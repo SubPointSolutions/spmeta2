@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2", "SPMeta2\SPMeta2.csproj", "{EE49D3FD-6180-40E6-829F-6831FF89DAC6}"
 EndProject
@@ -138,97 +138,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Research", "Research", "{7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{127ED6D0-3675-4E5A-B7B6-64473D50A0BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0D9CF547-9D53-4143-9708-2BD959F51974}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Docs", "SPMeta2.Docs\SPMeta2.Docs.csproj", "{8D7EF5B4-EABC-4481-B687-56004B4C0964}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 22
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = SPMeta2\\SPMeta2.csproj
-		SccProjectTopLevelParentUniqueName1 = SPMeta2.sln
-		SccProjectName1 = SPMeta2
-		SccLocalPath1 = SPMeta2
-		SccProjectUniqueName2 = SPMeta2.CSOM\\SPMeta2.CSOM.csproj
-		SccProjectTopLevelParentUniqueName2 = SPMeta2.sln
-		SccProjectName2 = SPMeta2.CSOM
-		SccLocalPath2 = SPMeta2.CSOM
-		SccProjectUniqueName3 = SPMeta2.SSOM\\SPMeta2.SSOM.csproj
-		SccProjectTopLevelParentUniqueName3 = SPMeta2.sln
-		SccProjectName3 = SPMeta2.SSOM
-		SccLocalPath3 = SPMeta2.SSOM
-		SccProjectUniqueName4 = SPMeta2.Syntax.Default\\SPMeta2.Syntax.Default.csproj
-		SccProjectTopLevelParentUniqueName4 = SPMeta2.sln
-		SccProjectName4 = SPMeta2.Syntax.Default
-		SccLocalPath4 = SPMeta2.Syntax.Default
-		SccProjectUniqueName5 = SPMeta2.SSOM.Samples.FoundationAppTests\\SPMeta2.SSOM.Samples.FoundationAppTests.csproj
-		SccProjectTopLevelParentUniqueName5 = SPMeta2.sln
-		SccProjectName5 = SPMeta2.SSOM.Samples.FoundationAppTests
-		SccLocalPath5 = SPMeta2.SSOM.Samples.FoundationAppTests
-		SccProjectUniqueName6 = SPMeta2.Regression\\SPMeta2.Regression.csproj
-		SccProjectTopLevelParentUniqueName6 = SPMeta2.sln
-		SccProjectName6 = SPMeta2.Regression
-		SccLocalPath6 = SPMeta2.Regression
-		SccProjectUniqueName7 = SPMeta2.Regression.CSOM\\SPMeta2.Regression.CSOM.csproj
-		SccProjectTopLevelParentUniqueName7 = SPMeta2.sln
-		SccProjectName7 = SPMeta2.Regression.CSOM
-		SccLocalPath7 = SPMeta2.Regression.CSOM
-		SccProjectUniqueName8 = SPMeta2.Regression.SSOM\\SPMeta2.Regression.SSOM.csproj
-		SccProjectTopLevelParentUniqueName8 = SPMeta2.sln
-		SccProjectName8 = SPMeta2.Regression.SSOM
-		SccLocalPath8 = SPMeta2.Regression.SSOM
-		SccProjectUniqueName9 = SPMeta2.Regression.Common\\SPMeta2.Regression.Common.csproj
-		SccProjectTopLevelParentUniqueName9 = SPMeta2.sln
-		SccProjectName9 = SPMeta2.Regression.Common
-		SccLocalPath9 = SPMeta2.Regression.Common
-		SccProjectUniqueName10 = SPMeta2.SSOM.Behaviours\\SPMeta2.SSOM.Behaviours.csproj
-		SccProjectTopLevelParentUniqueName10 = SPMeta2.sln
-		SccProjectName10 = SPMeta2.SSOM.Behaviours
-		SccLocalPath10 = SPMeta2.SSOM.Behaviours
-		SccProjectUniqueName11 = SPMeta2.CSOM.Behaviours\\SPMeta2.CSOM.Behaviours.csproj
-		SccProjectTopLevelParentUniqueName11 = SPMeta2.sln
-		SccProjectName11 = SPMeta2.CSOM.Behaviours
-		SccLocalPath11 = SPMeta2.CSOM.Behaviours
-		SccProjectUniqueName12 = SPMeta2.CSOM.Tests\\SPMeta2.CSOM.Tests.csproj
-		SccProjectTopLevelParentUniqueName12 = SPMeta2.sln
-		SccProjectName12 = SPMeta2.CSOM.Tests
-		SccLocalPath12 = SPMeta2.CSOM.Tests
-		SccProjectUniqueName13 = SPMeta2.CSOM.Samples.O365Provision\\SPMeta2.CSOM.Samples.O365Provision.csproj
-		SccProjectTopLevelParentUniqueName13 = SPMeta2.sln
-		SccProjectName13 = SPMeta2.CSOM.Samples.O365Provision
-		SccLocalPath13 = SPMeta2.CSOM.Samples.O365Provision
-		SccProjectUniqueName14 = SPMeta2.Regression.MinimalModelTests\\SPMeta2.Regression.MinimalModelTests.csproj
-		SccProjectTopLevelParentUniqueName14 = SPMeta2.sln
-		SccProjectName14 = SPMeta2.Regression.MinimalModelTests
-		SccLocalPath14 = SPMeta2.Regression.MinimalModelTests
-		SccProjectUniqueName15 = SPMeta2.Common\\SPMeta2.Common.csproj
-		SccProjectTopLevelParentUniqueName15 = SPMeta2.sln
-		SccProjectName15 = SPMeta2.Common
-		SccLocalPath15 = SPMeta2.Common
-		SccProjectUniqueName16 = SPMeta2.Common.Tests\\SPMeta2.Common.Tests.csproj
-		SccProjectTopLevelParentUniqueName16 = SPMeta2.sln
-		SccProjectName16 = SPMeta2.Common.Tests
-		SccLocalPath16 = SPMeta2.Common.Tests
-		SccProjectUniqueName17 = SPMeta2.CSOM.Standard\\SPMeta2.CSOM.Standard.csproj
-		SccProjectTopLevelParentUniqueName17 = SPMeta2.sln
-		SccProjectName17 = SPMeta2.CSOM.Standard
-		SccLocalPath17 = SPMeta2.CSOM.Standard
-		SccProjectUniqueName18 = SPMeta2.CSOM.Standard.Behaviours\\SPMeta2.CSOM.Standard.Behaviours.csproj
-		SccProjectTopLevelParentUniqueName18 = SPMeta2.sln
-		SccProjectName18 = SPMeta2.CSOM.Standard.Behaviours
-		SccLocalPath18 = SPMeta2.CSOM.Standard.Behaviours
-		SccProjectUniqueName19 = SPMeta2.T4\\SPMeta2.T4.csproj
-		SccProjectTopLevelParentUniqueName19 = SPMeta2.sln
-		SccProjectName19 = SPMeta2.T4
-		SccLocalPath19 = SPMeta2.T4
-		SccProjectUniqueName20 = SPMeta2.Nuget\\SPMeta2.Nuget.csproj
-		SccProjectTopLevelParentUniqueName20 = SPMeta2.sln
-		SccProjectName20 = SPMeta2.Nuget
-		SccLocalPath20 = SPMeta2.Nuget
-		SccProjectUniqueName21 = SPMeta2.Validation\\SPMeta2.Validation.csproj
-		SccProjectTopLevelParentUniqueName21 = SPMeta2.sln
-		SccProjectName21 = SPMeta2.Validation
-		SccLocalPath21 = SPMeta2.Validation
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -318,6 +232,10 @@ Global
 		{114D2FE1-02AB-4B1B-BBB1-E184E731B28F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114D2FE1-02AB-4B1B-BBB1-E184E731B28F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114D2FE1-02AB-4B1B-BBB1-E184E731B28F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D7EF5B4-EABC-4481-B687-56004B4C0964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D7EF5B4-EABC-4481-B687-56004B4C0964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D7EF5B4-EABC-4481-B687-56004B4C0964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D7EF5B4-EABC-4481-B687-56004B4C0964}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -356,10 +274,11 @@ Global
 		{6140491C-9E6F-474C-9035-50B87B76C703} = {EEDD55F8-EF18-419B-80B7-26BC273726A2}
 		{06C881CA-5FC3-4E0E-9F98-F564B95E607D} = {F2EB02F9-CD2E-4C76-A00F-27CEEA0F2310}
 		{B9900774-C957-4B4B-8E41-84BF72605FF8} = {F2EB02F9-CD2E-4C76-A00F-27CEEA0F2310}
-		{0F1EC0B3-DFFC-4554-A7B1-BAB7604A48B4} = {8AB9E935-5443-4E35-AD51-F03B1024D50A}
-		{C3C444C7-AB2C-4156-9F36-726CEB81F017} = {B9900774-C957-4B4B-8E41-84BF72605FF8}
 		{8AB9E935-5443-4E35-AD51-F03B1024D50A} = {7C7F9A02-802F-4386-AED1-31639984D2B0}
 		{127ED6D0-3675-4E5A-B7B6-64473D50A0BA} = {7C7F9A02-802F-4386-AED1-31639984D2B0}
+		{0F1EC0B3-DFFC-4554-A7B1-BAB7604A48B4} = {8AB9E935-5443-4E35-AD51-F03B1024D50A}
+		{C3C444C7-AB2C-4156-9F36-726CEB81F017} = {B9900774-C957-4B4B-8E41-84BF72605FF8}
 		{114D2FE1-02AB-4B1B-BBB1-E184E731B28F} = {127ED6D0-3675-4E5A-B7B6-64473D50A0BA}
+		{8D7EF5B4-EABC-4481-B687-56004B4C0964} = {0D9CF547-9D53-4143-9708-2BD959F51974}
 	EndGlobalSection
 EndGlobal

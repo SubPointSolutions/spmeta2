@@ -18,8 +18,8 @@ function GetCurrentDirectory
 
 $currentDir = GetCurrentDirectory
 
-. "$currentDir\SPMeta2.Nuget.Core.Config.ps1"
-. "$currentDir\SPMeta2.Nuget.Core.ps1"
+. "$currentDir\SPMeta2.Core.Config.ps1"
+. "$currentDir\SPMeta2.Core.ps1"
 
 
 cls
