@@ -1,0 +1,12 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\_3rd party\ClosedXML\ClosedXML.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\_3rd party\ClosedXML\DocumentFormat.OpenXml.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\_3rd party\SPMeta2\ExcelModel\Model.xlsx
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.T4.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.T4.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\obj\Debug\SPMeta2.T4.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\obj\Debug\SPMeta2.T4.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\obj\Debug\SPMeta2.T4.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.Syntax.Default.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.T4\bin\Debug\SPMeta2.Syntax.Default.pdb

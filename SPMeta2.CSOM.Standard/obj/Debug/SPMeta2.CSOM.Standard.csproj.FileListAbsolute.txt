@@ -1,0 +1,5 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb

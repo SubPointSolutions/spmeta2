@@ -1,0 +1,10 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\Microsoft.SharePoint.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\Microsoft.SharePoint.Security.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\Microsoft.SharePoint.Search.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb

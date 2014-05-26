@@ -1,0 +1,5 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.Regression.Common.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.Regression.Common.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.pdb

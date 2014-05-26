@@ -1,0 +1,7 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb

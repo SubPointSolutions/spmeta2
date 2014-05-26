@@ -1,0 +1,86 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ output extension="/" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="ClosedXML" #>
+<#@ import namespace="ClosedXML.Excel" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ assembly name="$(ProjectDir)_3rd party\ClosedXML\ClosedXml.dll" #>
+<#@ assembly name="$(ProjectDir)_3rd party\ClosedXML\DocumentFormat.OpenXml.dll" #><#+
+	DTE GetCurrentDTEService() {
+		IServiceProvider serviceProvider = (IServiceProvider)this.Host;
+		return serviceProvider.GetService(typeof(DTE)) as DTE;
+	}
+
+    void GenerateCurrentNamespace() {
+          WriteLine(GetCurrentNamespace());
+    }
+
+    string GetCurrentNamespace() {
+        var dte = GetCurrentDTEService();
+        var namespaceValue = dte.Solution.FindProjectItem(this.Host.TemplateFile).ContainingProject.Properties.Item("DefaultNamespace").Value;
+
+        var prjFolder = GetCurrentProjectFolderPath() + @"\";
+        var currentFolder = Host.ResolvePath("");
+
+        var subFolder = currentFolder.Replace(prjFolder, String.Empty);
+
+        var ns = subFolder.Split('\\');
+        var resNamespace = string.Join(".", ns);
+
+        return namespaceValue + "." + resNamespace;
+    }
+
+	string GetCurrentProjectFolderPath() {
+		
+		DTE dte = GetCurrentDTEService();
+
+		return Path.GetDirectoryName(dte.ActiveDocument.ProjectItem.ContainingProject.FileName);
+	}
+
+	string GetSPMetaFolderPath() {
+		return Path.Combine(GetCurrentProjectFolderPath(), @"_3rd party\SPMeta2\ExcelModel");
+	}
+
+	string GetSPMetaModelFilePath() {
+		return Path.Combine(GetSPMetaFolderPath(), "Model.xlsx");
+	}
+
+	string GetSPMeta2DictSetting(string name, string defaultValue) {
+
+		var workbook = new XLWorkbook(GetSPMetaModelFilePath());
+		var settingsSheet = workbook.Worksheet("DictSettings");
+
+		var rows = settingsSheet.Rows();
+		var rowsCount = settingsSheet.Rows().Count();
+
+		var result = defaultValue;
+
+		for(var rowIndex = 1; rowIndex < rowsCount; rowIndex++)
+		{
+			var currentRow = settingsSheet.Row(rowIndex);
+			var title = currentRow.Cell("A").Value.ToString();
+		
+			if(title == name)
+			{
+				var settingValue = currentRow.Cell("B").Value.ToString();
+		
+				if(!string.IsNullOrEmpty(settingValue))
+					result = settingValue;	
+			}
+		}
+
+		return result;
+	}
+#>

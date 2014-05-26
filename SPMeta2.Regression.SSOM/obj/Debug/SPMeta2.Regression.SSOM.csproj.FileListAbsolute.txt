@@ -1,0 +1,16 @@
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.Security.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.Search.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.pdb
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.csprojResolveAssemblyReference.cache
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.dll
+C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb

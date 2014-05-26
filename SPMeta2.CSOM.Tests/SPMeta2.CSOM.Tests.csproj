@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E1F11214-95FA-4F87-A480-83CAC1D88AAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPMeta2.CSOM.Tests</RootNamespace>
+    <AssemblyName>SPMeta2.CSOM.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_3rd party\SP2013\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Auto\AutoTest.cs" />
+    <Compile Include="Base\ClientOMSharePointTestBase.cs" />
+    <Compile Include="Const\TestConst.cs" />
+    <Compile Include="ContentTypeModelTests.cs" />
+    <Compile Include="Models\AppFolders.cs" />
+    <Compile Include="Models\AppQuickLaunchNavigationNodeModels.cs" />
+    <Compile Include="Models\ModuleFiles.cs" />
+    <Compile Include="Models\SP2013WorkflowModels.cs" />
+    <Compile Include="Models\SP2013WorkflowSubscriptionModels.cs" />
+    <Compile Include="ModuleFileModelTests.cs" />
+    <Compile Include="QuickLaunchNavigationNodeTests.cs" />
+    <Compile Include="SP2013WorkflowModelTests.cs" />
+    <Compile Include="UserCustomActionModelTests.cs" />
+    <Compile Include="FeatureModelTests.cs" />
+    <Compile Include="Models\UserCustomActionModels.cs" />
+    <Compile Include="Models\FeatureModels.cs" />
+    <Compile Include="Models\WebModels.cs" />
+    <Compile Include="WebModelTests.cs" />
+    <Compile Include="FieldModelTests.cs" />
+    <Compile Include="ListModelTests.cs" />
+    <Compile Include="Models\ContentTypeModels.cs" />
+    <Compile Include="Models\FieldModels.cs" />
+    <Compile Include="Models\ListModels.cs" />
+    <Compile Include="Models\ListViewModels.cs" />
+    <Compile Include="Models\ModelConsts.cs" />
+    <Compile Include="Models\PublishingPageModels.cs" />
+    <Compile Include="Models\SecurityGroupModels.cs" />
+    <Compile Include="Models\SecurityRoleModels.cs" />
+    <Compile Include="Models\WebPartModels.cs" />
+    <Compile Include="Models\WebPartPageModels.cs" />
+    <Compile Include="Models\WikiPageModels.cs" />
+    <Compile Include="PublishingPagesModelTests.cs" />
+    <Compile Include="SecurityGroupModelTests.cs" />
+    <Compile Include="Services\TracebleClientOModelService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebPartMakup.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebPartMakup.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebPartModelTests.cs" />
+    <Compile Include="WebPartPagesModelTests.cs" />
+    <Compile Include="WebPartTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebPartTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WikiPageModelTests.cs" />
+    <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowXAMLDefinitions.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WebPartMakup.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WebPartMakup.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebPartTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WebPartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowXAMLDefinitions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Common\SPMeta2.Common.csproj">
+      <Project>{3C2DCEEB-8C4E-4663-BAD9-41F536371A85}</Project>
+      <Name>SPMeta2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.CSOM.Standard.Behaviours\SPMeta2.CSOM.Standard.Behaviours.csproj">
+      <Project>{EF1B2839-C0C8-40E5-A27A-1B225907E891}</Project>
+      <Name>SPMeta2.CSOM.Standard.Behaviours</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
+      <Project>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</Project>
+      <Name>SPMeta2.CSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
+      <Project>{2B5CA105-8D61-4704-B9CE-C1CBA53AAAB0}</Project>
+      <Name>SPMeta2.Regression</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
+      <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>
+      <Name>SPMeta2.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
+      <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>
+      <Name>SPMeta2.Syntax.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Modules\js\jquery-1.11.0.min.js" />
+    <Content Include="SPMetaRegressionProfiles\dev101.WebApplicationSandboxProfile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SPMetaRegressionProfiles\sp2013.WebApplicationSandboxProfile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
