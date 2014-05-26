@@ -10,6 +10,7 @@ function GetSolutionDirectory
 
 	$dir += "\..\"
 
+
 	return $dir;
 }
 
