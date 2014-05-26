@@ -1,0 +1,68 @@
+# Notices
+
+04/14/2014
+- SP2013 workflow provision seems to be a big one
+- module provision needs to be "paired" with page provision, too much in common
+- refactoring is "must have", too much code aren't cool and copy-pasted
+- reengineering regressing test is to be done ASAP
+- OnCreating/Created events needs to be coimpleted
+- OnError strategy needs to be done
+
+04/08/2014
+- extract all "utlity" methods to static extensions
+- web part provision for wiki pages is increadible tricky
+
+- syntax samples
+
+-----------
+
+04-07-2013
+- Selenium runner for JSOM provision
+- splitting up model handlers (SOD w. lazy load?)
+- splitting up models (SOD w. lazy load?)
+- verbose/debug trace for model processing flow (to show in log)
+- mode definitions/fromJSON loading/fluent API
+- better exception handling
+
+04-03-2013
+- POCO has to be POCO 
+	- remove all by value referencies
+	- add light link to nbuild up a tree and external tree buildie/links wrapper
+- review & rebuilding CSOM is needed (prrof of concept w/ regression tetst have been completed)
+
+03-29-2013
+- a better validation for method arguments
+
+03-27-2013
+- WebPartDefinition.WebpartType has to be changed from Type to string to support client side OM
+- ModelHandler auto registration is recommended for ModelServiceBase
+
+03-26-2013
+- SPDevLab.SPMeta2.Events seems to be obsoleted 
+- BackToParentModel/BackToRootModel methods are obsoleted (BaseSyntax has beed introduced)
+
+03-25-2013
+- Event propogating from model deployment event to parent ModelServiceBase has to be reenginnered
+- Service Factory seems to be obsoleted and useless (however, some standard is a good thing)
+- Custom xml bulder for *.webpart filed is requred for both server side (from *.webpart file) and client side provision
+
+03-24-2013
+- Common model set is recommended for both client/server side provision tests
+- Custom ID/Names/WebPart type enums/const via T4 are recommended
+- Changing projects type from SharePoint project to regular dll is recommended
+
+03-20-2013
+- Creating .wsp pachages for repitable SharePoint (foundation and standard) server
+- Fixing up server side provision with new Child-model flow is requred
+
+03-14-2013
+- Adding FieldLinksChanges to content types is requred
+- Adding reordering behaviour to content type fields is requred
+- Defining the while strategy and 'the same' havavious for both provisions is required
+
+# Artifacts
+- Event receivers (server side only)
+- Workflow accosiations (both)
+- UserCustomActions (both)
+- Properties for web/list/so on (server side only)
+- Navigation (both)

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPMeta2.CSOM</RootNamespace>
+    <AssemblyName>SPMeta2.CSOM</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy">
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices">
+      <HintPath>..\_3rd party\SP2013\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefaultSyntax\ContentTypeDefinitionSyntax.cs" />
+    <Compile Include="DefaultSyntax\FieldDefinitionSyntax.cs" />
+    <Compile Include="DefaultSyntax\ListDefinitionSyntax.cs" />
+    <Compile Include="Common\ModelHostContext.cs" />
+    <Compile Include="DefaultSyntax\ModuleFileDefinitionSyntaz.cs" />
+    <Compile Include="DefaultSyntax\QuickLaunchNavigationNodeDefinitionSyntax.cs" />
+    <Compile Include="DefaultSyntax\WebPartDefinitionSyntax.cs" />
+    <Compile Include="DefaultSyntax\WebtDefinitionSyntax.cs" />
+    <Compile Include="Extensions\CamlQueryTemplates.cs" />
+    <Compile Include="Extensions\ContentTypeExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\WebExtensions.cs" />
+    <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
+    <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
+    <Compile Include="ModelHandlers\FieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\FolderModelHandler.cs" />
+    <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
+    <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\ListModelHandler.cs" />
+    <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
+    <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
+    <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\SecurityGroupModelHandler.cs" />
+    <Compile Include="ModelHandlers\SecurityRoleLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\SecurityRoleModelHandler.cs" />
+    <Compile Include="ModelHandlers\SiteModelHandler.cs" />
+    <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" />
+    <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
+    <Compile Include="ModelHandlers\WebModelHandler.cs" />
+    <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
+    <Compile Include="ModelHosts\ListItemFieldValueModelHost.cs" />
+    <Compile Include="ModelHosts\ModuleFileModelHost.cs" />
+    <Compile Include="ModelHosts\NavigationNodeModelHost.cs" />
+    <Compile Include="ModelHosts\PropertyModelHost.cs" />
+    <Compile Include="ModelHosts\SiteModelHost.cs" />
+    <Compile Include="ModelHosts\SP2013WorkflowSubscriptionModelHost.cs" />
+    <Compile Include="ModelHosts\CSOMModelHost.cs" />
+    <Compile Include="ModelHosts\FolderModelHost.cs" />
+    <Compile Include="ModelHosts\ListModelHost.cs" />
+    <Compile Include="ModelHosts\SecurityGroupModelHost.cs" />
+    <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
+    <Compile Include="ModelHosts\WebModelHost.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishingPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\CSOMProvisionService.cs" />
+    <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
+    <Compile Include="WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebPartTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebPartTemplates.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
+      <Project>{5e592eaa-e21f-4bf4-8edf-6f6452dc916a}</Project>
+      <Name>SPMeta2.CSOM.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
+      <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
+      <Name>SPMeta2.Syntax.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PublishingPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PublishingPageTemplates.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebPartPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WebPartPageTemplates.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebPartTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WebPartTemplates.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

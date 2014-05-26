@@ -1,0 +1,83 @@
+﻿using System;
+using Microsoft.SharePoint;
+using SPMeta2.Definitions;
+using SPMeta2.ModelHandlers;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Utils;
+
+namespace SPMeta2.SSOM.ModelHandlers
+{
+    public class ContentTypeModelHandler : ModelHandlerBase
+    {
+        #region methods
+
+        public override Type TargetType
+        {
+            get { return typeof(ContentTypeDefinition); }
+        }
+
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        {
+            var site = modelHost as SPSite;
+            var contentTypeDefinition = model as ContentTypeDefinition;
+
+            if (site != null && contentTypeDefinition != null)
+            {
+                var rootWeb = site.RootWeb;
+                var contentTypeId = new SPContentTypeId(contentTypeDefinition.GetContentTypeId());
+
+                // SPBug, it has to be new SPWen for every content type operation inside feature event handler
+                using (var tmpRootWeb = site.OpenWeb(rootWeb.ID))
+                {
+                    var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
+
+                    if (childModelType == typeof(ModuleFileDefinition))
+                    {
+                        action(targetContentType.ResourceFolder);
+                    }
+                    else
+                    {
+                        action(targetContentType);
+                    }
+
+                    targetContentType.Update(true);
+                    tmpRootWeb.Update();
+                }
+            }
+            else
+            {
+                action(modelHost);
+            }
+        }
+
+        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        {
+            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
+            var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
+
+            var rootWeb = site.RootWeb;
+
+            // SPBug, it has to be new SPWen for every content type operation inside feature event handler
+            using (var tmpRootWeb = site.OpenWeb(rootWeb.ID))
+            {
+                var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
+
+                var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
+
+                if (targetContentType == null)
+                    targetContentType = tmpRootWeb.ContentTypes.Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+
+                targetContentType.Name = contentTypeModel.Name;
+                targetContentType.Group = contentTypeModel.Group;
+
+                // SPBug, description cannot be null
+                targetContentType.Description = contentTypeModel.Description ?? string.Empty;
+                targetContentType.Update();
+
+                tmpRootWeb.Update();
+            }
+        }
+
+        #endregion
+    }
+}
