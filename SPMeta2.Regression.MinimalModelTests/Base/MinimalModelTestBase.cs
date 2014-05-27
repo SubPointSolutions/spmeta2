@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.JSGrid;
 using SPMeta2.CSOM.Services;
 using SPMeta2.Models;
 using SPMeta2.Regression.Base;
