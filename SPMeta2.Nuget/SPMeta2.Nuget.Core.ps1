@@ -107,9 +107,16 @@ function CreatePackage($package) {
 	$dir = [System.IO.Directory]::CreateDirectory($targetFolder);
 	
 	$solutionDirectory = GetSolutionDirectory
-	
+
 	foreach($fileName in $asm) {
-		$files = Get-ChildItem $solutionDirectory -Recurse -Include "$fileName"
+
+		$name = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
+
+		$projectFolderName = $name
+		$projectDirectory = [System.IO.Path]::Combine($solutionDirectory, $projectFolderName)
+		$projectDirectory = [System.IO.Path]::Combine($projectDirectory, "bin\debug")
+
+		$files = Get-ChildItem $projectDirectory -Recurse -Include "$fileName"
 
 		if($files.Length -gt 0) {
 			$targetFile = $files[0];
