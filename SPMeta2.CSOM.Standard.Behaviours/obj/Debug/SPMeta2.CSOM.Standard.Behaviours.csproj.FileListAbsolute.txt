@@ -6,3 +6,8 @@ C:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\bin\Debug\SPMeta2.CSOM.Standard
 C:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\bin\Debug\SPMeta2.CSOM.Standard.Behaviours.pdb
 C:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\obj\Debug\SPMeta2.CSOM.Standard.Behaviours.dll
 C:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\obj\Debug\SPMeta2.CSOM.Standard.Behaviours.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\bin\Debug\SPMeta2.CSOM.Standard.Behaviours.dll
+D:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\bin\Debug\SPMeta2.CSOM.Standard.Behaviours.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\obj\Debug\SPMeta2.CSOM.Standard.Behaviours.csprojResolveAssemblyReference.cache
+D:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\obj\Debug\SPMeta2.CSOM.Standard.Behaviours.dll
+D:\_git\spmeta2\SPMeta2.CSOM.Standard.Behaviours\obj\Debug\SPMeta2.CSOM.Standard.Behaviours.pdb
