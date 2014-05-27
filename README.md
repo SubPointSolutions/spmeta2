@@ -33,7 +33,7 @@ Having code based provision allows us to have full control over the provision an
 
 This allows us to write integration tests within minutes, make sure deployment and upgrade work as expected. Most of the provision cases are covered with integration tests. We create a new site or web, deploy everything we need and check if everything has been deployed correctly.
 
-### Documentation and support
+## Documentation and support
 <ul>
                     <li><a target="_blank" href="https://github.com/SubPointSolutions/spmeta2">SPMeta2 @ GitHub</a></li>
                     <li><a target="_blank" href="https://www.nuget.org/packages?q=spmeta2">SPMeta2 @ Nuget</a></li>
