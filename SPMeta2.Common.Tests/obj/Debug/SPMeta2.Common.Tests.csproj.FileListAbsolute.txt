@@ -7,15 +7,6 @@ C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.C
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.csproj.GenerateResource.Cache
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.dll
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.pdb
-C:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.Tests.dll
-C:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.Tests.pdb
-C:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.dll
-C:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.pdb
-C:\_git\spmeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.csprojResolveAssemblyReference.cache
-C:\_git\spmeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.Webparts.resources
-C:\_git\spmeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.csproj.GenerateResource.Cache
-C:\_git\spmeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.dll
-C:\_git\spmeta2\SPMeta2.Common.Tests\obj\Debug\SPMeta2.Common.Tests.pdb
 D:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.Tests.dll
 D:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.Tests.pdb
 D:\_git\spmeta2\SPMeta2.Common.Tests\bin\Debug\SPMeta2.Common.dll

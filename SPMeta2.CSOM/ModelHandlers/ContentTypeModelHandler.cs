@@ -95,14 +95,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = site.Context;
             var rootWeb = site.RootWeb;
 
-            context.Load(rootWeb, tmpWeb => tmpWeb.ContentTypes);
+            var contentTypes = rootWeb.ContentTypes;
+
+            context.Load(rootWeb);
+            context.Load(contentTypes);
+
             context.ExecuteQuery();
 
             InvokeOnModelEvents<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
 
             //var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
             var contentTypeId = contentTypeModel.GetContentTypeId();
-            var currentContentType = rootWeb.ContentTypes.GetById(contentTypeId);
+            var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
 
             if (currentContentType == null)
             {
