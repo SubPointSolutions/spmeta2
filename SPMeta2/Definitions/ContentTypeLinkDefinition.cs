@@ -1,5 +1,4 @@
-﻿using SPDevLab.SPMeta2.Definitions;
-
+﻿
 namespace SPMeta2.Definitions
 {
     public class ContentTypeLinkDefinition : DefinitionBase

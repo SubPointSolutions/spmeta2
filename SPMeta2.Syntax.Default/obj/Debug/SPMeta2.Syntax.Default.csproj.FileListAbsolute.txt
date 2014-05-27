@@ -12,3 +12,10 @@ C:\_git\spmeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.dll
 C:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.pdb
+D:\_git\spmeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.dll
+D:\_git\spmeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.pdb
+D:\_git\spmeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.dll
+D:\_git\spmeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.pdb
+D:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.csprojResolveAssemblyReference.cache
+D:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.dll
+D:\_git\spmeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.pdb
