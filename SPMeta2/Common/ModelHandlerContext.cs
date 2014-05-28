@@ -9,7 +9,7 @@ namespace SPMeta2.Common
     {
         #region properties
 
-        public ServiceFactory ServiceFactory { get; set; }
+        //public ServiceFactory ServiceFactory { get; set; }
 
         public object ModelHost { get; set; }
         public IEnumerable<DefinitionBase> Models { get; set; }
