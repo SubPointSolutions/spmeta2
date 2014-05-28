@@ -8,12 +8,13 @@ using SPMeta2.Validation.Extensions;
 
 namespace SPMeta2.Validation.Validators.Definitions
 {
-    public class SecurityGroupDefinitionValidator : ValidatorBase<SecurityGroupDefinition>
+    public class SecurityGroupDefinitionValidator : DefinitionBaseValidator
     {
-        public override void Validate(SecurityGroupDefinition model, List<ValidationResult> result)
+        public override void Validate(DefinitionBase definition, List<ValidationResult> result)
         {
-            model
-                .NotEmptyString(m => m.Name, result);
+            Validate<SecurityGroupDefinition>(definition, model => model
+                .NotEmptyString(m => m.Name, result)
+                .NoSpacesBeforeOrAfter(m => m.Name, result));
         }
     }
 }

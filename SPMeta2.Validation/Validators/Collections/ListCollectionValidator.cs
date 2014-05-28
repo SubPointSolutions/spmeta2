@@ -8,12 +8,15 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class ListCollectionValidator : CollectionValidatorBase<ListDefinition>
+    public class ListCollectionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<ListDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.Title, result);
-            CheckIfUnique(model, m => m.Url, result);
+            Validate<ListDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.Title, result);
+                CheckIfUnique(model, m => m.Url, result);
+            });
         }
     }
 }

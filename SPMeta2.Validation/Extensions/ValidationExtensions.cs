@@ -72,6 +72,49 @@ namespace SPMeta2.Validation.Extensions
             }
         }
 
+        public static TSource NoSpacesBeforeOrAfter<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
+          List<ValidationResult> result)
+        {
+            var valueResult = source.GetPropertyValue(propertyLambda);
+
+            CheckIfString<TSource, TProperty>(result, valueResult);
+            CheckIfStringHasSpacesBeforeOrAfter<TSource, TProperty>(result, valueResult);
+
+            return source;
+        }
+
+        private static void CheckIfStringHasSpacesBeforeOrAfter<T1, T2>(List<ValidationResult> result, PropResult valueResult)
+        {
+            var stringValue = valueResult.Value as string;
+
+            if (!string.IsNullOrEmpty(stringValue))
+            {
+                if (stringValue.StartsWith(" "))
+                {
+                    result.Add(new ValidationResult
+                  {
+                      IsValid = false,
+                      Message = string.Format("Property [{0}] of type [{1}] must not start with space.",
+                          valueResult.Name,
+                          valueResult.ObjectType.FullName)
+                  });
+                }
+
+                if (stringValue.EndsWith(" "))
+                {
+                    result.Add(new ValidationResult
+                    {
+                        IsValid = false,
+                        Message = string.Format("Property [{0}] of type [{1}] must not end with space.",
+                            valueResult.Name,
+                            valueResult.ObjectType.FullName)
+                    });
+                }
+
+
+            }
+        }
+
         public static TSource NotEmptyString<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
             List<ValidationResult> result)
         {

@@ -8,11 +8,14 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class SecurityRoleDefinitionValidator : CollectionValidatorBase<SecurityRoleDefinition>
+    public class SecurityRoleDefinitionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<SecurityRoleDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.Name, result);
+            Validate<SecurityRoleDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.Name, result);
+            });
         }
     }
 }

@@ -8,11 +8,14 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class WikiPageCollectionValidator : CollectionValidatorBase<WikiPageDefinition>
+    public class WikiPageCollectionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<WikiPageDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.FileName, result);
+            Validate<WikiPageDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.FileName, result);
+            });
         }
     }
 }

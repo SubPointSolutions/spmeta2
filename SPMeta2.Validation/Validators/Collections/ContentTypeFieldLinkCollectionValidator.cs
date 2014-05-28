@@ -8,11 +8,14 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class ContentTypeFieldLinkCollectionValidator : CollectionValidatorBase<ContentTypeFieldLinkDefinition>
+    public class ContentTypeFieldLinkCollectionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<ContentTypeFieldLinkDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.FieldId, result);
+            Validate<ContentTypeFieldLinkDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.FieldId, result);
+            });
         }
     }
 }

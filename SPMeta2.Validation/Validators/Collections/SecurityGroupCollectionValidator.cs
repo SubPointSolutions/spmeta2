@@ -8,11 +8,14 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class SecurityGroupCollectionValidator : CollectionValidatorBase<SecurityGroupDefinition>
+    public class SecurityGroupCollectionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<SecurityGroupDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.Name, result);
+            Validate<SecurityGroupDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.Name, result);
+            });
         }
     }
 }

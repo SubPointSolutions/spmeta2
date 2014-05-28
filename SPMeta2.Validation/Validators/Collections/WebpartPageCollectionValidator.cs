@@ -8,11 +8,14 @@ using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
 {
-    public class WebpartPageCollectionValidator : CollectionValidatorBase<WebPartPageDefinition>
+    public class WebpartPageCollectionValidator : CollectionValidatorBase
     {
-        public override void Validate(List<WebPartPageDefinition> model, List<ValidationResult> result)
+        public override void Validate(IEnumerable<DefinitionBase> models, List<ValidationResult> result)
         {
-            CheckIfUnique(model, m => m.FileName, result);
+            Validate<WebPartPageDefinition>(models, model =>
+            {
+                CheckIfUnique(model, m => m.FileName, result);
+            });
         }
     }
 }

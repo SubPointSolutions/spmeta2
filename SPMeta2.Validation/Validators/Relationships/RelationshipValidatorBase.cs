@@ -37,8 +37,8 @@ namespace SPMeta2.Validation.Validators.Relationships
                     {
                         IsValid = false,
                         Message = string.Format("Model definition of type [{0}] cannot contain child of type [{1}].",
-                            model.GetType(),
-                            type.GetType())
+                            model.Value.GetType(),
+                            type)
                     });
                 }
             }

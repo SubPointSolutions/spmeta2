@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Common\ValidationResult.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
+    <Compile Include="Services\ModelValidationService.cs" />
     <Compile Include="Validators\Collections\FolderCollectionValidator.cs" />
     <Compile Include="Validators\Collections\SecurityRoleCollectionValidator.cs" />
     <Compile Include="Validators\Collections\WikiPageCollectionValidator.cs" />
@@ -56,7 +57,9 @@
     <Compile Include="Validators\Collections\SecurityGroupCollectionValidator.cs" />
     <Compile Include="Validators\Collections\ListCollectionValidator.cs" />
     <Compile Include="Validators\Collections\FieldCollectionValidator.cs" />
+    <Compile Include="Validators\Definitions\FolderDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\ContentTypeDefinitionValidator.cs" />
+    <Compile Include="Validators\Definitions\DefinitionBaseValidator.cs" />
     <Compile Include="Validators\Definitions\SecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\SecurityGroupDefinitionDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\ListDefinitionValidator.cs" />
