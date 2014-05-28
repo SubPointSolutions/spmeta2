@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
-using SPDevLab.SPMeta2.Definitions;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;

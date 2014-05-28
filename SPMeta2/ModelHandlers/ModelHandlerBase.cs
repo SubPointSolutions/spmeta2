@@ -106,6 +106,13 @@ namespace SPMeta2.ModelHandlers
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelHost"></param>
+        /// <param name="model"></param>
+        /// <param name="childModelType"></param>
+        /// <param name="action"></param>
         public virtual void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
             action(modelHost);

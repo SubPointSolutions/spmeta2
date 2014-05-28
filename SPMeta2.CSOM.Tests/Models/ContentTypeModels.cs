@@ -1,5 +1,8 @@
 ﻿using System;
 using SPMeta2.Definitions;
+using SPMeta2.Extensions;
+using SPMeta2.Utils;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.CSOM.Tests.Models
 {
@@ -22,6 +25,14 @@ namespace SPMeta2.CSOM.Tests.Models
             Group = ModelConsts.DefaultGroup,
             Id = new Guid("{2EF91F5B-205E-4E5C-AA71-EFFBAF6717BD}"),
             Name = "__Test Document Content Type",
+        };
+
+        public static ContentTypeDefinition CustomChildDocument = new ContentTypeDefinition
+        {
+            ParentContentTypeId = CustomDocument.GetContentTypeId(),
+            Group = ModelConsts.DefaultGroup,
+            Id = new Guid("{BF91B4C9-BCC2-4AF8-8CFB-79C8F84F1D44}"),
+            Name = "__Test Child Document Content Type",
         };
 
         #endregion

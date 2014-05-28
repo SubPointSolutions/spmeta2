@@ -1,5 +1,4 @@
 ﻿using System;
-using SPDevLab.SPMeta2.Definitions;
 
 namespace SPMeta2.Definitions
 {

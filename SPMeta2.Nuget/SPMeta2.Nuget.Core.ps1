@@ -23,7 +23,13 @@ function GetPackagePrototype() {
                 'Dependencies'= @();
 				"Id" = "";
 				"Version" = "";
+				"Description" = "";
+				"ReleaseNotes" = "";
+				"Summary" = "";
+				"ProjectUrl" = "https://github.com/SubPointSolutions/spmeta2";
+				"Tags" = "SharePoint SP2013 SP2010 O365 Office365 Office365Dev Provision SPMeta2";
 			}
+
 	$object = New-Object –TypeName PSObject –Prop $properties
 
 	return $object;
@@ -107,9 +113,16 @@ function CreatePackage($package) {
 	$dir = [System.IO.Directory]::CreateDirectory($targetFolder);
 	
 	$solutionDirectory = GetSolutionDirectory
-	
+
 	foreach($fileName in $asm) {
-		$files = Get-ChildItem $solutionDirectory -Recurse -Include "$fileName"
+
+		$name = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
+
+		$projectFolderName = $name
+		$projectDirectory = [System.IO.Path]::Combine($solutionDirectory, $projectFolderName)
+		$projectDirectory = [System.IO.Path]::Combine($projectDirectory, "bin\debug")
+
+		$files = Get-ChildItem $projectDirectory -Recurse -Include "$fileName"
 
 		if($files.Length -gt 0) {
 			$targetFile = $files[0];
@@ -127,8 +140,6 @@ function CreateNugetSpec($package, $targetFolder) {
 	$version = $package.Version;
 	$asm = $package.Assemblies;
 	
-	
-
 	$specXml = GetNugetSpecTemplateXml
 
 	[Reflection.Assembly]::LoadWithpartialName("System.Xml.Linq") | Out-Null
@@ -139,8 +150,12 @@ function CreateNugetSpec($package, $targetFolder) {
 	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}id").Value = $packageName;	 
 	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}version").Value = $version;	 
 	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}title").Value = $packageName;	 
-	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}authors").Value = "Anton Vishnyakov";	 
-	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}owners").Value = "Anton Vishnyakov";	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}authors").Value = "SubPoint Solutions";	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}owners").Value = "SubPoint Solutions";	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}tags").Value = $package.Tags;	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}summary").Value = $package.Summary;	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}description").Value = $package.Description;	 
+	$metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}projectUrl").Value = $package.ProjectUrl;	 
 
 	$files = $specXml.FirstNode.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}files");
 	$dependencies = $metadata.Element("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}dependencies");
@@ -205,6 +220,9 @@ function CreateSPMeta2CorePackage($version) {
 	$package.Version = $version;
 	$package.Id =  "SPMeta2.Core"
 
+	$package.Description = "SPMeta2 common infrastructure. Provides model definitions, model handlers, model tree construction and base syntax.";
+	$package.Summary = "SPMeta2 common infrastructure."
+	
 	CreatePackage $package	
 }
 
@@ -214,6 +232,9 @@ function CreateSPMeta2CSOMFoundationPackage($version) {
 
 	$package.Version = $version;
 	$package.Id =  "SPMeta2.CSOM.Foundation"
+
+	$package.Description = "SPMeta2 CSOM provision implementation for SharePoint Foundation.";
+	$package.Summary = "SPMeta2 CSOM provision implementation for SharePoint Foundation.";
 
 	$package.Assemblies += "SPMeta2.CSOM.dll";
 	$package.Assemblies += "SPMeta2.CSOM.Behaviours.dll";
@@ -233,6 +254,9 @@ function CreateSPMeta2CSOMStandardPackage($version) {
 
 	$package.Version = $version;
 	$package.Id = "SPMeta2.CSOM.Standard"
+
+	$package.Description = "SPMeta2 CSOM provision implementation for SharePoint Standard.";
+	$package.Summary = "SPMeta2 CSOM provision implementation for SharePoint Standard.";
 
 	$package.Assemblies += "SPMeta2.CSOM.Standard.dll";
 	$package.Assemblies += "SPMeta2.CSOM.Standard.Behaviours.dll";
@@ -260,6 +284,9 @@ function CreateSPMeta2SSOMFoundationPackage($version) {
 	$package.Version = $version;
 	$package.Id = "SPMeta2.SSOM.Foundation"
 
+	$package.Description = "SPMeta2 SSOM provision implementation for SharePoint Foundation.";
+	$package.Summary = "SPMeta2 SSOM provision implementation for SharePoint Foundation.";
+
 	$package.Assemblies += "SPMeta2.SSOM.dll";
 	$package.Assemblies += "SPMeta2.SSOM.Behaviours.dll";
 
@@ -279,6 +306,9 @@ function CreateSPMeta2RegressionPackage($version) {
 	$package.Version = $version;
 	$package.Id = "SPMeta2.Regression.Core"
 
+	$package.Description = "SPMeta2 common regression package. Proivides core services for regression tests.";
+	$package.Summary = "SPMeta2 common regression package.";
+
 	$package.Assemblies += "SPMeta2.Regression.dll";
 	$package.Assemblies += "SPMeta2.Regression.Common.dll";
 
@@ -297,6 +327,9 @@ function CreateSPMeta2RegressionCSOMPackage($version) {
 
 	$package.Version = $version;
 	$package.Id = "SPMeta2.Regression.CSOM"
+
+	$package.Description = "SPMeta2 CSOM regression package. Proivides CSOM support for regression tests.";
+	$package.Summary = "SPMeta2 CSOM regression package.";
 
 	$package.Assemblies += "SPMeta2.Regression.CSOM.dll";
 
@@ -328,6 +361,9 @@ function CreateSPMeta2RegressionSSOMPackage($version) {
 	$package.Version = $version;
 	$package.Id = "SPMeta2.Regression.SSOM"
 
+	$package.Description = "SPMeta2 SSOM regression package. Proivides SSOM support for regression tests.";
+	$package.Summary = "SPMeta2 SSOM regression package.";
+
 	$package.Assemblies += "SPMeta2.Regression.SSOM.dll";
 
 	$spMetaCore = GetDependencyPrototype
@@ -348,8 +384,27 @@ function CreateSPMeta2RegressionSSOMPackage($version) {
 
 	$package.Dependencies += $spMetaRegressionCore
 	
-	
+	CreatePackage $package
+}
 
+function CreateSPMeta2Validation($version) {
+	
+	$package = GetPackagePrototype
+
+	$package.Version = $version;
+	$package.Id = "SPMeta2.Validation"
+
+	$package.Description = "SPMeta2 validation package. Proivides services for model validation - propeties, collections and relationships.";
+	$package.Summary = "SPMeta2 validation package";
+
+	$package.Assemblies += "SPMeta2.Validation.dll";
+
+	$spMetaCore = GetDependencyPrototype
+	$spMetaCore.Id = "SPMeta2.Core"
+	$spMetaCore.Version = $version
+
+	$package.Dependencies += $spMetaCore
+	
 	CreatePackage $package
 }
 
@@ -379,4 +434,7 @@ function CreateSPMeta2Packages() {
 
 	Write-Host "Creating SPMeta2.Regression.SSOM package"
 	CreateSPMeta2RegressionSSOMPackage $version	
+
+	Write-Host "Creating SPMeta2.Validation package"
+	CreateSPMeta2Validation $version	
 }

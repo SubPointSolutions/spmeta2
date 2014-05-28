@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.SharePoint.Administration;
-using SPDevLab.SPMeta2.Definitions;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;

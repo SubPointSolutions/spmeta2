@@ -3,6 +3,10 @@ C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll
+D:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
+D:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
 C:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll
 C:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.pdb
 C:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache

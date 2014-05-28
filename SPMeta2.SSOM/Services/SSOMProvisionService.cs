@@ -1,5 +1,4 @@
-﻿using SPDevLab.SPMeta2.Definitions;
-using SPMeta2.Definitions;
+﻿using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
 

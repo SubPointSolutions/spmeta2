@@ -16,7 +16,7 @@ namespace SPMeta2.Models
 
     public class ModelNode
     {
-        #region contructors
+        #region constructors
 
         public ModelNode()
         {
@@ -45,7 +45,7 @@ namespace SPMeta2.Models
         public Collection<ModelNode> ChildModels { get; set; }
 
         [XmlIgnore]
-        public virtual Dictionary<ModelEventType, List<object>> ModelEvents { get; set; }
+        public Dictionary<ModelEventType, List<object>> ModelEvents { get; set; }
 
         /// <summary>
         /// Experimental, may be removed in later releases.

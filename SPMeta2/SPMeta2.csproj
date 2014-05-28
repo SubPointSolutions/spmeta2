@@ -97,9 +97,11 @@
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Models\SiteModel.cs" />
+    <Compile Include="Models\WebModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
+    <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
   </ItemGroup>

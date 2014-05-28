@@ -78,7 +78,10 @@ namespace SPMeta2.CSOM.Tests
                                                 {
                                                     contentType
                                                         .AddContentTypeFieldLink(FieldModels.Contact);
-                                                });
+                                                })
+                                                .AddContentType(ContentTypeModels.CustomChildDocument, contentType =>
+                                                {
+                                                }); ;
                                         });
 
             WithStaticSharePointClientContext(context =>

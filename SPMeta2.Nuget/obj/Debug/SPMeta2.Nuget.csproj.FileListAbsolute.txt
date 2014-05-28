@@ -3,8 +3,12 @@ C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Nuget\bin\Debug\SPMeta2.Nuget.pd
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.csprojResolveAssemblyReference.cache
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.dll
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.pdb
+D:\_git\spmeta2\SPMeta2.Nuget\bin\Debug\SPMeta2.Nuget.dll
+D:\_git\spmeta2\SPMeta2.Nuget\bin\Debug\SPMeta2.Nuget.pdb
+D:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.dll
+D:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.pdb
+D:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2.Nuget\bin\Debug\SPMeta2.Nuget.dll
 C:\_git\spmeta2\SPMeta2.Nuget\bin\Debug\SPMeta2.Nuget.pdb
-C:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.dll
 C:\_git\spmeta2\SPMeta2.Nuget\obj\Debug\SPMeta2.Nuget.pdb

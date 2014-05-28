@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPDevLab.SPMeta2;
-using SPDevLab.SPMeta2.Definitions;
 using SPMeta2.Definitions;
 
 namespace SPMeta2.Common
