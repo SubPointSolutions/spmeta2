@@ -45,6 +45,11 @@
   <ItemGroup>
     <Compile Include="Common\ValidationResult.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
+    <Compile Include="Validators\Collections\FolderCollectionValidator.cs" />
+    <Compile Include="Validators\Collections\SecurityRoleCollectionValidator.cs" />
+    <Compile Include="Validators\Collections\WikiPageCollectionValidator.cs" />
+    <Compile Include="Validators\Collections\WebpartPageCollectionValidator.cs" />
+    <Compile Include="Validators\Collections\WebpartCollectionValidator.cs" />
     <Compile Include="Validators\Collections\FeatureCollectionValidator.cs" />
     <Compile Include="Validators\Collections\ContentTypeFieldLinkCollectionValidator.cs" />
     <Compile Include="Validators\Collections\ContentTypeCollectionValidator.cs" />
