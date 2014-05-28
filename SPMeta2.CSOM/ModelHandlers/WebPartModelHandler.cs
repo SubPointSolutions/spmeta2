@@ -13,7 +13,7 @@ using System.Xml;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class WebPartModelHandler : ModelHandlerBase
+    public class WebPartModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

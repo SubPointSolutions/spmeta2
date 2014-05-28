@@ -8,7 +8,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ListViewModelHandler : ModelHandlerBase
+    public class ListViewModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

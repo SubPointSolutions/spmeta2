@@ -7,7 +7,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ContentTypeFieldLinkModelHandler : ModelHandlerBase
+    public class ContentTypeFieldLinkModelHandler : CSOMModelHandlerBase
     {
         public override Type TargetType
         {

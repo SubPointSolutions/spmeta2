@@ -73,6 +73,7 @@
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
+    <Compile Include="ModelHandlers\CSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />

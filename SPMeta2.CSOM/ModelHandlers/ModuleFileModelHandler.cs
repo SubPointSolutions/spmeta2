@@ -8,7 +8,7 @@ using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ModuleFileModelHandler : ModelHandlerBase
+    public class ModuleFileModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

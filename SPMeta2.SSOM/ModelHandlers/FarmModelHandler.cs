@@ -6,7 +6,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class FarmModelHandler : ModelHandlerBase
+    public class FarmModelHandler : SSOMModelHandlerBase
     {
         #region methods
 

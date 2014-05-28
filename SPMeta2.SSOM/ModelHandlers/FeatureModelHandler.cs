@@ -11,7 +11,7 @@ using Microsoft.SharePoint.Administration;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class FeatureModelHandler : ModelHandlerBase
+    public class FeatureModelHandler : SSOMModelHandlerBase
     {
         #region properties
 

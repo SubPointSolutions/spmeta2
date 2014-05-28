@@ -6,7 +6,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class WikiPageModelHandler : ModelHandlerBase
+    public class WikiPageModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

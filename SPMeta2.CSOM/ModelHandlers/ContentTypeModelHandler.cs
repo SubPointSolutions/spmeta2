@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ContentTypeModelHandler : ModelHandlerBase
+    public class ContentTypeModelHandler : CSOMModelHandlerBase
     {
         public override Type TargetType
         {

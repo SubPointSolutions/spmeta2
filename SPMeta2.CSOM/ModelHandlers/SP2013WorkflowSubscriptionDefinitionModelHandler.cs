@@ -13,7 +13,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class SP2013WorkflowSubscriptionDefinitionModelHandler : ModelHandlerBase
+    public class SP2013WorkflowSubscriptionDefinitionModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

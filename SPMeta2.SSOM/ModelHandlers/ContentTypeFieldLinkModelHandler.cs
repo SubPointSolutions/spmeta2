@@ -6,7 +6,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class ContentTypeFieldLinkModelHandler : ModelHandlerBase
+    public class ContentTypeFieldLinkModelHandler : SSOMModelHandlerBase
     {
         #region methods
 

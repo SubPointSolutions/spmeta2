@@ -12,7 +12,7 @@ using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ListModelHandler : ModelHandlerBase
+    public class ListModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

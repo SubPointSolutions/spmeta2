@@ -73,6 +73,7 @@
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\SSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmModelHandler.cs" />

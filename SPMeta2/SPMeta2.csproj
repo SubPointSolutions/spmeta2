@@ -92,6 +92,7 @@
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />
+    <Compile Include="Extensions\ModelServiceBaseExtensions.cs" />
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelBase.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
+    <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
   </ItemGroup>

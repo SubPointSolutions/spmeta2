@@ -7,7 +7,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class FieldModelHandler : ModelHandlerBase
+    public class FieldModelHandler : SSOMModelHandlerBase
     {
         #region properties
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class ListItemModelHandler : ModelHandlerBase
+    public class ListItemModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

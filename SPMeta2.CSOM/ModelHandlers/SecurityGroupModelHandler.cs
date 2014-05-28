@@ -9,7 +9,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class SecurityGroupModelHandler : ModelHandlerBase
+    public class SecurityGroupModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

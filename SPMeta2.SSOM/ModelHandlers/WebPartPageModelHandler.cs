@@ -11,7 +11,7 @@ using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class WebPartPageModelHandler : ModelHandlerBase
+    public class WebPartPageModelHandler : SSOMModelHandlerBase
     {
         #region properties
 

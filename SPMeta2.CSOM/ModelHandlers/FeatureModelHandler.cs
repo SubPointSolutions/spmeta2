@@ -12,7 +12,7 @@ using FeatureDefinitionScope = SPMeta2.Definitions.FeatureDefinitionScope;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class FeatureModelHandler : ModelHandlerBase
+    public class FeatureModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

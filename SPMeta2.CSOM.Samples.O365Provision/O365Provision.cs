@@ -20,14 +20,6 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-            var siteUrl = "https://pademo3.sharepoint.com/sites/101-uat";
-            var webUrl = siteUrl + "/whs";
-
-            SiteUrl = siteUrl;
-            WebUrl = webUrl;
-
-            UserName = "admin@pademo3.onmicrosoft.com";
-            UserPassword = "Profe$$ional124";
         }
 
         #endregion
@@ -35,6 +27,8 @@ namespace SPMeta2.CSOM.Samples.O365Provision
         [TestMethod]
         public void CanT()
         {
+            new CSOMProvisionService().DeployModel(null, null);
+
             WithO365Context(SiteUrl,context =>
             {
                 var model = SPMeta2Model

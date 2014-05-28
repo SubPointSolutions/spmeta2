@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class QuickLaunchNavigationNodeModelHandler : ModelHandlerBase
+    public class QuickLaunchNavigationNodeModelHandler : SSOMModelHandlerBase
     {
         #region properties
 

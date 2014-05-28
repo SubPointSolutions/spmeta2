@@ -7,7 +7,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class SecurityGroupModelHandler : ModelHandlerBase
+    public class SecurityGroupModelHandler : SSOMModelHandlerBase
     {
         #region methods
 

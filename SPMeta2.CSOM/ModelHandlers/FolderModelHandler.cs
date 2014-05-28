@@ -11,7 +11,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class FolderModelHandler : ModelHandlerBase
+    public class FolderModelHandler : CSOMModelHandlerBase
     {
         #region properties
 

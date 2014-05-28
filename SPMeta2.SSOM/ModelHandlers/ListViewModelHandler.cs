@@ -9,7 +9,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class ListViewModelHandler : ModelHandlerBase
+    public class ListViewModelHandler : SSOMModelHandlerBase
     {
         #region methods
 

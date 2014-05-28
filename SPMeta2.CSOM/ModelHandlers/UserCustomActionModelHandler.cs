@@ -10,7 +10,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class UserCustomActionModelHandler : ModelHandlerBase
+    public class UserCustomActionModelHandler : CSOMModelHandlerBase
     {
         #region properties
 
