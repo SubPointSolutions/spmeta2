@@ -29,5 +29,43 @@ namespace SPMeta2.Validation.Tests
                 Trace.WriteLine(v.Message);
             }
         }
+
+        [TestMethod]
+        public void CanFindDuplicateFieldIds()
+        {
+            var validationService = new ModelValidationService();
+
+            var id = Guid.NewGuid();
+            var field1 = new FieldDefinition
+            {
+                InternalName = "sd",
+                Description = "sd",
+                Id = id,
+            };
+
+            var model = SPMeta2Model
+                .NewModel()
+                .DummyWeb()
+                .AddField(new FieldDefinition
+                {
+                    InternalName = "sd",
+                    Description = "sd",
+                    Id = id
+                })
+               .AddField(new FieldDefinition
+                {
+                    InternalName = "sd",
+                    Description = "sd",
+                    Id = id
+                });
+
+
+            validationService.DeployModel(null, model);
+
+            foreach (var v in validationService.Result)
+            {
+                Trace.WriteLine(v.Message);
+            }
+        }
     }
 }
