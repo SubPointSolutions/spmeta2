@@ -13,8 +13,15 @@ namespace SPMeta2.Validation.Validators.Definitions
         public override void Validate(FieldDefinition model, List<ValidationResult> result)
         {
             model
+                .NotEmptyString(m => m.Title, result)
+                .NotEmptyString(m => m.Description, result)
+
                 .NotEmptyString(m => m.InternalName, result)
-                .NotEmptyString(m => m.Title, result);
+                .NoMoreThan(m => m.InternalName, 32, result)
+
+                .NotEmptyString(m => m.Group, result)
+                .NotEmptyString(m => m.FieldType, result)
+                .NotDefaultGuid(m => m.Id, result);
         }
     }
 }
