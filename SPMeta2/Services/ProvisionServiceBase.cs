@@ -47,7 +47,7 @@ namespace SPMeta2.Services
             if (model == null)
                 return;
 
-            var provisionContext = GetProvisionContext(context);
+            var provisionContext = GetProvisionContext(context, model);
 
             WithEvents(OnBeforeProvisionSite, OnAfterProvisionSite, provisionContext, () => InternalDeploySiteModel(provisionContext));
         }
@@ -59,7 +59,7 @@ namespace SPMeta2.Services
             if (model == null)
                 return;
 
-            var provisionContext = GetProvisionContext(context);
+            var provisionContext = GetProvisionContext(context, model);
 
             WithEvents(OnBeforeProvisionRootWeb, OnAfterProvisionRootWeb, provisionContext, () => InternalDeployRootWebModel(provisionContext));
         }
@@ -71,7 +71,7 @@ namespace SPMeta2.Services
             if (model == null)
                 return;
 
-            var provisionContext = GetProvisionContext(context);
+            var provisionContext = GetProvisionContext(context, model);
 
             WithEvents(OnBeforeProvisionWeb, OnAfterProvisionWeb, provisionContext, () => InternalDeployWebModel(provisionContext));
         }
@@ -82,12 +82,12 @@ namespace SPMeta2.Services
 
         #region utils
 
-        private ProvisionServiceContext GetProvisionContext(object context)
+        private ProvisionServiceContext GetProvisionContext(object context, ModelNode model)
         {
             return new ProvisionServiceContext
             {
                 Context = context,
-                Model = Model,
+                Model = model,
                 ModelService = ModelService
             };
         }
