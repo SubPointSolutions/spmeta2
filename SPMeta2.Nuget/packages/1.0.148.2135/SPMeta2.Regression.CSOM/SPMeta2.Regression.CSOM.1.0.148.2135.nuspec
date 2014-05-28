@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SPMeta2.Regression.CSOM</id>
+    <version>1.0.148.2135</version>
+    <title>SPMeta2.Regression.CSOM</title>
+    <authors>SubPoint Solutions</authors>
+    <owners>SubPoint Solutions</owners>
+    <licenseUrl>http://spmeta2.codeplex.com/license</licenseUrl>
+    <projectUrl>https://github.com/SubPointSolutions/spmeta2</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SPMeta2 CSOM regression package. Proivides CSOM support for regression tests.</description>
+    <summary>SPMeta2 CSOM regression package.</summary>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+    </frameworkAssemblies>
+    <dependencies>
+      <group>
+        <dependency id="SPMeta2.Core" version="1.0.148.2135" xmlns="" />
+        <dependency id="SPMeta2.CSOM.Foundation" version="1.0.148.2135" xmlns="" />
+        <dependency id="SPMeta2.Regression.Core" version="1.0.148.2135" xmlns="" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="SPMeta2.Regression.CSOM.dll" target="lib\SPMeta2.Regression.CSOM.dll" xmlns="" />
+  </files>
+</package>

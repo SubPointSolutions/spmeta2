@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SPMeta2.CSOM.Foundation</id>
+    <version>1.0.148.2136</version>
+    <title>SPMeta2.CSOM.Foundation</title>
+    <authors>SubPoint Solutions</authors>
+    <owners>SubPoint Solutions</owners>
+    <tags>SharePoint SP2013 SP2010 O365 Office365 Office365Dev Provision SPMeta2</tags>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>http://spmeta2.codeplex.com/license</licenseUrl>
+    <projectUrl>https://github.com/SubPointSolutions/spmeta2</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SPMeta2 CSOM provision implementation for SharePoint Foundation.</description>
+    <summary>SPMeta2 CSOM provision implementation for SharePoint Foundation.</summary>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+    </frameworkAssemblies>
+    <dependencies>
+      <group>
+        <dependency id="SPMeta2.Core" version="1.0.148.2136" xmlns="" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="SPMeta2.CSOM.dll" target="lib\SPMeta2.CSOM.dll" xmlns="" />
+    <file src="SPMeta2.CSOM.Behaviours.dll" target="lib\SPMeta2.CSOM.Behaviours.dll" xmlns="" />
+  </files>
+</package>
