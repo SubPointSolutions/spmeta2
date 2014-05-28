@@ -23,6 +23,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
+        private string GetCurrentWebUrl(ClientRuntimeContext context, Web parentWeb, WebDefinition webModel)
+        {
+            // TOSDO, need to have "safe" url concats here, CSOM is doomed
+            // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
+
+            var fullUrl = context.Url.ToLower();
+            var serverUrl = fullUrl.Replace(parentWeb.ServerRelativeUrl.ToLower(), string.Empty);
+            var currentWebUrl = serverUrl + "/" + parentWeb.ServerRelativeUrl + "/" + webModel.Url;
+
+            return currentWebUrl.ToLower();
+        }
+
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
@@ -36,11 +48,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
 
-            // TOSDO, need to have "safe" url concats here, CSOM is doomed
-            // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
-            var fullUrl = context.Url;
-            var serverUrl = fullUrl.Replace(parentWeb.ServerRelativeUrl, string.Empty);
-            var currentWebUrl = serverUrl + "/" + parentWeb.ServerRelativeUrl + "/" + webModel.Url;
+            var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
 
             using (var webContext = new ClientContext(currentWebUrl))
             {
@@ -83,11 +91,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
 
-            // TOSDO, need to have "safe" url concats here, CSOM is doomed
-            // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
-            var fullUrl = context.Url;
-            var serverUrl = fullUrl.Replace(parentWeb.ServerRelativeUrl, string.Empty);
-            var currentWebUrl = serverUrl + "/" + parentWeb.ServerRelativeUrl + "/" + webModel.Url;
+            var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
 
             Web currentWeb = null;
 
