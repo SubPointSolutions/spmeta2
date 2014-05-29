@@ -20,14 +20,14 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-            var siteUrl = "https://pademo3.sharepoint.com/sites/101-uat";
-            var webUrl = siteUrl + "/whs";
+            var siteUrl = "";
+            var webUrl = "";
 
             SiteUrl = siteUrl;
             WebUrl = webUrl;
 
-            UserName = "admin@pademo3.onmicrosoft.com";
-            UserPassword = "Profe$$ional124";
+            UserName = "";
+            UserPassword = "";
         }
 
         #endregion
