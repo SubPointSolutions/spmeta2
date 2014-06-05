@@ -46,3 +46,5 @@ C:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\bin\Debug\SPMeta2.Regression.
 C:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\obj\Debug\SPMeta2.CSOM.Samples.O365Provision.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\obj\Debug\SPMeta2.CSOM.Samples.O365Provision.dll
 C:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\obj\Debug\SPMeta2.CSOM.Samples.O365Provision.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\obj\Debug\SPMeta2.CSOM.Samples.O365Provision.NavigationStrings.resources
+D:\_git\spmeta2\SPMeta2.CSOM.Samples.O365Provision\obj\Debug\SPMeta2.CSOM.Samples.O365Provision.csproj.GenerateResource.Cache

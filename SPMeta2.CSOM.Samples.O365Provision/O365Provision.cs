@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Security;
+using System.Text;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing;
+using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using SPMeta2.CSOM.ModelHosts;
@@ -20,16 +23,19 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
+           
         }
 
         #endregion
+       
 
         [TestMethod]
-        public void CanT()
+        [TestCategory("O365")]
+        public void CanCreateWeb()
         {
             new CSOMProvisionService().DeployModel(null, null);
 
-            WithO365Context(SiteUrl,context =>
+            WithO365Context(SiteUrl, context =>
             {
                 var model = SPMeta2Model
                     .NewModel()
@@ -45,6 +51,7 @@ namespace SPMeta2.CSOM.Samples.O365Provision
         }
 
         [TestMethod]
+        [TestCategory("O365")]
         public void CanConnectToO365()
         {
             WithO365Context(context =>

@@ -18,54 +18,42 @@ namespace SPMeta2.Validation.Tests
             var model = SPMeta2Model
                 .NewModel()
                 .DummyWeb()
-                .AddFolder(new FolderDefinition { Name = "sdfs" })
-                .AddFolder(new FolderDefinition { Name = "sdfs " });
-
+                .AddFolder(new FolderDefinition { Name = "test folder 1" })
+                .AddFolder(new FolderDefinition { Name = "test folder 1" })
+                .AddFolder(new FolderDefinition { Name = " folder with spaces " }); ;
 
             validationService.DeployModel(null, model);
 
-            foreach (var v in validationService.Result)
-            {
-                Trace.WriteLine(v.Message);
-            }
+            var validationResult = validationService.Result;
+
+            foreach (var result in validationResult)
+                Trace.WriteLine(result.Message);
         }
 
         [TestMethod]
         public void CanFindDuplicateFieldIds()
         {
             var validationService = new ModelValidationService();
-
-            var id = Guid.NewGuid();
-            var field1 = new FieldDefinition
-            {
-                InternalName = "sd",
-                Description = "sd",
-                Id = id,
-            };
+            var fieldId = Guid.NewGuid();
 
             var model = SPMeta2Model
                 .NewModel()
                 .DummyWeb()
                 .AddField(new FieldDefinition
                 {
-                    InternalName = "sd",
-                    Description = "sd",
-                    Id = id
+                    Id = fieldId
                 })
                .AddField(new FieldDefinition
                 {
-                    InternalName = "sd",
-                    Description = "sd",
-                    Id = id
+                    Id = fieldId
                 });
-
 
             validationService.DeployModel(null, model);
 
-            foreach (var v in validationService.Result)
-            {
-                Trace.WriteLine(v.Message);
-            }
+            var validationResult = validationService.Result;
+
+            foreach (var result in validationResult)
+                Trace.WriteLine(result.Message);
         }
     }
 }

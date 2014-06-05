@@ -154,3 +154,8 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/SPMeta2.Nuget/packages
+/SPMeta2.Nuget/nuget
+/SPMeta2.Web
+/_3rd party/SP2013 - 15.0.4569.1000
+/_3rd party/SPMeta2._3rd party/SPMeta2._3rd party.csproj

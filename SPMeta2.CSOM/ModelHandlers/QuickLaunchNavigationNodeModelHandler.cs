@@ -126,6 +126,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(quickLaunch);
             context.ExecuteQuery();
 
+            var previousNode = quickLaunch.Count > 0 ? quickLaunch.Last() : null;
+
             var existingNode = quickLaunch.OfType<NavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
 
@@ -136,7 +138,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Title = quickLaunchNode.Title,
                     IsExternal = quickLaunchNode.IsExternal,
                     Url = quickLaunchNode.Url,
-                    PreviousNode = quickLaunch.Last()
+                    PreviousNode = previousNode
                 });
 
                 context.ExecuteQuery();
