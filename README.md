@@ -18,7 +18,7 @@ The model tree might be optionally validated with build in rules. It guarantees 
 
 Builtin validators ensure SharePoint limitations and boundaries. SPMeta2 checks that internal names of all your fields don not exceed 32 chars. There is more magic than you can imagine.
 
-Learn more here - <a href="https://github.com/SubPointSolutions/spmeta2/wiki/SPMeta2.Validation-package">SPMeta2.Validation package</a>.
+Learn more here - <a href="https://github.com/SubPointSolutions/spmeta2/wiki/SPMeta2.Validation-package">SPMeta2.Validation package </a>.
 
 ### SharePoint 2013 Foundation, Standard, Enterprise and O365 are supported
 SPMeta2 supports all SharePoint editions. It is splitted up into several packages to reflect SharePoint editions: Foundation, Standart and Enterprise. O365 support is implemented with CSOM.
