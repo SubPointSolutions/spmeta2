@@ -39,6 +39,9 @@ Having code based provision allows us to have full control over the provision an
 
 This allows us to write integration tests within minutes, make sure deployment and upgrade work as expected. Most of the provision cases are covered with integration tests. We create a new site or web, deploy everything we need and check if everything has been deployed correctly.
 
+SPMeta2 uses [appveyor CI online service](http://www.appveyor.com/) at https://ci.appveyor.com/project/avishnyakov/spmeta2
+Current build status for the master branch: ![](https://ci.appveyor.com/api/projects/status/i96tsrq5xjdm4tu2)
+
 Learn more here - <a href="https://github.com/SubPointSolutions/spmeta2/wiki/Regression-and-CI">Regression and CI</a>.
 
 
