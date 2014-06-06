@@ -12,3 +12,4 @@ D:\_git\spmeta2\SPMeta2\bin\Debug\SPMeta2.dll
 D:\_git\spmeta2\SPMeta2\bin\Debug\SPMeta2.pdb
 D:\_git\spmeta2\SPMeta2\obj\Debug\SPMeta2.dll
 D:\_git\spmeta2\SPMeta2\obj\Debug\SPMeta2.pdb
+D:\_git\spmeta2\SPMeta2\obj\Debug\SPMeta2.csprojResolveAssemblyReference.cache

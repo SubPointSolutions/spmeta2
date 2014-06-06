@@ -89,7 +89,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.CSOM.Samples.O365Pr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Sign", "_Sign", "{EBA3EB00-1E7F-4561-92BC-709286E9F2A6}"
 	ProjectSection(SolutionItems) = preProject
-		SPMeta2.pfx = SPMeta2.pfx
+		SPMeta2.snk = SPMeta2.snk
 	EndProjectSection
 EndProject
 Global
