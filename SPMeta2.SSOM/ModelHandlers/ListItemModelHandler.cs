@@ -47,7 +47,6 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var listItem = GetOrCreateListItemByTitle(list, listItemModel);
             UpdateListItem(listItem, listItemModel);
-
         }
 
         private void UpdateListItem(SPListItem listItem, ListItemDefinition listItemModel)

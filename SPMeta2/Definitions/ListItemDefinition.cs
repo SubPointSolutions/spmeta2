@@ -7,19 +7,19 @@ namespace SPMeta2.Definitions
 {
     public class ListItemDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public ListItemDefinition()
         {
             Overwrite = true;
-            Content = new byte[0];
+            //Content = new byte[0];
         }
 
         #endregion
 
         #region properties
 
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         public bool Overwrite { get; set; }
 
@@ -28,7 +28,8 @@ namespace SPMeta2.Definitions
 
         public bool UpdateOverwriteVersion { get; set; }
 
-        public byte[] Content { get; set; }
+        // should be collection of attachments later
+        //public byte[] Content { get; set; }
 
         // TODO, serializable dictionary for propertied such as content type and so on
 

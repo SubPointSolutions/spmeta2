@@ -50,6 +50,7 @@
     <Compile Include="FieldLinkDefinitionSyntax.cs" />
     <Compile Include="FolderDefinitionSyntax.cs" />
     <Compile Include="ListDefinitionSyntax.cs" />
+    <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ListItemFieldValueDefinitionSyntax.cs" />
     <Compile Include="ListViewDefinitionSyntax.cs" />
     <Compile Include="ModelWithNamespaces.cs" />

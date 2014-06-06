@@ -37,7 +37,9 @@ namespace SPMeta2.CSOM.ModelHandlers
         private void ProcessFieldValue(ListItem listItem, ListItemFieldValueDefinition fieldValue)
         {
             if (!string.IsNullOrEmpty(fieldValue.FieldName))
+            {
                 listItem[fieldValue.FieldName] = fieldValue.Value;
+            }
         }
 
         #endregion

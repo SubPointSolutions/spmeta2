@@ -11,6 +11,24 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        public static ModelNode AddListItemFieldValue(this ModelNode model, Guid fieldId, object fieldValue)
+        {
+            return AddListItemFieldValue(model, new ListItemFieldValueDefinition
+            {
+                FieldId = fieldId,
+                Value = fieldValue
+            });
+        }
+
+        public static ModelNode AddListItemFieldValue(this ModelNode model, string fieldName, object fieldValue)
+        {
+            return AddListItemFieldValue(model, new ListItemFieldValueDefinition
+            {
+                FieldName = fieldName,
+                Value = fieldValue
+            });
+        }
+
         public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition fieldValueDefinition)
         {
             return AddListItemFieldValue(model, fieldValueDefinition, null);

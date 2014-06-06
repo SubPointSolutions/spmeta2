@@ -10,6 +10,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Samples.O365Provision.Models;
 using SPMeta2.CSOM.Services;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM.Base;
 using SPMeta2.Syntax.Default;
@@ -27,7 +28,48 @@ namespace SPMeta2.CSOM.Samples.O365Provision
         }
 
         #endregion
-       
+
+        [TestMethod]
+        [TestCategory("O365")]
+        public void CanDeployListItem()
+        {
+            WithO365Context(SiteUrl, context =>
+            {
+                var model = SPMeta2Model
+                    .NewModel()
+                    .DummyWeb()
+                    .AddList(new ListDefinition()
+                    {
+                        Url = "Tasks",
+                        Title = "Tasks",
+                        TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy
+                    }, list =>
+                    {
+                        list
+                            .AddListItem(new ListItemDefinition
+                            {
+                                Title = "task 1"
+                            }, item =>
+                            {
+                                item
+                                    .AddListItemFieldValue("Title", Environment.TickCount)
+                                    .AddListItemFieldValue("Body", Environment.TickCount)
+                                    .AddListItemFieldValue("DueDate", DateTime.Now);
+                            })
+                            .AddListItem(new ListItemDefinition
+                            {
+                                Title = "task 2"
+                            }, item =>
+                            {
+                                item
+                                    .AddListItemFieldValue("Body", Guid.NewGuid().ToString())
+                                    .AddListItemFieldValue("DueDate", DateTime.Now.AddMonths(1));
+                            });
+                    });
+
+                new CSOMProvisionService().DeployModel(WebModelHost.FromClientContext(context), model);
+            });
+        }
 
         [TestMethod]
         [TestCategory("O365")]

@@ -30,6 +30,12 @@ namespace SPMeta2.CSOM.Tests
 
         #region tests
 
+        [TestMethod]
+        [TestCategory("CSOM")]
+        public void CanDeployListItems()
+        {
+
+        }
 
         [TestMethod]
         [TestCategory("CSOM")]
