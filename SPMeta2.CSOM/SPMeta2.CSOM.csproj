@@ -128,10 +128,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
-      <Project>{5e592eaa-e21f-4bf4-8edf-6f6452dc916a}</Project>
-      <Name>SPMeta2.CSOM.Standard</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
