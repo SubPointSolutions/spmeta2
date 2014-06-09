@@ -5,13 +5,6 @@ C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
 C:\_cdplx\spmeta2\spmeta2\trunk\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
-D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
-D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
-D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
-D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
-D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
-D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
-D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
 C:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
 C:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
 C:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
@@ -19,3 +12,10 @@ C:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
 C:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
+D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
+D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
+D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
+D:\_git\spmeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
+D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
+D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
+D:\_git\spmeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
