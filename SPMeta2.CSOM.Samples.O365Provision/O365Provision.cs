@@ -24,14 +24,69 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-           
+
         }
 
         #endregion
 
         [TestMethod]
         [TestCategory("O365")]
-        public void CanDeleteWeb()
+        public void CanGetConfigFile()
+        {
+            var configExist = System.IO.File.Exists("test.config");
+
+            Assert.AreEqual(true, configExist);
+        }
+
+        [TestMethod]
+        [TestCategory("O365")]
+        public void CanRetractFields()
+        {
+            var model = SPMeta2Model
+                                    .NewSiteModel(site =>
+                                    {
+                                        site.WithFields(fields =>
+                                        {
+                                            fields
+                                                .AddField(FieldModels.ClientFeedback)
+                                                .AddField(FieldModels.ClientRating)
+                                                .AddField(FieldModels.Contact)
+                                                .AddField(FieldModels.Details);
+                                        });
+
+                                    });
+
+            WithO365Context(SiteUrl, context =>
+            {
+                new CSOMProvisionService().RetractModel(SiteModelHost.FromClientContext(context), model);
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("O365")]
+        public void CanRetractContentType()
+        {
+            var model = SPMeta2Model
+                                    .NewSiteModel(site =>
+                                    {
+                                        site.WithContentTypes(contentTypes =>
+                                        {
+                                            contentTypes
+                                                .AddContentType(ContentTypeModels.Client)
+                                                .AddContentType(ContentTypeModels.ClientDocument);
+                                        });
+                                    });
+
+            WithO365Context(SiteUrl, context =>
+            {
+                new CSOMProvisionService().RetractModel(SiteModelHost.FromClientContext(context), model);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("O365")]
+        public void CanRetractWeb()
         {
             var webDef = new WebDefinition
             {
@@ -57,8 +112,6 @@ namespace SPMeta2.CSOM.Samples.O365Provision
         [TestCategory("O365")]
         public void CanDeployListItem()
         {
-
-
             WithO365Context(SiteUrl, context =>
             {
                 var model = SPMeta2Model
@@ -158,7 +211,7 @@ namespace SPMeta2.CSOM.Samples.O365Provision
                     });
 
                 var provisionService = new CSOMProvisionService();
-                provisionService.DeployModel(context.Site, metadataModel);
+                provisionService.DeployModel(SiteModelHost.FromClientContext(context), metadataModel);
             });
         }
     }

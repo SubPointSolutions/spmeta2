@@ -65,12 +65,12 @@ namespace SPMeta2.ModelHandlers
 
         protected virtual void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-
+            //throw new NotImplementedException("DeployModelInternal");
         }
 
         protected virtual void RetractModelInternal(object modelHost, DefinitionBase model)
         {
-
+            //throw new NotImplementedException("RetractModelInternal");
         }
 
         protected void WithDeployModelEvents(DefinitionBase model, Action<DefinitionBase> action)

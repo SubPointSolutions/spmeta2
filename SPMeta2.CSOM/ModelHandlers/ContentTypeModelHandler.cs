@@ -137,6 +137,32 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         }
 
+        public override void RetractModel(object modelHost, DefinitionBase model)
+        {
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
+            var site = siteModelHost.HostSite;
+            var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
+
+            var context = site.Context;
+            var rootWeb = site.RootWeb;
+
+            var contentTypes = rootWeb.ContentTypes;
+
+            context.Load(rootWeb);
+            context.Load(contentTypes);
+
+            context.ExecuteQuery();
+
+            var contentTypeId = contentTypeModel.GetContentTypeId();
+
+            var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
+
+            if (currentContentType != null)
+            {
+                currentContentType.DeleteObject();
+                context.ExecuteQuery();
+            }
+        }
     }
 }

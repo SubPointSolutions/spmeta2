@@ -172,19 +172,34 @@ namespace SPMeta2.Services
             // experimental support yet
             // https://github.com/SubPointSolutions/spmeta2/issues/70
 
-            var modelDefinition = model.Value as WebDefinition;
+            var modelDefinition = model.Value;
 
-            if (modelDefinition != null)
-            {
-                var modelHandler = ResolveModelHandler(modelDefinition.GetType());
+            if (modelDefinition is WebDefinition)
+                RetractWeb(modelHost, model);
 
-                if (modelHandler == null && modelDefinition.RequireSelfProcessing)
-                    throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", modelDefinition.GetType()));
+            if (modelDefinition is SiteDefinition)
+                RetractSite(modelHost, model);
+        }
 
-                modelHandler.RetractModel(modelHost, modelDefinition);
-            }
+        private void RetractSite(object modelHost, ModelNode model)
+        {
+            var siteDefinition = model.Value as SiteDefinition;
+            var modelHandler = ResolveModelHandler(siteDefinition.GetType());
+        }
+
+        private void RetractWeb(object modelHost, ModelNode model)
+        {
+            var webDefinition = model.Value as WebDefinition;
+            var modelHandler = ResolveModelHandler(webDefinition.GetType());
+
+            if (modelHandler == null && webDefinition.RequireSelfProcessing)
+                throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", webDefinition.GetType()));
+
+            modelHandler.RetractModel(modelHost, webDefinition);
         }
 
         #endregion
     }
+
+
 }
