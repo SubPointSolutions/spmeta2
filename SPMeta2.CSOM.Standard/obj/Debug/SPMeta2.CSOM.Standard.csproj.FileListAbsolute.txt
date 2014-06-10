@@ -10,5 +10,6 @@ C:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
 C:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
 D:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll
 D:\_git\spmeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.pdb
+D:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
 D:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
 D:\_git\spmeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
