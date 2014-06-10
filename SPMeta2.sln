@@ -92,6 +92,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Sign", "_Sign", "{EBA3EB00
 		SPMeta2.snk = SPMeta2.snk
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A355BC6B-EF54-4E1A-BA62-A0117198FA69}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
