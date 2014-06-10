@@ -29,6 +29,17 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         #endregion
 
+
+        [TestMethod]
+        [TestCategory("O365")]
+        public void CanReadEnvironmentConfig()
+        {
+            var siteUrl = Environment.GetEnvironmentVariable("O365_Site");
+
+            Assert.AreEqual("http://test.com.au", siteUrl);
+        }
+
+
         [TestMethod]
         [TestCategory("O365")]
         public void CanGetConfigFile()
