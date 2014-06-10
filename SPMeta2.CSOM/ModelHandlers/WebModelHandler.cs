@@ -135,6 +135,43 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
+        public override void RetractModel(object modelHost, DefinitionBase model)
+        {
+            // TODO, should be better behavior with try/catch or "Ensure" methods
+
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
+
+            var parentWeb = GetParentWeb(webModelHost);
+
+            var context = parentWeb.Context;
+
+            context.Load(parentWeb, w => w.RootFolder);
+            context.Load(parentWeb, w => w.ServerRelativeUrl);
+            context.ExecuteQuery();
+
+            var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
+
+            try
+            {
+                using (var webContext = new ClientContext(currentWebUrl))
+                {
+                    webContext.Credentials = context.Credentials;
+
+                    var tmpWeb = webContext.Web;
+
+                    webContext.Load(tmpWeb);
+                    tmpWeb.DeleteObject();
+
+                    webContext.ExecuteQuery();
+                }
+            }
+            catch (ClientRequestException ex)
+            {
+                // TODO, chekc is web exists
+            }
+        }
+
         #endregion
     }
 }

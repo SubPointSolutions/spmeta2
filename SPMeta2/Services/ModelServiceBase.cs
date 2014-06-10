@@ -164,9 +164,25 @@ namespace SPMeta2.Services
             }
         }
 
-        public virtual void RetractModel(object modelHost, DefinitionBase model)
+        public virtual void RetractModel(object modelHost, ModelNode model)
         {
-            throw new NotImplementedException("Not implemented");
+            EnsureModelHandleEvents();
+
+            // TMP, just web model is supported yet
+            // experimental support yet
+            // https://github.com/SubPointSolutions/spmeta2/issues/70
+
+            var modelDefinition = model.Value as WebDefinition;
+
+            if (modelDefinition != null)
+            {
+                var modelHandler = ResolveModelHandler(modelDefinition.GetType());
+
+                if (modelHandler == null && modelDefinition.RequireSelfProcessing)
+                    throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", modelDefinition.GetType()));
+
+                modelHandler.RetractModel(modelHost, modelDefinition);
+            }
         }
 
         #endregion

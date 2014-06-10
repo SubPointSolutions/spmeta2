@@ -11,7 +11,7 @@ namespace SPMeta2.CSOM.Services
 {
     public class CSOMProvisionService : ModelServiceBase
     {
-        #region contructors
+        #region constructors
 
         public CSOMProvisionService()
         {
@@ -46,6 +46,14 @@ namespace SPMeta2.CSOM.Services
                 throw new ArgumentException("model host for CSOM needs to be inherited from CSOMModelHostBase");
 
             base.DeployModel(modelHost, model);
+        }
+
+        public override void RetractModel(object modelHost, ModelNode model)
+        {
+            if (!(modelHost is CSOMModelHostBase))
+                throw new ArgumentException("model host for CSOM needs to be inherited from CSOMModelHostBase");
+
+            base.RetractModel(modelHost, model);
         }
 
         #endregion

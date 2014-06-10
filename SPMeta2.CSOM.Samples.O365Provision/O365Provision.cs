@@ -24,15 +24,41 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-
+           
         }
 
         #endregion
 
         [TestMethod]
         [TestCategory("O365")]
+        public void CanDeleteWeb()
+        {
+            var webDef = new WebDefinition
+            {
+                Title = "test web",
+                Description = String.Empty,
+                WebTemplate = "BDR#0",
+                Url = "test-web",
+            };
+
+            WithO365Context(SiteUrl, context =>
+            {
+                var model = SPMeta2Model
+                    .NewWebModel(webDef, web =>
+                    {
+
+                    });
+
+                new CSOMProvisionService().RetractModel(WebModelHost.FromClientContext(context), model);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("O365")]
         public void CanDeployListItem()
         {
+
+
             WithO365Context(SiteUrl, context =>
             {
                 var model = SPMeta2Model
