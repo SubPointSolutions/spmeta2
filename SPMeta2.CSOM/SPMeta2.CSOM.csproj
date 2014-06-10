@@ -70,6 +70,7 @@
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
+    <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />

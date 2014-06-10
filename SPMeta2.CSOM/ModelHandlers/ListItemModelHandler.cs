@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using System;
@@ -39,7 +40,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 throw new NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
             }
 
-            var item = EnsureListItem(list, listItemModel);
+            ListItem currentItem = null;
+
+            InvokeOnModelEvents<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdating);
+            currentItem = EnsureListItem(list, listItemModel);
+            InvokeOnModelEvents<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdated);
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
