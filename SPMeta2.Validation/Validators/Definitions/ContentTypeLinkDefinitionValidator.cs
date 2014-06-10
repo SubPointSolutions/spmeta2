@@ -13,12 +13,26 @@ namespace SPMeta2.Validation.Validators.Definitions
     {
         public override void Validate(DefinitionBase definition, List<ValidationResult> result)
         {
-            Validate<ContentTypeLinkDefinition>(definition, model => model
-                .NotEmptyString(m => m.ContentTypeName, result)
-                .NoSpacesBeforeOrAfter(m => m.ContentTypeName, result)
+            Validate<ContentTypeLinkDefinition>(definition, model =>
+            {
+                // either ContentTypeName or ContentTypeId
 
-                .NotEmptyString(m => m.ContentTypeId, result)
-                .NoSpacesBeforeOrAfter(m => m.ContentTypeId, result));
+                if (string.IsNullOrEmpty(model.ContentTypeName))
+                {
+                    model
+                        .NotNullString(m => m.ContentTypeId, result)
+                        .NotEmptyString(m => m.ContentTypeId, result)
+                        .NoSpacesBeforeOrAfter(m => m.ContentTypeId, result);
+                }
+
+                if (string.IsNullOrEmpty(model.ContentTypeId))
+                {
+                    model
+                        .NotNullString(m => m.ContentTypeName, result)
+                        .NotEmptyString(m => m.ContentTypeName, result)
+                        .NoSpacesBeforeOrAfter(m => m.ContentTypeName, result);
+                }
+            });
         }
     }
 }

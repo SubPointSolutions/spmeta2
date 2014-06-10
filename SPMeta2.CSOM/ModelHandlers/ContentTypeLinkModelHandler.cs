@@ -54,7 +54,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected ContentType FindListContentType(List list, ContentTypeLinkDefinition contentTypeLinkModel)
         {
-            return list.ContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
+            // TODO
+            // https://github.com/SubPointSolutions/spmeta2/issues/68
+
+            // if content type name was not provided, this fails
+            // should be re-done by ID and Name
+            // OOTB content types could be binded by ID, and custom content types might be binded by name
+
+            if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+                return list.ContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
+
+            if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
+                return list.ContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
+
+            throw new Exception(
+                string.Format("Either ContentTypeName or ContentTypeId must be provides. Can't lookup current list content type by Name:[{0}] and ContentTypeId:[{1}] provided.",
+                contentTypeLinkModel.ContentTypeName, contentTypeLinkModel.ContentTypeId));
         }
 
         protected ContentType FindSiteContentType(Web web, ContentTypeLinkDefinition contentTypeLinkModel)
