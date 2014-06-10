@@ -1,3 +1,7 @@
 environment:
-  O365_Site:
-    secure: vuhNVMQbqmXXjgofGluOVnPcy367cubpRRtIV9yZI1g=
+  SPMeta2_O365_SiteUrl:
+    secure: KsmFz8zG6qr7iDukJK9kB0gY2S8Wh/grLSgQ+i0U0+YzzRnH9ltSUraIyCe/sJ5RpcBbXuBvtUhoposHpXTktQ==
+  SPMeta2_O365_UserName:
+    secure: QESysUofYQ/PoNF6CL0/JAPersMpMtWcYaKmL62Dwv8=
+  SPMeta2_O365_Password:
+    secure: xWavBT+QPEq6DY9rJdJXYtuqfvNx9NOPW37/gf3xOrw=

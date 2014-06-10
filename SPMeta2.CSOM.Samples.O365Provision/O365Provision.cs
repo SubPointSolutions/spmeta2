@@ -7,6 +7,7 @@ using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Samples.O365Provision.Consts;
 using SPMeta2.CSOM.Samples.O365Provision.Models;
 using SPMeta2.CSOM.Services;
 using SPMeta2.Definitions;
@@ -24,200 +25,32 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-
+            SiteUrl = Environment.GetEnvironmentVariable(EnvConsts.O365_SiteUrl); ;
+            UserName = Environment.GetEnvironmentVariable(EnvConsts.O365_UserName);
+            UserPassword = Environment.GetEnvironmentVariable(EnvConsts.O365_Password);
         }
 
         #endregion
 
+        #region tests
 
         [TestMethod]
         [TestCategory("O365")]
-        public void CanReadEnvironmentConfig()
-        {
-            var siteUrl = Environment.GetEnvironmentVariable("O365_Site");
-
-            Assert.AreEqual("http://test.com.au", siteUrl);
-        }
-
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanGetConfigFile()
-        {
-            var configExist = System.IO.File.Exists("test.config");
-
-            Assert.AreEqual(true, configExist);
-        }
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanRetractFields()
-        {
-            var model = SPMeta2Model
-                                    .NewSiteModel(site =>
-                                    {
-                                        site.WithFields(fields =>
-                                        {
-                                            fields
-                                                .AddField(FieldModels.ClientFeedback)
-                                                .AddField(FieldModels.ClientRating)
-                                                .AddField(FieldModels.Contact)
-                                                .AddField(FieldModels.Details);
-                                        });
-
-                                    });
-
-            WithO365Context(SiteUrl, context =>
-            {
-                new CSOMProvisionService().RetractModel(SiteModelHost.FromClientContext(context), model);
-            });
-        }
-
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanRetractContentType()
-        {
-            var model = SPMeta2Model
-                                    .NewSiteModel(site =>
-                                    {
-                                        site.WithContentTypes(contentTypes =>
-                                        {
-                                            contentTypes
-                                                .AddContentType(ContentTypeModels.Client)
-                                                .AddContentType(ContentTypeModels.ClientDocument);
-                                        });
-                                    });
-
-            WithO365Context(SiteUrl, context =>
-            {
-                new CSOMProvisionService().RetractModel(SiteModelHost.FromClientContext(context), model);
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanRetractWeb()
-        {
-            var webDef = new WebDefinition
-            {
-                Title = "test web",
-                Description = String.Empty,
-                WebTemplate = "BDR#0",
-                Url = "test-web",
-            };
-
-            WithO365Context(SiteUrl, context =>
-            {
-                var model = SPMeta2Model
-                    .NewWebModel(webDef, web =>
-                    {
-
-                    });
-
-                new CSOMProvisionService().RetractModel(WebModelHost.FromClientContext(context), model);
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanDeployListItem()
-        {
-            WithO365Context(SiteUrl, context =>
-            {
-                var model = SPMeta2Model
-                    .NewWebModel(web =>
-                    {
-                        web
-                            .AddList(new ListDefinition()
-                            {
-                                Url = "Tasks",
-                                Title = "Tasks",
-                                TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy
-                            }, list =>
-                            {
-                                list
-                                    .AddListItem(new ListItemDefinition
-                                    {
-                                        Title = "task 1"
-                                    }, item =>
-                                    {
-                                        item
-                                            .AddListItemFieldValue("Title", Environment.TickCount)
-                                            .AddListItemFieldValue("Body", Environment.TickCount)
-                                            .AddListItemFieldValue("DueDate", DateTime.Now);
-                                    })
-                                    .AddListItem(new ListItemDefinition
-                                    {
-                                        Title = "task 2"
-                                    }, item =>
-                                    {
-                                        item
-                                            .AddListItemFieldValue("Body", Guid.NewGuid().ToString())
-                                            .AddListItemFieldValue("DueDate", DateTime.Now.AddMonths(1));
-                                    });
-                            });
-                    });
-
-
-                new CSOMProvisionService().DeployModel(WebModelHost.FromClientContext(context), model);
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanCreateWeb()
-        {
-            new CSOMProvisionService().DeployModel(null, null);
-
-            WithO365Context(SiteUrl, context =>
-            {
-                var model = SPMeta2Model
-                    .NewModel()
-                    .AddWeb(new WebDefinition
-                    {
-                        Title = "test",
-                        Url = "test",
-                        WebTemplate = "STS#0"
-                    });
-
-                new CSOMProvisionService().DeployModel(WebModelHost.FromClientContext(context), model);
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("O365")]
-        public void CanConnectToO365()
+        public void CanDeployFields()
         {
             WithO365Context(context =>
             {
                 var metadataModel = SPMeta2Model
-                    .NewModel()
-                    .DummySite()
-                    .WithFields(fields =>
+                    .NewSiteModel(site =>
                     {
-                        fields
-                            .AddField(FieldModels.ClientFeedback)
-                            .AddField(FieldModels.ClientRating)
-                            .AddField(FieldModels.Contact)
-                            .AddField(FieldModels.Details);
-                    })
-                    .WithContentTypes(contentTypes =>
-                    {
-                        contentTypes
-                            .AddContentType(ContentTypeModels.Client, clientContentType =>
+                        site
+                            .WithFields(fields =>
                             {
-                                clientContentType
-                                    .AddContentTypeFieldLink(FieldModels.ClientFeedback)
-                                    .AddContentTypeFieldLink(FieldModels.ClientRating);
-                            })
-                            .AddContentType(ContentTypeModels.ClientDocument, clientDocument =>
-                            {
-                                clientDocument
-                                    .AddContentTypeFieldLink(FieldModels.ClientFeedback)
-                                    .AddContentTypeFieldLink(FieldModels.ClientRating)
-                                    .AddContentTypeFieldLink(FieldModels.Contact)
-                                    .AddContentTypeFieldLink(FieldModels.Details);
+                                fields
+                                    .AddField(FieldModels.ClientFeedback)
+                                    .AddField(FieldModels.ClientRating)
+                                    .AddField(FieldModels.Contact)
+                                    .AddField(FieldModels.Details);
                             });
                     });
 
@@ -225,5 +58,8 @@ namespace SPMeta2.CSOM.Samples.O365Provision
                 provisionService.DeployModel(SiteModelHost.FromClientContext(context), metadataModel);
             });
         }
+
+        #endregion
+
     }
 }

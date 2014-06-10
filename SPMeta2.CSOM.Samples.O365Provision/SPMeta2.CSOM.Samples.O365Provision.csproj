@@ -66,6 +66,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Consts\EnvConsts.cs" />
     <Compile Include="Models\ContentTypeModels.cs" />
     <Compile Include="Models\FieldModels.cs" />
     <Compile Include="Models\ModelConsts.cs" />
