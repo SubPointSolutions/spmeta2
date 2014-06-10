@@ -48,6 +48,13 @@ namespace SPMeta2.CSOM.Behaviours
             return contentType;
         }
 
+        public static ContentType MakeDocumentTemplate(this ContentType contentType, string serverRelativeUrl)
+        {
+            contentType.DocumentTemplate = serverRelativeUrl;
+
+            return contentType;
+        }
+
         #endregion
     }
 }
