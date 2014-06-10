@@ -63,6 +63,7 @@
     <Compile Include="Validators\Collections\SecurityGroupCollectionValidator.cs" />
     <Compile Include="Validators\Collections\ListCollectionValidator.cs" />
     <Compile Include="Validators\Collections\FieldCollectionValidator.cs" />
+    <Compile Include="Validators\Definitions\ContentTypeLinkDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\FolderDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\DefinitionBaseValidator.cs" />
