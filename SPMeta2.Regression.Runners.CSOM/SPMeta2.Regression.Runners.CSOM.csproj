@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C69C8205-B0C7-4FDB-B1F6-F4FA77FF95AB}</ProjectGuid>
+    <ProjectGuid>{FCF77A29-6871-43E2-A524-B5085FD13EB7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPMeta2.Regression.Runners</RootNamespace>
-    <AssemblyName>SPMeta2.Regression.Runners</AssemblyName>
+    <RootNamespace>SPMeta2.Regression.Runners.CSOM</RootNamespace>
+    <AssemblyName>SPMeta2.Regression.Runners.CSOM</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,14 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consts\EnvironmentConsts.cs" />
-    <Compile Include="ProvisionRunnerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
-      <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
-      <Name>SPMeta2</Name>
+    <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
+      <Project>{c69c8205-b0c7-4fdb-b1f6-f4fa77ff95ab}</Project>
+      <Name>SPMeta2.Regression.Runners</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

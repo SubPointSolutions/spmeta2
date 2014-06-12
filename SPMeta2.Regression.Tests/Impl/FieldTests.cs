@@ -2,7 +2,7 @@
 using SPMeta2.Regression.Model;
 using SPMeta2.Regression.Tests.Base;
 
-namespace SPMeta2.Regression.Tests
+namespace SPMeta2.Regression.Tests.Impl
 {
     [TestClass]
     public class FieldTests : SPMeta2RegresionTestBase

@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Services;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
-using SPMeta2.Regression.Runners;
+using SPMeta2.Regression.Runners.Consts;
 
-namespace SPMeta2.Regression.CSOMRunner
+namespace SPMeta2.Regression.Runners.O365
 {
-   
-
-    public class CSOMProvisionRunner : ProvisionRunnerBase
+    public class O365ProvisionRunner : ProvisionRunnerBase
     {
         #region constructors
 
@@ -29,7 +23,7 @@ namespace SPMeta2.Regression.CSOMRunner
             return result;
         }
 
-        public CSOMProvisionRunner()
+        public O365ProvisionRunner()
         {
             SiteUrl = GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
             UserName = GetEnvironmentVariable(EnvironmentConsts.O365_UserName);

@@ -53,7 +53,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         private void InitRunnerTypes()
         {
-            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.CSOMRunner.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
         }
 
         protected void WithProvisionRunners(Action<ProvisionRunnerBase> action)
