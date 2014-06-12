@@ -25,7 +25,6 @@ namespace SPMeta2.CSOM.Samples.O365Provision
 
         public O365Provision()
         {
-
             SiteUrl = Environment.GetEnvironmentVariable(EnvConsts.O365_SiteUrl); ;
             UserName = Environment.GetEnvironmentVariable(EnvConsts.O365_UserName);
             UserPassword = Environment.GetEnvironmentVariable(EnvConsts.O365_Password);
