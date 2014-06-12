@@ -32,7 +32,7 @@ namespace SPMeta2.Regression.MinimalModelTests.Base
 
             ProvisionEngineSettings.Add(new ProvisionEngineSettings
             {
-                Name = "CSOM Provision",
+                Name = "CSOM ValidationServiceProvision",
                 ProvisionService = new CSOMProvisionService(),
                 ValidationService = new CSOMValidationService(),
                 IsEnabled = false,

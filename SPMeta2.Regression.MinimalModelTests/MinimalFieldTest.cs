@@ -11,18 +11,26 @@ namespace SPMeta2.Regression.MinimalModelTests
         [TestInitialize]
         public void Setup()
         {
-            InitTestSettings();
+            //InitTestSettings();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupResources();
+            // CleanupResources();
         }
 
         #endregion
 
         #region tests
+
+
+        [TestMethod]
+        [TestCategory("MinimalModel2")]
+        public void Tmp()
+        {
+
+        }
 
         [TestMethod]
         [TestCategory("MinimalModel")]

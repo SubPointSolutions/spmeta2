@@ -7,16 +7,47 @@ using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Events;
+using SPMeta2.Utils;
+using System.Reflection;
 
 namespace SPMeta2.Services
 {
     public abstract class ModelServiceBase
     {
-        #region contructors
+        #region constructors
 
         public ModelServiceBase()
         {
             ModelHandlers = new Dictionary<Type, ModelHandlerBase>();
+        }
+
+        #endregion
+
+        #region static
+
+        public static void RegisterModelHandlers<T>(ModelServiceBase instance)
+            where T : ModelHandlerBase
+        {
+            RegisterModelHandlers<T>(instance, Assembly.GetExecutingAssembly());
+        }
+
+        public static void RegisterModelHandlers<T>(ModelServiceBase instance, Assembly asm)
+            where T : ModelHandlerBase
+        {
+            instance.ModelHandlers.Clear();
+
+            var handlerTypes = ReflectionUtils.GetTypesFromAssembly<T>(asm);
+
+            foreach (var handlerType in handlerTypes)
+            {
+                var handlerInstance = Activator.CreateInstance(handlerType) as T;
+
+                if (handlerInstance != null)
+                {
+                    if (!instance.ModelHandlers.ContainsKey(handlerInstance.TargetType))
+                        instance.ModelHandlers.Add(handlerInstance.TargetType, handlerInstance);
+                }
+            }
         }
 
         #endregion
@@ -97,7 +128,7 @@ namespace SPMeta2.Services
                 {
                     if (_activeModelNode != null)
                     {
-                        _activeModelNode.InvokeOnModelEvents(e.RawModel, e.EventType);
+                        _activeModelNode.InvokeOnModelEvents(e.Object, e.EventType);
                     }
                 };
 

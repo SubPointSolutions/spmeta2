@@ -1,17 +1,29 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
-    public class ClientFieldDefinitionValidator : FieldModelHandler
+    //public class ClientFieldDefinitionValidator : FieldModelHandler
+    public class ClientFieldDefinitionValidator : DefinitionValidatorBase
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<Site>("modelHost", value => value.RequireNotNull());
+            Site site = null;
+
+            if (modelHost is SiteModelHost)
+            {
+                var siteHost = modelHost as SiteModelHost;
+                var context = siteHost.HostSite.Context;
+
+                site = siteHost.HostSite;
+            }
+
+            //var site = modelHost.WithAssertAndCast<Site>("modelHost", value => value.RequireNotNull());
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
             TraceUtils.WithScope(traceScope =>
@@ -43,10 +55,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                     trace.WriteLine(string.Format("Validate Description: model:[{0}] field:[{1}]", fieldModel.Description, spField.Description));
                     Assert.AreEqual(fieldModel.Description, spField.Description);
 
-                    trace.WriteLine(string.Format("Validate Group: model:[{0}] field:[{1}]", fieldModel.Description, spField.Description));
+                    trace.WriteLine(string.Format("Validate Group: model:[{0}] field:[{1}]", fieldModel.Group, spField.Group));
                     Assert.AreEqual(fieldModel.Group, spField.Group);
                 });
             });
+        }
+
+        public override System.Type TargetType
+        {
+            get { return typeof(FieldDefinition); }
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
+using SPMeta2.Definitions;
+using SPMeta2.Models;
 
 namespace SPMeta2.Common
 {
     public class ModelEventArgs : EventArgs
     {
-        #region contructors
+        #region constructors
 
         public ModelEventArgs()
         {
@@ -17,8 +19,13 @@ namespace SPMeta2.Common
 
         public ModelEventType EventType { get; set; }
 
-        //public DefinitionBase Model { get; set; }
-        public object RawModel { get; set; }
+        public object Object { get; set; }
+        public Type ObjectType { get; set; }
+
+        public DefinitionBase ObjectDefinition { get; set; }
+
+        public ModelNode Model { get; set; }
+        public ModelNode CurrentModelNode { get; set; }
 
         #endregion
     }
@@ -27,10 +34,15 @@ namespace SPMeta2.Common
     {
         Unknown,
 
+        OnProvisioning,
+        OnProvisioned,
+
         OnUpdating,
         OnUpdated,
 
-        OnRemoving,
-        OnRemoved
+        OnRetracting,
+        OnRetracted,
+
+        OnError
     }
 }

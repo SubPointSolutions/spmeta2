@@ -7,7 +7,7 @@ namespace SPMeta2.ModelHandlers
 {
     public abstract class ModelHandlerBase
     {
-        #region contructors
+        #region constructors
 
 
         #endregion
@@ -22,31 +22,31 @@ namespace SPMeta2.ModelHandlers
 
         public EventHandler<ModelEventArgs> OnModelEvent;
 
-        public EventHandler<ModelDefinitionEventArgs> OnDeployingModel;
-        public EventHandler<ModelDefinitionEventArgs> OnDeployedModel;
+        //public EventHandler<ModelDefinitionEventArgs> OnDeployingModel;
+        //public EventHandler<ModelDefinitionEventArgs> OnDeployedModel;
 
-        public EventHandler<ModelDefinitionEventArgs> OnRetractingModel;
-        public EventHandler<ModelDefinitionEventArgs> OnRetractedModel;
+        //public EventHandler<ModelDefinitionEventArgs> OnRetractingModel;
+        //public EventHandler<ModelDefinitionEventArgs> OnRetractedModel;
 
-        protected virtual void InvokeOnDeployingModel(DefinitionBase model)
-        {
-            if (OnDeployingModel != null) OnDeployingModel(this, new ModelDefinitionEventArgs { Model = model });
-        }
+        //protected virtual void InvokeOnDeployingModel(DefinitionBase model)
+        //{
+        //    if (OnDeployingModel != null) OnDeployingModel(this, new ModelDefinitionEventArgs { Model = model });
+        //}
 
-        protected virtual void InvokeOnDeployedModel(DefinitionBase model)
-        {
-            if (OnDeployedModel != null) OnDeployedModel(this, new ModelDefinitionEventArgs { Model = model });
-        }
+        //protected virtual void InvokeOnDeployedModel(DefinitionBase model)
+        //{
+        //    if (OnDeployedModel != null) OnDeployedModel(this, new ModelDefinitionEventArgs { Model = model });
+        //}
 
-        protected virtual void InvokeOnRetractingModel(DefinitionBase model)
-        {
-            if (OnRetractingModel != null) OnRetractingModel(this, new ModelDefinitionEventArgs { Model = model });
-        }
+        //protected virtual void InvokeOnRetractingModel(DefinitionBase model)
+        //{
+        //    if (OnRetractingModel != null) OnRetractingModel(this, new ModelDefinitionEventArgs { Model = model });
+        //}
 
-        protected virtual void InvokeOnRetractedModel(DefinitionBase model)
-        {
-            if (OnRetractedModel != null) OnRetractedModel(this, new ModelDefinitionEventArgs { Model = model });
-        }
+        //protected virtual void InvokeOnRetractedModel(DefinitionBase model)
+        //{
+        //    if (OnRetractedModel != null) OnRetractedModel(this, new ModelDefinitionEventArgs { Model = model });
+        //}
 
 
         #endregion
@@ -75,11 +75,11 @@ namespace SPMeta2.ModelHandlers
 
         protected void WithDeployModelEvents(DefinitionBase model, Action<DefinitionBase> action)
         {
-            InvokeOnDeployingModel(model);
+            //InvokeOnDeployingModel(model);
 
             action(model);
 
-            InvokeOnDeployedModel(model);
+            //InvokeOnDeployedModel(model);
         }
 
         protected void WithRetractingModelEvents(DefinitionBase model, Action<DefinitionBase> action)
@@ -91,18 +91,22 @@ namespace SPMeta2.ModelHandlers
             //InvokeOnRetractedModel(model);
         }
 
-        protected void InvokeOnModelEvents<TModelDefinition, TSPObject>(TSPObject rawObject, ModelEventType eventType)
+        protected void InvokeOnModelEvents(object sender, ModelEventArgs args)
         {
             if (OnModelEvent != null)
             {
-                OnModelEvent.Invoke(this, new ModelEventArgs
-                {
-                    RawModel = rawObject,
-                    EventType = eventType
-                });
+                OnModelEvent.Invoke(this, args);
             }
         }
 
+        protected void InvokeOnModelEvents<TModelDefinition, TSPObject>(TSPObject rawObject, ModelEventType eventType)
+        {
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                Object = rawObject,
+                EventType = eventType
+            });
+        }
 
         #endregion
 
@@ -117,7 +121,5 @@ namespace SPMeta2.ModelHandlers
         {
             action(modelHost);
         }
-
-
     }
 }

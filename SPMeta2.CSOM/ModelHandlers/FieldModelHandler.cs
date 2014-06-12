@@ -40,7 +40,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             Field currentField = null;
             ClientRuntimeContext context = null;
 
-
             InvokeOnModelEvents<FieldDefinition, Field>(currentField, ModelEventType.OnUpdating);
 
             if (modelHost is SiteModelHost)

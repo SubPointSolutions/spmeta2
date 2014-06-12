@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Remoting;
 using System.Xml.Serialization;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
@@ -21,7 +22,9 @@ namespace SPMeta2.Models
         public ModelNode()
         {
             ChildModels = new Collection<ModelNode>();
+
             ModelEvents = new Dictionary<ModelEventType, List<object>>();
+            ModelContextEvents = new Dictionary<ModelEventType, List<object>>();
         }
 
         #endregion
@@ -47,6 +50,9 @@ namespace SPMeta2.Models
         [XmlIgnore]
         public Dictionary<ModelEventType, List<object>> ModelEvents { get; set; }
 
+        [XmlIgnore]
+        public Dictionary<ModelEventType, List<object>> ModelContextEvents { get; set; }
+
         /// <summary>
         /// Experimental, may be removed in later releases.
         /// </summary>
@@ -60,6 +66,43 @@ namespace SPMeta2.Models
 
         public delegate void TmpAction(object arg1, object arg2);
 
+        public virtual void InvokeOnModelContextEvents(object sender, ModelEventArgs eventArgs)
+        {
+            var eventType = eventArgs.EventType;
+
+            // type.. can be null, so?
+            var spObjectType = eventArgs.ObjectType;
+
+            if (!ModelContextEvents.ContainsKey(eventType)) return;
+
+            var targetEvents = ModelContextEvents[eventType];
+
+            // yeap, shitty yet
+            foreach (MulticastDelegate action in targetEvents)
+            {
+                var modelContextType = typeof(OnCreatingContext<,>);
+                var typeArgs = new Type[] { spObjectType };
+
+                var modelContextInstanceType = modelContextType.MakeGenericType(typeArgs);
+                var modelContextInstance = Activator.CreateInstance(modelContextInstanceType);
+
+                SetProperty(modelContextInstance, "Model", eventArgs.Model);
+                SetProperty(modelContextInstance, "CurrentModelNode", eventArgs.CurrentModelNode);
+
+                SetProperty(modelContextInstance, "Object", eventArgs.Object);
+                SetProperty(modelContextInstance, "ObjectDefinition", eventArgs.Model);
+
+                action.DynamicInvoke(modelContextInstance);
+            }
+        }
+
+        private static void SetProperty(object obj, string propName, object propValue)
+        {
+            var propertyInfo = obj.GetType().GetProperty(propName);
+            propertyInfo.SetValue(obj, propValue, null);
+
+        }
+
         public virtual void InvokeOnModelEvents(object rawObject, ModelEventType eventType)
         {
             if (!ModelEvents.ContainsKey(eventType)) return;
@@ -70,30 +113,6 @@ namespace SPMeta2.Models
             foreach (MulticastDelegate action in targetEvents)
                 action.DynamicInvoke(this.Value, rawObject);
         }
-
-        //private void InvokeOnModelUpdatedEvents<TModelDefinition, TSPObject>(TSPObject rawObject)
-        //    where TModelDefinition : DefinitionBase
-        //{
-        //    if (!ModelEvents.ContainsKey(Common.ModelEvents.Internal.OnUpdated)) return;
-
-        //    var that = this as TModelDefinition;
-        //    var onUpdatedEvents = ModelEvents[Common.ModelEvents.Internal.OnUpdated].Where(e => e is Action<TModelDefinition, TSPObject>);
-
-        //    foreach (Action<TModelDefinition, TSPObject> action in onUpdatedEvents)
-        //        action(that, rawObject);
-        //}
-
-        //private void InvokeOnModelUpdatingEvents<TModelDefinition, TSPObject>(TSPObject rawObject)
-        //   where TModelDefinition : DefinitionBase
-        //{
-        //    if (!ModelEvents.ContainsKey(Common.ModelEvents.Internal.OnUpdating)) return;
-
-        //    var that = this as TModelDefinition;
-        //    var onUpdatingEvents = ModelEvents[Common.ModelEvents.Internal.OnUpdating].Where(e => e is Action<TModelDefinition, TSPObject>);
-
-        //    foreach (Action<TModelDefinition, TSPObject> action in onUpdatingEvents)
-        //        action(that, rawObject);
-        //}
 
         public virtual void RegisterModelUpdateEvents<TModelDefinition, TSPObject>(
             Action<TModelDefinition, TSPObject> onUpdating, Action<TModelDefinition, TSPObject> onUpdated)
@@ -122,6 +141,39 @@ namespace SPMeta2.Models
             ModelEvents[actionType].Add(action);
         }
 
+        public virtual void RegisterModelContextEvent<TSPObject, TDefinitionType>(
+            ModelEventType actionType,
+            Action<OnCreatingContext<TSPObject, TDefinitionType>> action)
+             where TDefinitionType : DefinitionBase
+        {
+            if (action == null) return;
+
+            if (!ModelContextEvents.ContainsKey(actionType))
+                ModelContextEvents.Add(actionType, new List<object>());
+
+            ModelContextEvents[actionType].Add(action);
+        }
+
         #endregion
+    }
+
+    public enum ContinuationOptions
+    {
+        StopAndThrowException,
+        Continue,
+        Stop,
+    }
+
+    public class OnCreatingContext<TObjectType, TDefinitionType>
+        where TDefinitionType : DefinitionBase
+    {
+        public TObjectType Object { get; set; }
+        public TDefinitionType ObjectDefinition { get; set; }
+
+        public ModelNode Model { get; set; }
+        public ModelNode CurrentModelNode { get; set; }
+
+        public ContinuationOptions ContinuationOption { get; set; }
+        public AggregateException Error { get; set; }
     }
 }

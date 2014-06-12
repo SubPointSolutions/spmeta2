@@ -10,6 +10,5 @@ C:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
 C:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
 D:\_git\spmeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.dll
 D:\_git\spmeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
-D:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.csprojResolveAssemblyReference.cache
 D:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
 D:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
