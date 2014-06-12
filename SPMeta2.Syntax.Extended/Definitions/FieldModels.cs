@@ -20,6 +20,7 @@ namespace SPMeta2.Syntax.Extended.Definitions
     {
         #region properties
 
+
         public static FieldDefinition Contact = new FieldDefinition
         {
             Id = new Guid("{85C67EEA-5E3D-4DF3-AE8C-DC4D0A1D8BAC}"),

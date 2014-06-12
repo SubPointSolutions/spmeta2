@@ -72,6 +72,44 @@ namespace SPMeta2.Validation.Extensions
             }
         }
 
+        public static TSource NoSlashesBefore<TSource, TProperty>(this TSource source,
+                                                                        Expression<Func<TSource, TProperty>>
+                                                                            propertyLambda,
+                                                                        List<ValidationResult> result)
+        {
+            var valueResult = source.GetPropertyValue(propertyLambda);
+
+            CheckIfString<TSource, TProperty>(result, valueResult);
+            CheckIfStringHasStringsBefore<TSource, TProperty>(result, valueResult,
+                new string[] { "/", "\\" });
+
+            return source;
+        }
+
+        private static void CheckIfStringHasStringsBefore<T1, T2>(List<ValidationResult> result, PropResult valueResult,
+            IEnumerable<string> symbols)
+        {
+            var stringValue = valueResult.Value as string;
+
+            if (!string.IsNullOrEmpty(stringValue))
+            {
+                foreach (var ch in symbols)
+                {
+                    if (stringValue.StartsWith(ch))
+                    {
+                        result.Add(new ValidationResult
+                        {
+                            IsValid = false,
+                            Message = string.Format("Property [{0}] of type [{1}] must not start with char:[{2}].",
+                                valueResult.Name,
+                                valueResult.ObjectType.FullName,
+                                ch)
+                        });
+                    }
+                }
+            }
+        }
+
         public static TSource NoSpacesBeforeOrAfter<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
           List<ValidationResult> result)
         {

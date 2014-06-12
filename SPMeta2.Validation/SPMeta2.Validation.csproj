@@ -67,6 +67,7 @@
     <Compile Include="Validators\Definitions\FolderDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\DefinitionBaseValidator.cs" />
+    <Compile Include="Validators\Definitions\QuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\SecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\SecurityGroupDefinitionDefinitionValidator.cs" />
     <Compile Include="Validators\Definitions\ListDefinitionValidator.cs" />
