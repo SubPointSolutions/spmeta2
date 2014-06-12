@@ -10,6 +10,26 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        public static IEnumerable<object> GetStaticFieldValues(Type staticClassType)
+        {
+            return GetStaticFieldValues<object>(staticClassType);
+        }
+
+        public static IEnumerable<TValueType> GetStaticFieldValues<TValueType>(Type staticClassType)
+        {
+            var result = new List<TValueType>();
+
+            foreach (var p in staticClassType.GetFields())
+            {
+                var value = p.GetValue(null);
+
+                if (value != null && value.GetType() == typeof(TValueType))
+                    result.Add((TValueType)value);
+            }
+
+            return result;
+        }
+
         public static IEnumerable<Type> GetTypesFromCurrentDomain<TType>()
         {
             return GetTypesFromAssemblies<TType>(AppDomain.CurrentDomain.GetAssemblies());

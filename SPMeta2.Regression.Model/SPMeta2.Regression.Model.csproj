@@ -41,12 +41,13 @@
   <ItemGroup>
     <Compile Include="Consts\ModelConsts.cs" />
     <Compile Include="Definitions\RegCustomActions.cs" />
+    <Compile Include="Definitions\RegListFields.cs" />
     <Compile Include="Definitions\RegLists.cs" />
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegContentTypes.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
-    <Compile Include="Definitions\RegFields.cs" />
+    <Compile Include="Definitions\RegSiteFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegModel.cs" />
   </ItemGroup>

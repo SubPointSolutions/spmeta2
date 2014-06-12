@@ -53,7 +53,16 @@ namespace SPMeta2.Regression.Runners.O365
             WithO365Context(context =>
             {
                 _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
-                _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                // _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+            });
+        }
+
+        public override void DeployWebModel(ModelNode model)
+        {
+            WithO365Context(context =>
+            {
+                _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                // _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
             });
         }
 

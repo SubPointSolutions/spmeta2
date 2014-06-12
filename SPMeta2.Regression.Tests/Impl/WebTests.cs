@@ -1,6 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
+using SPMeta2.Regression.Model;
+using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl
 {
@@ -10,17 +15,63 @@ namespace SPMeta2.Regression.Tests.Impl
         #region tests
 
         [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployWebs()
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_BlankWeb()
         {
-            throw new NotImplementedException();
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.BlankWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployNestedWebs()
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_BlogWeb()
         {
-            throw new NotImplementedException();
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.BlogWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_DocumentCenterWeb()
+        {
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.DocumentCenterWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_SearchCenterLightWeb()
+        {
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.SearchCenterLightWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_SearchCenterWithTabsWeb()
+        {
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.SearchCenterWithTabsWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Webs")]
+        public void CanProvision_TeamWeb()
+        {
+            var model = SPMeta2Model
+                 .NewWebModel(web => web.AddWeb(RegWebs.TeamWeb));
+
+            WithProvisionRunners(runner => runner.DeployWebModel(model));
         }
 
         #endregion

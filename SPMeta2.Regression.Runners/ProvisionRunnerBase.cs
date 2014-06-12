@@ -16,6 +16,11 @@ namespace SPMeta2.Regression.Runners
 
         }
 
+        public virtual void DeployWebModel(ModelNode model)
+        {
+
+        }
+
         #endregion
     }
 }
