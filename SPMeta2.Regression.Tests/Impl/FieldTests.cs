@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.Definitions;
-using SPMeta2.Regression.Model;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Syntax.Default;
-using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl
 {

@@ -52,17 +52,6 @@ namespace SPMeta2.SSOM.ModelHandlers
         private void UpdateListItem(SPListItem listItem, ListItemDefinition listItemModel)
         {
             throw new NotImplementedException();
-
-            // UPDATE. TODO, 
-
-            if (listItemModel.UpdateOverwriteVersion)
-                listItem.UpdateOverwriteVersion();
-            else if (listItemModel.SystemUpdate)
-                listItem.SystemUpdate(listItemModel.SystemUpdateIncrementVersionNumber);
-            else
-            {
-                listItem.Update();
-            }
         }
 
         private SPListItem GetOrCreateListItemByTitle(SPList list, ListItemDefinition listItemModel)

@@ -53,11 +53,7 @@ namespace SPMeta2.Models
         [XmlIgnore]
         public Dictionary<ModelEventType, List<object>> ModelContextEvents { get; set; }
 
-        /// <summary>
-        /// Experimental, may be removed in later releases.
-        /// </summary>
         [XmlIgnore]
-        [Obsolete]
         public ModelNodeState State { get; set; }
 
         #endregion

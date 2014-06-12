@@ -4,7 +4,7 @@ using SPMeta2.Regression.Tests.Base;
 
 namespace SPMeta2.Regression.Tests.Impl
 {
-    [TestClass]
+    //[TestClass]
     public class FieldLinksTests : SPMeta2RegresionTestBase
     {
         #region tests

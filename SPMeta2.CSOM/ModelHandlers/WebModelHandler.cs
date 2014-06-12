@@ -166,7 +166,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     webContext.ExecuteQuery();
                 }
             }
-            catch (ClientRequestException ex)
+            catch (ClientRequestException)
             {
                 // TODO, chekc is web exists
             }
