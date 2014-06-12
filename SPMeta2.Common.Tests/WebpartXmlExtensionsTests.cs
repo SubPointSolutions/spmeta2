@@ -5,7 +5,7 @@ using SPMeta2.Common.Utils;
 
 namespace SPMeta2.Common.Tests
 {
-    [TestClass]
+    //[TestClass]
     public class WebpartXmlExtensionsTests
     {
         [TestMethod]

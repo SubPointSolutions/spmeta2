@@ -3,7 +3,7 @@ using SPMeta2.Regression.MinimalModelTests.Base;
 
 namespace SPMeta2.Regression.MinimalModelTests
 {
-    [TestClass]
+    //[TestClass]
     public class MinimalFieldTest : MinimalModelTestBase
     {
         #region resources

@@ -18,7 +18,7 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.CSOM.Samples.O365Provision
 {
-    [TestClass]
+    //[TestClass]
     public class O365Provision : CSOMTestBase
     {
         #region constructors

@@ -7,7 +7,7 @@ using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Validation.Tests
 {
-    [TestClass]
+    //[TestClass]
     public class ModelValidationServiceTests
     {
         [TestMethod]

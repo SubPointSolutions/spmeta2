@@ -9,7 +9,7 @@ using System;
 
 namespace SPMeta2.CSOM.Tests
 {
-    [TestClass]
+    //[TestClass]
     public class ModuleFileModelTests : ClientOMSharePointTestBase
     {
         #region resources

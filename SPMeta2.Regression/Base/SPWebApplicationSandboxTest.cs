@@ -10,7 +10,7 @@ using SPMeta2.Regression.Profiles;
 
 namespace SPMeta2.Regression.Base
 {
-    [TestClass]
+    //[TestClass]
     public class SPWebApplicationSandboxTest
     {
         #region contructors

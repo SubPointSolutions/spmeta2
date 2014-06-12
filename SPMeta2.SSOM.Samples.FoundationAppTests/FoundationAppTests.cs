@@ -15,7 +15,7 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.SSOM.Samples.FoundationAppTests
 {
-    [TestClass]
+    //[TestClass]
     public class FoundationAppTests : FoundationAppTestBase
     {
         #region resources

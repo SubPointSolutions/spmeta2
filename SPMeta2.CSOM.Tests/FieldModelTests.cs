@@ -12,7 +12,7 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.CSOM.Tests
 {
-    [TestClass]
+    //[TestClass]
     public class FieldModelTests : ClientOMSharePointTestBase
     {
         #region resources

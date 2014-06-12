@@ -18,7 +18,7 @@ namespace SPMeta2.Regression.Model.Definitions
             Title = "Test Text",
             InternalName = "spmeta2Reg_TestText",
             Description = String.Empty,
-            Group = "SPMeta2 Regression test",
+            Group = "SPMeta2 Regression test " + Environment.TickCount,
             FieldType = BuiltInFieldTypes.Text
         };
 

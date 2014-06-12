@@ -13,7 +13,7 @@ namespace SPMeta2.SSOM.Samples.FoundationAppTests
 {
     // here is a big TODO as Resharper shows a lot of recommendations to cut lambdas 
 
-    [TestClass]
+    //[TestClass]
     public class BaseSyntaxDemoSandboxTests : FoundationAppTestBase
     {
         #region resources

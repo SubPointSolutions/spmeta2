@@ -9,7 +9,7 @@ using SPMeta2.Regression.O365.Tests.Common;
 
 namespace SPMeta2.Regression.O365.Tests
 {
-    [TestClass]
+    //[TestClass]
     public class ListTests : CSOMTestBase
     {
         #region tests

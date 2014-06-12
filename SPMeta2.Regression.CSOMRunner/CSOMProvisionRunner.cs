@@ -24,11 +24,21 @@ namespace SPMeta2.Regression.CSOMRunner
     {
         #region constructors
 
+        private static string GetEnvironmentVariable(string varName)
+        {
+            var result = Environment.GetEnvironmentVariable(varName);
+
+            if (string.IsNullOrEmpty(result))
+                result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
+
+            return result;
+        }
+
         public CSOMProvisionRunner()
         {
-            SiteUrl = Environment.GetEnvironmentVariable(EnvConsts.O365_SiteUrl); ;
-            UserName = Environment.GetEnvironmentVariable(EnvConsts.O365_UserName);
-            UserPassword = Environment.GetEnvironmentVariable(EnvConsts.O365_Password);
+            SiteUrl = GetEnvironmentVariable(EnvConsts.O365_SiteUrl);
+            UserName = GetEnvironmentVariable(EnvConsts.O365_UserName);
+            UserPassword = GetEnvironmentVariable(EnvConsts.O365_Password);
         }
 
         #endregion

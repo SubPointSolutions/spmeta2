@@ -48,7 +48,7 @@ namespace SPMeta2.CSOM.Tests
         };
     }
 
-    [TestClass]
+    //[TestClass]
     public class WebPartModelTests : ClientOMSharePointTestBase
     {
         #region resources
