@@ -44,6 +44,14 @@ namespace SPMeta2.BuiltInDefinitions
             ContentTypesEnabled = true
         };
 
+        public static ListDefinition Pages = new ListDefinition
+        {
+            Title = "Pages",
+            TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+            Url = "Pages",
+            ContentTypesEnabled = true
+        };
+
         #endregion
 
         #region lists
