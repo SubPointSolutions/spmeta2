@@ -15,7 +15,6 @@
     <summary></summary>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
       <group>
