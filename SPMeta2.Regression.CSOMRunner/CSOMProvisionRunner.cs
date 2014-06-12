@@ -13,13 +13,22 @@ using SPMeta2.Regression.Runners;
 
 namespace SPMeta2.Regression.CSOMRunner
 {
+    public static class EnvConsts
+    {
+        public const string O365_SiteUrl = "SPMeta2_O365_SiteUrl";
+        public const string O365_UserName = "SPMeta2_O365_UserName";
+        public const string O365_Password = "SPMeta2_O365_Password";
+    }
+
     public class CSOMProvisionRunner : ProvisionRunnerBase
     {
         #region constructors
 
         public CSOMProvisionRunner()
         {
-           
+            SiteUrl = Environment.GetEnvironmentVariable(EnvConsts.O365_SiteUrl); ;
+            UserName = Environment.GetEnvironmentVariable(EnvConsts.O365_UserName);
+            UserPassword = Environment.GetEnvironmentVariable(EnvConsts.O365_Password);
         }
 
         #endregion
