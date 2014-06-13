@@ -26,6 +26,50 @@ namespace SPMeta2.Syntax.Extended
                     site
                         .AddField(FieldModels.ClientFeedback, field =>
                         {
+                            field
+                                .OnCreated((FieldDefinition definition, Field type) =>
+                                {
+
+                                });
+                        });
+
+                    site
+                        .AddField(FieldModels.ClientFeedback, field =>
+                        {
+                            field
+                                .OnError<Field>(context =>
+                                {
+
+                                })
+                                .OnCreated<Field>(context =>
+                                {
+                                    if (context.IsNew)
+                                    {
+                                        // creating
+                                    }
+                                    else
+                                    {
+                                        // updating
+                                    }
+                                })
+                                .OnCreated<Field, FieldDefinition>(context =>
+                                {
+                                    if (context.IsNew)
+                                    {
+                                        // creating
+                                    }
+                                    else
+                                    {
+                                        // updating
+                                    }
+                                });
+                        });
+
+
+
+                    site
+                        .AddField(FieldModels.ClientFeedback, field =>
+                        {
                             field.OnCreated((FieldDefinition def, Field spField) =>
                             {
                                 spField

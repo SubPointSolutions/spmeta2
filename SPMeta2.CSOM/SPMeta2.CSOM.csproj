@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DefaultSyntax\ContentTypeDefinitionSyntax.cs" />
     <Compile Include="DefaultSyntax\FieldDefinitionSyntax.cs" />
+    <Compile Include="DefaultSyntax\ListItemDefinitionSyntax.cs" />
     <Compile Include="DefaultSyntax\ListDefinitionSyntax.cs" />
     <Compile Include="Common\ModelHostContext.cs" />
     <Compile Include="DefaultSyntax\ModuleFileDefinitionSyntaz.cs" />
