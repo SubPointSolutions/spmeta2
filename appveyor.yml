@@ -5,3 +5,5 @@ environment:
     secure: QESysUofYQ/PoNF6CL0/JAPersMpMtWcYaKmL62Dwv8=
   SPMeta2_O365_Password:
     secure: xWavBT+QPEq6DY9rJdJXYtuqfvNx9NOPW37/gf3xOrw=
+  SPMeta2_RunnerLibraries:
+    secure: fjM6KXFe9K4+sdSLrfrlvDYxZlLOQIgVLNZqlBBOf5Tqk2M5E7JLaPzNcUmE9eDz

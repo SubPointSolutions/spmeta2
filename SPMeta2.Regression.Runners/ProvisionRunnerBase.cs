@@ -9,6 +9,8 @@ namespace SPMeta2.Regression.Runners
 {
     public class ProvisionRunnerBase
     {
+      
+
         #region methods
 
         public virtual void DeploySiteModel(ModelNode model)

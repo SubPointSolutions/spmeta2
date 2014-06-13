@@ -6,6 +6,7 @@ using SPMeta2.CSOM.Services;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.Runners.Consts;
+using SPMeta2.Regression.Runners.Utils;
 
 namespace SPMeta2.Regression.Runners.O365
 {
@@ -13,21 +14,11 @@ namespace SPMeta2.Regression.Runners.O365
     {
         #region constructors
 
-        private static string GetEnvironmentVariable(string varName)
-        {
-            var result = Environment.GetEnvironmentVariable(varName);
-
-            if (string.IsNullOrEmpty(result))
-                result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
-
-            return result;
-        }
-
         public O365ProvisionRunner()
         {
-            SiteUrl = GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
-            UserName = GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
-            UserPassword = GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+            SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
+            UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
+            UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
         }
 
         #endregion

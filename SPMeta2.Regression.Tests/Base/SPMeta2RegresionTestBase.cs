@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using SPMeta2.Regression.Runners;
+using SPMeta2.Regression.Runners.Consts;
+using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
@@ -53,14 +56,32 @@ namespace SPMeta2.Regression.Tests.Base
 
         private void InitRunnerTypes()
         {
-            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
-            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
+            var runnerLibraries = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
+
+            Trace.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
+
+            if (!string.IsNullOrEmpty(runnerLibraries))
+            {
+                var libs = runnerLibraries.Split(',');
+
+                foreach (var lib in libs)
+                    ProvisionRunnerAssemblies.Add(lib);
+            }
+
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
 
         protected void WithProvisionRunners(Action<ProvisionRunnerBase> action)
         {
             foreach (var provisionRunner in ProvisionRunners)
+            {
+                var type = provisionRunner.GetType().FullName;
+
+                Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
                 action(provisionRunner);
+            }
         }
     }
 }

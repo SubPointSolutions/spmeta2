@@ -160,6 +160,18 @@
       <Link>SPMeta2.Regression.Runners.O365.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Runners.SSOM.dll">
+      <Link>SPMeta2.Regression.Runners.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
+      <Link>SPMeta2.Regression.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.dll">
+      <Link>SPMeta2.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
