@@ -43,25 +43,11 @@ namespace SPMeta2.Syntax.Extended
                                 })
                                 .OnCreated<Field>(context =>
                                 {
-                                    if (context.IsNew)
-                                    {
-                                        // creating
-                                    }
-                                    else
-                                    {
-                                        // updating
-                                    }
+                                   
                                 })
                                 .OnCreated<Field, FieldDefinition>(context =>
                                 {
-                                    if (context.IsNew)
-                                    {
-                                        // creating
-                                    }
-                                    else
-                                    {
-                                        // updating
-                                    }
+                                   
                                 });
                         });
 
