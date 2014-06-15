@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 using SPMeta2.Validation.Common;
 using SPMeta2.Validation.Extensions;
 
@@ -38,7 +39,7 @@ namespace SPMeta2.Validation.Validators.Collections
 
             foreach (var m in model)
             {
-                var propValue = ValidationExtensions.GetPropertyValue(m, propertyLambda);
+                var propValue = ReflectionUtils.GetPropertyValue(m, propertyLambda);
 
                 var key = (TProperty)propValue.Value;
                 propName = propValue.Name;

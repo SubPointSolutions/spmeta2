@@ -67,13 +67,20 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
+        protected SPWeb GetWeb(SPWeb parentWeb, WebDefinition webModel)
+        {
+            var newWebSiteRelativeUrl = SPUrlUtility.CombineUrl(parentWeb.ServerRelativeUrl, webModel.Url);
+            var currentWeb = parentWeb.Site.OpenWeb(newWebSiteRelativeUrl);
+
+            return currentWeb;
+        }
+
         private SPWeb GetOrCreateWeb(SPWeb parentWeb, WebDefinition webModel)
         {
             var webUrl = webModel.Url;
             var webDescription = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
 
-            var newWebSiteRelativeUrl = SPUrlUtility.CombineUrl(parentWeb.ServerRelativeUrl, webModel.Url);
-            var currentWeb = parentWeb.Site.OpenWeb(newWebSiteRelativeUrl);
+            var currentWeb = GetWeb(parentWeb, webModel);
 
             if (!currentWeb.Exists)
             {

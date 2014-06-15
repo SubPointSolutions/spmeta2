@@ -149,7 +149,7 @@ namespace SPMeta2.Services
             var modelDefinition = modelNode.Value as DefinitionBase;
             var modelHandler = ResolveModelHandler(modelDefinition.GetType());
 
-            if (modelHandler == null && modelDefinition.RequireSelfProcessing)
+            if (modelHandler == null)
                 throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", modelDefinition.GetType()));
 
             // modelHandler might change a model host to allow continiuation
