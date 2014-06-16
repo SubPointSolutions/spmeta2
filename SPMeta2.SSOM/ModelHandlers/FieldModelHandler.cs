@@ -67,6 +67,28 @@ namespace SPMeta2.SSOM.ModelHandlers
             return EnsureFieldInFieldsCollection(site.RootWeb.Fields, fieldModel);
         }
 
+        protected SPField GetField(object modelHost, FieldDefinition definition)
+        {
+            if (modelHost is SPSite)
+                return GetSiteField(modelHost as SPSite, definition);
+            else if (modelHost is SPList)
+                return GetListField(modelHost as SPList, definition);
+            else
+            {
+                throw new ArgumentException("modelHost needs to be SPSite/SPList");
+            }
+        }
+
+        private SPField GetSiteField(SPSite site, FieldDefinition definition)
+        {
+            return site.RootWeb.Fields[definition.Id];
+        }
+
+        private SPField GetListField(SPList list, FieldDefinition definition)
+        {
+            return list.Fields[definition.Id];
+        }
+
         private static SPField EnsureFieldInFieldsCollection(SPFieldCollection fields, FieldDefinition fieldModel)
         {
             if (!fields.ContainsFieldWithStaticName(fieldModel.InternalName))

@@ -23,7 +23,7 @@ namespace SPMeta2.Validation.Extensions
             object value,
             List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             if (valueResult.Value == value)
             {
@@ -46,7 +46,7 @@ namespace SPMeta2.Validation.Extensions
             int lenght,
             List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             CheckIfString<TSource, TProperty>(result, valueResult);
             CheckIfStringIsNotNullOrEmpty<TSource, TProperty>(result, valueResult);
@@ -78,7 +78,7 @@ namespace SPMeta2.Validation.Extensions
                                                                             propertyLambda,
                                                                         List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             CheckIfString<TSource, TProperty>(result, valueResult);
             CheckIfStringHasStringsBefore<TSource, TProperty>(result, valueResult,
@@ -114,7 +114,7 @@ namespace SPMeta2.Validation.Extensions
         public static TSource NoSpacesBeforeOrAfter<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
           List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             CheckIfString<TSource, TProperty>(result, valueResult);
             CheckIfStringHasSpacesBeforeOrAfter<TSource, TProperty>(result, valueResult);
@@ -157,7 +157,7 @@ namespace SPMeta2.Validation.Extensions
         public static TSource NotEmptyString<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
             List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             CheckIfString<TSource, TProperty>(result, valueResult);
             CheckIfStringIsNotNullOrEmpty<TSource, TProperty>(result, valueResult);
@@ -169,7 +169,7 @@ namespace SPMeta2.Validation.Extensions
             <TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
             List<ValidationResult> result)
         {
-            var valueResult = source.GetPropertyValue(propertyLambda);
+            var valueResult = source.GetExpressionValue(propertyLambda);
 
             CheckIfString<TSource, TProperty>(result, valueResult);
             CheckIfStringIsNotNull<TSource, TProperty>(result, valueResult);

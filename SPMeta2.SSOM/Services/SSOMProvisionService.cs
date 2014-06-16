@@ -1,4 +1,6 @@
-﻿using SPMeta2.Definitions;
+﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint.Administration;
+using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
@@ -14,7 +16,28 @@ namespace SPMeta2.SSOM.Services
         public SSOMProvisionService()
         {
             RegisterModelHandlers();
+            //CheckSharePointRuntimeVersion();
         }
+
+        #endregion
+
+        #region properties
+
+        //private static Version MinimalSPRuntimeVersion = new Version("15.0.4569.1000");
+
+        #endregion
+
+        #region methods
+
+        //private void CheckSharePointRuntimeVersion()
+        //{
+        //    var spRuntimeVersion = SPFarm.Local.BuildVersion;
+
+        //    if (spRuntimeVersion < MinimalSPRuntimeVersion)
+        //    {
+        //        // TODO
+        //    }
+        //}
 
         private void RegisterModelHandlers()
         {

@@ -47,37 +47,40 @@ namespace SPMeta2.Utils
                        .Where(t => typeof(TType).IsAssignableFrom(t) && !t.IsAbstract);
         }
 
-        public static PropResult GetPropertyValue<TSource, TProperty>(this TSource source,
-           Expression<Func<TSource, TProperty>> propertyLambda)
+        public static PropResult GetExpressionValue<TSource, TProperty>(this TSource source,
+           Expression<Func<TSource, TProperty>> exp)
         {
             Type type = typeof(TSource);
 
-            MemberExpression member = propertyLambda.Body as MemberExpression;
-            if (member == null)
-                throw new ArgumentException(string.Format(
-                    "Expression '{0}' refers to a method, not a property.",
-                    propertyLambda.ToString()));
+            if (exp.Body is MethodCallExpression)
+            {
+                var member = exp.Body as MethodCallExpression;
+                var methodResult = Expression.Lambda(member, exp.Parameters).Compile().DynamicInvoke(source);
 
-            PropertyInfo propInfo = member.Member as PropertyInfo;
-            if (propInfo == null)
-                throw new ArgumentException(string.Format(
-                    "Expression '{0}' refers to a field, not a property.",
-                    propertyLambda.ToString()));
+                var result = new PropResult();
 
-            if (type != propInfo.ReflectedType &&
-                !type.IsSubclassOf(propInfo.ReflectedType))
-                throw new ArgumentException(string.Format(
-                    "Expresion '{0}' refers to a property that is not from type {1}.",
-                    propertyLambda.ToString(),
-                    type));
+                result.Name = member.ToString();
+                result.Value = methodResult;
+                result.ObjectType = source.GetType();
 
-            var result = new PropResult();
+                return result;
+            }
 
-            result.Name = propInfo.Name;
-            result.Value = propInfo.GetValue(source);
-            result.ObjectType = source.GetType();
+            if (exp.Body is MemberExpression)
+            {
+                var member = exp.Body as MemberExpression;
+                var propInfo = member.Member as PropertyInfo;
 
-            return result;
+                var result = new PropResult();
+
+                result.Name = propInfo.Name;
+                result.Value = propInfo.GetValue(source);
+                result.ObjectType = source.GetType();
+
+                return result;
+            }
+
+            throw new NotImplementedException("GetExpressionValue");
         }
 
         #endregion

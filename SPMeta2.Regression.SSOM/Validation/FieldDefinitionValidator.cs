@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 
@@ -16,31 +17,17 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             TraceUtils.WithScope(traceScope =>
             {
-                var rootWeb = site.RootWeb;
-                var fields = rootWeb.AvailableFields;
+                var spField = GetField(modelHost, fieldModel);
+                var pair = new ComparePair<FieldDefinition, SPField>(fieldModel, spField);
 
-                var spField = fields[fieldModel.Id];
+                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", fieldModel, spField));
 
-                traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", fieldModel, spField));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine(string.Format("Validate InternalName: model:[{0}] field:[{1}]", fieldModel.InternalName, spField.InternalName));
-                    Assert.AreEqual(fieldModel.InternalName, spField.InternalName);
-
-                    trace.WriteLine(string.Format("Validate Id: model:[{0}] field:[{1}]", fieldModel.Id, spField.Id));
-                    Assert.AreEqual(fieldModel.Id, spField.Id);
-
-                    trace.WriteLine(string.Format("Validate Title: model:[{0}] field:[{1}]", fieldModel.Title, spField.Title));
-                    Assert.AreEqual(fieldModel.Title, spField.Title);
-
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] field:[{1}]", fieldModel.Description, spField.Description));
-                    Assert.AreEqual(fieldModel.Description, spField.Description);
-
-                    trace.WriteLine(string.Format("Validate Group: model:[{0}] field:[{1}]", fieldModel.Description, spField.Description));
-                    Assert.AreEqual(fieldModel.Group, spField.Group);
-                });
+                traceScope.WithTraceIndent(trace => pair
+                    .ShouldBeEqual(trace, m => m.Title, w => w.Title)
+                    .ShouldBeEqual(trace, m => m.Description, w => w.Description)
+                    .ShouldBeEqual(trace, m => m.Group, w => w.Group)
+                    .ShouldBeEqual(trace, m => m.InternalName, w => w.InternalName)
+                    .ShouldBeEqual(trace, m => m.Id, w => w.Id));
             });
         }
     }

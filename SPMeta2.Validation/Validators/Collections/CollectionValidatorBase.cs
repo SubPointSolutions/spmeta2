@@ -39,7 +39,7 @@ namespace SPMeta2.Validation.Validators.Collections
 
             foreach (var m in model)
             {
-                var propValue = ReflectionUtils.GetPropertyValue(m, propertyLambda);
+                var propValue = ReflectionUtils.GetExpressionValue(m, propertyLambda);
 
                 var key = (TProperty)propValue.Value;
                 propName = propValue.Name;

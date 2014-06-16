@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -16,6 +17,12 @@ namespace SPMeta2.CSOM.Services
         public CSOMProvisionService()
         {
             RegisterModelHandlers();
+            CheckSharePointRuntimeVersion();
+        }
+
+        private void CheckSharePointRuntimeVersion()
+        {
+            //var asm = typeof (Web).Assembly;
         }
 
         private void RegisterModelHandlers()

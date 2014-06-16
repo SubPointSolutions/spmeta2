@@ -60,15 +60,15 @@ namespace SPMeta2.Regression.Tests.Base
 
             Trace.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
 
-            if (!string.IsNullOrEmpty(runnerLibraries))
-            {
-                var libs = runnerLibraries.Split(',');
+            //if (!string.IsNullOrEmpty(runnerLibraries))
+            //{
+            //    var libs = runnerLibraries.Split(',');
 
-                foreach (var lib in libs)
-                    ProvisionRunnerAssemblies.Add(lib);
-            }
+            //    foreach (var lib in libs)
+            //        ProvisionRunnerAssemblies.Add(lib);
+            //}
 
-            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
             //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
