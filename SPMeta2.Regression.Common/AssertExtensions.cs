@@ -52,5 +52,45 @@ namespace SPMeta2.Regression.SSOM.Utils
 
             return pair;
         }
+
+        public static ComparePair<TModel, TObj> ShouldBeEqual<TModel, TObj>(
+            this ComparePair<TModel, TObj> pair,
+            TraceUtils trace,
+            Expression<Func<TModel, bool>> modelPropExp,
+            Expression<Func<TObj, bool>> objPropLExp)
+        {
+            var modelProp = pair.Model.GetExpressionValue<TModel, bool>(modelPropExp);
+            var objProp = pair.Object.GetExpressionValue<TObj, bool>(objPropLExp);
+
+            trace.WriteLine(string.Format("Model prop [{0}] on obj prop [{1}]: model:[{2}] obj:[{3}]",
+               modelProp.Name,
+               objProp.Name,
+               modelProp.Value,
+               objProp.Value));
+
+            Assert.AreEqual(modelProp.Value, objProp.Value);
+
+            return pair;
+        }
+
+        public static ComparePair<TModel, TObj> ShouldBeEqual<TModel, TObj>(
+           this ComparePair<TModel, TObj> pair,
+           TraceUtils trace,
+           Expression<Func<TModel, int>> modelPropExp,
+           Expression<Func<TObj, int>> objPropLExp)
+        {
+            var modelProp = pair.Model.GetExpressionValue<TModel, int>(modelPropExp);
+            var objProp = pair.Object.GetExpressionValue<TObj, int>(objPropLExp);
+
+            trace.WriteLine(string.Format("Model prop [{0}] on obj prop [{1}]: model:[{2}] obj:[{3}]",
+               modelProp.Name,
+               objProp.Name,
+               modelProp.Value,
+               objProp.Value));
+
+            Assert.AreEqual(modelProp.Value, objProp.Value);
+
+            return pair;
+        }
     }
 }

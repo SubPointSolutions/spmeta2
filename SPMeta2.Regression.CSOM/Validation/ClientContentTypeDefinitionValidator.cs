@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Common;
+using SPMeta2.Regression.SSOM.Utils;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,41 +30,36 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<Site>("modelHost", value => value.RequireNotNull());
-            var definitionModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
-            var rootWeb = site.RootWeb;
-            var contentTypes = rootWeb.AvailableContentTypes;
+            var site = siteModelHost.HostSite;
 
             var context = site.Context;
+            var rootWeb = site.RootWeb;
 
+            var contentTypes = rootWeb.ContentTypes;
+
+            context.Load(rootWeb);
             context.Load(contentTypes);
+
             context.ExecuteQuery();
 
-            var spModel = FindByName(contentTypes, definitionModel.Name);
+            var contentTypeId = contentTypeModel.GetContentTypeId();
+            var spObject = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
 
             TraceUtils.WithScope(traceScope =>
             {
-                Trace.WriteLine(string.Format("Validate model: {0} ContentType:{1}", definitionModel, spModel));
+                var pair = new ComparePair<ContentTypeDefinition, ContentType>(contentTypeModel, spObject);
 
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine(string.Format("Validate Name: model:[{0}] ct:[{1}]", definitionModel.Name, spModel.Name));
-                    Assert.AreEqual(definitionModel.Name, spModel.Name);
+                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", model, spObject));
 
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] ct:[{1}]", definitionModel.Description, spModel.Description));
-                    Assert.AreEqual(definitionModel.Description, spModel.Description);
-
-                    // skipping content type ID validation as it 
-                    trace.WriteLine("Skipping content type ID validation as ID cannot be set via ClientOM...");
-
-                    //trace.WriteLine(string.Format("Validate Id: model:[{0}] ct:[{1}]", definitionModel.GetContentTypeId(), spModel.Id));
-                    //Assert.AreEqual(new SPContentTypeId(definitionModel.GetContentTypeId()), spModel.Id);
-
-                    trace.WriteLine(string.Format("Validate Group: model:[{0}] ct:[{1}]", definitionModel.Group, spModel.Group));
-                    Assert.AreEqual(definitionModel.Group, spModel.Group);
-                });
+                traceScope.WithTraceIndent(trace => pair
+                    .ShouldBeEqual(trace, m => m.Name, o => o.Name)
+                    .ShouldBeEqual(trace, m => m.Description, o => o.Description)
+                    .ShouldBeEqual(trace, m => m.Group, o => o.Group)
+                    .ShouldBeEqual(trace, m => m.GetContentTypeId().ToLowerInvariant(), o => o.Id.ToString().ToLowerInvariant())
+                    .ShouldBeEqual(trace, m => m.Group, o => o.Group));
             });
         }
     }

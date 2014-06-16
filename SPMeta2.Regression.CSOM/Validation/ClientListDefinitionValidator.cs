@@ -2,8 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -12,54 +15,57 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<Web>("modelHost", value => value.RequireNotNull());
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
             var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+
+            var web = webModelHost.HostWeb;
+            var context = web.Context;
+
+            context.Load(web, w => w.ServerRelativeUrl);
+            context.Load(web, w => w.Lists);
+            context.ExecuteQuery();
+
+            var spObject = FindListByTitle(web.Lists, listModel.Title);
+
+            context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
+            context.ExecuteQuery();
 
             TraceUtils.WithScope(traceScope =>
             {
-                var context = web.Context;
+                var pair = new ComparePair<ListDefinition, List>(listModel, spObject);
 
-                context.Load(web, w => w.Lists);
-                context.ExecuteQuery();
+                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", model, spObject));
 
-                // gosh!
-                var spList = FindListByTitle(web.Lists, listModel.Title);
+                traceScope.WithTraceIndent(trace => pair
+                    .ShouldBeEqual(trace, m => m.Title, o => o.Title)
+                    .ShouldBeEqual(trace, m => m.Description, o => o.Description)
+                    .ShouldBeEqual(trace, m => m.GetServerRelativeUrl(web), o => o.GetServerRelativeUrl())
+                    .ShouldBeEqual(trace, m => m.ContentTypesEnabled, o => o.ContentTypesEnabled));
 
-                context.Load(spList, list => list.RootFolder.ServerRelativeUrl);
-                context.ExecuteQuery();
-
-                traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", listModel, spList));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
+                if (listModel.TemplateType > 0)
                 {
-                    trace.WriteLine(string.Format("Validate Title: model:[{0}] list:[{1}]", listModel.Title, spList.Title));
-                    Assert.AreEqual(listModel.Title, spList.Title);
+                    traceScope.WithTraceIndent(trace => pair
+                        .ShouldBeEqual(trace, m => m.TemplateType, o => (int)o.BaseTemplate));
+                }
+                else
+                {
 
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] list:[{1}]", listModel.Description, spList.Description));
-                    Assert.AreEqual(listModel.Description, spList.Description);
-
-                    trace.WriteLine(string.Format("Validate ContentTypesEnabled: model:[{0}] list:[{1}]", listModel.ContentTypesEnabled, spList.ContentTypesEnabled));
-                    Assert.AreEqual(listModel.ContentTypesEnabled, spList.ContentTypesEnabled);
-
-                    // TODO
-                    // template type & template name
-                    if (listModel.TemplateType > 0)
-                    {
-                        trace.WriteLine(string.Format("Validate TemplateType: model:[{0}] list:[{1}]", listModel.TemplateType, spList.BaseTemplate));
-                        Assert.AreEqual(listModel.TemplateType, (int)spList.BaseTemplate);
-                    }
-                    else
-                    {
-                        trace.WriteLine(string.Format("Skipping TemplateType check. It is 0"));
-                    }
-
-                    // TODO
-                    // url checking
-                    trace.WriteLine(string.Format("Validate URL: model:[{0}] list:[{1}]", listModel.GetListUrl(), spList.RootFolder.ServerRelativeUrl));
-                    Assert.IsTrue(spList.RootFolder.ServerRelativeUrl.Contains(listModel.GetListUrl()));
-                });
+                }
             });
         }
+    }
+
+    public static class Ex
+    {
+        public static string GetServerRelativeUrl(this ListDefinition listDef, Web web)
+        {
+            return web.ServerRelativeUrl + "/" + listDef.GetListUrl();
+        }
+
+        public static string GetServerRelativeUrl(this List list)
+        {
+            return list.RootFolder.ServerRelativeUrl;
+        }
+
     }
 }

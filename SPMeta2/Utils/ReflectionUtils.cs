@@ -66,6 +66,20 @@ namespace SPMeta2.Utils
                 return result;
             }
 
+            if (exp.Body is UnaryExpression)
+            {
+                var member = exp.Body as UnaryExpression;
+                var methodResult = Expression.Lambda(member, exp.Parameters).Compile().DynamicInvoke(source);
+
+                var result = new PropResult();
+
+                result.Name = member.ToString();
+                result.Value = methodResult;
+                result.ObjectType = source.GetType();
+
+                return result;
+            }
+
             if (exp.Body is MemberExpression)
             {
                 var member = exp.Body as MemberExpression;
