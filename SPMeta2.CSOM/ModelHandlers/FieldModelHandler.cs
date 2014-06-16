@@ -114,6 +114,29 @@ namespace SPMeta2.CSOM.ModelHandlers
             return currentField;
         }
 
+        protected Field FindListField(List list, FieldDefinition fieldModel)
+        {
+            var context = list.Context;
+
+            context.Load(list, l => l.Fields);
+            context.ExecuteQuery();
+
+            return FindExistingField(list.Fields, fieldModel.InternalName);
+        }
+
+        protected Field FindSiteField(SiteModelHost siteModelHost, FieldDefinition fieldModel)
+        {
+            var site = siteModelHost.HostSite;
+
+            var context = site.Context;
+            var rootWeb = site.RootWeb;
+
+            context.Load(rootWeb, tmpWeb => tmpWeb.Fields);
+            context.ExecuteQuery();
+
+            return FindExistingField(rootWeb.Fields, fieldModel.InternalName);
+        }
+
         protected Field FindExistingField(FieldCollection fields, string internalFieldName)
         {
             foreach (var field in fields)

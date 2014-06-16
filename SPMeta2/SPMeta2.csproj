@@ -97,6 +97,9 @@
     <Compile Include="Events\OnModelNodeProcessedEventArgs.cs" />
     <Compile Include="Events\ModelNodeProcessingEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessingEventArgs.cs" />
+    <Compile Include="Exceptions\SPMeta2Exception.cs" />
+    <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
+    <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />

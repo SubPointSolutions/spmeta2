@@ -1,63 +1,57 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
+using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
-    //public class ClientFieldDefinitionValidator : FieldModelHandler
-    public class ClientFieldDefinitionValidator : DefinitionValidatorBase
+    public class ClientFieldDefinitionValidator : FieldModelHandler
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            Site site = null;
+            var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
             if (modelHost is SiteModelHost)
+                ValidateSiteField(modelHost as SiteModelHost, fieldModel);
+            else if (modelHost is ListModelHost)
+                ValidateListField(modelHost as ListModelHost, fieldModel);
+            else
             {
-                var siteHost = modelHost as SiteModelHost;
-                var context = siteHost.HostSite.Context;
-
-                site = siteHost.HostSite;
+                throw new SPMeta2NotSupportedException(
+                    string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
+                    fieldModel.GetType(),
+                    modelHost.GetType()));
             }
+        }
 
-            //var site = modelHost.WithAssertAndCast<Site>("modelHost", value => value.RequireNotNull());
-            var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
+        private void ValidateListField(ListModelHost listModelHost, FieldDefinition fieldModel)
+        {
+            throw new SPMeta2NotImplementedException();
+        }
+
+        private void ValidateSiteField(SiteModelHost siteModelHost, FieldDefinition model)
+        {
+            var spObject = FindSiteField(siteModelHost, model);
 
             TraceUtils.WithScope(traceScope =>
             {
-                var context = site.Context;
+                var pair = new ComparePair<FieldDefinition, Field>(model, spObject);
 
-                var rootWeb = site.RootWeb;
-                var fields = rootWeb.AvailableFields;
+                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", model, spObject));
 
-                var spField = fields.GetById(fieldModel.Id);
-
-                context.Load(spField);
-                context.ExecuteQuery();
-
-                traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", fieldModel, spField));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine(string.Format("Validate InternalName: model:[{0}] field:[{1}]", fieldModel.InternalName, spField.InternalName));
-                    Assert.AreEqual(fieldModel.InternalName, spField.InternalName);
-
-                    trace.WriteLine(string.Format("Validate Id: model:[{0}] field:[{1}]", fieldModel.Id, spField.Id));
-                    Assert.AreEqual(fieldModel.Id, spField.Id);
-
-                    trace.WriteLine(string.Format("Validate Title: model:[{0}] field:[{1}]", fieldModel.Title, spField.Title));
-                    Assert.AreEqual(fieldModel.Title, spField.Title);
-
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] field:[{1}]", fieldModel.Description, spField.Description));
-                    Assert.AreEqual(fieldModel.Description, spField.Description);
-
-                    trace.WriteLine(string.Format("Validate Group: model:[{0}] field:[{1}]", fieldModel.Group, spField.Group));
-                    Assert.AreEqual(fieldModel.Group, spField.Group);
-                });
+                traceScope.WithTraceIndent(trace => pair
+                    .ShouldBeEqual(trace, m => m.Title, o => o.Title)
+                    .ShouldBeEqual(trace, m => m.InternalName, o => o.InternalName)
+                    .ShouldBeEqual(trace, m => m.Id, o => o.Id)
+                    .ShouldBeEqual(trace, m => m.Description, o => o.Description)
+                    .ShouldBeEqual(trace, m => m.Group, o => o.Group));
             });
         }
 

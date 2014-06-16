@@ -54,8 +54,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSOMValidationService.cs" />
-    <Compile Include="Utils\AssertExtensions.cs" />
-    <Compile Include="Utils\ComparePair.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeLinkDefinitionValidator.cs" />
