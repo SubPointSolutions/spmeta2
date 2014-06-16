@@ -44,6 +44,32 @@
   <ItemGroup>
     <Content Include="ClosedXML\ClosedXML.dll" />
     <Content Include="ClosedXML\DocumentFormat.OpenXml.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.DocumentManagement.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Publishing.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Publishing.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Runtime.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Runtime.Windows.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Runtime.WindowsPhone.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Runtime.WindowsStore.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Search.Applications.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Search.Applications.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Search.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Taxonomy.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Taxonomy.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.UserProfiles.Portable.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.WorkflowServices.Portable.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\CSOM\Microsoft.SharePoint.Client.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\CSOM\Microsoft.SharePoint.Client.Runtime.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.dll" />
@@ -96,6 +122,7 @@
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\microsoft.sharepoint.WorkflowActions.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
