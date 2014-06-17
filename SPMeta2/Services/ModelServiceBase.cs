@@ -129,6 +129,7 @@ namespace SPMeta2.Services
                     if (_activeModelNode != null)
                     {
                         _activeModelNode.InvokeOnModelEvents(e.Object, e.EventType);
+                        _activeModelNode.InvokeOnModelContextEvents(s, e);
                     }
                 };
 

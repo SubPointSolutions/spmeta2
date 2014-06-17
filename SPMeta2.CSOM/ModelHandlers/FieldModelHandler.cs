@@ -40,6 +40,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             Field currentField = null;
             ClientRuntimeContext context = null;
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = null,
+                ObjectType = typeof(Field),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
             InvokeOnModelEvents<FieldDefinition, Field>(currentField, ModelEventType.OnUpdating);
 
             if (modelHost is SiteModelHost)
@@ -57,6 +67,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentField = DeployListField(modelHost as List, fieldModel);
             }
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentField,
+                ObjectType = typeof(Field),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
             InvokeOnModelEvents<FieldDefinition, Field>(currentField, ModelEventType.OnUpdated);
 
             currentField.UpdateAndPushChanges(true);

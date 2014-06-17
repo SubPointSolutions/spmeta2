@@ -24,6 +24,7 @@ namespace SPMeta2.Common
 
         public DefinitionBase ObjectDefinition { get; set; }
 
+        public object ModelHost { get; set; }
         public ModelNode Model { get; set; }
         public ModelNode CurrentModelNode { get; set; }
 

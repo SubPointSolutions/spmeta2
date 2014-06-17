@@ -73,20 +73,33 @@ namespace SPMeta2.Models
 
             var targetEvents = ModelContextEvents[eventType];
 
-            // yeap, shitty yet
+            // yea, yea..
             foreach (MulticastDelegate action in targetEvents)
             {
                 var modelContextType = typeof(OnCreatingContext<,>);
-                var typeArgs = new Type[] { spObjectType };
 
-                var modelContextInstanceType = modelContextType.MakeGenericType(typeArgs);
-                var modelContextInstance = Activator.CreateInstance(modelContextInstanceType);
+                var nonDefinition = new Type[] { spObjectType, typeof(DefinitionBase) };
+                var withDefinition = new Type[] { spObjectType, eventArgs.ObjectDefinition.GetType() };
+
+                var modelNonDefInstanceType = modelContextType.MakeGenericType(nonDefinition);
+                var modelWithDefInstanceType = modelContextType.MakeGenericType(withDefinition);
+
+                object modelContextInstance = null;
+
+                if (action.Method.GetParameters()[0].ParameterType.IsAssignableFrom(modelNonDefInstanceType))
+                {
+                    modelContextInstance = Activator.CreateInstance(modelNonDefInstanceType);
+                }
+                else if (action.Method.GetParameters()[0].ParameterType.IsAssignableFrom(modelWithDefInstanceType))
+                {
+                    modelContextInstance = Activator.CreateInstance(modelWithDefInstanceType);
+                }
 
                 SetProperty(modelContextInstance, "Model", eventArgs.Model);
                 SetProperty(modelContextInstance, "CurrentModelNode", eventArgs.CurrentModelNode);
 
                 SetProperty(modelContextInstance, "Object", eventArgs.Object);
-                SetProperty(modelContextInstance, "ObjectDefinition", eventArgs.Model);
+                SetProperty(modelContextInstance, "ObjectDefinition", eventArgs.ObjectDefinition);
 
                 action.DynamicInvoke(modelContextInstance);
             }

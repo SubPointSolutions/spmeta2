@@ -99,6 +99,7 @@ namespace SPMeta2.ModelHandlers
             }
         }
 
+        [Obsolete("Use InvokeOnModelEvents((object sender, ModelEventArgs args) with passing full ModelEventArgs")]
         protected void InvokeOnModelEvents<TModelDefinition, TSPObject>(TSPObject rawObject, ModelEventType eventType)
         {
             InvokeOnModelEvents(this, new ModelEventArgs
