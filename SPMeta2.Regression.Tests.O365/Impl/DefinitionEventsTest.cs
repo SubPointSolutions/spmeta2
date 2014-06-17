@@ -31,7 +31,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         }
 
         #endregion
-        
+
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ContentTypeFieldLinkDefinition()
@@ -71,7 +71,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ListDefinition()
         {
-            throw new NotImplementedException();
+            ValidateWebModelEvents<List>(SPMeta2Model.NewWebModel(), RegLists.GenericList);
         }
 
         [TestMethod]

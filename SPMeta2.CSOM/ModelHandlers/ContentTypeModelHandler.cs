@@ -103,6 +103,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQuery();
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = null,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
             InvokeOnModelEvents<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
 
             //var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
@@ -131,6 +141,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentContentType.Group = contentTypeModel.Group;
 
             InvokeOnModelEvents<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentContentType,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
 
             currentContentType.Update(true);
             context.ExecuteQuery();
