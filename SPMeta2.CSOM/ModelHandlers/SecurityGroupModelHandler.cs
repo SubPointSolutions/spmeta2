@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -64,6 +65,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentGroup,
+                ObjectType = typeof(Group),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             if (currentGroup == null)
             {
                 currentGroup = web.SiteGroups.Add(new GroupCreationInformation
@@ -75,6 +87,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             currentGroup.Title = securityGroupModel.Name;
             currentGroup.Description = securityGroupModel.Description ?? string.Empty;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentGroup,
+                ObjectType = typeof(Group),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
 
             currentGroup.Update();
             context.ExecuteQuery();

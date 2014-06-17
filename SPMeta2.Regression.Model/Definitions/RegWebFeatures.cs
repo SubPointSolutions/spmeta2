@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Model.Definitions
 {
@@ -11,10 +13,9 @@ namespace SPMeta2.Regression.Model.Definitions
     {
         #region properties
 
-        public static FeatureDefinition Definition = new FeatureDefinition
-        {
-
-        };
+        public static FeatureDefinition PublishingWeb = BuiltInWebFeatures.SharePointServerPublishing
+                                                                       .Inherit()
+                                                                       .Enable();
 
 
         #endregion

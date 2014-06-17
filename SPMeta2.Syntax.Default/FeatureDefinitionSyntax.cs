@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 
@@ -36,5 +37,34 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        public static FeatureDefinition Inherit(this FeatureDefinition definition)
+        {
+            return Inherit(definition, null);
+        }
+
+        public static FeatureDefinition Inherit(this FeatureDefinition definition, Action<FeatureDefinition> config)
+        {
+            var model = definition.Clone() as FeatureDefinition;
+
+            if (config != null)
+                config(model);
+
+            return model;
+        }
+
+        public static FeatureDefinition Enable(this FeatureDefinition definition)
+        {
+            definition.Enable = true;
+
+            return definition;
+        }
+
+        public static FeatureDefinition ForceActivate(this FeatureDefinition definition)
+        {
+            definition.ForceActivate = true;
+
+            return definition;
+        }
     }
 }

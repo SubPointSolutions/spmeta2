@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
@@ -36,7 +37,14 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ContentTypeFieldLinkDefinition()
         {
-            throw new NotImplementedException();
+            ValidateSiteModelEvents<FieldLink>(
+                SPMeta2Model.NewSiteModel(site =>
+                {
+                    site
+                        .AddField(RegSiteFields.BooleanField)
+                        .AddContentType(RegContentTypes.CustomItem);
+                }),
+                new ContentTypeFieldLinkDefinition { FieldId = RegSiteFields.BooleanField.Id });
         }
 
         [TestMethod]
@@ -57,7 +65,8 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_FeatureDefinition()
         {
-            throw new NotImplementedException();
+            ValidateSiteModelEvents<Feature>(SPMeta2Model.NewSiteModel(), RegSiteFeatures.PublishingSite);
+            ValidateSiteModelEvents<Feature>(SPMeta2Model.NewWebModel(), RegWebFeatures.PublishingWeb);
         }
 
         [TestMethod]
@@ -127,7 +136,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityGroupDefinition()
         {
-            throw new NotImplementedException();
+            ValidateSiteModelEvents<Group>(SPMeta2Model.NewSiteModel(), RegSecurityGroups.SecurityGroup1);
         }
 
         [TestMethod]
@@ -141,7 +150,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityRoleDefinition()
         {
-            throw new NotImplementedException();
+            ValidateSiteModelEvents<RoleDefinition>(SPMeta2Model.NewSiteModel(), RegSecurityRoles.SecurityRole1);
         }
 
         [TestMethod]

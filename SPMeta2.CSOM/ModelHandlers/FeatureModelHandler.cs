@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -68,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
             // http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.featurecollection.add%28v=office.15%29.aspx
-            ProcessFeature(context, web.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+            ProcessFeature(modelHost, context, web.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
         }
 
         private void DeploySiteFeature(object modelHost, FeatureDefinition featureModel)
@@ -83,21 +84,47 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
-            ProcessFeature(context, site.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+            ProcessFeature(modelHost, context, site.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
         }
 
-        private void ProcessFeature(ClientRuntimeContext context,
+        private void ProcessFeature(
+                    object modelHost,
+                    ClientRuntimeContext context,
                     FeatureCollection features,
                     FeatureDefinition featureModel,
                     Microsoft.SharePoint.Client.FeatureDefinitionScope scope)
         {
-            var featureActivated = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id) != null;
+            var currentFeature = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
+            var featureActivated = currentFeature != null;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFeature,
+                ObjectType = typeof(Feature),
+                ObjectDefinition = featureModel,
+                ModelHost = modelHost
+            });
 
             if (!featureActivated)
             {
                 if (featureModel.Enable)
                 {
-                    features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+                    var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = f,
+                        ObjectType = typeof(Feature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+
                     context.ExecuteQuery();
                 }
                 else
@@ -109,13 +136,37 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (featureModel.Enable && featureModel.ForceActivate)
                 {
-                    features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+                    var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = f,
+                        ObjectType = typeof(Feature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+
                     context.ExecuteQuery();
                 }
 
                 if (!featureModel.Enable)
                 {
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = null,
+                        ObjectType = typeof(Feature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+
                     context.ExecuteQuery();
                 }
             }

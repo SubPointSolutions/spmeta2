@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -37,6 +38,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleModel.Name);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentRoleDefinition,
+                ObjectType = typeof(RoleDefinition),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             var basePermissions = new BasePermissions();
 
             foreach (var permissionString in securityRoleModel.BasePermissions)
@@ -56,6 +68,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             // something wrong with setting up BasePermissions.Set() method up 
             // so, a new object has to be assigned every time
             currentRoleDefinition.BasePermissions = basePermissions;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentRoleDefinition,
+                ObjectType = typeof(RoleDefinition),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             currentRoleDefinition.Update();
 
             context.ExecuteQuery();
