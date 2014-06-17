@@ -14,7 +14,7 @@ using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Impl.Validation
 {
-    [TestClass]
+    //[TestClass]
     public class EmptyDefinitionValidationTest
     {
         #region definitions
@@ -23,83 +23,59 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
         [TestCategory("Regression.Validation.Definition")]
         public void CanValidateRequiredProperties_FieldDefinition()
         {
-            CanValidateRequiredPropertiesOnSiteModel<FieldDefinition>((def, result) =>
-            {
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Title);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.Title);
+            CanValidateRequiredPropertiesOnSiteModel<FieldDefinition>(context => context
+                .AssertProperty(ValidationResultType.NotNullString, d => d.Title)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.Title)
 
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.InternalName);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.InternalName);
+                .AssertProperty(ValidationResultType.NotNullString, d => d.InternalName)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.InternalName)
 
-                //AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Description);
-                // AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Group);
+                .AssertProperty(ValidationResultType.NotNullString, d => d.Group)
 
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.FieldType);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.FieldType);
+                .AssertProperty(ValidationResultType.NotNullString, d => d.FieldType)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.FieldType)
 
-                AssertProperty(def, result, ValidationResultType.NotDefaultGuid, d => d.Id);
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("Regression.Validation.Definition")]
-        public void CanValidateProperties_FieldDefinition()
-        {
-            CanValidatePropertiesOnSiteModel(new FieldDefinition
-            {
-                Title = "Test Field",
-                InternalName = "Test Internal Name",
-                Description = string.Empty,
-                Id = Guid.NewGuid(),
-                FieldType = "Text",
-                Group = string.Empty
-            }, result => Assert.AreEqual(0, result.Count));
+                .AssertProperty(ValidationResultType.NotDefaultGuid, d => d.Id));
         }
 
         [TestMethod]
         [TestCategory("Regression.Validation.Definition")]
         public void CanValidateRequiredProperties_ContentTypeDefinition()
         {
-            CanValidateRequiredPropertiesOnSiteModel<ContentTypeDefinition>((def, result) =>
-            {
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Name);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.Name);
+            CanValidateRequiredPropertiesOnSiteModel<ContentTypeDefinition>(context => context
+                .AssertProperty(ValidationResultType.NotNullString, d => d.Name)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.Name)
 
-                AssertProperty(def, result, ValidationResultType.NotDefaultGuid, d => d.Id);
+                .AssertProperty(ValidationResultType.NotDefaultGuid, d => d.Id)
 
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.ParentContentTypeId);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.ParentContentTypeId);
-            });
+                .AssertProperty(ValidationResultType.NotNullString, d => d.ParentContentTypeId)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.ParentContentTypeId));
         }
 
         [TestMethod]
         [TestCategory("Regression.Validation.Definition")]
         public void CanValidateRequiredProperties_ListDefinition()
         {
-            CanValidateRequiredPropertiesOnSiteModel<ListDefinition>((def, result) =>
-            {
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Title);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.Title);
+            CanValidateRequiredPropertiesOnSiteModel<ListDefinition>(context => context
+                .AssertProperty(ValidationResultType.NotNullString, d => d.Title)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.Title)
 
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.Description);
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.Description)
 
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.Url);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.Url);
+                .AssertProperty(ValidationResultType.NotNullString, d => d.Url)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.Url)
 
-                AssertProperty(def, result, ValidationResultType.NotEqual, d => d.TemplateType);
+                .AssertProperty(ValidationResultType.NotEqual, d => d.TemplateType)
 
-                AssertProperty(def, result, ValidationResultType.NotNullString, d => d.TemplateName);
-                AssertProperty(def, result, ValidationResultType.NotEmptyString, d => d.TemplateName);
-            });
+                .AssertProperty(ValidationResultType.NotNullString, d => d.TemplateName)
+                .AssertProperty(ValidationResultType.NotEmptyString, d => d.TemplateName));
         }
 
         #endregion
 
         #region static
 
-        private static void CanValidatePropertiesOnSiteModel<TModel>(
-            TModel def,
-            Action<List<ValidationResult>> action)
+        private static void CanValidatePropertiesOnSiteModel<TModel>(TModel def, Action<List<ValidationResult>> action)
             where TModel : DefinitionBase
         {
             var validationService = new ModelValidationService();
@@ -114,7 +90,7 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
             action(result);
         }
 
-        private static void CanValidateRequiredPropertiesOnSiteModel<TModel>(Action<TModel, List<ValidationResult>> action)
+        private static void CanValidateRequiredPropertiesOnSiteModel<TModel>(Action<ValidationPair<TModel>> action)
            where TModel : DefinitionBase, new()
         {
             var validationService = new ModelValidationService();
@@ -125,25 +101,40 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
 
             validationService.DeployModel(null, model);
 
-            var result = validationService.Result;
-
-            action(def, result);
+            action(new ValidationPair<TModel>
+            {
+                Model = def,
+                ValidationResult = validationService.Result
+            });
         }
 
-        private static void AssertProperty<TSource, TProperty>(TSource source,
-            List<ValidationResult> result,
-            ValidationResultType resultType,
-            Expression<Func<TSource, TProperty>> exp)
+        #endregion
+    }
+
+    public class ValidationPair<TModel>
+           where TModel : DefinitionBase
+    {
+        public TModel Model { get; set; }
+        public List<ValidationResult> ValidationResult { get; set; }
+    }
+
+    public static class Helper
+    {
+        public static ValidationPair<TSource> AssertProperty<TSource, TProperty>(
+           this ValidationPair<TSource> source,
+           ValidationResultType resultType,
+           Expression<Func<TSource, TProperty>> exp)
+            where TSource : DefinitionBase
         {
-            var prop = ReflectionUtils.GetExpressionValue(source, exp);
+            var result = source.ValidationResult;
+            var prop = ReflectionUtils.GetExpressionValue(source.Model, exp);
 
             Assert.IsTrue(
               result.Count(r => r.PropertyName == prop.Name &&
               !r.IsValid &&
               r.ResultType == resultType) > 0);
+
+            return source;
         }
-
-
-        #endregion
     }
 }

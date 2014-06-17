@@ -95,6 +95,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             Web currentWeb = null;
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = null,
+                ObjectType = typeof(Web),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
             InvokeOnModelEvents<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdating);
 
             try
@@ -124,14 +134,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQuery();
             }
 
-            using (var tmp = new ClientContext(currentWebUrl))
+            using (var tmpContext = new ClientContext(currentWebUrl))
             {
-                tmp.Credentials = context.Credentials;
+                tmpContext.Credentials = context.Credentials;
 
-                tmp.Load(tmp.Web);
-                tmp.ExecuteQuery();
+                var tmpWeb = tmpContext.Web;
 
-                InvokeOnModelEvents<WebDefinition, Web>(tmp.Web, ModelEventType.OnUpdated);
+                tmpContext.Load(tmpWeb);
+                tmpContext.ExecuteQuery();
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = tmpWeb,
+                    ObjectType = typeof(Web),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
+                InvokeOnModelEvents<WebDefinition, Web>(tmpContext.Web, ModelEventType.OnUpdated);
+
+                tmpWeb.Update();
+                tmpContext.ExecuteQuery();
             }
         }
 

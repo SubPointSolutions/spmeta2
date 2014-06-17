@@ -176,14 +176,14 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_UserCustomActionDefinition()
         {
-            throw new NotImplementedException();
+            ValidateSiteModelEvents<UserCustomAction>(SPMeta2Model.NewSiteModel(), RegUserCustomActions.jQueryScript);
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_WebDefinition()
         {
-            throw new NotImplementedException();
+            ValidateWebModelEvents<Web>(SPMeta2Model.NewWebModel(), RegWebs.BlankWeb);
         }
 
         [TestMethod]

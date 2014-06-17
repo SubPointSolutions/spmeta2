@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -32,20 +33,44 @@ namespace SPMeta2.CSOM.ModelHandlers
             var customAction = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
 
 
-            DeploySiteCustomAction(siteModelHost.HostSite, customAction);
+            DeploySiteCustomAction(siteModelHost, customAction);
         }
 
-        private void DeploySiteCustomAction(Site site, UserCustomActionDefinition customAction)
+        private void DeploySiteCustomAction(SiteModelHost modelHost, UserCustomActionDefinition model)
         {
+            var site = modelHost.HostSite;
             var context = site.Context;
 
             context.Load(site, s => s.UserCustomActions);
             context.ExecuteQuery();
 
-            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == customAction.Name) ??
+            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == model.Name) ??
                                   site.UserCustomActions.Add();
 
-            MapCustomAction(existingAction, customAction);
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = null,
+                ObjectType = typeof(UserCustomAction),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
+            MapCustomAction(existingAction, model);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingAction,
+                ObjectType = typeof(UserCustomAction),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             existingAction.Update();
 
             context.ExecuteQuery();

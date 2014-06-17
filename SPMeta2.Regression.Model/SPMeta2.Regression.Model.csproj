@@ -43,6 +43,7 @@
     <Compile Include="Definitions\RegCustomActions.cs" />
     <Compile Include="Definitions\RegListFields.cs" />
     <Compile Include="Definitions\RegLists.cs" />
+    <Compile Include="Definitions\RegUserCustomActions.cs" />
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegContentTypes.cs" />
