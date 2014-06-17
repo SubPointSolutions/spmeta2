@@ -13,7 +13,17 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition customAction)
         {
-            model.ChildModels.Add(new ModelNode { Value = customAction });
+            return AddUserCustomAction(model, customAction, null);
+        }
+
+        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition customAction, Action<ModelNode> action)
+        {
+            var newModel = new ModelNode { Value = customAction };
+
+            model.ChildModels.Add(newModel);
+
+            if (action != null)
+                action(newModel);
 
             return model;
         }

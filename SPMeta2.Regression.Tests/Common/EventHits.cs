@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.Tests.Common
 {
-    public class EventHits
+    public class EventHooks
     {
         #region properties
 

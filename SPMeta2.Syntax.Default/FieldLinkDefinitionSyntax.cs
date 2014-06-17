@@ -27,10 +27,15 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId)
         {
+            return AddContentTypeFieldLink(model, fieldId, null);
+        }
+
+        public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId, Action<ModelNode> action)
+        {
             return AddContentTypeFieldLink(model, new ContentTypeFieldLinkDefinition
             {
                 FieldId = fieldId
-            });
+            }, action);
         }
 
         public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
@@ -51,27 +56,28 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition fieldDefinition)
         {
+            return AddContentTypeFieldLink(model, fieldDefinition, null);
+        }
+
+        public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition fieldDefinition, Action<ModelNode> action)
+        {
             return AddContentTypeFieldLink(model, new ContentTypeFieldLinkDefinition
             {
                 FieldId = fieldDefinition.Id
-            });
+            }, action);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, DefinitionBase contentTypeFieldLink)
+        public static ModelNode AddContentTypeFieldLink(this ModelNode model, DefinitionBase contentTypeFieldLink, Action<ModelNode> action)
         {
-            model.ChildModels.Add(new ModelNode { Value = contentTypeFieldLink });
+            var newModelNode = new ModelNode { Value = contentTypeFieldLink };
+
+            model.ChildModels.Add(newModelNode);
+
+            if (action != null)
+                action(newModelNode);
 
             return model;
         }
-
-
-
-
-        #endregion
-
-        #region model
-
-        
 
         #endregion
     }

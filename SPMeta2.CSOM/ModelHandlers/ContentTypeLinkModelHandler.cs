@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -36,9 +37,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var targetContentType = FindSiteContentType(web, contentTypeLinkModel);
                 var listContentType = FindListContentType(list, contentTypeLinkModel);
 
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = listContentType,
+                    ObjectType = typeof(ContentType),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
+
                 if (targetContentType != null && listContentType == null)
                 {
-                    list.ContentTypes.Add(new ContentTypeCreationInformation
+                    var ct = list.ContentTypes.Add(new ContentTypeCreationInformation
                     {
                         Description = targetContentType.Description,
                         Group = targetContentType.Group,
@@ -46,7 +58,34 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ParentContentType = targetContentType
                     });
 
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = ct,
+                        ObjectType = typeof(ContentType),
+                        ObjectDefinition = model,
+                        ModelHost = modelHost
+                    });
+
                     list.Update();
+                    context.ExecuteQuery();
+                }
+                else
+                {
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = listContentType,
+                        ObjectType = typeof(ContentType),
+                        ObjectDefinition = model,
+                        ModelHost = modelHost
+                    });
+
+                    listContentType.Update(false);
                     context.ExecuteQuery();
                 }
             }

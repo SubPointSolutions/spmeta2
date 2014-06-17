@@ -11,29 +11,61 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddFeature(this ModelNode model, DefinitionBase featureDefinition)
         {
-            model.ChildModels.Add(new ModelNode { Value = featureDefinition });
+            return AddFeature(model, featureDefinition, null);
+        }
+
+        public static ModelNode AddFeature(this ModelNode model, DefinitionBase featureDefinition, Action<ModelNode> action)
+        {
+            var newModelNode = new ModelNode { Value = featureDefinition };
+
+            model.ChildModels.Add(newModelNode);
+
+            if (action != null)
+                action(newModelNode);
 
             return model;
         }
 
         public static ModelNode AddSiteFeature(this ModelNode siteModel, DefinitionBase featureDefinition)
         {
-            return AddFeature(siteModel, featureDefinition);
+            return AddSiteFeature(siteModel, featureDefinition, null);
+        }
+
+        public static ModelNode AddSiteFeature(this ModelNode siteModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        {
+            return AddFeature(siteModel, featureDefinition, action);
         }
 
         public static ModelNode AddWebFeature(this ModelNode webModel, DefinitionBase featureDefinition)
         {
-            return AddFeature(webModel, featureDefinition);
+            return AddWebFeature(webModel, featureDefinition, null);
         }
 
-        public static ModelNode AddWebApplicationFeature(this ModelNode webApplicationModel, DefinitionBase featureDefinition)
+        public static ModelNode AddWebFeature(this ModelNode webModel, DefinitionBase featureDefinition, Action<ModelNode> action)
         {
-            return AddFeature(webApplicationModel, featureDefinition);
+            return AddFeature(webModel, featureDefinition, action);
         }
 
-        public static ModelNode AddFarmFeature(this ModelNode farmModel, DefinitionBase featureDefinition)
+        public static ModelNode AddWebApplicationFeature(this ModelNode webApplicationModel,
+            DefinitionBase featureDefinition)
         {
-            return AddFeature(farmModel, featureDefinition);
+            return AddWebApplicationFeature(webApplicationModel, featureDefinition, null);
+        }
+
+        public static ModelNode AddWebApplicationFeature(this ModelNode webApplicationModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        {
+            return AddFeature(webApplicationModel, featureDefinition, action);
+        }
+
+        public static ModelNode AddFarmFeature(this ModelNode webApplicationModel,
+           DefinitionBase featureDefinition)
+        {
+            return AddFarmFeature(webApplicationModel, featureDefinition, null);
+        }
+
+        public static ModelNode AddFarmFeature(this ModelNode farmModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        {
+            return AddFeature(farmModel, featureDefinition, action);
         }
 
         #endregion

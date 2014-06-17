@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Models;
 using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
@@ -21,14 +22,38 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_FieldDefinition()
         {
-            ValidateSiteModelEvents<Field>(SPMeta2Model.NewSiteModel(), RegSiteFields.BooleanField);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site
+                        .AddField(RegSiteFields.BooleanField, field =>
+                        {
+                            AssertEventHooks<Field>(field, hooks);
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ContentTypeDefinition()
         {
-            ValidateSiteModelEvents<ContentType>(SPMeta2Model.NewSiteModel(), RegContentTypes.CustomItem);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site
+                        .AddContentType(RegContentTypes.CustomItem, contentType =>
+                        {
+                            AssertEventHooks<ContentType>(contentType, hooks);
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
         }
 
         #endregion
@@ -37,21 +62,68 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ContentTypeFieldLinkDefinition()
         {
-            ValidateSiteModelEvents<FieldLink>(
-                SPMeta2Model.NewSiteModel(site =>
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
                 {
                     site
                         .AddField(RegSiteFields.BooleanField)
-                        .AddContentType(RegContentTypes.CustomItem);
-                }),
-                new ContentTypeFieldLinkDefinition { FieldId = RegSiteFields.BooleanField.Id });
+                        .AddContentType(RegContentTypes.CustomItem, ct =>
+                        {
+                            ct.AddContentTypeFieldLink(RegSiteFields.BooleanField, link =>
+                            {
+                                AssertEventHooks<FieldLink>(link, hooks);
+                            });
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ContentTypeLinkDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddList(RegLists.DocumentLibrary, list =>
+                        {
+                            list
+                                .AddContentTypeLink(RegContentTypes.CustomDocument, link =>
+                                {
+                                    AssertEventHooks<ContentType>(link, hooks);
+                                });
+                        });
+
+
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
+
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddList(RegLists.GenericList, list =>
+                        {
+                            list
+                                .AddContentTypeLink(RegContentTypes.CustomItem, link =>
+                                {
+                                    AssertEventHooks<ContentType>(link, hooks);
+                                });
+                        });
+
+
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]
@@ -65,8 +137,31 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_FeatureDefinition()
         {
-            ValidateSiteModelEvents<Feature>(SPMeta2Model.NewSiteModel(), RegSiteFeatures.PublishingSite);
-            ValidateSiteModelEvents<Feature>(SPMeta2Model.NewWebModel(), RegWebFeatures.PublishingWeb);
+            WithEventHooks(hooks =>
+            {
+                var siteModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddFeature(RegSiteFeatures.PublishingSite, feature =>
+                    {
+                        AssertEventHooks<Feature>(feature, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(siteModel));
+            });
+
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(web =>
+                {
+                    web.AddFeature(RegWebFeatures.PublishingWeb, feature =>
+                    {
+                        AssertEventHooks<Feature>(feature, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
@@ -80,7 +175,18 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ListDefinition()
         {
-            ValidateWebModelEvents<List>(SPMeta2Model.NewWebModel(), RegLists.GenericList);
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericList, list =>
+                    {
+                        AssertEventHooks<List>(list, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
@@ -136,7 +242,18 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityGroupDefinition()
         {
-            ValidateSiteModelEvents<Group>(SPMeta2Model.NewSiteModel(), RegSecurityGroups.SecurityGroup1);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site.AddSecurityGroup(RegSecurityGroups.SecurityGroup1, securityGroup =>
+                    {
+                        AssertEventHooks<Group>(securityGroup, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
         }
 
         [TestMethod]
@@ -150,7 +267,19 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityRoleDefinition()
         {
-            ValidateSiteModelEvents<RoleDefinition>(SPMeta2Model.NewSiteModel(), RegSecurityRoles.SecurityRole1);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site.AddList(RegSecurityRoles.SecurityRole1, securityRole =>
+                    {
+                        AssertEventHooks<RoleDefinition>(securityRole, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
+
         }
 
         [TestMethod]
@@ -185,14 +314,36 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_UserCustomActionDefinition()
         {
-            ValidateSiteModelEvents<UserCustomAction>(SPMeta2Model.NewSiteModel(), RegUserCustomActions.jQueryScript);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site.AddUserCustomAction(RegUserCustomActions.jQueryScript, customAction =>
+                    {
+                        AssertEventHooks<UserCustomAction>(customAction, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_WebDefinition()
         {
-            ValidateWebModelEvents<Web>(SPMeta2Model.NewWebModel(), RegWebs.BlankWeb);
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(parentWeb =>
+                {
+                    parentWeb.AddWeb(RegWebs.BlankWeb, web =>
+                    {
+                        AssertEventHooks<Web>(web, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]

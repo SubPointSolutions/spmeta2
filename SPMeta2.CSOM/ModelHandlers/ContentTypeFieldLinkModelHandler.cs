@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -38,6 +39,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var fieldLink = FindContentTypeFieldLink(fieldLinks, contentTypeFieldLinkModel.FieldId);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = fieldLink,
+                ObjectType = typeof(FieldLink),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             if (fieldLink == null)
             {
                 var targetField = FindField(fields, contentTypeFieldLinkModel.FieldId);
@@ -47,6 +59,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Field = targetField
                 });
             }
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = fieldLink,
+                ObjectType = typeof(FieldLink),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
 
             contentType.Update(true);
             context.ExecuteQuery();

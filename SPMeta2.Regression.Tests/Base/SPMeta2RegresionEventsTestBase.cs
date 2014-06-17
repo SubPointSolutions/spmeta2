@@ -13,18 +13,18 @@ namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionEventsTestBase : SPMeta2RegresionTestBase
     {
-        protected virtual void AssertEvents<TObj>(ModelNode modelNode, EventHits hits)
+        protected virtual void AssertEventHooks<TObj>(ModelNode modelNode, EventHooks hooks)
         {
             modelNode.OnProvisioning<TObj>(context =>
             {
-                hits.OnProvisioning = true;
+                hooks.OnProvisioning = true;
 
                 Assert.IsNotNull(context.ObjectDefinition);
             });
 
             modelNode.OnProvisioned<TObj>(context =>
             {
-                hits.OnProvisioned = true;
+                hooks.OnProvisioned = true;
 
                 Assert.IsNotNull(context.Object);
                 Assert.IsNotNull(context.ObjectDefinition);
@@ -33,21 +33,21 @@ namespace SPMeta2.Regression.Tests.Base
             });
         }
 
-        protected virtual void WithEventHits(Action<EventHits> action)
+        protected virtual void WithEventHooks(Action<EventHooks> hooks)
         {
             TraceUtils.WithScope(traceScope =>
             {
                 traceScope.WriteLine(string.Format("Validating events..."));
 
-                var eventHits = new EventHits();
+                var eventHooks = new EventHooks();
 
-                action(eventHits);
+                hooks(eventHooks);
 
                 traceScope.WriteLine(string.Format("Validating OnProvisioning event hit."));
-                Assert.AreEqual(true, eventHits.OnProvisioning);
+                Assert.AreEqual(true, eventHooks.OnProvisioning);
 
                 traceScope.WriteLine(string.Format("Validating OnProvisioned event hit."));
-                Assert.AreEqual(true, eventHits.OnProvisioned);
+                Assert.AreEqual(true, eventHooks.OnProvisioned);
             });
         }
     }

@@ -35,17 +35,17 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition contentTypeDefinition)
         {
+            return AddContentTypeLink(model, contentTypeDefinition, null);
+        }
+
+        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition contentTypeDefinition, Action<ModelNode> action)
+        {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {
                 ContentTypeId = contentTypeDefinition.GetContentTypeId(),
                 ContentTypeName = contentTypeDefinition.Name
-            });
+            }, action);
         }
-
-        //public static IEnumerable<ContentTypeLinkDefinition> GetContentTypeLinks(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<ContentTypeLinkDefinition>();
-        //}
 
         #endregion
     }

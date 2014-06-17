@@ -21,7 +21,6 @@ namespace SPMeta2.Regression.Tests.Impl.Events
     {
         #region tests
 
-       
         public abstract void CanRaiseEvents_ContentTypeDefinition();
 
         public abstract void CanRaiseEvents_ContentTypeFieldLinkDefinition();
@@ -51,35 +50,6 @@ namespace SPMeta2.Regression.Tests.Impl.Events
         public abstract void CanRaiseEvents_WebPartDefinition();
         public abstract void CanRaiseEvents_WebPartPageDefinition();
         public abstract void CanRaiseEvents_WikiPageDefinition();
-        
-
-        #endregion
-
-        #region utils
-
-        protected void ValidateWebModelEvents<TObjectType>(ModelNode parentModel, DefinitionBase definition)
-        {
-            WithEventHits(hits =>
-            {
-                var newModelNode = new ModelNode { Value = definition };
-                parentModel.ChildModels.Add(newModelNode);
-                AssertEvents<TObjectType>(newModelNode, hits);
-
-                WithProvisionRunners(runner => runner.DeployWebModel(parentModel));
-            });
-        }
-
-        protected void ValidateSiteModelEvents<TObjectType>(ModelNode parentModel, DefinitionBase definition)
-        {
-            WithEventHits(hits =>
-            {
-                var newModelNode = new ModelNode { Value = definition };
-                parentModel.ChildModels.Add(newModelNode);
-                AssertEvents<TObjectType>(newModelNode, hits);
-
-                WithProvisionRunners(runner => runner.DeploySiteModel(parentModel));
-            });
-        }
 
         #endregion
     }
