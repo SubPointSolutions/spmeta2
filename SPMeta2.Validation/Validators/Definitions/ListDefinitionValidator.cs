@@ -12,16 +12,36 @@ namespace SPMeta2.Validation.Validators.Definitions
     {
         public override void Validate(DefinitionBase definition, List<ValidationResult> result)
         {
-            Validate<ListDefinition>(definition, model => model
-                 .NotEmptyString(m => m.Title, result)
-                 .NoSpacesBeforeOrAfter(m => m.Title, result)
+            Validate<ListDefinition>(definition, model =>
+            {
+                model
+                    .NotNullString(m => m.Title, result)
+                    .NotEmptyString(m => m.Title, result)
+                    .NoSpacesBeforeOrAfter(m => m.Title, result)
 
-                 .NotEmptyString(m => m.Description, result)
-                 .NoSpacesBeforeOrAfter(m => m.Description, result)
+                    .NotNullString(m => m.Description, result)
+                    .NotEmptyString(m => m.Description, result)
+                    .NoSpacesBeforeOrAfter(m => m.Description, result)
 
-                 .NotEmptyString(m => m.Url, result)
-                 .NoSpacesBeforeOrAfter(m => m.Url, result));
-            ;
+                    .NotNullString(m => m.Url, result)
+                    .NotEmptyString(m => m.Url, result)
+                    .NoSpacesBeforeOrAfter(m => m.Url, result);
+
+                if (model.TemplateType == 0)
+                {
+                    model
+                        .NotNullString(m => m.TemplateName, result)
+                        .NotEmptyString(m => m.TemplateName, result)
+                        .NoSpacesBeforeOrAfter(m => m.TemplateName, result);
+                }
+
+                if (string.IsNullOrEmpty(model.TemplateName))
+                {
+                    model
+                        .NotEqual(m => m.TemplateType, 0, result);
+                }
+            });
+
         }
     }
 }

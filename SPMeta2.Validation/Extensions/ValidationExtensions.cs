@@ -16,19 +16,32 @@ namespace SPMeta2.Validation.Extensions
             Expression<Func<TSource, TProperty>> propertyLambda,
             List<ValidationResult> result)
         {
-            return NotEqual(source, propertyLambda, default(Guid), result);
+            return NotEqual(source, propertyLambda, default(Guid), result, ValidationResultType.NotDefaultGuid);
+        }
+
+        public static TSource NotEqual<TSource, TProperty>(this TSource source,
+            Expression<Func<TSource, TProperty>> propertyLambda,
+            object value,
+            List<ValidationResult> result)
+        {
+            return NotEqual(source, propertyLambda, value, result, ValidationResultType.NotEqual);
         }
 
         public static TSource NotEqual<TSource, TProperty>(this TSource source, Expression<Func<TSource, TProperty>> propertyLambda,
             object value,
-            List<ValidationResult> result)
+            List<ValidationResult> result,
+            ValidationResultType resultType)
         {
             var valueResult = source.GetExpressionValue(propertyLambda);
 
-            if (valueResult.Value == value)
+            if (object.Equals(valueResult.Value, value))
+            // AH!
+            //(value is Guid && ((Guid)value == (Guid)valueResult.Value)))
             {
                 result.Add(new ValidationResult
                 {
+                    PropertyName = valueResult.Name,
+                    ResultType = resultType,
                     IsValid = false,
                     Message = string.Format("Property [{0}] of type [{1}] must not be equal to [{2}].",
                         valueResult.Name,
@@ -62,14 +75,16 @@ namespace SPMeta2.Validation.Extensions
             if (!string.IsNullOrEmpty(value) && value.Length > lenght)
             {
                 result.Add(new ValidationResult
-               {
-                   IsValid = false,
-                   Message = string.Format("Property [{0}] of type [{1}] must string with no more than [{2}] chars. Current lenght is: [{3}]",
-                       valueResult.Name,
-                       valueResult.ObjectType.FullName,
-                       lenght,
-                       value.Length)
-               });
+                {
+                    PropertyName = valueResult.Name,
+                    ResultType = ValidationResultType.NoMoreThan,
+                    IsValid = false,
+                    Message = string.Format("Property [{0}] of type [{1}] must string with no more than [{2}] chars. Current lenght is: [{3}]",
+                        valueResult.Name,
+                        valueResult.ObjectType.FullName,
+                        lenght,
+                        value.Length)
+                });
             }
         }
 
@@ -131,18 +146,22 @@ namespace SPMeta2.Validation.Extensions
                 if (stringValue.StartsWith(" "))
                 {
                     result.Add(new ValidationResult
-                  {
-                      IsValid = false,
-                      Message = string.Format("Property [{0}] of type [{1}] must not start with space.",
-                          valueResult.Name,
-                          valueResult.ObjectType.FullName)
-                  });
+                    {
+                        PropertyName = valueResult.Name,
+                        ResultType = ValidationResultType.NoSpacesBeforeOrAfter,
+                        IsValid = false,
+                        Message = string.Format("Property [{0}] of type [{1}] must not start with space.",
+                            valueResult.Name,
+                            valueResult.ObjectType.FullName)
+                    });
                 }
 
                 if (stringValue.EndsWith(" "))
                 {
                     result.Add(new ValidationResult
                     {
+                        PropertyName = valueResult.Name,
+                        ResultType = ValidationResultType.NoSpacesBeforeOrAfter,
                         IsValid = false,
                         Message = string.Format("Property [{0}] of type [{1}] must not end with space.",
                             valueResult.Name,
@@ -185,6 +204,8 @@ namespace SPMeta2.Validation.Extensions
             {
                 result.Add(new ValidationResult
                 {
+                    PropertyName = valueResult.Name,
+                    ResultType = ValidationResultType.NotNullString,
                     IsValid = false,
                     Message = string.Format("Property [{0}] of type [{1}] must not null string.",
                         valueResult.Name,
@@ -199,6 +220,8 @@ namespace SPMeta2.Validation.Extensions
             {
                 result.Add(new ValidationResult
                 {
+                    PropertyName = valueResult.Name,
+                    ResultType = ValidationResultType.NotEmptyString,
                     IsValid = false,
                     Message = string.Format("Property [{0}] of type [{1}] must be not null and not empty string.",
                         valueResult.Name,
@@ -213,6 +236,8 @@ namespace SPMeta2.Validation.Extensions
             {
                 result.Add(new ValidationResult
                 {
+                    PropertyName = valueResult.Name,
+                    ResultType = ValidationResultType.MustBeString,
                     IsValid = false,
                     Message = string.Format("Property [{0}] of type [{1}] must be string type.",
                         valueResult.Name,

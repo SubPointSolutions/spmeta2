@@ -64,6 +64,7 @@
     <Compile Include="Impl\Definitions\FolderTests.cs" />
     <Compile Include="Impl\Definitions\ListTests.cs" />
     <Compile Include="Impl\Events\DefinitionEventsTestBase.cs" />
+    <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
     <Compile Include="Impl\Definitions\QuickLaunchNavigationTests.cs" />
@@ -184,6 +185,9 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Impl\Utils\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
