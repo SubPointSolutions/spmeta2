@@ -59,7 +59,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = file,
-                ObjectType = typeof(UserCustomAction),
+                ObjectType = typeof(File),
                 ObjectDefinition = wikiPageModel,
                 ModelHost = list
             });
@@ -69,18 +69,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var newPageFile = list.RootFolder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
 
                 context.Load(newPageFile);
-                context.ExecuteQuery();
-
+                
                 InvokeOnModelEvents(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
                     EventType = ModelEventType.OnProvisioned,
                     Object = newPageFile,
-                    ObjectType = typeof(UserCustomAction),
+                    ObjectType = typeof(File),
                     ObjectDefinition = wikiPageModel,
                     ModelHost = list
                 });
+
+                context.ExecuteQuery();
+
             }
             else
             {
@@ -92,7 +94,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioned,
                     Object = file,
-                    ObjectType = typeof(UserCustomAction),
+                    ObjectType = typeof(File),
                     ObjectDefinition = wikiPageModel,
                     ModelHost = list
                 });

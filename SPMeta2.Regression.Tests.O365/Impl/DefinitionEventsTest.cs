@@ -452,7 +452,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
                             sitePages
                                 .AddWikiPage(RegWikiPages.Page1, page =>
                                 {
-                                    AssertEventHooks<File>(web, hooks);
+                                    AssertEventHooks<File>(page, hooks);
                                 });
                         });
                 });
