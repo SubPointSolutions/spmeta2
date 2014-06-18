@@ -49,6 +49,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWebPart,
+                ObjectType = typeof(WebPart),
+                ObjectDefinition = webPartModel,
+                ModelHost = modelHost
+            });
+
+
             if (existingWebPart == null)
             {
                 // TODO
@@ -74,13 +86,33 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 existingWebPart = webPartDefinition.WebPart;
 
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingWebPart,
+                    ObjectType = typeof(WebPart),
+                    ObjectDefinition = webPartModel,
+                    ModelHost = modelHost
+                });
+
                 InvokeOnModelEvents<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
             }
             else
             {
+                // BIG TODO
 
-
-                // not implemeted yet!
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingWebPart,
+                    ObjectType = typeof(WebPart),
+                    ObjectDefinition = webPartModel,
+                    ModelHost = modelHost
+                });
             }
 
             context.ExecuteQuery();

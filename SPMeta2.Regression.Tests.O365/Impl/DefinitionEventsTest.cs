@@ -11,6 +11,7 @@ using SPMeta2.Models;
 using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
+using Microsoft.SharePoint.Client.WebParts;
 
 namespace SPMeta2.Regression.Tests.O365.Impl
 {
@@ -412,7 +413,27 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_WebPartDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddList(BuiltInListDefinitions.SitePages, sitePages =>
+                        {
+                            sitePages
+                                .AddWebPartPage(RegWebPartPages.WebPartContainerPage, page =>
+                                {
+                                    page
+                                        .AddWebPart(RegWebParts.ContentEditorWebPart, webpart =>
+                                        {
+                                            AssertEventHooks<WebPart>(webpart, hooks);
+                                        });
+                                });
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]

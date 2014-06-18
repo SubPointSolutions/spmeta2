@@ -73,6 +73,7 @@
     <Compile Include="Validation\ClientSiteDefinitionValidator.cs" />
     <Compile Include="Validation\ClientUserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWikiPageDefinitionValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
