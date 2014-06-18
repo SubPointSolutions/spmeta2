@@ -16,7 +16,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientUserCustomActionDefinitionValidator : UserCustomActionModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             if (!IsValidHostModelHost(modelHost))
                 throw new Exception(string.Format("modelHost of type {0} is not supported.", modelHost.GetType()));

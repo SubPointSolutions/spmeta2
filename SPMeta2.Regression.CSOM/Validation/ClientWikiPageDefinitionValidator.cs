@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());

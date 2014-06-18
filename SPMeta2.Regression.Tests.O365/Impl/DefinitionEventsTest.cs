@@ -228,14 +228,58 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ListItemDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericList, list =>
+                    {
+                        list
+                            .AddListItem(new ListItemDefinition
+                            {
+                                Title = "test item"
+                            },
+                            item =>
+                            {
+                                AssertEventHooks<ListItem>(item, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ListItemFieldValueDefinition()
         {
-            throw new NotImplementedException();
+            var titleValue = "test item";
+
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericList, list =>
+                    {
+                        list
+                            .AddListItem(new ListItemDefinition
+                            {
+                                Title = titleValue
+                            },
+                            item =>
+                            {
+                                item
+                                    .AddListItemFieldValue("Title", titleValue, valueItem =>
+                                    {
+                                        AssertEventHooks<ListItem>(valueItem, hooks);
+                                    });
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]

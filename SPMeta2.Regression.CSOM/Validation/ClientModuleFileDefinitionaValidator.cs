@@ -1,4 +1,5 @@
 ﻿using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientModuleFileDefinitionaValidator : ModuleFileModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, Definitions.DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
 
         }

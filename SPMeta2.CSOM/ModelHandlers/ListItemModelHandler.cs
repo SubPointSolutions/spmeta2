@@ -91,11 +91,34 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentItem = items.FirstOrDefault(i => i["Title"] != null &&
                     (i["Title"].ToString() == listItemModel.Title));
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentItem,
+                ObjectType = typeof(ListItem),
+                ObjectDefinition = listItemModel,
+                ModelHost = list
+            });
+
             if (currentItem == null)
             {
                 var newItem = list.AddItem(new ListItemCreationInformation());
 
                 newItem["Title"] = listItemModel.Title;
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newItem,
+                    ObjectType = typeof(ListItem),
+                    ObjectDefinition = listItemModel,
+                    ModelHost = list
+                });
+
                 newItem.Update();
 
                 context.ExecuteQuery();
@@ -105,6 +128,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             else
             {
                 currentItem["Title"] = listItemModel.Title;
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentItem,
+                    ObjectType = typeof(ListItem),
+                    ObjectDefinition = listItemModel,
+                    ModelHost = list
+                });
+
                 currentItem.Update();
 
                 context.ExecuteQuery();

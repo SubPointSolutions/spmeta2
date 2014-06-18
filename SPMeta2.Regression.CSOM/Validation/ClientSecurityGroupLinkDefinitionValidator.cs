@@ -10,7 +10,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientSecurityGroupLinkDefinitionValidator : SecurityGroupLinkModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securableObject = modelHost.WithAssertAndCast<SecurableObject>("modelHost", value => value.RequireNotNull());
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());

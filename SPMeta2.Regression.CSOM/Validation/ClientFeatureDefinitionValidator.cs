@@ -18,7 +18,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientFeatureDefinitionValidator : FeatureModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var featureModel = model.WithAssertAndCast<FeatureDefinition>("model", value => value.RequireNotNull());
 

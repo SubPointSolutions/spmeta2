@@ -14,7 +14,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientFieldDefinitionValidator : FieldModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 

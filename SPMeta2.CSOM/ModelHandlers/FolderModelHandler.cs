@@ -123,7 +123,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             try
             {
+                context.Load(currentFolder, f => f.Name);
                 context.ExecuteQuery();
+
                 doesFolderExist = true;
             }
             catch (ServerException e)
@@ -179,6 +181,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             else
             {
                 context.Load(currentFolder, f => f.ListItemAllFields);
+                context.Load(currentFolder, f => f.Name);
                 context.ExecuteQuery();
 
                 currentFolderItem = currentFolder.ListItemAllFields;
@@ -211,6 +214,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                                    .Folders
                                    .OfType<Folder>()
                                    .FirstOrDefault(f => f.Name == folderModel.Name);
+
+            if (currentFolder != null)
+            {
+                context.Load(currentFolder, f => f.Name);
+                context.ExecuteQuery();
+            }
 
             return currentFolder;
         }

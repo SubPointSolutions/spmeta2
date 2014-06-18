@@ -16,7 +16,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientFolderDefinitionValidator : FolderModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());

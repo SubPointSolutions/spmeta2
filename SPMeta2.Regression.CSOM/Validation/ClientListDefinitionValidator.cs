@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientListDefinitionValidator : ListModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
             var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());

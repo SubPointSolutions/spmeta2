@@ -87,6 +87,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void MapCustomAction(UserCustomAction existringAction, UserCustomActionDefinition customAction)
         {
+            existringAction.Sequence = customAction.Sequence;
             existringAction.Description = customAction.Description;
             existringAction.Group = customAction.Group;
             existringAction.Location = customAction.Location;

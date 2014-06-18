@@ -7,7 +7,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientSecurityRoleLinkDefinitionValidator : SecurityRoleLinkModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securityGroupModelHost = modelHost.WithAssertAndCast<SecurityGroupModelHost>("modelHost", value => value.RequireNotNull());
             var securityRoleLinkModel = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());

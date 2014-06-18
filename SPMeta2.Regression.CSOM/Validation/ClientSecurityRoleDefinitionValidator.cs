@@ -11,7 +11,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientSecurityRoleDefinitionValidator : SecurityRoleModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 

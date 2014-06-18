@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientQuickLaunchNavigationNodeDefinitionValidator : QuickLaunchNavigationNodeModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var quickLaunchModel = model.WithAssertAndCast<QuickLaunchNavigationNodeDefinition>("model", value => value.RequireNotNull());
 
