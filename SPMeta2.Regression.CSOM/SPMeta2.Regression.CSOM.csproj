@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Base\CSOMTestBase.cs" />
     <Compile Include="CSOMValidationService.cs" />
+    <Compile Include="Validation\ClientModuleFileDefinitionaValidator.cs" />
     <Compile Include="Validation\ClientQuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeFieldLinkDefinitionValidator.cs" />

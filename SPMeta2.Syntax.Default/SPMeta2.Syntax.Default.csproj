@@ -74,6 +74,7 @@
     <Compile Include="SP2013WorkflowSubscriptionDefinitionSyntax.cs" />
     <Compile Include="SPMeta2Model.cs" />
     <Compile Include="UserCustomActionSyntax.cs" />
+    <Compile Include="Utils\ModuleFileUtils.cs" />
     <Compile Include="WebDefinitionSyntax.cs" />
     <Compile Include="WebPartDefinitionSyntax.cs" />
     <Compile Include="WebPartPageDefinitionSyntax.cs" />

@@ -264,7 +264,22 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ModuleFileDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.DocumentLibrary, library =>
+                    {
+                        library
+                            .AddModuleFile(RegModuleFiles.HelloSharePoint, moduleFile =>
+                            {
+                                AssertEventHooks<File>(moduleFile, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]

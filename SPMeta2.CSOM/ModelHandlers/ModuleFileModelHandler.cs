@@ -85,6 +85,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
+        //private File GetFile()
+        //{
+
+        //}
+
         private void WithSafeFileOperation(List list, File file, Func<File, File> action)
         {
             var context = file.Context;
@@ -163,7 +168,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
 
+            context.Load(file, f => f.Exists);
+            context.ExecuteQuery();
+
             InvokeOnModelEvents<ModuleFileDefinition, File>(file, ModelEventType.OnUpdating);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = file.Exists ? file : null,
+                ObjectType = typeof(File),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
+
 
             WithSafeFileOperation(list, file, f =>
             {
@@ -186,6 +206,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(resultFile, f => f.Exists);
             context.ExecuteQuery();
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = resultFile,
+                ObjectType = typeof(File),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
             InvokeOnModelEvents<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
 
             return resultFile;

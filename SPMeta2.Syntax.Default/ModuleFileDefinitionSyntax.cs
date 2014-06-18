@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using System.IO;
+using System.Reflection;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -23,8 +25,7 @@ namespace SPMeta2.Syntax.Default
             if (action != null) action(newModelNode);
 
             return model;
-        }
+        }      
 
-      
     }
 }

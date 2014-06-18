@@ -45,6 +45,7 @@
     <Compile Include="Definitions\RegFolders.cs" />
     <Compile Include="Definitions\RegListViews.cs" />
     <Compile Include="Definitions\RegLists.cs" />
+    <Compile Include="Definitions\RegModuleFiles.cs" />
     <Compile Include="Definitions\RegQuickLaunchNavigation.cs" />
     <Compile Include="Definitions\RegSecurityGroups.cs" />
     <Compile Include="Definitions\RegSecurityRoles.cs" />
@@ -74,7 +75,9 @@
       <Name>SPMeta2</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Modules\HelloSharePoint.txt" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\WebPartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
