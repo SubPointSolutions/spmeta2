@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.Model.Definitions
         public static WebPartPageDefinition Page1 = new WebPartPageDefinition
         {
             Title = "WebPartPage1",
-            FileName = "WebPartPage1.apsx",
+            FileName = "WebPartPage1.aspx",
             PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
             NeedOverride = true
         };
@@ -21,7 +21,7 @@ namespace SPMeta2.Regression.Model.Definitions
         public static WebPartPageDefinition Page2 = new WebPartPageDefinition
         {
             Title = "WebPartPage1",
-            FileName = "WebPartPage1.apsx",
+            FileName = "WebPartPage1.aspx",
             PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd2,
             NeedOverride = true
         };

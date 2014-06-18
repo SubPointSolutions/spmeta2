@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -77,8 +78,33 @@ namespace SPMeta2.CSOM.ModelHandlers
             file.Content = Encoding.UTF8.GetBytes(pageContent);
             file.Overwrite = webPartPageModel.NeedOverride;
 
-            context.Load(list.RootFolder.Files.Add(file));
+            var newFile = list.RootFolder.Files.Add(file);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = newFile,
+                ObjectType = typeof(File),
+                ObjectDefinition = webPartPageModel,
+                ModelHost = list
+            });
+
+            context.Load(newFile);
             context.ExecuteQuery();
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = newFile,
+                ObjectType = typeof(File),
+                ObjectDefinition = webPartPageModel,
+                ModelHost = list
+            });
+
         }
 
         protected string GetSafeWebPartPageFileName(WebPartPageDefinition webPartPageModel)

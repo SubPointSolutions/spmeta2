@@ -33,7 +33,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     var fileName = pageItem["FileLeafRef"];
 
-                    traceScope.WriteLine(string.Format("Validate FileName model:[{0}] web part page:[{1}]", webPartPageModel.FileName, fileName));
+                    traceScope.WriteLine(string.Format("Validate FileName model:[{0}] web part page:[{1}]", pageName, fileName));
                     Assert.AreEqual(pageName, fileName);
                 });
             });

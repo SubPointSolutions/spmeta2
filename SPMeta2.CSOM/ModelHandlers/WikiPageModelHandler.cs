@@ -42,8 +42,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
             DeployWikiPage(list, wikiPageModel);
-
-
         }
 
         private void DeployWikiPage(List list, WikiPageDefinition wikiPageModel)
