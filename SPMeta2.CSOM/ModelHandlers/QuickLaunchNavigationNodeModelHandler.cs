@@ -8,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Common;
+using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -26,27 +27,35 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var quickLaunchNode = model as QuickLaunchNavigationNodeDefinition;
+            var quickLaunchNode = model.WithAssertAndCast<QuickLaunchNavigationNodeDefinition>("model", value => value.RequireNotNull());
 
             NavigationNode node = null;
 
             InvokeOnModelEvents<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdating);
 
-
-            if (modelHost is WebModelHost)
+            if (ShouldDeployRootNavigationNode(modelHost))
                 node = EnsureRootQuickLaunchNavigationNode(modelHost as WebModelHost, quickLaunchNode);
-            else if (modelHost is NavigationNodeModelHost)
+            else if (ShouldDeployNavigationNode(modelHost))
                 node = EnsureQuickLaunchNavigationNode(modelHost as NavigationNodeModelHost, quickLaunchNode);
             else
-            {
-                throw new ArgumentException("modelHost needs to be SPWeb");
-            }
+                throw new ArgumentException("modelHost needs to be WebModelHost or NavigationNodeModelHost");
 
             InvokeOnModelEvents<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdated);
-
         }
 
-        private NavigationNode EnsureQuickLaunchNavigationNode(NavigationNodeModelHost navigationNodeModelHost, QuickLaunchNavigationNodeDefinition quickLaunchNode)
+        protected bool ShouldDeployRootNavigationNode(object modelHost)
+        {
+            return modelHost is WebModelHost;
+        }
+
+        protected bool ShouldDeployNavigationNode(object modelHost)
+        {
+            return modelHost is NavigationNodeModelHost;
+        }
+
+        protected NavigationNode GetNavigationNode(
+            NavigationNodeModelHost navigationNodeModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchNode)
         {
             var navigationNode = navigationNodeModelHost.HostNavigationNode;
             var quickLaunch = navigationNode.Children;
@@ -58,6 +67,33 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var existingNode = quickLaunch.OfType<NavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
+
+            return existingNode;
+        }
+
+        private NavigationNode EnsureQuickLaunchNavigationNode(NavigationNodeModelHost navigationNodeModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchNode)
+        {
+            var navigationNode = navigationNodeModelHost.HostNavigationNode;
+            var quickLaunch = navigationNode.Children;
+
+            var context = navigationNodeModelHost.HostWeb.Context;
+
+            context.Load(quickLaunch);
+            context.ExecuteQuery();
+
+            var existingNode = GetNavigationNode(navigationNodeModelHost, quickLaunchNode);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingNode,
+                ObjectType = typeof(NavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = navigationNodeModelHost
+            });
 
             if (existingNode == null)
             {
@@ -74,6 +110,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             existingNode.Title = quickLaunchNode.Title;
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingNode,
+                ObjectType = typeof(NavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = navigationNodeModelHost
+            });
 
             existingNode.Update();
 
@@ -116,37 +163,85 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private NavigationNode EnsureRootQuickLaunchNavigationNode(WebModelHost webModelHost, QuickLaunchNavigationNodeDefinition quickLaunchNode)
+        protected NavigationNode GetRootNavigationNode(
+            WebModelHost webModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchModel)
+        {
+            NavigationNodeCollection quickLaunch = null;
+            var result = GetRootNavigationNode(webModelHost, quickLaunchModel, out quickLaunch);
+
+            return result;
+        }
+
+        protected NavigationNode GetRootNavigationNode(
+            WebModelHost webModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchModel, out NavigationNodeCollection quickLaunch)
         {
             var web = webModelHost.HostWeb;
             var context = webModelHost.HostWeb.Context;
 
-            var quickLaunch = web.Navigation.QuickLaunch;
+            quickLaunch = web.Navigation.QuickLaunch;
 
             context.Load(quickLaunch);
             context.ExecuteQuery();
 
-            var previousNode = quickLaunch.Count > 0 ? quickLaunch.Last() : null;
+
 
             var existingNode = quickLaunch.OfType<NavigationNode>()
-                .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
+                .FirstOrDefault(n => n.Url == quickLaunchModel.Url);
+
+            return existingNode;
+        }
+
+        private NavigationNode EnsureRootQuickLaunchNavigationNode(
+            WebModelHost webModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchModel)
+        {
+            NavigationNodeCollection quickLaunch = null;
+
+            var context = webModelHost.HostWeb.Context;
+
+            var existingNode = GetRootNavigationNode(webModelHost, quickLaunchModel, out quickLaunch);
+            var previousNode = quickLaunch.Count > 0 ? quickLaunch.Last() : null;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingNode,
+                ObjectType = typeof(NavigationNode),
+                ObjectDefinition = quickLaunchModel,
+                ModelHost = webModelHost
+            });
 
             if (existingNode == null)
             {
                 existingNode = quickLaunch.Add(new NavigationNodeCreationInformation
                 {
-                    Title = quickLaunchNode.Title,
-                    IsExternal = quickLaunchNode.IsExternal,
-                    Url = quickLaunchNode.Url,
+                    Title = quickLaunchModel.Title,
+                    IsExternal = quickLaunchModel.IsExternal,
+                    Url = quickLaunchModel.Url,
                     PreviousNode = previousNode
                 });
 
                 context.ExecuteQuery();
             }
 
-            existingNode.Title = quickLaunchNode.Title;
-            existingNode.Url = quickLaunchNode.Url;
-            existingNode.IsVisible = quickLaunchNode.IsVisible;
+            existingNode.Title = quickLaunchModel.Title;
+            existingNode.Url = quickLaunchModel.Url;
+            existingNode.IsVisible = quickLaunchModel.IsVisible;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingNode,
+                ObjectType = typeof(NavigationNode),
+                ObjectDefinition = quickLaunchModel,
+                ModelHost = webModelHost
+            });
 
             existingNode.Update();
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Regression.Model.Definitions;
@@ -128,6 +129,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
+        [ExpectedException(typeof(NotImplementedException))]
         public override void CanRaiseEvents_FarmDefinition()
         {
             throw new NotImplementedException();
@@ -139,9 +141,9 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         {
             WithEventHooks(hooks =>
             {
-                var siteModel = SPMeta2Model.NewWebModel(site =>
+                var siteModel = SPMeta2Model.NewSiteModel(site =>
                 {
-                    site.AddFeature(RegSiteFeatures.PublishingSite, feature =>
+                    site.AddSiteFeature(RegSiteFeatures.PublishingSite, feature =>
                     {
                         AssertEventHooks<Feature>(feature, hooks);
                     });
@@ -154,7 +156,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
             {
                 var webModel = SPMeta2Model.NewWebModel(web =>
                 {
-                    web.AddFeature(RegWebFeatures.PublishingWeb, feature =>
+                    web.AddWebFeature(RegWebFeatures.PublishingWeb, feature =>
                     {
                         AssertEventHooks<Feature>(feature, hooks);
                     });
@@ -168,7 +170,39 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_FolderDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericList, list =>
+                    {
+                        list
+                            .AddFolder(RegFolders.Folder1, folder =>
+                            {
+                                AssertEventHooks<Folder>(folder, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
+
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.DocumentLibrary, list =>
+                    {
+                        list
+                            .AddFolder(RegFolders.Folder1, folder =>
+                            {
+                                AssertEventHooks<Folder>(folder, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
@@ -207,7 +241,22 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_ListViewDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericList, list =>
+                    {
+                        list
+                            .AddView(RegListViews.View1, view =>
+                            {
+                                AssertEventHooks<View>(view, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
@@ -219,6 +268,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
+        [ExpectedException(typeof(NotImplementedException))]
         public override void CanRaiseEvents_PropertyDefinition()
         {
             throw new NotImplementedException();
@@ -235,7 +285,19 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_QuickLunchNavigationNodeDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddQuickLaunchNavigationNode(RegQuickLaunchNavigation.GoogleLink, link =>
+                    {
+                        AssertEventHooks<NavigationNode>(link, hooks);
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]
@@ -357,14 +419,46 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_WebPartPageDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddList(BuiltInListDefinitions.SitePages, sitePages =>
+                        {
+                            sitePages
+                                .AddWebPartPage(RegWebPartPages.Page1, page =>
+                                {
+                                    AssertEventHooks<File>(web, hooks);
+                                });
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_WikiPageDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddList(BuiltInListDefinitions.SitePages, sitePages =>
+                        {
+                            sitePages
+                                .AddWikiPage(RegWikiPages.Page1, page =>
+                                {
+                                    AssertEventHooks<File>(web, hooks);
+                                });
+                        });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
     }
 }

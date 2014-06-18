@@ -23,9 +23,9 @@ namespace SPMeta2.BuiltInDefinitions
         public static ListDefinition SitePages = new ListDefinition
         {
             Title = "Site Pages",
-            TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+            TemplateType = BuiltInListTemplateTypeId.WebPageLibrary,
             Url = "SitePages",
-            ContentTypesEnabled = true
+            ContentTypesEnabled = false
         };
 
         public static ListDefinition Documents = new ListDefinition

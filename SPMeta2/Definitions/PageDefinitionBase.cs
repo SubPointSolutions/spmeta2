@@ -1,4 +1,6 @@
-﻿namespace SPMeta2.Definitions
+﻿using System;
+
+namespace SPMeta2.Definitions
 {
     public abstract class PageDefinitionBase : DefinitionBase
     {
@@ -16,6 +18,7 @@
         public string Title { get; set; }
         public string FileName { get; set; }
 
+        [Obsolete]
         public string FolderUrl { get; set; }
 
         public bool NeedOverride { get; set; }

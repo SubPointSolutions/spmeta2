@@ -57,10 +57,13 @@
   <ItemGroup>
     <Compile Include="Base\CSOMTestBase.cs" />
     <Compile Include="CSOMValidationService.cs" />
+    <Compile Include="Validation\ClientQuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeLinkDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientFeatureDefinitionValidator.cs" />
     <Compile Include="Validation\ClientFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientFolderDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListViewDefinitionValidator.cs" />
     <Compile Include="Validation\ClientSecurityGroupDefinitionValidator.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Validation\ClientSecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validation\ClientSecurityRoleLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ClientSiteDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientUserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWikiPageDefinitionValidator.cs" />

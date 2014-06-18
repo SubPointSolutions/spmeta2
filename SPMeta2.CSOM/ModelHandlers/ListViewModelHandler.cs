@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -22,6 +23,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
 
             var currentView = FindViewByTitle(list.Views, listViewModel.Title);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentView,
+                ObjectType = typeof(View),
+                ObjectDefinition = listViewModel,
+                ModelHost = modelHost
+            });
 
             if (currentView == null)
             {
@@ -59,6 +71,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                         currentView.ViewFields.Add(f);
                 }
             }
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentView,
+                ObjectType = typeof(View),
+                ObjectDefinition = listViewModel,
+                ModelHost = modelHost
+            });
 
             currentView.Update();
             list.Context.ExecuteQuery();

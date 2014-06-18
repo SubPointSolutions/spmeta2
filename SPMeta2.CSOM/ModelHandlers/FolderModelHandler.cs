@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Remoting.Lifetime;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -69,18 +70,37 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
 
-            if (folderModelHost.CurrentList != null && folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
+            if (ShouldDeployLibraryFolder(folderModelHost))
                 EnsureLibraryFolder(folderModelHost, folderModel);
-            else if (folderModelHost.CurrentList != null && folderModelHost.CurrentList.BaseType != BaseType.DocumentLibrary)
+            else if (ShouldDeployListFolder(folderModelHost))
                 EnsureListFolder(folderModelHost, folderModel);
         }
 
-        private ListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        protected bool ShouldDeployListFolder(FolderModelHost folderModelHost)
+        {
+            return folderModelHost.CurrentList != null &&
+                   folderModelHost.CurrentList.BaseType != BaseType.DocumentLibrary;
+        }
+
+        protected bool ShouldDeployLibraryFolder(FolderModelHost folderModelHost)
+        {
+            return folderModelHost.CurrentList != null &&
+                   folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary;
+        }
+
+        protected Folder GetListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            var tmp = string.Empty;
+            var result = GetListFolder(folderModelHost, folderModel, out tmp);
+
+            return result;
+        }
+
+        private Folder GetListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel,
+            out string serverRelativeUrl)
         {
             var list = folderModelHost.CurrentList;
             var context = list.Context;
-
-            var currentFolderItem = folderModelHost.CurrentListItem;
 
             context.Load(list, l => l.RootFolder);
             context.Load(list, l => l.ParentWeb);
@@ -92,7 +112,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQuery();
 
-            var serverRelativeUrl = folderModelHost.CurrentListItem == null
+            serverRelativeUrl = folderModelHost.CurrentListItem == null
                                                 ? list.RootFolder.ServerRelativeUrl
                                                 : folderModelHost.CurrentListItem.Folder.ServerRelativeUrl;
 
@@ -112,9 +132,37 @@ namespace SPMeta2.CSOM.ModelHandlers
                     doesFolderExist = false;
             }
 
+            if (doesFolderExist)
+                return currentFolder;
+
+            return null;
+        }
+
+        private ListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            string serverRelativeUrl = string.Empty;
+
+            var list = folderModelHost.CurrentList;
+            var context = list.Context;
+
+
+            var currentFolder = GetListFolder(folderModelHost, folderModel, out serverRelativeUrl);
+            var currentFolderItem = folderModelHost.CurrentListItem;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFolder,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
             context.ExecuteQuery();
 
-            if (!doesFolderExist)
+            if (currentFolder == null)
             {
                 currentFolderItem = list.AddItem(new ListItemCreationInformation
                 {
@@ -136,10 +184,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentFolderItem = currentFolder.ListItemAllFields;
             }
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentFolder,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
             return currentFolderItem;
         }
 
-        private Folder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        protected Folder GetLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
             var parentFolder = folderModelHost.CurrentLibraryFolder;
             var context = parentFolder.Context;
@@ -153,9 +212,45 @@ namespace SPMeta2.CSOM.ModelHandlers
                                    .OfType<Folder>()
                                    .FirstOrDefault(f => f.Name == folderModel.Name);
 
-            if (currentFolder == null)
-                currentFolder = parentFolder.Folders.Add(folderModel.Name);
+            return currentFolder;
+        }
 
+        private Folder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            var parentFolder = folderModelHost.CurrentLibraryFolder;
+            var context = parentFolder.Context;
+
+            var currentFolder = GetLibraryFolder(folderModelHost, folderModel);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFolder,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
+            if (currentFolder == null)
+            {
+                currentFolder = parentFolder.Folders.Add(folderModel.Name);
+                context.ExecuteQuery();
+            }
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentFolder,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
+            currentFolder.Update();
             context.ExecuteQuery();
 
             return currentFolder;

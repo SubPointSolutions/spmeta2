@@ -56,6 +56,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
+        protected FeatureCollection LoadWebFeatures(WebModelHost webModelHost)
+        {
+            var web = webModelHost.HostWeb;
+            var context = web.Context;
+
+            context.Load(web, w => w.Features);
+            context.ExecuteQuery();
+
+            return web.Features;
+        }
+
         private void DeployWebFeature(object modelHost, FeatureDefinition featureModel)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
@@ -63,13 +74,23 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = webModelHost.HostWeb;
             var context = web.Context;
 
-            context.Load(web, w => w.Features);
-            context.ExecuteQuery();
+            var features = LoadWebFeatures(webModelHost);
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
             // http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.featurecollection.add%28v=office.15%29.aspx
-            ProcessFeature(modelHost, context, web.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+            ProcessFeature(modelHost, context, features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+        }
+
+        protected FeatureCollection LoadSiteFeatures(SiteModelHost siteModelHost)
+        {
+            var site = siteModelHost.HostSite;
+            var context = site.Context;
+
+            context.Load(site, w => w.Features);
+            context.ExecuteQuery();
+
+            return site.Features;
         }
 
         private void DeploySiteFeature(object modelHost, FeatureDefinition featureModel)
@@ -79,12 +100,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             var site = siteModelHost.HostSite;
             var context = site.Context;
 
-            context.Load(site, w => w.Features);
-            context.ExecuteQuery();
+            var features = LoadSiteFeatures(siteModelHost);
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
-            ProcessFeature(modelHost, context, site.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+            ProcessFeature(modelHost, context, features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+        }
+
+        protected Feature GetFeature(FeatureCollection features, FeatureDefinition featureModel)
+        {
+            return features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
+        }
+
+        protected bool IsFeatureActivated(FeatureCollection features, FeatureDefinition featureModel)
+        {
+            return GetFeature(features, featureModel) != null;
         }
 
         private void ProcessFeature(
@@ -94,8 +124,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     FeatureDefinition featureModel,
                     Microsoft.SharePoint.Client.FeatureDefinitionScope scope)
         {
-            var currentFeature = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
-            var featureActivated = currentFeature != null;
+            var currentFeature = GetFeature(features, featureModel);
+            var featureActivated = IsFeatureActivated(features, featureModel);
 
             InvokeOnModelEvents(this, new ModelEventArgs
             {
@@ -110,27 +140,28 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!featureActivated)
             {
+                Feature tmpFeature;
+
                 if (featureModel.Enable)
                 {
-                    var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
-
-                    InvokeOnModelEvents(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = f,
-                        ObjectType = typeof(Feature),
-                        ObjectDefinition = featureModel,
-                        ModelHost = modelHost
-                    });
-
+                    tmpFeature = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
                     context.ExecuteQuery();
                 }
                 else
                 {
-                    // TODO, warning trace
+                    tmpFeature = GetFeature(features, featureModel);
                 }
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = tmpFeature,
+                    ObjectType = typeof(Feature),
+                    ObjectDefinition = featureModel,
+                    ModelHost = modelHost
+                });
             }
             else
             {
@@ -151,8 +182,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQuery();
                 }
-
-                if (!featureModel.Enable)
+                else if (!featureModel.Enable)
                 {
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
 
@@ -169,6 +199,21 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQuery();
                 }
+                else
+                {
+                    var tmpFeature = GetFeature(features, featureModel);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = tmpFeature,
+                        ObjectType = typeof(Feature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+                }
             }
 
 
@@ -178,7 +223,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region static
 
-        private static bool IsValidHost(object modelHost)
+        protected static bool IsValidHost(object modelHost)
         {
             return modelHost is SiteModelHost ||
                    modelHost is WebModelHost;

@@ -78,6 +78,14 @@
       <Project>{6f7ebf0c-7124-44d6-b9ec-302a54a19fe4}</Project>
       <Name>SPMeta2.CSOM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.Common\SPMeta2.Regression.Common.csproj">
+      <Project>{e9d05ae0-6466-45cd-b28d-63f87097d721}</Project>
+      <Name>SPMeta2.Regression.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.CSOM\SPMeta2.Regression.CSOM.csproj">
+      <Project>{5a1b98bf-4ea4-4dee-988f-fa62eefc9eb0}</Project>
+      <Name>SPMeta2.Regression.CSOM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression.Model\SPMeta2.Regression.Model.csproj">
       <Project>{0985687D-426F-4ACF-A85F-EE79FA4FF752}</Project>
       <Name>SPMeta2.Regression.Model</Name>

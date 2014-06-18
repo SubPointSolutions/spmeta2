@@ -42,15 +42,20 @@
     <Compile Include="Consts\ModelConsts.cs" />
     <Compile Include="Definitions\RegCustomActions.cs" />
     <Compile Include="Definitions\RegListFields.cs" />
+    <Compile Include="Definitions\RegFolders.cs" />
+    <Compile Include="Definitions\RegListViews.cs" />
     <Compile Include="Definitions\RegLists.cs" />
+    <Compile Include="Definitions\RegQuickLaunchNavigation.cs" />
     <Compile Include="Definitions\RegSecurityGroups.cs" />
     <Compile Include="Definitions\RegSecurityRoles.cs" />
     <Compile Include="Definitions\RegUserCustomActions.cs" />
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegContentTypes.cs" />
+    <Compile Include="Definitions\RegWebPartPages.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
     <Compile Include="Definitions\RegSiteFields.cs" />
+    <Compile Include="Definitions\RegWikiPages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

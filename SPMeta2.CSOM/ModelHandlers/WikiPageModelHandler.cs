@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -40,6 +41,74 @@ namespace SPMeta2.CSOM.ModelHandlers
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
+            DeployWikiPage(list, wikiPageModel);
+
+
+        }
+
+        private void DeployWikiPage(List list, WikiPageDefinition wikiPageModel)
+        {
+            var context = list.Context;
+
+            var newWikiPageUrl = string.Empty;
+            var file = GetWikiPageFile(list, wikiPageModel, out newWikiPageUrl);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = file,
+                ObjectType = typeof(UserCustomAction),
+                ObjectDefinition = wikiPageModel,
+                ModelHost = list
+            });
+
+            if (file == null)
+            {
+                var newPageFile = list.RootFolder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
+
+                context.Load(newPageFile);
+                context.ExecuteQuery();
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newPageFile,
+                    ObjectType = typeof(UserCustomAction),
+                    ObjectDefinition = wikiPageModel,
+                    ModelHost = list
+                });
+            }
+            else
+            {
+                // TODO,override if force
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = file,
+                    ObjectType = typeof(UserCustomAction),
+                    ObjectDefinition = wikiPageModel,
+                    ModelHost = list
+                });
+            }
+        }
+
+        protected File GetWikiPageFile(List list, WikiPageDefinition wikiPageModel)
+        {
+            var newWikiPageUrl = string.Empty;
+            var result = GetWikiPageFile(list, wikiPageModel, out newWikiPageUrl);
+
+            return result;
+        }
+
+        protected File GetWikiPageFile(List list, WikiPageDefinition wikiPageModel, out string newWikiPageUrl)
+        {
             var context = list.Context;
 
             if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
@@ -50,23 +119,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(list, l => l.RootFolder.ServerRelativeUrl);
             context.ExecuteQuery();
 
-            var newWikiPageUrl = list.RootFolder.ServerRelativeUrl + "/" + pageName;
+            newWikiPageUrl = list.RootFolder.ServerRelativeUrl + "/" + pageName;
             var file = list.ParentWeb.GetFileByServerRelativeUrl(newWikiPageUrl);
 
             context.Load(file, f => f.Exists);
             context.ExecuteQuery();
 
-            if (!file.Exists)
-            {
-                var newpage = list.RootFolder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
+            if (file.Exists)
+                return file;
 
-                context.Load(newpage);
-                context.ExecuteQuery();
-            }
-            else
-            {
-                // TODO
-            }
+            return null;
         }
 
         #endregion

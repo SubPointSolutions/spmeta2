@@ -32,11 +32,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var customAction = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
 
-
             DeploySiteCustomAction(siteModelHost, customAction);
         }
 
-        private void DeploySiteCustomAction(SiteModelHost modelHost, UserCustomActionDefinition model)
+        protected UserCustomAction GetCustomAction(SiteModelHost modelHost, UserCustomActionDefinition model)
         {
             var site = modelHost.HostSite;
             var context = site.Context;
@@ -44,8 +43,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(site, s => s.UserCustomActions);
             context.ExecuteQuery();
 
-            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == model.Name) ??
-                                  site.UserCustomActions.Add();
+            return site.UserCustomActions.FirstOrDefault(a => a.Name == model.Name);
+        }
+
+        private void DeploySiteCustomAction(SiteModelHost modelHost, UserCustomActionDefinition model)
+        {
+            var site = modelHost.HostSite;
+            var context = site.Context;
+
+            var existingAction = GetCustomAction(modelHost, model);
 
             InvokeOnModelEvents(this, new ModelEventArgs
             {
@@ -57,6 +63,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
+
+            if (existingAction == null)
+                existingAction = site.UserCustomActions.Add();
 
             MapCustomAction(existingAction, model);
 
@@ -87,7 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             existringAction.Title = customAction.Title;
         }
 
-        private bool IsValidHostModelHost(object modelHost)
+        protected bool IsValidHostModelHost(object modelHost)
         {
             return modelHost is SiteModelHost;
         }

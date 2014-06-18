@@ -2,6 +2,11 @@
 {
     public class ListDefinition : DefinitionBase
     {
+        public ListDefinition()
+        {
+            Description = string.Empty;
+        }
+
         #region properties
 
         public string Title { get; set; }
