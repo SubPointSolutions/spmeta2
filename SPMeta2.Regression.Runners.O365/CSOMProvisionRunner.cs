@@ -39,6 +39,25 @@ namespace SPMeta2.Regression.Runners.O365
 
         #region methods
 
+        private ClientContext _lazyContext;
+
+        public override void InitLazyRunnerConnection()
+        {
+            _lazyContext = new ClientContext(SiteUrl)
+            {
+                Credentials = new SharePointOnlineCredentials(UserName, GetSecurePasswordString(UserPassword))
+            };
+        }
+
+        public override void DisposeLazyRunnerConnection()
+        {
+            if (_lazyContext != null)
+            {
+                _lazyContext.Dispose();
+                _lazyContext = null;
+            }
+        }
+
         public override void DeploySiteModel(ModelNode model)
         {
             WithO365Context(context =>
@@ -91,17 +110,21 @@ namespace SPMeta2.Regression.Runners.O365
 
         private void WithO365Context(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
-            using (var context = new ClientContext(siteUrl))
+            if (_lazyContext != null)
             {
-                context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
-                action(context);
+                action(_lazyContext);
+            }
+            else
+            {
+                using (var context = new ClientContext(siteUrl))
+                {
+                    context.Credentials = new SharePointOnlineCredentials(userName,
+                        GetSecurePasswordString(userPassword));
+                    action(context);
+                }
             }
         }
 
-        private void WithStaticO365SiteSandbox(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
-        {
-            WithO365Context(siteUrl, userName, userPassword, action);
-        }
 
         #endregion
     }

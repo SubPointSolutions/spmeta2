@@ -28,5 +28,15 @@ namespace SPMeta2.Regression.Runners
         }
 
         #endregion
+
+        public virtual void InitLazyRunnerConnection()
+        {
+
+        }
+
+        public virtual void DisposeLazyRunnerConnection()
+        {
+
+        }
     }
 }

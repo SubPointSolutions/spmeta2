@@ -30,6 +30,18 @@ namespace SPMeta2.Regression.Tests.O365.Impl
 
         #region tests
 
+        [TestInitialize]
+        public void TestInit()
+        {
+            InitLazyRunnerConnection();
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            DisposeLazyRunnerConnection();
+        }
+
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_FieldDefinition()

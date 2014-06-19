@@ -28,7 +28,21 @@ namespace SPMeta2.Regression.Tests.Base
 
         #region properties
 
-        public bool EnableDefinitionValidation { get; set; }
+        protected void InitLazyRunnerConnection()
+        {
+            InitRunnerImplementations();
+
+            foreach (var runner in ProvisionRunners)
+                runner.InitLazyRunnerConnection();
+        }
+
+        protected void DisposeLazyRunnerConnection()
+        {
+            foreach (var runner in ProvisionRunners)
+                runner.DisposeLazyRunnerConnection();
+        }
+
+        protected bool EnableDefinitionValidation { get; set; }
 
         public List<ProvisionRunnerBase> ProvisionRunners { get; set; }
         public List<string> ProvisionRunnerAssemblies { get; set; }
@@ -41,8 +55,12 @@ namespace SPMeta2.Regression.Tests.Base
             InitRunnerImplementations();
         }
 
+        private bool _hasInit = false;
+
         private void InitRunnerImplementations()
         {
+            if (_hasInit) return;
+
             foreach (var asmFileName in ProvisionRunnerAssemblies)
             {
                 var asmImpl = Assembly.LoadFrom(asmFileName);
@@ -56,6 +74,8 @@ namespace SPMeta2.Regression.Tests.Base
                     ProvisionRunners.Add(runnerImpl);
                 }
             }
+
+            _hasInit = true;
         }
 
         private void InitRunnerTypes()
