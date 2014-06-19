@@ -11,8 +11,10 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
             var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model", value => value.RequireNotNull());
+
+            var web = site.RootWeb;
 
             TraceUtils.WithScope(traceScope =>
             {

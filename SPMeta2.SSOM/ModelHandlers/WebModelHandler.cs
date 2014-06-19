@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -22,16 +23,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             var parentHost = modelHost;
 
             if (parentHost is SPSite)
-                CreateWeb((parentHost as SPSite).RootWeb, webModel);
+                CreateWeb(modelHost, (parentHost as SPSite).RootWeb, webModel);
             else if (parentHost is SPWeb)
-                CreateWeb((parentHost as SPWeb), webModel);
+                CreateWeb(modelHost, (parentHost as SPWeb), webModel);
             else
             {
                 throw new Exception("modelHost needs to be either SPSite or SPWeb");
             }
         }
 
-        private void CreateWeb(SPWeb parentWeb, WebDefinition webModel)
+        private void CreateWeb(object modelHost, SPWeb parentWeb, WebDefinition webModel)
         {
             if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
             {
@@ -40,6 +41,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     web.Title = webModel.Title;
                     web.Description = webModel.Description;
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = web,
+                        ObjectType = typeof(SPWeb),
+                        ObjectDefinition = webModel,
+                        ModelHost = modelHost
+                    });
 
                     web.Update();
                 }
@@ -84,13 +96,37 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!currentWeb.Exists)
             {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = null,
+                    ObjectType = typeof (SPWeb),
+                    ObjectDefinition = webModel,
+                    ModelHost = webModel
+                });
+
                 currentWeb = parentWeb.Webs.Add(webUrl,
-                                        webModel.Title,
-                                        webDescription,
-                                        webModel.LCID,
-                                        webModel.WebTemplate,
-                                        webModel.UseUniquePermission,
-                                        webModel.ConvertIfThere);
+                    webModel.Title,
+                    webDescription,
+                    webModel.LCID,
+                    webModel.WebTemplate,
+                    webModel.UseUniquePermission,
+                    webModel.ConvertIfThere);
+            }
+            else
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = currentWeb,
+                    ObjectType = typeof(SPWeb),
+                    ObjectDefinition = webModel,
+                    ModelHost = webModel
+                });
             }
 
             return currentWeb;

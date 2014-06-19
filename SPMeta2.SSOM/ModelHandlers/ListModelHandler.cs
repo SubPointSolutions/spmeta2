@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.DefaultSyntax;
@@ -64,7 +65,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
 
             // min provision
-            var targetList = GetOrCreateList(web, listModel);
+            var targetList = GetOrCreateList(modelHost, web, listModel);
 
             targetList.Title = listModel.Title;
 
@@ -72,10 +73,23 @@ namespace SPMeta2.SSOM.ModelHandlers
             targetList.Description = listModel.Description = listModel.Description ?? string.Empty;
             targetList.ContentTypesEnabled = listModel.ContentTypesEnabled;
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = targetList,
+                ObjectType = typeof(SPList),
+                ObjectDefinition = listModel,
+                ModelHost = modelHost
+            });
+
             targetList.Update();
         }
 
-        private static SPList GetOrCreateList(SPWeb web, ListDefinition listModel)
+        private SPList GetOrCreateList(
+            object modelHost,
+            SPWeb web, ListDefinition listModel)
         {
             var result = GetListByUrl(web, listModel);
 
@@ -87,7 +101,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // (1) by TemplateName (2) by TemplateType 
                 if (listModel.TemplateType > 0)
                 {
-                    listId = web.Lists.Add(listModel.Url, listModel.Description, (SPListTemplateType)listModel.TemplateType);
+                    listId = web.Lists.Add(listModel.Url, listModel.Description,
+                        (SPListTemplateType)listModel.TemplateType);
                 }
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
@@ -102,6 +117,30 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
 
                 result = web.Lists[listId];
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = result,
+                    ObjectType = typeof(SPList),
+                    ObjectDefinition = listModel,
+                    ModelHost = modelHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = result,
+                    ObjectType = typeof(SPList),
+                    ObjectDefinition = listModel,
+                    ModelHost = modelHost
+                });
             }
 
             return result;

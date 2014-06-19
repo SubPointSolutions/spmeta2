@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.Extensions;
@@ -23,12 +24,23 @@ namespace SPMeta2.SSOM.ModelHandlers
             var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
             var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
 
-            ProcessView(list, listViewModel);
+            ProcessView(modelHost, list, listViewModel);
         }
 
-        protected void ProcessView(SPList targetList, ListViewDefinition viewModel)
+        protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition viewModel)
         {
             var currentView = targetList.Views.FindByName(viewModel.Title);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentView,
+                ObjectType = typeof(SPView),
+                ObjectDefinition = viewModel,
+                ModelHost = modelHost
+            });
 
             if (currentView == null)
             {
@@ -55,6 +67,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentView,
+                ObjectType = typeof(SPView),
+                ObjectDefinition = viewModel,
+                ModelHost = modelHost
+            });
 
             currentView.Update();
         }

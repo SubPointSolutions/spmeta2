@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -65,18 +66,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
             var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model", value => value.RequireNotNull());
+
+            var web = site.RootWeb;
 
             //var site = web.Site;
             var currentGroup = (SPGroup)null;
+            var hasInitialGroup = false;
 
             try
             {
-                currentGroup = web.SiteGroups[securityGroupModel.Name];
+                currentGroup = site.RootWeb.SiteGroups[securityGroupModel.Name];
+                hasInitialGroup = true;
+
             }
             catch (SPException)
             {
+
+
                 var ownerUser = EnsureOwnerUser(web, securityGroupModel);
                 var defaultUser = EnsureDefaultUser(web, securityGroupModel);
 
@@ -84,8 +92,47 @@ namespace SPMeta2.SSOM.ModelHandlers
                 currentGroup = web.SiteGroups[securityGroupModel.Name];
             }
 
+            if (hasInitialGroup)
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = currentGroup,
+                    ObjectType = typeof(SPGroup),
+                    ObjectDefinition = securityGroupModel,
+                    ModelHost = modelHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = null,
+                    ObjectType = typeof(SPGroup),
+                    ObjectDefinition = securityGroupModel,
+                    ModelHost = modelHost
+                });
+            }
+
+
             currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel);
             currentGroup.Description = securityGroupModel.Description;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentGroup,
+                ObjectType = typeof(SPGroup),
+                ObjectDefinition = securityGroupModel,
+                ModelHost = modelHost
+            });
 
             currentGroup.Update();
         }
