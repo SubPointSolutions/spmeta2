@@ -9,7 +9,11 @@ namespace SPMeta2.Regression.Runners
 {
     public class ProvisionRunnerBase
     {
-      
+        #region properties
+
+        public bool EnableDefinitionValidation { get; set; }
+
+        #endregion
 
         #region methods
 

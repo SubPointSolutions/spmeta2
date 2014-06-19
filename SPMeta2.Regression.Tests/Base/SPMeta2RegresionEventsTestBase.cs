@@ -13,6 +13,15 @@ namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionEventsTestBase : SPMeta2RegresionTestBase
     {
+        #region contructors
+
+        public SPMeta2RegresionEventsTestBase()
+        {
+            EnableDefinitionValidation = false;
+        }
+
+        #endregion
+
         protected virtual void AssertEventHooks<TObj>(ModelNode modelNode, EventHooks hooks)
         {
             modelNode.OnProvisioning<TObj>(context =>

@@ -19,6 +19,15 @@ namespace SPMeta2.Regression.Tests.O365.Impl
     [TestClass]
     public class DefinitionEventsTest : DefinitionEventsTestBase
     {
+        #region contructors
+
+        public DefinitionEventsTest()
+        {
+            EnableDefinitionValidation = false;
+        }
+
+        #endregion
+
         #region tests
 
         [TestMethod]

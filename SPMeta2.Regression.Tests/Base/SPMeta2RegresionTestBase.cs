@@ -19,12 +19,16 @@ namespace SPMeta2.Regression.Tests.Base
             ProvisionRunners = new List<ProvisionRunnerBase>();
             ProvisionRunnerAssemblies = new List<string>();
 
+            EnableDefinitionValidation = true;
+
             InitConfig();
         }
 
         #endregion
 
         #region properties
+
+        public bool EnableDefinitionValidation { get; set; }
 
         public List<ProvisionRunnerBase> ProvisionRunners { get; set; }
         public List<string> ProvisionRunnerAssemblies { get; set; }
@@ -78,6 +82,8 @@ namespace SPMeta2.Regression.Tests.Base
             foreach (var provisionRunner in ProvisionRunners)
             {
                 var type = provisionRunner.GetType().FullName;
+
+                provisionRunner.EnableDefinitionValidation = EnableDefinitionValidation;
 
                 Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
                 action(provisionRunner);

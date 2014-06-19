@@ -31,19 +31,19 @@ namespace SPMeta2.Regression.Tests.Impl
             WithProvisionRunners(runner => runner.DeploySiteModel(model));
         }
 
-        [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployContentTypesWithResourceFolders()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod]
+        //[TestCategory("Regression")]
+        //public void CanDeployContentTypesWithResourceFolders()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployContentTypesWithNestedParents()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod]
+        //[TestCategory("Regression")]
+        //public void CanDeployContentTypesWithNestedParents()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
     }
