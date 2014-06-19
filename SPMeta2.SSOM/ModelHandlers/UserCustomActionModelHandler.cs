@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -30,16 +31,42 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var customAction = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
 
-            if (modelHost is SPSite)
-                DeploySiteCustomAction(modelHost as SPSite, customAction);
+            DeploySiteCustomAction(modelHost, modelHost as SPSite, customAction);
         }
 
-        private void DeploySiteCustomAction(SPSite site, UserCustomActionDefinition customAction)
+        private void DeploySiteCustomAction(
+            object modelHost,
+            SPSite site, UserCustomActionDefinition customActionModel)
         {
-            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == customAction.Name) ??
-                                  site.UserCustomActions.Add();
+            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == customActionModel.Name);
 
-            MapCustomAction(existingAction, customAction);
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingAction,
+                ObjectType = typeof(SPUserCustomAction),
+                ObjectDefinition = customActionModel,
+                ModelHost = modelHost
+            });
+
+            if (existingAction == null)
+                existingAction = site.UserCustomActions.Add();
+
+            MapCustomAction(existingAction, customActionModel);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingAction,
+                ObjectType = typeof(SPUserCustomAction),
+                ObjectDefinition = customActionModel,
+                ModelHost = modelHost
+            });
+
             existingAction.Update();
         }
 

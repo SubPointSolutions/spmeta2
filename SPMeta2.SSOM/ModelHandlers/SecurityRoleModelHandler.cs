@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.ApplicationPages.Calendar.Exchange;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -17,8 +19,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
             var securityRoleModel = model.WithAssertAndCast<SecurityRoleDefinition>("model", value => value.RequireNotNull());
+
+            var web = site.RootWeb;
 
             var currentRoleDefinition = (SPRoleDefinition)null;
 
@@ -30,9 +34,31 @@ namespace SPMeta2.SSOM.ModelHandlers
             try
             {
                 currentRoleDefinition = web.RoleDefinitions[securityRoleModel.Name];
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = currentRoleDefinition,
+                    ObjectType = typeof(SPRoleDefinition),
+                    ObjectDefinition = securityRoleModel,
+                    ModelHost = modelHost
+                });
             }
             catch (SPException)
             {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = null,
+                    ObjectType = typeof(SPRoleDefinition),
+                    ObjectDefinition = securityRoleModel,
+                    ModelHost = modelHost
+                });
+
                 web.RoleDefinitions.Add(new SPRoleDefinition
                 {
                     Name = securityRoleModel.Name,
@@ -45,6 +71,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             currentRoleDefinition.Description = securityRoleModel.Description;
             currentRoleDefinition.BasePermissions = permissions;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentRoleDefinition,
+                ObjectType = typeof(SPRoleDefinition),
+                ObjectDefinition = securityRoleModel,
+                ModelHost = modelHost
+            });
 
             currentRoleDefinition.Update();
         }

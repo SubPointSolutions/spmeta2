@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.SharePoint.Navigation;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using System;
@@ -37,12 +38,24 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private SPNavigationNode EnsureQuickLaunchNavigationNode(SPNavigationNode navigationNode, QuickLaunchNavigationNodeDefinition quickLaunchNode)
+        private SPNavigationNode EnsureQuickLaunchNavigationNode(
+            SPNavigationNode navigationNode, QuickLaunchNavigationNodeDefinition quickLaunchNode)
         {
             var quickLaunch = navigationNode.Children;
 
             var existingNode = quickLaunch.OfType<SPNavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingNode,
+                ObjectType = typeof(SPNavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = navigationNode
+            });
 
             if (existingNode == null)
             {
@@ -53,6 +66,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             existingNode.Title = quickLaunchNode.Title;
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingNode,
+                ObjectType = typeof(SPNavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = navigationNode
+            });
 
             existingNode.Update();
 
@@ -90,6 +114,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             var existingNode = quickLaunch.OfType<SPNavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingNode,
+                ObjectType = typeof(SPNavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = existingNode
+            });
+
             if (existingNode == null)
             {
                 existingNode = new SPNavigationNode(quickLaunchNode.Title, quickLaunchNode.Url, quickLaunchNode.IsExternal);
@@ -99,6 +134,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             existingNode.Title = quickLaunchNode.Title;
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingNode,
+                ObjectType = typeof(SPNavigationNode),
+                ObjectDefinition = quickLaunchNode,
+                ModelHost = existingNode
+            });
 
             existingNode.Update();
 

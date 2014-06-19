@@ -62,11 +62,13 @@
     <Compile Include="Validation\FolderDefinitionValidator.cs" />
     <Compile Include="Validation\ListDefinitionValidator.cs" />
     <Compile Include="Validation\ListViewDefinitionValidator.cs" />
+    <Compile Include="Validation\QuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupLinkDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityRoleLinkDefinitionValidator.cs" />
     <Compile Include="Validation\SiteDefinitionValidator.cs" />
+    <Compile Include="Validation\UserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\WebDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />
