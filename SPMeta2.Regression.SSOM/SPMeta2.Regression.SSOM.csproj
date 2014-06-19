@@ -71,6 +71,7 @@
     <Compile Include="Validation\SiteDefinitionValidator.cs" />
     <Compile Include="Validation\UserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\WebDefinitionValidator.cs" />
+    <Compile Include="Validation\WebPartDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />
   </ItemGroup>

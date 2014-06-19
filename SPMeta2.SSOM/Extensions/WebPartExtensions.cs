@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml;
 using Microsoft.SharePoint;
@@ -50,9 +51,27 @@ namespace SPMeta2.SSOM.Extensions
                     }
                 }
             }
+            else if (!string.IsNullOrEmpty(webpartModel.WebpartXmlTemplate))
+            {
+                var stringBytes = Encoding.UTF8.GetBytes(webpartModel.WebpartXmlTemplate);
+
+                using (var streamReader = new MemoryStream(stringBytes))
+                {
+                    using (var xmlReader = XmlReader.Create(streamReader))
+                    {
+                        var errMessage = string.Empty;
+                        webpartInstance = webPartManager.ImportWebPart(xmlReader, out errMessage);
+
+                        if (!string.IsNullOrEmpty(errMessage))
+                            throw new ArgumentException(
+                                string.Format("Can't import web part for XML template: {0}. Error: {1}",
+                                webpartModel.WebpartXmlTemplate, errMessage));
+                    }
+                }
+            }
             else
             {
-                throw new Exception("Either WebpartType or WebpartFileName nneds to be defined.");
+                throw new Exception("Either WebpartType or WebpartFileName or WebpartXmlTemplate needs to be defined.");
             }
 
             return webpartInstance;
