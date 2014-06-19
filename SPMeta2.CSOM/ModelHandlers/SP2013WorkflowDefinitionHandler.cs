@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -29,10 +30,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = webModelHost.HostWeb;
             var workflowDefinitionModel = model.WithAssertAndCast<SP2013WorkflowDefinition>("model", value => value.RequireNotNull());
 
-            DeployWorkflowDefinition(web, workflowDefinitionModel);
+            DeployWorkflowDefinition(webModelHost, web, workflowDefinitionModel);
         }
 
-        private void DeployWorkflowDefinition(Web web, SP2013WorkflowDefinition workflowDefinitionModel)
+        private void DeployWorkflowDefinition(WebModelHost host,
+            Web web,
+            SP2013WorkflowDefinition workflowDefinitionModel)
         {
             var clientContext = web.Context;
 
@@ -42,11 +45,23 @@ namespace SPMeta2.CSOM.ModelHandlers
             var publishedWorkflows = workflowDeploymentService.EnumerateDefinitions(false);
             clientContext.Load(publishedWorkflows, c => c.Include(
                         w => w.DisplayName,
-                        w => w.Id
+                        w => w.Id,
+                        w => w.Published
                         ));
             clientContext.ExecuteQuery();
 
             var currentWorkflowDefinition = publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentWorkflowDefinition,
+                ObjectType = typeof(WorkflowDefinition),
+                ObjectDefinition = workflowDefinitionModel,
+                ModelHost = host
+            });
 
             if (currentWorkflowDefinition == null)
             {
@@ -59,7 +74,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 clientContext.Load(workflowDefinition);
                 workflowDeploymentService.SaveDefinition(workflowDefinition);
 
-                clientContext.ExecuteQuery();
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = workflowDefinition,
+                    ObjectType = typeof(WorkflowDefinition),
+                    ObjectDefinition = workflowDefinitionModel,
+                    ModelHost = host
+                });
 
                 workflowDeploymentService.PublishDefinition(workflowDefinition.Id);
                 clientContext.ExecuteQuery();
@@ -69,13 +93,36 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (workflowDefinitionModel.Override)
                 {
                     currentWorkflowDefinition.Xaml = workflowDefinitionModel.Xaml;
-                    clientContext.ExecuteQuery();
 
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentWorkflowDefinition,
+                        ObjectType = typeof(WorkflowDefinition),
+                        ObjectDefinition = workflowDefinitionModel,
+                        ModelHost = host
+                    });
+
+                    workflowDeploymentService.SaveDefinition(currentWorkflowDefinition);
                     workflowDeploymentService.PublishDefinition(currentWorkflowDefinition.Id);
+
                     clientContext.ExecuteQuery();
                 }
                 else
                 {
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentWorkflowDefinition,
+                        ObjectType = typeof(WorkflowDefinition),
+                        ObjectDefinition = workflowDefinitionModel,
+                        ModelHost = host
+                    });
+
                     workflowDeploymentService.PublishDefinition(currentWorkflowDefinition.Id);
                     clientContext.ExecuteQuery();
                 }

@@ -35,10 +35,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var workflowSubscriptionModel = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
 
-            DeployWorkflowSubscriptionDefinition(hostClientContext, list, workflowSubscriptionModel);
+            DeployWorkflowSubscriptionDefinition(workflowSubscriptionModelHost, hostClientContext, list, workflowSubscriptionModel);
         }
 
-        private void DeployWorkflowSubscriptionDefinition(ClientContext hostClientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
+        private void DeployWorkflowSubscriptionDefinition(
+            SP2013WorkflowSubscriptionModelHost host,
+            ClientContext hostClientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
         {
             // hostClientContext - it must be ClientContext, not ClientRuntimeContext - won't work and would give some weirs error with wg publishing
             // use only ClientContext instance for the workflow pubnlishing, not ClientRuntimeContext
@@ -84,6 +86,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentSubscription,
+                ObjectType = typeof(WorkflowSubscription),
+                ObjectDefinition = workflowSubscriptionModel,
+                ModelHost = host
+            });
+
             if (currentSubscription == null)
             {
                 var newSubscription = new WorkflowSubscription(hostClientContext);
@@ -107,6 +120,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // to be able to change HistoryListId, TaskListId, ListId
                 InvokeOnModelEvents<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
 
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newSubscription,
+                    ObjectType = typeof(WorkflowSubscription),
+                    ObjectDefinition = workflowSubscriptionModel,
+                    ModelHost = host
+                });
+
                 var currentSubscriptionId = workflowSubscriptionService.PublishSubscription(newSubscription);
                 hostClientContext.ExecuteQuery();
             }
@@ -115,6 +139,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
 
                 InvokeOnModelEvents<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentSubscription,
+                    ObjectType = typeof(WorkflowSubscription),
+                    ObjectDefinition = workflowSubscriptionModel,
+                    ModelHost = host
+                });
 
                 workflowSubscriptionService.PublishSubscription(currentSubscription);
                 hostClientContext.ExecuteQuery();

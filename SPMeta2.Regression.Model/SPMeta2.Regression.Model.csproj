@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consts\ModelConsts.cs" />
+    <Compile Include="Definitions\RegSP2013WorkflowSubscriptions.cs" />
     <Compile Include="Definitions\RegCustomActions.cs" />
     <Compile Include="Definitions\RegListFields.cs" />
     <Compile Include="Definitions\RegFolders.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Definitions\RegQuickLaunchNavigation.cs" />
     <Compile Include="Definitions\RegSecurityGroups.cs" />
     <Compile Include="Definitions\RegSecurityRoles.cs" />
+    <Compile Include="Definitions\RegSP2013Workflows.cs" />
     <Compile Include="Definitions\RegUserCustomActions.cs" />
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
@@ -64,6 +66,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebPartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\WorkflowXAMLDefinitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowXAMLDefinitions.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
@@ -77,6 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\HelloSharePoint.txt" />
+    <EmbeddedResource Include="Templates\WorkflowXAMLDefinitions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\WebPartTemplates.resx">
