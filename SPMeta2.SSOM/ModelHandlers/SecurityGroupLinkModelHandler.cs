@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -67,6 +68,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             // default one, it will be removed later
             var dummyRole = web.RoleDefinitions.GetByType(SPRoleType.Reader);
 
+
+
             if (!roleAssignment.RoleDefinitionBindings.Contains(dummyRole))
                 roleAssignment.RoleDefinitionBindings.Add(dummyRole);
 
@@ -74,7 +77,29 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!securableObject.HasUniqueRoleAssignments)
                 securableObject.BreakRoleInheritance(false);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = roleAssignment,
+                ObjectType = typeof(SPRoleAssignment),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             securableObject.RoleAssignments.Add(roleAssignment);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = roleAssignment,
+                ObjectType = typeof(SPRoleAssignment),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
 
             // GOTCHA!!! supposed to continue chain with adding role definitions via RoleDefinitionLinks
             roleAssignment.RoleDefinitionBindings.RemoveAll();
