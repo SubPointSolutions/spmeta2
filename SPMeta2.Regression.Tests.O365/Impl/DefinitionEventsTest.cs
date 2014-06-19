@@ -336,6 +336,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
+        [ExpectedException(typeof(NotImplementedException))]
         public override void CanRaiseEvents_PublishingPageDefinition()
         {
             throw new NotImplementedException();
@@ -382,7 +383,29 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityGroupLinkDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                // ensure group
+                var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSecurityGroup(RegSecurityGroups.SecurityGroup1));
+                WithProvisionRunners(runner => runner.DeploySiteModel(siteModel));
+
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericSecurableList, list =>
+                    {
+                        list
+                            .AddSecurityGroupLink(RegSecurityGroups.SecurityGroup1, securityGroupLink =>
+                            {
+                                securityGroupLink
+                                    .AddSecurityRoleLink(RegSecurityRoles.SecurityRole1);
+
+                                AssertEventHooks<RoleAssignment>(securityGroupLink, hooks);
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]
@@ -408,7 +431,30 @@ namespace SPMeta2.Regression.Tests.O365.Impl
         [TestCategory("Regression.Events.O365")]
         public override void CanRaiseEvents_SecurityRoleLinkDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                // ensure group
+                var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSecurityGroup(RegSecurityGroups.SecurityGroup1));
+                WithProvisionRunners(runner => runner.DeploySiteModel(siteModel));
+
+                var webModel = SPMeta2Model.NewWebModel(site =>
+                {
+                    site.AddList(RegLists.GenericSecurableList, list =>
+                    {
+                        list
+                            .AddSecurityGroupLink(RegSecurityGroups.SecurityGroup1, securityGroupLink =>
+                            {
+                                securityGroupLink
+                                    .AddSecurityRoleLink(RegSecurityRoles.SecurityRole1, securityRoleLink =>
+                                    {
+                                        AssertEventHooks<RoleDefinition>(securityRoleLink, hooks);
+                                    });
+                            });
+                    });
+                });
+
+                WithProvisionRunners(runner => runner.DeployWebModel(webModel));
+            });
         }
 
         [TestMethod]

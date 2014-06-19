@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -69,15 +70,50 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var roleAssignment = FindRoleRoleAssignment(securableObject.RoleAssignments, securityGroup);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = roleAssignment,
+                ObjectType = typeof(RoleAssignment),
+                ObjectDefinition = securityGroupLinkModel,
+                ModelHost = modelHost
+            });
+
             if (roleAssignment == null)
             {
                 var bindings = new RoleDefinitionBindingCollection(context);
                 bindings.Add(web.RoleDefinitions.GetByType(RoleType.Reader));
 
-                securableObject.RoleAssignments.Add(securityGroup, bindings);
+                var assegnment = securableObject.RoleAssignments.Add(securityGroup, bindings);
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = assegnment,
+                    ObjectType = typeof(RoleAssignment),
+                    ObjectDefinition = securityGroupLinkModel,
+                    ModelHost = modelHost
+                });
 
                 // GOTCHA!!! supposed to continue chain with adding role definitions via RoleDefinitionLinks
                 bindings.RemoveAll();
+            }
+            else
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = roleAssignment,
+                    ObjectType = typeof(RoleAssignment),
+                    ObjectDefinition = securityGroupLinkModel,
+                    ModelHost = modelHost
+                });
             }
         }
 

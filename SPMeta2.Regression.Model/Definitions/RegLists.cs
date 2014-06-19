@@ -30,6 +30,15 @@ namespace SPMeta2.Regression.Model.Definitions
             TemplateType = BuiltInListTemplateTypeId.GenericList
         };
 
+        public static ListDefinition GenericSecurableList = new ListDefinition
+        {
+            Title = "Custom Securable List",
+            Url = "spmeta2_custom_sec_list",
+            ContentTypesEnabled = true,
+            Description = "Custom Securable list",
+            TemplateType = BuiltInListTemplateTypeId.GenericList
+        };
+
 
         #endregion
     }

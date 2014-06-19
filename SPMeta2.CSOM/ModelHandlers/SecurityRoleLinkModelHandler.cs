@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -43,7 +44,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var group = securityGroupModelHost.SecurityGroup;
             var web = GetWebFromSPSecurableObject(securityGroupModelHost.SecurableObject);
-            
+
             var context = group.Context;
             var existingRoleAssignments = web.RoleAssignments;
 
@@ -69,6 +70,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleLinkModel.SecurityRoleName);
 
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentRoleDefinition,
+                ObjectType = typeof(RoleDefinition),
+                ObjectDefinition = securityRoleLinkModel,
+                ModelHost = modelHost
+            });
+
             // MESSY, refactor
 
             if (existingRoleAssignment == null)
@@ -76,6 +89,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var roleBindings = new RoleDefinitionBindingCollection(context);
                 roleBindings.Add(currentRoleDefinition);
                 existingRoleAssignment = web.RoleAssignments.Add(group, roleBindings);
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentRoleDefinition,
+                    ObjectType = typeof(RoleDefinition),
+                    ObjectDefinition = securityRoleLinkModel,
+                    ModelHost = modelHost
+                });
 
                 existingRoleAssignment.Update();
                 context.ExecuteQuery();
@@ -97,8 +121,32 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     existingRoleAssignment.RoleDefinitionBindings.Add(currentRoleDefinition);
 
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentRoleDefinition,
+                        ObjectType = typeof(RoleDefinition),
+                        ObjectDefinition = securityRoleLinkModel,
+                        ModelHost = modelHost
+                    });
+
                     existingRoleAssignment.Update();
                     context.ExecuteQuery();
+                }
+                else
+                {
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentRoleDefinition,
+                        ObjectType = typeof(RoleDefinition),
+                        ObjectDefinition = securityRoleLinkModel,
+                        ModelHost = modelHost
+                    });
                 }
             }
         }
