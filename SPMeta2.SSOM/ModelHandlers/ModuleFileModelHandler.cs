@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using System;
@@ -28,7 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var folder = modelHost.WithAssertAndCast<SPFolder>("modelHost", value => value.RequireNotNull());
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
-            ProcessFile(folder, moduleFile);
+            ProcessFile(modelHost, folder, moduleFile);
         }
 
         private string GetSafeFileUrl(SPFolder folder, ModuleFileDefinition moduleFile)
@@ -36,12 +37,25 @@ namespace SPMeta2.SSOM.ModelHandlers
             return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
         }
 
-        private void ProcessFile(SPFolder folder, ModuleFileDefinition moduleFile)
+        private void ProcessFile(
+            object modelHost,
+            SPFolder folder, ModuleFileDefinition moduleFile)
         {
             var web = folder.ParentWeb;
             var list = folder.DocumentLibrary;
 
             var file = web.GetFile(GetSafeFileUrl(folder, moduleFile));
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = file.Exists ? file : null,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = moduleFile,
+                ModelHost = modelHost
+            });
 
             var fileName = moduleFile.FileName;
             var fileContent = moduleFile.Content;
@@ -54,13 +68,25 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
                 file.UndoCheckOut();
 
-            if (list != null && (file.Exists && file.Level == SPFileLevel.Published))
+            if (list != null && (list.EnableMinorVersions && file.Exists && file.Level == SPFileLevel.Published))
                 file.UnPublish("Provision");
 
             if (list != null && (file.Exists && file.CheckOutType == SPFile.SPCheckOutType.None))
                 file.CheckOut();
 
             var spFile = folder.Files.Add(fileName, fileContent, file.Exists);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = spFile,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = moduleFile,
+                ModelHost = modelHost
+            });
+
             spFile.Update();
 
             if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))

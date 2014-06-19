@@ -62,6 +62,7 @@
     <Compile Include="Validation\FolderDefinitionValidator.cs" />
     <Compile Include="Validation\ListDefinitionValidator.cs" />
     <Compile Include="Validation\ListViewDefinitionValidator.cs" />
+    <Compile Include="Validation\ModuleFileDefinitionValidator.cs" />
     <Compile Include="Validation\QuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupLinkDefinitionValidator.cs" />
