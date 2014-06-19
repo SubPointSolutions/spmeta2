@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -33,14 +34,49 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var pageItem = FindWikiPage(list, wikiPageModel);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = pageItem == null ? null : pageItem.File,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             if (pageItem == null)
             {
                 var newWikiPageUrl = GetSafeWikiPageUrl(list, wikiPageModel);
                 var newpage = list.RootFolder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newpage,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
+
+                newpage.Update();
             }
             else
             {
-                // TODO
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = pageItem.File,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
+
+                pageItem.File.Update();
             }
         }
 

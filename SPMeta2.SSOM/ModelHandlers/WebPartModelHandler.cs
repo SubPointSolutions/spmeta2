@@ -34,7 +34,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override Type TargetType
         {
-            get { return typeof(WebPartPageDefinition); }
+            get { return typeof(WebPartDefinition); }
         }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
@@ -46,11 +46,34 @@ namespace SPMeta2.SSOM.ModelHandlers
             WebPartExtensions.DeployWebPartsToPage(host.SPLimitedWebPartManager, new[] { webpartPageModel },
                 onUpdatingWebpartInstnce =>
                 {
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioning,
+                        Object = onUpdatingWebpartInstnce,
+                        ObjectType = typeof(System.Web.UI.WebControls.WebParts.WebPart),
+                        ObjectDefinition = model,
+                        ModelHost = modelHost
+                    });
+
                     InvokeOnModelEvents<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
 
                 },
                 onUpdatedWebpartInstnce =>
                 {
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = onUpdatedWebpartInstnce,
+                        ObjectType = typeof(System.Web.UI.WebControls.WebParts.WebPart),
+                        ObjectDefinition = model,
+                        ModelHost = modelHost
+                    });
+
                     InvokeOnModelEvents<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
                 });
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.Extensions;
@@ -65,6 +66,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             // gosh, it really does not have a title
             //targetPage[SPBuiltInFieldId.Title] = webpartPageModel.Title;
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = targetPage == null ? null : targetPage.File,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = webpartPageModel,
+                ModelHost = list
+            });
+
             targetPage.Update();
         }
 
@@ -88,9 +100,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             return webPartPageName;
         }
 
-        private SPListItem GetOrCreateNewWebPartPage(SPList list, WebPartPageDefinition webpartPageModel)
+        private SPListItem GetOrCreateNewWebPartPage(SPList list, 
+            WebPartPageDefinition webpartPageModel)
         {
             var targetPage = FindWebPartPage(list, webpartPageModel);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = targetPage == null ? null : targetPage.File,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = webpartPageModel,
+                ModelHost = list
+            });
 
             if (targetPage == null || webpartPageModel.NeedOverride)
             {

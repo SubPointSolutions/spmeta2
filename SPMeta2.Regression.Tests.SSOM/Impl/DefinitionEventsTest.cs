@@ -607,7 +607,7 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
                                     page
                                         .AddWebPart(RegWebParts.ContentEditorWebPart, webpart =>
                                         {
-                                            AssertEventHooks<WebPart>(webpart, hooks);
+                                            AssertEventHooks<System.Web.UI.WebControls.WebParts.WebPart>(webpart, hooks);
                                         });
                                 });
                         });
