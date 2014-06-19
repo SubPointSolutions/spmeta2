@@ -28,25 +28,35 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
-            SPField siteField = null;
+            SPField field = null;
 
             // TODO, needs to be changed to using pattern and adjust all model handlers
-            InvokeOnModelEvents<FieldDefinition, SPField>(siteField, ModelEventType.OnUpdating);
+            InvokeOnModelEvents<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
 
             if (modelHost is SPSite)
-                siteField = EnsureSiteField(modelHost as SPSite, fieldModel);
+                field = EnsureSiteField(modelHost as SPSite, fieldModel);
             else if (modelHost is SPList)
-                siteField = DeployListField(modelHost as SPList, fieldModel);
+                field = DeployListField(modelHost as SPList, fieldModel);
             else
             {
                 throw new ArgumentException("modelHost needs to be SPSite/SPList");
             }
 
-            ProcessCommonProperties(siteField, fieldModel);
+            ProcessCommonProperties(field, fieldModel);
 
-            InvokeOnModelEvents<FieldDefinition, SPField>(siteField, ModelEventType.OnUpdated);
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = field,
+                ObjectType = typeof(SPField),
+                ObjectDefinition = fieldModel,
+                ModelHost = modelHost
+            });
+            InvokeOnModelEvents<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
 
-            siteField.Update(true);
+            field.Update(true);
         }
 
         private void CheckValidModelHost(object modelHost)
@@ -59,12 +69,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPField DeployListField(SPList list, FieldDefinition fieldModel)
         {
-            return EnsureFieldInFieldsCollection(list.Fields, fieldModel);
+            return EnsureFieldInFieldsCollection(list, list.Fields, fieldModel);
         }
 
-        private static SPField EnsureSiteField(SPSite site, FieldDefinition fieldModel)
+        private  SPField EnsureSiteField(SPSite site, FieldDefinition fieldModel)
         {
-            return EnsureFieldInFieldsCollection(site.RootWeb.Fields, fieldModel);
+            return EnsureFieldInFieldsCollection(site, site.RootWeb.Fields, fieldModel);
         }
 
         protected SPField GetField(object modelHost, FieldDefinition definition)
@@ -89,10 +99,25 @@ namespace SPMeta2.SSOM.ModelHandlers
             return list.Fields[definition.Id];
         }
 
-        private static SPField EnsureFieldInFieldsCollection(SPFieldCollection fields, FieldDefinition fieldModel)
+        private SPField EnsureFieldInFieldsCollection(
+            object modelHost,
+            SPFieldCollection fields, FieldDefinition fieldModel)
         {
+            SPField currentField = null;
+
             if (!fields.ContainsFieldWithStaticName(fieldModel.InternalName))
             {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = currentField,
+                    ObjectType = typeof(SPField),
+                    ObjectDefinition = fieldModel,
+                    ModelHost = modelHost
+                });
+
                 // first creation
                 var fieldDef = string.Format(MinimalSPFieldTemplate, new string[]
                                                                          {
@@ -104,10 +129,30 @@ namespace SPMeta2.SSOM.ModelHandlers
                                                                              fieldModel.FieldType
                                                                          });
 
+
+
+
                 fields.AddFieldAsXml(fieldDef);
+
+                currentField = fields[fieldModel.Id];
+            }
+            else
+            {
+                currentField = fields[fieldModel.Id];
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = currentField,
+                    ObjectType = typeof(SPField),
+                    ObjectDefinition = fieldModel,
+                    ModelHost = modelHost
+                });
             }
 
-            return fields[fieldModel.Id];
+            return currentField;
         }
 
         private static void ProcessCommonProperties(SPField siteField, FieldDefinition fieldModel)

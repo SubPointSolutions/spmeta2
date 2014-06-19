@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -65,6 +66,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 EnsureLibraryFolder(folderModelHost, folderModel);
             else if (folderModelHost.CurrentList != null)
                 EnsureListFolder(folderModelHost, folderModel);
+            else
+            {
+                throw new ArgumentException("Model host is not supported.");
+            }
         }
 
         private SPListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
@@ -79,15 +84,50 @@ namespace SPMeta2.SSOM.ModelHandlers
             var currentUrl = serverRelativeUrl + "/" + folderModel.Name;
             var currentFolder = folderModelHost.CurrentList.ParentWeb.GetFolder(currentUrl);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFolder == null || !currentFolder.Exists ? null : currentFolder,
+                ObjectType = typeof(SPFolder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
             if (!currentFolder.Exists)
             {
                 currentFolderItem = list.AddItem(serverRelativeUrl, SPFileSystemObjectType.Folder);
 
                 currentFolderItem[SPBuiltInFieldId.Title] = folderModel.Name;
                 currentFolderItem.Update();
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFolderItem.Folder,
+                    ObjectType = typeof(SPFolder),
+                    ObjectDefinition = folderModel,
+                    ModelHost = folderModelHost
+                });
             }
             else
             {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFolder,
+                    ObjectType = typeof(SPFolder),
+                    ObjectDefinition = folderModel,
+                    ModelHost = folderModelHost
+                });
+
+                currentFolder.Update();
+
                 currentFolderItem = currentFolder.Item;
             }
 
@@ -104,8 +144,47 @@ namespace SPMeta2.SSOM.ModelHandlers
                                    .OfType<SPFolder>()
                                    .FirstOrDefault(f => f.Name == folderModel.Name);
 
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFolder == null || !currentFolder.Exists ? null : currentFolder,
+                ObjectType = typeof(SPFolder),
+                ObjectDefinition = folderModel,
+                ModelHost = folderModelHost
+            });
+
             if (currentFolder == null || !currentFolder.Exists)
+            {
                 currentFolder = parentFolder.SubFolders.Add(folderModel.Name);
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFolder,
+                    ObjectType = typeof(SPFolder),
+                    ObjectDefinition = folderModel,
+                    ModelHost = folderModelHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFolder,
+                    ObjectType = typeof(SPFolder),
+                    ObjectDefinition = folderModel,
+                    ModelHost = folderModelHost
+                });
+
+                currentFolder.Update();
+            }
 
             return currentFolder;
         }

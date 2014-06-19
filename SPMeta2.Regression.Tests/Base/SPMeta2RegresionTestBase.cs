@@ -49,7 +49,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         #endregion
 
-        private void InitConfig()
+        protected virtual void InitConfig()
         {
             InitRunnerTypes();
             InitRunnerImplementations();
@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         private bool _hasInit = false;
 
-        private void InitRunnerImplementations()
+        protected virtual void InitRunnerImplementations()
         {
             if (_hasInit) return;
 
@@ -78,7 +78,7 @@ namespace SPMeta2.Regression.Tests.Base
             _hasInit = true;
         }
 
-        private void InitRunnerTypes()
+        protected virtual void InitRunnerTypes()
         {
             var runnerLibraries = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
 

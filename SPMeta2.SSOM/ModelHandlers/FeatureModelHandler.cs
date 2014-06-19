@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -58,19 +59,19 @@ namespace SPMeta2.SSOM.ModelHandlers
         private void DeployWebFeature(object modelHost, FeatureDefinition featureModel)
         {
             var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
-            ProcessFeature(web.Features, featureModel);
+            ProcessFeature(modelHost, web.Features, featureModel);
         }
 
         private void DeploySiteFeature(object modelHost, FeatureDefinition featureModel)
         {
             var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
-            ProcessFeature(site.Features, featureModel);
+            ProcessFeature(modelHost, site.Features, featureModel);
         }
 
         private void DeployWebApplicationFeature(object modelHost, FeatureDefinition featureModel)
         {
             var webApplication = modelHost.WithAssertAndCast<SPWebApplication>("modelHost", value => value.RequireNotNull());
-            ProcessFeature(webApplication.Features, featureModel);
+            ProcessFeature(modelHost, webApplication.Features, featureModel);
         }
 
         private void DeployFarmFeature(object modelHost, FeatureDefinition featureModel)
@@ -91,31 +92,99 @@ namespace SPMeta2.SSOM.ModelHandlers
                    modelHost is SPWeb;
         }
 
-        private static void ProcessFeature(SPFeatureCollection features, FeatureDefinition featureModel)
+        private void ProcessFeature(
+            object modelHost,
+            SPFeatureCollection features, FeatureDefinition featureModel)
         {
-            var featureActivated = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id) != null;
+            var currentFeature = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
+            var featureActivated = currentFeature != null;
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFeature,
+                ObjectType = typeof(SPFeature),
+                ObjectDefinition = featureModel,
+                ModelHost = modelHost
+            });
 
             if (!featureActivated)
             {
                 if (featureModel.Enable)
                 {
-                    features.Add(featureModel.Id, featureModel.ForceActivate);
+                    var f = features.Add(featureModel.Id, featureModel.ForceActivate);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = f,
+                        ObjectType = typeof(SPFeature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
                 }
                 else
                 {
-                    // TODO, warning trace
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentFeature,
+                        ObjectType = typeof(SPFeature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
                 }
             }
             else
             {
                 if (featureModel.Enable && featureModel.ForceActivate)
                 {
-                    features.Add(featureModel.Id, featureModel.ForceActivate);
-                }
+                    var f = features.Add(featureModel.Id, featureModel.ForceActivate);
 
-                if (!featureModel.Enable)
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = f,
+                        ObjectType = typeof(SPFeature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+                }
+                else if (!featureModel.Enable)
                 {
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
+
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = null,
+                        ObjectType = typeof(SPFeature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
+                }
+                else
+                {
+                    InvokeOnModelEvents(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentFeature,
+                        ObjectType = typeof(SPFeature),
+                        ObjectDefinition = featureModel,
+                        ModelHost = modelHost
+                    });
                 }
             }
         }

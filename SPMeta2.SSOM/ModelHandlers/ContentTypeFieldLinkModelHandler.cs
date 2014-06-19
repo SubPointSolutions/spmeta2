@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -22,8 +25,41 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var rootWeb = contentType.ParentWeb;
 
-            // TODO, some validation are required
-            contentType.FieldLinks.Add(new SPFieldLink(rootWeb.AvailableFields[contentTypeFieldLinkModel.FieldId]));
+            var currentFieldLink = contentType.FieldLinks
+                .OfType<SPFieldLink>()
+                .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFieldLink,
+                ObjectType = typeof(SPFieldLink),
+                ObjectDefinition = contentTypeFieldLinkModel,
+                ModelHost = modelHost
+            });
+
+            if (currentFieldLink == null)
+            {
+                contentType.FieldLinks.Add(new SPFieldLink(rootWeb.AvailableFields[contentTypeFieldLinkModel.FieldId]));
+
+                currentFieldLink = contentType.FieldLinks
+                .OfType<SPFieldLink>()
+                .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
+            }
+
+            InvokeOnModelEvents(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentFieldLink,
+                ObjectType = typeof(SPFieldLink),
+                ObjectDefinition = contentTypeFieldLinkModel,
+                ModelHost = modelHost
+            });
+
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Syntax.Default;
@@ -64,14 +65,40 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
 
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = targetContentType,
+                    ObjectType = typeof(SPContentType),
+                    ObjectDefinition = contentTypeModel,
+                    ModelHost = modelHost
+                });
+
                 if (targetContentType == null)
-                    targetContentType = tmpRootWeb.ContentTypes.Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+                    targetContentType = tmpRootWeb
+                                            .ContentTypes
+                                            .Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+
 
                 targetContentType.Name = contentTypeModel.Name;
                 targetContentType.Group = contentTypeModel.Group;
 
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
+
+                InvokeOnModelEvents(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = targetContentType,
+                    ObjectType = typeof(SPContentType),
+                    ObjectDefinition = contentTypeModel,
+                    ModelHost = modelHost
+                });
+                
                 targetContentType.Update();
 
                 tmpRootWeb.Update();
