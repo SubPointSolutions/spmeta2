@@ -13,6 +13,7 @@ using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
 using Microsoft.SharePoint.Navigation;
+using Microsoft.SharePoint.WorkflowServices;
 
 namespace SPMeta2.Regression.Tests.SSOM.Impl
 {
@@ -511,47 +512,43 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
         [TestCategory("Regression.Events.SSOM")]
         public override void CanRaiseEvents_SP2013WorkflowDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                var model = SPMeta2Model.NewWebModel(web =>
+                 {
+                     web.AddSP2013Workflow(RegSP2013Workflows.WriteToHistoryList, workflow =>
+                     {
+                         AssertEventHooks<WorkflowDefinition>(workflow, hooks);
+                     });
+                 });
 
-            //WithEventHooks(hooks =>
-            //{
-            //    var model = SPMeta2Model.NewWebModel(web =>
-            //    {
-            //        web.AddSP2013Workflow(RegSP2013Workflows.WriteToHistoryList, workflow =>
-            //        {
-            //            AssertEventHooks<SPWorkflowDefinition>(workflow, hooks);
-            //        });
-            //    });
-
-            //    WithProvisionRunners(runner => runner.DeployWebModel(model));
-            //});
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Events.SSOM")]
         public override void CanRaiseEvents_SP2013WorkflowSubscriptionDefinition()
         {
-            throw new NotImplementedException();
+            WithEventHooks(hooks =>
+            {
+                // ensure workflow and list
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web
+                        .AddSP2013Workflow(RegSP2013Workflows.WriteToHistoryList)
+                        .AddList(RegLists.GenericList, list =>
+                        {
+                            list.AddSP2013WorkflowSubscription(RegSP2013WorkflowSubscriptions.WriteToHistoryList,
+                                workflowSubscription =>
+                                {
+                                    AssertEventHooks<WorkflowSubscription>(workflowSubscription, hooks);
+                                });
+                        });
+                });
 
-            //WithEventHooks(hooks =>
-            //{
-            //    // ensure workflow and list
-            //    var model = SPMeta2Model.NewWebModel(web =>
-            //    {
-            //        web
-            //            .AddSP2013Workflow(RegSP2013Workflows.WriteToHistoryList)
-            //            .AddList(RegLists.GenericList, list =>
-            //            {
-            //                list.AddSP2013WorkflowSubscription(RegSP2013WorkflowSubscriptions.WriteToHistoryList,
-            //                    workflowSubscription =>
-            //                    {
-            //                        AssertEventHooks<WorkflowSubscription>(workflowSubscription, hooks);
-            //                    });
-            //            });
-            //    });
-
-            //    WithProvisionRunners(runner => runner.DeployWebModel(model));
-            //});
+                WithProvisionRunners(runner => runner.DeployWebModel(model));
+            });
         }
 
         [TestMethod]

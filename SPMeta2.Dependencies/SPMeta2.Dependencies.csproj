@@ -120,6 +120,8 @@
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.Intl.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\microsoft.sharepoint.WorkflowActions.dll" />
+    <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServices.dll" />
+    <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll" />
   </ItemGroup>
   <ItemGroup />

@@ -69,6 +69,8 @@
     <Compile Include="Validation\SecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityRoleLinkDefinitionValidator.cs" />
     <Compile Include="Validation\SiteDefinitionValidator.cs" />
+    <Compile Include="Validation\SP2013WorkflowDefinitionValidator.cs" />
+    <Compile Include="Validation\SP2013WorkflowSubscriptionDefinitionValidator.cs" />
     <Compile Include="Validation\UserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\WebDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartDefinitionValidator.cs" />
