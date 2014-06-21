@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Model.Definitions;
+using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
 using Microsoft.SharePoint.Navigation;
@@ -37,6 +38,12 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
 
             // should be run only on-premis
             //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+        }
+
+        protected override void WithEventHooks(Action<EventHooks> hooks)
+        {
+            if (ProvisionRunnerAssemblies.Count > 0)
+                base.WithEventHooks(hooks);
         }
 
         #endregion
