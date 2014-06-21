@@ -35,10 +35,3 @@ D:\_git\spmeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.pdb
 D:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 D:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
 D:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.dll
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.pdb
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.dll
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.pdb
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
-C:\_git\spmeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb
