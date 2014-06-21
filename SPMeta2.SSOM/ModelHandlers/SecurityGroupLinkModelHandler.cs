@@ -77,7 +77,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!securableObject.HasUniqueRoleAssignments)
                 securableObject.BreakRoleInheritance(false);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -90,7 +90,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             securableObject.RoleAssignments.Add(roleAssignment);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

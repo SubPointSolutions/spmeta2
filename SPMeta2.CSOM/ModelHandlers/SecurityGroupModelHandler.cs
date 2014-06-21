@@ -65,7 +65,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -88,7 +88,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentGroup.Title = securityGroupModel.Name;
             currentGroup.Description = securityGroupModel.Description ?? string.Empty;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

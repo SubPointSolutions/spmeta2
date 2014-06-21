@@ -151,7 +151,12 @@ namespace SPMeta2.Services
             var modelHandler = ResolveModelHandler(modelDefinition.GetType());
 
             if (modelHandler == null)
-                throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", modelDefinition.GetType()));
+            {
+                throw new ArgumentNullException(
+                    string.Format("Can't find model handler for type:[{0}]. Current ModelService type: [{1}].",
+                        modelDefinition.GetType(),
+                        GetType()));
+            }
 
             // modelHandler might change a model host to allow continiuation
             // spsite -> spweb -> spcontentype -> spcontentypelink

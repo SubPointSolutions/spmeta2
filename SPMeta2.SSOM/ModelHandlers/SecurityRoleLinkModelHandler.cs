@@ -53,7 +53,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!roleAssignment.RoleDefinitionBindings.Contains(role))
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -68,7 +68,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -83,7 +83,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             targetList.RoleAssignments.Add(roleAssignment);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -108,7 +108,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!securityRoleAssignment.RoleDefinitionBindings.Contains(roleDefinition))
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -123,7 +123,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -135,7 +135,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

@@ -103,7 +103,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQuery();
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -113,7 +113,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvents<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
 
             //var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
             var contentTypeId = contentTypeModel.GetContentTypeId();
@@ -140,9 +140,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
             currentContentType.Group = contentTypeModel.Group;
 
-            InvokeOnModelEvents<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

@@ -99,7 +99,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var currentFeature = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
             var featureActivated = currentFeature != null;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -116,7 +116,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     var f = features.Add(featureModel.Id, featureModel.ForceActivate);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -129,7 +129,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -147,7 +147,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     var f = features.Add(featureModel.Id, featureModel.ForceActivate);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -162,7 +162,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -175,7 +175,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,

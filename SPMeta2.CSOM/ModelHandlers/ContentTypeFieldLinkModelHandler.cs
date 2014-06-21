@@ -39,7 +39,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var fieldLink = FindContentTypeFieldLink(fieldLinks, contentTypeFieldLinkModel.FieldId);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -60,7 +60,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

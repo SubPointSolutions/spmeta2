@@ -65,7 +65,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -88,7 +88,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

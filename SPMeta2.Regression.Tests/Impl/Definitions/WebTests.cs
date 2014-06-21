@@ -3,7 +3,7 @@ using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Syntax.Default;
 
-namespace SPMeta2.Regression.Tests.Impl
+namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
     public class WebTests : SPMeta2RegresionTestBase

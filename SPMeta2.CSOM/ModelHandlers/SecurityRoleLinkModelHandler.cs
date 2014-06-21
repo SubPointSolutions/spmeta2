@@ -71,7 +71,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleLinkModel.SecurityRoleName);
 
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -90,7 +90,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 roleBindings.Add(currentRoleDefinition);
                 existingRoleAssignment = web.RoleAssignments.Add(group, roleBindings);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -121,7 +121,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     existingRoleAssignment.RoleDefinitionBindings.Add(currentRoleDefinition);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -137,7 +137,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,

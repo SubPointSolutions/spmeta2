@@ -35,7 +35,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentRoleDefinition = web.RoleDefinitions[securityRoleModel.Name];
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -48,7 +48,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             catch (SPException)
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -72,7 +72,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentRoleDefinition.Description = securityRoleModel.Description;
             currentRoleDefinition.BasePermissions = permissions;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

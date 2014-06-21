@@ -5,7 +5,6 @@ using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 
-
 namespace SPMeta2.CSOM.ModelHandlers
 {
     public class ListItemFieldValueModelHandler : CSOMModelHandlerBase
@@ -31,7 +30,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void ProcessFieldValue(ListItemFieldValueModelHost modelHost, ListItem listItem, ListItemFieldValueDefinition fieldValue)
         {
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -47,7 +46,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 listItem[fieldValue.FieldName] = fieldValue.Value;
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

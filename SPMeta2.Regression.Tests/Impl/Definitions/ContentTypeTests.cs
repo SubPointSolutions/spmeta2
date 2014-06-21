@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Regression.Model.Definitions;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Syntax.Default;
 
-namespace SPMeta2.Regression.Tests.Impl
+namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
-    [TestClass]
+    //[TestClass]
     public class ContentTypeTests : SPMeta2RegresionTestBase
     {
         #region tests

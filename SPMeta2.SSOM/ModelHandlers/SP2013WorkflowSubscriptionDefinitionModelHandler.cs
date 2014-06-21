@@ -54,11 +54,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var subscriptions = workflowSubscriptionService.EnumerateSubscriptionsByList(list.ID);
 
-            InvokeOnModelEvents<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
 
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -90,9 +90,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 newSubscription.SetProperty("Microsoft.SharePoint.ActivationProperties.ListId", list.ID.ToString());
 
                 // to be able to change HistoryListId, TaskListId, ListId
-                InvokeOnModelEvents<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
+                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -109,9 +109,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes.ToList();
 
-                InvokeOnModelEvents<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
+                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

@@ -80,7 +80,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var newFile = list.RootFolder.Files.Add(file);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -94,7 +94,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(newFile);
             context.ExecuteQuery();
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

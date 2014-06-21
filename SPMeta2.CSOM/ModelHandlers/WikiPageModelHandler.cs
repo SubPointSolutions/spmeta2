@@ -51,7 +51,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var newWikiPageUrl = string.Empty;
             var file = GetWikiPageFile(list, wikiPageModel, out newWikiPageUrl);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -68,7 +68,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.Load(newPageFile);
                 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -86,7 +86,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 // TODO,override if force
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

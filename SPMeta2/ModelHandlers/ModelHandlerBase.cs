@@ -91,7 +91,7 @@ namespace SPMeta2.ModelHandlers
             //InvokeOnRetractedModel(model);
         }
 
-        protected void InvokeOnModelEvents(object sender, ModelEventArgs args)
+        protected void InvokeOnModelEvent(object sender, ModelEventArgs args)
         {
             if (OnModelEvent != null)
             {
@@ -100,9 +100,9 @@ namespace SPMeta2.ModelHandlers
         }
 
         [Obsolete("Use InvokeOnModelEvents((object sender, ModelEventArgs args) with passing full ModelEventArgs")]
-        protected void InvokeOnModelEvents<TModelDefinition, TSPObject>(TSPObject rawObject, ModelEventType eventType)
+        protected void InvokeOnModelEvent<TModelDefinition, TSPObject>(TSPObject rawObject, ModelEventType eventType)
         {
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 Object = rawObject,
                 EventType = eventType

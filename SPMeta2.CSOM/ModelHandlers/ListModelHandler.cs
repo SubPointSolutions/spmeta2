@@ -119,7 +119,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             List currentList = null;
             
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -129,7 +129,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvents<ListDefinition, List>(currentList, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdating);
 
             // gosh!
             currentList = FindListByTitle(web.Lists, listModel.Title);
@@ -171,7 +171,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentList.Description = listModel.Description ?? string.Empty;
             currentList.ContentTypesEnabled = listModel.ContentTypesEnabled;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -181,7 +181,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvents<ListDefinition, List>(currentList, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdated);
 
             currentList.Update();
 

@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 .OfType<SPFieldLink>()
                 .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -49,7 +49,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

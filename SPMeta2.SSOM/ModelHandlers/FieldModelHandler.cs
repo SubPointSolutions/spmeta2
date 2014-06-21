@@ -31,7 +31,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             SPField field = null;
 
             // TODO, needs to be changed to using pattern and adjust all model handlers
-            InvokeOnModelEvents<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
 
             if (modelHost is SPSite)
                 field = EnsureSiteField(modelHost as SPSite, fieldModel);
@@ -44,7 +44,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             ProcessCommonProperties(field, fieldModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -54,7 +54,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvents<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
 
             field.Update(true);
         }
@@ -107,7 +107,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!fields.ContainsFieldWithStaticName(fieldModel.InternalName))
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -140,7 +140,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentField = fields[fieldModel.Id];
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

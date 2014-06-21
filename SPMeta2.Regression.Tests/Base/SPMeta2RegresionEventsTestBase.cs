@@ -46,7 +46,7 @@ namespace SPMeta2.Regression.Tests.Base
         {
             TraceUtils.WithScope(traceScope =>
             {
-                traceScope.WriteLine(string.Format("Validating events..."));
+                traceScope.WriteLine(string.Format("Validating OnProvisioning/OnProvisioned events."));
 
                 var eventHooks = new EventHooks();
 
@@ -54,9 +54,11 @@ namespace SPMeta2.Regression.Tests.Base
 
                 traceScope.WriteLine(string.Format("Validating OnProvisioning event hit."));
                 Assert.AreEqual(true, eventHooks.OnProvisioning);
+                traceScope.WriteLine(string.Format("    - done"));
 
                 traceScope.WriteLine(string.Format("Validating OnProvisioned event hit."));
                 Assert.AreEqual(true, eventHooks.OnProvisioned);
+                traceScope.WriteLine(string.Format("    - done"));
             });
         }
     }

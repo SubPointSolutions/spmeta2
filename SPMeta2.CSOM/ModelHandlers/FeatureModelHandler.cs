@@ -127,7 +127,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFeature = GetFeature(features, featureModel);
             var featureActivated = IsFeatureActivated(features, featureModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -152,7 +152,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     tmpFeature = GetFeature(features, featureModel);
                 }
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -169,7 +169,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -186,7 +186,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -203,7 +203,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     var tmpFeature = GetFeature(features, featureModel);
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,

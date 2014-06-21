@@ -73,7 +73,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             targetList.Description = listModel.Description = listModel.Description ?? string.Empty;
             targetList.ContentTypesEnabled = listModel.ContentTypesEnabled;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -118,7 +118,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 result = web.Lists[listId];
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -131,7 +131,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

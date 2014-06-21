@@ -42,9 +42,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             ListItem currentItem = null;
 
-            InvokeOnModelEvents<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdating);
             currentItem = EnsureListItem(list, listItemModel);
-            InvokeOnModelEvents<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdated);
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
@@ -91,7 +91,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentItem = items.FirstOrDefault(i => i["Title"] != null &&
                     (i["Title"].ToString() == listItemModel.Title));
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -108,7 +108,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 newItem["Title"] = listItemModel.Title;
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -129,7 +129,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 currentItem["Title"] = listItemModel.Title;
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

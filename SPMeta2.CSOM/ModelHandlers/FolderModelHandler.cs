@@ -151,7 +151,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFolder = GetListFolder(folderModelHost, folderModel, out serverRelativeUrl);
             var currentFolderItem = folderModelHost.CurrentListItem;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -187,7 +187,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentFolderItem = currentFolder.ListItemAllFields;
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -231,7 +231,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentFolder = GetLibraryFolder(folderModelHost, folderModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -248,7 +248,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQuery();
             }
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

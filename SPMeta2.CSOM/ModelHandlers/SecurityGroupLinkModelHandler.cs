@@ -70,7 +70,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var roleAssignment = FindRoleRoleAssignment(securableObject.RoleAssignments, securityGroup);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -88,7 +88,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var assegnment = securableObject.RoleAssignments.Add(securityGroup, bindings);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -104,7 +104,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

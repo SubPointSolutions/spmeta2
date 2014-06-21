@@ -35,7 +35,8 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
         {
             ProvisionRunnerAssemblies.Clear();
 
-            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            // should be run only on-premis
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
 
         #endregion

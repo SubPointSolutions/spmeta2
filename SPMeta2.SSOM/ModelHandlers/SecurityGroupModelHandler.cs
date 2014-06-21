@@ -94,7 +94,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (hasInitialGroup)
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -107,7 +107,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -123,7 +123,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel);
             currentGroup.Description = securityGroupModel.Description;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

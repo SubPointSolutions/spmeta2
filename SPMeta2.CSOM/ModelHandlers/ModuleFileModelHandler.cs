@@ -171,9 +171,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(file, f => f.Exists);
             context.ExecuteQuery();
 
-            InvokeOnModelEvents<ModuleFileDefinition, File>(file, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<ModuleFileDefinition, File>(file, ModelEventType.OnUpdating);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -206,7 +206,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(resultFile, f => f.Exists);
             context.ExecuteQuery();
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -216,7 +216,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = moduleFile,
                 ModelHost = folderHost
             });
-            InvokeOnModelEvents<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
 
             return resultFile;
         }

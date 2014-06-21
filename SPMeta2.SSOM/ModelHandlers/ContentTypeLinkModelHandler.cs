@@ -34,7 +34,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var currentListContentType = list.ContentTypes[targetContentType.Name];
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -49,7 +49,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var listCt = list.ContentTypes.Add(targetContentType);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -64,7 +64,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

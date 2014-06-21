@@ -84,7 +84,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var currentUrl = serverRelativeUrl + "/" + folderModel.Name;
             var currentFolder = folderModelHost.CurrentList.ParentWeb.GetFolder(currentUrl);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -102,7 +102,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 currentFolderItem[SPBuiltInFieldId.Title] = folderModel.Name;
                 currentFolderItem.Update();
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -115,7 +115,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -144,7 +144,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                                    .OfType<SPFolder>()
                                    .FirstOrDefault(f => f.Name == folderModel.Name);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -159,7 +159,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentFolder = parentFolder.SubFolders.Add(folderModel.Name);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -172,7 +172,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

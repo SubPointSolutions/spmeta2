@@ -95,7 +95,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             Web currentWeb = null;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -105,7 +105,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvents<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdating);
 
             try
             {
@@ -143,7 +143,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 tmpContext.Load(tmpWeb);
                 tmpContext.ExecuteQuery();
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -153,7 +153,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
-                InvokeOnModelEvents<WebDefinition, Web>(tmpContext.Web, ModelEventType.OnUpdated);
+                InvokeOnModelEvent<WebDefinition, Web>(tmpContext.Web, ModelEventType.OnUpdated);
 
                 tmpWeb.Update();
                 tmpContext.ExecuteQuery();

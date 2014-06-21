@@ -53,7 +53,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var existingAction = GetCustomAction(modelHost, model);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -69,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             MapCustomAction(existingAction, model);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

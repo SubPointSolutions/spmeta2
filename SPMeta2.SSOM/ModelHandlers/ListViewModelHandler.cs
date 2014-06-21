@@ -31,7 +31,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var currentView = targetList.Views.FindByName(viewModel.Title);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -68,7 +68,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

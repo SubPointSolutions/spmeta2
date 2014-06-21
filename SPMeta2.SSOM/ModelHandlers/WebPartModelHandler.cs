@@ -42,12 +42,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
 
-            InvokeOnModelEvents<FieldDefinition, SPField>(null, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<FieldDefinition, SPField>(null, ModelEventType.OnUpdating);
             WebPartExtensions.DeployWebPartsToPage(host.SPLimitedWebPartManager, new[] { webpartPageModel },
                 onUpdatingWebpartInstnce =>
                 {
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -58,12 +58,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    InvokeOnModelEvents<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
+                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
 
                 },
                 onUpdatedWebpartInstnce =>
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -74,7 +74,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    InvokeOnModelEvents<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
+                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
                 });
 
         }

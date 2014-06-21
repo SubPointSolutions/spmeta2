@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Regression.Tests.Base;
 
-namespace SPMeta2.Regression.Tests.Impl
+namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     //[TestClass]
     public class FolderTests : SPMeta2RegresionTestBase

@@ -31,7 +31,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             NavigationNode node = null;
 
-            InvokeOnModelEvents<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdating);
+            InvokeOnModelEvent<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdating);
 
             if (ShouldDeployRootNavigationNode(modelHost))
                 node = EnsureRootQuickLaunchNavigationNode(modelHost as WebModelHost, quickLaunchNode);
@@ -40,7 +40,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             else
                 throw new ArgumentException("modelHost needs to be WebModelHost or NavigationNodeModelHost");
 
-            InvokeOnModelEvents<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdated);
+            InvokeOnModelEvent<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdated);
         }
 
         protected bool ShouldDeployRootNavigationNode(object modelHost)
@@ -84,7 +84,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var existingNode = GetNavigationNode(navigationNodeModelHost, quickLaunchNode);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -111,7 +111,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -204,7 +204,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var existingNode = GetRootNavigationNode(webModelHost, quickLaunchModel, out quickLaunch);
             var previousNode = quickLaunch.Count > 0 ? quickLaunch.Last() : null;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -232,7 +232,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             existingNode.Url = quickLaunchModel.Url;
             existingNode.IsVisible = quickLaunchModel.IsVisible;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

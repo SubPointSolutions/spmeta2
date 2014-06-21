@@ -34,7 +34,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var pageItem = FindWikiPage(list, wikiPageModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -50,7 +50,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var newWikiPageUrl = GetSafeWikiPageUrl(list, wikiPageModel);
                 var newpage = list.RootFolder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -65,7 +65,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

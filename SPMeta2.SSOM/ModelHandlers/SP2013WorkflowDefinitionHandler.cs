@@ -40,7 +40,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var publishedWorkflows = workflowDeploymentService.EnumerateDefinitions(false);
             var currentWorkflowDefinition = publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -61,7 +61,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 workflowDeploymentService.SaveDefinition(workflowDefinition);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -80,7 +80,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     currentWorkflowDefinition.Xaml = workflowDefinitionModel.Xaml;
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -96,7 +96,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -25,7 +26,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = model.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
             DeployInternall(list, listItemModel);
@@ -35,47 +36,92 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (IsDocumentLibray(list))
             {
-                DeployDocumentLibraryItem(list, listItemModel);
+                throw new NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
+            }
+
+            EnsureListItem(list, listItemModel);
+        }
+
+        private SPListItem EnsureListItem(SPList list, ListItemDefinition listItemModel)
+        {
+            // TODO, lazy to query
+            // BIG TODO, don't tell me, I know that
+            var currentItem = list.Items
+                            .OfType<SPListItem>()
+                            .FirstOrDefault(i => i.Title == listItemModel.Title);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentItem,
+                ObjectType = typeof(SPListItem),
+                ObjectDefinition = listItemModel,
+                ModelHost = list
+            });
+
+            if (currentItem == null)
+            {
+                var newItem = list.AddItem();
+
+                newItem["Title"] = listItemModel.Title;
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newItem,
+                    ObjectType = typeof(SPListItem),
+                    ObjectDefinition = listItemModel,
+                    ModelHost = list
+                });
+
+                newItem.Update();
+
+                return newItem;
             }
             else
             {
-                DeployListItem(list, listItemModel);
+                currentItem["Title"] = listItemModel.Title;
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentItem,
+                    ObjectType = typeof(SPListItem),
+                    ObjectDefinition = listItemModel,
+                    ModelHost = list
+                });
+
+                currentItem.Update();
+
+                return currentItem;
             }
         }
 
-        private void DeployListItem(SPList list, ListItemDefinition listItemModel)
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var listItem = GetOrCreateListItemByTitle(list, listItemModel);
-            UpdateListItem(listItem, listItemModel);
+            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
+
+            var item = EnsureListItem(list, listItemModel);
+
+            if (childModelType == typeof(ListItemFieldValueDefinition))
+            {
+                // naaaaah, just gonna get a new one list item
+                // keep it simple and safe, really really really safe with all that SharePoint stuff...
+                var currentItem = list.GetItemById(item.ID);
+
+                action(currentItem);
+
+                currentItem.Update();
+            }
         }
 
-        private void UpdateListItem(SPListItem listItem, ListItemDefinition listItemModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        private SPListItem GetOrCreateListItemByTitle(SPList list, ListItemDefinition listItemModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void DeployDocumentLibraryItem(SPList list, ListItemDefinition listItemModel)
-        {
-            var listItem = GetOrCreateDocumentItemByName(list, listItemModel);
-            UpdateDocumentItem(listItem, listItemModel);
-        }
-
-        private void UpdateDocumentItem(object listItem, ListItemDefinition listItemModel)
-        {
-            // TODO, handle all checking-versions-publishing stuff
-
-            throw new NotImplementedException();
-        }
-
-        private object GetOrCreateDocumentItemByName(SPList list, ListItemDefinition listItemModel)
-        {
-            throw new NotImplementedException();
-        }
 
         private bool IsDocumentLibray(SPList list)
         {

@@ -38,7 +38,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleModel.Name);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -69,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // so, a new object has to be assigned every time
             currentRoleDefinition.BasePermissions = basePermissions;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

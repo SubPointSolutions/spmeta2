@@ -46,7 +46,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var file = web.GetFile(GetSafeFileUrl(folder, moduleFile));
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -76,7 +76,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var spFile = folder.Files.Add(fileName, fileContent, file.Exists);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

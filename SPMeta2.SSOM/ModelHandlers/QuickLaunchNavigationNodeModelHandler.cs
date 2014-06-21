@@ -46,7 +46,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var existingNode = quickLaunch.OfType<SPNavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -67,7 +67,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -114,7 +114,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var existingNode = quickLaunch.OfType<SPNavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -135,7 +135,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             existingNode.Url = quickLaunchNode.Url;
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

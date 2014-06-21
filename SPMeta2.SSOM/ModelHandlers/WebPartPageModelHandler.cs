@@ -66,7 +66,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             // gosh, it really does not have a title
             //targetPage[SPBuiltInFieldId.Title] = webpartPageModel.Title;
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -105,7 +105,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var targetPage = FindWebPartPage(list, webpartPageModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,

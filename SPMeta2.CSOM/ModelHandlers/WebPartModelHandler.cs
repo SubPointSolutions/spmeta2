@@ -49,7 +49,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
 
-            InvokeOnModelEvents(this, new ModelEventArgs
+            InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
@@ -79,14 +79,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (string.IsNullOrEmpty(webPartModel.WebpartXmlTemplate))
                     throw new Exception("WebpartXmlTemplate is empty");
 
-                InvokeOnModelEvents<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
+                InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
 
                 var webPartDefinition = webPartManager.ImportWebPart(webPartModel.WebpartXmlTemplate);
                 var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
 
                 existingWebPart = webPartDefinition.WebPart;
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -97,13 +97,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                InvokeOnModelEvents<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
+                InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
             }
             else
             {
                 // BIG TODO
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,

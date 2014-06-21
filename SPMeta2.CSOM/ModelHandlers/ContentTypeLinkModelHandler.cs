@@ -37,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var targetContentType = FindSiteContentType(web, contentTypeLinkModel);
                 var listContentType = FindListContentType(list, contentTypeLinkModel);
 
-                InvokeOnModelEvents(this, new ModelEventArgs
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
@@ -58,7 +58,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ParentContentType = targetContentType
                     });
 
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
@@ -74,7 +74,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    InvokeOnModelEvents(this, new ModelEventArgs
+                    InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
