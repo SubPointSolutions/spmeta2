@@ -21,7 +21,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var web = modelHost as SPWeb;
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var web = webModelHost.HostWeb;
 
             var listDefinition = model as ListDefinition;
 
@@ -61,7 +62,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var web = webModelHost.HostWeb;
+
             var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
 
             // min provision

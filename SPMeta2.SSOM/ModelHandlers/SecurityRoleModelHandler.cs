@@ -4,6 +4,7 @@ using Microsoft.SharePoint.ApplicationPages.Calendar.Exchange;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -19,11 +20,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
-            var securityRoleModel = model.WithAssertAndCast<SecurityRoleDefinition>("model", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
+            var site = siteModelHost.HostSite;
             var web = site.RootWeb;
 
+            var securityRoleModel = model.WithAssertAndCast<SecurityRoleDefinition>("model", value => value.RequireNotNull());
             var currentRoleDefinition = (SPRoleDefinition)null;
 
             var permissions = SPBasePermissions.EmptyMask;

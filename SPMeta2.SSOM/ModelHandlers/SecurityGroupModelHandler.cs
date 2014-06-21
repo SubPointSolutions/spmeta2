@@ -52,6 +52,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPWeb ExtractWeb(object modelHost)
         {
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
             if (modelHost is SPWeb)
                 return modelHost as SPWeb;
 
@@ -66,7 +69,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var site = siteModelHost.HostSite;
+
             var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model", value => value.RequireNotNull());
 
             var web = site.RootWeb;
@@ -83,8 +88,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             catch (SPException)
             {
-
-
                 var ownerUser = EnsureOwnerUser(web, securityGroupModel);
                 var defaultUser = EnsureDefaultUser(web, securityGroupModel);
 
@@ -118,7 +121,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
             }
-
 
             currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel);
             currentGroup.Description = securityGroupModel.Description;

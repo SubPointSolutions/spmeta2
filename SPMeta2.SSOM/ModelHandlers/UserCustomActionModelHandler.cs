@@ -7,6 +7,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -31,7 +32,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var customAction = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
 
-            DeploySiteCustomAction(modelHost, modelHost as SPSite, customAction);
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var site = siteModelHost.HostSite;
+
+            DeploySiteCustomAction(modelHost, site, customAction);
         }
 
         private void DeploySiteCustomAction(
@@ -83,7 +87,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private bool IsValidHostModelHost(object modelHost)
         {
-            return modelHost is SPSite;
+            return modelHost is SiteModelHost;
         }
 
         #endregion

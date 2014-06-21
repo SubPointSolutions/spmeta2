@@ -3,6 +3,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -33,8 +34,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             // TODO, needs to be changed to using pattern and adjust all model handlers
             InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
 
-            if (modelHost is SPSite)
-                field = EnsureSiteField(modelHost as SPSite, fieldModel);
+            if (modelHost is SiteModelHost)
+                field = EnsureSiteField((modelHost as SiteModelHost).HostSite, fieldModel);
             else if (modelHost is SPList)
                 field = DeployListField(modelHost as SPList, fieldModel);
             else
@@ -61,7 +62,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void CheckValidModelHost(object modelHost)
         {
-            if (!(modelHost is SPSite || modelHost is SPList))
+            if (!(modelHost is SiteModelHost || modelHost is SPList))
             {
                 throw new ArgumentException("modelHost needs to be SPSite/SPList");
             }
@@ -72,15 +73,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             return EnsureFieldInFieldsCollection(list, list.Fields, fieldModel);
         }
 
-        private  SPField EnsureSiteField(SPSite site, FieldDefinition fieldModel)
+        private SPField EnsureSiteField(SPSite site, FieldDefinition fieldModel)
         {
             return EnsureFieldInFieldsCollection(site, site.RootWeb.Fields, fieldModel);
         }
 
         protected SPField GetField(object modelHost, FieldDefinition definition)
         {
-            if (modelHost is SPSite)
-                return GetSiteField(modelHost as SPSite, definition);
+            if (modelHost is SiteModelHost)
+                return GetSiteField((modelHost as SiteModelHost).HostSite, definition);
             else if (modelHost is SPList)
                 return GetListField(modelHost as SPList, definition);
             else

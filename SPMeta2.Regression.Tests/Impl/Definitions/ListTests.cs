@@ -11,8 +11,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         #region tests
 
         [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployDocumentLibrary()
+        [TestCategory("Regression.Lists")]
+        public void CanProvision_DocumentLibrary()
         {
             var model = SPMeta2Model
               .NewWebModel(site => site.AddList(RegLists.DocumentLibrary));
@@ -21,8 +21,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         }
 
         [TestMethod]
-        [TestCategory("Regression")]
-        public void CanDeployGenericList()
+        [TestCategory("Regression.Lists")]
+        public void CanProvision_GeneraicList()
         {
             var model = SPMeta2Model
               .NewWebModel(site => site.AddList(RegLists.GenericList));

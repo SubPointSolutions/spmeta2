@@ -8,6 +8,7 @@ using SPMeta2.Models;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Regression.SSOM;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
 
 namespace SPMeta2.Regression.Runners.SSOM
@@ -41,8 +42,8 @@ namespace SPMeta2.Regression.Runners.SSOM
         {
             WithSSOMContext((site, web) =>
             {
-                _provisionService.DeployModel(site, model);
-                _validationService.DeployModel(site, model);
+                _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+                _validationService.DeployModel(SiteModelHost.FromSite(site), model);
             });
         }
 
@@ -50,8 +51,8 @@ namespace SPMeta2.Regression.Runners.SSOM
         {
             WithSSOMContext((site, web) =>
             {
-                _provisionService.DeployModel(web, model);
-                _validationService.DeployModel(web, model);
+                _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+                _validationService.DeployModel(WebModelHost.FromWeb(web), model);
             });
         }
 

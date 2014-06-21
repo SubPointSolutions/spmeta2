@@ -7,6 +7,7 @@ using Microsoft.SharePoint;
 using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -26,7 +27,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var web = webModelHost.HostWeb;
+
             var workflowDefinitionModel = model.WithAssertAndCast<SP2013WorkflowDefinition>("model", value => value.RequireNotNull());
 
             DeployWorkflowDefinition(modelHost, web, workflowDefinitionModel);

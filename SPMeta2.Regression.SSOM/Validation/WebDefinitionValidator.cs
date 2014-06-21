@@ -7,6 +7,7 @@ using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -15,8 +16,14 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var parentWeb = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
             var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
+            SPWeb parentWeb = null;
+
+            if (modelHost is SiteModelHost)
+                parentWeb = (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                parentWeb = (modelHost as WebModelHost).HostWeb;
 
             TraceUtils.WithScope(traceScope =>
             {

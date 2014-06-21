@@ -3,6 +3,7 @@ using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Common.Utils;
@@ -13,10 +14,12 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definitionModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
+            var site = siteModelHost.HostSite;
             var rootWeb = site.RootWeb;
+
             var contentTypes = rootWeb.AvailableContentTypes;
 
             var spModel = contentTypes[definitionModel.Name];

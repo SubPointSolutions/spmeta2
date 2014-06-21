@@ -103,6 +103,9 @@
     <Compile Include="ModelHosts\FolderModelHost.cs" />
     <Compile Include="ModelHosts\SecurityGroupModelHost.cs" />
     <Compile Include="ModelHosts\SecurityRoleLinkModelHost.cs" />
+    <Compile Include="ModelHosts\SiteModelHost.cs" />
+    <Compile Include="ModelHosts\SSOMModelHostBase.cs" />
+    <Compile Include="ModelHosts\WebModelHost.cs" />
     <Compile Include="ModelHosts\WebpartPageModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />

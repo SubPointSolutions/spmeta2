@@ -7,6 +7,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Administration;
 
@@ -58,13 +59,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void DeployWebFeature(object modelHost, FeatureDefinition featureModel)
         {
-            var web = modelHost.WithAssertAndCast<SPWeb>("modelHost", value => value.RequireNotNull());
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var web = webModelHost.HostWeb;
+
             ProcessFeature(modelHost, web.Features, featureModel);
         }
 
         private void DeploySiteFeature(object modelHost, FeatureDefinition featureModel)
         {
-            var site = modelHost.WithAssertAndCast<SPSite>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var site = siteModelHost.HostSite;
+
             ProcessFeature(modelHost, site.Features, featureModel);
         }
 
@@ -88,8 +93,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             return modelHost is SPFarm ||
                    modelHost is SPWebApplication ||
-                   modelHost is SPSite ||
-                   modelHost is SPWeb;
+                   modelHost is SiteModelHost ||
+                   modelHost is WebModelHost;
         }
 
         private void ProcessFeature(

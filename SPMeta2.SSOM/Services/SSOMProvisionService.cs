@@ -1,8 +1,10 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
 using SPMeta2.Definitions;
+using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System;
 using System.Reflection;
@@ -55,6 +57,22 @@ namespace SPMeta2.SSOM.Services
                         ModelHandlers.Add(handlerInstance.TargetType, handlerInstance);
                 }
             }
+        }
+
+        public override void DeployModel(object modelHost, ModelNode model)
+        {
+            if (!(modelHost is SSOMModelHostBase))
+                throw new ArgumentException("modelHost for SSOM needs to be inherited from SSOMModelHostBase.");
+
+            base.DeployModel(modelHost, model);
+        }
+
+        public override void RetractModel(object modelHost, ModelNode model)
+        {
+            if (!(modelHost is SSOMModelHostBase))
+                throw new ArgumentException("model host for SSOM needs to be inherited from SSOMModelHostBase.");
+
+            base.RetractModel(modelHost, model);
         }
 
         #endregion

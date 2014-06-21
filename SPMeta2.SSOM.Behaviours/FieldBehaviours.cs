@@ -49,13 +49,6 @@ namespace SPMeta2.SSOM.Behaviours
             return MakeRequired(field, false);
         }
 
-        public static SPField MakeItPretty(this SPField field)
-        {
-            field.Title = "sdfsdfsd";
-
-            return field;
-        }
-
         public static SPField MakeRequired(this SPField field)
         {
             return MakeRequired(field, true);

@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -22,10 +23,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
             var parentHost = modelHost;
 
-            if (parentHost is SPSite)
-                CreateWeb(modelHost, (parentHost as SPSite).RootWeb, webModel);
-            else if (parentHost is SPWeb)
-                CreateWeb(modelHost, (parentHost as SPWeb), webModel);
+            if (modelHost is SiteModelHost)
+            {
+                CreateWeb(modelHost, (modelHost as SiteModelHost).HostSite.RootWeb, webModel);
+            }
+            else if (parentHost is WebModelHost)
+            {
+                CreateWeb(modelHost, (parentHost as WebModelHost).HostWeb, webModel);
+            }
             else
             {
                 throw new Exception("modelHost needs to be either SPSite or SPWeb");
@@ -67,15 +72,18 @@ namespace SPMeta2.SSOM.ModelHandlers
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
-            if (modelHost is SPSite)
-                parentWeb = (modelHost as SPSite).RootWeb;
+            if (modelHost is SiteModelHost)
+                parentWeb = (modelHost as SiteModelHost).HostSite.RootWeb;
 
-            if (modelHost is SPWeb)
-                parentWeb = (modelHost as SPWeb);
+            if (modelHost is WebModelHost)
+                parentWeb = (modelHost as WebModelHost).HostWeb;
 
             using (var currentWeb = GetOrCreateWeb(parentWeb, webDefinition))
             {
-                action(currentWeb);
+                action(new WebModelHost
+                {
+                    HostWeb = currentWeb
+                });
             }
         }
 
@@ -102,7 +110,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = null,
-                    ObjectType = typeof (SPWeb),
+                    ObjectType = typeof(SPWeb),
                     ObjectDefinition = webModel,
                     ModelHost = webModel
                 });

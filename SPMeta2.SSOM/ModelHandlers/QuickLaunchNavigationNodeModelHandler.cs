@@ -3,11 +3,13 @@ using Microsoft.SharePoint.Navigation;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -28,8 +30,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var quickLaunchNode = model as QuickLaunchNavigationNodeDefinition;
 
-            if (modelHost is SPWeb)
-                EnsureRootQuickLaunchNavigationNode(modelHost as SPWeb, quickLaunchNode);
+            if (modelHost is WebModelHost)
+                EnsureRootQuickLaunchNavigationNode(modelHost as WebModelHost, quickLaunchNode);
             else if (modelHost is SPNavigationNode)
                 EnsureQuickLaunchNavigationNode(modelHost as SPNavigationNode, quickLaunchNode);
             else
@@ -39,7 +41,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         }
 
         private SPNavigationNode EnsureQuickLaunchNavigationNode(
-            SPNavigationNode navigationNode, QuickLaunchNavigationNodeDefinition quickLaunchNode)
+            SPNavigationNode navigationNode,
+            QuickLaunchNavigationNodeDefinition quickLaunchNode)
         {
             var quickLaunch = navigationNode.Children;
 
@@ -87,10 +90,10 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var quickLaunchNode = model as QuickLaunchNavigationNodeDefinition;
 
-            if (modelHost is SPWeb)
+            if (modelHost is WebModelHost)
             {
-                var web = modelHost as SPWeb;
-                var currentNode = EnsureRootQuickLaunchNavigationNode(web, quickLaunchNode);
+                var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                var currentNode = EnsureRootQuickLaunchNavigationNode(webModelHost, quickLaunchNode);
 
                 action(currentNode);
             }
@@ -107,8 +110,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private SPNavigationNode EnsureRootQuickLaunchNavigationNode(SPWeb web, QuickLaunchNavigationNodeDefinition quickLaunchNode)
+        private SPNavigationNode EnsureRootQuickLaunchNavigationNode(
+            WebModelHost webModelHost,
+            QuickLaunchNavigationNodeDefinition quickLaunchNode)
         {
+            var web = webModelHost.HostWeb;
+
             var quickLaunch = web.Navigation.QuickLaunch;
 
             var existingNode = quickLaunch.OfType<SPNavigationNode>()
