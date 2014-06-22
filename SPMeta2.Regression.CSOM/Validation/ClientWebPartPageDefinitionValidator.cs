@@ -18,8 +18,8 @@ namespace SPMeta2.Regression.CSOM.Validation
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
             var webPartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
-                throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+            //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
+            //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
 
             var pageName = GetSafeWebPartPageFileName(webPartPageModel);
             var pageItem = list.QueryAndGetItemByFileName(pageName);

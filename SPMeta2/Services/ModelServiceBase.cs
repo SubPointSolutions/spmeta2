@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.ModelHosts;
 using SPMeta2.Models;
 using SPMeta2.Events;
 using SPMeta2.Utils;
@@ -55,6 +56,8 @@ namespace SPMeta2.Services
         #region properties
 
         private readonly List<ModelHandlerBase> ModelHandlerEvents = new List<ModelHandlerBase>();
+        private ModelNode _activeModelNode = null;
+
         public Dictionary<Type, ModelHandlerBase> ModelHandlers { get; set; }
 
         protected virtual List<ModelWeigh> GetModelWeighs()
@@ -89,6 +92,34 @@ namespace SPMeta2.Services
 
         #endregion
 
+        #region public API
+
+        public virtual void DeployModel(ModelHostBase modelHost, ModelNode model)
+        {
+            EnsureModelHandleEvents();
+
+            ProcessModelDeployment(modelHost, model);
+        }
+
+        public virtual void RetractModel(ModelHostBase modelHost, ModelNode model)
+        {
+            EnsureModelHandleEvents();
+
+            // TMP, just web model is supported yet
+            // experimental support yet
+            // https://github.com/SubPointSolutions/spmeta2/issues/70
+
+            var modelDefinition = model.Value;
+
+            if (modelDefinition is WebDefinition)
+                RetractWeb(modelHost, model);
+
+            if (modelDefinition is SiteDefinition)
+                RetractSite(modelHost, model);
+        }
+
+        #endregion
+
         #region methods
 
         protected void InvokeOnModelNodeProcessed(object sender, OnModelNodeProcessedEventArgs args)
@@ -112,13 +143,6 @@ namespace SPMeta2.Services
             return result;
         }
 
-        public virtual void DeployModel(object modelHost, ModelNode model)
-        {
-            EnsureModelHandleEvents();
-
-            ProcessModelDeployment(modelHost, model);
-        }
-
         private void EnsureModelHandleEvents()
         {
             foreach (var modelHandler in ModelHandlers.Values
@@ -136,8 +160,6 @@ namespace SPMeta2.Services
                 ModelHandlerEvents.Add(modelHandler);
             }
         }
-
-        private ModelNode _activeModelNode = null;
 
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
@@ -199,23 +221,6 @@ namespace SPMeta2.Services
                         ProcessModelDeployment(childModelHost, childModel);
                 });
             }
-        }
-
-        public virtual void RetractModel(object modelHost, ModelNode model)
-        {
-            EnsureModelHandleEvents();
-
-            // TMP, just web model is supported yet
-            // experimental support yet
-            // https://github.com/SubPointSolutions/spmeta2/issues/70
-
-            var modelDefinition = model.Value;
-
-            if (modelDefinition is WebDefinition)
-                RetractWeb(modelHost, model);
-
-            if (modelDefinition is SiteDefinition)
-                RetractSite(modelHost, model);
         }
 
         private void RetractSite(object modelHost, ModelNode model)

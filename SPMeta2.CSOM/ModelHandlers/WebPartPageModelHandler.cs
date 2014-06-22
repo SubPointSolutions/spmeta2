@@ -52,8 +52,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
             var webPartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
-                throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+            //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
+            //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
 
             var context = list.Context;
 

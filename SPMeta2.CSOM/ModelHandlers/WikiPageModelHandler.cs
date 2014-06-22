@@ -111,8 +111,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var context = list.Context;
 
-            if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
-                throw new Exception("FolderUrl property is not supported yet!");
+            //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
+            //    throw new Exception("FolderUrl property is not supported yet!");
 
             var pageName = GetSafeWikiPageFileName(wikiPageModel);
 

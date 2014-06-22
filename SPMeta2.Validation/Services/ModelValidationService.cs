@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
+using SPMeta2.ModelHosts;
 using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.Validation.Common;
@@ -40,7 +41,7 @@ namespace SPMeta2.Validation.Services
 
         #region methods
 
-        public override void DeployModel(object modelHost, ModelNode model)
+        public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
             Result.Clear();
 

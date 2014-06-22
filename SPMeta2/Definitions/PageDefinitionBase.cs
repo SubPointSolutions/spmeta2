@@ -18,9 +18,6 @@ namespace SPMeta2.Definitions
         public string Title { get; set; }
         public string FileName { get; set; }
 
-        [Obsolete]
-        public string FolderUrl { get; set; }
-
         public bool NeedOverride { get; set; }
 
         #endregion
@@ -29,7 +26,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("Title:[{0}] FileName:[{1}] FolderUrl:[{2}]", Title, FileName, FolderUrl);
+            return string.Format("Title:[{0}] FileName:[{1}]", Title, FileName);
         }
 
         #endregion

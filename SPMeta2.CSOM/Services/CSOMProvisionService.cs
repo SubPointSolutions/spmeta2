@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.ModelHosts;
 using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -47,7 +48,7 @@ namespace SPMeta2.CSOM.Services
 
         #region methods
 
-        public override void DeployModel(object modelHost, ModelNode model)
+        public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
             if (!(modelHost is CSOMModelHostBase))
                 throw new ArgumentException("model host for CSOM needs to be inherited from CSOMModelHostBase");
@@ -55,7 +56,7 @@ namespace SPMeta2.CSOM.Services
             base.DeployModel(modelHost, model);
         }
 
-        public override void RetractModel(object modelHost, ModelNode model)
+        public override void RetractModel(ModelHostBase modelHost, ModelNode model)
         {
             if (!(modelHost is CSOMModelHostBase))
                 throw new ArgumentException("model host for CSOM needs to be inherited from CSOMModelHostBase");

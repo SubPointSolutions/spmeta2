@@ -50,8 +50,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             file.Overwrite = publishingPageModel.NeedOverride;
 
             // just root folder is supported yet
-            if (!string.IsNullOrEmpty(publishingPageModel.FolderUrl))
-                throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+            //if (!string.IsNullOrEmpty(publishingPageModel.FolderUrl))
+            //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
 
             context.Load(list.RootFolder.Files.Add(file));
             context.ExecuteQuery();

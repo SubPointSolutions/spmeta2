@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
 using SPMeta2.Services;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.Services
 {
@@ -17,7 +18,7 @@ namespace SPMeta2.SSOM.Services
             var site = context.Context as SPSite;
             var model = context.Model;
 
-            ModelService.DeployModel(site, model);
+            ModelService.DeployModel(SiteModelHost.FromSite(site), model);
         }
 
         protected override void InternalDeployRootWebModel(ProvisionServiceContext context)
@@ -25,7 +26,7 @@ namespace SPMeta2.SSOM.Services
             var web = context.Context as SPWeb;
             var model = context.Model;
 
-            ModelService.DeployModel(web, model);
+            ModelService.DeployModel(WebModelHost.FromWeb(web), model);
         }
 
         protected override void InternalDeployWebModel(ProvisionServiceContext context)
@@ -33,7 +34,7 @@ namespace SPMeta2.SSOM.Services
             var web = context.Context as SPWeb;
             var model = context.Model;
 
-            ModelService.DeployModel(web, model);
+            ModelService.DeployModel(WebModelHost.FromWeb(web), model);
         }
 
         #endregion

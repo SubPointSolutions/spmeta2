@@ -12,8 +12,8 @@
 
         public override string ToString()
         {
-            return string.Format("Title:[{0}] FileName:[{1}] FolderUrl:[{2}] PageLayoutFileName:[{3}]",
-                new[] { Title, FileName, FolderUrl, PageLayoutFileName });
+            return string.Format("Title:[{0}] FileName:[{1}] PageLayoutFileName:[{2}]",
+                new[] { Title, FileName, PageLayoutFileName });
         }
 
         #endregion
