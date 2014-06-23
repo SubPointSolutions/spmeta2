@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2B5CA105-8D61-4704-B9CE-C1CBA53AAAB0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPMeta2.Regression</RootNamespace>
+    <AssemblyName>SPMeta2.Regression</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\ReferenceAssemblies\v4.0\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\SPMeta2Attributes.cs" />
+    <Compile Include="Base\SPWebApplicationSandboxTest.cs" />
+    <Compile Include="Consts\SPFeatureIds.cs" />
+    <Compile Include="Const\SPBasePermissions.cs" />
+    <Compile Include="Const\SPBuiltInContentTypeId.cs" />
+    <Compile Include="Const\SPListTemplateType.cs" />
+    <Compile Include="Models\DynamicModels\DynamicContentTypeModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicFieldModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicListModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicListViewModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicSecurityGroupModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicSecurityRoleModels.cs" />
+    <Compile Include="Models\DynamicModels\DynamicWebPartPageModels.cs" />
+    <Compile Include="Models\DynamicModels\ModelConsts.cs" />
+    <Compile Include="Models\ModelBuilders\DynamicModelBuilder.cs" />
+    <Compile Include="Profiles\HostCreatingMode.cs" />
+    <Compile Include="Profiles\ProfileHelper.cs" />
+    <Compile Include="Profiles\TestProfileBase.cs" />
+    <Compile Include="Profiles\WebApplicationSandboxProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ModelGeneratorService.cs" />
+    <Compile Include="Services\ModelTreeGeneratorService.cs" />
+    <Compile Include="Services\TraceableServerOMServiceFactory.cs" />
+    <Compile Include="Services\TracebleClientOModelService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
+      <Project>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</Project>
+      <Name>SPMeta2.CSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.Common\SPMeta2.Regression.Common.csproj">
+      <Project>{E9D05AE0-6466-45CD-B28D-63F87097D721}</Project>
+      <Name>SPMeta2.Regression.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
+      <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>
+      <Name>SPMeta2.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
+      <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>
+      <Name>SPMeta2.Syntax.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

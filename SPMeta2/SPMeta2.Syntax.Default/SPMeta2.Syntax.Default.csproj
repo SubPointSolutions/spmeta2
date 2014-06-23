@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPMeta2.Syntax.Default</RootNamespace>
+    <AssemblyName>SPMeta2.Syntax.Default</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContentTypeDefinitionSyntax.cs" />
+    <Compile Include="ContentTypeLinkDefinitionSyntax.cs" />
+    <Compile Include="FeatureDefinitionSyntax.cs" />
+    <Compile Include="FarmDefinitionSyntax.cs" />
+    <Compile Include="FieldDefinitionSyntax.cs" />
+    <Compile Include="FieldLinkDefinitionSyntax.cs" />
+    <Compile Include="FolderDefinitionSyntax.cs" />
+    <Compile Include="ListDefinitionSyntax.cs" />
+    <Compile Include="ListItemDefinitionSyntax.cs" />
+    <Compile Include="ListItemFieldValueDefinitionSyntax.cs" />
+    <Compile Include="ListViewDefinitionSyntax.cs" />
+    <Compile Include="ModelWithNamespaces.cs" />
+    <Compile Include="Modern\ModernSyntax.cs" />
+    <Compile Include="ModuleFileDefinitionSyntax.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuickLaunchNavigationSyntax.cs" />
+    <Compile Include="SecurityGroupDefinitionSyntax.cs" />
+    <Compile Include="SecurityGroupLinkDefinitionSyntax.cs" />
+    <Compile Include="SecurityRoleDefinitionSyntax.cs" />
+    <Compile Include="SecurityRoleLinkDefinitionSyntax.cs" />
+    <Compile Include="SP2013WorkflowDefinitionSyntax.cs" />
+    <Compile Include="SP2013WorkflowSubscriptionDefinitionSyntax.cs" />
+    <Compile Include="SPMeta2Model.cs" />
+    <Compile Include="UserCustomActionSyntax.cs" />
+    <Compile Include="Utils\ModuleFileUtils.cs" />
+    <Compile Include="WebDefinitionSyntax.cs" />
+    <Compile Include="WebPartDefinitionSyntax.cs" />
+    <Compile Include="WebPartPageDefinitionSyntax.cs" />
+    <Compile Include="WikiPageDefinitionSyntax.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SPMeta2.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,12 @@
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.Regression.Model.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.Regression.Model.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.Syntax.Default.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\bin\Debug\SPMeta2.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.csprojResolveAssemblyReference.cache
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.Templates.WorkflowXAMLDefinitions.resources
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.Templates.WebPartTemplates.resources
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.csproj.GenerateResource.Cache
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Model\obj\Debug\SPMeta2.Regression.Model.pdb
