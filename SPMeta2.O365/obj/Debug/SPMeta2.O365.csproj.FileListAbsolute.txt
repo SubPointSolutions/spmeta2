@@ -1,0 +1,10 @@
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.dll
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.pdb
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\Microsoft.Online.SharePoint.Client.Tenant.dll
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\Microsoft.SharePoint.Client.dll
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\SPMeta2.dll
+C:\_git\spmeta2\SPMeta2.O365\bin\Debug\SPMeta2.pdb
+C:\_git\spmeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
+C:\_git\spmeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
+C:\_git\spmeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb
