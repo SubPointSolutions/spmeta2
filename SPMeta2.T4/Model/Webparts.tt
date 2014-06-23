@@ -1,3 +1,0 @@
-﻿<#@ output extension=".cs" #>
-<#@ include file="$(ProjectDir)\_3rd party\SPMeta2\ExcelModel\T4\SPMeta2.T4.tt" #>
-<#    GenerateSPMeta2Template("SPWebpart"); #>
