@@ -84,9 +84,11 @@
     <Compile Include="Definitions\WebPartPageDefinition.cs" />
     <Compile Include="Definitions\WikiPageDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInFarmFeatures.cs" />
     <Compile Include="Enumerations\BuiltInFieldId.cs" />
     <Compile Include="Enumerations\BuiltInFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInSiteContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInSiteFeatures.cs" />
     <Compile Include="Enumerations\BuiltInSP2013Workflow.cs" />
     <Compile Include="Enumerations\BuiltInWebApplicationFeatures.cs" />

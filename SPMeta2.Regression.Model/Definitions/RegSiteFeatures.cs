@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.Model.Definitions
     {
         #region properties
 
-        public static FeatureDefinition PublishingSite = BuiltInSiteFeatures.PublishingSite
+        public static FeatureDefinition PublishingSite = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure
                                                                             .Inherit()
                                                                             .Enable();
 
