@@ -1,5 +1,7 @@
-﻿using SPMeta2.Definitions;
+﻿using System;
+using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -7,21 +9,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition securityRoleDefinition)
+        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition)
         {
-            model.ChildModels.Add(new ModelNode { Value = securityRoleDefinition });
-
-            return model;
+            return AddSecurityRole(model, definition, null);
         }
 
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<SecurityRoleDefinition> GetSecurityRoles(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<SecurityRoleDefinition>();
-        //}
+        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNode(definition, action);
+        }
 
         #endregion
     }

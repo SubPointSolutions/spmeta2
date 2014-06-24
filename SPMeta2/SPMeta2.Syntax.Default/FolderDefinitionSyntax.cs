@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -11,20 +12,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region add folders
 
-        public static ModelNode AddFolder(this ModelNode model, FolderDefinition folderModel)
+        public static ModelNode AddFolder(this ModelNode model, FolderDefinition definition)
         {
-            return AddFolder(model, folderModel, null);
+            return AddFolder(model, definition, null);
         }
 
-        public static ModelNode AddFolder(this ModelNode model, FolderDefinition folderModel, Action<ModelNode> action)
+        public static ModelNode AddFolder(this ModelNode model, FolderDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = folderModel };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion

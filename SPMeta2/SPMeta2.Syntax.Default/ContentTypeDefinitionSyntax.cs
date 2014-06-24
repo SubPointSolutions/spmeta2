@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -15,32 +16,25 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static ModelNode AddContentType(this ModelNode siteModel, DefinitionBase contentTypeDefinition)
+        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition)
         {
-            return AddContentType(siteModel, contentTypeDefinition, null);
+            return AddContentType(model, definition, null);
         }
 
-        public static ModelNode AddContentType(this ModelNode siteModel, DefinitionBase contentTypeDefinition, Action<ModelNode> contentTypeModelNodeAction)
+        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
         {
-            var contentTypeModelNode = new ModelNode { Value = contentTypeDefinition };
-
-            siteModel.ChildModels.Add(contentTypeModelNode);
-
-            if (contentTypeModelNodeAction != null)
-                contentTypeModelNodeAction(contentTypeModelNode);
-
-            return siteModel;
+            return model.AddDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, params DefinitionBase[] contentTypeDefinitions)
+        public static ModelNode AddContentTypes(this ModelNode siteModel, params ContentTypeDefinition[] definitions)
         {
-            return AddContentTypes(siteModel, (IEnumerable<DefinitionBase>)contentTypeDefinitions);
+            return AddContentTypes(siteModel, (IEnumerable<ContentTypeDefinition>)definitions);
         }
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, IEnumerable<DefinitionBase> contentTypeDefinitions)
+        public static ModelNode AddContentTypes(this ModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
         {
-            foreach (var contentTypeDefinition in contentTypeDefinitions)
-                AddContentType(siteModel, contentTypeDefinition);
+            foreach (var definition in definitions)
+                AddContentType(siteModel, definition);
 
             return siteModel;
         }

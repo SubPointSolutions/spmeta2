@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ContentTypeDefinitionSyntax.cs" />
     <Compile Include="ContentTypeLinkDefinitionSyntax.cs" />
+    <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="FeatureDefinitionSyntax.cs" />
     <Compile Include="FarmDefinitionSyntax.cs" />
     <Compile Include="FieldDefinitionSyntax.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -9,63 +10,54 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddFeature(this ModelNode model, DefinitionBase featureDefinition)
+        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition)
         {
-            return AddFeature(model, featureDefinition, null);
+            return AddFeature(model, definition, null);
         }
 
-        public static ModelNode AddFeature(this ModelNode model, DefinitionBase featureDefinition, Action<ModelNode> action)
+        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = featureDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null)
-                action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddSiteFeature(this ModelNode siteModel, DefinitionBase featureDefinition)
+        public static ModelNode AddSiteFeature(this ModelNode model, FeatureDefinition definition)
         {
-            return AddSiteFeature(siteModel, featureDefinition, null);
+            return AddSiteFeature(model, definition, null);
         }
 
-        public static ModelNode AddSiteFeature(this ModelNode siteModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        public static ModelNode AddSiteFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
-            return AddFeature(siteModel, featureDefinition, action);
+            return AddFeature(model, definition, action);
         }
 
-        public static ModelNode AddWebFeature(this ModelNode webModel, DefinitionBase featureDefinition)
+        public static ModelNode AddWebFeature(this ModelNode model, FeatureDefinition definition)
         {
-            return AddWebFeature(webModel, featureDefinition, null);
+            return AddWebFeature(model, definition, null);
         }
 
-        public static ModelNode AddWebFeature(this ModelNode webModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        public static ModelNode AddWebFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
-            return AddFeature(webModel, featureDefinition, action);
+            return AddFeature(model, definition, action);
         }
 
-        public static ModelNode AddWebApplicationFeature(this ModelNode webApplicationModel,
-            DefinitionBase featureDefinition)
+        public static ModelNode AddWebApplicationFeature(this ModelNode model, FeatureDefinition definition)
         {
-            return AddWebApplicationFeature(webApplicationModel, featureDefinition, null);
+            return AddWebApplicationFeature(model, definition, null);
         }
 
-        public static ModelNode AddWebApplicationFeature(this ModelNode webApplicationModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        public static ModelNode AddWebApplicationFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
-            return AddFeature(webApplicationModel, featureDefinition, action);
+            return AddFeature(model, definition, action);
         }
 
-        public static ModelNode AddFarmFeature(this ModelNode webApplicationModel,
-           DefinitionBase featureDefinition)
+        public static ModelNode AddFarmFeature(this ModelNode model, FeatureDefinition definition)
         {
-            return AddFarmFeature(webApplicationModel, featureDefinition, null);
+            return AddFarmFeature(model, definition, null);
         }
 
-        public static ModelNode AddFarmFeature(this ModelNode farmModel, DefinitionBase featureDefinition, Action<ModelNode> action)
+        public static ModelNode AddFarmFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
-            return AddFeature(farmModel, featureDefinition, action);
+            return AddFeature(model, definition, action);
         }
 
         #endregion

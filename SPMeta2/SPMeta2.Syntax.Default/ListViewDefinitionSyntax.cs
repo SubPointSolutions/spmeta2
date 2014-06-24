@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,30 +9,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddView(this ModelNode model, ListViewDefinition listViewDefinition)
+        public static ModelNode AddView(this ModelNode model, ListViewDefinition definition)
         {
-            return AddView(model, listViewDefinition, null);
+            return AddView(model, definition, null);
         }
 
-        public static ModelNode AddView(this ModelNode model, DefinitionBase listViewDefinition, Action<ModelNode> action)
+        public static ModelNode AddView(this ModelNode model, ListViewDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = listViewDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<ListViewDefinition> GetListViews(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<ListViewDefinition>();
-        //}
 
         #endregion
     }

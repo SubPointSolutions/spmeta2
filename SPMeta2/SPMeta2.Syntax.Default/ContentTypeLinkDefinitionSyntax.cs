@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,20 +9,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition contentTypeLinkDefinition)
+        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition)
         {
-            return AddContentTypeLink(model, contentTypeLinkDefinition, null);
+            return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition contentTypeLinkModel, Action<ModelNode> action)
+        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = contentTypeLinkModel };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
         public static ModelNode AddContentTypeLink(this ModelNode model, string contentTypdId)
@@ -33,17 +28,17 @@ namespace SPMeta2.Syntax.Default
             });
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition contentTypeDefinition)
+        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition)
         {
-            return AddContentTypeLink(model, contentTypeDefinition, null);
+            return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition contentTypeDefinition, Action<ModelNode> action)
+        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
         {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {
-                ContentTypeId = contentTypeDefinition.GetContentTypeId(),
-                ContentTypeName = contentTypeDefinition.Name
+                ContentTypeId = definition.GetContentTypeId(),
+                ContentTypeName = definition.Name
             }, action);
         }
 

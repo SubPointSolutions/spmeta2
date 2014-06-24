@@ -467,7 +467,7 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
             {
                 var model = SPMeta2Model.NewSiteModel(site =>
                 {
-                    site.AddList(RegSecurityRoles.SecurityRole1, securityRole =>
+                    site.AddSecurityRole(RegSecurityRoles.SecurityRole1, securityRole =>
                     {
                         AssertEventHooks<SPRoleDefinition>(securityRole, hooks);
                     });

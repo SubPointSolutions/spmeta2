@@ -6,25 +6,20 @@ using SPMeta2.Definitions;
 using SPMeta2.Models;
 using System.IO;
 using System.Reflection;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
     public static class ModuleFileDefinitionSyntax
     {
-        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition moduleFileDefinition)
+        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition definition)
         {
-            return AddModuleFile(model, moduleFileDefinition, null);
+            return AddModuleFile(model, definition, null);
         }
 
-        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition moduleFileDefinition, Action<ModelNode> action)
+        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = moduleFileDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }      
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -9,30 +10,15 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
 
-        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition webPartDefinition)
+        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition definition)
         {
-            return AddWebPart(model, webPartDefinition, null);
+            return AddWebPart(model, definition, null);
         }
 
-        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition webPartDefinition, Action<ModelNode> action)
+        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = webPartDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<WebPartDefinition> GetWebParts(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<WebPartDefinition>();
-        //}
 
         #endregion
     }

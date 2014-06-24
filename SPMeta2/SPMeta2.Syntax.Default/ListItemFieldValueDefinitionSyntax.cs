@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -39,20 +40,14 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition fieldValueDefinition)
+        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition)
         {
-            return AddListItemFieldValue(model, fieldValueDefinition, null);
+            return AddListItemFieldValue(model, definition, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition fieldValueDefinition, Action<ModelNode> action)
+        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = fieldValueDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
 

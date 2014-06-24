@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,43 +9,28 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupLinkDefinition securityGroupLinkDefinition)
+        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupLinkDefinition definition)
         {
-            return AddSecurityGroupLink(model, securityGroupLinkDefinition, null);
+            return AddSecurityGroupLink(model, definition, null);
         }
 
-        public static ModelNode AddSecurityGroupLink(this ModelNode model, SecurityGroupLinkDefinition securityGroupLinkDefinition, Action<ModelNode> action)
+        public static ModelNode AddSecurityGroupLink(this ModelNode model, SecurityGroupLinkDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = securityGroupLinkDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupDefinition securityGroupDefinition)
+        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupDefinition definition)
         {
-            return AddSecurityGroupLink(model, securityGroupDefinition, null);
+            return AddSecurityGroupLink(model, definition, null);
         }
 
-        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupDefinition securityGroupDefinition, Action<ModelNode> action)
+        public static ModelNode AddSecurityGroupLink(this  ModelNode model, SecurityGroupDefinition definition, Action<ModelNode> action)
         {
             return AddSecurityGroupLink(model, new SecurityGroupLinkDefinition
             {
-                SecurityGroupName = securityGroupDefinition.Name
+                SecurityGroupName = definition.Name
             }, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<SecurityGroupLinkDefinition> GetSecurityGroupLinks(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<SecurityGroupLinkDefinition>();
-        //}
 
         #endregion
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -11,20 +12,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, DefinitionBase workflowDefinitionModel)
+        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, SP2013WorkflowSubscriptionDefinition definition)
         {
-            return AddSP2013WorkflowSubscription(model, workflowDefinitionModel, null);
+            return AddSP2013WorkflowSubscription(model, definition, null);
         }
 
-        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, DefinitionBase workflowDefinitionModel, Action<ModelNode> action)
+        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, SP2013WorkflowSubscriptionDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = workflowDefinitionModel };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion

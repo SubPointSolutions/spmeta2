@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -11,20 +12,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition listItemDefinition)
+        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition definition)
         {
-            return AddListItem(model, listItemDefinition, null);
+            return AddListItem(model, definition, null);
         }
 
-        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition fieldValueDefinition, Action<ModelNode> action)
+        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = fieldValueDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -11,21 +12,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition customAction)
+        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition definition)
         {
-            return AddUserCustomAction(model, customAction, null);
+            return AddUserCustomAction(model, definition, null);
         }
 
-        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition customAction, Action<ModelNode> action)
+        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
         {
-            var newModel = new ModelNode { Value = customAction };
-
-            model.ChildModels.Add(newModel);
-
-            if (action != null)
-                action(newModel);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion

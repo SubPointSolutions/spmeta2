@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,21 +9,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecurityGroup(this ModelNode model, SecurityGroupDefinition securityGroup)
+        public static ModelNode AddSecurityGroup(this ModelNode model, SecurityGroupDefinition definition)
         {
-            return AddSecurityGroup(model, securityGroup, null);
+            return AddSecurityGroup(model, definition, null);
         }
 
-        public static ModelNode AddSecurityGroup(this ModelNode model, SecurityGroupDefinition securityGroup, Action<ModelNode> securityGroupAction)
+        public static ModelNode AddSecurityGroup(this ModelNode model, SecurityGroupDefinition definition, Action<ModelNode> action)
         {
-            var securityGroupModelNode = new ModelNode { Value = securityGroup };
-
-            model.ChildModels.Add(securityGroupModelNode);
-
-            if (securityGroupAction != null)
-                securityGroupAction(securityGroupModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion

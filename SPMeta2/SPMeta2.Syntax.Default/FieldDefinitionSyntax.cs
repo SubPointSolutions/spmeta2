@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -9,41 +10,28 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddField(this ModelNode siteModel, DefinitionBase fielDefinition)
+        public static ModelNode AddField(this ModelNode siteModel, FieldDefinition definition)
         {
-            return AddFields(siteModel, new[] { fielDefinition });
+            return AddFields(siteModel, new[] { definition });
         }
 
-        public static ModelNode AddField(this ModelNode siteModel, DefinitionBase fielDefinition, Action<ModelNode> action)
+        public static ModelNode AddField(this ModelNode model, FieldDefinition fielDefinition, Action<ModelNode> action)
         {
-            var fieldNode = new ModelNode { Value = fielDefinition };
-
-            siteModel.ChildModels.Add(fieldNode);
-
-            if (action != null)
-                action(fieldNode);
-
-            return siteModel;
+            return model.AddDefinitionNode(fielDefinition, action);
         }
 
-        public static ModelNode AddFields(this ModelNode siteModel, params DefinitionBase[] fielDefinition)
+        public static ModelNode AddFields(this ModelNode siteModel, FieldDefinition[] fielDefinition)
         {
-            return AddFields(siteModel, (IEnumerable<DefinitionBase>)fielDefinition);
+            return AddFields(siteModel, (IEnumerable<FieldDefinition>)fielDefinition);
         }
 
-        public static ModelNode AddFields(this ModelNode siteModel, IEnumerable<DefinitionBase> fieldDefinitions)
+        public static ModelNode AddFields(this ModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
         {
             foreach (var fieldDefinition in fieldDefinitions)
-                siteModel.ChildModels.Add(new ModelNode { Value = fieldDefinition });
+                return model.AddDefinitionNode(fieldDefinition);
 
-            return siteModel;
+            return model;
         }
-
-        #endregion
-
-        #region model
-
-
 
         #endregion
     }

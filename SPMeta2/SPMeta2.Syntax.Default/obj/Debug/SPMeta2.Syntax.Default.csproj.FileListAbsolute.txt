@@ -23,6 +23,5 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.
 C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.pdb

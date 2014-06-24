@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,48 +9,35 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecurityRoleLink(this  ModelNode model, SecurityRoleDefinition securityRoleDefinition)
+        public static ModelNode AddSecurityRoleLink(this  ModelNode model, SecurityRoleDefinition definition)
         {
-            return AddSecurityRoleLink(model, securityRoleDefinition, null);
+            return AddSecurityRoleLink(model, definition, null);
         }
 
-        public static ModelNode AddSecurityRoleLink(this ModelNode model, SecurityRoleDefinition securityRoleDefinition, Action<ModelNode> action)
+        public static ModelNode AddSecurityRoleLink(this ModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
         {
             var roleLinkDefinition = new SecurityRoleLinkDefinition
             {
-                SecurityRoleName = securityRoleDefinition.Name
+                SecurityRoleName = definition.Name
             };
 
-            var newModelNode = new ModelNode { Value = roleLinkDefinition };
-
-            model.ChildModels.Add(newModelNode);
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(roleLinkDefinition, action);
         }
 
-        public static ModelNode AddSecurityRoleLink(this  ModelNode model, string securityRoleName)
+        public static ModelNode AddSecurityRoleLink(this ModelNode model, string securityRoleName)
+        {
+            return AddSecurityRoleLink(model, securityRoleName, null);
+        }
+
+        public static ModelNode AddSecurityRoleLink(this  ModelNode model, string securityRoleName, Action<ModelNode> action)
         {
             var newSecurityRoleLink = new SecurityRoleLinkDefinition
             {
                 SecurityRoleName = securityRoleName
             };
 
-            var newModelNode = new ModelNode { Value = newSecurityRoleLink };
-
-            model.ChildModels.Add(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(newSecurityRoleLink, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<SecurityRoleLinkDefinition> GetSecurityRoleLinks(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<SecurityRoleLinkDefinition>();
-        //}
 
         #endregion
     }
