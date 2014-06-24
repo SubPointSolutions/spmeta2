@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -8,30 +9,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition wikiPageDefinition)
+        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition definition)
         {
-            return AddWikiPage(model, wikiPageDefinition, null);
+            return AddWikiPage(model, definition, null);
         }
 
-        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition webpartPageDefinition, Action<ModelNode> action)
+        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition definition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = webpartPageDefinition };
-
-            model.ChildModels.Add(newModelNode);
-
-            if (action != null) action(newModelNode);
-
-            return model;
+            return model.AddDefinitionNode(definition, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<WikiPageDefinition> GetWikiPages(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<WikiPageDefinition>();
-        //}
 
         #endregion
     }
