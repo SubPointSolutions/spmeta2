@@ -1,10 +1,3 @@
-## Btw, you can hire the author of SPMeta2!
-My name is <a href="http://www.linkedin.com/in/antonvishnyakov">Anton Vishnyakov</a> and I am looking for an awesome place to work in sunny Sydney, Australia. I have <a href="http://www.linkedin.com/in/antonvishnyakov">an awesome SharePoint and custom development skillset (check LinkedIn)</a> , and I have 457 visa.
-
-Currently, I am in Sydney, Australia. I have been for the last two years in Sydney as a consultant across various big and small clients in Sydney (20+ in total), for both in-house and client faces engagements; user training, custom development, infrastructure engagements, bug-fixing and pretty much everything related to SharePoint and development.
-
-Look up me at LinkedIn: <a href="http://www.linkedin.com/in/antonvishnyakov">http://www.linkedin.com/in/antonvishnyakov</a> or check more details here - <a href="http://spdevlab.com/2014/06/25/will-code-sharepoint-for-food-in-sydney-australia/">Will code SharePoint for food and donuts in Sydney, Austra
-
 ## What is SPMeta2?
 SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
 
