@@ -3,7 +3,7 @@ SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
 
 Struggling with SharePoint's API inconsistency, bugs, "by-design" behaviour, unaffordable amount of time to write, support and upgrade WSP packages and XML, a team of passionate SharePoint professionals decided to come up with robust, testable and repeatable way to deploy such artifacts like fields, content types, libraries, pages and many more.
 
-As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. What's inside?
+As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. What's inside? 
 
 ## SPMeta2 philosophy and mission
 ### Fluent API and syntax extensions
