@@ -1,9 +1,19 @@
+## SPMeta2 is now part of <a href="http://subpointsolutions.com">SubPoint Solutions</a>
+
+<a href="http://subpointsolutions.com">SubPoint Solutions</a> is an inovative company that helps SharePoint professionals and consultancy companies be efficient. 
+
+We look after <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, <a href="http://subpointsolutions.com/spcafcontrib/about">SPCAFContrib</a> and a few more projects aim to provide a powerful foundation and experience for SharePoint professionals. 
+
+With growing demaind of effective SharePoint artifact provision for SP2013 and O365, we are taking <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a> to the next level, offering <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a hre='http://subpointsolutions.com/services/support'>additional support</a> for our clients.
+
+Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a href='https://subpointsolutions.zendesk.com/forums/21123216-General-Question-Answer'>let us know how it works for you</a>.
+
 ## What is SPMeta2?
 SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
 
 Struggling with SharePoint's API inconsistency, bugs, "by-design" behaviour, unaffordable amount of time to write, support and upgrade WSP packages and XML, a team of passionate SharePoint professionals decided to come up with robust, testable and repeatable way to deploy such artifacts like fields, content types, libraries, pages and many more.
 
-As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. What's inside?
+As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. What's inside? 
 
 ## SPMeta2 philosophy and mission
 ### Fluent API and syntax extensions
@@ -40,7 +50,6 @@ Having code based provision allows us to have full control over the provision an
 This allows us to write integration tests within minutes, make sure deployment and upgrade work as expected. Most of the provision cases are covered with integration tests. We create a new site or web, deploy everything we need and check if everything has been deployed correctly.
 
 SPMeta2 uses [appveyor CI online service](http://www.appveyor.com/) at https://ci.appveyor.com/project/avishnyakov/spmeta2
-Current build status for the master branch: ![](https://ci.appveyor.com/api/projects/status/i96tsrq5xjdm4tu2)
 
 Learn more here - <a href="https://github.com/SubPointSolutions/spmeta2/wiki/Regression-and-CI">Regression and CI</a>.
 
