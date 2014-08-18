@@ -118,7 +118,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             //var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
             var contentTypeId = contentTypeModel.GetContentTypeId();
             var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
-            currentContentType = currentContentType ?? contentTypes.FindByName(contentTypeModel.Name);
 
             if (currentContentType == null)
             {
