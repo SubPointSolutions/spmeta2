@@ -59,13 +59,36 @@ namespace SPMeta2.CSOM.Behaviours
 
         public static Field MakeLookupConnectionToList(this Field field, Guid webId, Guid listId, string showFieldName)
         {
-            var lookupField = field as FieldLookup;
+            var context = field.Context;
+            var lookupField = context.CastTo<FieldLookup>(field);
+
+            context.Load(lookupField, f => f.LookupList);
+            context.ExecuteQuery();
 
             if (lookupField != null && string.IsNullOrEmpty(lookupField.LookupList))
             {
                 lookupField.LookupWebId = webId;
                 lookupField.LookupList = listId.ToString();
                 lookupField.LookupField = showFieldName;
+            }
+
+            return field;
+        }
+
+        public static Field MakeDependentLookupConnectionToList(this Field field, Guid webId, Guid listId, Guid primaryLookupFieldId, string showFieldName)
+        {
+            var context = field.Context;
+            var lookupField = context.CastTo<FieldLookup>(field);
+
+            context.Load(lookupField, f => f.LookupList);
+            context.ExecuteQuery();
+
+            if (lookupField != null && string.IsNullOrEmpty(lookupField.LookupList))
+            {
+                lookupField.LookupWebId = webId;
+                lookupField.LookupList = listId.ToString();
+                lookupField.LookupField = showFieldName;
+                lookupField.PrimaryFieldId = primaryLookupFieldId.ToString();
             }
 
             return field;

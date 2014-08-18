@@ -25,12 +25,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private string GetCurrentWebUrl(ClientRuntimeContext context, Web parentWeb, WebDefinition webModel)
         {
-            // TOSDO, need to have "safe" url concats here, CSOM is doomed
-            // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
-
             var fullUrl = context.Url.ToLower();
-            var serverUrl = fullUrl.Replace(parentWeb.ServerRelativeUrl.ToLower(), string.Empty);
-            var currentWebUrl = serverUrl + "/" + parentWeb.ServerRelativeUrl + "/" + webModel.Url;
+            var serverUrl = fullUrl.EndsWith(parentWeb.ServerRelativeUrl.ToLower())
+                ? fullUrl.Substring(0, fullUrl.LastIndexOf(parentWeb.ServerRelativeUrl.ToLower()))
+                : fullUrl;
+            var isParentWebRootUrl = parentWeb.ServerRelativeUrl.Trim('/').Length == 0;
+            var currentWebUrl = serverUrl +
+                                (isParentWebRootUrl
+                                    ? String.Empty
+                                    : parentWeb.ServerRelativeUrl +
+                                      (webModel.Url.StartsWith("/") ? webModel.Url : "/" + webModel.Url));
 
             return currentWebUrl.ToLower();
         }
