@@ -137,7 +137,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (list != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
                 spFile.CheckIn("", CheckinType.MajorCheckIn);
 
-            if (list != null && (list.EnableMinorVersions || list.EnableVersioning))
+            if (list != null && (list.EnableMinorVersions))
                 spFile.Publish("Provision");
 
             if (list != null && (list.EnableModeration))
