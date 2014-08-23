@@ -1,0 +1,3196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://nintex.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://nintex.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://nintex.com">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="WorkflowFormProductSelected">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowConfiguration" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfiguration" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="product" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="formType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WorkflowFormProductSelectedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WorkflowFormProductSelectedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckInForms">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowConfiguration" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfiguration" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="formType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckInFormsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="wfName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfigs" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="listId" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="contentTypeId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="changeNotes" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveWorkflowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveWorkflowResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WorkflowMetaData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModifiedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PublishedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EcbId" type="s1:guid" />
+          <s:element minOccurs="1" maxOccurs="1" name="Published" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocalTimePublishedString" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TimeLastModified" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocalTimeLastModifiedString" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChangeInformation" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkflowId" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowTypeDisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UIVersion" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsPublished" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PreviouslyPublished" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ListId" type="s1:guid" />
+          <s:element minOccurs="1" maxOccurs="1" name="MajorVersion" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MinorVersion" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WorkflowExists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="listId" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WorkflowExistsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WorkflowExistsResult" type="tns:NameInUseStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="NameInUseStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="NameNotUsed" />
+          <s:enumeration value="NameUsedInOtherList" />
+          <s:enumeration value="NameUsedInThisList" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SnippetExists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="snippetName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SnippetExistsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SnippetExistsResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TemplateExists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="templateName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TemplateExistsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TemplateExistsResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveSnippet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="snippetName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfigs" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveSnippetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveSnippetResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveTemplate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="templateName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateDescription" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfigs" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveTemplateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveTemplate2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="templateName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateDescription" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfigs" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lcid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveTemplate2Response">
+        <s:complexType />
+      </s:element>
+      <s:element name="PublishWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="wfName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="activityConfigs" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="listId" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="contentTypeId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="changeNotes" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishWorkflowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PublishWorkflowResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TerminateWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="listId" type="s1:guid" />
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="instanceId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TerminateWorkflowResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TerminateWorkflowByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="terminatePreviousInstances" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TerminateWorkflowByNameResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TerminateWorkflowByNameForListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="terminatePreviousInstances" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TerminateWorkflowByNameForListItemResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CheckGlobalReuseStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckGlobalReuseStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckGlobalReuseStatusResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="listId" type="s1:guid" />
+            <s:element minOccurs="1" maxOccurs="1" name="workflowId" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteWorkflowResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeleteSnippet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="snippetId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteSnippetResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="HideTaskForApprover">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="approverId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="contentDbId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HideTaskForApproverResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="HideWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="siteId" type="s1:guid" />
+            <s:element minOccurs="1" maxOccurs="1" name="instanceId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HideWorkflowResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="StartWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="associationData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartWorkflowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StartWorkflowResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartWorkflowOnListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="associationData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartWorkflowOnListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StartWorkflowOnListItemResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartSiteWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="associationData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartSiteWorkflowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StartSiteWorkflowResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemsPendingMyApproval">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uniquenessInfo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemsPendingMyApprovalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetItemsPendingMyApprovalResult" type="tns:ItemsPendingApproval" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ItemsPendingApproval">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfPendingMyApprovalLight" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasNewData" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="UniquenessInfo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPendingMyApprovalLight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PendingMyApprovalLight" nillable="true" type="tns:PendingMyApprovalLight" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PendingMyApprovalLight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentActivityTitle" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdleTimeMinutes" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpectedDuration" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemFilename" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemUrl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProgressUrl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApprovalUrl" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EntryTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRunningWorkflowTasksForCurrentUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksForCurrentUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRunningWorkflowTasksForCurrentUserResult" type="tns:ArrayOfUserTask" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfUserTask">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="UserTask" nillable="true" type="tns:UserTask" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UserTask">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SharePointTaskId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="HumanWorkflowID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="AssignedTo" type="tns:User" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EntryTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkflowInstaceId" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="TaskName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaskType" type="tns:TaskType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="User">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SipAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OtherEmailAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsDomainGroup" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsSPGroup" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsUser" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TaskType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Approval" />
+          <s:enumeration value="Review" />
+          <s:enumeration value="CollectData" />
+          <s:enumeration value="Todo" />
+          <s:enumeration value="MultiOutcome" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetRunningWorkflowTasksForCurrentUserForListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksForCurrentUserForListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRunningWorkflowTasksForCurrentUserForListItemResult" type="tns:ArrayOfUserTask" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRunningWorkflowTasksResult" type="tns:ArrayOfUserTask" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksForListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksForListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRunningWorkflowTasksForListItemResult" type="tns:ArrayOfUserTask" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksCollection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userlogin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="teamsiteUrl" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRunningWorkflowTasksCollectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRunningWorkflowTasksCollectionResult" type="tns:ArrayOfUserTask" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="outcome" type="tns:Outcome" />
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="Outcome">
+        <s:restriction base="s:string">
+          <s:enumeration value="Approved" />
+          <s:enumeration value="Rejected" />
+          <s:enumeration value="Pending" />
+          <s:enumeration value="Cancelled" />
+          <s:enumeration value="NotRequired" />
+          <s:enumeration value="Continue" />
+          <s:enumeration value="Delegated" />
+          <s:enumeration value="Custom" />
+          <s:enumeration value="OverrideApproved" />
+          <s:enumeration value="OverrideRejected" />
+          <s:enumeration value="OverrideContinue" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ProcessTaskResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessTaskResponseResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponse2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="outcome" type="tns:Outcome" />
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponse2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessTaskResponse2Result" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponse3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="outcome" type="tns:Outcome" />
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponse3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessTaskResponse3Result" type="tns:ProcessTaskResponseResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ProcessTaskResponseResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="Success" />
+          <s:enumeration value="CannotObtainLock" />
+          <s:enumeration value="InvalidUser" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ProcessFlexiTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="outcome" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessFlexiTaskResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessFlexiTaskResponseResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessFlexiTaskResponse2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="outcome" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessFlexiTaskResponse2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessFlexiTaskResponse2Result" type="tns:ProcessTaskResponseResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOutcomesForFlexiTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOutcomesForFlexiTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOutcomesForFlexiTaskResult" type="tns:ArrayOfConfiguredOutcome" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfConfiguredOutcome">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConfiguredOutcome" nillable="true" type="tns:ConfiguredOutcome" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConfiguredOutcome">
+        <s:attribute name="Id" type="s:int" use="required" />
+        <s:attribute name="Name" type="s:string" />
+        <s:attribute name="CommentsMode" type="tns:CommentsMode" use="required" />
+        <s:attribute name="Description" type="s:string" />
+        <s:attribute name="BranchIndex" type="s:int" use="required" />
+      </s:complexType>
+      <s:simpleType name="CommentsMode">
+        <s:restriction base="s:string">
+          <s:enumeration value="None" />
+          <s:enumeration value="Optional" />
+          <s:enumeration value="Required" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="DelegateTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="spTaskId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskListName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="targetUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendNotification" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DelegateTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DelegateTaskResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkflowHistory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stateFilter" type="tns:SPWorkflowState" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowNameFilter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="SPWorkflowState">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="None" />
+              <s:enumeration value="Locked" />
+              <s:enumeration value="Running" />
+              <s:enumeration value="Completed" />
+              <s:enumeration value="Cancelled" />
+              <s:enumeration value="Expiring" />
+              <s:enumeration value="Expired" />
+              <s:enumeration value="Faulting" />
+              <s:enumeration value="Terminated" />
+              <s:enumeration value="Suspended" />
+              <s:enumeration value="Orphaned" />
+              <s:enumeration value="HasNewEvents" />
+              <s:enumeration value="NotStarted" />
+              <s:enumeration value="All" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:element name="GetWorkflowHistoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorkflowHistoryResult" type="tns:ArrayOfWorkflowLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfWorkflowLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WorkflowLog" nillable="true" type="tns:WorkflowLog" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WorkflowLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InternalState" type="tns:SPWorkflowState" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDateLong" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastModifiedDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastModifiedTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastModifiedTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastModifiedDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastModifiedDateLong" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkflowInstanceId" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Activities" type="tns:ArrayOfActivityLogInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="HumanTasks" type="tns:ArrayOfHumanTaskLogInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowHistory">
+            <s:complexType>
+              <s:sequence>
+                <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfActivityLogInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ActivityLogInfo" nillable="true" type="tns:ActivityLogInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ActivityLogInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BeforeProperties" type="tns:VerboseLog" />
+          <s:element minOccurs="0" maxOccurs="1" name="AfterProperties" type="tns:VerboseLog" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDateLong" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDateLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTitle" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SequenceId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProgressId" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VerboseLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MachineName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProcessName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NWVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SPVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContextData" type="tns:ArrayOfNWContextData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfNWContextData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NWContextData" nillable="true" type="tns:NWContextData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NWContextData">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:NWContextKey">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Options" type="tns:ContextDataOptions" />
+              <s:element minOccurs="0" maxOccurs="1" name="DataTypeDisplayResourceKey" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Data" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="NWContextKey">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataType" type="tns:SPFieldType" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SPFieldType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Invalid" />
+          <s:enumeration value="Integer" />
+          <s:enumeration value="Text" />
+          <s:enumeration value="Note" />
+          <s:enumeration value="DateTime" />
+          <s:enumeration value="Counter" />
+          <s:enumeration value="Choice" />
+          <s:enumeration value="Lookup" />
+          <s:enumeration value="Boolean" />
+          <s:enumeration value="Number" />
+          <s:enumeration value="Currency" />
+          <s:enumeration value="URL" />
+          <s:enumeration value="Computed" />
+          <s:enumeration value="Threading" />
+          <s:enumeration value="Guid" />
+          <s:enumeration value="MultiChoice" />
+          <s:enumeration value="GridChoice" />
+          <s:enumeration value="Calculated" />
+          <s:enumeration value="File" />
+          <s:enumeration value="Attachments" />
+          <s:enumeration value="User" />
+          <s:enumeration value="Recurrence" />
+          <s:enumeration value="CrossProjectLink" />
+          <s:enumeration value="ModStat" />
+          <s:enumeration value="Error" />
+          <s:enumeration value="ContentTypeId" />
+          <s:enumeration value="PageSeparator" />
+          <s:enumeration value="ThreadIndex" />
+          <s:enumeration value="WorkflowStatus" />
+          <s:enumeration value="AllDayEvent" />
+          <s:enumeration value="WorkflowEventType" />
+          <s:enumeration value="MaxItems" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ContextDataOptions">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="None" />
+              <s:enumeration value="DatesInIso8601Format" />
+              <s:enumeration value="BooleanInCamlFormat" />
+              <s:enumeration value="BooleanInXmlFormat" />
+              <s:enumeration value="HtmlEncodeStrings" />
+              <s:enumeration value="SqlFriendly" />
+              <s:enumeration value="UnformattedNumbers" />
+              <s:enumeration value="RetainCollections" />
+              <s:enumeration value="RetainInfoPathPersonXml" />
+              <s:enumeration value="PeopleAsSPId" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:complexType name="ArrayOfHumanTaskLogInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HumanTaskLogInfo" nillable="true" type="tns:HumanTaskLogInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HumanTaskLogInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EntryTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryDateLong" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDateLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTitle" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SequenceId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserStart" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserStartTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserStartTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserStartDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserStartDateLong" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserEnd" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserEndTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserEndTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserEndDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserEndDateLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserComments" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Outcome" type="tns:Outcome" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomOutcome" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserActionTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserActionTimeShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserActionTimeLong" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserActionDateShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserActionDateLong" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetWorkflowHistoryForListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stateFilter" type="tns:SPWorkflowState" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowNameFilter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkflowHistoryForListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorkflowHistoryForListItemResult" type="tns:ArrayOfWorkflowLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryForMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="workflowInstanceId" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="messageId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MessageBoxItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MessageID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkflowInstanceID" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Data" type="tns:ArrayOfStartDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfStartDataItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="StartDataItem" nillable="true" type="tns:StartDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="StartDataItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMessageBoxItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MessageBoxItem" nillable="true" type="tns:MessageBoxItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QueryForMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryForMessagesResult" type="tns:ArrayOfMessageBoxItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXml">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFXmlResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlSkipValidation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlSkipValidationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFXmlSkipValidationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFXmlNoOverwriteResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlSkipValidationNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFXmlSkipValidationNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFXmlSkipValidationNoOverwriteResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFNoOverwriteResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFSkipValidation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFSkipValidationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFSkipValidationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFSkipValidationNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saveIfCannotPublish" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PublishFromNWFSkipValidationNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PublishFromNWFSkipValidationNoOverwriteResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFXml">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveFromNWFXmlResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFXmlNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFXmlNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveFromNWFXmlNoOverwriteResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveFromNWFResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFNoOverwrite">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveFromNWFNoOverwriteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveFromNWFNoOverwriteResult" type="tns:WorkflowMetaData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddWorkflowScheduleOnListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="startDataXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="schedule" type="tns:Schedule" />
+            <s:element minOccurs="1" maxOccurs="1" name="updateIfExists" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Schedule">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MaximumRepeats" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkdaysOnly" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="RepeatInterval" type="tns:RepeatInterval" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndOn" type="tns:EndScheduleOn" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RepeatInterval">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:RepeatIntervalType" />
+          <s:element minOccurs="1" maxOccurs="1" name="CountBetweenIntervals" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="RepeatIntervalType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Daily" />
+          <s:enumeration value="Monthly" />
+          <s:enumeration value="Hourly" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="EndScheduleOn">
+        <s:restriction base="s:string">
+          <s:enumeration value="RepeatCount" />
+          <s:enumeration value="EndDate" />
+          <s:enumeration value="NoLimit" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AddWorkflowScheduleOnListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddWorkflowScheduleOnListItemResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddWorkflowSchedule">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="startDataXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="schedule" type="tns:Schedule" />
+            <s:element minOccurs="1" maxOccurs="1" name="updateIfExists" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddWorkflowScheduleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddWorkflowScheduleResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveWorkflowScheduleOnListItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="itemId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveWorkflowScheduleOnListItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveWorkflowScheduleOnListItemResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveWorkflowSchedule">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileUrl" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveWorkflowScheduleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveWorkflowScheduleResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DelegateAllTasks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="currentUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newUser" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendNotification" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="global" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="DelegateAllTasksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DelegateAllTasksResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddLongTermDelegationRule">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="fromTheBeginningOf" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="untilTheEndOf" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="delegateFrom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="delegateTo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="currentSiteOnly" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddLongTermDelegationRuleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddLongTermDelegationRuleResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteLongTermDelegationRule">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteLongTermDelegationRuleResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FixWorkflowsInSiteFromTemplate">
+        <s:complexType />
+      </s:element>
+      <s:element name="FixWorkflowsInSiteFromTemplateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ExportWorkflow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="workflowName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExportWorkflowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ExportWorkflowResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskStubsForCurrentUser">
+        <s:complexType />
+      </s:element>
+      <s:complexType name="TaskStub">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TaskToken" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTitle" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EntryTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTaskStub">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TaskStub" nillable="true" type="tns:TaskStub" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTaskStubsForCurrentUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaskStubsForCurrentUserResult" type="tns:ArrayOfTaskStub" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskDetailsUsingStub">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="taskToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WorkflowTaskDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AvailableCustomOutcome" type="tns:ArrayOfConfiguredOutcome" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemProperties" type="tns:ArrayOfField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfField">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Field" nillable="true" type="tns:Field" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Field">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTaskDetailsUsingStubResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaskDetailsUsingStubResult" type="tns:WorkflowTaskDetail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponseUsingToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comments" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="outcome" type="tns:Outcome" />
+            <s:element minOccurs="0" maxOccurs="1" name="taskToken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="customOutcome" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessTaskResponseUsingTokenResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetFolders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Folder">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Url" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFolder">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Folder" nillable="true" type="tns:Folder" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetFoldersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFoldersResult" type="tns:ArrayOfFolder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetListContentTypes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ContentType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfContentType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ContentType" nillable="true" type="tns:ContentType" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetListContentTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetListContentTypesResult" type="tns:ArrayOfContentType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WorkflowFormProductSelectedSoapIn">
+    <wsdl:part name="parameters" element="tns:WorkflowFormProductSelected" />
+  </wsdl:message>
+  <wsdl:message name="WorkflowFormProductSelectedSoapOut">
+    <wsdl:part name="parameters" element="tns:WorkflowFormProductSelectedResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckInFormsSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckInForms" />
+  </wsdl:message>
+  <wsdl:message name="CheckInFormsSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckInFormsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="SaveWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="WorkflowExistsSoapIn">
+    <wsdl:part name="parameters" element="tns:WorkflowExists" />
+  </wsdl:message>
+  <wsdl:message name="WorkflowExistsSoapOut">
+    <wsdl:part name="parameters" element="tns:WorkflowExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SnippetExistsSoapIn">
+    <wsdl:part name="parameters" element="tns:SnippetExists" />
+  </wsdl:message>
+  <wsdl:message name="SnippetExistsSoapOut">
+    <wsdl:part name="parameters" element="tns:SnippetExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="TemplateExistsSoapIn">
+    <wsdl:part name="parameters" element="tns:TemplateExists" />
+  </wsdl:message>
+  <wsdl:message name="TemplateExistsSoapOut">
+    <wsdl:part name="parameters" element="tns:TemplateExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveSnippetSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveSnippet" />
+  </wsdl:message>
+  <wsdl:message name="SaveSnippetSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveSnippetResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveTemplateSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveTemplate" />
+  </wsdl:message>
+  <wsdl:message name="SaveTemplateSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveTemplate2SoapIn">
+    <wsdl:part name="parameters" element="tns:SaveTemplate2" />
+  </wsdl:message>
+  <wsdl:message name="SaveTemplate2SoapOut">
+    <wsdl:part name="parameters" element="tns:SaveTemplate2Response" />
+  </wsdl:message>
+  <wsdl:message name="PublishWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="PublishWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowByNameSoapIn">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflowByName" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowByNameSoapOut">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflowByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowByNameForListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflowByNameForListItem" />
+  </wsdl:message>
+  <wsdl:message name="TerminateWorkflowByNameForListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:TerminateWorkflowByNameForListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckGlobalReuseStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckGlobalReuseStatus" />
+  </wsdl:message>
+  <wsdl:message name="CheckGlobalReuseStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckGlobalReuseStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="DeleteWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSnippetSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteSnippet" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSnippetSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteSnippetResponse" />
+  </wsdl:message>
+  <wsdl:message name="HideTaskForApproverSoapIn">
+    <wsdl:part name="parameters" element="tns:HideTaskForApprover" />
+  </wsdl:message>
+  <wsdl:message name="HideTaskForApproverSoapOut">
+    <wsdl:part name="parameters" element="tns:HideTaskForApproverResponse" />
+  </wsdl:message>
+  <wsdl:message name="HideWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:HideWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="HideWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:HideWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="StartWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:StartWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="StartWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:StartWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="StartWorkflowOnListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:StartWorkflowOnListItem" />
+  </wsdl:message>
+  <wsdl:message name="StartWorkflowOnListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:StartWorkflowOnListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="StartSiteWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:StartSiteWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="StartSiteWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:StartSiteWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetItemsPendingMyApprovalSoapIn">
+    <wsdl:part name="parameters" element="tns:GetItemsPendingMyApproval" />
+  </wsdl:message>
+  <wsdl:message name="GetItemsPendingMyApprovalSoapOut">
+    <wsdl:part name="parameters" element="tns:GetItemsPendingMyApprovalResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForCurrentUserSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForCurrentUser" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForCurrentUserSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForCurrentUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForCurrentUserForListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForCurrentUserForListItem" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForCurrentUserForListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForCurrentUserForListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasks" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForListItem" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksForListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksForListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksCollectionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksCollection" />
+  </wsdl:message>
+  <wsdl:message name="GetRunningWorkflowTasksCollectionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRunningWorkflowTasksCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponse2SoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponse2" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponse2SoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponse2Response" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponse3SoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponse3" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponse3SoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponse3Response" />
+  </wsdl:message>
+  <wsdl:message name="ProcessFlexiTaskResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessFlexiTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessFlexiTaskResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessFlexiTaskResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessFlexiTaskResponse2SoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessFlexiTaskResponse2" />
+  </wsdl:message>
+  <wsdl:message name="ProcessFlexiTaskResponse2SoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessFlexiTaskResponse2Response" />
+  </wsdl:message>
+  <wsdl:message name="GetOutcomesForFlexiTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOutcomesForFlexiTask" />
+  </wsdl:message>
+  <wsdl:message name="GetOutcomesForFlexiTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOutcomesForFlexiTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelegateTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:DelegateTask" />
+  </wsdl:message>
+  <wsdl:message name="DelegateTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:DelegateTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowHistorySoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistory" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowHistorySoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowHistoryForListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistoryForListItem" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowHistoryForListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistoryForListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryForMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryForMessages" />
+  </wsdl:message>
+  <wsdl:message name="QueryForMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryForMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXml" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSkipValidationSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlSkipValidation" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSkipValidationSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlSkipValidationResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSkipValidationNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlSkipValidationNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFXmlSkipValidationNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFXmlSkipValidationNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWF" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSkipValidationSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFSkipValidation" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSkipValidationSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFSkipValidationResponse" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSkipValidationNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFSkipValidationNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="PublishFromNWFSkipValidationNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:PublishFromNWFSkipValidationNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFXml" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFXmlNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFXmlNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFXmlNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFXmlNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveFromNWF" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFNoOverwriteSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFNoOverwrite" />
+  </wsdl:message>
+  <wsdl:message name="SaveFromNWFNoOverwriteSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveFromNWFNoOverwriteResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddWorkflowScheduleOnListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:AddWorkflowScheduleOnListItem" />
+  </wsdl:message>
+  <wsdl:message name="AddWorkflowScheduleOnListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:AddWorkflowScheduleOnListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddWorkflowScheduleSoapIn">
+    <wsdl:part name="parameters" element="tns:AddWorkflowSchedule" />
+  </wsdl:message>
+  <wsdl:message name="AddWorkflowScheduleSoapOut">
+    <wsdl:part name="parameters" element="tns:AddWorkflowScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveWorkflowScheduleOnListItemSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveWorkflowScheduleOnListItem" />
+  </wsdl:message>
+  <wsdl:message name="RemoveWorkflowScheduleOnListItemSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveWorkflowScheduleOnListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveWorkflowScheduleSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveWorkflowSchedule" />
+  </wsdl:message>
+  <wsdl:message name="RemoveWorkflowScheduleSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveWorkflowScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelegateAllTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:DelegateAllTasks" />
+  </wsdl:message>
+  <wsdl:message name="DelegateAllTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:DelegateAllTasksResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddLongTermDelegationRuleSoapIn">
+    <wsdl:part name="parameters" element="tns:AddLongTermDelegationRule" />
+  </wsdl:message>
+  <wsdl:message name="AddLongTermDelegationRuleSoapOut">
+    <wsdl:part name="parameters" element="tns:AddLongTermDelegationRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteLongTermDelegationRuleSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteLongTermDelegationRule" />
+  </wsdl:message>
+  <wsdl:message name="DeleteLongTermDelegationRuleSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteLongTermDelegationRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="FixWorkflowsInSiteFromTemplateSoapIn">
+    <wsdl:part name="parameters" element="tns:FixWorkflowsInSiteFromTemplate" />
+  </wsdl:message>
+  <wsdl:message name="FixWorkflowsInSiteFromTemplateSoapOut">
+    <wsdl:part name="parameters" element="tns:FixWorkflowsInSiteFromTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExportWorkflowSoapIn">
+    <wsdl:part name="parameters" element="tns:ExportWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="ExportWorkflowSoapOut">
+    <wsdl:part name="parameters" element="tns:ExportWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskStubsForCurrentUserSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskStubsForCurrentUser" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskStubsForCurrentUserSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskStubsForCurrentUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskDetailsUsingStubSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskDetailsUsingStub" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskDetailsUsingStubSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskDetailsUsingStubResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponseUsingTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponseUsingToken" />
+  </wsdl:message>
+  <wsdl:message name="ProcessTaskResponseUsingTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessTaskResponseUsingTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFoldersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFolders" />
+  </wsdl:message>
+  <wsdl:message name="GetFoldersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFoldersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetListContentTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetListContentTypes" />
+  </wsdl:message>
+  <wsdl:message name="GetListContentTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetListContentTypesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="NintexWorkflowWSSoap">
+    <wsdl:operation name="WorkflowFormProductSelected">
+      <wsdl:input message="tns:WorkflowFormProductSelectedSoapIn" />
+      <wsdl:output message="tns:WorkflowFormProductSelectedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckInForms">
+      <wsdl:input message="tns:CheckInFormsSoapIn" />
+      <wsdl:output message="tns:CheckInFormsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflow">
+      <wsdl:input message="tns:SaveWorkflowSoapIn" />
+      <wsdl:output message="tns:SaveWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowExists">
+      <wsdl:input message="tns:WorkflowExistsSoapIn" />
+      <wsdl:output message="tns:WorkflowExistsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SnippetExists">
+      <wsdl:input message="tns:SnippetExistsSoapIn" />
+      <wsdl:output message="tns:SnippetExistsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TemplateExists">
+      <wsdl:input message="tns:TemplateExistsSoapIn" />
+      <wsdl:output message="tns:TemplateExistsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveSnippet">
+      <wsdl:input message="tns:SaveSnippetSoapIn" />
+      <wsdl:output message="tns:SaveSnippetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate">
+      <wsdl:input message="tns:SaveTemplateSoapIn" />
+      <wsdl:output message="tns:SaveTemplateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate2">
+      <wsdl:input message="tns:SaveTemplate2SoapIn" />
+      <wsdl:output message="tns:SaveTemplate2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishWorkflow">
+      <wsdl:input message="tns:PublishWorkflowSoapIn" />
+      <wsdl:output message="tns:PublishWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflow">
+      <wsdl:input message="tns:TerminateWorkflowSoapIn" />
+      <wsdl:output message="tns:TerminateWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByName">
+      <wsdl:input message="tns:TerminateWorkflowByNameSoapIn" />
+      <wsdl:output message="tns:TerminateWorkflowByNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByNameForListItem">
+      <wsdl:input message="tns:TerminateWorkflowByNameForListItemSoapIn" />
+      <wsdl:output message="tns:TerminateWorkflowByNameForListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckGlobalReuseStatus">
+      <wsdl:input message="tns:CheckGlobalReuseStatusSoapIn" />
+      <wsdl:output message="tns:CheckGlobalReuseStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteWorkflow">
+      <wsdl:input message="tns:DeleteWorkflowSoapIn" />
+      <wsdl:output message="tns:DeleteWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSnippet">
+      <wsdl:input message="tns:DeleteSnippetSoapIn" />
+      <wsdl:output message="tns:DeleteSnippetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HideTaskForApprover">
+      <wsdl:input message="tns:HideTaskForApproverSoapIn" />
+      <wsdl:output message="tns:HideTaskForApproverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HideWorkflow">
+      <wsdl:input message="tns:HideWorkflowSoapIn" />
+      <wsdl:output message="tns:HideWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflow">
+      <wsdl:input message="tns:StartWorkflowSoapIn" />
+      <wsdl:output message="tns:StartWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflowOnListItem">
+      <wsdl:input message="tns:StartWorkflowOnListItemSoapIn" />
+      <wsdl:output message="tns:StartWorkflowOnListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StartSiteWorkflow">
+      <wsdl:input message="tns:StartSiteWorkflowSoapIn" />
+      <wsdl:output message="tns:StartSiteWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItemsPendingMyApproval">
+      <wsdl:input message="tns:GetItemsPendingMyApprovalSoapIn" />
+      <wsdl:output message="tns:GetItemsPendingMyApprovalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUser">
+      <wsdl:input message="tns:GetRunningWorkflowTasksForCurrentUserSoapIn" />
+      <wsdl:output message="tns:GetRunningWorkflowTasksForCurrentUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUserForListItem">
+      <wsdl:input message="tns:GetRunningWorkflowTasksForCurrentUserForListItemSoapIn" />
+      <wsdl:output message="tns:GetRunningWorkflowTasksForCurrentUserForListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasks">
+      <wsdl:input message="tns:GetRunningWorkflowTasksSoapIn" />
+      <wsdl:output message="tns:GetRunningWorkflowTasksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForListItem">
+      <wsdl:input message="tns:GetRunningWorkflowTasksForListItemSoapIn" />
+      <wsdl:output message="tns:GetRunningWorkflowTasksForListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksCollection">
+      <wsdl:input message="tns:GetRunningWorkflowTasksCollectionSoapIn" />
+      <wsdl:output message="tns:GetRunningWorkflowTasksCollectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse">
+      <wsdl:input message="tns:ProcessTaskResponseSoapIn" />
+      <wsdl:output message="tns:ProcessTaskResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse2">
+      <wsdl:input message="tns:ProcessTaskResponse2SoapIn" />
+      <wsdl:output message="tns:ProcessTaskResponse2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse3">
+      <wsdl:input message="tns:ProcessTaskResponse3SoapIn" />
+      <wsdl:output message="tns:ProcessTaskResponse3SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse">
+      <wsdl:input message="tns:ProcessFlexiTaskResponseSoapIn" />
+      <wsdl:output message="tns:ProcessFlexiTaskResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse2">
+      <wsdl:input message="tns:ProcessFlexiTaskResponse2SoapIn" />
+      <wsdl:output message="tns:ProcessFlexiTaskResponse2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOutcomesForFlexiTask">
+      <wsdl:input message="tns:GetOutcomesForFlexiTaskSoapIn" />
+      <wsdl:output message="tns:GetOutcomesForFlexiTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DelegateTask">
+      <wsdl:input message="tns:DelegateTaskSoapIn" />
+      <wsdl:output message="tns:DelegateTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistory">
+      <wsdl:input message="tns:GetWorkflowHistorySoapIn" />
+      <wsdl:output message="tns:GetWorkflowHistorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistoryForListItem">
+      <wsdl:input message="tns:GetWorkflowHistoryForListItemSoapIn" />
+      <wsdl:output message="tns:GetWorkflowHistoryForListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryForMessages">
+      <wsdl:input message="tns:QueryForMessagesSoapIn" />
+      <wsdl:output message="tns:QueryForMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXml">
+      <wsdl:input message="tns:PublishFromNWFXmlSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidation">
+      <wsdl:input message="tns:PublishFromNWFXmlSkipValidationSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFXmlSkipValidationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlNoOverwrite">
+      <wsdl:input message="tns:PublishFromNWFXmlNoOverwriteSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFXmlNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidationNoOverwrite">
+      <wsdl:input message="tns:PublishFromNWFXmlSkipValidationNoOverwriteSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFXmlSkipValidationNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWF">
+      <wsdl:input message="tns:PublishFromNWFSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFNoOverwrite">
+      <wsdl:input message="tns:PublishFromNWFNoOverwriteSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidation">
+      <wsdl:input message="tns:PublishFromNWFSkipValidationSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFSkipValidationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidationNoOverwrite">
+      <wsdl:input message="tns:PublishFromNWFSkipValidationNoOverwriteSoapIn" />
+      <wsdl:output message="tns:PublishFromNWFSkipValidationNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXml">
+      <wsdl:input message="tns:SaveFromNWFXmlSoapIn" />
+      <wsdl:output message="tns:SaveFromNWFXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXmlNoOverwrite">
+      <wsdl:input message="tns:SaveFromNWFXmlNoOverwriteSoapIn" />
+      <wsdl:output message="tns:SaveFromNWFXmlNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWF">
+      <wsdl:input message="tns:SaveFromNWFSoapIn" />
+      <wsdl:output message="tns:SaveFromNWFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFNoOverwrite">
+      <wsdl:input message="tns:SaveFromNWFNoOverwriteSoapIn" />
+      <wsdl:output message="tns:SaveFromNWFNoOverwriteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowScheduleOnListItem">
+      <wsdl:input message="tns:AddWorkflowScheduleOnListItemSoapIn" />
+      <wsdl:output message="tns:AddWorkflowScheduleOnListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowSchedule">
+      <wsdl:input message="tns:AddWorkflowScheduleSoapIn" />
+      <wsdl:output message="tns:AddWorkflowScheduleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowScheduleOnListItem">
+      <wsdl:input message="tns:RemoveWorkflowScheduleOnListItemSoapIn" />
+      <wsdl:output message="tns:RemoveWorkflowScheduleOnListItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowSchedule">
+      <wsdl:input message="tns:RemoveWorkflowScheduleSoapIn" />
+      <wsdl:output message="tns:RemoveWorkflowScheduleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DelegateAllTasks">
+      <wsdl:input message="tns:DelegateAllTasksSoapIn" />
+      <wsdl:output message="tns:DelegateAllTasksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddLongTermDelegationRule">
+      <wsdl:input message="tns:AddLongTermDelegationRuleSoapIn" />
+      <wsdl:output message="tns:AddLongTermDelegationRuleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLongTermDelegationRule">
+      <wsdl:input message="tns:DeleteLongTermDelegationRuleSoapIn" />
+      <wsdl:output message="tns:DeleteLongTermDelegationRuleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FixWorkflowsInSiteFromTemplate">
+      <wsdl:input message="tns:FixWorkflowsInSiteFromTemplateSoapIn" />
+      <wsdl:output message="tns:FixWorkflowsInSiteFromTemplateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportWorkflow">
+      <wsdl:input message="tns:ExportWorkflowSoapIn" />
+      <wsdl:output message="tns:ExportWorkflowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStubsForCurrentUser">
+      <wsdl:input message="tns:GetTaskStubsForCurrentUserSoapIn" />
+      <wsdl:output message="tns:GetTaskStubsForCurrentUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskDetailsUsingStub">
+      <wsdl:input message="tns:GetTaskDetailsUsingStubSoapIn" />
+      <wsdl:output message="tns:GetTaskDetailsUsingStubSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponseUsingToken">
+      <wsdl:input message="tns:ProcessTaskResponseUsingTokenSoapIn" />
+      <wsdl:output message="tns:ProcessTaskResponseUsingTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFolders">
+      <wsdl:input message="tns:GetFoldersSoapIn" />
+      <wsdl:output message="tns:GetFoldersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListContentTypes">
+      <wsdl:input message="tns:GetListContentTypesSoapIn" />
+      <wsdl:output message="tns:GetListContentTypesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NintexWorkflowWSSoap" type="tns:NintexWorkflowWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WorkflowFormProductSelected">
+      <soap:operation soapAction="http://nintex.com/WorkflowFormProductSelected" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckInForms">
+      <soap:operation soapAction="http://nintex.com/CheckInForms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflow">
+      <soap:operation soapAction="http://nintex.com/SaveWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowExists">
+      <soap:operation soapAction="http://nintex.com/WorkflowExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SnippetExists">
+      <soap:operation soapAction="http://nintex.com/SnippetExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TemplateExists">
+      <soap:operation soapAction="http://nintex.com/TemplateExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSnippet">
+      <soap:operation soapAction="http://nintex.com/SaveSnippet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate">
+      <soap:operation soapAction="http://nintex.com/SaveTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate2">
+      <soap:operation soapAction="http://nintex.com/SaveTemplate2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishWorkflow">
+      <soap:operation soapAction="http://nintex.com/PublishWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflow">
+      <soap:operation soapAction="http://nintex.com/TerminateWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByName">
+      <soap:operation soapAction="http://nintex.com/TerminateWorkflowByName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByNameForListItem">
+      <soap:operation soapAction="http://nintex.com/TerminateWorkflowByNameForListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckGlobalReuseStatus">
+      <soap:operation soapAction="http://nintex.com/CheckGlobalReuseStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteWorkflow">
+      <soap:operation soapAction="http://nintex.com/DeleteWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSnippet">
+      <soap:operation soapAction="http://nintex.com/DeleteSnippet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HideTaskForApprover">
+      <soap:operation soapAction="http://nintex.com/HideTaskForApprover" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HideWorkflow">
+      <soap:operation soapAction="http://nintex.com/HideWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflow">
+      <soap:operation soapAction="http://nintex.com/StartWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflowOnListItem">
+      <soap:operation soapAction="http://nintex.com/StartWorkflowOnListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartSiteWorkflow">
+      <soap:operation soapAction="http://nintex.com/StartSiteWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemsPendingMyApproval">
+      <soap:operation soapAction="http://nintex.com/GetItemsPendingMyApproval" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUser">
+      <soap:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForCurrentUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUserForListItem">
+      <soap:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForCurrentUserForListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasks">
+      <soap:operation soapAction="http://nintex.com/GetRunningWorkflowTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForListItem">
+      <soap:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksCollection">
+      <soap:operation soapAction="http://nintex.com/GetRunningWorkflowTasksCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse">
+      <soap:operation soapAction="http://nintex.com/ProcessTaskResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse2">
+      <soap:operation soapAction="http://nintex.com/ProcessTaskResponse2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse3">
+      <soap:operation soapAction="http://nintex.com/ProcessTaskResponse3" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse">
+      <soap:operation soapAction="http://nintex.com/ProcessFlexiTaskResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse2">
+      <soap:operation soapAction="http://nintex.com/ProcessFlexiTaskResponse2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOutcomesForFlexiTask">
+      <soap:operation soapAction="http://nintex.com/GetOutcomesForFlexiTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelegateTask">
+      <soap:operation soapAction="http://nintex.com/DelegateTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistory">
+      <soap:operation soapAction="http://nintex.com/GetWorkflowHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistoryForListItem">
+      <soap:operation soapAction="http://nintex.com/GetWorkflowHistoryForListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryForMessages">
+      <soap:operation soapAction="http://nintex.com/QueryForMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXml">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidation">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFXmlSkipValidation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFXmlNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidationNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFXmlSkipValidationNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWF">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidation">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFSkipValidation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidationNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/PublishFromNWFSkipValidationNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXml">
+      <soap:operation soapAction="http://nintex.com/SaveFromNWFXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXmlNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/SaveFromNWFXmlNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWF">
+      <soap:operation soapAction="http://nintex.com/SaveFromNWF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFNoOverwrite">
+      <soap:operation soapAction="http://nintex.com/SaveFromNWFNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowScheduleOnListItem">
+      <soap:operation soapAction="http://nintex.com/AddWorkflowScheduleOnListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowSchedule">
+      <soap:operation soapAction="http://nintex.com/AddWorkflowSchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowScheduleOnListItem">
+      <soap:operation soapAction="http://nintex.com/RemoveWorkflowScheduleOnListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowSchedule">
+      <soap:operation soapAction="http://nintex.com/RemoveWorkflowSchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelegateAllTasks">
+      <soap:operation soapAction="http://nintex.com/DelegateAllTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddLongTermDelegationRule">
+      <soap:operation soapAction="http://nintex.com/AddLongTermDelegationRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLongTermDelegationRule">
+      <soap:operation soapAction="http://nintex.com/DeleteLongTermDelegationRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixWorkflowsInSiteFromTemplate">
+      <soap:operation soapAction="http://nintex.com/FixWorkflowsInSiteFromTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportWorkflow">
+      <soap:operation soapAction="http://nintex.com/ExportWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStubsForCurrentUser">
+      <soap:operation soapAction="http://nintex.com/GetTaskStubsForCurrentUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskDetailsUsingStub">
+      <soap:operation soapAction="http://nintex.com/GetTaskDetailsUsingStub" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponseUsingToken">
+      <soap:operation soapAction="http://nintex.com/ProcessTaskResponseUsingToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFolders">
+      <soap:operation soapAction="http://nintex.com/GetFolders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListContentTypes">
+      <soap:operation soapAction="http://nintex.com/GetListContentTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="NintexWorkflowWSSoap12" type="tns:NintexWorkflowWSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WorkflowFormProductSelected">
+      <soap12:operation soapAction="http://nintex.com/WorkflowFormProductSelected" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckInForms">
+      <soap12:operation soapAction="http://nintex.com/CheckInForms" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflow">
+      <soap12:operation soapAction="http://nintex.com/SaveWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowExists">
+      <soap12:operation soapAction="http://nintex.com/WorkflowExists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SnippetExists">
+      <soap12:operation soapAction="http://nintex.com/SnippetExists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TemplateExists">
+      <soap12:operation soapAction="http://nintex.com/TemplateExists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSnippet">
+      <soap12:operation soapAction="http://nintex.com/SaveSnippet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate">
+      <soap12:operation soapAction="http://nintex.com/SaveTemplate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveTemplate2">
+      <soap12:operation soapAction="http://nintex.com/SaveTemplate2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishWorkflow">
+      <soap12:operation soapAction="http://nintex.com/PublishWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflow">
+      <soap12:operation soapAction="http://nintex.com/TerminateWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByName">
+      <soap12:operation soapAction="http://nintex.com/TerminateWorkflowByName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TerminateWorkflowByNameForListItem">
+      <soap12:operation soapAction="http://nintex.com/TerminateWorkflowByNameForListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckGlobalReuseStatus">
+      <soap12:operation soapAction="http://nintex.com/CheckGlobalReuseStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteWorkflow">
+      <soap12:operation soapAction="http://nintex.com/DeleteWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSnippet">
+      <soap12:operation soapAction="http://nintex.com/DeleteSnippet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HideTaskForApprover">
+      <soap12:operation soapAction="http://nintex.com/HideTaskForApprover" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HideWorkflow">
+      <soap12:operation soapAction="http://nintex.com/HideWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflow">
+      <soap12:operation soapAction="http://nintex.com/StartWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartWorkflowOnListItem">
+      <soap12:operation soapAction="http://nintex.com/StartWorkflowOnListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartSiteWorkflow">
+      <soap12:operation soapAction="http://nintex.com/StartSiteWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemsPendingMyApproval">
+      <soap12:operation soapAction="http://nintex.com/GetItemsPendingMyApproval" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUser">
+      <soap12:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForCurrentUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForCurrentUserForListItem">
+      <soap12:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForCurrentUserForListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasks">
+      <soap12:operation soapAction="http://nintex.com/GetRunningWorkflowTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksForListItem">
+      <soap12:operation soapAction="http://nintex.com/GetRunningWorkflowTasksForListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunningWorkflowTasksCollection">
+      <soap12:operation soapAction="http://nintex.com/GetRunningWorkflowTasksCollection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse">
+      <soap12:operation soapAction="http://nintex.com/ProcessTaskResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse2">
+      <soap12:operation soapAction="http://nintex.com/ProcessTaskResponse2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponse3">
+      <soap12:operation soapAction="http://nintex.com/ProcessTaskResponse3" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse">
+      <soap12:operation soapAction="http://nintex.com/ProcessFlexiTaskResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFlexiTaskResponse2">
+      <soap12:operation soapAction="http://nintex.com/ProcessFlexiTaskResponse2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOutcomesForFlexiTask">
+      <soap12:operation soapAction="http://nintex.com/GetOutcomesForFlexiTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelegateTask">
+      <soap12:operation soapAction="http://nintex.com/DelegateTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistory">
+      <soap12:operation soapAction="http://nintex.com/GetWorkflowHistory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowHistoryForListItem">
+      <soap12:operation soapAction="http://nintex.com/GetWorkflowHistoryForListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryForMessages">
+      <soap12:operation soapAction="http://nintex.com/QueryForMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXml">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidation">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFXmlSkipValidation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFXmlNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFXmlSkipValidationNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFXmlSkipValidationNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWF">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidation">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFSkipValidation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishFromNWFSkipValidationNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/PublishFromNWFSkipValidationNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXml">
+      <soap12:operation soapAction="http://nintex.com/SaveFromNWFXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFXmlNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/SaveFromNWFXmlNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWF">
+      <soap12:operation soapAction="http://nintex.com/SaveFromNWF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFromNWFNoOverwrite">
+      <soap12:operation soapAction="http://nintex.com/SaveFromNWFNoOverwrite" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowScheduleOnListItem">
+      <soap12:operation soapAction="http://nintex.com/AddWorkflowScheduleOnListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWorkflowSchedule">
+      <soap12:operation soapAction="http://nintex.com/AddWorkflowSchedule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowScheduleOnListItem">
+      <soap12:operation soapAction="http://nintex.com/RemoveWorkflowScheduleOnListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorkflowSchedule">
+      <soap12:operation soapAction="http://nintex.com/RemoveWorkflowSchedule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelegateAllTasks">
+      <soap12:operation soapAction="http://nintex.com/DelegateAllTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddLongTermDelegationRule">
+      <soap12:operation soapAction="http://nintex.com/AddLongTermDelegationRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLongTermDelegationRule">
+      <soap12:operation soapAction="http://nintex.com/DeleteLongTermDelegationRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixWorkflowsInSiteFromTemplate">
+      <soap12:operation soapAction="http://nintex.com/FixWorkflowsInSiteFromTemplate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportWorkflow">
+      <soap12:operation soapAction="http://nintex.com/ExportWorkflow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStubsForCurrentUser">
+      <soap12:operation soapAction="http://nintex.com/GetTaskStubsForCurrentUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskDetailsUsingStub">
+      <soap12:operation soapAction="http://nintex.com/GetTaskDetailsUsingStub" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTaskResponseUsingToken">
+      <soap12:operation soapAction="http://nintex.com/ProcessTaskResponseUsingToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFolders">
+      <soap12:operation soapAction="http://nintex.com/GetFolders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListContentTypes">
+      <soap12:operation soapAction="http://nintex.com/GetListContentTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NintexWorkflowWS">
+    <wsdl:port name="NintexWorkflowWSSoap" binding="tns:NintexWorkflowWSSoap">
+      <soap:address location="http://sp2013dev/_vti_bin/NintexWorkflow/Workflow.asmx" />
+    </wsdl:port>
+    <wsdl:port name="NintexWorkflowWSSoap12" binding="tns:NintexWorkflowWSSoap12">
+      <soap:address location="http://sp2013dev/_vti_bin/NintexWorkflow/Workflow.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

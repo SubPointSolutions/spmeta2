@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Exceptions;
+using System.Web.UI.WebControls.WebParts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -25,6 +26,33 @@ namespace SPMeta2.SSOM.ModelHandlers
         #endregion
 
         #region methods
+
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        {
+            var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+            var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
+
+            var folder = folderHost.CurrentLibraryFolder;
+            var file = folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+
+            if (childModelType == typeof(WebPartDefinition))
+            {
+                using (var webPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                {
+                    var webpartPageHost = new WebpartPageModelHost
+                    {
+                        PageListItem = file.Item,
+                        SPLimitedWebPartManager = webPartManager
+                    };
+
+                    action(webpartPageHost);
+                }
+            }
+            else
+            {
+                action(file);
+            }
+        }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {

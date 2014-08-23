@@ -68,6 +68,11 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
+        public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition)
+        {
+            return model.AddDefinitionNode(definition, null);
+        }
+
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
