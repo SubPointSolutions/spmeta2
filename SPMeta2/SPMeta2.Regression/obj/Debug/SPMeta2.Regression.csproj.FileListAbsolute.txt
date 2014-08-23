@@ -75,3 +75,13 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.CSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.Common.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.CSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.Common.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.csprojResolveAssemblyReference.cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.pdb

@@ -95,6 +95,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             existringAction.ScriptBlock = customAction.ScriptBlock;
             existringAction.ScriptSrc = customAction.ScriptSrc;
             existringAction.Title = customAction.Title;
+            existringAction.Url = customAction.Url;
         }
 
         protected bool IsValidHostModelHost(object modelHost)

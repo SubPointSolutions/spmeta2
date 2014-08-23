@@ -21,6 +21,8 @@ namespace SPMeta2.Definitions
 
         public int Sequence { get; set; }
 
+        public string Url { get; set; }
+
         #endregion
     }
 }

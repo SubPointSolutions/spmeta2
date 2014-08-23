@@ -185,8 +185,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(quickLaunch);
             context.ExecuteQuery();
 
-
-
             var existingNode = quickLaunch.OfType<NavigationNode>()
                 .FirstOrDefault(n => n.Url == quickLaunchModel.Url);
 

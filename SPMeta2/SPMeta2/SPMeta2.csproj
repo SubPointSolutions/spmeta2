@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltInDefinitions\BuiltInFolderDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="Common\DefaultModelWegh.cs" />
     <Compile Include="Common\ModelDeploymentOrder.cs" />

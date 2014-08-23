@@ -50,3 +50,8 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csprojResolveAssemblyReference.cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb
