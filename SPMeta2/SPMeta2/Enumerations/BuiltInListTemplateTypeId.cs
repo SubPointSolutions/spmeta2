@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint list template types.
+    /// </summary>
     public class BuiltInListTemplateTypeId
     {
         public static int InvalidType = -1;

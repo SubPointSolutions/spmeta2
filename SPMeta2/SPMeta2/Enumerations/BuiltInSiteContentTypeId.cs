@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the bix SharePoint site content types.
+    /// </summary>
     public static class BuiltInSiteContentTypeId
     {
         public static readonly string AdministrativeTask = "0x010802";

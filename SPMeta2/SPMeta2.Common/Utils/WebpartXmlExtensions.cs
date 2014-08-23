@@ -7,6 +7,9 @@ using System.Xml.Linq;
 
 namespace SPMeta2.Common.Utils
 {
+    /// <summary>
+    /// Web part XML routines helper.
+    /// </summary>
     public static class WebpartXmlExtensions
     {
         #region properties

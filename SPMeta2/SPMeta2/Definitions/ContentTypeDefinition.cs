@@ -2,17 +2,43 @@
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Allows to define and deploy SharePoint content type.
+    /// </summary>
     public class ContentTypeDefinition : DefinitionBase
     {
         #region properties
 
+        /// <summary>
+        /// ID of the target content type. 
+        /// Final content type id is calculated based on ParentContentTypeId, IdNumberValue or Id properties with ContentTypeDefinitionSyntax.GetContentTypeId() method.
+        /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// IdNumberValue of the target content type. 
+        /// Final content type id is calculated based on ParentContentTypeId, IdNumberValue or Id properties with ContentTypeDefinitionSyntax.GetContentTypeId() method.
+        /// </summary>
         public string IdNumberValue { get; set; }
 
+        /// <summary>
+        /// Name of the target content type.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Description if the target content type.
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Group of the target content type.
+        /// </summary>
         public string Group { get; set; }
 
+        /// <summary>
+        /// Parent content type id. BuiltInContentTypeId class could be used to utilize out of the box content type ids.
+        /// </summary>
         public string ParentContentTypeId { get; set; }
 
         #endregion

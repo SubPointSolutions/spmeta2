@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Common
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public class ModelWeigh
     {
         #region contructors

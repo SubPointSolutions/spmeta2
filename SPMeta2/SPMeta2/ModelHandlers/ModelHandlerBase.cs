@@ -5,6 +5,9 @@ using SPMeta2.Events;
 
 namespace SPMeta2.ModelHandlers
 {
+    /// <summary>
+    /// Base handler for model provision.
+    /// </summary>
     public abstract class ModelHandlerBase
     {
         #region constructors

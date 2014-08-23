@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Extensions
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public static class ModelServiceBaseExtensions
     {
     }

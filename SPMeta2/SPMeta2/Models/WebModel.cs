@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Models
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public abstract class WebModel : ModelBase
     {
         #region constructors
@@ -14,7 +17,6 @@ namespace SPMeta2.Models
         #region properties
 
         #endregion
-
 
         #region methods
 

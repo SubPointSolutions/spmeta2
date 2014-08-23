@@ -5,6 +5,9 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Extensions
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public static class ModelDefinitionExtensions
     {
         #region methods

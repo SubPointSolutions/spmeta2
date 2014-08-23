@@ -7,6 +7,9 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint farm features.
+    /// </summary>
     public static class BuiltInFarmFeatures
     {
         /// <summary>

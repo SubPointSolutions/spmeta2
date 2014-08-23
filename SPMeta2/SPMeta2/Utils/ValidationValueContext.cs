@@ -1,5 +1,9 @@
 ﻿namespace SPMeta2.Utils
 {
+    /// <summary>
+    /// Validation helper.
+    /// Internal usage only.
+    /// </summary>
     public class ValidationValueContext
     {
         #region properties

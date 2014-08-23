@@ -6,6 +6,9 @@ using System.Text;
 
 namespace SPMeta2.Common
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public static class DefaultModelWegh
     {
         #region static

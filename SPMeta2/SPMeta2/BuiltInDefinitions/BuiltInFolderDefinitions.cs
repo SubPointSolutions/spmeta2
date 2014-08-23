@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.BuiltInDefinitions
 {
+    /// <summary>
+    /// Out of the box SharePoint folders.
+    /// </summary>
     public static class BuiltInFolderDefinitions
     {
+        /// <summary>
+        /// Forms folder in the libraries and lists.
+        /// </summary>
         public static FolderDefinition Forms = new FolderDefinition
         {
             Name = "Forms"

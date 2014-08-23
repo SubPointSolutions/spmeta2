@@ -56,6 +56,7 @@
     <Compile Include="Common\ModelDeploymentOrder.cs" />
     <Compile Include="Common\ModelEvents.cs" />
     <Compile Include="Common\ModelHandlerContext.cs" />
+    <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
     <Compile Include="Definitions\ContentTypeFieldLinkDefinition.cs" />
     <Compile Include="Definitions\ContentTypeLinkDefinition.cs" />
@@ -64,8 +65,9 @@
     <Compile Include="Definitions\QuickLaunchNavigationNodeDefinition.cs" />
     <Compile Include="Definitions\SP2013WorkflowDefinition.cs" />
     <Compile Include="Definitions\SP2013WorkflowSubscriptionDefinition.cs" />
+    <Compile Include="Definitions\TopNavigationNodeDefinition.cs" />
     <Compile Include="Definitions\UserCustomActionDefinition.cs" />
-    <Compile Include="Definitions\DefinitionBase.cs" />
+    <Compile Include="Definitions\Base\DefinitionBase.cs" />
     <Compile Include="Definitions\FarmDefinition.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\FeatureDefinition.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="Definitions\ListItemDefinition.cs" />
     <Compile Include="Definitions\ListDefinition.cs" />
     <Compile Include="Definitions\ListViewDefinition.cs" />
-    <Compile Include="Definitions\PageDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\PageDefinitionBase.cs" />
     <Compile Include="Definitions\PublishingPageDefinition.cs" />
     <Compile Include="Definitions\SecurityGroupDefinition.cs" />
     <Compile Include="Definitions\SecurityGroupLinkDefinition.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
     <Compile Include="Enumerations\BuiltInSiteContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInSiteFeatures.cs" />
-    <Compile Include="Enumerations\BuiltInSP2013Workflow.cs" />
+    <Compile Include="Enumerations\BuiltInSP2013WorkflowEventTypes.cs" />
     <Compile Include="Enumerations\BuiltInWebApplicationFeatures.cs" />
     <Compile Include="Enumerations\BuiltInWebFeatures.cs" />
     <Compile Include="Enumerations\BuiltInWebpartPageTemplateId.cs" />

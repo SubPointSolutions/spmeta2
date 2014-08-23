@@ -2,6 +2,9 @@
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Base definition for pages.
+    /// </summary>
     public abstract class PageDefinitionBase : DefinitionBase
     {
         #region contructors
@@ -15,9 +18,19 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        /// <summary>
+        /// Title of the target page.
+        /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// File name of the target page.
+        /// </summary>
         public string FileName { get; set; }
 
+        /// <summary>
+        /// Should page be overwritten during provision.
+        /// </summary>
         public bool NeedOverride { get; set; }
 
         #endregion

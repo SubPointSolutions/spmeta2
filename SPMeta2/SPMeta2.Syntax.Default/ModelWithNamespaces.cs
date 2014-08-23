@@ -108,6 +108,13 @@ namespace SPMeta2.Syntax.Default
 
             return model;
         }
+        
+        public static ModelNode WithListViews(this ModelNode model, Action<ModelNode> action)
+        {
+            action(model);
+
+            return model;
+        }
 
         #endregion
 

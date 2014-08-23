@@ -16,6 +16,9 @@ namespace SPMeta2.Services
 
     public delegate void ProvisioningServiceEventHandler(ProvisionServiceContext context);
 
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public abstract class ModelProvisionServiceBase
     {
         #region properties

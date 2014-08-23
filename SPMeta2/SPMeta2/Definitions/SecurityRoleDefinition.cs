@@ -2,6 +2,9 @@
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Allows to define and deploy SharePoint security role.
+    /// </summary>
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region contructors
@@ -15,9 +18,19 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        /// <summary>
+        /// Name of the target security role.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Description of the target security role.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Permissions of the target security role.
+        /// </summary>
         public Collection<string> BasePermissions { get; set; }
 
         #endregion

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint field types.
+    /// </summary>
     public static class BuiltInFieldTypes
     {
         public static readonly string Invalid = "Invalid";

@@ -2,6 +2,10 @@
 
 namespace SPMeta2.Utils
 {
+    /// <summary>
+    /// Validation helper.
+    /// Internal usage only.
+    /// </summary>
     public static class ValidationUtils
     {
         #region static

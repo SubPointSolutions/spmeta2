@@ -7,10 +7,16 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.BuiltInDefinitions
 {
+    /// <summary>
+    /// Out of the box SharePoint list and libraries.
+    /// </summary>
     public static class BuiltInListDefinitions
     {
         #region libraries
 
+        /// <summary>
+        /// 'Style Library' library shortcut.
+        /// </summary>
         public static ListDefinition StyleLibrary = new ListDefinition
         {
             Title = "Style Library",
@@ -20,6 +26,9 @@ namespace SPMeta2.BuiltInDefinitions
             ContentTypesEnabled = true
         };
 
+        /// <summary>
+        /// 'Site Pages' library shortcut.
+        /// </summary>
         public static ListDefinition SitePages = new ListDefinition
         {
             Title = "Site Pages",
@@ -28,6 +37,9 @@ namespace SPMeta2.BuiltInDefinitions
             ContentTypesEnabled = false
         };
 
+        /// <summary>
+        /// 'Shared Documents' library shortcut.
+        /// </summary>
         public static ListDefinition Documents = new ListDefinition
         {
             Title = "Documents",
@@ -36,6 +48,9 @@ namespace SPMeta2.BuiltInDefinitions
             ContentTypesEnabled = true
         };
 
+        /// <summary>
+        /// 'Site Assets' library shortcut.
+        /// </summary>
         public static ListDefinition SiteAssets = new ListDefinition
         {
             Title = "Site Assets",
@@ -44,6 +59,9 @@ namespace SPMeta2.BuiltInDefinitions
             ContentTypesEnabled = true
         };
 
+        /// <summary>
+        /// 'Pages' library shortcut.
+        /// </summary>
         public static ListDefinition Pages = new ListDefinition
         {
             Title = "Pages",

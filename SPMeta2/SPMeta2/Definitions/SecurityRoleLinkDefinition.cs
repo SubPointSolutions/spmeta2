@@ -1,5 +1,8 @@
 ﻿namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Allows to attach security rile to the target security group.
+    /// </summary>
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
         #region contructors
@@ -13,6 +16,9 @@
 
         #region properties
 
+        /// <summary>
+        /// Target security role name.
+        /// </summary>
         public string SecurityRoleName { get; set; }
 
         #endregion

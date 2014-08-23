@@ -6,6 +6,9 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint site features.
+    /// </summary>
     public static class BuiltInSiteFeatures
     {
         /// <summary>

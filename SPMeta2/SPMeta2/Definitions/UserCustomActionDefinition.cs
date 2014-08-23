@@ -5,22 +5,56 @@ using System.Text;
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Allows to define and deploy SharePoint custom user action.
+    /// </summary>
     public class UserCustomActionDefinition : DefinitionBase
     {
         #region properties
 
+        /// <summary>
+        /// Name of the target custom user action.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Title of the target custom user action.
+        /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Description of the target user custom action.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Group of the target user custom action.
+        /// </summary>
         public string Group { get; set; }
+
+        /// <summary>
+        /// Location of the target custom user action.
+        /// </summary>
         public string Location { get; set; }
 
+        /// <summary>
+        /// ScriptSrc of the target user custom action.
+        /// </summary>
         public string ScriptSrc { get; set; }
+
+        /// <summary>
+        /// ScriptBlock of the target custom user action.
+        /// </summary>
         public string ScriptBlock { get; set; }
 
+        /// <summary>
+        /// Sequence of the target custom user action.
+        /// </summary>
         public int Sequence { get; set; }
 
+        /// <summary>
+        /// URL of the target custom user action.
+        /// </summary>
         public string Url { get; set; }
 
         #endregion

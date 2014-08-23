@@ -5,6 +5,7 @@ using SPMeta2.Models;
 
 namespace SPMeta2.SSOM.DefaultSyntax
 {
+    [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
     public static class FieldDefinitionSyntax
     {
         #region methods
@@ -21,6 +22,7 @@ namespace SPMeta2.SSOM.DefaultSyntax
             return model;
         }
 
+        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
         public static ModelNode OnCreating(this ModelNode model, Action<FieldDefinition, SPField> action)
         {
             model.RegisterModelEvent<FieldDefinition, SPField>(Common.ModelEventType.OnUpdating, action);
@@ -28,6 +30,7 @@ namespace SPMeta2.SSOM.DefaultSyntax
             return model;
         }
 
+        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
         public static ModelNode OnCreated(this ModelNode model, Action<FieldDefinition, SPField> action)
         {
             model.RegisterModelEvent<FieldDefinition, SPField>(Common.ModelEventType.OnUpdated, action);

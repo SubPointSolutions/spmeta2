@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.ModelHosts
 {
+    /// <summary>
+    /// Base model host for provision flow.
+    /// </summary>
     public class ModelHostBase : ICloneable
     {
         #region methods

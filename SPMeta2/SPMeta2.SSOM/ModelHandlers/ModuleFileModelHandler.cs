@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -26,8 +28,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var folder = modelHost.WithAssertAndCast<SPFolder>("modelHost", value => value.RequireNotNull());
+            var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
+
+            if (folderHost.CurrentWebFolder != null)
+                throw new SPMeta2NotImplementedException("Module provision under web folders is not implemented yet.");
+
+            var folder = folderHost.CurrentLibraryFolder;
 
             ProcessFile(modelHost, folder, moduleFile);
         }
@@ -92,7 +99,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
                 spFile.CheckIn("Provision");
 
-            if (list != null && (list.EnableMinorVersions || list.EnableVersioning))
+            if (list != null && (list.EnableMinorVersions))
                 spFile.Publish("Provision");
 
             if (list != null && list.EnableModeration)

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace SPMeta2.Events
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public class ModelNodeProcessingEventArgs : EventArgs
     {
         public ModelNode ModelNode { get; set; }

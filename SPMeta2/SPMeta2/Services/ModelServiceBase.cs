@@ -13,6 +13,9 @@ using System.Reflection;
 
 namespace SPMeta2.Services
 {
+    /// <summary>
+    /// Base model service class for model provision operations.
+    /// </summary>
     public abstract class ModelServiceBase
     {
         #region constructors

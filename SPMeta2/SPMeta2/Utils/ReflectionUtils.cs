@@ -7,6 +7,10 @@ using System.Text;
 
 namespace SPMeta2.Utils
 {
+    /// <summary>
+    /// Reflection helpers.
+    /// Internal usage only.
+    /// </summary>
     public static class ReflectionUtils
     {
         #region methods

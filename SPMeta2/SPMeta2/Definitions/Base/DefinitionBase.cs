@@ -2,6 +2,9 @@
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Base definition for all SharePoint artifacts to be defined and deployed.
+    /// </summary>
     public abstract class DefinitionBase : ICloneable
     {
         #region contructors

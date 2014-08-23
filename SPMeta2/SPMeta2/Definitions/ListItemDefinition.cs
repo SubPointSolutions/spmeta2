@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Allows to define and deploy list item to the target list.
+    /// </summary>
     public class ListItemDefinition : DefinitionBase
     {
         #region constructors
@@ -19,13 +22,29 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        /// <summary>
+        /// Title of the target list item.
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// Should item be overwritten.
+        /// </summary>
         public bool Overwrite { get; set; }
 
+        /// <summary>
+        /// Should SystemUpdate() be used.
+        /// </summary>
         public bool SystemUpdate { get; set; }
+
+        /// <summary>
+        /// Should SystemUpdateIncrementVersionNumber be used.
+        /// </summary>
         public bool SystemUpdateIncrementVersionNumber { get; set; }
 
+        /// <summary>
+        /// Should UpdateOverwriteVersion be used.
+        /// </summary>
         public bool UpdateOverwriteVersion { get; set; }
 
         // should be collection of attachments later

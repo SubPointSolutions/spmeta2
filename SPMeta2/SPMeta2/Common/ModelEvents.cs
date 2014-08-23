@@ -4,6 +4,9 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Common
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public class ModelEventArgs : EventArgs
     {
         #region constructors
@@ -31,6 +34,9 @@ namespace SPMeta2.Common
         #endregion
     }
 
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public enum ModelEventType
     {
         Unknown,

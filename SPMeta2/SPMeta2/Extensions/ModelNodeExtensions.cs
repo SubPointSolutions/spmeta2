@@ -7,6 +7,7 @@ using System.Text;
 
 namespace SPMeta2.Extensions
 {
+
     public static class ModelNodeExtensions
     {
         #region static

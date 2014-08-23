@@ -112,7 +112,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     // TODO, add some validation
                     var listTemplate = web.ListTemplates[listModel.TemplateName];
 
-                    web.Lists.Add(listModel.Url, listModel.Description, listTemplate);
+                    listId = web.Lists.Add(listModel.Url, listModel.Description, listTemplate);
                 }
                 else
                 {

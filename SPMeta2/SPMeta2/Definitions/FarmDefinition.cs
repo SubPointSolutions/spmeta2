@@ -6,10 +6,13 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Definitions
 {
+    /// <summary>
+    /// Reserved for the future usage.
+    /// </summary>
     public class FarmDefinition : DefinitionBase
     {
         #region properties
-        
+
         #endregion
     }
 }

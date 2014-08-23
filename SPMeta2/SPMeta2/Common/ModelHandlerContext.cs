@@ -4,6 +4,9 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Common
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     [Obsolete]
     public class ModelHandlerContext
     {

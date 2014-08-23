@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint web part page layouts.
+    /// </summary>
     public static class BuiltInWebPartPageTemplates
     {
         public static int spstd1 = 1;
