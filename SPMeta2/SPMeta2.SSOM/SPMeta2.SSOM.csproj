@@ -77,6 +77,7 @@
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
+    <Compile Include="ModelHandlers\PrefixModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="ModelHosts\SecurityRoleLinkModelHost.cs" />
     <Compile Include="ModelHosts\SiteModelHost.cs" />
     <Compile Include="ModelHosts\SSOMModelHostBase.cs" />
+    <Compile Include="ModelHosts\WebApplicationModelHost.cs" />
     <Compile Include="ModelHosts\WebModelHost.cs" />
     <Compile Include="ModelHosts\WebpartPageModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,10 +113,12 @@
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
       <Name>SPMeta2</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

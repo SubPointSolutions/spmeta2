@@ -170,6 +170,13 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
+        public static ModelNode WithTopNavigation(this ModelNode model, Action<ModelNode> action)
+        {
+            action(model);
+
+            return model;
+        }
+
         #endregion
 
         #endregion

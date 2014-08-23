@@ -66,6 +66,7 @@
     <Compile Include="Modern\ModernSyntax.cs" />
     <Compile Include="ModuleFileDefinitionSyntax.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TopNavigationSyntax.cs" />
     <Compile Include="QuickLaunchNavigationSyntax.cs" />
     <Compile Include="SecurityGroupDefinitionSyntax.cs" />
     <Compile Include="SecurityGroupLinkDefinitionSyntax.cs" />
