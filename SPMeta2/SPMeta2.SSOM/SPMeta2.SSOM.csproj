@@ -73,6 +73,7 @@
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
+    <Compile Include="ModelHandlers\FarmPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
+    <Compile Include="ModelHosts\FarmModelHost.cs" />
     <Compile Include="ModelHosts\FolderModelHost.cs" />
     <Compile Include="ModelHosts\ListModelHost.cs" />
     <Compile Include="ModelHosts\SecurityGroupModelHost.cs" />

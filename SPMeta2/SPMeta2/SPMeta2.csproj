@@ -62,6 +62,7 @@
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
     <Compile Include="Definitions\ContentTypeFieldLinkDefinition.cs" />
     <Compile Include="Definitions\ContentTypeLinkDefinition.cs" />
+    <Compile Include="Definitions\FarmPropertyDefinition.cs" />
     <Compile Include="Definitions\FolderDefinition.cs" />
     <Compile Include="Definitions\ListFieldLinkDefinition.cs" />
     <Compile Include="Definitions\ModuleFileDefinition.cs" />
