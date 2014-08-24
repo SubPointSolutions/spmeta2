@@ -37,7 +37,7 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
             ProvisionRunnerAssemblies.Clear();
 
             // should be run only on-premis
-            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
 
         protected override void WithEventHooks(Action<EventHooks> hooks)

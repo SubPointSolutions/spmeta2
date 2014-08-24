@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -19,7 +20,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            if (modelHost is SPSecurableObject)
+            var securableObject = ExtractSecurableObject(modelHost);
+
+            if (securableObject is SPSecurableObject)
             {
                 var securityGroupLinkModel = model as SecurityGroupLinkDefinition;
                 if (securityGroupLinkModel == null) throw new ArgumentException("model has to be SecurityGroupDefinition");
@@ -52,12 +55,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is SPListItem)
                 return (modelHost as SPListItem).ParentList.ParentWeb;
 
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).CurrentList.ParentWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
             throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
         }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var securableObject = modelHost.WithAssertAndCast<SPSecurableObject>("modelHost", value => value.RequireNotNull());
+            var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
@@ -103,6 +115,30 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // GOTCHA!!! supposed to continue chain with adding role definitions via RoleDefinitionLinks
             roleAssignment.RoleDefinitionBindings.RemoveAll();
+        }
+
+        protected SPSecurableObject ExtractSecurableObject(object modelHost)
+        {
+            if (modelHost is SPSecurableObject)
+                return modelHost as SPSecurableObject;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).CurrentList;
+
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.Item;
+
+            if (modelHost is WebpartPageModelHost)
+                return (modelHost as WebpartPageModelHost).PageListItem;
+
+            throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
+                modelHost.GetType()));
         }
 
         protected SPWeb GetWebFromSPSecurableObject(SPSecurableObject securableObject)

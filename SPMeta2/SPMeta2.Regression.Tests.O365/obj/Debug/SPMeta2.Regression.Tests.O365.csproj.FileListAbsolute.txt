@@ -77,6 +77,8 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\D
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Regression.Model.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Regression.Runners.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Regression.Tests.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Validation.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.O365\obj\Debug\SPMeta2.Regression.Tests.O365.csprojResolveAssemblyReference.cache

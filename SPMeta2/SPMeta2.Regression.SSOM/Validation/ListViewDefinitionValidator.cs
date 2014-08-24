@@ -7,6 +7,7 @@ using SPMeta2.Regression.Common.Utils;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -14,8 +15,10 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.CurrentList;
 
             TraceUtils.WithScope(traceScope =>
             {

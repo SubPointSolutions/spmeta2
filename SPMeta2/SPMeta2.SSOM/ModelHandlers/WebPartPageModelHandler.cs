@@ -39,8 +39,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.CurrentList;
 
             var targetPage = GetOrCreateNewWebPartPage(list, webpartPageModel);
 
@@ -58,9 +60,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
+            var list = listModelHost.CurrentList;
             var targetPage = GetOrCreateNewWebPartPage(list, webpartPageModel);
 
             // gosh, it really does not have a title
@@ -100,7 +103,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             return webPartPageName;
         }
 
-        private SPListItem GetOrCreateNewWebPartPage(SPList list, 
+        private SPListItem GetOrCreateNewWebPartPage(SPList list,
             WebPartPageDefinition webpartPageModel)
         {
             var targetPage = FindWebPartPage(list, webpartPageModel);

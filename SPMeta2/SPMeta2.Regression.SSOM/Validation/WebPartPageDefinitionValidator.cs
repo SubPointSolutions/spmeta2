@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -11,9 +12,10 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
+            var list = listModelHost.CurrentList;
             var spWebPartPage = FindWebPartPage(list, webpartPageModel);
 
             TraceUtils.WithScope(traceScope =>

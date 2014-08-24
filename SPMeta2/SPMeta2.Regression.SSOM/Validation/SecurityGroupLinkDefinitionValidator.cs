@@ -14,7 +14,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var securableObject = modelHost.WithAssertAndCast<SPSecurableObject>("modelHost", value => value.RequireNotNull());
+            var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);

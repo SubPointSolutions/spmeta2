@@ -45,7 +45,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
-                    action(list.RootFolder);
+                    var folderModelHost = new FolderModelHost
+                    {
+                        CurrentLibrary = list as SPDocumentLibrary,
+                        CurrentLibraryFolder = list.RootFolder,
+
+                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
+                        CurrentListItem = null,
+                    };
+
+                    action(folderModelHost);
                 }
                 else if (childModelType == typeof(FolderDefinition))
                 {

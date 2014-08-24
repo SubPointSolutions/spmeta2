@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -15,6 +16,30 @@ namespace SPMeta2.SSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(SecurityRoleLinkDefinition); }
+        }
+
+        private SPSecurableObject ExtractSecurableObject(object modelHost)
+        {
+            if (modelHost is SPSecurableObject)
+                return modelHost as SPSecurableObject;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).CurrentList;
+
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.Item;
+
+            if (modelHost is WebpartPageModelHost)
+                return (modelHost as WebpartPageModelHost).PageListItem;
+
+            throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
+                modelHost.GetType()));
         }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
@@ -40,7 +65,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private void ProcessSPListHost(SPList targetList, SPGroup securityGroup, 
+        private void ProcessSPListHost(SPList targetList, SPGroup securityGroup,
             SecurityRoleLinkDefinition securityRoleLinkModel)
         {
             //// TODO

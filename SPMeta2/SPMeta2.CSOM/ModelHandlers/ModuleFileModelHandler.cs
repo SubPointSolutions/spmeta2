@@ -111,7 +111,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (list != null && (file.Exists && file.CheckOutType != CheckOutType.None))
                 file.UndoCheckOut();
 
-            if (list != null && (list.EnableMinorVersions || list.EnableVersioning) && (file.Exists && file.Level == FileLevel.Published))
+            if (list != null && (list.EnableMinorVersions) && (file.Exists && file.Level == FileLevel.Published))
                 file.UnPublish("Provision");
 
             if (list != null && (file.Exists && file.CheckOutType == CheckOutType.None))

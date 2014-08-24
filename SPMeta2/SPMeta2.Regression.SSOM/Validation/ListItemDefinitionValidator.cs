@@ -7,6 +7,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -14,8 +15,10 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.CurrentList;
 
             ValidateListItem(list, listItemModel);
         }

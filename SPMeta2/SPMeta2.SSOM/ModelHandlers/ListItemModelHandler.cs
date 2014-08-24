@@ -108,9 +108,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
+            var list = listModelHost.CurrentList;
             var item = EnsureListItem(list, listItemModel);
 
             if (childModelType == typeof(ListItemFieldValueDefinition))
