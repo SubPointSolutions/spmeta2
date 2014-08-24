@@ -28,9 +28,20 @@ namespace SPMeta2.CSOM.ModelHandlers
             // TOSDO, need to have "safe" url concats here, CSOM is doomed
             // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
 
+            // @tarurar fix
+            // "GetCurrentWebUrl fix (didn't work for root url sites)"
+            // https://github.com/tarurar/spmeta2/commit/580172bb008742131ec5fb771f61af617b0e5f46
+
             var fullUrl = context.Url.ToLower();
-            var serverUrl = fullUrl.Replace(parentWeb.ServerRelativeUrl.ToLower(), string.Empty);
-            var currentWebUrl = serverUrl + "/" + parentWeb.ServerRelativeUrl + "/" + webModel.Url;
+            var serverUrl = fullUrl.EndsWith(parentWeb.ServerRelativeUrl.ToLower())
+                ? fullUrl.Substring(0, fullUrl.LastIndexOf(parentWeb.ServerRelativeUrl.ToLower()))
+                : fullUrl;
+            var isParentWebRootUrl = parentWeb.ServerRelativeUrl.Trim('/').Length == 0;
+            var currentWebUrl = serverUrl +
+                                (isParentWebRootUrl
+                                    ? String.Empty
+                                    : parentWeb.ServerRelativeUrl +
+                                      (webModel.Url.StartsWith("/") ? webModel.Url : "/" + webModel.Url));
 
             return currentWebUrl.ToLower();
         }
