@@ -59,10 +59,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.Syntax.Default.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.PublishingPageTemplates.resources
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.WebPartPageTemplates.resources

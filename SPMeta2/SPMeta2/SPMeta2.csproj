@@ -57,6 +57,7 @@
     <Compile Include="Common\ModelEvents.cs" />
     <Compile Include="Common\ModelHandlerContext.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
+    <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\BuiltInPrefixTypes.cs" />
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
     <Compile Include="Definitions\ContentTypeFieldLinkDefinition.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="Enumerations\BuiltInFieldId.cs" />
     <Compile Include="Enumerations\BuiltInFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInSecurityRoleNames.cs" />
+    <Compile Include="Enumerations\BuiltInSecurityRoleTypes.cs" />
     <Compile Include="Enumerations\BuiltInSiteContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInSiteFeatures.cs" />
     <Compile Include="Enumerations\BuiltInSP2013WorkflowEventTypes.cs" />

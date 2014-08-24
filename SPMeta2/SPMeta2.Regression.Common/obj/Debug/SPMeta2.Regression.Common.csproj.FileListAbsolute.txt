@@ -23,8 +23,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.C
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.Regression.Common.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.Regression.Common.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Common\obj\Debug\SPMeta2.Regression.Common.pdb

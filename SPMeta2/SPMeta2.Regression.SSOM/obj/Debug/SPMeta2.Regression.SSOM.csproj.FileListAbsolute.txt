@@ -68,14 +68,10 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSO
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb

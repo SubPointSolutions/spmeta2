@@ -72,6 +72,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
+            if (!securableObject.HasUniqueRoleAssignments)
+            {
+                throw new SPMeta2Exception("securableObject does not have HasUniqueRoleAssignments. Please use BreakRoleInheritanceDefinition object or break role inheritable manually before deploying SecurityGroupLinkDefinition.");
+            }
+
             var web = GetWebFromSPSecurableObject(securableObject);
 
             var securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
@@ -80,14 +85,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             // default one, it will be removed later
             var dummyRole = web.RoleDefinitions.GetByType(SPRoleType.Reader);
 
-
-
             if (!roleAssignment.RoleDefinitionBindings.Contains(dummyRole))
                 roleAssignment.RoleDefinitionBindings.Add(dummyRole);
-
-            // this is has to be decided later - what is the strategy fro breaking role inheritance
-            if (!securableObject.HasUniqueRoleAssignments)
-                securableObject.BreakRoleInheritance(false);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="ContentTypeDefinitionSyntax.cs" />
     <Compile Include="ContentTypeLinkDefinitionSyntax.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />

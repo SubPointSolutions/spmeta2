@@ -21,6 +21,17 @@
         /// </summary>
         public string SecurityRoleName { get; set; }
 
+        /// <summary>
+        /// Type of the target role.
+        /// 
+        /// </summary>
+        public string SecurityRoleType { get; set; }
+
+        /// <summary>
+        /// ID of the target security role.
+        /// </summary>
+        public int SecurityRoleId { get; set; }
+
         #endregion
 
         #region methods

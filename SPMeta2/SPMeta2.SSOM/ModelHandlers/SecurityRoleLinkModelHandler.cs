@@ -129,7 +129,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             var web = securityGroup.ParentWeb;
 
             var securityRoleAssignment = new SPRoleAssignment(securityGroup);
-            var roleDefinition = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
+            SPRoleDefinition roleDefinition = null;
+
+            if (!string.IsNullOrEmpty(securityRoleLinkModel.SecurityRoleName))
+            {
+                roleDefinition = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
+            }
+            else if (!string.IsNullOrEmpty(securityRoleLinkModel.SecurityRoleType))
+            {
+                var securityRoleType = (SPRoleType)Enum.Parse(typeof(SPRoleType), securityRoleLinkModel.SecurityRoleType, true);
+                roleDefinition = web.RoleDefinitions.GetByType(securityRoleType);
+            }
+            else
+            {
+                roleDefinition = web.RoleDefinitions.GetById(securityRoleLinkModel.SecurityRoleId);
+            }
 
             if (!securityRoleAssignment.RoleDefinitionBindings.Contains(roleDefinition))
             {
