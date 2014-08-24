@@ -88,6 +88,7 @@
     <Compile Include="Definitions\WebDefinition.cs" />
     <Compile Include="Definitions\WebPartDefinition.cs" />
     <Compile Include="Definitions\WebPartPageDefinition.cs" />
+    <Compile Include="Definitions\WebPropertyDefinition.cs" />
     <Compile Include="Definitions\WikiPageDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInFarmFeatures.cs" />

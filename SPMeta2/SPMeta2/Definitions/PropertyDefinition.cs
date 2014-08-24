@@ -17,6 +17,11 @@
         /// </summary>
         public object Value { get; set; }
 
+        /// <summary>
+        /// Should value be overwritten
+        /// </summary>
+        public bool Overwrite { get; set; }
+
         #endregion
     }
 }
