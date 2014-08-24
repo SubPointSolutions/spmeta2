@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPMeta2.Definitions
+namespace SPMeta2.Definitions.Enumerations
 {
     /// <summary>
     /// Builtin SPPrefix definitions.
