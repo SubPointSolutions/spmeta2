@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,6 +73,10 @@
       <Project>{1f079600-f007-4c60-9b42-55284cf0cd7e}</Project>
       <Name>SPMeta2.Nintex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
+      <Project>{fbd78ac1-b766-4332-a9b1-c73ee64fd5c6}</Project>
+      <Name>SPMeta2.SSOM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2\SPMeta2.csproj">
       <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
       <Name>SPMeta2</Name>
@@ -97,6 +107,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SPMeta2.snk" />
     <None Include="Web References\NintexWorkflowService\ConfiguredOutcome.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>

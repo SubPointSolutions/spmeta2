@@ -9,6 +9,7 @@ using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -27,8 +28,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var workflowSubscriptionModel = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.CurrentList;
 
             DeployWorkflowSubscriptionDefinition(modelHost, list, workflowSubscriptionModel);
         }

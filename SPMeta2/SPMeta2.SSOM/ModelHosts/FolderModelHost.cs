@@ -7,7 +7,7 @@ using Microsoft.SharePoint;
 
 namespace SPMeta2.SSOM.ModelHosts
 {
-    public class FolderModelHost
+    public class FolderModelHost : SSOMModelHostBase
     {
         public SPList CurrentList { get; set; }
         public SPListItem CurrentListItem { get; set; }

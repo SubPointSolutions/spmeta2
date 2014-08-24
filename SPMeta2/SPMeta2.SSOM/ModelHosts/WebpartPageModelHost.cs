@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.SSOM.ModelHosts
 {
-    public class WebpartPageModelHost
+    public class WebpartPageModelHost : SSOMModelHostBase
     {
         #region properties
 

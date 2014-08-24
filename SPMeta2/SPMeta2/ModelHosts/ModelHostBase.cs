@@ -10,6 +10,21 @@ namespace SPMeta2.ModelHosts
     /// </summary>
     public class ModelHostBase : ICloneable
     {
+        #region constructors
+
+        public ModelHostBase()
+        {
+            ShouldUpdateHost = true;
+        }
+
+        #endregion
+
+        #region properties
+
+        public bool ShouldUpdateHost { get; set; }
+
+        #endregion
+
         #region methods
 
         public object Clone()

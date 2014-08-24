@@ -28,7 +28,20 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (web != null && listDefinition != null)
             {
+                // This is very important line ->  adding new 'fake list'
+                //
+                // Nintex workflow deployment web service updates the list, so that version of the list becomes +4
+                // Current SPWeb has not been updated, current list will be 4 versions behind so you will have 'Save conflict' exception
+                //
+                // We try to add new list, so SPListCollection is invalidated.
+                // Surely, we won't save this list.
+                var tmpList = web.Lists.Add(System.Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
                 var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
+
+                var listModelHost = new ListModelHost
+                {
+                    CurrentList = list
+                };
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -49,10 +62,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    action(list);
+                    action(listModelHost);
                 }
 
-                list.Update();
+                if (listModelHost.ShouldUpdateHost)
+                    list.Update();
             }
             else
             {

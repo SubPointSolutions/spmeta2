@@ -2,7 +2,7 @@
 
 namespace SPMeta2.SSOM.ModelHosts
 {
-    public class SecurityGroupLinkModel
+    public class SecurityGroupLinkModel : SSOMModelHostBase
     {
         #region properties
 

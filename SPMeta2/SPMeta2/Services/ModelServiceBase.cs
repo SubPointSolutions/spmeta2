@@ -61,6 +61,12 @@ namespace SPMeta2.Services
         private readonly List<ModelHandlerBase> ModelHandlerEvents = new List<ModelHandlerBase>();
         private ModelNode _activeModelNode = null;
 
+        public void RegisterModelHandler(ModelHandlerBase modelHandlerType)
+        {
+            if (!ModelHandlers.ContainsKey(modelHandlerType.TargetType))
+                ModelHandlers.Add(modelHandlerType.TargetType, modelHandlerType);
+        }
+
         public Dictionary<Type, ModelHandlerBase> ModelHandlers { get; set; }
 
         protected virtual List<ModelWeigh> GetModelWeighs()
@@ -215,14 +221,29 @@ namespace SPMeta2.Services
 
             foreach (var childModelType in childModelTypes)
             {
-                modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
-                {
-                    var childModels =
-                        modelNode.GetChildModels(childModelType.Key);
+                // V1, optimized one
+                // does not work with nintex workflow as 'List was modified and needs to be refreshed.'
 
-                    foreach (var childModel in childModels)
+                //var childModels =
+                //        modelNode.GetChildModels(childModelType.Key);
+
+                //modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
+                //{
+                //    foreach (var childModel in childModels)
+                //        ProcessModelDeployment(childModelHost, childModel);
+                //});
+
+                /// V2, less optimized version
+                var childModels =
+                       modelNode.GetChildModels(childModelType.Key);
+
+                foreach (var childModel in childModels)
+                {
+                    modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
+                    {
                         ProcessModelDeployment(childModelHost, childModel);
-                });
+                    });
+                }
             }
         }
 

@@ -14,30 +14,40 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Nintex.Consts;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.Nintex.ModelHandlers
 {
     public class NintexWorkflowModelHandler : ModelHandlerBase
     {
         #region properties
+
         public override Type TargetType
         {
             get { return typeof(NintexWorkflowDefinition); }
         }
+
         #endregion
 
         #region methods
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var workflowDefinition = model.WithAssertAndCast<NintexWorkflowDefinition>("model", value => value.RequireNotNull());
 
-            DeployNintexWorkflow(list, workflowDefinition);
+            // Nintex workflow web service updates current list with 4 versions
+            // We can't really call SPList.Update for the current list as we have 'Save conflict exception'
+            // We say 'don't update list' to the parent model host, so we safe and can make other list operations
+            listModelHost.ShouldUpdateHost = false;
+
+            DeployNintexWorkflow(listModelHost, workflowDefinition);
         }
 
-        private void DeployNintexWorkflow(SPList list, NintexWorkflowDefinition workflowDefinition)
+        private void DeployNintexWorkflow(ListModelHost listModelHost, NintexWorkflowDefinition workflowDefinition)
         {
+            var list = listModelHost.CurrentList;
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

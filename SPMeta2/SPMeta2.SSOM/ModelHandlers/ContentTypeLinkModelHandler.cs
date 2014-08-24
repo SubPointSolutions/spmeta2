@@ -4,6 +4,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -18,8 +19,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<SPList>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.CurrentList;
 
             if (!list.ContentTypesEnabled)
                 throw new ArgumentException(string.Format("List [{0}] does not allow content types.", list.RootFolder.ServerRelativeUrl));
@@ -60,7 +63,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                list.Update();
+                //list.Update();
             }
             else
             {
