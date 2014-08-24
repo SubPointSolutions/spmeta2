@@ -15,7 +15,7 @@ namespace SPMeta2.SSOM.ModelHosts
         public SPDocumentLibrary CurrentLibrary { get; set; }
         public SPFolder CurrentLibraryFolder { get; set; }
 
-        public SPDocumentLibrary CurrentWeb { get; set; }
+        public SPWeb CurrentWeb { get; set; }
         public SPFolder CurrentWebFolder { get; set; }
     }
 }

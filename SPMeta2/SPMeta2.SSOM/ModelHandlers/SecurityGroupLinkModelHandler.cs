@@ -33,7 +33,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var newModelHost = new SecurityGroupModelHost
                 {
-                    SecurableObject = modelHost as SPSecurableObject,
+                    SecurableObject = securableObject as SPSecurableObject,
                     SecurityGroup = securityGroup
                 };
 
@@ -59,11 +59,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite.RootWeb;
 
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).CurrentList.ParentWeb;
 
-            if (modelHost is WebModelHost)
-                return (modelHost as WebModelHost).HostWeb;
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.ParentWeb;
 
             throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
         }

@@ -55,9 +55,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // this is SPGroup -> SPRoleLink deployment
                 ProcessSPGroupHost(securityGroup, securityGroup, securityRoleLinkModel);
             }
-            else if (securableObject is SPList)
+            else if (securableObject is SPSecurableObject)
             {
-                ProcessSPListHost(securableObject as SPList, securityGroup, securityRoleLinkModel);
+                ProcessSPSecurableObjectHost(securableObject as SPSecurableObject, securityGroup, securityRoleLinkModel);
             }
             else
             {
@@ -65,12 +65,38 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private void ProcessSPListHost(SPList targetList, SPGroup securityGroup,
+        private SPWeb ExtractWeb(object modelHost)
+        {
+            if (modelHost is SPWeb)
+                return modelHost as SPWeb;
+
+            if (modelHost is SPList)
+                return (modelHost as SPList).ParentWeb;
+
+            if (modelHost is SPListItem)
+                return (modelHost as SPListItem).ParentList.ParentWeb;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).CurrentList.ParentWeb;
+
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.ParentWeb;
+
+            throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
+        }
+
+        private void ProcessSPSecurableObjectHost(SPSecurableObject targetSecurableObject, SPGroup securityGroup,
             SecurityRoleLinkDefinition securityRoleLinkModel)
         {
             //// TODO
             // need common validation infrastructure 
-            var web = targetList.ParentWeb;
+            var web = ExtractWeb(targetSecurableObject);
 
             var roleAssignment = new SPRoleAssignment(securityGroup);
 
@@ -86,7 +112,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Object = null,
                     ObjectType = typeof(SPRoleDefinition),
                     ObjectDefinition = securityRoleLinkModel,
-                    ModelHost = targetList
+                    ModelHost = targetSecurableObject
                 });
 
                 roleAssignment.RoleDefinitionBindings.Add(role);
@@ -101,12 +127,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Object = role,
                     ObjectType = typeof(SPRoleDefinition),
                     ObjectDefinition = securityRoleLinkModel,
-                    ModelHost = targetList
+                    ModelHost = targetSecurableObject
                 });
 
             }
 
-            targetList.RoleAssignments.Add(roleAssignment);
+            targetSecurableObject.RoleAssignments.Add(roleAssignment);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -116,10 +142,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Object = role,
                 ObjectType = typeof(SPRoleDefinition),
                 ObjectDefinition = securityRoleLinkModel,
-                ModelHost = targetList
+                ModelHost = targetSecurableObject
             });
-
-            targetList.Update();
         }
 
         private void ProcessSPGroupHost(SPGroup modelHost, SPGroup securityGroup, SecurityRoleLinkDefinition securityRoleLinkModel)
