@@ -1,5 +1,4 @@
 ﻿using SPMeta2.Definitions;
-using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +7,12 @@ using System.Threading.Tasks;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
-using SPMeta2.SSOM.DefaultSyntax;
-using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
-
-namespace SPMeta2.SSOM.ModelHandlers
+namespace SPMeta2.CSOM.ModelHandlers
 {
-    public class WebPropertyModelHandler : SSOMModelHandlerBase
+    public class WebPropertyModelHandler : CSOMModelHandlerBase
     {
         #region properties
 
@@ -38,9 +35,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeploytWebProperty(webModelHost, web, webProperty);
         }
 
-        private void DeploytWebProperty(ModelHosts.WebModelHost webModelHost, Microsoft.SharePoint.SPWeb web, Definitions.WebPropertyDefinition webProperty)
+        private void DeploytWebProperty(WebModelHost webModelHost, Microsoft.SharePoint.Client.Web web, Definitions.WebPropertyDefinition webProperty)
         {
-            var currentValue = web.GetProperty(webProperty.Key);
+            var clientContext = web.Context;
+
+            clientContext.Load(web, w => w.AllProperties);
+            clientContext.ExecuteQuery();
+
+            var allProperties = web.AllProperties;
+            clientContext.Load(allProperties);
+
+            var currentValue = web.AllProperties.FieldValues.ContainsKey(webProperty.Key) ? web.AllProperties[webProperty.Key] : null;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -55,7 +60,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentValue == null)
             {
-                web.SetProperty(webProperty.Key, webProperty.Value);
+                web.AllProperties[webProperty.Key] = webProperty.Value;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -69,12 +74,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 web.Update();
+                clientContext.ExecuteQuery();
             }
             else
             {
                 if (webProperty.Overwrite)
                 {
-                    web.SetProperty(webProperty.Key, webProperty.Value);
+                    web.AllProperties[webProperty.Key] = webProperty.Value;
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -88,6 +94,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     });
 
                     web.Update();
+                    clientContext.ExecuteQuery();
                 }
                 else
                 {
@@ -96,16 +103,19 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentModelNode = null,
                         Model = null,
                         EventType = ModelEventType.OnProvisioned,
-                        Object = currentValue,
+                        Object = webProperty.Value,
                         ObjectType = typeof(object),
                         ObjectDefinition = webProperty,
                         ModelHost = webModelHost
                     });
 
                     web.Update();
+                    clientContext.ExecuteQuery();
                 }
             }
         }
+
+
 
         #endregion
     }
