@@ -72,6 +72,7 @@
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
