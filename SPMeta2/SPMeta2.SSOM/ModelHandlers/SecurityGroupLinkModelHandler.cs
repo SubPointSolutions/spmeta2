@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
@@ -80,13 +81,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             var web = GetWebFromSPSecurableObject(securableObject);
 
             var securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
-            var roleAssignment = new SPRoleAssignment(securityGroup);
+            var roleAssignment = securableObject.RoleAssignments
+                                                       .OfType<SPRoleAssignment>()
+                                                       .FirstOrDefault(a => a.Member.ID == securityGroup.ID);
 
-            // default one, it will be removed later
-            var dummyRole = web.RoleDefinitions.GetByType(SPRoleType.Reader);
+            var isNewRoleAssignment = false;
 
-            if (!roleAssignment.RoleDefinitionBindings.Contains(dummyRole))
-                roleAssignment.RoleDefinitionBindings.Add(dummyRole);
+            if (roleAssignment == null)
+            {
+                roleAssignment = new SPRoleAssignment(securityGroup);
+                isNewRoleAssignment = true;
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -99,7 +104,32 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            if (isNewRoleAssignment)
+            {
+                // default one, it will be removed later
+                // we need at least one role for a new role assignment created
+                // it will be deleted later
+
+                var dummyRole = web.RoleDefinitions.GetByType(SPRoleType.Reader);
+
+                if (!roleAssignment.RoleDefinitionBindings.Contains(dummyRole))
+                    roleAssignment.RoleDefinitionBindings.Add(dummyRole);
+            }
+
             securableObject.RoleAssignments.Add(roleAssignment);
+
+            if (isNewRoleAssignment)
+            {
+                // removing dummy role for a new assignment created
+                var tmpAssignment = securableObject.RoleAssignments
+                                                       .OfType<SPRoleAssignment>()
+                                                       .FirstOrDefault(a => a.Member.ID == securityGroup.ID);
+
+                while (tmpAssignment.RoleDefinitionBindings.Count > 0)
+                    tmpAssignment.RoleDefinitionBindings.Remove(0);
+
+                tmpAssignment.Update();
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -111,9 +141,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-
-            // GOTCHA!!! supposed to continue chain with adding role definitions via RoleDefinitionLinks
-            roleAssignment.RoleDefinitionBindings.RemoveAll();
         }
 
         protected SPSecurableObject ExtractSecurableObject(object modelHost)
