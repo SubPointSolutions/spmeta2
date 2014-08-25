@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -18,7 +19,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             get { return typeof(ListFieldLinkDefinition); }
         }
- 
+
         #endregion
 
         #region methods
@@ -35,7 +36,64 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void DeployListFieldLink(object modelHost, List list, ListFieldLinkDefinition listFieldLinkModel)
         {
-            throw new NotImplementedException();
+            var web = list.ParentWeb;
+
+            var context = list.Context;
+            var fields = list.Fields;
+
+            context.Load(fields);
+            context.ExecuteQuery();
+
+            var existingListField = fields.OfType<Field>().FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingListField,
+                ObjectType = typeof(Field),
+                ObjectDefinition = listFieldLinkModel,
+                ModelHost = modelHost
+            });
+
+            if (existingListField == null)
+            {
+                var avialableField = web.AvailableFields;
+
+                context.Load(fields);
+                context.ExecuteQuery();
+
+                var siteField = avialableField.OfType<Field>().FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);
+
+                fields.Add(siteField);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = siteField,
+                    ObjectType = typeof(Field),
+                    ObjectDefinition = listFieldLinkModel,
+                    ModelHost = modelHost
+                });
+
+                context.ExecuteQuery();
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingListField,
+                    ObjectType = typeof(Field),
+                    ObjectDefinition = listFieldLinkModel,
+                    ModelHost = modelHost
+                });
+            }
         }
 
         #endregion
