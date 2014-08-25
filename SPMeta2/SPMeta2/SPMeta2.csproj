@@ -60,6 +60,7 @@
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
+    <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Enumerations\BuiltInCustomActionLocationId.cs" />
     <Compile Include="Enumerations\BuiltInPrefixTypes.cs" />
     <Compile Include="Definitions\ContentTypeDefinition.cs" />

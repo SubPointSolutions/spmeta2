@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Administration;
+using System.Security;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -33,7 +34,45 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void DeployWebApplication(FarmModelHost farmModelHost, SPFarm farm, WebApplicationDefinition webApplicationDefinition)
         {
+            var webAppBuilder = new SPWebApplicationBuilder(farm);
 
+            webAppBuilder.Port = webApplicationDefinition.Port;
+            webAppBuilder.ApplicationPoolId = webApplicationDefinition.ApplicationPoolId;
+
+            if (!string.IsNullOrEmpty(webApplicationDefinition.ManagedAccount))
+            {
+                webAppBuilder.IdentityType = IdentityType.SpecificUser;
+
+                var managedAccounts = new SPFarmManagedAccountCollection(SPFarm.Local);
+                var maccount = managedAccounts.FindOrCreateAccount(webApplicationDefinition.ManagedAccount);
+
+                webAppBuilder.ManagedAccount = maccount;
+            }
+            else
+            {
+                webAppBuilder.ApplicationPoolUsername = webApplicationDefinition.ApplicationPoolUsername;
+
+                var password = new SecureString();
+
+                foreach (char c in webApplicationDefinition.ApplicationPoolPassword.ToCharArray())
+                    password.AppendChar(c);
+
+                webAppBuilder.ApplicationPoolPassword = password;
+            }
+
+            webAppBuilder.CreateNewDatabase = webApplicationDefinition.CreateNewDatabase;
+
+            webAppBuilder.DatabaseName = webApplicationDefinition.DatabaseName;
+            webAppBuilder.DatabaseServer = webApplicationDefinition.DatabaseServer;
+
+            webAppBuilder.UseNTLMExclusively = webApplicationDefinition.UseNTLMExclusively;
+
+            webAppBuilder.HostHeader = webApplicationDefinition.HostHeader;
+            webAppBuilder.AllowAnonymousAccess = webApplicationDefinition.AllowAnonymousAccess;
+            webAppBuilder.UseSecureSocketsLayer = webApplicationDefinition.UseSecureSocketsLayer;
+
+            var webApp = webAppBuilder.Create();
+            webApp.Provision();
         }
 
         #endregion
