@@ -12,9 +12,12 @@ namespace SPMeta2.CSOM.ModelHandlers
     {
         #region properties
 
-        #region properties
+        public override Type TargetType
+        {
+            get { return typeof(FieldDefinition); }
+        }
 
-        private static string SiteFieldXmlTemplate = @"<Field " +
+        private static string MinimalSPFieldTemplate = @"<Field " +
                                 "ID=\"{0}\" " +
                                 "StaticName=\"{1}\" " +
                                 "DisplayName=\"{2}\" " +
@@ -23,8 +26,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                                 "Type=\"{5}\" " +
                                 "Group=\"{6}\" " +
                                 "/>";
-
-        #endregion
 
         #endregion
 
@@ -106,30 +107,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             return EnsureField(context, rootWeb.Fields, fieldModel);
         }
 
+        protected virtual void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
+        {
+            field.Title = fieldModel.Title;
+            field.Description = fieldModel.Description ?? string.Empty;
+            field.Group = fieldModel.Group ?? string.Empty;
+        }
+
         private Field EnsureField(ClientRuntimeContext context, FieldCollection fieldCollection, FieldDefinition fieldModel)
         {
             var currentField = FindExistingField(fieldCollection, fieldModel.InternalName);
 
             if (currentField == null)
             {
-                var fieldDef = string.Format(SiteFieldXmlTemplate,
-                                             new string[]
-                                                 {
-                                                     fieldModel.Id.ToString("B"),
-                                                     fieldModel.InternalName,
-                                                     fieldModel.Title,
-                                                     fieldModel.Title,
-                                                     fieldModel.InternalName,
-                                                     fieldModel.FieldType,
-                                                     fieldModel.Group
-                                                 });
-
+                var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
                 currentField = fieldCollection.AddFieldAsXml(fieldDef, false, AddFieldOptions.DefaultValue);
             }
 
-            currentField.Title = fieldModel.Title;
-            currentField.Description = fieldModel.Description ?? string.Empty;
-            currentField.Group = fieldModel.Group ?? string.Empty;
+            ProcessFieldProperties(currentField, fieldModel);
 
             return currentField;
         }
@@ -168,9 +163,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             return null;
         }
 
-        public override Type TargetType
+
+        protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
-            get { return typeof(FieldDefinition); }
+            return string.Format(MinimalSPFieldTemplate, new string[]
+                                                                         {
+                                                                             fieldModel.Id.ToString("B"),
+                                                                             fieldModel.InternalName,
+                                                                             fieldModel.Title,
+                                                                             fieldModel.Title,
+                                                                             fieldModel.InternalName,
+                                                                             fieldModel.FieldType
+                                                                         });
         }
 
         #endregion
