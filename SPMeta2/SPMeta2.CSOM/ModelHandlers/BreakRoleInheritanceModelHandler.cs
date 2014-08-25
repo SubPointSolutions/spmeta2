@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
+using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -33,12 +35,65 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void ProcessRoleInheritance(object modelHost, SecurableObject securableObject, BreakRoleInheritanceDefinition breakRoleInheritanceModel)
         {
-            throw new NotImplementedException();
+            var context = securableObject.Context;
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = securableObject,
+                ObjectType = typeof(SecurableObject),
+                ObjectDefinition = breakRoleInheritanceModel,
+                ModelHost = modelHost
+            });
+
+            if (!securableObject.HasUniqueRoleAssignments)
+                securableObject.BreakRoleInheritance(breakRoleInheritanceModel.CopyRoleAssignments, breakRoleInheritanceModel.ClearSubscopes);
+
+            if (breakRoleInheritanceModel.ForceClearSubscopes)
+            {
+                context.Load(securableObject.RoleAssignments);
+                context.ExecuteQuery();
+
+                while (securableObject.RoleAssignments.Count > 0)
+                    securableObject.RoleAssignments[0].DeleteObject();
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = securableObject,
+                ObjectType = typeof(SecurableObject),
+                ObjectDefinition = breakRoleInheritanceModel,
+                ModelHost = modelHost
+            });
         }
 
-        private SecurableObject ExtractSecurableObject(object modelHost)
+        protected SecurableObject ExtractSecurableObject(object modelHost)
         {
-            throw new NotImplementedException();
+            if (modelHost is SecurableObject)
+                return modelHost as SecurableObject;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList;
+
+            //if (modelHost is FolderModelHost)
+            //    return (modelHost as FolderModelHost).CurrentLibraryFolder.ite;
+
+            //if (modelHost is WebpartPageModelHost)
+            //    return (modelHost as WebpartPageModelHost).PageListItem;
+
+            throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
+                modelHost.GetType()));
         }
 
         #endregion
