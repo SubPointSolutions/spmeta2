@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return (modelHost as WebModelHost).HostWeb;
 
             if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).CurrentList.ParentWeb;
+                return (modelHost as ListModelHost).HostList.ParentWeb;
 
             if (modelHost is FolderModelHost)
                 return (modelHost as FolderModelHost).CurrentLibraryFolder.ParentWeb;
@@ -158,7 +158,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return (modelHost as WebModelHost).HostWeb;
 
             if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).CurrentList;
+                return (modelHost as ListModelHost).HostList;
 
             if (modelHost is FolderModelHost)
                 return (modelHost as FolderModelHost).CurrentLibraryFolder.Item;

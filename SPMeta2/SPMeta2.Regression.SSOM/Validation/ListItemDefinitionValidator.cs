@@ -18,7 +18,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             ValidateListItem(list, listItemModel);
         }

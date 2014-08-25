@@ -47,5 +47,7 @@ namespace SPMeta2.Enumerations
 
         public static readonly string TaxonomyFieldType = "TaxonomyFieldType";
         public static readonly string TaxonomyFieldTypeMulti = "TaxonomyFieldTypeMulti";
+
+        public static readonly string BusinessData = "BusinessData";
     }
 }

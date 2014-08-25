@@ -40,7 +40,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var listModelHost = new ListModelHost
                 {
-                    CurrentList = list
+                    HostList = list
                 };
 
                 if (childModelType == typeof(ModuleFileDefinition))

@@ -11,9 +11,105 @@ namespace SPMeta2.Syntax.Default
     {
         #region farm
 
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty model".
+        /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// </summary>
+        /// <returns></returns>
+        public static ModelNode NewFarmModel()
+        {
+            return NewFarmModel((FarmDefinition)null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty model".
+        /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// Use action to get access to the "model node" and construct model tree.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewFarmModel(Action<ModelNode> action)
+        {
+            return NewFarmModel(new FarmDefinition { RequireSelfProcessing = false }, action);
+        }
+
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding model provided.
+        /// If RequireSelfProcessing set as 'true', then model is going to be processed and pushed by SPMeta2 API.
+        /// </summary>
+        /// <param name="farmDefinition"></param>
+        /// <returns></returns>
+        public static ModelNode NewFarmModel(FarmDefinition farmDefinition)
+        {
+            return NewFarmModel(farmDefinition, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding model provided.
+        /// If RequireSelfProcessing set as 'true', then site model is going to be processed and pushed by SPMeta2 API.
+        /// Use action to get access to the "model node" and construct model tree.
+        /// </summary>
+        /// <param name="farmDefinition"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewFarmModel(FarmDefinition farmDefinition, Action<ModelNode> action)
+        {
+            return NewModelNode<FarmDefinition>(farmDefinition, action);
+
+        }
+
         #endregion
 
         #region web applications
+
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty model".
+        /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// </summary>
+        /// <returns></returns>
+        public static ModelNode NewWebApplicationModel()
+        {
+            return NewWebApplicationModel((WebApplicationDefinition)null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty model".
+        /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// Use action to get access to the "model node" and construct model tree.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewWebApplicationModel(Action<ModelNode> action)
+        {
+            return NewWebApplicationModel(new WebApplicationDefinition { RequireSelfProcessing = false }, action);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding model provided.
+        /// If RequireSelfProcessing set as 'true', then model is going to be processed and pushed by SPMeta2 API.
+        /// </summary>
+        /// <param name="webApplicationDefinition"></param>
+        /// <returns></returns>
+        public static ModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition)
+        {
+            return NewWebApplicationModel(webApplicationDefinition, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding model provided.
+        /// If RequireSelfProcessing set as 'true', then site model is going to be processed and pushed by SPMeta2 API.
+        /// Use action to get access to the "model node" and construct model tree.
+        /// </summary>
+        /// <param name="webApplicationDefinition"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition, Action<ModelNode> action)
+        {
+            return NewModelNode<WebApplicationDefinition>(webApplicationDefinition, action);
+
+        }
 
         #endregion
 
@@ -38,9 +134,7 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewSiteModel(Action<ModelNode> action)
         {
-            var definition = new SiteDefinition { RequireSelfProcessing = false };
-
-            return NewSiteModel(definition, action);
+            return NewSiteModel(new SiteDefinition { RequireSelfProcessing = false }, action);
         }
 
         /// <summary>
@@ -64,12 +158,7 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewSiteModel(SiteDefinition siteDefinition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = siteDefinition ?? new SiteDefinition { RequireSelfProcessing = false } };
-
-            if (action != null)
-                action(newModelNode);
-
-            return newModelNode;
+            return NewModelNode<SiteDefinition>(siteDefinition, action);
         }
 
         #endregion
@@ -87,20 +176,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         /// <summary>
-        /// Creates a new instance of the ModelNode adding "empty web model".
-        /// Web model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
-        /// Use action to get access to the "site model node" and construct model tree.
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public static ModelNode NewWebModel(Action<ModelNode> action)
-        {
-            var definition = new WebDefinition { RequireSelfProcessing = false };
-
-            return NewWebModel(definition, action);
-        }
-
-        /// <summary>
         /// Creates a new instance of the ModelNode adding web model provided.
         /// If RequireSelfProcessing set as 'true', then web model is going to be processed and pushed by SPMeta2 API.
         /// </summary>
@@ -109,6 +184,18 @@ namespace SPMeta2.Syntax.Default
         public static ModelNode NewWebModel(WebDefinition webDefinition)
         {
             return NewWebModel(webDefinition, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty web model".
+        /// Web model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// Use action to get access to the "site model node" and construct model tree.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewWebModel(Action<ModelNode> action)
+        {
+            return NewWebModel(new WebDefinition { RequireSelfProcessing = false }, action);
         }
 
         /// <summary>
@@ -121,7 +208,17 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewWebModel(WebDefinition webDefinition, Action<ModelNode> action)
         {
-            var newModelNode = new ModelNode { Value = webDefinition ?? new WebDefinition { RequireSelfProcessing = false } };
+            return NewModelNode<WebDefinition>(webDefinition, action);
+        }
+
+        #endregion
+
+        #region utils
+
+        private static ModelNode NewModelNode<TModelDefinition>(TModelDefinition model, Action<ModelNode> action)
+          where TModelDefinition : DefinitionBase, new()
+        {
+            var newModelNode = new ModelNode { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
 
             if (action != null)
                 action(newModelNode);
@@ -133,14 +230,13 @@ namespace SPMeta2.Syntax.Default
 
         #region Obsolete
 
-        [Obsolete("Please use NewSiteModel()/NewWebModel() methods. NewModel() will be removed in further versions of SPMeta2 API.")]
+        [Obsolete("Please use NewSiteModel()/NewWebModel()/NewWebApplicationModel()/NewFarmModel() methods. NewModel() will be removed in further versions of SPMeta2 API.")]
         public static ModelNode NewModel()
         {
             return new ModelNode();
         }
 
-
-        [Obsolete("Please use NewSiteModel() methods. DummySite() will be removed in further versions of SPMeta2 API.")]
+        [Obsolete("Please use NewSiteModel()/NewWebModel()/NewWebApplicationModel()/NewFarmModel() methods.. DummySite() will be removed in further versions of SPMeta2 API.")]
         public static ModelNode DummySite(this ModelNode node)
         {
             node.Value = new SiteDefinition { RequireSelfProcessing = false };
@@ -148,7 +244,7 @@ namespace SPMeta2.Syntax.Default
             return node;
         }
 
-        [Obsolete("Please use NewWebModel() methods. DummyWeb() will be removed in further versions of SPMeta2 API.")]
+        [Obsolete("Please use NewSiteModel()/NewWebModel()/NewWebApplicationModel()/NewFarmModel() methods.. DummyWeb() will be removed in further versions of SPMeta2 API.")]
         public static ModelNode DummyWeb(this ModelNode node)
         {
             node.Value = new WebDefinition { RequireSelfProcessing = false };

@@ -16,7 +16,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
 
-            var spList = listModelHost.CurrentList;
+            var spList = listModelHost.HostList;
 
             TraceUtils.WithScope(traceScope =>
             {

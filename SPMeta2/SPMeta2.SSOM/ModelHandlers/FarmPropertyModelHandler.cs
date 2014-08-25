@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Administration;
 using SPMeta2.Common;
+using SPMeta2.SSOM.ModelHandlers.Base;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class FarmPropertyModelHandler : SSOMModelHandlerBase
+    public class FarmPropertyModelHandler : PropertyModelHandler
     {
         #region properties
 
@@ -27,74 +28,11 @@ namespace SPMeta2.SSOM.ModelHandlers
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
-            var farmProperty = model.WithAssertAndCast<FarmPropertyDefinition>("model", value => value.RequireNotNull());
+            var propertyModel = model.WithAssertAndCast<FarmPropertyDefinition>("model", value => value.RequireNotNull());
 
             var farm = farmModelHost.HostFarm;
 
-            DeploytFarmProperty(farmModelHost, farm, farmProperty);
-        }
-
-        private void DeploytFarmProperty(FarmModelHost farmModelHost, SPFarm farm, FarmPropertyDefinition property)
-        {
-            var currentValue = farm.Properties[property.Key];
-
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioning,
-                Object = currentValue,
-                ObjectType = typeof(object),
-                ObjectDefinition = property,
-                ModelHost = farmModelHost
-            });
-
-            if (currentValue == null)
-            {
-                farm.Properties[property.Key] = property.Value;
-
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioned,
-                    Object = property.Value,
-                    ObjectType = typeof(object),
-                    ObjectDefinition = property,
-                    ModelHost = farmModelHost
-                });
-            }
-            else
-            {
-                if (property.Overwrite)
-                {
-                    farm.Properties[property.Key] = property.Value;
-
-                    InvokeOnModelEvent(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = property.Value,
-                        ObjectType = typeof(object),
-                        ObjectDefinition = property,
-                        ModelHost = farmModelHost
-                    });
-                }
-                else
-                {
-                    InvokeOnModelEvent(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = currentValue,
-                        ObjectType = typeof(object),
-                        ObjectDefinition = property,
-                        ModelHost = farmModelHost
-                    });
-                }
-            }
+            DeployProperty(modelHost, farm.Properties, propertyModel);
         }
 
         #endregion

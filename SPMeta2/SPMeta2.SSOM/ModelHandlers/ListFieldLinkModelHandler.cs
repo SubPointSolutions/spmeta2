@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listFieldLinkModel = model.WithAssertAndCast<ListFieldLinkDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             DeployListFieldLink(modelHost, list, listFieldLinkModel);
         }

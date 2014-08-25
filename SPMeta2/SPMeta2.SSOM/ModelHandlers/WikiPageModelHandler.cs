@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
             //    throw new Exception("FolderUrl property is not supported yet!");

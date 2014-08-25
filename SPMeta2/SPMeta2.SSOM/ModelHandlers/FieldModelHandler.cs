@@ -12,7 +12,7 @@ namespace SPMeta2.SSOM.ModelHandlers
     {
         #region properties
 
-        private const string MinimalSPFieldTemplate = "<Field ID=\"{0}\" StaticName=\"{1}\" DisplayName=\"{2}\" Title=\"{3}\" Name=\"{4}\" Type=\"{5}\" />";
+        protected const string MinimalSPFieldTemplate = "<Field ID=\"{0}\" StaticName=\"{1}\" DisplayName=\"{2}\" Title=\"{3}\" Name=\"{4}\" Type=\"{5}\" />";
 
         public override Type TargetType
         {
@@ -34,16 +34,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             // TODO, needs to be changed to using pattern and adjust all model handlers
             InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
 
+            var isListField = false;
+
             if (modelHost is SiteModelHost)
                 field = EnsureSiteField((modelHost as SiteModelHost).HostSite, fieldModel);
             else if (modelHost is SPList)
+            {
                 field = DeployListField(modelHost as SPList, fieldModel);
+                isListField = true;
+            }
             else
             {
                 throw new ArgumentException("modelHost needs to be SPSite/SPList");
             }
 
-            ProcessCommonProperties(field, fieldModel);
+            ProcessFieldProperties(field, fieldModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -55,9 +60,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
+
             InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
 
-            field.Update(true);
+            // no promotion for the list field, and force push for the site fields
+            if (isListField)
+            {
+                field.Update();
+            }
+            else
+            {
+                field.Update(true);
+            }
         }
 
         private void CheckValidModelHost(object modelHost)
@@ -100,6 +114,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             return list.Fields[definition.Id];
         }
 
+        protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+        {
+            return string.Format(MinimalSPFieldTemplate, new string[]
+                                                                         {
+                                                                             fieldModel.Id.ToString("B"),
+                                                                             fieldModel.InternalName,
+                                                                             fieldModel.Title,
+                                                                             fieldModel.Title,
+                                                                             fieldModel.InternalName,
+                                                                             fieldModel.FieldType
+                                                                         });
+        }
+
         private SPField EnsureFieldInFieldsCollection(
             object modelHost,
             SPFieldCollection fields, FieldDefinition fieldModel)
@@ -119,22 +146,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                // first creation
-                var fieldDef = string.Format(MinimalSPFieldTemplate, new string[]
-                                                                         {
-                                                                             fieldModel.Id.ToString("B"),
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.FieldType
-                                                                         });
-
-
-
-
+                var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
                 fields.AddFieldAsXml(fieldDef);
-
                 currentField = fields[fieldModel.Id];
             }
             else
@@ -156,13 +169,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentField;
         }
 
-        private static void ProcessCommonProperties(SPField siteField, FieldDefinition fieldModel)
+        protected virtual void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
         {
-            siteField.Title = fieldModel.Title;
-            siteField.Group = fieldModel.Group;
+            field.Title = fieldModel.Title;
+            field.Group = fieldModel.Group;
 
-            // SPBug, description cannot be null
-            siteField.Description = fieldModel.Description ?? string.Empty;
+            field.Description = fieldModel.Description ?? string.Empty;
         }
 
         #endregion

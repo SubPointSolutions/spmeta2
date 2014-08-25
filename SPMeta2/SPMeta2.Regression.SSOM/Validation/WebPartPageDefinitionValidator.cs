@@ -15,7 +15,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
             var spWebPartPage = FindWebPartPage(list, webpartPageModel);
 
             TraceUtils.WithScope(traceScope =>

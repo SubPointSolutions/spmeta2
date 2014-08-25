@@ -50,6 +50,11 @@ namespace SPMeta2.Definitions
         /// </summary>
         public string FieldType { get; set; }
 
+        /// <summary>
+        /// Required flag for the target field.
+        /// </summary>
+        public bool Required { get; set; }
+
         #endregion
 
         #region methods

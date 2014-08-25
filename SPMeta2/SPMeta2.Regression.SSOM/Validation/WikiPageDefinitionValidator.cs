@@ -15,7 +15,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             var spWikiPageItem = FindWikiPage(list, wikiPageModel);
 

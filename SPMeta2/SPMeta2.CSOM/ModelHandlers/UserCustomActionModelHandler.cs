@@ -96,6 +96,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             existringAction.ScriptSrc = customAction.ScriptSrc;
             existringAction.Title = customAction.Title;
             existringAction.Url = customAction.Url;
+
+            var permissions = new BasePermissions();
+
+            if (customAction.Rights != null && customAction.Rights.Count > 0)
+            {
+                foreach (var permissionString in customAction.Rights)
+                    permissions.Set((PermissionKind)Enum.Parse(typeof(PermissionKind), permissionString));
+            }
+
+            existringAction.Rights = permissions;
         }
 
         protected bool IsValidHostModelHost(object modelHost)

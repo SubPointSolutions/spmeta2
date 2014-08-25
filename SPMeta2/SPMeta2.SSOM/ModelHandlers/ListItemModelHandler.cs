@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             DeployInternall(list, listItemModel);
         }
@@ -111,7 +111,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
             var item = EnsureListItem(list, listItemModel);
 
             if (childModelType == typeof(ListItemFieldValueDefinition))

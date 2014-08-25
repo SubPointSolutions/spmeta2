@@ -31,7 +31,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var workflowSubscriptionModel = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             DeployWorkflowSubscriptionDefinition(modelHost, list, workflowSubscriptionModel);
         }

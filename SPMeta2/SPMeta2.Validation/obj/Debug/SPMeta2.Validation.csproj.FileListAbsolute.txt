@@ -28,6 +28,8 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb

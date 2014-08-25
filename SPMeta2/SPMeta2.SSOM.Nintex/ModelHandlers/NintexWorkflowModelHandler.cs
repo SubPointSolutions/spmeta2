@@ -46,7 +46,7 @@ namespace SPMeta2.SSOM.Nintex.ModelHandlers
 
         private void DeployNintexWorkflow(ListModelHost listModelHost, NintexWorkflowDefinition workflowDefinition)
         {
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

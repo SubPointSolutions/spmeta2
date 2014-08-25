@@ -17,6 +17,16 @@ namespace SPMeta2.Regression.Runners
 
         #region methods
 
+        public virtual void DeployFarmModel(ModelNode model)
+        {
+
+        }
+
+        public virtual void DeployWebApplicationModel(ModelNode model)
+        {
+
+        }
+
         public virtual void DeploySiteModel(ModelNode model)
         {
 

@@ -51,11 +51,11 @@
     <Compile Include="Syntax\ModelWithNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
+    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPMeta2\SPMeta2\SPMeta2.csproj">
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>

@@ -58,6 +58,11 @@
     <Compile Include="Common\ModelHandlerContext.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
+    <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
+    <Compile Include="Definitions\JobDefinition.cs" />
+    <Compile Include="Definitions\ListPropertyDefinition.cs" />
+    <Compile Include="Definitions\WebApplicationPropertyDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInCustomActionLocationId.cs" />
     <Compile Include="Enumerations\BuiltInPrefixTypes.cs" />
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
     <Compile Include="Definitions\ContentTypeFieldLinkDefinition.cs" />

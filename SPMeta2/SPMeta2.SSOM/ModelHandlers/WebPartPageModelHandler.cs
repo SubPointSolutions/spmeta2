@@ -42,7 +42,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             var targetPage = GetOrCreateNewWebPartPage(list, webpartPageModel);
 
@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
             var targetPage = GetOrCreateNewWebPartPage(list, webpartPageModel);
 
             // gosh, it really does not have a title

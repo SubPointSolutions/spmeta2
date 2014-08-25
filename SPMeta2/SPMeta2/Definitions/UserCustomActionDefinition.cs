@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,15 @@ namespace SPMeta2.Definitions
     /// </summary>
     public class UserCustomActionDefinition : DefinitionBase
     {
+        #region constructors
+
+        public UserCustomActionDefinition()
+        {
+            Rights = new Collection<string>();
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -56,6 +66,11 @@ namespace SPMeta2.Definitions
         /// URL of the target custom user action.
         /// </summary>
         public string Url { get; set; }
+
+        /// <summary>
+        /// Permissions of the target custom user action.
+        /// </summary>
+        public Collection<string> Rights { get; set; }
 
         #endregion
     }

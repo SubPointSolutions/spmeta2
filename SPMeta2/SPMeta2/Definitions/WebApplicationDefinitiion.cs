@@ -9,7 +9,7 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows to define and deploy SharePoint web application.
     /// </summary>
-    public class WebApplicationDefinitiion : DefinitionBase
+    public class WebApplicationDefinition : DefinitionBase
     {
     }
 }

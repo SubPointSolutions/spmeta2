@@ -22,7 +22,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.CurrentList;
+            var list = listModelHost.HostList;
 
             if (!list.ContentTypesEnabled)
                 throw new ArgumentException(string.Format("List [{0}] does not allow content types.", list.RootFolder.ServerRelativeUrl));

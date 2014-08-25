@@ -11,10 +11,8 @@ namespace SPMeta2.SSOM.ModelHosts
     {
         #region properties
 
-        public SPList CurrentList { get; set; }
+        public SPList HostList { get; set; }
 
         #endregion
-
-        
     }
 }
