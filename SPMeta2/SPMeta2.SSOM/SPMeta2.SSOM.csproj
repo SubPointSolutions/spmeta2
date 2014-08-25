@@ -69,12 +69,11 @@
     <Compile Include="Extensions\SPViewCollectionExtensions.cs" />
     <Compile Include="Extensions\WebPartExtensions.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
-    <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
+    <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
-    <Compile Include="ModelHandlers\FarmPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BusinessDataFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
-    <Compile Include="ModelHandlers\ListPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
     <Compile Include="ModelHandlers\PrefixModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
@@ -92,7 +90,6 @@
     <Compile Include="ModelHandlers\TopNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
     <Compile Include="ModelHandlers\WebApplicationModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebApplicationPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
@@ -105,11 +102,11 @@
     <Compile Include="ModelHandlers\SiteModelHandler.cs" />
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHosts\FarmModelHost.cs" />
     <Compile Include="ModelHosts\FolderModelHost.cs" />
     <Compile Include="ModelHosts\ListModelHost.cs" />
+    <Compile Include="ModelHosts\PropertyModelHost.cs" />
     <Compile Include="ModelHosts\SecurityGroupModelHost.cs" />
     <Compile Include="ModelHosts\SecurityRoleLinkModelHost.cs" />
     <Compile Include="ModelHosts\SiteModelHost.cs" />

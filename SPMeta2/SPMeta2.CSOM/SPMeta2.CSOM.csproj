@@ -72,6 +72,7 @@
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
+    <Compile Include="ModelHandlers\ListPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
@@ -99,7 +101,6 @@
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHosts\ListItemFieldValueModelHost.cs" />
     <Compile Include="ModelHosts\ModuleFileModelHost.cs" />
