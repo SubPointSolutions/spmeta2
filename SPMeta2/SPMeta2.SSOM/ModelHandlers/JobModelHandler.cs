@@ -8,6 +8,8 @@ using SPMeta2.Utils;
 using Microsoft.SharePoint.Administration;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Exceptions;
+using Microsoft.SharePoint;
+using SPMeta2.Common;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -35,8 +37,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (modelHost is WebApplicationModelHost)
             {
-                var jobDefinitions = (modelHost as WebApplicationModelHost).HostWebApplication.JobDefinitions;
-                DeployJob(jobDefinitions, jobDefinition);
+                var webAppModelHost = modelHost as WebApplicationModelHost;
+                DeployWebApplicationJob(modelHost, webAppModelHost.HostWebApplication, jobDefinition);
             }
             else
             {
@@ -44,18 +46,67 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private void DeployJob(SPJobDefinitionCollection jobDefinitions, JobDefinition jobDefinition)
+        private void DeployWebApplicationJob(object modelHost, SPWebApplication webApp, JobDefinition jobDefinition)
         {
-            var jobNameInUpperCase = jobDefinition.Name.ToUpper();
-            var currentJob = jobDefinitions.FirstOrDefault(j => !string.IsNullOrEmpty(j.Name) && j.Name.ToUpper() == jobNameInUpperCase);
+            var jobDefinitions = webApp.JobDefinitions;
 
-            if (currentJob == null)
+            var jobNameInUpperCase = jobDefinition.Name.ToUpper();
+            var currentJobInstance = jobDefinitions.FirstOrDefault(j => !string.IsNullOrEmpty(j.Name) && j.Name.ToUpper() == jobNameInUpperCase);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentJobInstance,
+                ObjectType = typeof(SPJobDefinition),
+                ObjectDefinition = jobDefinition,
+                ModelHost = modelHost
+            });
+
+            if (currentJobInstance == null)
             {
                 // install one
+                var jobType = Type.GetType(jobDefinition.JobType);
+                currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, jobDefinition.Name, webApp);
+
+                if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
+                {
+                    currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
+                }
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentJobInstance,
+                    ObjectType = typeof(SPJobDefinition),
+                    ObjectDefinition = jobDefinition,
+                    ModelHost = modelHost
+                });
+
+                currentJobInstance.Update();
             }
             else
             {
-                // update one
+                if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
+                {
+                    currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
+                }
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentJobInstance,
+                    ObjectType = typeof(SPJobDefinition),
+                    ObjectDefinition = jobDefinition,
+                    ModelHost = modelHost
+                });
+
+                currentJobInstance.Update();
             }
         }
 

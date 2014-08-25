@@ -23,6 +23,13 @@ namespace SPMeta2.Definitions
         /// </summary>
         public string JobType { get; set; }
 
+        /// <summary>
+        /// Schedule string for the target timer job.
+        /// 
+        /// SPSchedule.FromString is used to get instance of the target Schedule object.
+        /// </summary>
+        public string ScheduleString { get; set; }
+
         #endregion
     }
 }
