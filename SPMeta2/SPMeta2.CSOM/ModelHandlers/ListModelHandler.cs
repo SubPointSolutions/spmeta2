@@ -35,6 +35,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = web.Context;
                 var list = web.QueryAndGetListByTitle(listDefinition.Title);
 
+                var listModelHost = new ListModelHost
+                {
+                    HostList = list
+                };
+
                 if (childModelType == typeof(ListViewDefinition))
                 {
                     context.Load<List>(list, l => l.Views);
@@ -92,10 +97,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    action(list);
+                    action(listModelHost);
                 }
 
-                list.Update();
+                if (listModelHost.ShouldUpdateHost)
+                    list.Update();
             }
             else
             {

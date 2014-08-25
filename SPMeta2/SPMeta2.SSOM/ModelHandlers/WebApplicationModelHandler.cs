@@ -34,6 +34,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void DeployWebApplication(FarmModelHost farmModelHost, SPFarm farm, WebApplicationDefinition webApplicationDefinition)
         {
+            var webApps = SPWebService.ContentService.WebApplications;
+
             var webAppBuilder = new SPWebApplicationBuilder(farm);
 
             webAppBuilder.Port = webApplicationDefinition.Port;

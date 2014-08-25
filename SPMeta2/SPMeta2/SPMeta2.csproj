@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInFolderDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
+    <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\DefaultModelWegh.cs" />
     <Compile Include="Common\ModelDeploymentOrder.cs" />
     <Compile Include="Common\ModelEvents.cs" />

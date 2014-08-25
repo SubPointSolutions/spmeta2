@@ -83,7 +83,6 @@ namespace SPMeta2.SSOM.Nintex.ModelHandlers
 
         }
 
-
         #endregion
     }
 }
