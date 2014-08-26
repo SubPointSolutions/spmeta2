@@ -638,5 +638,61 @@ namespace SPMeta2.Regression.Tests.O365.Impl
                 WithProvisionRunners(runner => runner.DeployWebModel(model));
             });
         }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_BreakRoleInheritanceDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_JobDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_ListFieldLinkDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_ManagedAccountDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_PrefixDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_SandboxSolutionDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_TopNavigationNodeDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.O365")]
+        public override void CanRaiseEvents_WebApplicationDefinition()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

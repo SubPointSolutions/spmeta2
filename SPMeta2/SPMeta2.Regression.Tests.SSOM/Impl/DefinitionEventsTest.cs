@@ -151,8 +151,6 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
                                     AssertEventHooks<SPContentType>(link, hooks);
                                 });
                         });
-
-
                 });
 
                 WithProvisionRunners(runner => runner.DeployWebModel(model));
@@ -666,6 +664,62 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
 
                 WithProvisionRunners(runner => runner.DeployWebModel(model));
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_BreakRoleInheritanceDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_JobDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_ListFieldLinkDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_ManagedAccountDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_PrefixDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_SandboxSolutionDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_TopNavigationNodeDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events.SSOM")]
+        public override void CanRaiseEvents_WebApplicationDefinition()
+        {
+            throw new NotImplementedException();
         }
     }
 }

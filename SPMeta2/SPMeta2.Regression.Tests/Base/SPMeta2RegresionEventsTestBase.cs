@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionEventsTestBase : SPMeta2RegresionTestBase
     {
-        #region contructors
+        #region constructors
 
         public SPMeta2RegresionEventsTestBase()
         {

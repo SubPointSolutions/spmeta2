@@ -68,7 +68,6 @@
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
     <Compile Include="Definitions\ContentTypeFieldLinkDefinition.cs" />
     <Compile Include="Definitions\ContentTypeLinkDefinition.cs" />
-    <Compile Include="Definitions\FarmPropertyDefinition.cs" />
     <Compile Include="Definitions\FolderDefinition.cs" />
     <Compile Include="Definitions\ListFieldLinkDefinition.cs" />
     <Compile Include="Definitions\ModuleFileDefinition.cs" />
@@ -93,7 +92,7 @@
     <Compile Include="Definitions\SecurityRoleDefinition.cs" />
     <Compile Include="Definitions\SecurityRoleLinkDefinition.cs" />
     <Compile Include="Definitions\SiteDefinition.cs" />
-    <Compile Include="Definitions\WebApplicationDefinitiion.cs" />
+    <Compile Include="Definitions\WebApplicationDefinition.cs" />
     <Compile Include="Definitions\WebDefinition.cs" />
     <Compile Include="Definitions\WebPartDefinition.cs" />
     <Compile Include="Definitions\WebPartPageDefinition.cs" />
