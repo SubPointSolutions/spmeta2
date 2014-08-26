@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionEventsTestBase()
         {
-            EnableDefinitionValidation = false;
+            //EnableDefinitionValidation = false;
         }
 
         #endregion

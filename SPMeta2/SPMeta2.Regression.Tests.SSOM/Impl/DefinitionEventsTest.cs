@@ -15,6 +15,8 @@ using SPMeta2.Regression.Tests.Impl.Events;
 using SPMeta2.Syntax.Default;
 using Microsoft.SharePoint.Navigation;
 using Microsoft.SharePoint.WorkflowServices;
+using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Modern;
 
 namespace SPMeta2.Regression.Tests.SSOM.Impl
 {
@@ -38,6 +40,7 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
 
             // should be run only on-premis
             ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
         }
 
         protected override void WithEventHooks(Action<EventHooks> hooks)
@@ -62,24 +65,12 @@ namespace SPMeta2.Regression.Tests.SSOM.Impl
             DisposeLazyRunnerConnection();
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Events.SSOM")]
-        public override void CanRaiseEvents_FieldDefinition()
-        {
-            WithEventHooks(hooks =>
-            {
-                var model = SPMeta2Model.NewSiteModel(site =>
-                {
-                    site
-                        .AddField(RegSiteFields.BooleanField, field =>
-                        {
-                            AssertEventHooks<SPField>(field, hooks);
-                        });
-                });
-
-                WithProvisionRunners(runner => runner.DeploySiteModel(model));
-            });
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Events.SSOM")]
+        //public override void CanRaiseEvents_FieldDefinition()
+        //{
+        //    base.CanRaiseEvents_FieldDefinition();
+        //}
 
         [TestMethod]
         [TestCategory("Regression.Events.SSOM")]

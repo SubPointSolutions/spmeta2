@@ -1,10 +1,13 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using System;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint field.
     /// </summary>
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPField", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
     public class FieldDefinition : DefinitionBase
     {
         #region constructors

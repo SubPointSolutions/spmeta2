@@ -19,6 +19,8 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         public SSOMProvisionRunner()
         {
+            Name = "SSOM";
+
             WebApplicationUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.SSOM_WebApplicationUrl);
             SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.SSOM_SiteUrl);
         }
@@ -33,6 +35,12 @@ namespace SPMeta2.Regression.Runners.SSOM
         private readonly SSOMProvisionService _provisionService = new SSOMProvisionService();
         private readonly SSOMValidationService _validationService = new SSOMValidationService();
 
+        public override string ResolveFullTypeName(string typeName, string assemblyName)
+        {
+            var tt = typeof(SPField);
+
+            return base.ResolveFullTypeName(typeName, assemblyName);
+        }
 
         #endregion
 

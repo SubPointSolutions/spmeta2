@@ -94,8 +94,10 @@ namespace SPMeta2.Regression.Tests.Base
 
             ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
-            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
+
+        protected ProvisionRunnerBase CurrentProvisionRunner;
 
         protected void WithProvisionRunners(Action<ProvisionRunnerBase> action)
         {
@@ -104,6 +106,8 @@ namespace SPMeta2.Regression.Tests.Base
                 var type = provisionRunner.GetType().FullName;
 
                 provisionRunner.EnableDefinitionValidation = EnableDefinitionValidation;
+
+                CurrentProvisionRunner = provisionRunner;
 
                 Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
                 action(provisionRunner);

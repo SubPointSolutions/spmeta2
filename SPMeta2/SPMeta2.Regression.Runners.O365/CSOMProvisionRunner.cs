@@ -16,6 +16,8 @@ namespace SPMeta2.Regression.Runners.O365
 
         public O365ProvisionRunner()
         {
+            Name = "CSOM";
+
             SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
             UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
             UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
@@ -38,6 +40,13 @@ namespace SPMeta2.Regression.Runners.O365
         #endregion
 
         #region methods
+
+        public override string ResolveFullTypeName(string typeName, string assemblyName)
+        {
+            var type = typeof(Field);
+
+            return base.ResolveFullTypeName(typeName, assemblyName);
+        }
 
         private ClientContext _lazyContext;
 

@@ -23,7 +23,7 @@ namespace SPMeta2.Regression.Tests.O365.Impl
 
         public DefinitionEventsTest()
         {
-            EnableDefinitionValidation = false;
+            EnableDefinitionValidation = true;
         }
 
         #endregion
@@ -42,24 +42,26 @@ namespace SPMeta2.Regression.Tests.O365.Impl
             DisposeLazyRunnerConnection();
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Events.O365")]
-        public override void CanRaiseEvents_FieldDefinition()
-        {
-            WithEventHooks(hooks =>
-            {
-                var model = SPMeta2Model.NewSiteModel(site =>
-                {
-                    site
-                        .AddField(RegSiteFields.BooleanField, field =>
-                        {
-                            AssertEventHooks<Field>(field, hooks);
-                        });
-                });
+        //override 
 
-                WithProvisionRunners(runner => runner.DeploySiteModel(model));
-            });
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Events.O365")]
+        //public override void CanRaiseEvents_FieldDefinition()
+        //{
+        //    WithEventHooks(hooks =>
+        //    {
+        //        var model = SPMeta2Model.NewSiteModel(site =>
+        //        {
+        //            site
+        //                .AddField(RegSiteFields.BooleanField, field =>
+        //                {
+        //                    AssertEventHooks<Field>(field, hooks);
+        //                });
+        //        });
+
+        //        WithProvisionRunners(runner => runner.DeploySiteModel(model));
+        //    });
+        //}
 
         [TestMethod]
         [TestCategory("Regression.Events.O365")]
