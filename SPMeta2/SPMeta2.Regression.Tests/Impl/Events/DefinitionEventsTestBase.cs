@@ -16,6 +16,7 @@ using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Regression.Common.Utils;
 using System.Reflection;
 using SPMeta2.Attributes;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Events
 {
@@ -24,7 +25,49 @@ namespace SPMeta2.Regression.Tests.Impl.Events
     {
         [TestMethod]
         [TestCategory("Regression.Events")]
-        public void CanRaiseEvents_FieldDefinitionNew()
+        public void SelfDiagnostic_TestShouldHaveAllDefinitions()
+        {
+            var methods = GetType().GetMethods();
+
+            var spMetaAssembly = typeof(FieldDefinition).Assembly;
+            var allDefinitions = ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaAssembly);
+
+            foreach (var def in allDefinitions)
+            {
+                Trace.WriteLine(def.Name);
+            }
+
+            foreach (var definition in allDefinitions)
+            {
+                var hasTestMethod = HasTestMethod(definition, methods);
+
+                Assert.IsTrue(hasTestMethod);
+            }
+        }
+
+        private bool HasTestMethod(Type definition, MethodInfo[] methods)
+        {
+            var methodPrefix = "CanRaiseEvents";
+            var methodName = string.Format("{0}_{1}", methodPrefix, definition.Name);
+
+            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
+
+            var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
+
+            return targetMethod != null;
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_BreakRoleInheritanceDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_FieldDefinition()
         {
             WithProvisionRunners(runner =>
             {
@@ -45,6 +88,251 @@ namespace SPMeta2.Regression.Tests.Impl.Events
                 });
             });
         }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_BusinessDataFieldDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_JobDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ManagedAccountDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SandboxSolutionDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ContentTypeDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ContentTypeFieldLinkDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ContentTypeLinkDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_FolderDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ListFieldLinkDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ModuleFileDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_PrefixDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_QuickLaunchNavigationNodeDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SP2013WorkflowDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SP2013WorkflowSubscriptionDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_TopNavigationNodeDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_UserCustomActionDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_FarmDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_PropertyDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_FeatureDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ListItemDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ListDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ListViewDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_PublishingPageDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SecurityGroupDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SecurityGroupLinkDefinition()
+        {
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SecurityRoleDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SecurityRoleLinkDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_SiteDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_WebApplicationDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_WebDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_WebPartDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_WebPartPageDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_WikiPageDefinition()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Events")]
+        public void CanRaiseEvents_ListItemFieldValueDefinition()
+        {
+
+        }
+
 
         private string ResolveSPType(ModelNode field)
         {

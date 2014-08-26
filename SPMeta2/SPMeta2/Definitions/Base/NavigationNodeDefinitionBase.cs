@@ -9,7 +9,7 @@ namespace SPMeta2.Definitions.Base
     /// <summary>
     /// Base definition for SharePoint navigation nodes.
     /// </summary>
-    public class NavigationNodeDefinitionBase : DefinitionBase
+    public abstract class NavigationNodeDefinitionBase : DefinitionBase
     {
         #region constructors
 
