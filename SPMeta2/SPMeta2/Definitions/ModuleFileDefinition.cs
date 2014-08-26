@@ -11,7 +11,7 @@ namespace SPMeta2.Definitions
 
     public class ModuleFileDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public ModuleFileDefinition()
         {

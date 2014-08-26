@@ -2,16 +2,16 @@
 
 namespace SPMeta2.O365.ModelHosts
 {
-    public class SiteModelHost : O365ModelHostBase
+    public class AdminSiteModelHost : O365ModelHostBase
     {
         #region constructors
 
-        public SiteModelHost()
+        public AdminSiteModelHost()
         {
             
         }
 
-        public SiteModelHost(ClientContext clientContext)
+        public AdminSiteModelHost(ClientContext clientContext)
         {
             HostClientContext = clientContext;
             HostSite = clientContext.Site;
@@ -21,9 +21,9 @@ namespace SPMeta2.O365.ModelHosts
 
         #region static
 
-        public static SiteModelHost FromClientContext(ClientContext clientContext)
+        public static AdminSiteModelHost FromClientContext(ClientContext clientContext)
         {
-            return new SiteModelHost(clientContext);
+            return new AdminSiteModelHost(clientContext);
         }
 
         #endregion

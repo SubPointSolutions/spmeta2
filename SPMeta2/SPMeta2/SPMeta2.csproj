@@ -62,6 +62,7 @@
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
+    <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
     <Compile Include="Enumerations\BuiltInCustomActionLocationId.cs" />
     <Compile Include="Enumerations\BuiltInPrefixTypes.cs" />
     <Compile Include="Definitions\ContentTypeDefinition.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Enumerations\BuiltInFieldId.cs" />
     <Compile Include="Enumerations\BuiltInFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInRegistrationTypes.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleNames.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleTypes.cs" />
     <Compile Include="Enumerations\BuiltInSiteContentTypeId.cs" />

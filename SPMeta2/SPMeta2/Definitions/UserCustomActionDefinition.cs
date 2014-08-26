@@ -72,6 +72,18 @@ namespace SPMeta2.Definitions
         /// </summary>
         public Collection<string> Rights { get; set; }
 
+        /// <summary>
+        /// Registration ID of the target custom user action.
+        /// </summary>
+        public string RegistrationId { get; set; }
+
+        /// <summary>
+        /// Registration type of the target custom user action.
+        /// 
+        /// BuiltInRegistrationTypes class can be uses to utilize out of the box SharePoint registration types.
+        /// </summary>
+        public string RegistrationType { get; set; }
+
         #endregion
     }
 }
