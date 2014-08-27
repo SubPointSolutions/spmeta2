@@ -92,9 +92,9 @@ namespace SPMeta2.Regression.Tests.Base
             //        ProvisionRunnerAssemblies.Add(lib);
             //}
 
-            //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
+            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
-            ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            // ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
         }
 
         protected ProvisionRunnerBase CurrentProvisionRunner;

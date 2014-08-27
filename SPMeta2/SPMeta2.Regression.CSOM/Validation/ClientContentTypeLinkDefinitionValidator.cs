@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -12,9 +13,10 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
 
+            var list = listModelHost.HostList;
             var context = list.Context;
 
             context.Load(list, l => l.ContentTypesEnabled);
