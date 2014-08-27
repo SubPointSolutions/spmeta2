@@ -37,6 +37,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                new XAttribute("BdcField", "Title"));
         }
 
+        protected override Type GetTargetFieldType()
+        {
+            return typeof(SPBusinessDataField);
+        }
+
         #endregion
 
         #region methods
@@ -78,7 +83,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 .SetAttribute("EntityName", businessFieldModel.EntityName)
                 .SetAttribute("BdcField", businessFieldModel.BdcFieldName);
 
-            return string.Empty;
+            return bcsFieldXml.ToString();
         }
 
         #endregion

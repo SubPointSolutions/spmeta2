@@ -80,6 +80,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanRaiseEvents_JobDefinition()
         {
             throw new NotImplementedException();
+
+            TestRandomDefinition<JobDefinition>();
         }
 
         [TestMethod]
@@ -87,6 +89,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanRaiseEvents_ManagedAccountDefinition()
         {
             throw new NotImplementedException();
+
+            TestRandomDefinition<ManagedAccountDefinition>();
         }
 
         [TestMethod]
@@ -94,6 +98,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanRaiseEvents_SandboxSolutionDefinition()
         {
             throw new NotImplementedException();
+
+            TestRandomDefinition<SandboxSolutionDefinition>();
         }
 
         [TestMethod]
@@ -274,6 +280,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_WebApplicationDefinition()
         {
+            throw new NotImplementedException();
+
             TestRandomDefinition<WebApplicationDefinition>();
         }
 

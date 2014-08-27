@@ -54,12 +54,14 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSOMValidationService.cs" />
+    <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeLinkDefinitionValidator.cs" />
     <Compile Include="Validation\FarmDefinitionValidator.cs" />
     <Compile Include="Validation\FeatureDefinitionValidator.cs" />
     <Compile Include="Validation\FieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
     <Compile Include="Validation\FolderDefinitionValidator.cs" />
     <Compile Include="Validation\ListDefinitionValidator.cs" />
     <Compile Include="Validation\ListItemDefinitionValidator.cs" />

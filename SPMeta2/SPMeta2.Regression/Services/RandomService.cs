@@ -20,5 +20,12 @@ namespace SPMeta2.Regression.Services
 
         public abstract double Double();
         public abstract double Double(double maxValue);
+
+        public abstract string UserLogin();
+        public abstract string UserName();
+
+        public abstract string UserEmail();
+
+        public abstract string ManagedPath();
     }
 }

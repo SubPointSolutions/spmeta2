@@ -1,9 +1,22 @@
 ﻿
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to attach content type to the target list.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(ListDefinition))]
+
+    [Serializable]
+
     public class ContentTypeLinkDefinition : DefinitionBase
     {
         #region properties

@@ -1,10 +1,21 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to attach field to the target content type.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldLink", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldLink", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(SiteDefinition))]
+    [ParentHostAttribute(typeof(ContentTypeDefinition))]
+
+    [Serializable]
+
     public class ContentTypeFieldLinkDefinition : DefinitionBase
     {
         #region properties

@@ -1,8 +1,17 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint security group.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPGroup", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Group", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(SiteDefinition))]
+    [ParentHostAttribute(typeof(SiteDefinition))]
+
     public class SecurityGroupDefinition : DefinitionBase
     {
         #region properties

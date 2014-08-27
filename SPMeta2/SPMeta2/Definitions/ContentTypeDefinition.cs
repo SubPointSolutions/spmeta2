@@ -1,10 +1,21 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint content type.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
+
+    [ParentHostAttribute(typeof(SiteDefinition))]
+    [RootHostAttribute(typeof(SiteDefinition))]
+
+    [Serializable]
+
     public class ContentTypeDefinition : DefinitionBase
     {
         #region properties

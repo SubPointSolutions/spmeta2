@@ -56,7 +56,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = field,
-                ObjectType = typeof(SPField),
+                ObjectType = GetTargetFieldType(),
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
@@ -127,6 +127,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                                                                          });
         }
 
+        protected virtual Type GetTargetFieldType()
+        {
+            return typeof(SPField);
+        }
+
         private SPField EnsureFieldInFieldsCollection(
             object modelHost,
             SPFieldCollection fields, FieldDefinition fieldModel)
@@ -141,7 +146,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = currentField,
-                    ObjectType = typeof(SPField),
+                    ObjectType = GetTargetFieldType(),
                     ObjectDefinition = fieldModel,
                     ModelHost = modelHost
                 });
@@ -160,7 +165,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = currentField,
-                    ObjectType = typeof(SPField),
+                    ObjectType = GetTargetFieldType(),
                     ObjectDefinition = fieldModel,
                     ModelHost = modelHost
                 });

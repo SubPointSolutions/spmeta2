@@ -53,7 +53,6 @@ namespace SPMeta2.Regression.Services
             var parentHostType = GetParentHostType<TDefinition>();
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
-
             var defs = new List<DefinitionBase>();
 
             LookupModelTree<TDefinition>(rootHostType, defs);
@@ -99,9 +98,6 @@ namespace SPMeta2.Regression.Services
                 return model;
             }
 
-            //for (int i = 0; i < 10; i++)
-            //    _m.AddDefinitionNode(GetRandomDefinition<TDefinition>());
-
             ModelNode resultModel = null;
 
             if (currentDefinition.GetType() == typeof(FarmDefinition))
@@ -115,6 +111,11 @@ namespace SPMeta2.Regression.Services
 
             if (currentDefinition.GetType() == typeof(WebDefinition))
                 resultModel = SPMeta2Model.NewWebModel();
+
+            if (resultModel == null)
+            {
+                throw new SPMeta2NotImplementedException(string.Format("Cannot find host model for type:[{0}]. Ensure correct RootHostAttribute/ParentHostAttribute/SPObjectTypeAttribute attributes.", typeof(TDefinition).AssemblyQualifiedName));
+            }
 
             resultModel.Value = currentDefinition;
 

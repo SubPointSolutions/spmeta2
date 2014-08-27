@@ -9,23 +9,17 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.DefinitionGenerators
 {
-    public class FieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<FieldDefinition>
+    public class SecurityGroupDefinitionGenerator : TypedDefinitionGeneratorServiceBase<SecurityGroupDefinition>
     {
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {
             return WithEmptyDefinition(def =>
             {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
+                def.Name = Rnd.String();
                 def.Description = Rnd.String();
-                def.FieldType = BuiltInFieldTypes.Text;
 
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
+                def.Owner = Rnd.UserLogin();
+                def.DefaultUser = Rnd.UserLogin();
             });
         }
     }

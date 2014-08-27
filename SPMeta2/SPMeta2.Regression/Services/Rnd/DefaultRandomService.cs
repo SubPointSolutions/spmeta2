@@ -60,5 +60,25 @@ namespace SPMeta2.Regression.Services.Rnd
 
             return _boolFlag;
         }
+
+        public override string UserLogin()
+        {
+            return string.Format("{0}/{1}", Environment.UserDomainName, Environment.UserName);
+        }
+
+        public override string UserEmail()
+        {
+            return string.Format("{0}@{0}.com", Environment.UserName);
+        }
+
+        public override string UserName()
+        {
+            return string.Format("{0}", Environment.UserName);
+        }
+
+        public override string ManagedPath()
+        {
+            return "sites";
+        }
     }
 }

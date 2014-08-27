@@ -1,10 +1,19 @@
-﻿using System.Collections.ObjectModel;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System.Collections.ObjectModel;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint security role.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRoleDefinition", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RoleDefinition", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(SiteDefinition))]
+    [ParentHostAttribute(typeof(SiteDefinition))]
+
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region contructors

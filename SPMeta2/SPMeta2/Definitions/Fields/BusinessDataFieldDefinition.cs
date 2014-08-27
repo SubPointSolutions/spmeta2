@@ -1,4 +1,6 @@
-﻿using SPMeta2.Enumerations;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using SPMeta2.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,14 @@ namespace SPMeta2.Definitions.Fields
     /// <summary>
     /// Allows to define and deploy business data field.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPBusinessDataField", "Microsoft.SharePoint")]
+    //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
+
+    [ParentHostAttribute(typeof(SiteDefinition))]
+    [RootHostAttribute(typeof(SiteDefinition))]
+
+    [Serializable]
     public class BusinessDataFieldDefinition : FieldDefinition
     {
         #region constructors
