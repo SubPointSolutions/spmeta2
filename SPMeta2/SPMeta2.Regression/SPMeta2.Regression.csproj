@@ -53,6 +53,10 @@
     <Compile Include="Const\SPListTemplateType.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\QuickLaunchNavigationNodeDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PropertyDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SecurityGroupLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SecurityRoleDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SecurityGroupDefinitionGenerator.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListViewDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SiteDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />

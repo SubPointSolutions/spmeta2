@@ -63,11 +63,13 @@
     <Compile Include="Validation\FieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
     <Compile Include="Validation\FolderDefinitionValidator.cs" />
+    <Compile Include="Validation\ListFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ListDefinitionValidator.cs" />
     <Compile Include="Validation\ListItemDefinitionValidator.cs" />
     <Compile Include="Validation\ListItemFieldValueDefinitionValidator.cs" />
     <Compile Include="Validation\ListViewDefinitionValidator.cs" />
     <Compile Include="Validation\ModuleFileDefinitionValidator.cs" />
+    <Compile Include="Validation\TopNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\QuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupLinkDefinitionValidator.cs" />

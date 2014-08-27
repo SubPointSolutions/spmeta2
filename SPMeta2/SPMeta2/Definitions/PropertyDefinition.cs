@@ -1,8 +1,21 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy property value to the SharePoint property bags.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "System.Object", "mscorlib")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "System.Object", "mscorlib")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(WebDefinition))]
+
+    [Serializable]
+
     public class PropertyDefinition : DefinitionBase
     {
         #region properties

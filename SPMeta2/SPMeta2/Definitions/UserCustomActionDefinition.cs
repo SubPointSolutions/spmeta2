@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,6 +11,15 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows to define and deploy SharePoint custom user action.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserCustomAction", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.UserCustomAction", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(SiteDefinition))]
+    [ParentHostAttribute(typeof(SiteDefinition))]
+
+    [Serializable]
+
     public class UserCustomActionDefinition : DefinitionBase
     {
         #region constructors

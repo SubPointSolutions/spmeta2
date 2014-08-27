@@ -85,8 +85,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             existringAction.Title = customAction.Title;
             existringAction.Url = customAction.Url;
 
-            existringAction.RegistrationId = customAction.RegistrationId;
-            existringAction.RegistrationType = (SPUserCustomActionRegistrationType)Enum.Parse(typeof(SPUserCustomActionRegistrationType), customAction.RegistrationType, true);
+            if (!string.IsNullOrEmpty(customAction.RegistrationId))
+                existringAction.RegistrationId = customAction.RegistrationId;
+
+            if (!string.IsNullOrEmpty(customAction.RegistrationType))
+                existringAction.RegistrationType = (SPUserCustomActionRegistrationType)Enum.Parse(typeof(SPUserCustomActionRegistrationType), customAction.RegistrationType, true);
 
             var permissions = SPBasePermissions.EmptyMask;
 
