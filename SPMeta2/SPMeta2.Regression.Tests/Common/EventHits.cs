@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMeta2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace SPMeta2.Regression.Tests.Common
 
         public bool OnProvisioned { get; set; }
         public bool OnProvisioning { get; set; }
+
+        public ModelNode ModelNode { get; set; }
+
+        public string Tag { get; set; }
 
         #endregion
     }

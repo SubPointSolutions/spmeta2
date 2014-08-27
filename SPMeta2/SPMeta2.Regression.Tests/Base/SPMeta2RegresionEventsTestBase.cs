@@ -42,6 +42,29 @@ namespace SPMeta2.Regression.Tests.Base
             });
         }
 
+        protected EventHooks CreateHook()
+        {
+            return new EventHooks();
+        }
+
+        protected void ResolveHook(EventHooks eventHooks)
+        {
+            TraceUtils.WithScope(traceScope =>
+            {
+                traceScope.WriteLine(string.Format("Validation OnProvisioning/OnProvisioned hist for model: [{0}] and OM:[{1}]",
+                        eventHooks.ModelNode,
+                        eventHooks.Tag));
+
+                traceScope.WriteLine(string.Format("Validating OnProvisioning event hit."));
+                Assert.AreEqual(true, eventHooks.OnProvisioning);
+                traceScope.WriteLine(string.Format("    - done"));
+
+                traceScope.WriteLine(string.Format("Validating OnProvisioned event hit."));
+                Assert.AreEqual(true, eventHooks.OnProvisioned);
+                traceScope.WriteLine(string.Format("    - done"));
+            });
+        }
+
         protected virtual void WithEventHooks(Action<EventHooks> hooks)
         {
             TraceUtils.WithScope(traceScope =>

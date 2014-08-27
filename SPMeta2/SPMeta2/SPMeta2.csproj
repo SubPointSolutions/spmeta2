@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\Regression\ParentHostAttribute.cs" />
     <Compile Include="Attributes\SPObjectType.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInFolderDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />

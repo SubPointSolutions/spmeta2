@@ -4,6 +4,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Common;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -27,8 +28,33 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var farm = modelHost.WithAssertAndCast<SPFarm>("modelHost", value => value.RequireNotNull());
+            var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
             var farmModel = model.WithAssertAndCast<FarmDefinition>("model", value => value.RequireNotNull());
+
+            var farm = farmModelHost.HostFarm;
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = farm,
+                ObjectType = typeof(SPFarm),
+                ObjectDefinition = farmModel,
+                ModelHost = modelHost
+            });
+
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = farm,
+                ObjectType = typeof(SPFarm),
+                ObjectDefinition = farmModel,
+                ModelHost = modelHost
+            });
         }
 
 

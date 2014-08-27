@@ -15,6 +15,7 @@ namespace SPMeta2.Models
         Processed
     }
 
+    [Serializable]
     public class ModelNode
     {
         #region constructors

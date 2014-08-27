@@ -35,7 +35,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regressi
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.CSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\Microsoft.SharePoint.Client.dll
@@ -57,6 +56,7 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\D
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.Tests.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.Tests.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.Model.dll
@@ -70,5 +70,8 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\D
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Validation.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.Common.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.Regression.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\bin\Debug\SPMeta2.SSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests.SSOM\obj\Debug\SPMeta2.Regression.Tests.SSOM.pdb

@@ -1,8 +1,21 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows too define and deploy SharePoint web site.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Web", "Microsoft.SharePoint.Client")]
+
+
+    [RootHostAttribute(typeof(SiteDefinition))]
+    [ParentHostAttribute(typeof(SiteDefinition))]
+
+    [Serializable]
     public class WebDefinition : DefinitionBase
     {
         #region constructors

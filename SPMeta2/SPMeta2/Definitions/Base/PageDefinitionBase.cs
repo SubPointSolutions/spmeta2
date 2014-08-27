@@ -5,6 +5,8 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Base definition for pages.
     /// </summary>
+    /// 
+     [Serializable]
     public abstract class PageDefinitionBase : DefinitionBase
     {
         #region contructors

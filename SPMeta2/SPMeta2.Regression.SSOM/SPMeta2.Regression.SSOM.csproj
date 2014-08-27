@@ -57,6 +57,7 @@
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeLinkDefinitionValidator.cs" />
+    <Compile Include="Validation\FarmDefinitionValidator.cs" />
     <Compile Include="Validation\FeatureDefinitionValidator.cs" />
     <Compile Include="Validation\FieldDefinitionValidator.cs" />
     <Compile Include="Validation\FolderDefinitionValidator.cs" />

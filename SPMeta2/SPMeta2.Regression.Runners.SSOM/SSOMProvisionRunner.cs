@@ -10,6 +10,7 @@ using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Regression.SSOM;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
+using Microsoft.SharePoint.Administration;
 
 namespace SPMeta2.Regression.Runners.SSOM
 {
@@ -46,9 +47,18 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         #region methods
 
+        public override void DeployFarmModel(ModelNode model)
+        {
+            WithSSOMFarmContext(farm =>
+            {
+                _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
+                _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
+            });
+        }
+
         public override void DeploySiteModel(ModelNode model)
         {
-            WithSSOMContext((site, web) =>
+            WithSSOMSiteAndWebContext((site, web) =>
             {
                 _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
                 _validationService.DeployModel(SiteModelHost.FromSite(site), model);
@@ -57,7 +67,7 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         public override void DeployWebModel(ModelNode model)
         {
-            WithSSOMContext((site, web) =>
+            WithSSOMSiteAndWebContext((site, web) =>
             {
                 _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
                 _validationService.DeployModel(WebModelHost.FromWeb(web), model);
@@ -68,7 +78,14 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         #region utils
 
-        private void WithSSOMContext(Action<SPSite, SPWeb> action)
+        private void WithSSOMFarmContext(Action<SPFarm> action)
+        {
+            var farm = SPFarm.Local;
+
+            action(farm);
+        }
+
+        private void WithSSOMSiteAndWebContext(Action<SPSite, SPWeb> action)
         {
             using (var site = new SPSite(SiteUrl))
             {

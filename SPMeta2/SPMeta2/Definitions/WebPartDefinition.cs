@@ -3,6 +3,7 @@
     /// <summary>
     /// Allows to define and deploy SharePoint web part.
     /// </summary>
+    /// 
     public class WebPartDefinition : DefinitionBase
     {
         #region contructors

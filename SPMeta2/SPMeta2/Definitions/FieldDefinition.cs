@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
 using System;
 
 namespace SPMeta2.Definitions
@@ -8,6 +9,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPField", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
+
+    [ParentHostAttribute(typeof(SiteDefinition))]
+    [RootHostAttribute(typeof(SiteDefinition))]
+
+    [Serializable]
     public class FieldDefinition : DefinitionBase
     {
         #region constructors

@@ -5,6 +5,8 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Base definition for all SharePoint artifacts to be defined and deployed.
     /// </summary>
+    /// 
+     [Serializable]
     public abstract class DefinitionBase : ICloneable
     {
         #region contructors
@@ -47,14 +49,14 @@ namespace SPMeta2.Definitions
 
         #region properties
 
-        public string ObjectType
-        {
-            get { return GetType().Name; }
-            set
-            {
+        //public string ObjectType
+        //{
+        //    get { return GetType().Name; }
+        //    set
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public virtual bool RequireSelfProcessing { get; set; }
 

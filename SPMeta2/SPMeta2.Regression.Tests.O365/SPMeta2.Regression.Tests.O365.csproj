@@ -62,7 +62,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Impl\DefinitionEventsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +101,9 @@
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Impl\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

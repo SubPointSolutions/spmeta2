@@ -1,8 +1,20 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint list.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(WebDefinition))]
+
+    [Serializable]
     public class ListDefinition : DefinitionBase
     {
         public ListDefinition()

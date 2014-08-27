@@ -70,6 +70,11 @@
     <Compile Include="Const\SPBasePermissions.cs" />
     <Compile Include="Const\SPBuiltInContentTypeId.cs" />
     <Compile Include="Const\SPListTemplateType.cs" />
+    <Compile Include="DefinitionGenerators\FarmDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListViewDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
     <Compile Include="Models\DynamicModels\DynamicContentTypeModels.cs" />
     <Compile Include="Models\DynamicModels\DynamicFieldModels.cs" />
     <Compile Include="Models\DynamicModels\DynamicListModels.cs" />
@@ -84,8 +89,12 @@
     <Compile Include="Profiles\TestProfileBase.cs" />
     <Compile Include="Profiles\WebApplicationSandboxProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Base\DefinitionGeneratorServiceBase.cs" />
+    <Compile Include="Services\Base\TypedDefinitionGeneratorServiceBase.cs" />
     <Compile Include="Services\ModelGeneratorService.cs" />
     <Compile Include="Services\ModelTreeGeneratorService.cs" />
+    <Compile Include="Services\RandomService.cs" />
+    <Compile Include="Services\Rnd\DefaultRandomService.cs" />
     <Compile Include="Services\TraceableServerOMServiceFactory.cs" />
     <Compile Include="Services\TracebleClientOModelService.cs" />
   </ItemGroup>

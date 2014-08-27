@@ -5,7 +5,7 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
-    [TestClass]
+    //[TestClass]
     public class ListTests : SPMeta2RegresionTestBase
     {
         #region tests

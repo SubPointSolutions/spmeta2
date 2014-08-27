@@ -1,10 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
+using System.Collections.ObjectModel;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy list view.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPView", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.View", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(ListDefinition))]
+
+    [Serializable]
     public class ListViewDefinition : DefinitionBase
     {
         #region contructors
