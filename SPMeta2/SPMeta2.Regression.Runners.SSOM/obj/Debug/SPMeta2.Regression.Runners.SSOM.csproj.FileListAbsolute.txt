@@ -15,7 +15,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Syntax
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Runners.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Runners.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.dll
@@ -30,5 +29,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.pdb
