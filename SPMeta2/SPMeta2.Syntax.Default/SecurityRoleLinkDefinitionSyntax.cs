@@ -18,7 +18,9 @@ namespace SPMeta2.Syntax.Default
         {
             var roleLinkDefinition = new SecurityRoleLinkDefinition
             {
-                SecurityRoleName = definition.Name
+                SecurityRoleName = definition.Name,
+
+                
             };
 
             return model.AddDefinitionNode(roleLinkDefinition, action);

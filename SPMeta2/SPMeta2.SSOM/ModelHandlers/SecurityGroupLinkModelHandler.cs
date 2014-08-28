@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (securityGroupLinkModel == null) throw new ArgumentException("model has to be SecurityGroupDefinition");
 
                 var web = ExtractWeb(modelHost);
-                var securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
+                var securityGroup = ResolveSecurityGroup(web, securityGroupLinkModel);
 
                 var newModelHost = new SecurityGroupModelHost
                 {
@@ -71,6 +71,33 @@ namespace SPMeta2.SSOM.ModelHandlers
             throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
         }
 
+        protected SPGroup ResolveSecurityGroup(SPWeb web, SecurityGroupLinkDefinition securityGroupLinkModel)
+        {
+            SPGroup securityGroup = null;
+
+            if (securityGroupLinkModel.IsAssociatedMemberGroup)
+            {
+                securityGroup = web.AssociatedMemberGroup;
+            }
+            else if (securityGroupLinkModel.IsAssociatedOwnerGroup)
+            {
+                securityGroup = web.AssociatedOwnerGroup;
+            }
+            else if (securityGroupLinkModel.IsAssociatedVisitorsGroup)
+            {
+                securityGroup = web.AssociatedVisitorGroup;
+            }
+            else if (!string.IsNullOrEmpty(securityGroupLinkModel.SecurityGroupName))
+            {
+                securityGroup =web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
+            }
+            else
+            {
+                throw new ArgumentException("securityGroupLinkModel");
+            }
+            return securityGroup;
+        }
+
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
@@ -83,7 +110,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var web = GetWebFromSPSecurableObject(securableObject);
 
-            var securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
+            var securityGroup = ResolveSecurityGroup(web, securityGroupLinkModel);
             var roleAssignment = securableObject.RoleAssignments
                                                        .OfType<SPRoleAssignment>()
                                                        .FirstOrDefault(a => a.Member.ID == securityGroup.ID);

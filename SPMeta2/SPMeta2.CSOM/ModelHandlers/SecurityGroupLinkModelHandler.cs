@@ -31,7 +31,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(web, w => w.SiteGroups);
                 context.ExecuteQuery();
 
-                var securityGroup = WebExtensions.FindGroupByName(web.SiteGroups, securityGroupLinkModel.SecurityGroupName);
+                Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
 
                 var newModelHost = new SecurityGroupModelHost
                 {

@@ -18,7 +18,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
-            var securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
+            var securityGroup = ResolveSecurityGroup(web, securityGroupLinkModel);
+
             //securableObject.RoleAssignments
 
             TraceUtils.WithScope(traceScope =>

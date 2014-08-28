@@ -28,7 +28,12 @@ namespace SPMeta2.Syntax.Default
         {
             return AddSecurityGroupLink(model, new SecurityGroupLinkDefinition
             {
-                SecurityGroupName = definition.Name
+                SecurityGroupName = definition.Name,
+
+                IsAssociatedMemberGroup = definition.IsAssociatedMemberGroup,
+                IsAssociatedOwnerGroup = definition.IsAssociatedOwnerGroup,
+                IsAssociatedVisitorsGroup = definition.IsAssociatedVisitorsGroup
+
             }, action);
         }
 
