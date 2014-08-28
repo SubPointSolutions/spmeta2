@@ -38,7 +38,7 @@ namespace SPMeta2.Regression.SSOM.Validation
         private void AssertSPListHost(SPList targetList, SPGroup securityGroup, SecurityRoleLinkDefinition securityRoleLinkModel)
         {
             var web = targetList.ParentWeb;
-            var role = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
+            var role = ResolveSecurityRole(web, securityRoleLinkModel);
 
             // check if roleAssignment has current  role
 
@@ -69,7 +69,7 @@ namespace SPMeta2.Regression.SSOM.Validation
         private void AssertSPGroupHost(SPGroup securableObject, SPGroup securityGroup, SecurityRoleLinkDefinition securityRoleLinkModel)
         {
             var web = securityGroup.ParentWeb;
-            var role = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
+            var role = ResolveSecurityRole(web, securityRoleLinkModel);
 
             TraceUtils.WithScope(traceScope =>
             {

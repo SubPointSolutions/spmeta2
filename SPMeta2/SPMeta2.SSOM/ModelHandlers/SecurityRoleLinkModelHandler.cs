@@ -91,6 +91,35 @@ namespace SPMeta2.SSOM.ModelHandlers
             throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
         }
 
+        protected SPRoleDefinition ResolveSecurityRole(SPWeb web, SecurityRoleLinkDefinition rolDefinitionModel)
+        {
+            var roleDefinitions = web.RoleDefinitions;
+
+            if (!string.IsNullOrEmpty(rolDefinitionModel.SecurityRoleName))
+            {
+                foreach (SPRoleDefinition roleDefinition in roleDefinitions)
+                    if (string.Compare(roleDefinition.Name, rolDefinitionModel.SecurityRoleName, true) == 0)
+                        return roleDefinition;
+            }
+            else if (rolDefinitionModel.SecurityRoleId > 0)
+            {
+                foreach (SPRoleDefinition roleDefinition in roleDefinitions)
+                {
+                    if (roleDefinition.Id == rolDefinitionModel.SecurityRoleId)
+                        return roleDefinition;
+                }
+            }
+            else if (!string.IsNullOrEmpty(rolDefinitionModel.SecurityRoleType))
+            {
+                var roleType = (SPRoleType)Enum.Parse(typeof(SPRoleType), rolDefinitionModel.SecurityRoleType, true);
+
+                return roleDefinitions.GetByType(roleType);
+            }
+
+            throw new ArgumentException(string.Format("Cannot resolve role definition for role definition link model:[{0}]", rolDefinitionModel));
+
+        }
+
         private void ProcessSPSecurableObjectHost(SPSecurableObject targetSecurableObject, SPGroup securityGroup,
             SecurityRoleLinkDefinition securityRoleLinkModel)
         {
@@ -100,7 +129,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var roleAssignment = new SPRoleAssignment(securityGroup);
 
-            var role = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
+            var role = ResolveSecurityRole(web, securityRoleLinkModel);
 
             if (!roleAssignment.RoleDefinitionBindings.Contains(role))
             {
@@ -153,21 +182,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var web = securityGroup.ParentWeb;
 
             var securityRoleAssignment = new SPRoleAssignment(securityGroup);
-            SPRoleDefinition roleDefinition = null;
-
-            if (!string.IsNullOrEmpty(securityRoleLinkModel.SecurityRoleName))
-            {
-                roleDefinition = web.RoleDefinitions[securityRoleLinkModel.SecurityRoleName];
-            }
-            else if (!string.IsNullOrEmpty(securityRoleLinkModel.SecurityRoleType))
-            {
-                var securityRoleType = (SPRoleType)Enum.Parse(typeof(SPRoleType), securityRoleLinkModel.SecurityRoleType, true);
-                roleDefinition = web.RoleDefinitions.GetByType(securityRoleType);
-            }
-            else
-            {
-                roleDefinition = web.RoleDefinitions.GetById(securityRoleLinkModel.SecurityRoleId);
-            }
+            SPRoleDefinition roleDefinition = ResolveSecurityRole(web, securityRoleLinkModel);
 
             if (!securityRoleAssignment.RoleDefinitionBindings.Contains(roleDefinition))
             {
