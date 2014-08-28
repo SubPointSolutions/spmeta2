@@ -27,30 +27,28 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var propertyHost = modelHost.WithAssertAndCast<PropertyModelHost>("modelHost", value => value.RequireNotNull());
-            var property = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
+            var properties = ExtractProperties(modelHost);
+            var propertyModel = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
 
-            ProcessProperty(propertyHost, property);
+            DeployProperty(modelHost,properties, propertyModel);
         }
 
-        private void ProcessProperty(PropertyModelHost host, PropertyDefinition property)
+        protected Hashtable ExtractProperties(object modelHost)
         {
-            if (host.CurrentFarm != null)
-                DeployProperty(host, host.CurrentFarm.Properties, property);
-            else if (host.CurrentWebApplication != null)
-                DeployProperty(host, host.CurrentWebApplication.Properties, property);
-            else if (host.CurrentSite != null)
-                DeployProperty(host, host.CurrentSite.RootWeb.AllProperties, property);
-            else if (host.CurrentWeb != null)
-                DeployProperty(host, host.CurrentWeb.AllProperties, property);
-            else if (host.CurrentList != null)
-                DeployProperty(host, host.CurrentList.RootFolder.Properties, property);
-            else if (host.CurrentFolder != null)
-                DeployProperty(host, host.CurrentFolder.Properties, property);
-            else if (host.CurrentListItem != null)
-                DeployProperty(host, host.CurrentListItem.Properties, property);
-            else if (host.CurrentFile != null)
-                DeployProperty(host, host.CurrentFile.Properties, property);
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.AllProperties;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.RootFolder.Properties;
+
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.Properties;
+
+            // TODO
+            return null;
         }
 
         protected virtual void DeployProperty(object modelHost, Hashtable properties, PropertyDefinition property)

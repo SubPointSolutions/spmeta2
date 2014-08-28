@@ -112,6 +112,7 @@
     <Compile Include="Enumerations\BuiltInSP2013WorkflowEventTypes.cs" />
     <Compile Include="Enumerations\BuiltInWebApplicationFeatures.cs" />
     <Compile Include="Enumerations\BuiltInWebFeatures.cs" />
+    <Compile Include="Enumerations\BuiltInWebpartFileNames.cs" />
     <Compile Include="Enumerations\BuiltInWebpartPageTemplateId.cs" />
     <Compile Include="Enumerations\BuiltInWebPartPageTemplates.cs" />
     <Compile Include="Enumerations\BuiltInWebTemplates.cs" />
