@@ -81,7 +81,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 .SetAttribute("EntityName", businessFieldModel.EntityName)
                 .SetAttribute("BdcField", businessFieldModel.BdcFieldName);
 
-            return string.Empty;
+            return bcsFieldXml.ToString();
         }
 
         #endregion
