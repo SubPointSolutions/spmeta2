@@ -12,6 +12,33 @@ using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
+    internal static class SecurableHelper
+    {
+        public static SecurableObject ExtractSecurableObject(object modelHost)
+        {
+            if (modelHost is SecurableObject)
+                return modelHost as SecurableObject;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList;
+
+            //if (modelHost is FolderModelHost)
+            //    return (modelHost as FolderModelHost).CurrentLibraryFolder.ite;
+
+            //if (modelHost is WebpartPageModelHost)
+            //    return (modelHost as WebpartPageModelHost).PageListItem;
+
+            throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
+                modelHost.GetType()));
+        }
+    }
+
     public class BreakRoleInheritanceModelHandler : CSOMModelHandlerBase
     {
         #region properties
@@ -80,26 +107,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected SecurableObject ExtractSecurableObject(object modelHost)
         {
-            if (modelHost is SecurableObject)
-                return modelHost as SecurableObject;
-
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite.RootWeb;
-
-            if (modelHost is WebModelHost)
-                return (modelHost as WebModelHost).HostWeb;
-
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostList;
-
-            //if (modelHost is FolderModelHost)
-            //    return (modelHost as FolderModelHost).CurrentLibraryFolder.ite;
-
-            //if (modelHost is WebpartPageModelHost)
-            //    return (modelHost as WebpartPageModelHost).PageListItem;
-
-            throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
-                modelHost.GetType()));
+            return SecurableHelper.ExtractSecurableObject(modelHost);
         }
 
         #endregion

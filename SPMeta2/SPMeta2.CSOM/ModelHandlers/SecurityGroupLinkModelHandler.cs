@@ -47,9 +47,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
+        protected SecurableObject ExtractSecurableObject(object modelHost)
+        {
+            return SecurableHelper.ExtractSecurableObject(modelHost);
+        }
+
+
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var securableObject = modelHost.WithAssertAndCast<SecurableObject>("modelHost", value => value.RequireNotNull());
+            var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
@@ -63,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQuery();
 
-            var securityGroup = WebExtensions.FindGroupByName(web.SiteGroups, securityGroupLinkModel.SecurityGroupName);
+            Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
 
             if (!securableObject.HasUniqueRoleAssignments)
                 securableObject.BreakRoleInheritance(false, false);
@@ -115,6 +121,42 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
             }
+        }
+
+        protected virtual Group ResolveSecurityGroup(SecurityGroupLinkDefinition securityGroupLinkModel, Web web, ClientRuntimeContext context)
+        {
+            Group securityGroup = null;
+
+            if (securityGroupLinkModel.IsAssociatedMemberGroup)
+            {
+                context.Load(web, w => w.AssociatedMemberGroup);
+                context.ExecuteQuery();
+
+                securityGroup = web.AssociatedMemberGroup;
+            }
+            else if (securityGroupLinkModel.IsAssociatedOwnerGroup)
+            {
+                context.Load(web, w => w.AssociatedOwnerGroup);
+                context.ExecuteQuery();
+
+                securityGroup = web.AssociatedOwnerGroup;
+            }
+            else if (securityGroupLinkModel.IsAssociatedVisitorsGroup)
+            {
+                context.Load(web, w => w.AssociatedVisitorGroup);
+                context.ExecuteQuery();
+
+                securityGroup = web.AssociatedVisitorGroup;
+            }
+            else if (!string.IsNullOrEmpty(securityGroupLinkModel.SecurityGroupName))
+            {
+                securityGroup = WebExtensions.FindGroupByName(web.SiteGroups, securityGroupLinkModel.SecurityGroupName);
+            }
+            else
+            {
+                throw new ArgumentException("securityGroupLinkModel");
+            }
+            return securityGroup;
         }
 
         protected RoleAssignment FindRoleRoleAssignment(RoleAssignmentCollection roleAssignments, Group securityGroup)

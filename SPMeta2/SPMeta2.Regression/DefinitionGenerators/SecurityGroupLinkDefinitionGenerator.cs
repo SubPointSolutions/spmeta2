@@ -16,8 +16,10 @@ namespace SPMeta2.Regression.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 // TODO
-                // we need to resolve 'parent' TMP security group and link it here
-                def.SecurityGroupName = "Approvers";
+                // name resolution does not work well with localization
+                //def.SecurityGroupName = "Approvers";
+
+                def.IsAssociatedMemberGroup = true;
             });
         }
     }

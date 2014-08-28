@@ -27,6 +27,22 @@ namespace SPMeta2.Definitions
         /// </summary>
         public string SecurityGroupName { get; set; }
 
+        /// <summary>
+        /// Flag to mimic out of the box AssociatedOwnerGroup
+        /// </summary>
+        public bool IsAssociatedVisitorsGroup { get; set; }
+
+        /// <summary>
+        /// Flag to mimic AssociatedMemberGroup
+        /// </summary>
+        public bool IsAssociatedMemberGroup { get; set; }
+
+        /// <summary>
+        /// Flag to mimic AssociatedOwnerGroup
+        /// </summary>
+
+        public bool IsAssociatedOwnerGroup { get; set; }
+
         #endregion
 
         #region methods

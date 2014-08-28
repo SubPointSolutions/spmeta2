@@ -12,7 +12,7 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
          public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var securableObject = modelHost.WithAssertAndCast<SecurableObject>("modelHost", value => value.RequireNotNull());
+            var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
@@ -24,8 +24,8 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.ExecuteQuery();
 
-            var securityGroup = WebExtensions.FindGroupByName(web.SiteGroups, securityGroupLinkModel.SecurityGroupName);
-
+            Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
+ 
             TraceUtils.WithScope(traceScope =>
             {
                 traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", securityGroupLinkModel, securityGroup));
