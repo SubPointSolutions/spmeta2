@@ -24,36 +24,44 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var propertyHost = modelHost.WithAssertAndCast<PropertyModelHost>("modelHost", value => value.RequireNotNull());
+            var properties = ExtractProperties(modelHost);
             var property = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
 
-            ProcessProperty(propertyHost, property);
+            DeployProperty(modelHost, properties, property);
         }
 
-        private void ProcessProperty(PropertyModelHost host, PropertyDefinition property)
+        protected PropertyValues ExtractProperties(object modelHost)
         {
-            if (host.CurrentSite != null)
-                DeployProperty(host, host.CurrentSite.RootWeb.AllProperties, property);
-            else if (host.CurrentWeb != null)
-                DeployProperty(host, host.CurrentWeb.AllProperties, property);
-            else if (host.CurrentList != null)
-                DeployProperty(host, host.CurrentList.RootFolder.Properties, property);
-            else if (host.CurrentFolder != null)
-                DeployProperty(host, host.CurrentFolder.Properties, property);
-            else if (host.CurrentListItem != null)
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.AllProperties;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.RootFolder.Properties;
+
+            if (modelHost is FolderModelHost)
+                return (modelHost as FolderModelHost).CurrentLibraryFolder.Properties;
+
+            if (modelHost is ListItem)
             {
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6343086-expose-properties-property-for-microsoft-sharepo
 
                 throw new SPMeta2NotImplementedException("ListItem properties provision is not supported yet.");
                 //DeployProperty(host, host.CurrentListItem.all, property);
             }
-            else if (host.CurrentFile != null)
+
+            if (modelHost is File)
             {
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6343087-expose-properties-property-for-microsoft-sharepo
 
                 throw new SPMeta2NotImplementedException("File properties provision is not supported yet.");
                 // DeployProperty(host, host.CurrentFile., property);
             }
+
+            throw new SPMeta2NotImplementedException(string.Format("Model host [{0}] is not supported yet.", modelHost));
+
         }
 
         protected virtual void DeployProperty(object modelHost, PropertyValues properties, PropertyDefinition property)

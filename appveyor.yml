@@ -1,9 +1,9 @@
 environment:
   SPMeta2_O365_SiteUrl:
-    secure: KsmFz8zG6qr7iDukJK9kB0gY2S8Wh/grLSgQ+i0U0+YzzRnH9ltSUraIyCe/sJ5RpcBbXuBvtUhoposHpXTktQ==
+    secure: j0L8clRyLW7xY7UFBuI2k8G+ootYCT3+a6BFobQ26dbu20RPDFHXTjPlfZDSMzOnrSWX4VAzlaLg52L3Xydvew==
   SPMeta2_O365_UserName:
-    secure: QESysUofYQ/PoNF6CL0/JAPersMpMtWcYaKmL62Dwv8=
+    secure: wFqfEa659MyPAksIbkzh0zv6vnTCIA2vmEPVRZ60WwSqdwe5cuJ5QOBazAYirbV9
   SPMeta2_O365_Password:
-    secure: xWavBT+QPEq6DY9rJdJXYtuqfvNx9NOPW37/gf3xOrw=
+    secure: HE7kgk9JwRjrFb2u1JBBTw==
   SPMeta2_RunnerLibraries:
     secure: fjM6KXFe9K4+sdSLrfrlvDYxZlLOQIgVLNZqlBBOf5Tqk2M5E7JLaPzNcUmE9eDz

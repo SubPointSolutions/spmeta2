@@ -10,7 +10,7 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
-    public class CLientBreakRoleInheritanceDefinitionValidator : BreakRoleInheritanceModelHandler
+    public class ClientBreakRoleInheritanceDefinitionValidator : BreakRoleInheritanceModelHandler
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
