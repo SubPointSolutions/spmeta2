@@ -1,11 +1,20 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to attach security rile to the target security group.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRoleDefinition", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RoleDefinition", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
+
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public SecurityRoleLinkDefinition()
         {

@@ -19,12 +19,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            if (modelHost is SecurableObject)
+            var securableObject = ExtractSecurableObject(modelHost);
+
+            if (securableObject is SecurableObject)
             {
                 var securityGroupLinkModel = model as SecurityGroupLinkDefinition;
                 if (securityGroupLinkModel == null) throw new ArgumentException("model has to be SecurityGroupDefinition");
 
-                var web = GetWebFromSPSecurableObject(modelHost as SecurableObject);
+                var web = GetWebFromSPSecurableObject(securableObject as SecurableObject);
 
                 var context = web.Context;
 
@@ -35,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var newModelHost = new SecurityGroupModelHost
                 {
-                    SecurableObject = modelHost as SecurableObject,
+                    SecurableObject = securableObject,
                     SecurityGroup = securityGroup
                 };
 

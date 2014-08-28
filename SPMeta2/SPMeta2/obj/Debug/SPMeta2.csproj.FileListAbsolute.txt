@@ -18,6 +18,5 @@ C:\_git\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb

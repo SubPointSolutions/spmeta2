@@ -65,11 +65,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var roleDefinitions = web.RoleDefinitions;
 
-            context.Load(roleDefinitions);
+            context.Load(roleDefinitions, r => r.Include(l => l.Name, l => l.Id));
             context.ExecuteQuery();
 
-            var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleLinkModel.SecurityRoleName);
+            var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleLinkModel);
 
+            context.Load(currentRoleDefinition, r => r.Id, r => r.Name);
+            context.ExecuteQuery();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -151,13 +153,31 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private RoleDefinition FindRoleDefinition(RoleDefinitionCollection roleDefinitions, string roleDefinitionName)
+        private RoleDefinition FindRoleDefinition(RoleDefinitionCollection roleDefinitions, SecurityRoleLinkDefinition rolDefinitionModel)
         {
-            foreach (var roleDefinition in roleDefinitions)
-                if (string.Compare(roleDefinition.Name, roleDefinitionName, true) == 0)
-                    return roleDefinition;
 
-            return null;
+            if (!string.IsNullOrEmpty(rolDefinitionModel.SecurityRoleName))
+            {
+                foreach (var roleDefinition in roleDefinitions)
+                    if (string.Compare(roleDefinition.Name, rolDefinitionModel.SecurityRoleName, true) == 0)
+                        return roleDefinition;
+            }
+            else if (rolDefinitionModel.SecurityRoleId > 0)
+            {
+                foreach (var roleDefinition in roleDefinitions)
+                {
+                    if (roleDefinition.Id == rolDefinitionModel.SecurityRoleId)
+                        return roleDefinition;
+                }
+            }
+            else if (!string.IsNullOrEmpty(rolDefinitionModel.SecurityRoleType))
+            {
+                var roleType = (RoleType)Enum.Parse(typeof(RoleType), rolDefinitionModel.SecurityRoleType, true);
+
+                return roleDefinitions.GetByType(roleType);
+            }
+
+            throw new ArgumentException(string.Format("Cannot resolve role definition for role definition link model:[{0}]", rolDefinitionModel));
         }
 
         #endregion

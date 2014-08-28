@@ -59,6 +59,7 @@
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListItemFieldValueDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SecurityRoleLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
