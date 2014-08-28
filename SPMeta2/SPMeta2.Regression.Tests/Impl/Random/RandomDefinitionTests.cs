@@ -23,6 +23,7 @@ using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Services;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Exceptions;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Random
@@ -79,18 +80,57 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_JobDefinition()
         {
-            throw new NotImplementedException();
-
-            TestRandomDefinition<JobDefinition>();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<JobDefinition>();
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_ManagedAccountDefinition()
         {
-            throw new NotImplementedException();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ManagedAccountDefinition>();
+            });
+        }
 
-            TestRandomDefinition<ManagedAccountDefinition>();
+        private static void WithExcpectedCSOMnO365RunnerExceptions(Action action)
+        {
+            WithExcpectedExceptions(new Type[] {
+                typeof(SPMeta2UnsupportedCSOMRunnerException),
+                typeof(SPMeta2UnsupportedO365RunnerException)
+            }, action);
+        }
+
+        private static void WithExcpectedExceptions(IEnumerable<Type> exceptionTypes, Action action)
+        {
+            try
+            {
+                if (action != null)
+                    action();
+            }
+            catch (Exception e)
+            {
+                var isAllowedException = false;
+
+                foreach (var allowedType in exceptionTypes)
+                    if (e.GetType().IsAssignableFrom(allowedType))
+                        isAllowedException = true;
+
+                if (isAllowedException)
+                {
+                    // TODO, Trace utils to report
+                }
+                else
+                {
+                    // TOOD, trace utils to report
+
+                    throw;
+                }
+
+            }
         }
 
         [TestMethod]
@@ -151,7 +191,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_PrefixDefinition()
         {
-            TestRandomDefinition<PrefixDefinition>();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<PrefixDefinition>();
+            });
         }
 
         [TestMethod]
@@ -193,7 +236,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_FarmDefinition()
         {
-            TestRandomDefinition<FarmDefinition>();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<FarmDefinition>();
+            });
         }
 
 
@@ -273,16 +319,20 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_SiteDefinition()
         {
-            TestRandomDefinition<SiteDefinition>();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<SiteDefinition>();
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_WebApplicationDefinition()
         {
-            throw new NotImplementedException();
-
-            TestRandomDefinition<WebApplicationDefinition>();
+            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<WebApplicationDefinition>();
+            });
         }
 
         [TestMethod]
@@ -343,6 +393,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
             WithProvisionRunners(runner =>
             {
+                ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
+
                 var sandboxService = new ModelGeneratorService();
                 var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>();
 
@@ -371,11 +423,39 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         }
 
+        private void ValidateDefinitionHostRunnerSupport<T1>(Runners.ProvisionRunnerBase runner)
+        {
+            var attrs = typeof(T1).GetCustomAttributes()
+                                             .OfType<SPObjectTypeAttribute>();
+
+            if (CurrentProvisionRunner.Name == "SSOM")
+            {
+                var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.SSOM);
+
+                if (att == null)
+                    throw new SPMeta2UnsupportedCSOMRunnerException();
+
+            }
+            if (CurrentProvisionRunner.Name == "CSOM")
+            {
+                var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
+
+                if (att == null)
+                    throw new SPMeta2UnsupportedCSOMRunnerException();
+            }
+            if (CurrentProvisionRunner.Name == "O365")
+            {
+                var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
+
+                if (att == null)
+                    throw new SPMeta2UnsupportedO365RunnerException();
+            }
+        }
+
         private List<EventHooks> GetHooks(ModelNode modeNode)
         {
             var reult = new List<EventHooks>();
             AttachHooks(modeNode, reult);
-
 
             return reult;
         }
@@ -416,6 +496,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
                 classAssembly = att.AssemblyName;
             }
             if (CurrentProvisionRunner.Name == "CSOM")
+            {
+                var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
+
+                className = att.ClassName;
+                classAssembly = att.AssemblyName;
+            }
+            if (CurrentProvisionRunner.Name == "O365")
             {
                 var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
 

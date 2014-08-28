@@ -1,9 +1,21 @@
-﻿namespace SPMeta2.Definitions
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
+namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint web part.
     /// </summary>
     /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "System.Web.UI.WebControls.WebParts.WebPart", "System.Web")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WebParts.WebPart", "Microsoft.SharePoint.Client")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(WebPartPageDefinition))]
+
+    [Serializable]
+
     public class WebPartDefinition : DefinitionBase
     {
         #region contructors

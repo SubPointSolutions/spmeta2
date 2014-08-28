@@ -53,9 +53,13 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 traceScope.WithTraceIndent(trace => pair
                     .ShouldBeEqual(trace, m => m.Title, o => o.Title)
-                    .ShouldBeEqual(trace, m => m.Url, o => o.Url)
+
                     .ShouldBeEqual(trace, m => m.IsVisible, o => o.IsVisible)
                     .ShouldBeEqual(trace, m => m.IsExternal, o => o.IsExternal));
+
+                // should end with
+                // TODO
+                Assert.IsTrue(qlNode.Url.ToUpper().EndsWith(quickLaunchModel.Url.ToUpper()));
             });
         }
     }

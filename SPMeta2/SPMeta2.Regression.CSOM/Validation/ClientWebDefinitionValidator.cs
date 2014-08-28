@@ -10,8 +10,15 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var web = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var parentWeb = ExtractWeb(modelHost);
             var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
+
+            ValidateWebDefinition(modelHost, parentWeb, webModel);
+        }
+
+        private void ValidateWebDefinition(object modelHost, Web parentWeb, WebDefinition webModel)
+        {
+
         }
     }
 }

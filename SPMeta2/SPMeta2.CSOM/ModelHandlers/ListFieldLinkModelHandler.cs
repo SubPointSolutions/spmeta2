@@ -61,7 +61,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var avialableField = web.AvailableFields;
 
-                context.Load(fields);
+                context.Load(avialableField);
                 context.ExecuteQuery();
 
                 var siteField = avialableField.OfType<Field>().FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);

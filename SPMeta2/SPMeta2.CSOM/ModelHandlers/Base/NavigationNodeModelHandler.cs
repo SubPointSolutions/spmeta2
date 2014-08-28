@@ -21,7 +21,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var quickLaunchNode = model.WithAssertAndCast<QuickLaunchNavigationNodeDefinition>("model", value => value.RequireNotNull());
+            var quickLaunchNode = model.WithAssertAndCast<NavigationNodeDefinitionBase>("model", value => value.RequireNotNull());
 
             NavigationNode node = null;
 
@@ -49,7 +49,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         protected NavigationNode GetNavigationNode(
             NavigationNodeModelHost navigationNodeModelHost,
-            QuickLaunchNavigationNodeDefinition quickLaunchNode)
+            NavigationNodeDefinitionBase quickLaunchNode)
         {
             var navigationNode = navigationNodeModelHost.HostNavigationNode;
             var quickLaunch = navigationNode.Children;
@@ -66,7 +66,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
         }
 
         private NavigationNode EnsureNavigationNode(NavigationNodeModelHost navigationNodeModelHost,
-            QuickLaunchNavigationNodeDefinition quickLaunchNode)
+            NavigationNodeDefinitionBase quickLaunchNode)
         {
             var navigationNode = navigationNodeModelHost.HostNavigationNode;
             var quickLaunch = navigationNode.Children;
@@ -159,7 +159,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         protected NavigationNode GetRootNavigationNode(
             WebModelHost webModelHost,
-            QuickLaunchNavigationNodeDefinition quickLaunchModel)
+            NavigationNodeDefinitionBase quickLaunchModel)
         {
             NavigationNodeCollection quickLaunch = null;
             var result = GetRootNavigationNode(webModelHost, quickLaunchModel, out quickLaunch);
@@ -173,7 +173,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         protected NavigationNode GetRootNavigationNode(
             WebModelHost webModelHost,
-            QuickLaunchNavigationNodeDefinition navigationNodeModel, out NavigationNodeCollection rootNavigationNodes)
+            NavigationNodeDefinitionBase navigationNodeModel, out NavigationNodeCollection rootNavigationNodes)
         {
             var web = webModelHost.HostWeb;
             var context = webModelHost.HostWeb.Context;
@@ -183,15 +183,17 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             context.Load(rootNavigationNodes);
             context.ExecuteQuery();
 
+            // TODO, crazy URL matching to find 'resolved URL'
+
             var existingNode = rootNavigationNodes.OfType<NavigationNode>()
-                .FirstOrDefault(n => n.Url == navigationNodeModel.Url);
+                .FirstOrDefault(n => n.Url.ToUpper().EndsWith(navigationNodeModel.Url.ToUpper()));
 
             return existingNode;
         }
 
         private NavigationNode EnsureRootNavigationNode(
             WebModelHost webModelHost,
-            QuickLaunchNavigationNodeDefinition navigationNodeModel)
+            NavigationNodeDefinitionBase navigationNodeModel)
         {
             NavigationNodeCollection quickLaunch = null;
 

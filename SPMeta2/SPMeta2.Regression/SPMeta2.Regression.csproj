@@ -51,8 +51,20 @@
     <Compile Include="Const\SPBasePermissions.cs" />
     <Compile Include="Const\SPBuiltInContentTypeId.cs" />
     <Compile Include="Const\SPListTemplateType.cs" />
+    <Compile Include="DefaultWebpartTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListItemFieldValueDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListItemDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ModuleFileDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\QuickLaunchNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PropertyDefinitionGenerator.cs" />
@@ -70,9 +82,11 @@
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SiteDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
+    <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Base\DefinitionGeneratorServiceBase.cs" />
     <Compile Include="Services\Base\TypedDefinitionGeneratorServiceBase.cs" />
@@ -94,7 +108,12 @@
       <Name>SPMeta2</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultWebpartTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultWebpartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

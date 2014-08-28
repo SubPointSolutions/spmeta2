@@ -132,22 +132,42 @@ namespace SPMeta2.Regression.Services
             if (rootHostType == null)
                 return;
 
-            var parentHostType = type;
-
-            if (rootHostType == parentHostType)
+            if (rootHostType == type)
                 return;
 
-            var upParentHostType = GetParentHostType(parentHostType);
+            var parentHostType = type;
+            var customParentHost = GetDefinitionParentHost(type);
 
-            defs.Add(GetRandomDefinition(upParentHostType));
+            if (customParentHost == null)
+            {
+                var upParentHostType = GetParentHostType(parentHostType);
 
-            LookupModelTree(rootHostType, upParentHostType, defs);
+                var definition = GetRandomDefinition(upParentHostType);
+                defs.Add(definition);
+
+                LookupModelTree(rootHostType, upParentHostType, defs);
+            }
+            else
+            {
+                defs.Add(customParentHost);
+                LookupModelTree(rootHostType, customParentHost.GetType(), defs);
+            }
         }
 
         private TDefinition GetRandomDefinition<TDefinition>()
             where TDefinition : DefinitionBase
         {
             return (TDefinition)GetRandomDefinition(typeof(TDefinition));
+        }
+
+        private DefinitionBase GetDefinitionParentHost(Type type)
+        {
+            if (!DefinitionGenerators.ContainsKey(type))
+                throw new SPMeta2NotImplementedException(string.Format("Cannot find definition generator for type:[{0}]", type.AssemblyQualifiedName));
+
+            var definitionGenrator = DefinitionGenerators[type];
+
+            return definitionGenrator.GetCustomParenHost();
         }
 
         private DefinitionBase GetRandomDefinition(Type type)

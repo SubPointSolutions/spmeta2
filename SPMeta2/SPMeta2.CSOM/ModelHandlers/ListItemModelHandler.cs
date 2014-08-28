@@ -27,8 +27,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModeHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModeHost.HostList;
 
             DeployInternall(list, listItemModel);
         }
@@ -49,8 +51,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModeHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModeHost.HostList;
 
             var item = EnsureListItem(list, listItemModel);
             var context = list.Context;

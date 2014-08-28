@@ -16,7 +16,7 @@ namespace SPMeta2.Regression.Runners.O365
 
         public O365ProvisionRunner()
         {
-            Name = "CSOM";
+            Name = "O365";
 
             SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
             UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);

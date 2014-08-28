@@ -177,6 +177,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentFolderItem.Update();
 
                 context.ExecuteQuery();
+
+
+
+                context.Load(currentFolderItem.Folder);
+                context.ExecuteQuery();
+
+                currentFolder = currentFolderItem.Folder;
             }
             else
             {

@@ -22,11 +22,13 @@ namespace SPMeta2.Regression.CSOM.Validation
             var context = web.Context;
 
             context.Load(web, w => w.ServerRelativeUrl);
-            context.Load(web, w => w.Lists);
+
+            var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
             context.ExecuteQuery();
 
-            var spObject = FindListByTitle(web.Lists, listModel.Title);
+            var spObject = FindListByUrl(lists, listModel.GetListUrl());
 
+            context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
             context.ExecuteQuery();
 

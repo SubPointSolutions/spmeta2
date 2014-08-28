@@ -17,15 +17,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(FieldDefinition); }
         }
 
-        private static string MinimalSPFieldTemplate = @"<Field " +
-                                "ID=\"{0}\" " +
-                                "StaticName=\"{1}\" " +
-                                "DisplayName=\"{2}\" " +
-                                "Title=\"{3}\" " +
-                                "Name=\"{4}\" " +
-                                "Type=\"{5}\" " +
-                                "Group=\"{6}\" " +
-                                "/>";
+        // TODO, replace with XElement generation later.
+        private static string MinimalSPFieldTemplate =
+                                @"<Field " +
+                                    "ID=\"{0}\" " +
+                                    "StaticName=\"{1}\" " +
+                                    "DisplayName=\"{2}\" " +
+                                    "Title=\"{3}\" " +
+                                    "Name=\"{4}\" " +
+                                    "Type=\"{5}\" " +
+                                    "Group=\"{6}\" " +
+                                    "/>";
 
         #endregion
 
@@ -173,7 +175,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                                                                              fieldModel.Title,
                                                                              fieldModel.Title,
                                                                              fieldModel.InternalName,
-                                                                             fieldModel.FieldType
+                                                                             fieldModel.FieldType,
+                                                                             fieldModel.Group
                                                                          });
         }
 

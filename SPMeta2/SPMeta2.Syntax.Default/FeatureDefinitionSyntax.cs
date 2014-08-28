@@ -6,6 +6,26 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public static class DefinitionExtensions
+    {
+        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition)
+            where TDefinition : DefinitionBase, new()
+        {
+            return Inherit < TDefinition>(definition, null);
+        }
+
+        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition, Action<TDefinition> config)
+            where TDefinition : DefinitionBase, new()
+        {
+            var model = definition.Clone() as TDefinition;
+
+            if (config != null)
+                config(model);
+
+            return model;
+        }
+    }
+
     public static class FeatureDefinitionSyntax
     {
         #region methods

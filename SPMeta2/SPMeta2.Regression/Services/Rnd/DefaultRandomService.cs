@@ -80,5 +80,15 @@ namespace SPMeta2.Regression.Services.Rnd
         {
             return "sites";
         }
+
+        public override byte[] Content()
+        {
+            return Content(32);
+        }
+
+        public override byte[] Content(int lenght)
+        {
+            return Encoding.UTF8.GetBytes(String());
+        }
     }
 }

@@ -6,6 +6,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -15,9 +16,10 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webPartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
+            var list = listModelHost.HostList;
             //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
             //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
 

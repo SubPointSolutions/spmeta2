@@ -48,6 +48,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            if (!securableObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))
+            {
+                context.Load(securableObject, s => s.HasUniqueRoleAssignments);
+                context.ExecuteQuery();
+            }
+
             if (!securableObject.HasUniqueRoleAssignments)
                 securableObject.BreakRoleInheritance(breakRoleInheritanceModel.CopyRoleAssignments, breakRoleInheritanceModel.ClearSubscopes);
 

@@ -57,9 +57,12 @@
   <ItemGroup>
     <Compile Include="Base\CSOMTestBase.cs" />
     <Compile Include="CSOMValidationService.cs" />
+    <Compile Include="Validation\CLientBreakRoleInheritanceDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientListFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListItemDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListItemFieldValueDefinitionValidator.cs" />
     <Compile Include="Validation\ClientModuleFileDefinitionaValidator.cs" />
+    <Compile Include="Validation\ClientTopNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientQuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeFieldLinkDefinitionValidator.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Validation\ClientUserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWikiPageDefinitionValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Common;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -24,8 +25,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var list = modelHost as List;
+            var listModelHost = modelHost as ListModelHost;
             var webPartPageDefinition = model as WebPartPageDefinition;
+
+            List list = listModelHost != null ? listModelHost.HostList : null;
 
             if (list != null && webPartPageDefinition != null)
             {
@@ -49,8 +52,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var webPartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
 
             //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
             //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");

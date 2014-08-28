@@ -6,6 +6,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.Common;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -37,6 +38,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = null,
+                ObjectType = typeof(File),
+                ObjectDefinition = publishingPageModel,
+                ModelHost = modelHost
+            });
+
             var file = new FileCreationInformation();
             var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
 
@@ -65,6 +77,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             //newPage["PublishingPageContent"] = "Yea!";
             //newPage["PublishingPageLayout"] = "/auto-tests/csom-application/_catalogs/masterpage/ArticleLinks.aspx";
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = newPage.File,
+                ObjectType = typeof(File),
+                ObjectDefinition = publishingPageModel,
+                ModelHost = modelHost
+            });
 
             newPage.Update();
 

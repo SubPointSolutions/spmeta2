@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,12 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSOMProvisionRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
+      <Project>{6f7ebf0c-7124-44d6-b9ec-302a54a19fe4}</Project>
+      <Name>SPMeta2.CSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.CSOM\SPMeta2.Regression.CSOM.csproj">
+      <Project>{5a1b98bf-4ea4-4dee-988f-fa62eefc9eb0}</Project>
+      <Name>SPMeta2.Regression.CSOM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
       <Project>{c69c8205-b0c7-4fdb-b1f6-f4fa77ff95ab}</Project>
       <Name>SPMeta2.Regression.Runners</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Validation\SPMeta2.Validation.csproj">
+      <Project>{114d2fe1-02ab-4b1b-bbb1-e184e731b28f}</Project>
+      <Name>SPMeta2.Validation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
+      <Name>SPMeta2</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

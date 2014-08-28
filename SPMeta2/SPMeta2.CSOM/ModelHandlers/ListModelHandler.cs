@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.DefaultSyntax;
@@ -33,7 +34,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // no no no no... not a TITLE! 
 
                 var context = web.Context;
-                var list = web.QueryAndGetListByTitle(listDefinition.Title);
+
+                var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
+                context.ExecuteQuery();
+
+                var list = FindListByUrl(lists, listDefinition.GetListUrl());
 
                 var listModelHost = new ListModelHost
                 {
@@ -118,13 +123,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = web.Context;
 
-            context.Load(web, w => w.Lists);
+            //context.Load(web, w => w.Lists);
             context.Load(web, w => w.ServerRelativeUrl);
-
+            var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
             context.ExecuteQuery();
 
             List currentList = null;
-            
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -138,7 +143,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdating);
 
             // gosh!
-            currentList = FindListByTitle(web.Lists, listModel.Title);
+            currentList = FindListByUrl(lists, listModel.GetListUrl());
 
             if (currentList == null)
             {
@@ -194,16 +199,27 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQuery();
         }
 
-        protected List FindListByTitle(ListCollection listCollection, string listTitle)
+        protected List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
         {
             foreach (var list in listCollection)
             {
-                if (System.String.Compare(list.Title, listTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
+                if (list.DefaultViewUrl.ToUpper().Contains(listUrl.ToUpper()))
                     return list;
             }
 
             return null;
         }
+
+        //protected List FindListByTitle(ListCollection listCollection, string listTitle)
+        //{
+        //    foreach (var list in listCollection)
+        //    {
+        //        if (System.String.Compare(list.Title, listTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
+        //            return list;
+        //    }
+
+        //    return null;
+        //}
 
         protected ListTemplate FindListTemplateByName(IEnumerable<ListTemplate> listTemplateCollection, string listTemplateName)
         {

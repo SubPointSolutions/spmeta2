@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -46,12 +47,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             return currentWebUrl.ToLower();
         }
 
+        protected Web ExtractWeb(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            throw new SPMeta2NotSupportedException(string.Format("New web canonot be created under model host of type:[{0}]", modelHost.GetType()));
+        }
+
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
+            var parentWeb = ExtractWeb(modelHost);
+            var hostClientContext = ExtractHostClientContext(modelHost);
+            var hostSite = ExtractHostSite(modelHost);
 
-            var parentWeb = GetParentWeb(webModelHost);
+            var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
 
             var context = parentWeb.Context;
 
@@ -66,14 +79,40 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var tmpWebContext = webContext;
 
                 webContext.Credentials = context.Credentials;
-                var tmpWebModelHost = ModelHostBase.Inherit<WebModelHost>(webModelHost,
-                    webHost =>
-                    {
-                        webHost.HostWeb = tmpWebContext.Web;
-                    });
+
+                var tmpWebModelHost = new WebModelHost
+                {
+                    HostClientContext = hostClientContext,
+                    HostSite = hostSite,
+                    HostWeb = tmpWebContext.Web
+                };
 
                 action(tmpWebModelHost);
             }
+        }
+
+        private Site ExtractHostSite(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostSite;
+
+            throw new SPMeta2NotSupportedException(string.Format("Cannot get host site from model host of type:[{0}]", modelHost.GetType()));
+
+        }
+
+        private ClientContext ExtractHostClientContext(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostClientContext;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostClientContext;
+
+            throw new SPMeta2NotSupportedException(string.Format("Cannot get host client context from model host of type:[{0}]", modelHost.GetType()));
+
         }
 
         private static Web GetParentWeb(WebModelHost csomModelHost)
@@ -92,10 +131,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var csomModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var parentWeb = ExtractWeb(modelHost);
+            var hostClientContext = ExtractHostClientContext(modelHost);
             var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
 
-            var parentWeb = GetParentWeb(csomModelHost); ;
             var context = parentWeb.Context;
 
             context.Load(parentWeb, w => w.RootFolder);
