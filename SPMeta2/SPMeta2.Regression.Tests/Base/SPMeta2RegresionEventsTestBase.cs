@@ -55,6 +55,8 @@ namespace SPMeta2.Regression.Tests.Base
                         eventHooks.ModelNode,
                         eventHooks.Tag));
 
+                traceScope.WriteLine("Definition:" + eventHooks.ModelNode.Value.ToString());
+
                 traceScope.WriteLine(string.Format("Validating OnProvisioning event hit."));
                 Assert.AreEqual(true, eventHooks.OnProvisioning);
                 traceScope.WriteLine(string.Format("    - done"));

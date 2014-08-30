@@ -72,34 +72,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
         }
 
-        private void ProcessFile(
-            object modelHost,
-            SPFolder folder, ModuleFileDefinition moduleFile)
+        public static void WithSafeFileOperation(
+            SPList list,
+            SPFolder folder,
+            string fileUrl,
+            string fileName,
+            byte[] fileContent,
+            bool overide,
+            Action<SPFile> onBeforeAction,
+            Action<SPFile> onAction)
         {
-            var web = folder.ParentWeb;
-            var list = folder.DocumentLibrary;
+            var file = list.ParentWeb.GetFile(fileUrl);
 
-            var file = web.GetFile(GetSafeFileUrl(folder, moduleFile));
+            if (onBeforeAction != null)
+                onBeforeAction(file);
 
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioning,
-                Object = file.Exists ? file : null,
-                ObjectType = typeof(SPFile),
-                ObjectDefinition = moduleFile,
-                ModelHost = modelHost
-            });
-
-            var fileName = moduleFile.FileName;
-            var fileContent = moduleFile.Content;
-
-            // for file deployment to the folder, root web folder or under _cts or other spccial folders
-            // list == null
-
-            // big todo with correct update and punblishing
-            // get prev SPMeta2 impl for publishing pages
             if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
                 file.UndoCheckOut();
 
@@ -109,29 +96,94 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (list != null && (file.Exists && file.CheckOutType == SPFile.SPCheckOutType.None))
                 file.CheckOut();
 
-            var spFile = folder.Files.Add(fileName, fileContent, file.Exists);
+            SPFile newFile;
 
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = spFile,
-                ObjectType = typeof(SPFile),
-                ObjectDefinition = moduleFile,
-                ModelHost = modelHost
-            });
+            if (overide)
+                newFile = folder.Files.Add(fileName, fileContent, file.Exists);
+            else
+                newFile = file;
 
-            spFile.Update();
+            if (onAction != null)
+                onAction(newFile);
+
+            newFile.Update();
 
             if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
-                spFile.CheckIn("Provision");
+                newFile.CheckIn("Provision");
 
             if (list != null && (list.EnableMinorVersions))
-                spFile.Publish("Provision");
+                newFile.Publish("Provision");
 
             if (list != null && list.EnableModeration)
-                spFile.Approve("Provision");
+                newFile.Approve("Provision");
+
+        }
+
+
+
+        public static void DeployModuleFile(SPFolder folder,
+            string fileUrl,
+            string fileName,
+            byte[] fileContent,
+            bool overwrite,
+            Action<SPFile> beforeProvision,
+            Action<SPFile> afterProvision)
+        {
+            var web = folder.ParentWeb;
+            var list = folder.DocumentLibrary;
+
+            WithSafeFileOperation(list, folder, fileUrl, fileName, fileContent,
+                overwrite,
+                onBeforeFile =>
+                {
+                    if (beforeProvision != null)
+                        beforeProvision(onBeforeFile);
+                },
+                onActionFile =>
+                {
+                    if (afterProvision != null)
+                        afterProvision(onActionFile);
+
+                });
+        }
+
+        private void ProcessFile(
+            object modelHost,
+            SPFolder folder, ModuleFileDefinition moduleFile)
+        {
+            DeployModuleFile(
+                folder,
+                GetSafeFileUrl(folder, moduleFile),
+                moduleFile.FileName,
+                moduleFile.Content,
+                moduleFile.Overwrite,
+                before =>
+                {
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioning,
+                        Object = before.Exists ? before : null,
+                        ObjectType = typeof(SPFile),
+                        ObjectDefinition = moduleFile,
+                        ModelHost = modelHost
+                    });
+
+                },
+                after =>
+                {
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = after,
+                        ObjectType = typeof(SPFile),
+                        ObjectDefinition = moduleFile,
+                        ModelHost = modelHost
+                    });
+                });
         }
 
         #endregion

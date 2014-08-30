@@ -70,6 +70,8 @@
     <Compile Include="Validation\ListViewDefinitionValidator.cs" />
     <Compile Include="Validation\ModuleFileDefinitionValidator.cs" />
     <Compile Include="Validation\PropertyDefinitionValidator.cs" />
+    <Compile Include="Validation\PrefixDefinitionValidator.cs" />
+    <Compile Include="Validation\ManagedAccountDefinitionValidator.cs" />
     <Compile Include="Validation\TopNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\QuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\SecurityGroupDefinitionValidator.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Validation\WebDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartDefinitionValidator.cs" />
     <Compile Include="Validation\PublishingPageDefinitionValidator.cs" />
+    <Compile Include="Validation\WebApplicationDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />
   </ItemGroup>

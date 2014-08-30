@@ -15,7 +15,14 @@ namespace SPMeta2.Regression.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                
+                def.Name = Rnd.String();
+
+                // TODO, we need a helper here
+                //http://blogs.msdn.com/b/markarend/archive/2007/01/16/spschedule-fromstring-recurrencevalue-syntax-format-for-recurrence-value.aspx
+                def.ScheduleString = "yearly at jan 1 09:00:00";
+
+                // TMP
+                def.JobType = "Microsoft.SharePoint.Administration.SPUpgradeJobDefinition, Microsoft.SharePoint";
             });
         }
     }

@@ -137,8 +137,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.RandomDefinition")]
         public void CanRaiseEvents_SandboxSolutionDefinition()
         {
-            throw new NotImplementedException();
-
             TestRandomDefinition<SandboxSolutionDefinition>();
         }
 

@@ -18,7 +18,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(SiteDefinition); }
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webAppModelHost = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
             var siteModel = model.WithAssertAndCast<SiteDefinition>("model", value => value.RequireNotNull());

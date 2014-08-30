@@ -1,5 +1,6 @@
 ﻿using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using System;
 namespace SPMeta2.Definitions
 {
     /// <summary>
@@ -12,6 +13,7 @@ namespace SPMeta2.Definitions
     [RootHostAttribute(typeof(WebDefinition))]
     [ParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
 
+    [Serializable]
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
         #region constructors

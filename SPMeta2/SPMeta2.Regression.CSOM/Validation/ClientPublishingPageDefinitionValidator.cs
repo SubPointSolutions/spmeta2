@@ -18,15 +18,15 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
+            var folder = folderModelHost.CurrentLibraryFolder;
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
-            ValidatePublishingPage(modelHost, list, publishingPageModel);
+            ValidatePublishingPage(modelHost, folder, publishingPageModel);
         }
 
-        private void ValidatePublishingPage(object modelHost, List list, PublishingPageDefinition publishingPageModel)
+        private void ValidatePublishingPage(object modelHost, Folder list, PublishingPageDefinition publishingPageModel)
         {
             // TODO
         }

@@ -59,12 +59,19 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQuery();
 
-                    var folderModelHost = new FolderModelHost
+                    var folderModelHost = new FolderModelHost();
+
+                    folderModelHost.CurrentWeb = web;
+                    folderModelHost.CurrentList = list;
+
+                    if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        CurrentWeb = web,
-                        CurrentList = list,
-                        CurrentLibraryFolder = list.RootFolder
-                    };
+                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                    }
+                    else
+                    {
+                        folderModelHost.CurrentListItem = null;
+                    }
 
                     action(folderModelHost);
                 }
@@ -99,6 +106,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
 
                     action(sp2013WorkflowSubscriptionModelHost);
+                } 
+                else if(typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
+                {
+                    context.Load<List>(list, l => l.RootFolder);
+                    context.Load<List>(list, l => l.BaseType);
+
+                    context.ExecuteQuery();
+
+                    var folderModelHost = new FolderModelHost();
+
+                    folderModelHost.CurrentWeb = web;
+                    folderModelHost.CurrentList = list;
+
+                    if (list.BaseType == BaseType.DocumentLibrary)
+                    {
+                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                    }
+                    else
+                    {
+                        folderModelHost.CurrentListItem = null;
+                    }
+
+                    action(folderModelHost);
                 }
                 else
                 {

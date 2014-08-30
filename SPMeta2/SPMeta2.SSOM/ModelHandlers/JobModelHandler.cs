@@ -66,9 +66,30 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentJobInstance == null)
             {
+                Type jobType = null;
+
                 // install one
-                var jobType = Type.GetType(jobDefinition.JobType);
-                currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, jobDefinition.Name, webApp);
+                var subType = jobDefinition.JobType.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (subType.Length == 2)
+                {
+                    var typeName = subType[0].Trim();
+                    var assemblyName = subType[1].Trim();
+
+                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+                    var targetAssembly = assemblies.FirstOrDefault(a => a.FullName.Split(',')[0].ToUpper() == assemblyName.ToUpper());
+                    jobType = targetAssembly.GetType(typeName);
+                }
+                else
+                {
+                    jobType = Type.GetType(jobDefinition.JobType);
+                }
+
+                // TODO
+                // sort out job host - SPWebApp, SPServer
+                currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType);
+                //, jobDefinition.Name, webApp);
 
                 if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
                 {

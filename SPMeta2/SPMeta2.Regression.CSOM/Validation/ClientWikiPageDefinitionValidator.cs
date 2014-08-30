@@ -16,16 +16,18 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
-
-            //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
-            //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+            var folder = folderModelHost.CurrentLibraryFolder;
+            var context = folder.Context;
 
             var pageName = GetSafeWikiPageFileName(wikiPageModel);
-            var pageItem = list.QueryAndGetItemByFileName(pageName);
+            var file = GetWikiPageFile(folderModelHost.CurrentList.ParentWeb, folder, wikiPageModel);
+            var pageItem = file.ListItemAllFields;
+
+            context.Load(pageItem);
+            context.ExecuteQuery();
 
             TraceUtils.WithScope(traceScope =>
             {

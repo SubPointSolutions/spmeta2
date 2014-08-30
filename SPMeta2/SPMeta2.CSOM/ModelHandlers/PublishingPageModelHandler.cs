@@ -23,14 +23,43 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        protected string GetSafePageFileName(PageDefinitionBase page)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var fileName = page.FileName;
+            if (!fileName.EndsWith(".aspx")) fileName += ".aspx";
 
-            var list = listModelHost.HostList;
+            return fileName;
+        }
+
+
+        protected File GetCurrentPage(Folder folder, string pageName)
+        {
+            var context = folder.Context;
+
+            var files = folder.Files;
+            context.Load(files);
+            context.ExecuteQuery();
+
+            foreach (var file in files)
+            {
+                if (file.Name.ToUpper() == pageName.ToUpper())
+                    return file;
+            }
+
+            return null;
+        }
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+
+            var folder = folderModelHost.CurrentLibraryFolder;
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
-            var context = list.Context;
+            var context = folder.Context;
+
+            var pageName = GetSafePageFileName(publishingPageModel);
+            var currentPageFile = GetCurrentPage(folder, pageName);
 
             // #SPBug
             // it turns out that there is no support for the web part page creating via CMOM
@@ -38,38 +67,43 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
+            var currentPageFiles = GetCurrentPage(folder, pageName);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
-                Object = null,
+                Object = currentPageFile,
                 ObjectType = typeof(File),
                 ObjectDefinition = publishingPageModel,
                 ModelHost = modelHost
             });
 
-            var file = new FileCreationInformation();
-            var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
+            if ((currentPageFile == null) || (currentPageFile != null && publishingPageModel.NeedOverride))
+            {
+                var file = new FileCreationInformation();
+                var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
 
-            // TODO, need to be fixed
-            // add new page
-            var fileName = publishingPageModel.FileName;
-            if (!fileName.EndsWith(".aspx")) fileName += ".aspx";
+                // TODO, need to be fixed
+                // add new page
+                var fileName = publishingPageModel.FileName;
+                if (!fileName.EndsWith(".aspx")) fileName += ".aspx";
 
-            file.Url = fileName;
-            file.Content = Encoding.UTF8.GetBytes(pageContent);
-            file.Overwrite = publishingPageModel.NeedOverride;
+                file.Url = fileName;
+                file.Content = Encoding.UTF8.GetBytes(pageContent);
+                file.Overwrite = publishingPageModel.NeedOverride;
 
-            // just root folder is supported yet
-            //if (!string.IsNullOrEmpty(publishingPageModel.FolderUrl))
-            //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+                // just root folder is supported yet
+                //if (!string.IsNullOrEmpty(publishingPageModel.FolderUrl))
+                //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
 
-            context.Load(list.RootFolder.Files.Add(file));
-            context.ExecuteQuery();
+                context.Load(folder.Files.Add(file));
+                context.ExecuteQuery();
 
-            // update properties
-            var newPage = list.QueryAndGetItemByFileName(fileName);
+                // TODO, setup publishing page properties
+
+            }
 
             // TODO
             // gosh, how we are supposed to get Master Page gallery with publishing template having just list here?
@@ -78,18 +112,20 @@ namespace SPMeta2.CSOM.ModelHandlers
             //newPage["PublishingPageContent"] = "Yea!";
             //newPage["PublishingPageLayout"] = "/auto-tests/csom-application/_catalogs/masterpage/ArticleLinks.aspx";
 
+            currentPageFile = GetCurrentPage(folder, pageName);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
-                Object = newPage.File,
+                Object = currentPageFile,
                 ObjectType = typeof(File),
                 ObjectDefinition = publishingPageModel,
                 ModelHost = modelHost
             });
 
-            newPage.Update();
+            //currentPageFile..ite();//
 
             context.ExecuteQuery();
         }

@@ -1,5 +1,6 @@
 ﻿using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using System;
 using System.Collections.ObjectModel;
 
 namespace SPMeta2.Definitions
@@ -14,6 +15,7 @@ namespace SPMeta2.Definitions
     [RootHostAttribute(typeof(SiteDefinition))]
     [ParentHostAttribute(typeof(SiteDefinition))]
 
+    [Serializable]
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region contructors

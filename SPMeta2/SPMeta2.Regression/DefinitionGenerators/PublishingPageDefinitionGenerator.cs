@@ -20,6 +20,10 @@ namespace SPMeta2.Regression.DefinitionGenerators
             {
                 def.Title = Rnd.String();
                 def.FileName = Rnd.String() + ".aspx";
+
+                def.Description = Rnd.String();
+                def.PageLayoutFileName = BuiltInPublishingPageLayoutNames.ArticleLeft;
+
                 def.NeedOverride = true;
             });
         }

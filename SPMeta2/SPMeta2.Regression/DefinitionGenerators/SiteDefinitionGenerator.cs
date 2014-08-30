@@ -15,6 +15,8 @@ namespace SPMeta2.Regression.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
+                def.Url = Rnd.String();
+
                 def.Name = Rnd.String();
                 def.Description = Rnd.String();
 

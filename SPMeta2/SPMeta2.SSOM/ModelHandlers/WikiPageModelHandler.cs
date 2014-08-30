@@ -27,15 +27,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
+            var folder = folderModelHost.CurrentLibraryFolder;
 
             //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
             //    throw new Exception("FolderUrl property is not supported yet!");
 
-            var pageItem = FindWikiPage(list, wikiPageModel);
+            var pageItem = FindWikiPageItem(folder, wikiPageModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -50,8 +50,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (pageItem == null)
             {
-                var newWikiPageUrl = GetSafeWikiPageUrl(list, wikiPageModel);
-                var newpage = list.RootFolder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
+                var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
+                var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -83,10 +83,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        protected string GetSafeWikiPageUrl(SPList pageList, WikiPageDefinition wikiPageModel)
+        protected string GetSafeWikiPageUrl(SPFolder folder, WikiPageDefinition wikiPageModel)
         {
             // TODO, fix +/ to SPUtility
-            return pageList.RootFolder.ServerRelativeUrl + "/" + GetSafeWikiPageFileName(wikiPageModel);
+            return folder.ServerRelativeUrl + "/" + GetSafeWikiPageFileName(wikiPageModel);
         }
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
@@ -99,9 +99,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             return wikiPageName;
         }
 
-        protected SPListItem FindWikiPage(SPList pageList, WikiPageDefinition wikiPageModel)
+        protected SPListItem FindWikiPageItem(SPFolder folder, WikiPageDefinition wikiPageModel)
         {
-            var file = pageList.ParentWeb.GetFile(GetSafeWikiPageUrl(pageList, wikiPageModel));
+            var file = folder.ParentWeb.GetFile(GetSafeWikiPageUrl(folder, wikiPageModel));
 
             return file.Exists ? file.Item : null;
         }

@@ -16,6 +16,8 @@ namespace SPMeta2.Definitions
 
     [RootHostAttribute(typeof(WebDefinition))]
     [ParentHostAttribute(typeof(ListDefinition))]
+
+    [Serializable]
     public class ModuleFileDefinition : DefinitionBase
     {
         #region constructors
@@ -23,6 +25,7 @@ namespace SPMeta2.Definitions
         public ModuleFileDefinition()
         {
             Content = new byte[0];
+            Overwrite = true;
         }
 
         #endregion
@@ -38,6 +41,11 @@ namespace SPMeta2.Definitions
         /// Target file content.
         /// </summary>
         public byte[] Content { get; set; }
+
+        /// <summary>
+        /// Overwrite flag
+        /// </summary>
+        public bool Overwrite { get; set; }
 
         #endregion
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Configuration;
@@ -9,6 +11,15 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows to define and deploy SharePoint 2013 workflow.
     /// </summary>
+    /// 
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.WorkflowServicesBase")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.Client.WorkflowServices")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(WebDefinition))]
+
+    [Serializable]
+
     public class SP2013WorkflowDefinition : DefinitionBase
     {
         #region contructors

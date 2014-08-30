@@ -4,12 +4,24 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using SPMeta2.Enumerations;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint 2013 workflow to the target list or library.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowSubscription", "Microsoft.SharePoint.WorkflowServicesBase")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowSubscription", "Microsoft.SharePoint.Client.WorkflowServices")]
+
+    [RootHostAttribute(typeof(WebDefinition))]
+    [ParentHostAttribute(typeof(ListDefinition))]
+
+    [Serializable]
+
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
         #region contructors

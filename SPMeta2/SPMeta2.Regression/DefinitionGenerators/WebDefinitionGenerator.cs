@@ -18,6 +18,7 @@ namespace SPMeta2.Regression.DefinitionGenerators
                 def.Title = Rnd.String();
                 def.Description = Rnd.String();
 
+
                 def.Url = Rnd.String(16);
 
                 def.WebTemplate = BuiltInWebTemplates.Collaboration.TeamSite;

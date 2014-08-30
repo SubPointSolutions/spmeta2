@@ -56,6 +56,15 @@ namespace SPMeta2.Regression.Runners.SSOM
             });
         }
 
+        public override void DeployWebApplicationModel(ModelNode model)
+        {
+            WithSSOMWebApplicationContext(webApp =>
+            {
+                _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+                _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+            });
+        }
+
         public override void DeploySiteModel(ModelNode model)
         {
             WithSSOMSiteAndWebContext((site, web) =>
@@ -77,6 +86,13 @@ namespace SPMeta2.Regression.Runners.SSOM
         #endregion
 
         #region utils
+
+        private void WithSSOMWebApplicationContext(Action<SPWebApplication> action)
+        {
+            var webApp = SPWebApplication.Lookup(new Uri(WebApplicationUrl));
+
+            action(webApp);
+        }
 
         private void WithSSOMFarmContext(Action<SPFarm> action)
         {

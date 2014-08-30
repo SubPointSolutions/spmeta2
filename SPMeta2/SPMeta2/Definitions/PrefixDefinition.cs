@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,15 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows to define and deploy SharePoint managed path.
     /// </summary>
+    /// 
+
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPPrefix", "Microsoft.SharePoint")]
+
+    [RootHostAttribute(typeof(WebApplicationDefinition))]
+    [ParentHostAttribute(typeof(WebApplicationDefinition))]
+
+    [Serializable]
+
     public class PrefixDefinition : DefinitionBase
     {
         #region properties

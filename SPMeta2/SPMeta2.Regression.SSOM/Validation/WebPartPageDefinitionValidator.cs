@@ -12,11 +12,11 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModel = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
-            var spWebPartPage = FindWebPartPage(list, webpartPageModel);
+            var folder = folderModel.CurrentLibraryFolder;
+            var spWebPartPage = FindWebPartPage( folder, webpartPageModel);
 
             TraceUtils.WithScope(traceScope =>
             {

@@ -39,20 +39,20 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
+            var folder = folderModelHost.CurrentLibraryFolder;
 
-            DeployWikiPage(list, wikiPageModel);
+            DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folder, wikiPageModel);
         }
 
-        private void DeployWikiPage(List list, WikiPageDefinition wikiPageModel)
+        private void DeployWikiPage(Web web, Folder folder, WikiPageDefinition wikiPageModel)
         {
-            var context = list.Context;
+            var context = folder.Context;
 
             var newWikiPageUrl = string.Empty;
-            var file = GetWikiPageFile(list, wikiPageModel, out newWikiPageUrl);
+            var file = GetWikiPageFile(web, folder, wikiPageModel, out newWikiPageUrl);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -62,15 +62,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 Object = file,
                 ObjectType = typeof(File),
                 ObjectDefinition = wikiPageModel,
-                ModelHost = list
+                ModelHost = folder
             });
 
             if (file == null)
             {
-                var newPageFile = list.RootFolder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
+                var newPageFile = folder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
 
                 context.Load(newPageFile);
-                
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -79,7 +79,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Object = newPageFile,
                     ObjectType = typeof(File),
                     ObjectDefinition = wikiPageModel,
-                    ModelHost = list
+                    ModelHost = folder
                 });
 
                 context.ExecuteQuery();
@@ -97,33 +97,33 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Object = file,
                     ObjectType = typeof(File),
                     ObjectDefinition = wikiPageModel,
-                    ModelHost = list
+                    ModelHost = folder
                 });
             }
         }
 
-        protected File GetWikiPageFile(List list, WikiPageDefinition wikiPageModel)
+        protected File GetWikiPageFile(Web web, Folder folder, WikiPageDefinition wikiPageModel)
         {
             var newWikiPageUrl = string.Empty;
-            var result = GetWikiPageFile(list, wikiPageModel, out newWikiPageUrl);
+            var result = GetWikiPageFile(web, folder, wikiPageModel, out newWikiPageUrl);
 
             return result;
         }
 
-        protected File GetWikiPageFile(List list, WikiPageDefinition wikiPageModel, out string newWikiPageUrl)
+        protected File GetWikiPageFile(Web web, Folder folder, WikiPageDefinition wikiPageModel, out string newWikiPageUrl)
         {
-            var context = list.Context;
+            var context = folder.Context;
 
             //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
             //    throw new Exception("FolderUrl property is not supported yet!");
 
             var pageName = GetSafeWikiPageFileName(wikiPageModel);
 
-            context.Load(list, l => l.RootFolder.ServerRelativeUrl);
+            context.Load(folder, l => l.ServerRelativeUrl);
             context.ExecuteQuery();
 
-            newWikiPageUrl = list.RootFolder.ServerRelativeUrl + "/" + pageName;
-            var file = list.ParentWeb.GetFileByServerRelativeUrl(newWikiPageUrl);
+            newWikiPageUrl = folder.ServerRelativeUrl + "/" + pageName;
+            var file = web.GetFileByServerRelativeUrl(newWikiPageUrl);
 
             context.Load(file, f => f.Exists);
             context.ExecuteQuery();

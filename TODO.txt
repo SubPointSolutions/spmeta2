@@ -1,1 +1,1 @@
-Random model test improvements, CSOM 33/37, SSOM 32/37
+Random model test improvements, CSOM 33/37, SSOM 29/37

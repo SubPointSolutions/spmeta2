@@ -13,6 +13,7 @@ namespace SPMeta2.Definitions
     /// 
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPFarm", "Microsoft.SharePoint")]
+    [Serializable]
     public class FarmDefinition : DefinitionBase
     {
         #region properties

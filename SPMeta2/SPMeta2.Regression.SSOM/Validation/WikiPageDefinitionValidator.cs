@@ -12,12 +12,12 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
+            var folder = folderModelHost.CurrentLibraryFolder; ;
 
-            var spWikiPageItem = FindWikiPage(list, wikiPageModel);
+            var spWikiPageItem = FindWikiPageItem(folder, wikiPageModel);
 
             TraceUtils.WithScope(traceScope =>
             {

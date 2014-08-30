@@ -26,6 +26,11 @@ namespace SPMeta2.Definitions
         /// </summary>
         public string PageLayoutFileName { get; set; }
 
+        /// <summary>
+        /// Description of the target publishing page.
+        /// </summary>
+        public string Description { get; set; }
+
         #endregion
 
         #region methods

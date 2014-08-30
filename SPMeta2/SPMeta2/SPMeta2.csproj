@@ -104,6 +104,9 @@
     <Compile Include="Enumerations\BuiltInFieldId.cs" />
     <Compile Include="Enumerations\BuiltInFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingContentTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingFieldId.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingPageLayoutNames.cs" />
     <Compile Include="Enumerations\BuiltInRegistrationTypes.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleNames.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleTypes.cs" />
