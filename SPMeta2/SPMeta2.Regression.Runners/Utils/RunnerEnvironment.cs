@@ -10,12 +10,7 @@ namespace SPMeta2.Regression.Runners.Utils
     {
         public static string GetEnvironmentVariable(string varName)
         {
-            var result = Environment.GetEnvironmentVariable(varName);
-
-            if (string.IsNullOrEmpty(result))
-                result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
-
-            return result;
+           return Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
         }
     }
 }

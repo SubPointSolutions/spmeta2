@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
+using SPMeta2.ModelHosts;
+
 namespace SPMeta2.CSOM.ModelHandlers
 {
     public class ListItemModelHandler : CSOMModelHandlerBase
@@ -79,6 +81,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQuery();
             }
+
+           
         }
 
         private ListItem EnsureListItem(List list, ListItemDefinition listItemModel)

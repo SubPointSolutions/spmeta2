@@ -21,7 +21,8 @@ namespace SPMeta2.Regression.DefinitionGenerators
                 def.ZoneId = "Main";
                 def.ZoneIndex = 10;
 
-                def.WebpartXmlTemplate = DefaultWebpartTemplates.ContentEditorWebpart;
+                //def.WebpartXmlTemplate = DefaultWebpartTemplates.ContentEditorWebpart;
+                def.WebpartFileName = BuiltInWebpartFileNames.MSContentEditor;
             });
         }
     }

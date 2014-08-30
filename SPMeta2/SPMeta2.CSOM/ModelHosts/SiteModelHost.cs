@@ -18,7 +18,9 @@ namespace SPMeta2.CSOM.ModelHosts
         public SiteModelHost(ClientContext clientContext)
         {
             HostClientContext = clientContext;
+            
             HostSite = clientContext.Site;
+            HostWeb = clientContext.Web;
         }
 
         #endregion

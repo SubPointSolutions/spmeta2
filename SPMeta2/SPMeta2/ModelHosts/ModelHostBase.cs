@@ -63,10 +63,16 @@ namespace SPMeta2.ModelHosts
             foreach (var prop in source.GetType().GetProperties())
             {
                 var propGetter = prop.GetGetMethod();
-                var propSetter = customerType.GetProperty(prop.Name).GetSetMethod();
-                var valueToSet = propGetter.Invoke(source, null);
 
-                propSetter.Invoke(target, new[] { valueToSet });
+                var targetProperty = customerType.GetProperty(prop.Name);
+
+                if (targetProperty != null)
+                {
+                    var propSetter = customerType.GetProperty(prop.Name).GetSetMethod();
+                    var valueToSet = propGetter.Invoke(source, null);
+
+                    propSetter.Invoke(target, new[] { valueToSet });
+                }
             }
         }
 

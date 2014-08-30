@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Utils;
 
+using SPMeta2.ModelHosts;
+
 namespace SPMeta2.CSOM.ModelHandlers
 {
     public class FolderModelHandler : CSOMModelHandlerBase
@@ -34,15 +36,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var currentFolder = EnsureLibraryFolder(folderModelHost, folderModel);
 
-                var newContext = new FolderModelHost
+                var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
-                    CurrentList = folderModelHost.CurrentList,
-                    CurrentLibraryFolder = currentFolder,
-                    CurrentWeb = folderModelHost.CurrentWeb
-                    //Folder = currentFolder,
-                    //List = folderModelHost.CurrentList,
-                    //Web = folderModelHost.CurrentWeb
-                };
+                    c.CurrentList = folderModelHost.CurrentList;
+                    c.CurrentLibraryFolder = currentFolder;
+                    c.CurrentWeb = folderModelHost.CurrentWeb;
+                });
 
                 action(newContext);
             }
@@ -50,12 +49,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var currentListItem = EnsureListFolder(folderModelHost, folderModel);
 
-                var newContext = new FolderModelHost
+                var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
-                    CurrentList = folderModelHost.CurrentList,
-                    CurrentListItem = currentListItem,
-                    CurrentWeb = folderModelHost.CurrentWeb
-                };
+                    c.CurrentList = folderModelHost.CurrentList;
+                    c.CurrentListItem = currentListItem;
+                    c.CurrentWeb = folderModelHost.CurrentWeb;
+                });
 
                 action(newContext);
             }

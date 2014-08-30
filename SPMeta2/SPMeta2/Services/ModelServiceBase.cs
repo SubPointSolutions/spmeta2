@@ -129,6 +129,10 @@ namespace SPMeta2.Services
 
         #endregion
 
+        #region internal
+        
+        #endregion
+
         #region methods
 
         protected void InvokeOnModelNodeProcessed(object sender, OnModelNodeProcessedEventArgs args)

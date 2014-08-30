@@ -64,6 +64,9 @@ namespace SPMeta2.CSOM.DefaultSyntax
 
         public static string GetListUrl(this ListDefinition listDefinition)
         {
+            if (listDefinition.Url.ToUpper().Contains("_CATALOGS"))
+                return listDefinition.Url;
+
             // BIG BIG BIG TODO
             // correct list/doc lib mapping has to be implemented and tested
             // very critical part of the whole provision lib

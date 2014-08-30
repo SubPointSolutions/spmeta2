@@ -105,6 +105,7 @@
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHosts\ListItemFieldValueModelHost.cs" />
+    <Compile Include="ModelHosts\ListItemModelHost.cs" />
     <Compile Include="ModelHosts\ModuleFileModelHost.cs" />
     <Compile Include="ModelHosts\NavigationNodeModelHost.cs" />
     <Compile Include="ModelHosts\PropertyModelHost.cs" />

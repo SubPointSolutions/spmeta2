@@ -40,10 +40,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var list = FindListByUrl(lists, listDefinition.GetListUrl());
 
-                var listModelHost = new ListModelHost
+                var listModelHost = ModelHostBase.Inherit<ListModelHost>(webModelHost, c =>
                 {
-                    HostList = list
-                };
+                    c.HostList = list;
+                });
 
                 if (childModelType == typeof(ListViewDefinition))
                 {
@@ -59,10 +59,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQuery();
 
-                    var folderModelHost = new FolderModelHost();
-
-                    folderModelHost.CurrentWeb = web;
-                    folderModelHost.CurrentList = list;
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    {
+                        itemHost.CurrentWeb = web;
+                        itemHost.CurrentList = list;
+                    });
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
@@ -82,10 +83,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQuery();
 
-                    var folderModelHost = new FolderModelHost();
-
-                    folderModelHost.CurrentWeb = web;
-                    folderModelHost.CurrentList = list;
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    {
+                        itemHost.CurrentWeb = web;
+                        itemHost.CurrentList = list;
+                    });
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
@@ -106,18 +108,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
 
                     action(sp2013WorkflowSubscriptionModelHost);
-                } 
-                else if(typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
+                }
+                else if (typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
                 {
                     context.Load<List>(list, l => l.RootFolder);
                     context.Load<List>(list, l => l.BaseType);
 
                     context.ExecuteQuery();
 
-                    var folderModelHost = new FolderModelHost();
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    {
+                        itemHost.CurrentWeb = web;
+                        itemHost.CurrentList = list;
+                    });
 
-                    folderModelHost.CurrentWeb = web;
-                    folderModelHost.CurrentList = list;
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {

@@ -2,7 +2,7 @@
 
 namespace SPMeta2.CSOM.ModelHosts
 {
-    public class FolderModelHost 
+    public class FolderModelHost : CSOMModelHostBase
     {
         #region properties
 

@@ -76,5 +76,66 @@ namespace SPMeta2.BuiltInDefinitions
 
 
         #endregion
+
+
+        /// <summary>
+        /// Out of the box SharePoint list and libraries under "_catalogs" category.
+        /// </summary>
+        public static class Calalogs
+        {
+            public static ListDefinition AppData = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.GenericList,
+                Url = "_catalogs/appdata"
+            };
+
+            public static ListDefinition Design = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.GenericList,
+                Url = "_catalogs/design"
+            };
+
+            public static ListDefinition Users = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.GenericList,
+                Url = "_catalogs/users"
+            };
+
+            public static ListDefinition ListTemplates = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/lt"
+            };
+
+            public static ListDefinition MasterPage = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/masterpage",
+            };
+
+            public static ListDefinition Solutions = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/solutions"
+            };
+
+            public static ListDefinition Theme = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/theme"
+            };
+
+            public static ListDefinition WfPub = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/wfpub"
+            };
+
+            public static ListDefinition Wp = new ListDefinition
+            {
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                Url = "_catalogs/wp"
+            };
+        }
     }
 }

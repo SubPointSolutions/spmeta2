@@ -7,6 +7,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -39,7 +40,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQuery();
 
-                action(currentListItem);
+                if (childModelType == typeof(WebPartDefinition))
+                {
+                    var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
+                    {
+                        itemHost.HostListItem = currentListItem;
+                    });
+
+                    action(listItemHost);
+
+                    currentListItem.Update();
+                }
+
                 context.ExecuteQuery();
             }
             else
