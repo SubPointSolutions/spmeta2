@@ -14,8 +14,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPListItem", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ListItem", "Microsoft.SharePoint.Client")]
 
-    [RootHostAttribute(typeof(WebDefinition))]
-    [ParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
     public class ListItemDefinition : DefinitionBase

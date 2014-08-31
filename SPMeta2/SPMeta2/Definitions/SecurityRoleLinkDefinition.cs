@@ -10,8 +10,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRoleDefinition", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RoleDefinition", "Microsoft.SharePoint.Client")]
 
-    [RootHostAttribute(typeof(WebDefinition))]
-    [ParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
+    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
 
     [Serializable]
     public class SecurityRoleLinkDefinition : DefinitionBase

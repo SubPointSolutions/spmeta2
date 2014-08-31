@@ -17,8 +17,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowSubscription", "Microsoft.SharePoint.WorkflowServicesBase")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowSubscription", "Microsoft.SharePoint.Client.WorkflowServices")]
 
-    [RootHostAttribute(typeof(WebDefinition))]
-    [ParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
 

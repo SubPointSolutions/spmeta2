@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Regression.Model.Definitions;
+using SPMeta2.Regression.Reports;
+using SPMeta2.Regression.Reports.Services;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Syntax.Default;
@@ -24,6 +26,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.Regression.Services;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.Exceptions;
+using System.IO;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Random
@@ -32,6 +35,26 @@ namespace SPMeta2.Regression.Tests.Impl.Random
     public class RandomDefinitionTest : SPMeta2RegresionEventsTestBase
     {
         #region common
+
+        [ClassInitializeAttribute]
+        public static void Init(TestContext context)
+        {
+            ReportService.OnReportItemAdded += OnReportItemAdded;
+        }
+
+        [ClassCleanupAttribute]
+        public static void Cleanup()
+        {
+            var testReports = TestReports;
+
+            Console.Write("");
+        }
+
+        private static void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
+        {
+            ReportNodes.Add(e.Node);
+
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd")]
@@ -207,7 +230,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_PropertyDefinition()
         {
             TestRandomDefinition<PropertyDefinition>();
-
         }
 
         [TestMethod]

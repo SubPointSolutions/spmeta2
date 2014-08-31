@@ -44,3 +44,5 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regres
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Reports.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Reports.pdb

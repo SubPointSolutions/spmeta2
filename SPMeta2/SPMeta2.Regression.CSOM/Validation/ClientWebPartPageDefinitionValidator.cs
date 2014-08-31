@@ -32,6 +32,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(pageItem);
             context.ExecuteQuery();
 
+            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, webPartPageModel, pageItem);
+
+            //reportItem
+            //    .ShouldBeEqual(m => m.Title, o => o.Title);
+
             TraceUtils.WithScope(traceScope =>
             {
                 traceScope.WriteLine(string.Format("Validate model:[{0}] web part page:[{1}]", webPartPageModel, pageItem));

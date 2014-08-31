@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
               .NewWebModel(site => site.AddList(RegLists.DocumentLibrary));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
               .NewWebModel(site => site.AddList(RegLists.GenericList));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         #endregion

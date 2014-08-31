@@ -7,11 +7,14 @@ using SPMeta2.Regression.Runners;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionTestBase
     {
+        public TestContext TestContext { get; set; }
+
         #region constructors
 
         public SPMeta2RegresionTestBase()
@@ -105,7 +108,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected ProvisionRunnerBase CurrentProvisionRunner;
 
-        protected void WithProvisionRunners(Action<ProvisionRunnerBase> action)
+        protected void WithProvisionRunnerContext(Action<ProvisionRunnerContext> action)
         {
             foreach (var provisionRunner in ProvisionRunners)
             {
@@ -116,8 +119,16 @@ namespace SPMeta2.Regression.Tests.Base
                 CurrentProvisionRunner = provisionRunner;
 
                 Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
-                action(provisionRunner);
+                action(new ProvisionRunnerContext
+                {
+                    Runner = provisionRunner
+                });
             }
         }
+    }
+
+    public class ProvisionRunnerContext
+    {
+        public ProvisionRunnerBase Runner { get; set; }
     }
 }

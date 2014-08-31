@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.BlankWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            //WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.BlogWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.DocumentCenterWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            //WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.SearchCenterLightWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.SearchCenterWithTabsWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            //WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewWebModel(web => web.AddWeb(RegWebs.TeamWeb));
 
-            WithProvisionRunners(runner => runner.DeployWebModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeployWebModel(model));
         }
 
         #endregion

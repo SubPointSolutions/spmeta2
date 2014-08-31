@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace SPMeta2.Attributes.Regression
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ParentHostAttribute : Attribute
+    public class DefaultParentHostAttribute : Attribute
     {
-        public ParentHostAttribute(Type hostType)
+        public DefaultParentHostAttribute(Type hostType)
         {
             HostType = hostType;
         }
@@ -18,13 +18,33 @@ namespace SPMeta2.Attributes.Regression
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class RootHostAttribute : Attribute
+    public class DefaultRootHostAttribute : Attribute
     {
-        public RootHostAttribute(Type hostType)
+        public DefaultRootHostAttribute(Type hostType)
         {
             HostType = hostType;
         }
 
         public Type HostType { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class CSOMParentHostAttribute : DefaultParentHostAttribute
+    {
+        public CSOMParentHostAttribute(Type hostType)
+            : base(hostType)
+        {
+
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class CSOMRootHostAttribute : DefaultRootHostAttribute
+    {
+        public CSOMRootHostAttribute(Type hostType)
+            : base(hostType)
+        {
+
+        }
     }
 }

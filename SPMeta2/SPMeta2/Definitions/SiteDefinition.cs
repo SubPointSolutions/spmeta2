@@ -10,8 +10,11 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPSite", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Site", "Microsoft.SharePoint.Client")]
 
-    [RootHostAttribute(typeof(WebApplicationDefinition))]
-    [ParentHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultRootHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
+
+    [CSOMRootHostAttribute(typeof(SiteDefinition))]
+    [CSOMParentHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
     public class SiteDefinition : DefinitionBase

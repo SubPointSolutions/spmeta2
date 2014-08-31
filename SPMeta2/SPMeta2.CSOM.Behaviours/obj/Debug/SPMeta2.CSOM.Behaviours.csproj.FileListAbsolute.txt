@@ -26,3 +26,4 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviour
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\bin\Debug\Microsoft.SharePoint.Client.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.csprojResolveAssemblyReference.cache

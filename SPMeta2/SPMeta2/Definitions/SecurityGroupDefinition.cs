@@ -10,8 +10,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPGroup", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Group", "Microsoft.SharePoint.Client")]
 
-    [RootHostAttribute(typeof(SiteDefinition))]
-    [ParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
     public class SecurityGroupDefinition : DefinitionBase

@@ -16,8 +16,8 @@ namespace SPMeta2.Definitions.Fields
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPBusinessDataField", "Microsoft.SharePoint")]
     //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
 
-    [ParentHostAttribute(typeof(SiteDefinition))]
-    [RootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
     public class BusinessDataFieldDefinition : FieldDefinition

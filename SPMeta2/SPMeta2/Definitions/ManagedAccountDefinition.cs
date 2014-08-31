@@ -15,8 +15,8 @@ namespace SPMeta2.Definitions
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPManagedAccount", "Microsoft.SharePoint")]
 
-    [RootHostAttribute(typeof(FarmDefinition))]
-    [ParentHostAttribute(typeof(FarmDefinition))]
+    [DefaultRootHostAttribute(typeof(FarmDefinition))]
+    [DefaultParentHostAttribute(typeof(FarmDefinition))]
 
     [Serializable]
 

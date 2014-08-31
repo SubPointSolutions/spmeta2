@@ -16,6 +16,7 @@ using SPMeta2.Regression.Services.Base;
 using SPMeta2.Utils;
 using System.Reflection;
 using SPMeta2.Exceptions;
+using SPMeta2.Attributes;
 
 namespace SPMeta2.Regression.Services
 {
@@ -46,16 +47,16 @@ namespace SPMeta2.Regression.Services
             }
         }
 
-        public ModelNode GenerateModelTreeForDefinition<TDefinition>()
+        public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
              where TDefinition : DefinitionBase, new()
         {
-            var rootHostType = GetRootHostType<TDefinition>();
-            var parentHostType = GetParentHostType<TDefinition>();
+            var rootHostType = GetRootHostType<TDefinition>(objectModelType);
+            var parentHostType = GetParentHostType<TDefinition>(objectModelType);
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
             var defs = new List<DefinitionBase>();
 
-            LookupModelTree<TDefinition>(rootHostType, defs);
+            LookupModelTree<TDefinition>(rootHostType, defs, objectModelType);
 
             if (defs.Count > 0)
             {
@@ -122,12 +123,12 @@ namespace SPMeta2.Regression.Services
             return resultModel;
         }
 
-        private void LookupModelTree<TDefinition>(Type rootHostType, List<DefinitionBase> defs)
+        private void LookupModelTree<TDefinition>(Type rootHostType, List<DefinitionBase> defs, SPObjectModelType objectModelType)
         {
-            LookupModelTree(rootHostType, typeof(TDefinition), defs);
+            LookupModelTree(rootHostType, typeof(TDefinition), defs, objectModelType);
         }
 
-        private void LookupModelTree(Type rootHostType, Type type, List<DefinitionBase> defs)
+        private void LookupModelTree(Type rootHostType, Type type, List<DefinitionBase> defs, SPObjectModelType objectModelType)
         {
             if (rootHostType == null)
                 return;
@@ -140,17 +141,17 @@ namespace SPMeta2.Regression.Services
 
             if (customParentHost == null)
             {
-                var upParentHostType = GetParentHostType(parentHostType);
+                var upParentHostType = GetParentHostType(parentHostType, objectModelType);
 
                 var definition = GetRandomDefinition(upParentHostType);
                 defs.Add(definition);
 
-                LookupModelTree(rootHostType, upParentHostType, defs);
+                LookupModelTree(rootHostType, upParentHostType, defs, objectModelType);
             }
             else
             {
                 defs.Add(customParentHost);
-                LookupModelTree(rootHostType, customParentHost.GetType(), defs);
+                LookupModelTree(rootHostType, customParentHost.GetType(), defs, objectModelType);
             }
         }
 
@@ -180,29 +181,76 @@ namespace SPMeta2.Regression.Services
             return definitionGenrator.GenerateRandomDefinition();
         }
 
-        private Type GetRootHostType<TDefinition>()
+        private Type GetRootHostType<TDefinition>(SPObjectModelType objectModelType)
         {
-            var hostAtrr = typeof(TDefinition)
+            var hostAtrrs = typeof(TDefinition)
                                        .GetCustomAttributes(true)
-                                       .OfType<RootHostAttribute>()
-                                       .FirstOrDefault();
+                                       .OfType<DefaultRootHostAttribute>()
+                                       .ToList();
 
-            return hostAtrr != null ? hostAtrr.HostType : null;
+            if (hostAtrrs.Count == 0)
+                return null;
+
+            if (hostAtrrs.Count == 1)
+                return hostAtrrs[0].HostType;
+
+            switch (objectModelType)
+            {
+                case SPObjectModelType.CSOM:
+                    {
+                        var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMRootHostAttribute));
+                        return csomHost.HostType;
+
+                    }; break;
+
+                case SPObjectModelType.SSOM:
+                    {
+
+
+                    }; break;
+            }
+
+
+            throw new SPMeta2NotImplementedException(string.Format("Unsupporter SPObjectModelType:[{0}]", objectModelType));
 
         }
 
-        private Type GetParentHostType<TDefinition>()
+        private Type GetParentHostType<TDefinition>(SPObjectModelType objectModelType)
         {
-            return GetParentHostType(typeof(TDefinition));
+            return GetParentHostType(typeof(TDefinition), objectModelType);
         }
 
-        private Type GetParentHostType(Type type)
+        private Type GetParentHostType(Type type, SPObjectModelType objectModelType)
         {
-            var hostAtrr = type.GetCustomAttributes(true)
-                                        .OfType<ParentHostAttribute>()
-                                        .FirstOrDefault();
+            var hostAtrrs = type
+                                      .GetCustomAttributes(true)
+                                      .OfType<DefaultParentHostAttribute>()
+                                      .ToList();
 
-            return hostAtrr != null ? hostAtrr.HostType : null;
+            if (hostAtrrs.Count == 0)
+                return null;
+
+            if (hostAtrrs.Count == 1)
+                return hostAtrrs[0].HostType;
+
+            switch (objectModelType)
+            {
+                case SPObjectModelType.CSOM:
+                    {
+                        var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMParentHostAttribute));
+                        return csomHost.HostType;
+
+                    }; break;
+
+                case SPObjectModelType.SSOM:
+                    {
+
+
+                    }; break;
+            }
+
+
+            throw new SPMeta2NotImplementedException(string.Format("Unsupporter SPObjectModelType:[{0}]", objectModelType));
 
         }
     }

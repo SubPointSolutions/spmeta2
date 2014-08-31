@@ -11,8 +11,15 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var site = modelHost.WithAssertAndCast<Site>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var siteModel = model.WithAssertAndCast<SiteDefinition>("model", value => value.RequireNotNull());
+
+            ValidateSiteModel(modelHost, siteModelHost.HostSite, siteModel);
+        }
+
+        private void ValidateSiteModel(object modelHost, Site site, SiteDefinition siteModel)
+        {
+            
         }
     }
 }

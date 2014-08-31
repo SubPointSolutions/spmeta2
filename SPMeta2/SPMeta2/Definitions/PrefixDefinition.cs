@@ -15,8 +15,8 @@ namespace SPMeta2.Definitions
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPPrefix", "Microsoft.SharePoint")]
 
-    [RootHostAttribute(typeof(WebApplicationDefinition))]
-    [ParentHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultRootHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
 
     [Serializable]
 

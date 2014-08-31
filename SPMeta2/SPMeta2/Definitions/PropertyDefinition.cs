@@ -11,8 +11,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "System.Object", "mscorlib")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "System.Object", "mscorlib")]
 
-    [RootHostAttribute(typeof(WebDefinition))]
-    [ParentHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultParentHostAttribute(typeof(WebDefinition))]
 
     [Serializable]
 

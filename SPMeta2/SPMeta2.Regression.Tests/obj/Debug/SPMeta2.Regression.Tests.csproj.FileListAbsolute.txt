@@ -80,3 +80,5 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.xml
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.pdb

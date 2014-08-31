@@ -1,10 +1,13 @@
-﻿using SPMeta2.CSOM.ModelHandlers;
+﻿using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -12,7 +15,17 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
+            var webPartModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
 
+            var pageItem = listItemModelHost.HostListItem;
+
+            ValidateWebPart(modelHost, pageItem, webPartModel);
+        }
+
+        private void ValidateWebPart(object modelHost, ListItem pageItem, WebPartDefinition model)
+        {
+            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, model, pageItem);
         }
     }
 }

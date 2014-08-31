@@ -15,8 +15,8 @@ namespace SPMeta2.Definitions
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserSolution", "Microsoft.SharePoint")]
 
-    [ParentHostAttribute(typeof(SiteDefinition))]
-    [RootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
 

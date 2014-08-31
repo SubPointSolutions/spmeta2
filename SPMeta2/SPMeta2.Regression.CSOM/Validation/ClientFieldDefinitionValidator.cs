@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Reports.Extensions;
 using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
 
@@ -40,19 +41,14 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             var spObject = FindSiteField(siteModelHost, model);
 
-            TraceUtils.WithScope(traceScope =>
-            {
-                var pair = new ComparePair<FieldDefinition, Field>(model, spObject);
+            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, model, spObject);
 
-                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", model, spObject));
-
-                traceScope.WithTraceIndent(trace => pair
-                    .ShouldBeEqual(trace, m => m.Title, o => o.Title)
-                    .ShouldBeEqual(trace, m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(trace, m => m.Id, o => o.Id)
-                    .ShouldBeEqual(trace, m => m.Description, o => o.Description)
-                    .ShouldBeEqual(trace, m => m.Group, o => o.Group));
-            });
+            reportItem
+                .ShouldBeEqual(m => m.Title, o => o.Title)
+                    .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
+                    .ShouldBeEqual(m => m.Id, o => o.Id)
+                    .ShouldBeEqual(m => m.Description, o => o.Description)
+                    .ShouldBeEqual(m => m.Group, o => o.Group);
         }
 
         public override System.Type TargetType

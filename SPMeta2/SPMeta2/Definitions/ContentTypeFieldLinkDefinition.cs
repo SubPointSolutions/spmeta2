@@ -11,8 +11,8 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldLink", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldLink", "Microsoft.SharePoint.Client")]
 
-    [RootHostAttribute(typeof(SiteDefinition))]
-    [ParentHostAttribute(typeof(ContentTypeDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHostAttribute(typeof(ContentTypeDefinition))]
 
     [Serializable]
 

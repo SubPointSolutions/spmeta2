@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Base\CSOMTestBase.cs" />
     <Compile Include="CSOMValidationService.cs" />
+    <Compile Include="ServiceFactory.cs" />
     <Compile Include="Validation\ClientBreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ClientListItemDefinitionValidator.cs" />
@@ -90,6 +91,10 @@
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SPMeta2.Regression.Reports\SPMeta2.Regression.Reports.csproj">
+      <Project>{F3D1FBAF-55CF-456D-A26C-FB46E64F2BD0}</Project>
+      <Name>SPMeta2.Regression.Reports</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
       <Project>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</Project>
       <Name>SPMeta2.CSOM</Name>
@@ -106,6 +111,9 @@
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

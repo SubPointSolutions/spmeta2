@@ -10,3 +10,4 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Dependencies\bin\Debug\SPMeta2.Dependencies.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Dependencies\bin\Debug\SPMeta2.Dependencies.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.csprojResolveAssemblyReference.cache

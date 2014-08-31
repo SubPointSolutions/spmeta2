@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Models;
 using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Reports;
+using SPMeta2.Regression.Reports.Data;
+using SPMeta2.Regression.Reports.Services;
 using SPMeta2.Regression.Tests.Common;
+using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Definitions;
 using System.Reflection;
@@ -14,6 +18,8 @@ using System.Diagnostics;
 using SPMeta2.Regression.Exceptions;
 using SPMeta2.Regression.Services;
 using SPMeta2.Attributes;
+using SPMeta2.Regression.Runners;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -24,7 +30,16 @@ namespace SPMeta2.Regression.Tests.Base
         public SPMeta2RegresionEventsTestBase()
         {
             //EnableDefinitionValidation = false;
+
+            ReportService.OnReportItemAdded += OnReportItemAdded;
         }
+
+        private void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
+        {
+            ReportNodes.Add(e.Node);
+        }
+
+        protected static List<TestReportNode> ReportNodes = new List<TestReportNode>();
 
         #endregion
 
@@ -143,17 +158,57 @@ namespace SPMeta2.Regression.Tests.Base
             return targetMethod != null;
         }
 
+        private SPObjectModelType GetRunnerType(ProvisionRunnerBase runner)
+        {
+            if (runner.Name == "SSOM")
+                return SPObjectModelType.SSOM;
+
+            if (runner.Name == "O365" || runner.Name == "CSOM")
+                return SPObjectModelType.CSOM;
+
+            throw new SPMeta2NotSupportedException(string.Format("Cannot find SPObjectModelType type for runer of type:[{0}]", runner.Name));
+        }
+
+        //protected Dictionary<string, TestReport> TestReports = new Dictionary<string, TestReport>();
+        protected static List<TestReport> TestReports = new List<TestReport>();
+
+        private TestReport EnsureTestReportItem(string testName)
+        {
+            var testReport = TestReports.FirstOrDefault(r => r.TestName == testName);
+
+            if (testReport == null)
+            {
+                testReport = new TestReport
+                {
+                    TestName = testName
+                };
+
+                TestReports.Add(testReport);
+            }
+
+            return testReport;
+        }
+
         protected void TestRandomDefinition<TDefinition>()
             where TDefinition : DefinitionBase, new()
         {
+            var frame = new StackFrame(1);
+            var parentMethod = frame.GetMethod();
+
+            var testReport = EnsureTestReportItem(parentMethod.Name);
+
             var allHooks = new List<EventHooks>();
 
-            WithProvisionRunners(runner =>
+            WithProvisionRunnerContext(runnerContext =>
             {
+                var runner = runnerContext.Runner;
+
                 ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
+                var omModelType = GetRunnerType(runner);
+
                 var sandboxService = new ModelGeneratorService();
-                var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>();
+                var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
 
                 var hooks = GetHooks(definitionSandbox);
 
@@ -176,8 +231,32 @@ namespace SPMeta2.Regression.Tests.Base
 
                 foreach (var hook in hooks)
                     ResolveHook(hook);
+
+                LookupTestReportItems(testReport, definitionSandbox);
             });
 
+        }
+
+        private void LookupTestReportItems(TestReport testReport, ModelNode definitionSandbox)
+        {
+            LookupTestReportItems(testReport, null, definitionSandbox);
+        }
+
+        private void LookupTestReportItems(TestReport testReport, TestReportNode parentReportNode, ModelNode definitionSandbox)
+        {
+            var model = definitionSandbox.Value;
+            var modelReportNode = ReportNodes.FirstOrDefault(i => i.Tag == model);
+
+            if (modelReportNode == null)
+                modelReportNode = new TestReportNode { Title = model.ToString() };
+
+            if (parentReportNode == null)
+                testReport.AddReportItem(modelReportNode);
+            else
+                parentReportNode.AddChildItem(modelReportNode);
+
+            foreach (var modelNode in definitionSandbox.ChildModels)
+                LookupTestReportItems(testReport, modelReportNode, modelNode);
         }
 
         private void ValidateDefinitionHostRunnerSupport<T1>(Runners.ProvisionRunnerBase runner)

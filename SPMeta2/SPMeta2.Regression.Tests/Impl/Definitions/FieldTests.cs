@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.BooleanField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.ChoiceField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //  WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.CurrencyField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.DateTimeField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.GuidField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.LookupField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.MultiChoiceField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.NoteField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.NumberField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.TextField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            // WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.UrlField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //  WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                  .NewSiteModel(site => site.AddField(RegSiteFields.UserField));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //  WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         #endregion

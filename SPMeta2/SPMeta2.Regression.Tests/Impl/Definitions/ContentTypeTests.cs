@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                 .NewSiteModel(site => site.AddContentType(RegContentTypes.CustomDocument));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //  WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var model = SPMeta2Model
                 .NewSiteModel(site => site.AddContentType(RegContentTypes.CustomItem));
 
-            WithProvisionRunners(runner => runner.DeploySiteModel(model));
+            //  WithProvisionRunnerContext(runner => runner.DeploySiteModel(model));
         }
 
         //[TestMethod]
