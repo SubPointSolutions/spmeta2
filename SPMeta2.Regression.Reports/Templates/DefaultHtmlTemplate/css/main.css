@@ -1,0 +1,26 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+.tree {
+    width: 600px;
+    padding: 10px;
+    border: 1px #eee solid;
+}
+
+    .tree tr {
+    }
+
+        .tree tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+    .tree td {
+        padding: 3px;
+    }
+
+    .tree th {
+        padding: 5px;
+    }
