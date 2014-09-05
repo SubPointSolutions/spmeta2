@@ -26,6 +26,9 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target folder.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string Name { get; set; }
 
         #endregion

@@ -30,6 +30,9 @@ namespace SPMeta2.Definitions
         /// ID of the target field to be attached to content type.
         /// BuiltInFieldId class can be used to utilize out of the box SharePoint fields. 
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public Guid FieldId { get; set; }
 
         #endregion

@@ -7,6 +7,8 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Common.Utils;
+using System;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -15,35 +17,75 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var definitionModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
             var site = siteModelHost.HostSite;
             var rootWeb = site.RootWeb;
 
             var contentTypes = rootWeb.AvailableContentTypes;
+            var spObject = contentTypes[definition.Name];
 
-            var spModel = contentTypes[definitionModel.Name];
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
-            TraceUtils.WithScope(traceScope =>
+            assert
+                  .ShouldBeEqual(m => m.Name, o => o.Name)
+                  .ShouldBeEqual(m => m.Group, o => o.Group)
+                  .ShouldBeEqual(m => m.Description, o => o.Description);
+
+            if (definition.Id == default(Guid))
             {
-                Trace.WriteLine(string.Format("Validate model: {0} ContentType:{1}", definitionModel, spModel));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
+                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping Id as it is default(Guid)"));
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
                 {
-                    trace.WriteLine(string.Format("Validate Name: model:[{0}] ct:[{1}]", definitionModel.Name, spModel.Name));
-                    Assert.AreEqual(definitionModel.Name, spModel.Name);
+                    var srcProp = s.GetExpressionValue(def => def.Id);
+                    var dstProp = d.GetExpressionValue(ct => ct.GetId());
 
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] ct:[{1}]", definitionModel.Description, spModel.Description));
-                    Assert.AreEqual(definitionModel.Description, spModel.Description);
+                    var srcCtId = s.GetContentTypeId();
+                    var dstCtId = d.GetId();
 
-                    trace.WriteLine(string.Format("Validate Id: model:[{0}] ct:[{1}]", definitionModel.GetContentTypeId(), spModel.Id));
-                    Assert.AreEqual(new SPContentTypeId(definitionModel.GetContentTypeId()), spModel.Id);
-
-                    trace.WriteLine(string.Format("Validate Group: model:[{0}] ct:[{1}]", definitionModel.Group, spModel.Group));
-                    Assert.AreEqual(definitionModel.Group, spModel.Group);
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = dstCtId.ToString().ToUpper() == dstCtId.ToString().ToUpper()
+                    };
                 });
-            });
+            }
+
+            if (string.IsNullOrEmpty(definition.IdNumberValue))
+            {
+                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping IdNumberValue as it is Empty"));
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Id);
+                    var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = srcProp.ToString().ToUpper() == dstProp.ToString().ToUpper()
+                    };
+                });
+            }
+        }
+
+
+    }
+
+    public static class ContentTypeDefinitionValidatorUtils
+    {
+        public static string GetId(this SPContentType c)
+        {
+            return c.Id.ToString();
         }
     }
 }

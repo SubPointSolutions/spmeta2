@@ -10,18 +10,22 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class ManagedAccountDefinitionValidator : ManagedAccountModelHandler
     {
+        #region methods
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
-            var managedAccountDefinition = model.WithAssertAndCast<ManagedAccountDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ManagedAccountDefinition>("model", value => value.RequireNotNull());
 
-            DeployManagedAccount(modelHost, farmModelHost.HostFarm, managedAccountDefinition);
+            var spObject = GetManagedAccount(farmModelHost.HostFarm, definition);
+
+            var assert = ServiceFactory.AssertService
+                               .NewAssert(definition, spObject)
+                                     .ShouldNotBeNull(spObject)
+                                     // domain agnostic check
+                                     .ShouldBeEndOf(m => m.LoginName, o => o.Username);
         }
 
-        private void DeployManagedAccount(object modelHost, Microsoft.SharePoint.Administration.SPFarm sPFarm, ManagedAccountDefinition managedAccountDefinition)
-        {
-
-        }
-
+        #endregion
     }
 }

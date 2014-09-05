@@ -41,22 +41,34 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// ID of the target features.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public Guid Id { get; set; }
 
         /// <summary>
         /// ForceActivate flag which is passed to SPFeatureCollection.Add(is, forceActivate) method.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public bool ForceActivate { get; set; }
 
         /// <summary>
         /// Enable or disable flag.
         /// Set 'true' to enable feature, set 'false' to disable feature.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public bool Enable { get; set; }
 
         /// <summary>
         /// Scope of the target feature.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public FeatureDefinitionScope Scope { get; set; }
 
         #endregion

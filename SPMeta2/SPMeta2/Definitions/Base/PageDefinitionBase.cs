@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMeta2.Attributes.Regression;
+using System;
 
 namespace SPMeta2.Definitions
 {
@@ -6,7 +7,7 @@ namespace SPMeta2.Definitions
     /// Base definition for pages.
     /// </summary>
     /// 
-     [Serializable]
+    [Serializable]
     public abstract class PageDefinitionBase : DefinitionBase
     {
         #region contructors
@@ -23,16 +24,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Title of the target page.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// File name of the target page.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string FileName { get; set; }
 
         /// <summary>
         /// Should page be overwritten during provision.
         /// </summary>
+        /// 
+
         public bool NeedOverride { get; set; }
 
         #endregion

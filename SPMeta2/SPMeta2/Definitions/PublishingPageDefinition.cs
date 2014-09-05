@@ -24,11 +24,15 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Page layout name of the target publishing page.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string PageLayoutFileName { get; set; }
 
         /// <summary>
         /// Description of the target publishing page.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         #endregion

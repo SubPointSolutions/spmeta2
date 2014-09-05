@@ -12,13 +12,17 @@ namespace SPMeta2.Regression.Reports.Data
 
         #region properties
 
-        private readonly List<TestReportNode> _items = new List<TestReportNode>();
+        private List<TestReportNode> _items = new List<TestReportNode>();
 
-        public IEnumerable<TestReportNode> Items
+        public List<TestReportNode> Items
         {
             get
             {
                 return _items;
+            }
+            set
+            {
+                _items = value;
             }
         }
 

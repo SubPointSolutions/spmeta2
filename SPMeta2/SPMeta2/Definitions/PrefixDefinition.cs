@@ -27,6 +27,8 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Path of the target managed path.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Path { get; set; }
 
         /// <summary>
@@ -34,6 +36,8 @@ namespace SPMeta2.Definitions
         /// 
         /// BuiltInPrefixTypes class can be used to utilize out of the box SharePoint prefix types.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string PrefixType { get; set; }
 
         #endregion

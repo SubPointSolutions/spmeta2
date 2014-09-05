@@ -32,16 +32,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target security role.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Description of the target security role.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
         /// Permissions of the target security role.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Collection<string> BasePermissions { get; set; }
 
         #endregion

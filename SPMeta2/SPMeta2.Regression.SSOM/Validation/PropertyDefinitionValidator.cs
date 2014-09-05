@@ -23,9 +23,13 @@ namespace SPMeta2.Regression.SSOM.Validation
             ValidateProperty(modelHost, properties, propertyModel);
         }
 
-        private void ValidateProperty(object modelHost, System.Collections.Hashtable properties, PropertyDefinition propertyModel)
+        private void ValidateProperty(object modelHost, System.Collections.Hashtable properties, PropertyDefinition definition)
         {
-            // TODO
+            //ServiceFactory.AssertService
+            //            .NewAssert(definition, properties)
+            //                  .ShouldBeEqual(m => m.Key, o => o.Keys)
+            //                  .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+            //                  .ShouldBeEqual(m => m.Description, o => o.Description);
         }
 
         #endregion

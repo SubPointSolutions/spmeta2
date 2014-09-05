@@ -15,16 +15,14 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
-            var listFieldLinkModel = model.WithAssertAndCast<ListFieldLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ListFieldLinkDefinition>("model", value => value.RequireNotNull());
 
             var list = listModelHost.HostList;
+            var spObject = list.Fields[definition.FieldId];
 
-            ValidateListFieldLink(modelHost, list, listFieldLinkModel);
-        }
-
-        private void ValidateListFieldLink(object modelHost, SPList list, ListFieldLinkDefinition listFieldLinkModel)
-        {
-           // throw new System.NotImplementedException();
+            var assert = ServiceFactory.AssertService
+                                      .NewAssert(definition, spObject)
+                                            .ShouldBeEqual(m => m.FieldId, o => o.Id);
         }
     }
 }

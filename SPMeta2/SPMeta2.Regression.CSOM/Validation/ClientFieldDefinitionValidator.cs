@@ -7,9 +7,9 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
-using SPMeta2.Regression.Reports.Extensions;
 using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
+
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -20,9 +20,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
             if (modelHost is SiteModelHost)
-                ValidateSiteField(modelHost as SiteModelHost, fieldModel);
+                ValidateSiteField(modelHost as SiteModelHost, model, fieldModel);
             else if (modelHost is ListModelHost)
-                ValidateListField(modelHost as ListModelHost, fieldModel);
+                ValidateListField(modelHost as ListModelHost, model, fieldModel);
             else
             {
                 throw new SPMeta2NotSupportedException(
@@ -32,18 +32,18 @@ namespace SPMeta2.Regression.CSOM.Validation
             }
         }
 
-        private void ValidateListField(ListModelHost listModelHost, FieldDefinition fieldModel)
+        private void ValidateListField(ListModelHost listModelHost, DefinitionBase model, FieldDefinition definition)
         {
             throw new SPMeta2NotImplementedException();
         }
 
-        private void ValidateSiteField(SiteModelHost siteModelHost, FieldDefinition model)
+        private void ValidateSiteField(SiteModelHost siteModelHost, DefinitionBase model, FieldDefinition definition)
         {
-            var spObject = FindSiteField(siteModelHost, model);
+            var spObject = FindSiteField(siteModelHost, definition);
 
-            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, model, spObject);
+            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
-            reportItem
+            assert
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                     .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
                     .ShouldBeEqual(m => m.Id, o => o.Id)

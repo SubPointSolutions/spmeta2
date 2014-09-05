@@ -32,11 +32,17 @@ namespace SPMeta2.Definitions
         /// 
         /// BuiltInWebpartPageTemplateId class can be used to utilize out of the box SharePoint web part page templates.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public int PageLayoutTemplate { get; set; }
 
         /// <summary>
         /// Custom web part page layout content.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string CustomPageLayout { get; set; }
 
         #endregion

@@ -38,32 +38,44 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target SharePoint 2013 workflow.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Display name of the target SharePoint 2013 workflow in the list or library.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string WorkflowDisplayName { get; set; }
 
         /// <summary>
         /// URL of the workflow history list for the target workflow.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string HistoryListUrl { get; set; }
 
         /// <summary>
         /// URL of the workflow task list for the target workflow. 
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string TaskListUrl { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Guid EventSourceId { get; set; }
 
         /// <summary>
         /// Set of the events to trigger on.
         /// BuiltInSP2013WorkflowEventTypes class can be used to utilize out of the box SharePoint events.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Collection<string> EventTypes { get; set; }
 
         #endregion

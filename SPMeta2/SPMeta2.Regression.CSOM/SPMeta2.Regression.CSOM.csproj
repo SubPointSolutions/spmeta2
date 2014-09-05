@@ -91,10 +91,6 @@
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SPMeta2.Regression.Reports\SPMeta2.Regression.Reports.csproj">
-      <Project>{F3D1FBAF-55CF-456D-A26C-FB46E64F2BD0}</Project>
-      <Name>SPMeta2.Regression.Reports</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
       <Project>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</Project>
       <Name>SPMeta2.CSOM</Name>
@@ -102,6 +98,10 @@
     <ProjectReference Include="..\SPMeta2.Regression.Common\SPMeta2.Regression.Common.csproj">
       <Project>{E9D05AE0-6466-45CD-B28D-63F87097D721}</Project>
       <Name>SPMeta2.Regression.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
+      <Project>{2b5ca105-8d61-4704-b9ce-c1cba53aaab0}</Project>
+      <Name>SPMeta2.Regression</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>

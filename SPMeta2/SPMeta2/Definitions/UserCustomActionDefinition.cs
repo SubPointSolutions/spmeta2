@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using SPMeta2.Enumerations;
+
 namespace SPMeta2.Definitions
 {
     /// <summary>
@@ -27,6 +29,7 @@ namespace SPMeta2.Definitions
         public UserCustomActionDefinition()
         {
             Rights = new Collection<string>();
+            RegistrationType = BuiltInRegistrationTypes.None;
         }
 
         #endregion
@@ -36,56 +39,78 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Title of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// Description of the target user custom action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
         /// Group of the target user custom action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Group { get; set; }
 
         /// <summary>
         /// Location of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Location { get; set; }
 
         /// <summary>
         /// ScriptSrc of the target user custom action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ScriptSrc { get; set; }
 
         /// <summary>
         /// ScriptBlock of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ScriptBlock { get; set; }
 
         /// <summary>
         /// Sequence of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public int Sequence { get; set; }
 
         /// <summary>
         /// URL of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Url { get; set; }
 
         /// <summary>
         /// Permissions of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Collection<string> Rights { get; set; }
 
         /// <summary>
         /// Registration ID of the target custom user action.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string RegistrationId { get; set; }
 
         /// <summary>
@@ -93,6 +118,8 @@ namespace SPMeta2.Definitions
         /// 
         /// BuiltInRegistrationTypes class can be uses to utilize out of the box SharePoint registration types.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string RegistrationType { get; set; }
 
         #endregion

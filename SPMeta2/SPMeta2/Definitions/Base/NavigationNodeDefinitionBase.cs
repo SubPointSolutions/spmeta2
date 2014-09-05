@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMeta2.Attributes.Regression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace SPMeta2.Definitions.Base
     /// Base definition for SharePoint navigation nodes.
     /// </summary>
     /// 
-     [Serializable]
+    [Serializable]
     public abstract class NavigationNodeDefinitionBase : DefinitionBase
     {
         #region constructors
@@ -27,21 +28,28 @@ namespace SPMeta2.Definitions.Base
         /// <summary>
         /// Title of the target navigation node.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// URL of the target navigation node.
         /// </summary>
+        [ExpectValidation]
         public string Url { get; set; }
 
         /// <summary>
         /// IsExternal flag of the target navigation node.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool IsExternal { get; set; }
 
         /// <summary>
         /// IsVisible flag of the target navigation node.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool IsVisible { get; set; }
 
         #endregion

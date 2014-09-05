@@ -27,13 +27,19 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #region methods
 
+        protected SPFile GetFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            var folder = folderHost.CurrentLibraryFolder;
+            return folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+        }
+
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
             var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
             var folder = folderHost.CurrentLibraryFolder;
-            var file = folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+            var file = GetFile(folderHost, moduleFile);
 
             if (childModelType == typeof(WebPartDefinition))
             {
@@ -118,8 +124,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 newFile.Approve("Provision");
 
         }
-
-
 
         public static void DeployModuleFile(SPFolder folder,
             string fileUrl,

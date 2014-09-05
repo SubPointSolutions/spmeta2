@@ -24,11 +24,15 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target site collection.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Description of the target site collection.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
@@ -37,11 +41,15 @@ namespace SPMeta2.Definitions
         /// URL should be without managed path.
         /// Use PrefixName property to setup managed path to create site collection under.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Url { get; set; }
 
         /// <summary>
         /// Name of the managed path to create site collection under.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string PrefixName { get; set; }
 
         /// <summary>
@@ -49,26 +57,36 @@ namespace SPMeta2.Definitions
         /// 
         /// BuiltInWebTemplates class can be used to utilize out of the box SharePoint site templates.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string SiteTemplate { get; set; }
 
         /// <summary>
         /// LCID of the target site collection.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public uint LCID { get; set; }
 
         /// <summary>
         /// Owner login name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string OwnerLogin { get; set; }
 
         /// <summary>
         /// Owner name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string OwnerName { get; set; }
 
         /// <summary>
         /// Owner email.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string OwnerEmail { get; set; }
 
         /// <summary>
@@ -79,11 +97,15 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Secondary contact name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string SecondaryContactName { get; set; }
 
         /// <summary>
         /// Secondary contact email.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string SecondaryContactEmail { get; set; }
 
         /// <summary>
@@ -92,6 +114,8 @@ namespace SPMeta2.Definitions
         /// If empty, site collection will be created in the default content database.
         /// If not empty, a new content database will be created.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string DatabaseName { get; set; }
 
 

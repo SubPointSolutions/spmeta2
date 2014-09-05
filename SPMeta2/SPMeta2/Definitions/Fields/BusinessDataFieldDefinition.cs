@@ -36,21 +36,33 @@ namespace SPMeta2.Definitions.Fields
         /// <summary>
         /// System instance of the target business data field.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string SystemInstanceName { get; set; }
 
         /// <summary>
         /// Entity namespace of the target business data field
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string EntityNamespace { get; set; }
 
         /// <summary>
         /// Entity name of the target business data field
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string EntityName { get; set; }
 
         /// <summary>
         /// Name of the the target business data field
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string BdcFieldName { get; set; }
 
         #endregion

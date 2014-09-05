@@ -32,7 +32,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(pageItem);
             context.ExecuteQuery();
 
-            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, webPartPageModel, pageItem);
+            //var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             //reportItem
             //    .ShouldBeEqual(m => m.Title, o => o.Title);

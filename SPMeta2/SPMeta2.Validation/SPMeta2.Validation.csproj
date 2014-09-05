@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Common\ValidationResult.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
+    <Compile Include="Services\AssertService.cs" />
     <Compile Include="Services\ModelValidationService.cs" />
     <Compile Include="Validators\Collections\FolderCollectionValidator.cs" />
     <Compile Include="Validators\Collections\SecurityRoleCollectionValidator.cs" />

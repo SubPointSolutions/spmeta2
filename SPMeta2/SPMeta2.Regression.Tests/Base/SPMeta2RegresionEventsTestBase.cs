@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Models;
 using SPMeta2.Regression.Common.Utils;
-using SPMeta2.Regression.Reports;
-using SPMeta2.Regression.Reports.Data;
-using SPMeta2.Regression.Reports.Services;
 using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Syntax.Default.Modern;
@@ -20,6 +17,8 @@ using SPMeta2.Regression.Services;
 using SPMeta2.Attributes;
 using SPMeta2.Regression.Runners;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Assertion;
+using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -31,17 +30,56 @@ namespace SPMeta2.Regression.Tests.Base
         {
             //EnableDefinitionValidation = false;
 
-            ReportService.OnReportItemAdded += OnReportItemAdded;
+            //ReportService.OnReportItemAdded += OnReportItemAdded;
         }
 
-        private void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
-        {
-            ReportNodes.Add(e.Node);
-        }
-
-        protected static List<TestReportNode> ReportNodes = new List<TestReportNode>();
+        //private void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
+        //{
+        //    ReportNodes.Add(e.Node);
+        //}
 
         #endregion
+
+        internal class ModelValidationResult
+        {
+            public ModelValidationResult()
+            {
+                Properties = new List<PropertyValidationResult>();
+            }
+
+            public DefinitionBase Model { get; set; }
+            public List<PropertyValidationResult> Properties { get; set; }
+        }
+
+
+        protected static void InternalInit()
+        {
+            RegressionAssertService.OnPropertyValidated += OnModelPropertyValidated;
+        }
+
+        protected static void InternalCleanup()
+        {
+
+        }
+
+        private static List<ModelValidationResult> ModelValidations = new List<ModelValidationResult>();
+
+        protected static void OnModelPropertyValidated(object sender, OnPropertyValidatedEventArgs e)
+        {
+            var existingModelResult = ModelValidations.FirstOrDefault(r => r.Model == e.Result.Tag);
+
+            if (existingModelResult == null)
+            {
+                existingModelResult = new ModelValidationResult
+                {
+                    Model = e.Result.Tag as DefinitionBase
+                };
+
+                ModelValidations.Add(existingModelResult);
+            }
+
+            existingModelResult.Properties.Add(e.Result);
+        }
 
         protected static void WithExcpectedCSOMnO365RunnerExceptions(Action action)
         {
@@ -158,6 +196,8 @@ namespace SPMeta2.Regression.Tests.Base
             return targetMethod != null;
         }
 
+
+
         private SPObjectModelType GetRunnerType(ProvisionRunnerBase runner)
         {
             if (runner.Name == "SSOM")
@@ -169,33 +209,11 @@ namespace SPMeta2.Regression.Tests.Base
             throw new SPMeta2NotSupportedException(string.Format("Cannot find SPObjectModelType type for runer of type:[{0}]", runner.Name));
         }
 
-        //protected Dictionary<string, TestReport> TestReports = new Dictionary<string, TestReport>();
-        protected static List<TestReport> TestReports = new List<TestReport>();
-
-        private TestReport EnsureTestReportItem(string testName)
-        {
-            var testReport = TestReports.FirstOrDefault(r => r.TestName == testName);
-
-            if (testReport == null)
-            {
-                testReport = new TestReport
-                {
-                    TestName = testName
-                };
-
-                TestReports.Add(testReport);
-            }
-
-            return testReport;
-        }
-
         protected void TestRandomDefinition<TDefinition>()
             where TDefinition : DefinitionBase, new()
         {
             var frame = new StackFrame(1);
             var parentMethod = frame.GetMethod();
-
-            var testReport = EnsureTestReportItem(parentMethod.Name);
 
             var allHooks = new List<EventHooks>();
 
@@ -232,31 +250,101 @@ namespace SPMeta2.Regression.Tests.Base
                 foreach (var hook in hooks)
                     ResolveHook(hook);
 
-                LookupTestReportItems(testReport, definitionSandbox);
+                var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox);
+                Assert.IsFalse(hasMissedOrInvalidProps);
             });
 
         }
 
-        private void LookupTestReportItems(TestReport testReport, ModelNode definitionSandbox)
+        private bool ResolveModelValidation(ModelNode modelNode)
         {
-            LookupTestReportItems(testReport, null, definitionSandbox);
+            return ResolveModelValidation(modelNode, "     ");
         }
 
-        private void LookupTestReportItems(TestReport testReport, TestReportNode parentReportNode, ModelNode definitionSandbox)
+        private bool ResolveModelValidation(ModelNode modelNode, string start)
         {
-            var model = definitionSandbox.Value;
-            var modelReportNode = ReportNodes.FirstOrDefault(i => i.Tag == model);
+            var hasMissedOrInvalidProps = false;
 
-            if (modelReportNode == null)
-                modelReportNode = new TestReportNode { Title = model.ToString() };
+            var model = modelNode.Value;
+            Trace.WriteLine(string.Format("{2}Checking validation result for model [{0}]:{1}", model.GetType(), model.ToString(), start));
 
-            if (parentReportNode == null)
-                testReport.AddReportItem(modelReportNode);
+            if (model.RequireSelfProcessing)
+            {
+                var modelValidationResult = ModelValidations.FirstOrDefault(r => r.Model == model);
+
+                var shouldBeValidatedProperties = model.GetType()
+                                                       .GetProperties()
+                                                       .Where(p => p.GetCustomAttributes<SPMeta2.Attributes.Regression.ExpectValidationAttribute>().Count() > 0)
+                                                       .ToList();
+
+
+                if (modelValidationResult == null)
+                {
+                    Trace.WriteLine(string.Format("{2}Missing validation result for model [{0}]:{1}", model.GetType(), model.ToString(), start));
+
+                    hasMissedOrInvalidProps = true;
+                    return hasMissedOrInvalidProps;
+                }
+
+                foreach (var property in modelValidationResult.Properties)
+                {
+                    Trace.WriteLine(string.Format("{6}IS VALID:[{4}] - Src prop:[{0}] Src value:[{1}] Dst prop:[{2}] Dst value:[{3}] - Message:[{5}]",
+                        new object[]{
+                        property.Src != null ? property.Src.Name : string.Empty,
+                        property.Src != null ? property.Src.Value : string.Empty,
+
+                        property.Dst != null ? property.Dst.Name : string.Empty,
+                        property.Dst != null ? property.Dst.Value : string.Empty,
+
+                        property.IsValid,
+                        property.Message,
+                        start
+
+                    }));
+
+                    if (!property.IsValid)
+                        hasMissedOrInvalidProps = true;
+                }
+
+                Trace.WriteLine(string.Format("{0}Checking if property has been validated", start));
+
+                foreach (var shouldBeValidatedProp in shouldBeValidatedProperties)
+                {
+                    var hasValidation = false;
+                    var validationResult = modelValidationResult.Properties.FirstOrDefault(r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
+
+                    if (validationResult != null)
+                    {
+                        hasValidation = true;
+                        // Assert.IsTrue(validationResult.IsValid);
+                    }
+                    else
+                    {
+                        hasMissedOrInvalidProps = true;
+                        hasValidation = false;
+                        //Assert.IsNotNull(validationResult);
+                    }
+
+                    Trace.WriteLine(string.Format("{2}[{1}] - [{0}]",
+                        shouldBeValidatedProp.Name,
+                        hasValidation.ToString().ToUpper(),
+                        start));
+                }
+            }
             else
-                parentReportNode.AddChildItem(modelReportNode);
+            {
+                Trace.WriteLine(string.Format("{0}Skipping due RequireSelfProcessing ==  FALSE", start));
+            }
 
-            foreach (var modelNode in definitionSandbox.ChildModels)
-                LookupTestReportItems(testReport, modelReportNode, modelNode);
+            foreach (var childModel in modelNode.ChildModels)
+            {
+                var tmp = ResolveModelValidation(childModel, start + start);
+
+                if (tmp == true)
+                    hasMissedOrInvalidProps = true;
+            }
+
+            return hasMissedOrInvalidProps;
         }
 
         private void ValidateDefinitionHostRunnerSupport<T1>(Runners.ProvisionRunnerBase runner)

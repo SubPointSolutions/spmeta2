@@ -19,13 +19,15 @@ namespace SPMeta2.Definitions
     [Serializable]
     public class ListViewDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public ListViewDefinition()
         {
             Fields = new Collection<string>();
             IsPaged = true;
             RowLimit = 30;
+
+            Query = string.Empty;
         }
 
         #endregion
@@ -35,31 +37,44 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Title of the target list view.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// RowLimit of the target list view.
         /// </summary>
+
+        [ExpectValidation]
         public int RowLimit { get; set; }
 
         /// <summary>
         /// CAML Query of the target list view.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Query { get; set; }
 
         /// <summary>
         /// IsPaged flag of the target list view.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool IsPaged { get; set; }
 
         /// <summary>
         /// ISDefault flag of the target list view.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool IsDefault { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Collection<string> Fields { get; set; }
 
         #endregion

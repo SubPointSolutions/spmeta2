@@ -21,21 +21,29 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target security group.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Description of the target security group.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
         /// Login name of the owner for the target security group.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Owner { get; set; }
 
         /// <summary>
         /// Default user login for the target security group.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string DefaultUser { get; set; }
 
         /// <summary>

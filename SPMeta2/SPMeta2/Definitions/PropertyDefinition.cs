@@ -23,16 +23,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target property.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Key { get; set; }
 
         /// <summary>
         /// Value of the target property.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public object Value { get; set; }
 
         /// <summary>
         /// Should value be overwritten
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool Overwrite { get; set; }
 
         #endregion

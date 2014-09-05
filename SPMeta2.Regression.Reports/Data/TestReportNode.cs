@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SPMeta2.Regression.Reports.Data
 {
@@ -16,21 +18,32 @@ namespace SPMeta2.Regression.Reports.Data
 
         public object Tag { get; set; }
 
+        [XmlIgnore]
         public object SourceValue { get; set; }
+
+        [XmlIgnore]
         public object DestValue { get; set; }
 
         private List<TestReportNodeProperty> _props = new List<TestReportNodeProperty>();
 
-        public IEnumerable<TestReportNodeProperty> Properties
+        public List<TestReportNodeProperty> Properties
         {
             get { return _props; }
+            set
+            {
+                _props = value;
+            }
         }
 
         private List<TestReportNode> _childItems = new List<TestReportNode>();
 
-        public IEnumerable<TestReportNode> ChildItems
+        public List<TestReportNode> ChildItems
         {
             get { return _childItems; }
+            set
+            {
+                _childItems = value;
+            }
         }
 
         public void AddProperty(TestReportNodeProperty property)
@@ -44,11 +57,15 @@ namespace SPMeta2.Regression.Reports.Data
         }
     }
 
-    public class TypedTestReportNode<TSource, TDest> : TestReportNode
-    {
-        public TSource SourceTypedValue { get; set; }
-        public TDest DestTypedValue { get; set; }
 
-        
-    }
+    //public class TypedTestReportNode<TSource, TDest> : TestReportNode
+    //{
+    //    [XmlIgnore]
+    //    public TSource SourceTypedValue { get; set; }
+
+    //    [XmlIgnore]
+    //    public TDest DestTypedValue { get; set; }
+
+
+    //}
 }

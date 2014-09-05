@@ -35,11 +35,16 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Title of the target list item.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// Should item be overwritten.
         /// </summary>
+        /// 
+
         public bool Overwrite { get; set; }
 
         /// <summary>

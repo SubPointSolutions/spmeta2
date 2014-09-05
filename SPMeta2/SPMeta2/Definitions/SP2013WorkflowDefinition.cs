@@ -36,16 +36,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Display name of the target SharePoint 2013 workflow.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// XAML content of the target SharePoint 2013 workflow.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Xaml { get; set; }
 
         /// <summary>
         /// Should target workflow be overwritten.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool Override { get; set; }
 
         #endregion

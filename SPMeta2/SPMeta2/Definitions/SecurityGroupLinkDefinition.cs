@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Target security group name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string SecurityGroupName { get; set; }
 
         /// <summary>

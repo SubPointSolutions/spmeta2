@@ -36,16 +36,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Target sandbox solutions file name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string FileName { get; set; }
 
         /// <summary>
         /// Target sandbox solution content.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public byte[] Content { get; set; }
 
         /// <summary>
         /// Should the solution be activated.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool Activate { get; set; }
 
         #endregion

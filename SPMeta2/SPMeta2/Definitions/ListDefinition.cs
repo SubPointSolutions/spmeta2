@@ -24,14 +24,20 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+
         /// <summary>
         /// Title of the target list.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
+
 
         /// <summary>
         /// Description of the target list.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
@@ -41,6 +47,8 @@ namespace SPMeta2.Definitions
         /// 
         /// Use ListDefinition.GetListUrl() methods to resolve particular list URL.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Url { get; set; }
 
         /// <summary>
@@ -49,17 +57,23 @@ namespace SPMeta2.Definitions
         /// 
         /// Skip TemplateType and use TemplateName property to create list based on custom template.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public int TemplateType { get; set; }
 
         /// <summary>
         /// Template name of the target list. 
         /// This property is used to allow list creation based on custom templates.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string TemplateName { get; set; }
 
         /// <summary>
         /// Enables content type support on the target list.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool ContentTypesEnabled { get; set; }
 
         /// <summary>

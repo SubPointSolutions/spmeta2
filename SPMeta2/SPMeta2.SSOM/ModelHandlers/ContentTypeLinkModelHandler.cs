@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
@@ -15,6 +16,25 @@ namespace SPMeta2.SSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(ContentTypeLinkDefinition); }
+        }
+
+        protected SPContentType GetListContentType(SPList list, ContentTypeLinkDefinition definition)
+        {
+            SPContentType result = null;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                result = list.ContentTypes[definition.ContentTypeName];
+
+            if (result == null && !string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                var linkContenType = new SPContentTypeId(definition.ContentTypeId);
+                var bestMatch = list.ContentTypes.BestMatch(linkContenType);
+
+                if (bestMatch.IsChildOf(linkContenType))
+                    result = list.ContentTypes[bestMatch];
+            }
+
+            return result;
         }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
@@ -35,7 +55,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (targetContentType == null)
                 throw new ArgumentException(string.Format("Cannot find site content type with ID [{0}].", contentTypeId));
 
-            var currentListContentType = list.ContentTypes[targetContentType.Name];
+            var currentListContentType = GetListContentType(list, contentTypeLinkModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

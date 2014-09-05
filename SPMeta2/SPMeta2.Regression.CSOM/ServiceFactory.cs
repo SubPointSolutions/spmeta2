@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SPMeta2.Validation.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SPMeta2.Regression.Reports.Services;
 
 namespace SPMeta2.Regression.CSOM
 {
@@ -13,14 +13,14 @@ namespace SPMeta2.Regression.CSOM
 
         static ServiceFactory()
         {
-            ReportService = new DefaultReportService();
+           
         }
 
         #endregion
 
         #region properties
 
-        public static ReportService ReportService { get; set; }
+        public static RegressionAssertService AssertService = new RegressionAssertService();
 
         #endregion
     }

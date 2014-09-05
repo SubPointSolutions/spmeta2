@@ -4,9 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Regression.Reports.Data;
+using SPMeta2.Regression.Reports.Assert;
 
 namespace SPMeta2.Regression.Reports.Services
 {
+    public class TestReportNodeResult<TSource, TDest>
+    {
+        public TestReportNode TestReportNode { get; set; }
+        public AssertPair<TSource, TDest> Assert { get; set; }
+    }
+
     public abstract class ReportService
     {
         #region contructors
@@ -29,9 +36,47 @@ namespace SPMeta2.Regression.Reports.Services
 
         #region static
 
-        public abstract TypedTestReportNode<TSource, TDest> NotifyReportItem<TSource, TDest>(object tag, TSource source, TDest dest);
+        public TestReportNodeResult<TSource, TDest> NotifyReportItem<TSource, TDest>(object tag, TSource source, TDest dest)
+        {
+            var reportItem = new TestReportNode
+            {
+                Tag = tag,
+
+                SourceValue = source,
+                DestValue = dest,
+            };
+
+            InvokeOnReportNodeAdded(null, reportItem);
+
+            var nodeResult = new TestReportNodeResult<TSource, TDest>
+            {
+                TestReportNode = reportItem,
+                Assert = new AssertPair<TSource, TDest>(source, dest)
+            };
+
+            nodeResult.Assert.OnValidateProperty += (e, a) =>
+            {
+                reportItem.Properties.Add(new TestReportNodeProperty
+                {
+                    SourcePropName = a.SrcPropertyName,
+                    SourcePropValue = a.SrcPropertyValue,
+                    SourcePropType = a.SrcPropertyType,
+
+                    DestPropName = a.DstPropertyName,
+                    DestPropValue = a.DstPropertyValue,
+                    DestPropType = a.DstPropertyType
+                });
+
+            };
+
+          
+
+
+            return nodeResult;
+        }
 
         #endregion
+
 
         protected static void InvokeOnReportNodeAdded(object sender, TestReportNode item)
         {

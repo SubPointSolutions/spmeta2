@@ -15,24 +15,22 @@ namespace SPMeta2.Regression.Reports.Services
 
 
         #endregion
-        public override TypedTestReportNode<TSource, TDest> NotifyReportItem<TSource, TDest>(object tag, TSource source, TDest dest)
-        {
-            var reportItem = new TypedTestReportNode<TSource, TDest>
-            {
-                Tag = tag,
 
-                SourceValue = source,
-                DestValue = dest,
+        //public override TestReportNode NotifyReportItem<TSource, TDest>(object tag, TSource source, TDest dest)
+        //{
+        //    var reportItem = new TestReportNode
+        //    {
+        //        Tag = tag,
 
-                SourceTypedValue = source,
-                DestTypedValue = dest
-            };
+        //        SourceValue = source,
+        //        DestValue = dest,
+        //    };
 
-            InvokeOnReportNodeAdded(null, reportItem);
+        //    InvokeOnReportNodeAdded(null, reportItem);
 
-            return reportItem;
-        }
+        //    return reportItem;
+        //}
     }
 
-   
+
 }

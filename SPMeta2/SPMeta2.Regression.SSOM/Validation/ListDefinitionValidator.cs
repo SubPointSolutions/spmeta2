@@ -8,6 +8,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
+
 namespace SPMeta2.Regression.SSOM.Validation
 {
     public class ListDefinitionValidator : ListModelHandler
@@ -17,44 +18,74 @@ namespace SPMeta2.Regression.SSOM.Validation
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
             var web = webModelHost.HostWeb;
 
-            var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+            var spObject = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, definition.GetListUrl()));
 
-            TraceUtils.WithScope(traceScope =>
+            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
+
+            assert
+                .ShouldBeEqual(m => m.Title, o => o.Title)
+                .ShouldBeEqual(m => m.Description, o => o.Description)
+                .ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
+                .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
+
+            if (definition.TemplateType > 0)
             {
-                var spList = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, listModel.GetListUrl()));
+                assert
+                    .ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate)
+                    .SkipProperty(m => m.TemplateName, "Skipping from validation. TemplateType should be == 0");
+            }
+            else
+            {
+                assert
+                    //.ShouldBeEqual(m => m.TemplateName, o => (int)o.BaseTemplate)
+                    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType should be > 0");
+            }
 
-                traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", listModel, spList));
+            //TraceUtils.WithScope(traceScope =>
+            //{
 
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine(string.Format("Validate Title: model:[{0}] list:[{1}]", listModel.Title, spList.Title));
-                    Assert.AreEqual(listModel.Title, spList.Title);
 
-                    trace.WriteLine(string.Format("Validate Description: model:[{0}] list:[{1}]", listModel.Description, spList.Description));
-                    Assert.AreEqual(listModel.Description, spList.Description);
+            //    traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", definition, spObject));
 
-                    trace.WriteLine(string.Format("Validate ContentTypesEnabled: model:[{0}] list:[{1}]", listModel.ContentTypesEnabled, spList.ContentTypesEnabled));
-                    Assert.AreEqual(listModel.ContentTypesEnabled, spList.ContentTypesEnabled);
+            //    // assert base properties
+            //    traceScope.WithTraceIndent(trace =>
+            //    {
+            //        trace.WriteLine(string.Format("Validate Title: model:[{0}] list:[{1}]", definition.Title, spObject.Title));
+            //        Assert.AreEqual(definition.Title, spObject.Title);
 
-                    // TODO
-                    // template type & template name
-                    if (listModel.TemplateType > 0)
-                    {
-                        trace.WriteLine(string.Format("Validate TemplateType: model:[{0}] list:[{1}]", listModel.TemplateType, spList.BaseTemplate));
-                        Assert.AreEqual(listModel.TemplateType, (int)spList.BaseTemplate);
-                    }
-                    else
-                    {
-                        trace.WriteLine(string.Format("Skipping TemplateType check. It is 0"));
-                    }
+            //        trace.WriteLine(string.Format("Validate Description: model:[{0}] list:[{1}]", definition.Description, spObject.Description));
+            //        Assert.AreEqual(definition.Description, spObject.Description);
 
-                    // TODO
-                    // url checking
-                    trace.WriteLine(string.Format("Validate Url: model:[{0}] list:[{1}]", listModel.GetListUrl(), spList.RootFolder.ServerRelativeUrl));
-                    Assert.IsTrue(spList.RootFolder.ServerRelativeUrl.Contains(listModel.GetListUrl()));
-                });
-            });
+            //        trace.WriteLine(string.Format("Validate ContentTypesEnabled: model:[{0}] list:[{1}]", definition.ContentTypesEnabled, spObject.ContentTypesEnabled));
+            //        Assert.AreEqual(definition.ContentTypesEnabled, spObject.ContentTypesEnabled);
+
+            //        // TODO
+            //        // template type & template name
+            //        if (definition.TemplateType > 0)
+            //        {
+            //            trace.WriteLine(string.Format("Validate TemplateType: model:[{0}] list:[{1}]", definition.TemplateType, spObject.BaseTemplate));
+            //            Assert.AreEqual(definition.TemplateType, (int)spObject.BaseTemplate);
+            //        }
+            //        else
+            //        {
+            //            trace.WriteLine(string.Format("Skipping TemplateType check. It is 0"));
+            //        }
+
+            //        // TODO
+            //        // url checking
+            //        trace.WriteLine(string.Format("Validate Url: model:[{0}] list:[{1}]", definition.GetListUrl(), spObject.RootFolder.ServerRelativeUrl));
+            //        Assert.IsTrue(spObject.RootFolder.ServerRelativeUrl.Contains(definition.GetListUrl()));
+            //    });
+            //});
+        }
+    }
+
+    public static class ListExtensions
+    {
+        public static string GetServerRelativeUrl(this SPList list)
+        {
+            return list.RootFolder.ServerRelativeUrl;
         }
     }
 }

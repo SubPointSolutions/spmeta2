@@ -31,26 +31,36 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Internal name of the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string InternalName { get; set; }
 
         /// <summary>
         /// Title of the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// Description of the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
         /// Group of the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Group { get; set; }
 
         /// <summary>
         /// ID of the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -62,6 +72,8 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Required flag for the target field.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool Required { get; set; }
 
         #endregion

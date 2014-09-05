@@ -20,12 +20,12 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var pageItem = listItemModelHost.HostListItem;
 
-            ValidateWebPart(modelHost, pageItem, webPartModel);
+            var assert = ServiceFactory.AssertService.NewAssert(model, webPartModel, pageItem);
         }
 
         private void ValidateWebPart(object modelHost, ListItem pageItem, WebPartDefinition model)
         {
-            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, model, pageItem);
+           // var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
         }
     }
 }

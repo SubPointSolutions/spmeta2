@@ -45,13 +45,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             EnsureListItem(list, listItemModel);
         }
 
-        private SPListItem EnsureListItem(SPList list, ListItemDefinition listItemModel)
+        protected SPListItem GetListItem(SPList list, ListItemDefinition listItemModel)
         {
             // TODO, lazy to query
             // BIG TODO, don't tell me, I know that
-            var currentItem = list.Items
+
+            return list.Items
                             .OfType<SPListItem>()
                             .FirstOrDefault(i => i.Title == listItemModel.Title);
+        }
+
+        private SPListItem EnsureListItem(SPList list, ListItemDefinition listItemModel)
+        {
+            var currentItem = GetListItem(list, listItemModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

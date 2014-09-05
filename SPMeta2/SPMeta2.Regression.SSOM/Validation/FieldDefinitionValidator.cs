@@ -14,25 +14,25 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
-            var site = siteModelHost.HostSite;
+            var site = typedModelHost.HostSite;
+            var spObject = GetField(modelHost, definition);
 
-            TraceUtils.WithScope(traceScope =>
-            {
-                var spField = GetField(modelHost, fieldModel);
-                var pair = new ComparePair<FieldDefinition, SPField>(fieldModel, spField);
+            ValidateField(definition, spObject);
+        }
 
-                traceScope.WriteLine(string.Format("Validating model:[{0}] field:[{1}]", fieldModel, spField));
-
-                traceScope.WithTraceIndent(trace => pair
-                    .ShouldBeEqual(trace, m => m.Title, w => w.Title)
-                    .ShouldBeEqual(trace, m => m.Description, w => w.Description)
-                    .ShouldBeEqual(trace, m => m.Group, w => w.Group)
-                    .ShouldBeEqual(trace, m => m.InternalName, w => w.InternalName)
-                    .ShouldBeEqual(trace, m => m.Id, w => w.Id));
-            });
+        private static void ValidateField(FieldDefinition definition, SPField spObject)
+        {
+            ServiceFactory.AssertService
+                          .NewAssert(definition, spObject)
+                                .ShouldBeEqual(m => m.Title, o => o.Title)
+                                .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
+                                .ShouldBeEqual(m => m.Group, o => o.Group)
+                                .ShouldBeEqual(m => m.Id, o => o.Id)
+                                .ShouldBeEqual(m => m.Description, o => o.Description)
+                                .ShouldBeEqual(m => m.Required, o => o.Required);
         }
     }
 }

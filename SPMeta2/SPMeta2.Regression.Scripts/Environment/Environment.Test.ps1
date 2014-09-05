@@ -1,42 +1,42 @@
-#. .\Environment.ps1
+. .\Environment.ps1
 
-#TestFixture "SPMeta2.Regression" {
+TestFixture "SPMeta2.Regression" {
 
-#	TestSetup {
+	TestSetup {
 			
-#		$g_ssomWebAppUrl = ""
-#		$g_ssomSiteUrl = ""
+		$g_ssomWebAppUrl = ""
+		$g_ssomSiteUrl = ""
 
 
-#		$g_o365SiteUrl = ""
-#		$g_o365UserName = ""
-#		$g_o365UserPassword	= ""
-#	}
+		$g_o365SiteUrl = ""
+		$g_o365UserName = ""
+		$g_o365UserPassword	= ""
+	}
 
-#	TestCase "Setup SSOM Environment" {
+	TestCase "Setup SSOM Environment" {
 		
-#		$runnerAssemblies = @()
-#		$runnerAssemblies += "SPMeta2.Regression.Runners.SSOM.dll"
+		$runnerAssemblies = @()
+		$runnerAssemblies += "SPMeta2.Regression.Runners.SSOM.dll"
 
-#		SPM2_SetRegressionEnvironment $runnerAssemblies $g_ssomWebAppUrl $g_ssomSiteUrl $g_o365SiteUrl $g_o365UserName $g_o365UserPassword
-#	}
+		SPM2_SetRegressionEnvironment $runnerAssemblies $g_ssomWebAppUrl $g_ssomSiteUrl $g_o365SiteUrl $g_o365UserName $g_o365UserPassword
+	}
 
-#	TestCase "Setup O365 Environment" {
+	TestCase "Setup O365 Environment" {
 		
-#		$runnerAssemblies = @()
-#		$runnerAssemblies += "SPMeta2.Regression.Runners.O365.dll"
+		$runnerAssemblies = @()
+		$runnerAssemblies += "SPMeta2.Regression.Runners.O365.dll"
 
-#		SPM2_SetRegressionEnvironment 
-#	}
+		SPM2_SetRegressionEnvironment 
+	}
 
-#	TestCase "Setup SSOM/O365 Environment" {
+	TestCase "Setup SSOM/O365 Environment" {
 		
-#		$runnerAssemblies = @()
+		$runnerAssemblies = @()
 
-#		$runnerAssemblies += "SPMeta2.Regression.Runners.O365.dll"
-#		$runnerAssemblies += "SPMeta2.Regression.Runners.SSOM.dll"
+		$runnerAssemblies += "SPMeta2.Regression.Runners.O365.dll"
+		$runnerAssemblies += "SPMeta2.Regression.Runners.SSOM.dll"
 
-#		SPM2_SetRegressionEnvironment $runnerAssemblies $g_ssomWebAppUrl $g_ssomSiteUrl $g_o365SiteUrl $g_o365UserName $g_o365UserPassword
-#	}
+		SPM2_SetRegressionEnvironment $runnerAssemblies $g_ssomWebAppUrl $g_ssomSiteUrl $g_o365SiteUrl $g_o365UserName $g_o365UserPassword
+	}
 
-#}
+}

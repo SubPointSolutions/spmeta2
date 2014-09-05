@@ -179,6 +179,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             field.Title = fieldModel.Title;
             field.Group = fieldModel.Group;
 
+            field.Required = fieldModel.Required;
+
             field.Description = fieldModel.Description ?? string.Empty;
         }
 

@@ -95,7 +95,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentWeb;
         }
 
-        private SPWeb GetOrCreateWeb(SPWeb parentWeb, WebDefinition webModel)
+        protected SPWeb GetOrCreateWeb(SPWeb parentWeb, WebDefinition webModel)
         {
             var webUrl = webModel.Url;
             var webDescription = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;

@@ -10,5 +10,6 @@ namespace SPMeta2.Regression.Reports.Services
     public abstract class ReportGenerator
     {
         public abstract byte[] GenerateClassReport(TestClassReport report);
+        public abstract string FileExtension { get; set; }
     }
 }

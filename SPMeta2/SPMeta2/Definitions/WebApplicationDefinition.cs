@@ -24,41 +24,57 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Application pool is of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ApplicationPoolId { get; set; }
 
         /// <summary>
         /// Application pool user name.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ApplicationPoolUsername { get; set; }
 
         /// <summary>
         /// Application pool password.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ApplicationPoolPassword { get; set; }
 
         /// <summary>
         /// Port number of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public int Port { get; set; }
 
         /// <summary>
         /// Host header of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string HostHeader { get; set; }
 
         /// <summary>
         /// Create new database flag.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool CreateNewDatabase { get; set; }
 
         /// <summary>
         /// AllowAnonymousAccess flag.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool AllowAnonymousAccess { get; set; }
 
         /// <summary>
         /// Managed account to run application pool of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string ManagedAccount { get; set; }
 
         /// <summary>
@@ -69,16 +85,22 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Database name of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string DatabaseName { get; set; }
 
         /// <summary>
         /// Database server of the target web application.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string DatabaseServer { get; set; }
 
         /// <summary>
         /// Should NTLM authentication be used.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool UseNTLMExclusively { get; set; }
     }
 }

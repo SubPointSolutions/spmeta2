@@ -25,8 +25,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #endregion
 
-
-
         protected override SPNavigationNodeCollection GetNavigationNodeCollection(SPWeb web)
         {
             return web.Navigation.QuickLaunch;

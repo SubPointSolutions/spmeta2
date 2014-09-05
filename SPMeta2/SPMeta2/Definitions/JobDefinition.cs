@@ -25,11 +25,17 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Name of the target timer job.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
         /// Type of the target timer job.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string JobType { get; set; }
 
         /// <summary>
@@ -37,6 +43,9 @@ namespace SPMeta2.Definitions
         /// 
         /// SPSchedule.FromString is used to get instance of the target Schedule object.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string ScheduleString { get; set; }
 
         #endregion

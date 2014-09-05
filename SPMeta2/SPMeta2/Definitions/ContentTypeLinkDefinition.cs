@@ -25,12 +25,18 @@ namespace SPMeta2.Definitions
         /// ID of the target content type to be attached to the list.
         /// ContentTypeId is used for the first place, then ContentTypeName is used as a second attempt to lookup the content type.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string ContentTypeId { get; set; }
 
         /// <summary>
         /// Name of the target content type to be attached to the list.
         /// ContentTypeId is used for the first place, then ContentTypeName is used as a second attempt to lookup the content type.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
         public string ContentTypeName { get; set; }
 
         #endregion

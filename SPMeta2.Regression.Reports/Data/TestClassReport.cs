@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SPMeta2.Regression.Reports.Data
 {
@@ -6,13 +7,17 @@ namespace SPMeta2.Regression.Reports.Data
     {
         public string ClassName { get; set; }
 
-        private readonly List<TestReport> _items = new List<TestReport>();
+        private  List<TestReport> _items = new List<TestReport>();
 
-        public IEnumerable<TestReport> Items
+        public List<TestReport> Items
         {
             get
             {
                 return _items;
+            }
+            set
+            {
+                _items = value;
             }
         }
 

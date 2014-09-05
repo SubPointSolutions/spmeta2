@@ -32,21 +32,33 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Title of the target web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string Title { get; set; }
 
         /// <summary>
         /// ID of the target web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string Id { get; set; }
 
         /// <summary>
         /// ZoneId of the target web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string ZoneId { get; set; }
 
         /// <summary>
         /// ZoneIndex of the target web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public int ZoneIndex { get; set; }
 
         /// <summary>
@@ -54,6 +66,8 @@ namespace SPMeta2.Definitions
         /// 
         /// WebpartFileName is used for the first priority to deploy web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string WebpartFileName { get; set; }
 
         /// <summary>
@@ -61,6 +75,8 @@ namespace SPMeta2.Definitions
         /// 
         /// WebpartType is used as a second priority to deploy web part.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string WebpartType { get; set; }
 
         /// <summary>
@@ -69,6 +85,8 @@ namespace SPMeta2.Definitions
         /// 
         /// WebpartXmlTemplate is used as the final step to deploy web part. 
         /// </summary>        
+        /// 
+        [ExpectValidation]
         public string WebpartXmlTemplate { get; set; }
 
         #endregion

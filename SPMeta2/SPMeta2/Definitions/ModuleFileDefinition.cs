@@ -35,11 +35,15 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Target file name,
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string FileName { get; set; }
 
         /// <summary>
         /// Target file content.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public byte[] Content { get; set; }
 
         /// <summary>

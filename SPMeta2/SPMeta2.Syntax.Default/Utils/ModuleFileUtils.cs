@@ -12,7 +12,7 @@ namespace SPMeta2.Syntax.Default.Utils
     {
         #region from resource helpers
 
-        private static byte[] ReadFully(Stream input)
+        public static byte[] ReadFully(Stream input)
         {
             var buffer = new byte[16 * 1024];
 

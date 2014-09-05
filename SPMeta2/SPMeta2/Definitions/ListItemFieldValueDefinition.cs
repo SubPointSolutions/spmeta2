@@ -29,16 +29,25 @@ namespace SPMeta2.Definitions
         /// Field name of the target field value.
         /// FieldId property can be used to set field by ID.
         /// </summary>
+        /// 
+        [ExpectValidation]
+
         public string FieldName { get; set; }
 
         /// <summary>
         /// Field id.
         /// </summary>
+        /// 
+
+        [ExpectValidation]
+
         public Guid? FieldId { get; set; }
 
         /// <summary>
         /// Target field value.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public object Value { get; set; }
 
         #endregion

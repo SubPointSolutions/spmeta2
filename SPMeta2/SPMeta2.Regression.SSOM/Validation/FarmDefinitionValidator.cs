@@ -18,7 +18,13 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
-            var farmModel = model.WithAssertAndCast<FarmDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FarmDefinition>("model", value => value.RequireNotNull());
+
+            var spObject = farmModelHost.HostFarm;
+
+            ServiceFactory.AssertService
+                       .NewAssert(definition, spObject)
+                       .ShouldNotBeNull(spObject);
         }
 
         #endregion

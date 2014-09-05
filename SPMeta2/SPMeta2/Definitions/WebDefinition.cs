@@ -23,6 +23,7 @@ namespace SPMeta2.Definitions
         public WebDefinition()
         {
             Url = "/";
+            LCID = 1033;
         }
 
         #endregion
@@ -32,32 +33,43 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Title of the target web.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Title { get; set; }
 
         /// <summary>
         /// Description of the target web.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Description { get; set; }
 
         /// <summary>
         /// LCID of the target web.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public uint LCID { get; set; }
 
         /// <summary>
         /// Should unique permissions be used for the new web.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool UseUniquePermission { get; set; }
 
         /// <summary>
         /// Convert to the new web template if web if there.
         /// </summary>
+        /// 
         public bool ConvertIfThere { get; set; }
 
         /// <summary>
         /// URL of the target. 
         /// Should be relative to the current web. 
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string Url { get; set; }
 
         /// <summary>
@@ -65,6 +77,8 @@ namespace SPMeta2.Definitions
         /// 
         /// BuiltInWebTemplates class can be used to utilize out of the box SharePoint web templates.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string WebTemplate { get; set; }
 
         /// <summary>

@@ -38,11 +38,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeploySiteCustomAction(modelHost, site, customAction);
         }
 
+        protected SPUserCustomAction GetCurrentCustomUserAction(SPSite site, UserCustomActionDefinition customActionModel)
+        {
+            return site.UserCustomActions.FirstOrDefault(a => a.Name == customActionModel.Name);
+        }
+
         private void DeploySiteCustomAction(
             object modelHost,
             SPSite site, UserCustomActionDefinition customActionModel)
         {
-            var existingAction = site.UserCustomActions.FirstOrDefault(a => a.Name == customActionModel.Name);
+            var existingAction = GetCurrentCustomUserAction(site, customActionModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -84,6 +89,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             existringAction.ScriptSrc = customAction.ScriptSrc;
             existringAction.Title = customAction.Title;
             existringAction.Url = customAction.Url;
+
+            existringAction.Sequence = customAction.Sequence;
 
             if (!string.IsNullOrEmpty(customAction.RegistrationId))
                 existringAction.RegistrationId = customAction.RegistrationId;

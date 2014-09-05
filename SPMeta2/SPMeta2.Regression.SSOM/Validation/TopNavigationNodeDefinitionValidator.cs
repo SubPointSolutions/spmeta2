@@ -12,7 +12,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-
+            //var assert = ServiceFactory.AssertService.NewAssert(model, model, null);
         }
     }
 }

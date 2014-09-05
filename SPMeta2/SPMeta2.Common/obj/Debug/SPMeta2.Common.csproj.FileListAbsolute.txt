@@ -11,12 +11,12 @@ D:\_git\spmeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.dll
 D:\_git\spmeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
 D:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
 D:\_git\spmeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.csprojResolveAssemblyReference.cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb

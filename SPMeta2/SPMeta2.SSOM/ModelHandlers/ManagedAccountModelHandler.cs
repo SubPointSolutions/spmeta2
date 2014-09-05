@@ -33,7 +33,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployManagedAccount(modelHost, farmModelHost.HostFarm, managedAccountDefinition);
         }
 
-        private void DeployManagedAccount(object modelHost, SPFarm farm, ManagedAccountDefinition managedAccountDefinition)
+        protected SPManagedAccount GetManagedAccount(SPFarm farm, ManagedAccountDefinition managedAccountDefinition)
         {
             var loginName = managedAccountDefinition.LoginName;
             var accounts = new SPFarmManagedAccountCollection(farm);
@@ -47,6 +47,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             catch (Exception ex)
             { }
 
+            return currentAccount;
+        }
+
+        private void DeployManagedAccount(object modelHost, SPFarm farm, ManagedAccountDefinition managedAccountDefinition)
+        {
+            var currentAccount = GetManagedAccount(farm, managedAccountDefinition);
+
+            var loginName = managedAccountDefinition.LoginName;
+            var accounts = new SPFarmManagedAccountCollection(farm);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -74,6 +83,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = managedAccountDefinition,
                     ModelHost = modelHost
                 });
+
+                currentAccount.Update();
             }
             else
             {
@@ -88,6 +99,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = managedAccountDefinition,
                     ModelHost = modelHost
                 });
+
+                currentAccount.Update();
             }
         }
 

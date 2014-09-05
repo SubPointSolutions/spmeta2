@@ -9,6 +9,7 @@ using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -16,7 +17,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var webModel = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
             SPWeb parentWeb = null;
 
             if (modelHost is SiteModelHost)
@@ -25,18 +26,49 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (modelHost is WebModelHost)
                 parentWeb = (modelHost as WebModelHost).HostWeb;
 
-            TraceUtils.WithScope(traceScope =>
+
+            var spObject = GetWeb(parentWeb, definition);
+
+            var assert = ServiceFactory.AssertService
+                           .NewAssert(definition, spObject)
+                                 .ShouldBeEqual(m => m.Title, o => o.Title)
+                                 .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
+                                 .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+                                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments)
+                                 .ShouldBeEqual(m => m.Description, o => o.Description);
+            //.ShouldBeEqual(m => m.LCID, o => o.loc);
+
+            assert.ShouldBeEqual((p, s, d) =>
             {
-                var web = GetWeb(parentWeb, webModel);
-                var pair = new ComparePair<WebDefinition, SPWeb>(webModel, web);
+                var srcProp = s.GetExpressionValue(def => def.Url);
+                var dstProp = d.GetExpressionValue(ct => ct.Url);
 
-                traceScope.WriteLine(string.Format("Validating model:[{0}] web:[{1}]", webModel, web));
+                var srcUrl = s.Url;
+                var dstUrl = d.Url;
 
-                traceScope.WithTraceIndent(trace => pair
-                    .ShouldBeEqual(trace, m => m.Title, w => w.Title)
-                    .ShouldBeEqual(trace, m => m.Description, w => w.Description)
-                    .ShouldBeEqual(trace, m => m.WebTemplate, w => string.Format("{0}#{1}", w.WebTemplate, w.Configuration)));
+                var dstSubUrl = dstUrl.Replace(parentWeb.Url + "/", string.Empty);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = srcUrl == dstSubUrl
+                };
             });
+        }
+    }
+
+    internal static class WebExtensions
+    {
+        public static uint GetLCID(this SPWeb web)
+        {
+            return (uint)web.Locale.LCID;
+        }
+
+        public static string GetWebTemplate(this SPWeb web)
+        {
+            return string.Format("{0}#{1}", web.WebTemplate, web.Configuration);
         }
     }
 }

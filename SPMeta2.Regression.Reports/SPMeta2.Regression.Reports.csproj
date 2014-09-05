@@ -39,12 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assert\AssertPair.cs" />
+    <Compile Include="Assert\AssertExtensions.cs" />
     <Compile Include="Data\TestReport.cs" />
     <Compile Include="Data\TestReportNode.cs" />
     <Compile Include="Data\TestReportNodeProperty.cs" />
-    <Compile Include="Extensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DefaultReportGenerator.cs" />
     <Compile Include="Services\DefaultReportService.cs" />
     <Compile Include="Services\ReportGenerator.cs" />
     <Compile Include="Services\ReportService.cs" />
@@ -56,34 +56,7 @@
       <Name>SPMeta2</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Templates\DefaultHtmlTemplate\img\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap-theme.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap-theme.min.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap.min.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\main.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\vendor\jquery-treegrid\jquery.treegrid.css" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\favicon.ico" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\fonts\glyphicons-halflings-regular.svg" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\index.html" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\main.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\bootstrap.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\bootstrap.min.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\html5-3.6-respond-1.1.0.min.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\jquery-1.11.0.min.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\jquery-treegrid\jquery.treegrid.bootstrap3.js" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\js\vendor\jquery-treegrid\jquery.treegrid.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap-theme.css.map" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\css\bootstrap.css.map" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\fonts\glyphicons-halflings-regular.eot" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\fonts\glyphicons-halflings-regular.ttf" />
-    <EmbeddedResource Include="Templates\DefaultHtmlTemplate\fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,11 +6,9 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
-using SPMeta2.Regression.Reports;
-using SPMeta2.Regression.Reports.Extensions;
-using SPMeta2.Regression.Reports.Services;
 using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
+
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -19,7 +17,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var listModel = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
 
             var web = webModelHost.HostWeb;
             var context = web.Context;
@@ -29,29 +27,29 @@ namespace SPMeta2.Regression.CSOM.Validation
             var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
             context.ExecuteQuery();
 
-            var spObject = FindListByUrl(lists, listModel.GetListUrl());
+            var spObject = FindListByUrl(lists, definition.GetListUrl());
 
             context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
             context.ExecuteQuery();
 
-            var reportItem = ServiceFactory.ReportService.NotifyReportItem(model, listModel, spObject);
+            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
-            reportItem
+            assert
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 .ShouldBeEqual(m => m.Description, o => o.Description)
                 .ShouldBeEqual(m => m.GetServerRelativeUrl(web), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 
-            if (listModel.TemplateType > 0)
+            if (definition.TemplateType > 0)
             {
-                reportItem
+                assert
                     .ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate);
             }
             else
             {
-                reportItem
-                    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType shoule be > 0");
+                //assert
+                //    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType shoule be > 0");
             }
         }
     }

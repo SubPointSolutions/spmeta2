@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [ExpectValidation]
         public string LoginName { get; set; }
 
         #endregion
