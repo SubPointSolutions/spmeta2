@@ -192,7 +192,24 @@ namespace SPMeta2.Regression.Assertion
                     Src = null,
                     Dst = null,
                     IsValid = value != null,
-                    Message = value.GetType().ToString()
+                    Message = string.Format("Not null instance. Object type is:[{0}]", value.GetType().ToString())
+                }
+            });
+
+            return this;
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeNull(object value)
+        {
+            InvokeOnPropertyValidated(this, new OnPropertyValidatedEventArgs
+            {
+                Result = new PropertyValidationResult
+                {
+                    Tag = this.Tag,
+                    Src = null,
+                    Dst = null,
+                    IsValid = value == null,
+                    Message = string.Format("Null instance")
                 }
             });
 
@@ -220,6 +237,11 @@ namespace SPMeta2.Regression.Assertion
             });
 
             return this;
+        }
+
+        public AssertPair<TSrc, TDst> SkipProperty<TProp>(Expression<Func<TSrc, TProp>> srcPropExp, string message)
+        {
+            return InternalSkipProperty<TProp>(srcPropExp, message);
         }
 
         public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, string>> srcPropExp, string message)

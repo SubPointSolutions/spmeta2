@@ -33,14 +33,20 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             }
         }
 
-        private SPNavigationNode EnsurehNavigationNode(
-            SPNavigationNode navigationNode,
-            NavigationNodeDefinitionBase quickLaunchNode)
+        protected SPNavigationNode LookupNodeForHost(object modelHost, NavigationNodeDefinitionBase definition)
+        {
+            if (modelHost is WebModelHost)
+                return LookupNavigationNode(GetNavigationNodeCollection((modelHost as WebModelHost).HostWeb), definition);
+            else if (modelHost is SPNavigationNode)
+                return LookupNavigationNode((modelHost as SPNavigationNode).Children, definition);
+
+            throw new ArgumentException("modelHost needs to be SPWeb");
+        }
+
+        private SPNavigationNode EnsurehNavigationNode(SPNavigationNode navigationNode, NavigationNodeDefinitionBase quickLaunchNode)
         {
             var topNavigationNode = navigationNode.Children;
-
-            var existingNode = topNavigationNode.OfType<SPNavigationNode>()
-                .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
+            var existingNode = LookupNavigationNode(topNavigationNode, quickLaunchNode);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -105,16 +111,28 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
 
         protected abstract SPNavigationNodeCollection GetNavigationNodeCollection(SPWeb web);
 
-        private SPNavigationNode EnsureRootNavigationNode(
-            WebModelHost webModelHost,
-            NavigationNodeDefinitionBase rootNode)
+        protected virtual SPNavigationNode LookupNavigationNode(SPNavigationNodeCollection nodes, NavigationNodeDefinitionBase definition)
+        {
+            var currentNode = nodes
+                                .OfType<SPNavigationNode>()
+                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Title) && (n.Title.ToUpper() == definition.Title.ToUpper()));
+
+            if (currentNode == null)
+            {
+                currentNode = nodes
+                                .OfType<SPNavigationNode>()
+                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Url) && (n.Url.ToUpper().EndsWith(definition.Url.ToUpper())));
+            }
+
+            return currentNode;
+        }
+
+        private SPNavigationNode EnsureRootNavigationNode(WebModelHost webModelHost, NavigationNodeDefinitionBase rootNode)
         {
             var web = webModelHost.HostWeb;
 
             var quickLaunch = GetNavigationNodeCollection(web);
-
-            var existingNode = quickLaunch.OfType<SPNavigationNode>()
-                .FirstOrDefault(n => n.Url == rootNode.Url);
+            var existingNode = LookupNavigationNode(quickLaunch, rootNode);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

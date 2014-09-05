@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.Exceptions;
+using SPMeta2.SSOM.ModelHosts;
+using Microsoft.SharePoint;
+
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -12,7 +17,87 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var definition = model.WithAssertAndCast<FeatureDefinition>("model", value => value.RequireNotNull());
 
+            SPFeatureCollection features = null;
+            SPFeature spObject = null;
+
+            var assert = ServiceFactory.AssertService
+                   .NewAssert(definition, spObject);
+
+            switch (definition.Scope)
+            {
+                case FeatureDefinitionScope.Farm:
+                    assert.SkipProperty(m => m.Scope, "Correct farm scope");
+
+                    throw new SPMeta2NotImplementedException("Farm features are not supported yet.");
+                    break;
+
+                case FeatureDefinitionScope.WebApplication:
+
+                    assert.SkipProperty(m => m.Scope, "Correct web app scope");
+
+                    var webApplication = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
+                    features = webApplication.HostWebApplication.Features;
+
+                    break;
+
+                case FeatureDefinitionScope.Site:
+
+                    assert.SkipProperty(m => m.Scope, "Correct site scope");
+
+                    var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+                    features = siteModelHost.HostSite.Features;
+                    break;
+
+                case FeatureDefinitionScope.Web:
+
+                    assert.SkipProperty(m => m.Scope, "Correct web scope");
+
+                    var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                    features = webModelHost.HostWeb.Features;
+                    break;
+            }
+
+            spObject = GetFeature(features, definition);
+            assert.Dst = spObject;
+
+            assert
+                .ShouldBeEqual(m => m.Id, o => o.GetFeatureId());
+
+            if (definition.ForceActivate)
+            {
+                assert
+                    .SkipProperty(m => m.Enable, "ForceActivate = true. Expect not null feature instance.")
+                    .ShouldNotBeNull(spObject);
+            }
+            else
+            {
+                assert
+                  .SkipProperty(m => m.ForceActivate, "ForceActivate = false. Skipping.");
+            }
+
+
+            if (definition.Enable)
+            {
+                assert
+                    .SkipProperty(m => m.Enable, "Enable = true. Expect not null feature instance.")
+                    .ShouldNotBeNull(spObject);
+            }
+            else
+            {
+                assert
+                  .SkipProperty(m => m.Enable, "Enable = false. Expect null feature instance.")
+                  .ShouldBeNull(spObject);
+            }
+        }
+    }
+
+    internal static class SPFeatureExtensions
+    {
+        public static Guid GetFeatureId(this SPFeature feature)
+        {
+            return feature.Definition.Id;
         }
     }
 }

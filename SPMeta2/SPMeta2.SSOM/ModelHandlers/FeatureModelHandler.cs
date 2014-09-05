@@ -97,12 +97,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                    modelHost is WebModelHost;
         }
 
+        protected SPFeature GetFeature(SPFeatureCollection features, FeatureDefinition featureModel)
+        {
+            return features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
+        }
+
+        protected bool IsFeatureActivated(SPFeature currentFeature)
+        {
+            return currentFeature != null;
+        }
+
         private void ProcessFeature(
             object modelHost,
             SPFeatureCollection features, FeatureDefinition featureModel)
         {
-            var currentFeature = features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
-            var featureActivated = currentFeature != null;
+            var currentFeature = GetFeature(features, featureModel);
+            var featureActivated = IsFeatureActivated(currentFeature);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
