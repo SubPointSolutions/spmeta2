@@ -126,6 +126,7 @@
     <Compile Include="Services\CSOMProvisionService.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="Services\CSOMWebModelProvisionService.cs" />
+    <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

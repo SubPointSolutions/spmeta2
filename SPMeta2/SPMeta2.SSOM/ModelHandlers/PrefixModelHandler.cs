@@ -33,10 +33,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployPrefix(webAppModelHost.HostWebApplication, prefixDefinition);
         }
 
+        protected SPPrefix GetPrefix(SPWebApplication webApp, PrefixDefinition prefixDefinition)
+        {
+            var prefixes = webApp.Prefixes;
+            return prefixes.FirstOrDefault(p => p.Name.ToUpper() == prefixDefinition.Path.ToUpper());
+        }
+
         private void DeployPrefix(SPWebApplication webApp, PrefixDefinition prefixDefinition)
         {
             var prefixes = webApp.Prefixes;
-            var existingPrefix = prefixes.FirstOrDefault(p => p.Name.ToUpper() == prefixDefinition.Path.ToUpper());
+            var existingPrefix = GetPrefix(webApp, prefixDefinition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
