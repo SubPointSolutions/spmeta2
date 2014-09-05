@@ -32,7 +32,7 @@ namespace SPMeta2.Syntax.Default
 
                 IsAssociatedMemberGroup = definition.IsAssociatedMemberGroup,
                 IsAssociatedOwnerGroup = definition.IsAssociatedOwnerGroup,
-                IsAssociatedVisitorsGroup = definition.IsAssociatedVisitorsGroup
+                IsAssociatedVisitorGroup = definition.IsAssociatedVisitorsGroup
 
             }, action);
         }

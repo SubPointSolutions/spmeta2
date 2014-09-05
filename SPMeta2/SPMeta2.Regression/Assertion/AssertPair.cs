@@ -232,6 +232,21 @@ namespace SPMeta2.Regression.Assertion
             return InternalSkipProperty<int>(srcPropExp, message);
         }
 
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, bool>> srcPropExp, string message)
+        {
+            return InternalSkipProperty<bool>(srcPropExp, message);
+        }
+
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, uint>> srcPropExp, string message)
+        {
+            return InternalSkipProperty<uint>(srcPropExp, message);
+        }
+
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, Guid>> srcPropExp, string message)
+        {
+            return InternalSkipProperty<Guid>(srcPropExp, message);
+        }
+
         #endregion
 
     }

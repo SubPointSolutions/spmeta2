@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<package dslVersion="1.0.0.0" 
-        Id="9f8b9c1a-087a-4d1e-a43b-9b8a993fba88" 
-        solutionId="9f8b9c1a-087a-4d1e-a43b-9b8a993fba88" 
-        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
-        name="SPMeta2.Sandbox.TestApp"
-        sharePointProductVersion="15.0">
-</package>

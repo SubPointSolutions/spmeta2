@@ -65,7 +65,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private SPWeb ExtractWeb(object modelHost)
+        protected SPWeb ExtractWeb(object modelHost)
         {
             if (modelHost is SPWeb)
                 return modelHost as SPWeb;

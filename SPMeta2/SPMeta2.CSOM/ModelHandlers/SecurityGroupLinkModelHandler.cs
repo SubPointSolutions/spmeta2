@@ -143,7 +143,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 securityGroup = web.AssociatedOwnerGroup;
             }
-            else if (securityGroupLinkModel.IsAssociatedVisitorsGroup)
+            else if (securityGroupLinkModel.IsAssociatedVisitorGroup)
             {
                 context.Load(web, w => w.AssociatedVisitorGroup);
                 context.ExecuteQuery();

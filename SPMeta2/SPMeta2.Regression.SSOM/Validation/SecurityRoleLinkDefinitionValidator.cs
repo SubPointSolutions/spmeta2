@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -15,85 +16,75 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var modelHostContext = modelHost.WithAssertAndCast<SPMeta2.SSOM.ModelHosts.SecurityGroupModelHost>("modelHost", value => value.RequireNotNull());
-            var securityRoleLinkModel = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());
 
             var securableObject = modelHostContext.SecurableObject;
             var securityGroup = modelHostContext.SecurityGroup;
 
-            if (securableObject == null || securableObject is SPWeb)
+            var securityRole = ResolveSecurityRole(ExtractWeb(securableObject), definition);
+
+            var spObject = securableObject.RoleAssignments
+                                          .OfType<SPRoleAssignment>()
+                                          .FirstOrDefault(r => r.Member.ID == securityGroup.ID);
+
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
+
+            assert
+                 .ShouldNotBeNull(spObject);
+
+            if (!string.IsNullOrEmpty(definition.SecurityRoleName))
             {
-                // this is SPGroup -> SPRoleLink deployment
-                AssertSPGroupHost(securityGroup, securityGroup, securityRoleLinkModel);
-            }
-            else if (securableObject is SPList)
-            {
-                AssertSPListHost(securableObject as SPList, securityGroup, securityRoleLinkModel);
+
             }
             else
             {
-                throw new Exception(string.Format("modelHost of type:[{0}] is not supported.", modelHost.GetType()));
+                assert.SkipProperty(m => m.SecurityRoleName, "SecurityRoleName is null or empty. Skipping.");
             }
-        }
 
-        private void AssertSPListHost(SPList targetList, SPGroup securityGroup, SecurityRoleLinkDefinition securityRoleLinkModel)
-        {
-            var web = targetList.ParentWeb;
-            var role = ResolveSecurityRole(web, securityRoleLinkModel);
-
-            // check if roleAssignment has current  role
-
-            TraceUtils.WithScope(traceScope =>
+            if (!string.IsNullOrEmpty(definition.SecurityRoleType))
             {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", securityRoleLinkModel, targetList));
-
-                traceScope.WithTraceIndent(trace =>
+                assert.ShouldBeEqual((p, s, d) =>
                 {
-                    // asserting it exists
-                    traceScope.WriteLine(string.Format("Validating existance..."));
+                    var srcProp = s.GetExpressionValue(m => m.SecurityRoleType);
+                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
 
-                    var roleAssignment = targetList
-                                            .RoleAssignments
-                                            .OfType<SPRoleAssignment>()
-                                            .FirstOrDefault(r => r.Member.ID == securityGroup.ID);
+                    var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings.Contains(securityRole);
 
-                    Assert.IsNotNull(roleAssignment);
-
-                    traceScope.WriteLine(string.Format("Validating role presence..."));
-                    roleAssignment.RoleDefinitionBindings.Contains(role);
-
-                    traceScope.WriteLine(string.Format("Role [{0}] exists!", securityRoleLinkModel.SecurityRoleName));
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = hasRoleDefinitionBinding
+                    };
                 });
-            });
-        }
 
-        private void AssertSPGroupHost(SPGroup securableObject, SPGroup securityGroup, SecurityRoleLinkDefinition securityRoleLinkModel)
-        {
-            var web = securityGroup.ParentWeb;
-            var role = ResolveSecurityRole(web, securityRoleLinkModel);
-
-            TraceUtils.WithScope(traceScope =>
+            }
+            else
             {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", securityRoleLinkModel, web));
+                assert.SkipProperty(m => m.SecurityRoleType, "SecurityRoleType is null or empty. Skipping.");
+            }
 
-                traceScope.WithTraceIndent(trace =>
-                {
-                    traceScope.WriteLine(string.Format("Validating existance..."));
-                    
-                    var roleAssignment = web
-                                    .RoleAssignments
-                                    .OfType<SPRoleAssignment>()
-                                    .FirstOrDefault(r => r.Member.ID == securityGroup.ID);
+            if (definition.SecurityRoleId > 0)
+            {
 
-                    Assert.IsNotNull(roleAssignment);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SecurityRoleId, "SecurityRoleId == 0. Skipping.");
+            }
 
-                    traceScope.WriteLine(string.Format("Validating role presence..."));
-                    roleAssignment.RoleDefinitionBindings.Contains(role);
-
-                    traceScope.WriteLine(string.Format("Role [{0}] exists!", securityRoleLinkModel.SecurityRoleName));
-                });
-            });
         }
+
 
         #endregion
+    }
+
+    internal static class SPRoleAssignmentExtensinos
+    {
+        public static string GetRoleDefinitionBindings(this SPRoleAssignment assignment)
+        {
+            return assignment.RoleDefinitionBindings.ToString();
+        }
     }
 }

@@ -149,12 +149,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SandboxApps\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\SPMeta2.Sandbox.TestApp\bin\Debug\SPMeta2.Sandbox.TestApp.wsp">
-      <Link>SandboxApps\SPMeta2.Sandbox.TestApp.wsp</Link>
-    </EmbeddedResource>
     <None Include="SPMeta2.snk" />
   </ItemGroup>
   <ItemGroup>

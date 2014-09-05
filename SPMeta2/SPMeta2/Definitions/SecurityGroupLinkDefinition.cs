@@ -32,17 +32,21 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Flag to mimic out of the box AssociatedOwnerGroup
         /// </summary>
-        public bool IsAssociatedVisitorsGroup { get; set; }
+        /// 
+        [ExpectValidation]
+        public bool IsAssociatedVisitorGroup { get; set; }
 
         /// <summary>
         /// Flag to mimic AssociatedMemberGroup
         /// </summary>
+        /// 
+        [ExpectValidation]
         public bool IsAssociatedMemberGroup { get; set; }
 
         /// <summary>
         /// Flag to mimic AssociatedOwnerGroup
         /// </summary>
-
+        [ExpectValidation]
         public bool IsAssociatedOwnerGroup { get; set; }
 
         #endregion
