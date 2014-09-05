@@ -68,6 +68,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                // pageItem.Title = wikiPageModel.Title;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SPMeta2.Utils;
+using Microsoft.SharePoint;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -18,26 +19,29 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
-            var breakRoleInheritanceModel = model.WithAssertAndCast<BreakRoleInheritanceDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<BreakRoleInheritanceDefinition>("model", value => value.RequireNotNull());
 
-            ValidateRoleInheritance(modelHost, securableObject, breakRoleInheritanceModel);
+            var assert = ServiceFactory.AssertService
+                                      .NewAssert(definition, securableObject)
+                                            .ShouldNotBeNull(securableObject)
+                                            .ShouldBeEqual(m => m.ClearSubscopes, o => o.HasClearSubscopes())
+                //.ShouldBeEqual(m => m.CopyRoleAssignments, o => o.HasCopyRoleAssignments())
+                                            .ShouldBeEqual(m => m.ForceClearSubscopes, o => o.HasClearSubscopes());
         }
+    }
 
-        private void ValidateRoleInheritance(object modelHost, Microsoft.SharePoint.SPSecurableObject securableObject, BreakRoleInheritanceDefinition breakRoleInheritanceModel)
+    internal static class SPSecurableHelper
+    {
+        public static bool HasClearSubscopes(this SPSecurableObject secObject)
         {
-            TraceUtils.WithScope(traceScope =>
-            {
-                Trace.WriteLine(string.Format("Validate model: {0} BreakRoleInheritanceModel:{1}", securableObject, breakRoleInheritanceModel));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine("Validating HasUniqueRoleAssignments. Should be true.");
-                    trace.WriteLine("SPSecurableObject.HasUniqueRoleAssignments:" + securableObject.HasUniqueRoleAssignments);
-
-                    Assert.AreEqual(securableObject.HasUniqueRoleAssignments, true);
-                });
-            });
+            return secObject.RoleAssignments.Count == 0;
         }
+
+        public static bool HasCopyRoleAssignments(this SPSecurableObject secObject)
+        {
+            var parent = secObject.FirstUniqueAncestorSecurableObject;
+            return secObject.RoleAssignments == parent.RoleAssignments;
+        }
+
     }
 }

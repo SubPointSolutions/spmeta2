@@ -21,7 +21,7 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
-        [ExpectValidation]
+        //[ExpectValidation]
         public bool CopyRoleAssignments { get; set; }
 
         [ExpectValidation]

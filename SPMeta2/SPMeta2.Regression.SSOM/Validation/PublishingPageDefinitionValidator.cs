@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -10,39 +11,38 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class PublishingPageDefinitionValidator : PublishingPageModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
-            var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
+            var folder = listModelHost.CurrentLibraryFolder;
 
-            ValidatePublishingPage(modelHost, list, publishingPageModel);
+            var spObject = FindPublishingPage(folder, definition);
+
+            var assert = ServiceFactory.AssertService
+                                       .NewAssert(definition, spObject)
+                                             .ShouldNotBeNull(spObject)
+                                             .ShouldBeEqual(m => m.FileName, o => o.Name)
+                                             .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
+                                             .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
+                                             .ShouldBeEqual(m => m.Title, o => o.Title);
 
 
         }
+    }
 
-        private void ValidatePublishingPage(object modelHost, SPList list, PublishingPageDefinition publishingPageModel)
+    public static class SPListItemHelper
+    {
+        public static string GetPublishingPageDescription(this SPListItem item)
         {
-            //TraceUtils.WithScope(traceScope =>
-            //       {
-            //           traceScope.WriteLine(string.Format("Validate model:[{0}] web part page:[{1}]", webpartPageModel, spWebPartPage));
+            return item[BuiltInPublishingFieldId.Description] as string;
+        }
 
-            //           // asserting it exists
-            //           traceScope.WriteLine(string.Format("Validating existance..."));
-            //           Assert.IsNotNull(spWebPartPage);
-
-            //           traceScope.WriteLine(string.Format("Web part page exists!"));
-
-            //           // assert base properties
-            //           traceScope.WithTraceIndent(trace =>
-            //           {
-            //               var originalFileName = GetSafeWebPartPageFileName(webpartPageModel);
-
-            //               trace.WriteLine(string.Format("Validate Name: model:[{0}] field:[{1}]", originalFileName, spWebPartPage.Name));
-            //               Assert.AreEqual(originalFileName, spWebPartPage.Name);
-            //           });
-            //       });
+        public static string GetPublishingPagePageLayoutFileName(this SPListItem item)
+        {
+            return (new SPFieldUrlValue(item[BuiltInPublishingFieldId.PageLayout].ToString())).Url;
         }
     }
 }

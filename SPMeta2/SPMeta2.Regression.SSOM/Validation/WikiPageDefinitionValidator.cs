@@ -13,31 +13,16 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder; ;
+            var folder = folderModelHost.CurrentLibraryFolder;
+            var spObject = FindWikiPageItem(folder, definition);
 
-            var spWikiPageItem = FindWikiPageItem(folder, wikiPageModel);
-
-            TraceUtils.WithScope(traceScope =>
-            {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] wiki page:[{1}]", wikiPageModel, spWikiPageItem));
-
-                // asserting it exists
-                traceScope.WriteLine(string.Format("Validating existance..."));
-                Assert.IsNotNull(spWikiPageItem);
-
-                traceScope.WriteLine(string.Format("Wiki page exists!"));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    var originalFileName = GetSafeWikiPageFileName(wikiPageModel);
-
-                    trace.WriteLine(string.Format("Validate Name: model:[{0}] field:[{1}]", originalFileName, spWikiPageItem.Name));
-                    Assert.AreEqual(originalFileName, spWikiPageItem.Name);
-                });
-            });
+            var assert = ServiceFactory.AssertService
+                                      .NewAssert(definition, spObject)
+                                            .ShouldNotBeNull(spObject)
+                                            .ShouldBeEqual(m => m.FileName, o => o.Name)
+                                            .SkipProperty(m => m.Title, "Title field is not available for wiki pages.");
         }
     }
 }

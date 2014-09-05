@@ -4,7 +4,9 @@ using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -13,30 +15,70 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var folderModel = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
             var folder = folderModel.CurrentLibraryFolder;
-            var spWebPartPage = FindWebPartPage( folder, webpartPageModel);
+            var spObject = FindWebPartPage(folder, definition);
 
-            TraceUtils.WithScope(traceScope =>
+
+            var assert = ServiceFactory.AssertService
+                                     .NewAssert(definition, spObject)
+                                           .ShouldNotBeNull(spObject)
+                                           .ShouldBeEqual(m => m.FileName, o => o.Name);
+            //.ShouldBeEqual(m => m.Title, o => o.Title);
+
+            assert.SkipProperty(m => m.Title, "Web part pages don't have title. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.CustomPageLayout))
             {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] web part page:[{1}]", webpartPageModel, spWebPartPage));
+                var custmPageContent = Encoding.UTF8.GetBytes(definition.CustomPageLayout);
 
-                // asserting it exists
-                traceScope.WriteLine(string.Format("Validating existance..."));
-                Assert.IsNotNull(spWebPartPage);
+                assert.ShouldBeEqual(m => m.GetCustomnPageContent(), o => o.GetContent());
+                assert.SkipProperty(m => m.CustomPageLayout, "CustomPageLayout validated with GetCustomnPageContent() call before.");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CustomPageLayout, "CustomPageLayout is null or empty. Skipping.");
+            }
 
-                traceScope.WriteLine(string.Format("Web part page exists!"));
+            if (definition.PageLayoutTemplate > 0)
+            {
+                var pageTemplateContent = definition.GetWebPartPageTemplateContent();
 
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    var originalFileName = GetSafeWebPartPageFileName(webpartPageModel);
+                assert.ShouldBeEqual(m => m.GetWebPartPageTemplateContent(), o => o.GetContent());
+                assert.SkipProperty(m => m.PageLayoutTemplate, "PageLayoutTemplate validated with GetWebPartPageTemplateContent() call before.");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CustomPageLayout, "PageLayoutTemplate is o or less. Skipping.");
+            }
 
-                    trace.WriteLine(string.Format("Validate Name: model:[{0}] field:[{1}]", originalFileName, spWebPartPage.Name));
-                    Assert.AreEqual(originalFileName, spWebPartPage.Name);
-                });
-            });
+        }
+    }
+
+    internal static class WebPartPageDefinitionEx
+    {
+        public static byte[] GetWebPartPageTemplateContent(this WebPartPageDefinition definition)
+        {
+            return Encoding.UTF8.GetBytes(WebPartPageModelHandler.GetWebPartPageTemplateContent(definition));
+        }
+
+        public static byte[] GetCustomnPageContent(this WebPartPageDefinition definition)
+        {
+            return Encoding.UTF8.GetBytes(definition.CustomPageLayout);
+        }
+    }
+
+    internal static class SPListItemExtensions
+    {
+        public static byte[] GetContent(this SPListItem item)
+        {
+            byte[] result = null;
+
+            using (var stream = item.File.OpenBinaryStream())
+                result = ModuleFileUtils.ReadFully(stream);
+
+            return result;
         }
     }
 }

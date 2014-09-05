@@ -34,12 +34,16 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var srcProp = s.GetExpressionValue(def => def.Owner);
                 var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
+                var isValid = srcProp.Value.ToString().Replace("\\", "/") ==
+                              dstProp.Value.ToString().Replace("\\", "/");
+
+
                 return new PropertyValidationResult
                 {
                     Tag = p.Tag,
                     Src = srcProp,
                     Dst = dstProp,
-                    IsValid = srcProp.Value == dstProp.Value
+                    IsValid = isValid
                 };
             });
 
@@ -48,14 +52,18 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var srcProp = s.GetExpressionValue(def => def.DefaultUser);
                 var dstProp = d.GetExpressionValue(ct => ct.GetDefaultUserLoginName());
 
+                var isValid = srcProp.Value.ToString().Replace("\\", "/") ==
+                            dstProp.Value.ToString().Replace("\\", "/");
+
+
                 return new PropertyValidationResult
                 {
                     Tag = p.Tag,
                     Src = srcProp,
                     Dst = dstProp,
-                    IsValid = srcProp.Value == dstProp.Value
+                    IsValid = isValid
                 };
-            });           
+            });
         }
     }
 

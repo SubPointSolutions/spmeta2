@@ -158,6 +158,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
         {
+            return GetWebPartPageTemplateContent(webPartPageModel);
+        }
+
+        public static string GetWebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
+        {
             // gosh! would u like to offer a better way?
             switch (webPartPageModel.PageLayoutTemplate)
             {

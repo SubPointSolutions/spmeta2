@@ -15,30 +15,33 @@ namespace SPMeta2.Regression.SSOM.Validation
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
-            var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
-            var securityGroup = ResolveSecurityGroup(web, securityGroupLinkModel);
+            var spObject = ResolveSecurityGroup(web, definition);
 
-            //securableObject.RoleAssignments
+            var assert = ServiceFactory.AssertService
+                    .NewAssert(definition, spObject)
+                          .ShouldNotBeNull(spObject)
+                          .ShouldBeEqual(m => m.SecurityGroupName, o => o.Name);
 
-            TraceUtils.WithScope(traceScope =>
-            {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", securityGroupLinkModel, securityGroup));
+            //TraceUtils.WithScope(traceScope =>
+            //{
+            //    traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", definition, spObject));
 
-                traceScope.WithTraceIndent(trace =>
-                {
-                    // asserting it exists
-                    trace.WriteLine(string.Format("Validating existance..."));
+            //    traceScope.WithTraceIndent(trace =>
+            //    {
+            //        // asserting it exists
+            //        trace.WriteLine(string.Format("Validating existance..."));
 
-                    Assert.IsTrue(securableObject
-                                            .RoleAssignments
-                                            .OfType<SPRoleAssignment>()
-                                            .FirstOrDefault(a => a.Member.ID == securityGroup.ID) != null);
+            //        Assert.IsTrue(securableObject
+            //                                .RoleAssignments
+            //                                .OfType<SPRoleAssignment>()
+            //                                .FirstOrDefault(a => a.Member.ID == spObject.ID) != null);
 
-                    trace.WriteLine(string.Format("RoleAssignments for security group link [{0}] exists.", securityGroupLinkModel.SecurityGroupName));
-                });
-            });
+            //        trace.WriteLine(string.Format("RoleAssignments for security group link [{0}] exists.", definition.SecurityGroupName));
+            //    });
+            //});
         }
 
         #endregion
