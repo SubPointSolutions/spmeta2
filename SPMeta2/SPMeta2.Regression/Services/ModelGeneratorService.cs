@@ -184,7 +184,7 @@ namespace SPMeta2.Regression.Services
         private Type GetRootHostType<TDefinition>(SPObjectModelType objectModelType)
         {
             var hostAtrrs = typeof(TDefinition)
-                                       .GetCustomAttributes(true)
+                                       .GetCustomAttributes(false)
                                        .OfType<DefaultRootHostAttribute>()
                                        .ToList();
 
@@ -211,7 +211,7 @@ namespace SPMeta2.Regression.Services
             }
 
 
-            throw new SPMeta2NotImplementedException(string.Format("Unsupporter SPObjectModelType:[{0}]", objectModelType));
+            throw new SPMeta2NotImplementedException(string.Format("Unsupported SPObjectModelType:[{0}]", objectModelType));
 
         }
 
@@ -223,7 +223,7 @@ namespace SPMeta2.Regression.Services
         private Type GetParentHostType(Type type, SPObjectModelType objectModelType)
         {
             var hostAtrrs = type
-                                      .GetCustomAttributes(true)
+                                      .GetCustomAttributes(false)
                                       .OfType<DefaultParentHostAttribute>()
                                       .ToList();
 

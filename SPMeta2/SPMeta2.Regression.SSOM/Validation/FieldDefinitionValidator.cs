@@ -20,19 +20,14 @@ namespace SPMeta2.Regression.SSOM.Validation
             var site = typedModelHost.HostSite;
             var spObject = GetField(modelHost, definition);
 
-            ValidateField(definition, spObject);
-        }
-
-        private static void ValidateField(FieldDefinition definition, SPField spObject)
-        {
             ServiceFactory.AssertService
-                          .NewAssert(definition, spObject)
-                                .ShouldBeEqual(m => m.Title, o => o.Title)
-                                .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                                .ShouldBeEqual(m => m.Group, o => o.Group)
-                                .ShouldBeEqual(m => m.Id, o => o.Id)
-                                .ShouldBeEqual(m => m.Description, o => o.Description)
-                                .ShouldBeEqual(m => m.Required, o => o.Required);
+                           .NewAssert(definition, spObject)
+                                 .ShouldBeEqual(m => m.Title, o => o.Title)
+                                 .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
+                                 .ShouldBeEqual(m => m.Group, o => o.Group)
+                                 .ShouldBeEqual(m => m.Id, o => o.Id)
+                                 .ShouldBeEqual(m => m.Description, o => o.Description)
+                                 .ShouldBeEqual(m => m.Required, o => o.Required);
         }
     }
 }
