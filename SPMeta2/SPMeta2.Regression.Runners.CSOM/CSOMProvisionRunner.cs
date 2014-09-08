@@ -127,8 +127,8 @@ namespace SPMeta2.Regression.Runners.CSOM
             {
                 using (var context = new ClientContext(siteUrl))
                 {
-                    context.Credentials = new SharePointOnlineCredentials(userName,
-                        GetSecurePasswordString(userPassword));
+                    //context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
+
                     action(context);
                 }
             }

@@ -129,6 +129,20 @@ namespace SPMeta2.CSOM.ModelHandlers
             return parentWeb;
         }
 
+        protected Web GetWeb(Web parentWeb, WebDefinition definition)
+        {
+            var currentWebUrl = GetCurrentWebUrl(parentWeb.Context, parentWeb, definition);
+
+            var tmp = new ClientContext(currentWebUrl);
+
+            tmp.Credentials = parentWeb.Context.Credentials;
+
+            tmp.Load(tmp.Web);
+            tmp.ExecuteQuery();
+
+            return tmp.Web;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var parentWeb = ExtractWeb(modelHost);

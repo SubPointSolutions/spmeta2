@@ -34,7 +34,17 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         private void ValidateListField(ListModelHost listModelHost, DefinitionBase model, FieldDefinition definition)
         {
-            throw new SPMeta2NotImplementedException();
+            var spObject = FindListField(listModelHost.HostList, definition);
+
+            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
+
+            assert
+                .ShouldBeEqual(m => m.Title, o => o.Title)
+                    .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
+                    .ShouldBeEqual(m => m.Id, o => o.Id)
+                    .ShouldBeEqual(m => m.Required, o => o.Required)
+                    .ShouldBeEqual(m => m.Description, o => o.Description)
+                    .ShouldBeEqual(m => m.Group, o => o.Group);
         }
 
         private void ValidateSiteField(SiteModelHost siteModelHost, DefinitionBase model, FieldDefinition definition)
@@ -47,13 +57,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                     .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
                     .ShouldBeEqual(m => m.Id, o => o.Id)
+                    .ShouldBeEqual(m => m.Required, o => o.Required)
                     .ShouldBeEqual(m => m.Description, o => o.Description)
                     .ShouldBeEqual(m => m.Group, o => o.Group);
-        }
-
-        public override System.Type TargetType
-        {
-            get { return typeof(FieldDefinition); }
         }
     }
 }

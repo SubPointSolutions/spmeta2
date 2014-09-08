@@ -15,7 +15,15 @@ namespace SPMeta2.Regression.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
+                def.Port = 1000 + Rnd.Int(20000);
 
+                def.AllowAnonymousAccess = false;
+                def.ManagedAccount = Rnd.UserName();
+
+                def.CreateNewDatabase = true;
+
+                def.DatabaseServer = Rnd.DbServerName();
+                def.DatabaseName = Rnd.String();
             });
         }
     }

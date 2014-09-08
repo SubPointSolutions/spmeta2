@@ -27,6 +27,8 @@ namespace SPMeta2.Regression.Services
         public abstract string UserLogin();
         public abstract string UserName();
 
+        public abstract string DbServerName();
+
         public abstract string UserEmail();
 
         public abstract string ManagedPath();

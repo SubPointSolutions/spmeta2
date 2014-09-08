@@ -90,5 +90,10 @@ namespace SPMeta2.Regression.Services.Rnd
         {
             return Encoding.UTF8.GetBytes(String());
         }
+
+        public override string DbServerName()
+        {
+            return string.Format("{0}", Environment.MachineName);
+        }
     }
 }

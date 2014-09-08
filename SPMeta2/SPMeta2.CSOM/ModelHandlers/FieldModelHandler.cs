@@ -70,6 +70,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentField = DeployListField(modelHost as List, fieldModel);
             }
 
+            currentField.Required = fieldModel.Required;
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -81,6 +83,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
             InvokeOnModelEvent<FieldDefinition, Field>(currentField, ModelEventType.OnUpdated);
+
+           
 
             currentField.UpdateAndPushChanges(true);
             context.ExecuteQuery();

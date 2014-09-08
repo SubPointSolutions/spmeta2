@@ -4,6 +4,7 @@ using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Regression.Common;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Regression.SSOM.Utils;
@@ -38,18 +39,25 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 .ShouldBeEqual(m => m.Description, o => o.Description)
-                .ShouldBeEqual(m => m.GetServerRelativeUrl(web), o => o.GetServerRelativeUrl())
+                .ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 
             if (definition.TemplateType > 0)
             {
-                assert
-                    .ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate);
+                assert.ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate);
             }
             else
             {
-                //assert
-                //    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType shoule be > 0");
+                assert.SkipProperty(m => m.TemplateType, "TemplateType == 0. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.TemplateName))
+            {
+                throw new SPMeta2NotImplementedException("TemplateName validation for List is not supported yet.");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TemplateName, "TemplateName is null or empty. Skipping.");
             }
         }
     }

@@ -41,43 +41,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                     //.ShouldBeEqual(m => m.TemplateName, o => (int)o.BaseTemplate)
                     .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType should be > 0");
             }
-
-            //TraceUtils.WithScope(traceScope =>
-            //{
-
-
-            //    traceScope.WriteLine(string.Format("Validate model:[{0}] field:[{1}]", definition, spObject));
-
-            //    // assert base properties
-            //    traceScope.WithTraceIndent(trace =>
-            //    {
-            //        trace.WriteLine(string.Format("Validate Title: model:[{0}] list:[{1}]", definition.Title, spObject.Title));
-            //        Assert.AreEqual(definition.Title, spObject.Title);
-
-            //        trace.WriteLine(string.Format("Validate Description: model:[{0}] list:[{1}]", definition.Description, spObject.Description));
-            //        Assert.AreEqual(definition.Description, spObject.Description);
-
-            //        trace.WriteLine(string.Format("Validate ContentTypesEnabled: model:[{0}] list:[{1}]", definition.ContentTypesEnabled, spObject.ContentTypesEnabled));
-            //        Assert.AreEqual(definition.ContentTypesEnabled, spObject.ContentTypesEnabled);
-
-            //        // TODO
-            //        // template type & template name
-            //        if (definition.TemplateType > 0)
-            //        {
-            //            trace.WriteLine(string.Format("Validate TemplateType: model:[{0}] list:[{1}]", definition.TemplateType, spObject.BaseTemplate));
-            //            Assert.AreEqual(definition.TemplateType, (int)spObject.BaseTemplate);
-            //        }
-            //        else
-            //        {
-            //            trace.WriteLine(string.Format("Skipping TemplateType check. It is 0"));
-            //        }
-
-            //        // TODO
-            //        // url checking
-            //        trace.WriteLine(string.Format("Validate Url: model:[{0}] list:[{1}]", definition.GetListUrl(), spObject.RootFolder.ServerRelativeUrl));
-            //        Assert.IsTrue(spObject.RootFolder.ServerRelativeUrl.Contains(definition.GetListUrl()));
-            //    });
-            //});
         }
     }
 
