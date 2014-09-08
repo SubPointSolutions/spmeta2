@@ -18,8 +18,8 @@ namespace SPMeta2.Regression.DefinitionGenerators
                 def.Id = Rnd.String();
                 def.Title = Rnd.String();
 
-                def.ZoneId = "Main";
-                def.ZoneIndex = 10;
+                def.ZoneId = "FullPage";
+                def.ZoneIndex = 0;
 
                 //def.WebpartXmlTemplate = DefaultWebpartTemplates.ContentEditorWebpart;
                 def.WebpartFileName = BuiltInWebpartFileNames.MSContentEditor;

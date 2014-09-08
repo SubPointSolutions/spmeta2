@@ -7,6 +7,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -20,6 +21,50 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                              .NewAssert(definition, spObject)
                                    .ShouldNotBeNull(spObject);
+
+            if (definition.FieldId.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.FieldId);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = object.Equals(s.Value, d[s.FieldId.Value])
+                    };
+                });
+
+                assert.SkipProperty(m => m.Value, string.Format("Value validated with FieldId and actual value:[{0}]", spObject[definition.FieldId.Value]));
+            }
+            else
+            {
+                assert.SkipProperty(m => m.FieldId, "FieldId is null. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.FieldName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.FieldName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = object.Equals(s.Value, d[s.FieldName])
+                    };
+                });
+
+                assert.SkipProperty(m => m.Value, string.Format("Value validated with FieldName and actual value:[{0}]", spObject[definition.FieldName]));
+            }
+            else
+            {
+                assert.SkipProperty(m => m.FieldName, "FieldName is null. Skipping.");
+            }
         }
     }
 }

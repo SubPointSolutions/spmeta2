@@ -84,6 +84,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     HostWeb = currentWeb
                 });
+
+                currentWeb.Update();
             }
         }
 

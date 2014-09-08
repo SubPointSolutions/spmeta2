@@ -36,7 +36,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                                  .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
                                  .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments)
                                  .ShouldBeEqual(m => m.Description, o => o.Description);
-            //.ShouldBeEqual(m => m.LCID, o => o.loc);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

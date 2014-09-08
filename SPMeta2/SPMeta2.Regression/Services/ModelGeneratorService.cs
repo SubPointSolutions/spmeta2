@@ -47,14 +47,23 @@ namespace SPMeta2.Regression.Services
             }
         }
 
+        private class GeneratedArtifact
+        {
+            public DefinitionBase Definition { get; set; }
+            public IEnumerable<string> AdditionalDefinitions { get; set; }
+
+        }
+
         public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
              where TDefinition : DefinitionBase, new()
         {
+            ModelNode result = null;
+
             var rootHostType = GetRootHostType<TDefinition>(objectModelType);
             var parentHostType = GetParentHostType<TDefinition>(objectModelType);
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
-            var defs = new List<DefinitionBase>();
+            var defs = new List<GeneratedArtifact>();
 
             LookupModelTree<TDefinition>(rootHostType, defs, objectModelType);
 
@@ -62,7 +71,7 @@ namespace SPMeta2.Regression.Services
             {
                 defs.Reverse();
 
-                var rootHost = defs[0];
+                var rootHost = defs[0].Definition;
                 parentHostType = rootHost.GetType();
 
                 defs.RemoveAt(0);
@@ -86,49 +95,67 @@ namespace SPMeta2.Regression.Services
                 foreach (var def in defs)
                 {
                     _m
-                   .AddDefinitionNode(def, currentDef =>
-                   {
-                       _m = currentDef;
-
-                   });
+                       .AddDefinitionNode(def.Definition, currentDef =>
+                       {
+                           _m = currentDef;
+                       });
                 }
 
                 _m.AddDefinitionNode(currentDefinition);
 
 
-                return model;
+                result = model;
             }
-
-            ModelNode resultModel = null;
-
-            if (currentDefinition.GetType() == typeof(FarmDefinition))
-                resultModel = SPMeta2Model.NewFarmModel();
-
-            if (currentDefinition.GetType() == typeof(WebApplicationDefinition))
-                resultModel = SPMeta2Model.NewWebApplicationModel();
-
-            if (currentDefinition.GetType() == typeof(SiteDefinition))
-                resultModel = SPMeta2Model.NewSiteModel();
-
-            if (currentDefinition.GetType() == typeof(WebDefinition))
-                resultModel = SPMeta2Model.NewWebModel();
-
-            if (resultModel == null)
+            else
             {
-                throw new SPMeta2NotImplementedException(string.Format("Cannot find host model for type:[{0}]. Ensure correct RootHostAttribute/ParentHostAttribute/SPObjectTypeAttribute attributes.", typeof(TDefinition).AssemblyQualifiedName));
+                ModelNode resultModel = null;
+
+                if (currentDefinition.GetType() == typeof(FarmDefinition))
+                    resultModel = SPMeta2Model.NewFarmModel();
+
+                if (currentDefinition.GetType() == typeof(WebApplicationDefinition))
+                    resultModel = SPMeta2Model.NewWebApplicationModel();
+
+                if (currentDefinition.GetType() == typeof(SiteDefinition))
+                    resultModel = SPMeta2Model.NewSiteModel();
+
+                if (currentDefinition.GetType() == typeof(WebDefinition))
+                    resultModel = SPMeta2Model.NewWebModel();
+
+                if (resultModel == null)
+                {
+                    throw new SPMeta2NotImplementedException(string.Format("Cannot find host model for type:[{0}]. Ensure correct RootHostAttribute/ParentHostAttribute/SPObjectTypeAttribute attributes.", typeof(TDefinition).AssemblyQualifiedName));
+                }
+
+                resultModel.Value = currentDefinition;
+                result = resultModel;
             }
 
-            resultModel.Value = currentDefinition;
+            // ProcessAdditionalArtifacts(result, defs);
 
-            return resultModel;
+            return result;
         }
 
-        private void LookupModelTree<TDefinition>(Type rootHostType, List<DefinitionBase> defs, SPObjectModelType objectModelType)
+        private void ProcessAdditionalArtifacts(ModelNode model, List<GeneratedArtifact> defs)
+        {
+            foreach (var gen in defs)
+            {
+                if (gen.AdditionalDefinitions == null)
+                    continue;
+
+                foreach (var def in gen.AdditionalDefinitions)
+                {
+
+                }
+            }
+        }
+
+        private void LookupModelTree<TDefinition>(Type rootHostType, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
         {
             LookupModelTree(rootHostType, typeof(TDefinition), defs, objectModelType);
         }
 
-        private void LookupModelTree(Type rootHostType, Type type, List<DefinitionBase> defs, SPObjectModelType objectModelType)
+        private void LookupModelTree(Type rootHostType, Type type, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
         {
             if (rootHostType == null)
                 return;
@@ -144,13 +171,20 @@ namespace SPMeta2.Regression.Services
                 var upParentHostType = GetParentHostType(parentHostType, objectModelType);
 
                 var definition = GetRandomDefinition(upParentHostType);
-                defs.Add(definition);
+                defs.Add(new GeneratedArtifact
+                {
+                    Definition = definition
+                });
 
                 LookupModelTree(rootHostType, upParentHostType, defs, objectModelType);
             }
             else
             {
-                defs.Add(customParentHost);
+                defs.Add(new GeneratedArtifact
+                {
+                    Definition = customParentHost
+                });
+
                 LookupModelTree(rootHostType, customParentHost.GetType(), defs, objectModelType);
             }
         }
@@ -180,6 +214,17 @@ namespace SPMeta2.Regression.Services
 
             return definitionGenrator.GenerateRandomDefinition();
         }
+
+        private IEnumerable<DefinitionBase> GetAdditionalDefinitions(Type type)
+        {
+            if (!DefinitionGenerators.ContainsKey(type))
+                throw new SPMeta2NotImplementedException(string.Format("Cannot find definition generator for type:[{0}]", type.AssemblyQualifiedName));
+
+            var definitionGenrator = DefinitionGenerators[type];
+
+            return definitionGenrator.GetAdditionalArtifacts();
+        }
+
 
         private Type GetRootHostType<TDefinition>(SPObjectModelType objectModelType)
         {

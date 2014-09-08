@@ -9,12 +9,13 @@ using Microsoft.SharePoint;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.Extensions
 {
     public static class WebPartExtensions
     {
-        private static System.Web.UI.WebControls.WebParts.WebPart ResolveWebPartInstance(SPSite site,
+        public static System.Web.UI.WebControls.WebParts.WebPart ResolveWebPartInstance(SPSite site,
            SPLimitedWebPartManager webPartManager,
            WebPartDefinition webpartModel)
         {
@@ -81,6 +82,38 @@ namespace SPMeta2.SSOM.Extensions
             IEnumerable<WebPartDefinition> webpartDefinitions)
         {
             DeployWebPartsToPage(webPartManager, webpartDefinitions, null, null);
+        }
+
+        public static void WithExistingWebPart(SPListItem targetPage,
+            WebPartDefinition definition,
+            Action<SPLimitedWebPartManager, WebPart> webpart)
+        {
+            WithLimitedWebPartManager(targetPage, webPartManager =>
+            {
+                var webParts = webPartManager.WebParts.OfType<WebPart>();
+
+                // by ID
+                var currentWebPart = webParts.FirstOrDefault(wp =>
+                                                !string.IsNullOrEmpty(wp.ID) &&
+                                                wp.ID.ToUpper() == definition.Id.ToUpper());
+
+                // by type
+                if (currentWebPart == null)
+                {
+                    var webPartInstance = ResolveWebPartInstance(webPartManager.Web.Site, webPartManager, definition);
+                    var webPartInstanceType = webPartInstance.GetType();
+
+                    currentWebPart = webParts.FirstOrDefault(wp => wp.GetType() == webPartInstanceType);
+                }
+
+                if (currentWebPart != null)
+                    webpart(webPartManager, currentWebPart);
+                else
+                {
+                    throw new SPMeta2Exception(string.Format("Cannot lookup web part by definition:[{0}]", definition));
+                }
+            });
+
         }
 
         public static void DeployWebPartsToPage(SPLimitedWebPartManager webPartManager,
@@ -152,17 +185,24 @@ namespace SPMeta2.SSOM.Extensions
             }
         }
 
+        public static void WithLimitedWebPartManager(SPListItem targetPage, Action<SPLimitedWebPartManager> action)
+        {
+            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            {
+                action(webPartManager);
+            }
+        }
+
         public static void DeployWebPartsToPage(SPListItem targetPage, IEnumerable<WebPartDefinition> webpartDefinitions)
         {
             var webPartModels = webpartDefinitions;
 
             if (!webPartModels.Any()) return;
 
-            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            WithLimitedWebPartManager(targetPage, webPartManager =>
             {
                 DeployWebPartsToPage(webPartManager, webpartDefinitions);
-            }
+            });
         }
-
     }
 }

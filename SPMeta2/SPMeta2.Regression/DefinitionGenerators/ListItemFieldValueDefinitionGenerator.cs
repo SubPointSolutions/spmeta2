@@ -15,8 +15,8 @@ namespace SPMeta2.Regression.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.FieldName = "Title";
-                def.Value = Rnd.String();
+                def.FieldId = BuiltInFieldId.Order;
+                def.Value = Math.Ceiling(Rnd.Double(100));
             });
         }
     }

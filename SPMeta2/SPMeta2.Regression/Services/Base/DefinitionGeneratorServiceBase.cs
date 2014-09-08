@@ -22,6 +22,11 @@ namespace SPMeta2.Regression.Services.Base
             return null;
         }
 
+        public virtual IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            return Enumerable.Empty<DefinitionBase>();
+        }
+
         public virtual DefinitionBase GenerateRandomDefinition()
         {
             return GenerateRandomDefinition(null);

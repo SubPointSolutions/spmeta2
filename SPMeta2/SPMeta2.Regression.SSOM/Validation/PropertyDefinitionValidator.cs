@@ -9,6 +9,7 @@ using SPMeta2.Utils;
 
 
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Assertion;
 namespace SPMeta2.Regression.SSOM.Validation
 {
     public class PropertyDefinitionValidator : PropertyModelHandler
@@ -18,18 +19,52 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var properties = ExtractProperties(modelHost);
-            var propertyModel = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
 
-            ValidateProperty(modelHost, properties, propertyModel);
-        }
+            var propertyValue = properties[definition.Key];
 
-        private void ValidateProperty(object modelHost, System.Collections.Hashtable properties, PropertyDefinition definition)
-        {
-            //ServiceFactory.AssertService
-            //            .NewAssert(definition, properties)
-            //                  .ShouldBeEqual(m => m.Key, o => o.Keys)
-            //                  .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
-            //                  .ShouldBeEqual(m => m.Description, o => o.Description);
+            var assert = ServiceFactory.AssertService
+                                      .NewAssert(definition, propertyValue)
+                                            .ShouldNotBeNull(propertyValue);
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Key);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = null,
+                    IsValid = properties.ContainsKey(s.Key)
+                };
+            });
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Value);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = null,
+                    IsValid = properties[s.Key] != null
+                };
+            });
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Overwrite);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = null,
+                    IsValid = object.Equals(properties[s.Key], s.Value)
+                };
+            });
         }
 
         #endregion

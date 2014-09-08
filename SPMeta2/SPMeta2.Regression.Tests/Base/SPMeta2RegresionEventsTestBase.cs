@@ -209,7 +209,7 @@ namespace SPMeta2.Regression.Tests.Base
             throw new SPMeta2NotSupportedException(string.Format("Cannot find SPObjectModelType type for runer of type:[{0}]", runner.Name));
         }
 
-        protected void TestRandomDefinition<TDefinition>() 
+        protected void TestRandomDefinition<TDefinition>()
             where TDefinition : DefinitionBase, new()
         {
             var frame = new StackFrame(1);
@@ -226,6 +226,7 @@ namespace SPMeta2.Regression.Tests.Base
                 var omModelType = GetRunnerType(runner);
 
                 var sandboxService = new ModelGeneratorService();
+
                 var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
 
                 var hooks = GetHooks(definitionSandbox);

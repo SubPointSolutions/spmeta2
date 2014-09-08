@@ -20,3 +20,4 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Co
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\bin\Debug\SPMeta2.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Common\obj\Debug\SPMeta2.Common.csprojResolveAssemblyReference.cache

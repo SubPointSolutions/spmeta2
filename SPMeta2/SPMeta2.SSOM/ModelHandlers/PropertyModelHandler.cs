@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             var properties = ExtractProperties(modelHost);
             var propertyModel = model.WithAssertAndCast<PropertyDefinition>("model", value => value.RequireNotNull());
 
-            DeployProperty(modelHost,properties, propertyModel);
+            DeployProperty(modelHost, properties, propertyModel);
         }
 
         protected Hashtable ExtractProperties(object modelHost)

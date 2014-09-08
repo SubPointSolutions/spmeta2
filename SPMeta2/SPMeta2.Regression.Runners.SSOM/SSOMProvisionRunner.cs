@@ -11,6 +11,7 @@ using SPMeta2.Regression.SSOM;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
 using Microsoft.SharePoint.Administration;
+using System.Web.UI.WebControls.WebParts;
 
 namespace SPMeta2.Regression.Runners.SSOM
 {
@@ -38,7 +39,8 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         public override string ResolveFullTypeName(string typeName, string assemblyName)
         {
-            var tt = typeof(SPField);
+            var sp = typeof(SPField);
+            var wp = typeof(WebPart);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
