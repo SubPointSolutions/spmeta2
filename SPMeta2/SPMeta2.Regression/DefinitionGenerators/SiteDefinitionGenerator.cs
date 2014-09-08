@@ -20,11 +20,11 @@ namespace SPMeta2.Regression.DefinitionGenerators
                 def.Name = Rnd.String();
                 def.Description = Rnd.String();
 
-                def.OwnerLogin = Rnd.UserLogin();
+                def.OwnerLogin = Rnd.UserName();
                 def.OwnerName = Rnd.UserName();
                 def.OwnerEmail = Rnd.UserEmail();
 
-                def.SecondaryContactLogin = Rnd.UserLogin();
+                def.SecondaryContactLogin = Rnd.UserName();
                 def.SecondaryContactName = Rnd.UserName();
                 def.SecondaryContactEmail = Rnd.UserEmail();
 

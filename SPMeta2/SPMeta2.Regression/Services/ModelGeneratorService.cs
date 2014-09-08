@@ -250,7 +250,8 @@ namespace SPMeta2.Regression.Services
 
                 case SPObjectModelType.SSOM:
                     {
-
+                        var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultRootHostAttribute));
+                        return defaultHost.HostType;
 
                     }; break;
             }
@@ -289,7 +290,8 @@ namespace SPMeta2.Regression.Services
 
                 case SPObjectModelType.SSOM:
                     {
-
+                        var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultParentHostAttribute));
+                        return defaultHost.HostType;
 
                     }; break;
             }

@@ -19,6 +19,15 @@ namespace SPMeta2.Definitions
     [Serializable]
     public class SiteDefinition : DefinitionBase
     {
+        #region constructors
+
+        public SiteDefinition()
+        {
+            LCID = 1033;
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>

@@ -149,6 +149,69 @@ namespace SPMeta2.Regression.Assertion
 
         #endregion
 
+        #region should be part of
+
+        public AssertPair<TSrc, TDst> ShouldBePartOf(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
+        {
+            return ShouldBePartOf(srcExp, srcExp, dstExp, dstExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBePartOf(Expression<Func<TSrc, string>> srcExp, Expression<Func<TSrc, string>> srcAlias, Expression<Func<TDst, string>> dstExp, Expression<Func<TDst, string>> dstAlias)
+        {
+            var srcProp = Src.GetExpressionValue<TSrc, string>(srcExp);
+            var dstProp = Dst.GetExpressionValue<TDst, string>(dstExp);
+
+            var srcPropAlias = Src.GetExpressionValue<TSrc, string>(srcAlias);
+            var dstPropAlias = Dst.GetExpressionValue<TDst, string>(dstAlias);
+
+            InvokeOnPropertyValidated(this, new OnPropertyValidatedEventArgs
+            {
+                Result = new PropertyValidationResult
+                {
+                    Tag = this.Tag,
+                    Src = srcPropAlias,
+                    Dst = dstPropAlias,
+                    IsValid = dstProp.Value.ToString().Contains(srcProp.Value.ToString())
+                }
+            });
+
+            return this;
+        }
+
+        #endregion
+
+
+        #region should be start of
+
+        public AssertPair<TSrc, TDst> ShouldBeStartOf(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
+        {
+            return ShouldBeStartOf(srcExp, srcExp, dstExp, dstExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeStartOf(Expression<Func<TSrc, string>> srcExp, Expression<Func<TSrc, string>> srcAlias, Expression<Func<TDst, string>> dstExp, Expression<Func<TDst, string>> dstAlias)
+        {
+            var srcProp = Src.GetExpressionValue<TSrc, string>(srcExp);
+            var dstProp = Dst.GetExpressionValue<TDst, string>(dstExp);
+
+            var srcPropAlias = Src.GetExpressionValue<TSrc, string>(srcAlias);
+            var dstPropAlias = Dst.GetExpressionValue<TDst, string>(dstAlias);
+
+            InvokeOnPropertyValidated(this, new OnPropertyValidatedEventArgs
+            {
+                Result = new PropertyValidationResult
+                {
+                    Tag = this.Tag,
+                    Src = srcPropAlias,
+                    Dst = dstPropAlias,
+                    IsValid = dstProp.Value.ToString().StartsWith(srcProp.Value.ToString())
+                }
+            });
+
+            return this;
+        }
+
+        #endregion
+
         #region should be end of
 
         public AssertPair<TSrc, TDst> ShouldBeEndOf(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
