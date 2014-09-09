@@ -49,6 +49,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             return null;
         }
 
+        protected ListItem FindPublishingPage(Folder folder, PublishingPageDefinition definition)
+        {
+            var pageName = GetSafePageFileName(definition);
+            var file = GetCurrentPage(folder, pageName);
+
+            if (file != null)
+                return file.ListItemAllFields;
+
+            return null;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());

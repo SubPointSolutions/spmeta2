@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Assertion;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
 
@@ -10,38 +11,104 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientSecurityGroupLinkDefinitionValidator : SecurityGroupLinkModelHandler
     {
-         public override void DeployModel(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
-            var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());
 
             var web = GetWebFromSPSecurableObject(securableObject);
-
             var context = web.Context;
 
             context.Load(web, w => w.SiteGroups);
+
+            context.Load(web, w => w.AssociatedMemberGroup);
+            context.Load(web, w => w.AssociatedOwnerGroup);
+            context.Load(web, w => w.AssociatedVisitorGroup);
+
             context.Load(securableObject, s => s.RoleAssignments.Include(r => r.Member));
 
             context.ExecuteQuery();
 
-            Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
- 
-            TraceUtils.WithScope(traceScope =>
+            var spObject = ResolveSecurityGroup(definition, web, context);
+
+            var assert = ServiceFactory.AssertService
+                    .NewAssert(definition, spObject)
+                          .ShouldNotBeNull(spObject);
+
+
+            if (!string.IsNullOrEmpty(definition.SecurityGroupName))
+                assert.ShouldBeEqual(m => m.SecurityGroupName, o => o.Title);
+            else
+                assert.SkipProperty(m => m.SecurityGroupName, "SecurityGroupName is null or empty. Skipping.");
+
+            if (definition.IsAssociatedMemberGroup)
             {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", securityGroupLinkModel, securityGroup));
-
-                traceScope.WithTraceIndent(trace =>
+                assert.ShouldBeEqual((p, s, d) =>
                 {
-                    // asserting it exists
-                    trace.WriteLine(string.Format("Validating existance..."));
+                    var srcProp = s.GetExpressionValue(m => m.IsAssociatedMemberGroup);
+                    var assosiatedMemberGroup = web.AssociatedMemberGroup;
 
-                    var existingRoleAssignments = FindClientRoleRoleAssignment(securableObject.RoleAssignments, securityGroup);
+                    var isValid = spObject.Id == assosiatedMemberGroup.Id;
 
-                    Assert.IsNotNull(existingRoleAssignments);
-
-                    trace.WriteLine(string.Format("RoleAssignments for security group link [{0}] exists.", securityGroupLinkModel.SecurityGroupName));
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        //Dst = dstProp,
+                        IsValid = isValid
+                    };
                 });
-            });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsAssociatedMemberGroup, "IsAssociatedMemberGroup is false. Skipping.");
+            }
+
+            if (definition.IsAssociatedOwnerGroup)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.IsAssociatedOwnerGroup);
+                    var assosiatedOwnerGroup = web.AssociatedOwnerGroup;
+
+                    var isValid = spObject.Id == assosiatedOwnerGroup.Id;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        //Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsAssociatedOwnerGroup, "IsAssociatedOwnerGroup is false. Skipping.");
+            }
+
+            if (definition.IsAssociatedVisitorGroup)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.IsAssociatedVisitorGroup);
+                    var assosiatedVisitorGroup = web.AssociatedVisitorGroup;
+
+                    var isValid = spObject.Id == assosiatedVisitorGroup.Id;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        //Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsAssociatedVisitorGroup, "IsAssociatedVisitorsGroup is false. Skipping.");
+            }
         }
 
         protected RoleAssignment FindClientRoleRoleAssignment(RoleAssignmentCollection roleAssignments, Group securityGroup)
@@ -53,4 +120,22 @@ namespace SPMeta2.Regression.CSOM.Validation
             return null;
         }
     }
+
+    //internal static class SPGroupLinkExtensions
+    //{
+    //    public static Group GetAssociatedVisitorGroup(this Group group)
+    //    {
+    //        return group.we.AssociatedVisitorGroup;
+    //    }
+
+    //    public static SPGroup GetAssociatedOwnerGroup(this SPGroup group)
+    //    {
+    //        return group.ParentWeb.AssociatedOwnerGroup;
+    //    }
+
+    //    public static SPGroup GetAssociatedMemberGroup(this SPGroup group)
+    //    {
+    //        return group.ParentWeb.AssociatedMemberGroup;
+    //    }
+    //}
 }

@@ -99,24 +99,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.IsAssociatedVisitorGroup, "IsAssociatedVisitorsGroup is false. Skipping.");
             }
-
-            //TraceUtils.WithScope(traceScope =>
-            //{
-            //    traceScope.WriteLine(string.Format("Validate model:[{0}] securableObject:[{1}]", definition, spObject));
-
-            //    traceScope.WithTraceIndent(trace =>
-            //    {
-            //        // asserting it exists
-            //        trace.WriteLine(string.Format("Validating existance..."));
-
-            //        Assert.IsTrue(securableObject
-            //                                .RoleAssignments
-            //                                .OfType<SPRoleAssignment>()
-            //                                .FirstOrDefault(a => a.Member.ID == spObject.ID) != null);
-
-            //        trace.WriteLine(string.Format("RoleAssignments for security group link [{0}] exists.", definition.SecurityGroupName));
-            //    });
-            //});
         }
 
         #endregion

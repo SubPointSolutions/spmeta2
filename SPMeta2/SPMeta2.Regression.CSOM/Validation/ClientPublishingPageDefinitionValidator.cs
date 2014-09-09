@@ -9,6 +9,7 @@ using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
 using SPMeta2.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -21,16 +22,47 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
-            var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
-            ValidatePublishingPage(modelHost, folder, publishingPageModel);
-        }
+            var spObject = FindPublishingPage(folder, definition);
 
-        private void ValidatePublishingPage(object modelHost, Folder list, PublishingPageDefinition publishingPageModel)
-        {
-            // TODO
+            var context = spObject.Context;
+            context.Load(spObject);
+            context.ExecuteQuery();
+
+            var assert = ServiceFactory.AssertService
+                                     .NewAssert(definition, spObject)
+                                           .ShouldNotBeNull(spObject)
+                                           .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
+                                           .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
+                                           .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
+                                           .ShouldBeEqual(m => m.Title, o => o.DisplayName);
+
         }
 
         #endregion
+    }
+
+    public static class SPListItemHelper
+    {
+
+        public static string GetFileName(this ListItem item)
+        {
+            return item["FileLeafRef"] as string;
+        }
+
+        public static string GetPublishingPageDescription(this ListItem item)
+        {
+            return item["Comments"] as string;
+        }
+
+        public static string GetPublishingPagePageLayoutFileName(this ListItem item)
+        {
+            var value = item["PublishingPageLayout"].ToString();
+
+            return value;
+
+
+        }
     }
 }
