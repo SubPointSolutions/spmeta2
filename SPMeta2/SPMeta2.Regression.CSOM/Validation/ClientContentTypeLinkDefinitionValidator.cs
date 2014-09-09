@@ -6,6 +6,7 @@ using SPMeta2.Utils;
 using SPMeta2.Regression.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -14,48 +15,57 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
-            var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
 
             var list = listModelHost.HostList;
             var context = list.Context;
 
             context.Load(list, l => l.ContentTypesEnabled);
+            context.Load(list, l => l.ContentTypes);
+
             context.ExecuteQuery();
 
-            TraceUtils.WithScope(traceScope =>
+            var spObject = FindListContentType(list, definition);
+
+            var assert = ServiceFactory.AssertService
+                                       .NewAssert(definition, spObject)
+                                            .ShouldNotBeNull(spObject);
+
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
             {
-                Trace.WriteLine(string.Format("Validate model: {0} ContentTypeLink:{1}", list, contentTypeLinkModel));
+                assert
+                    .ShouldBeEqual(m => m.ContentTypeName, o => o.Name);
+            }
+            else
+            {
+                assert
+                    .SkipProperty(m => m.ContentTypeName, "ContentTypeName is empty. Skipping");
 
-                var web = list.ParentWeb;
+            }
 
-                context.Load(list, l => l.ContentTypesEnabled);
-                context.ExecuteQuery();
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
                 {
-                    if (list.ContentTypesEnabled)
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeId);
+                    var dstProp = d.GetExpressionValue(ct => ct.Id);
+
+                    return new PropertyValidationResult
                     {
-                        context.Load(web, w => w.AvailableContentTypes);
-                        context.Load(list, l => l.ContentTypes);
-
-                        context.ExecuteQuery();
-
-                        var listContentType = FindListContentType(list, contentTypeLinkModel);
-
-                        // presence
-                        trace.WriteLine(string.Format("Validate list content type presence (not null): model:[{0}] content type link:[{1}]", contentTypeLinkModel.ContentTypeId, listContentType));
-                        Assert.IsNotNull(listContentType);
-
-                        // child of
-                        trace.WriteLine(string.Format("SSkipping checking ChildOf as in CSOM ct is referenced to list by name."));
-                    }
-                    else
-                    {
-                        trace.WriteLine("Skipping content type link check as List.ContentTypesEnabled is false");
-                    }
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = dstProp.Value.ToString().ToUpper().StartsWith(srcProp.Value.ToString().ToUpper())
+                    };
                 });
-            });
+            }
+            else
+            {
+                assert
+                    .SkipProperty(m => m.ContentTypeId, "ContentTypeId is empty. Skipping");
+
+            }
         }
     }
 }

@@ -76,7 +76,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
                 .SetAttribute("ID", businessFieldModel.Id.ToString("B"))
 
-                .SetAttribute("SystemInstance", businessFieldModel.Title)
+                .SetAttribute("SystemInstance", businessFieldModel.SystemInstanceName)
                 .SetAttribute("EntityNamespace", businessFieldModel.EntityNamespace)
                 .SetAttribute("EntityName", businessFieldModel.EntityName)
                 .SetAttribute("BdcField", businessFieldModel.BdcFieldName);

@@ -15,7 +15,12 @@ namespace SPMeta2.Regression.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.FieldId = BuiltInFieldId.Order;
+                //def.FieldId = BuiltInFieldId.Order;
+
+                // FieldId is not supported by CSOM, so we use field name
+                // http://officespdev.uservoice.com/forums/224641-general/suggestions/6411772-expose-guid-field-value-indexer-for-microsoft-shar
+
+                def.FieldName = "Order";
                 def.Value = Math.Ceiling(Rnd.Double(100));
             });
         }

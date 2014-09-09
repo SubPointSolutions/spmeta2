@@ -146,6 +146,34 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQuery();
         }
 
+        protected File GetFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            var context = folderHost.CurrentLibraryFolder.Context;
+
+            var web = folderHost.CurrentWeb;
+            var list = folderHost.CurrentList;
+            var folder = folderHost.CurrentLibraryFolder;
+
+            context.Load(folder, f => f.ServerRelativeUrl);
+            context.ExecuteQuery();
+
+            if (list != null)
+            {
+                context.Load(list, l => l.EnableMinorVersions);
+                context.Load(list, l => l.EnableVersioning);
+                context.Load(list, l => l.EnableModeration);
+
+                context.ExecuteQuery();
+            }
+
+            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+
+            context.Load(file, f => f.Exists);
+            context.ExecuteQuery();
+
+            return file;
+        }
+
         private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
             var context = folderHost.CurrentLibraryFolder.Context;

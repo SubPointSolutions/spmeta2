@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Assertion;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
 
@@ -15,7 +16,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
             var web = webModelHost.HostSite.RootWeb;
-            var securityGroupModel = model as SecurityGroupDefinition;
+            var definition = model as SecurityGroupDefinition;
 
             var context = web.Context;
 
@@ -23,22 +24,85 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
             context.ExecuteQuery();
 
-            var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
+            var spObject = FindSecurityGroupByTitle(web.SiteGroups, definition.Name);
 
-            TraceUtils.WithScope(traceScope =>
+            var assert = ServiceFactory.AssertService
+                       .NewAssert(definition, spObject)
+                             .ShouldNotBeNull(spObject)
+                             .ShouldBeEqual(m => m.Name, o => o.Title)
+                             .ShouldBeEqual(m => m.Description, o => o.Description);
+
+
+            assert.ShouldBeEqual((p, s, d) =>
             {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] list view:[{1}]", securityGroupModel, currentGroup));
-                Assert.IsNotNull(currentGroup);
+                var srcProp = s.GetExpressionValue(def => def.Owner);
+                var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                traceScope.WithTraceIndent(trace =>
+                // hope domain is the same, just check the username
+
+                var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
+                              srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
+
+                return new PropertyValidationResult
                 {
-                    traceScope.WriteLine(string.Format("Validate Title: model:[{0}] list view:[{1}]", securityGroupModel.Name, currentGroup.Title));
-                    Assert.AreEqual(securityGroupModel.Name, currentGroup.Title);
-
-                    traceScope.WriteLine(string.Format("Validate Description: model:[{0}] list view:[{1}]", securityGroupModel.Description, currentGroup.Description));
-                    Assert.AreEqual(securityGroupModel.Description, currentGroup.Description);
-                });
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
             });
+
+            assert.SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
+
+            //assert.ShouldBeEqual((p, s, d) =>
+            //{
+            //    var srcProp = s.GetExpressionValue(def => def.DefaultUser);
+            //    var dstProp = d.GetExpressionValue(ct => ct.GetDefaultUserLoginName());
+
+            //    var isValid = srcProp.Value.ToString().Replace("\\", "/") ==
+            //                dstProp.Value.ToString().Replace("\\", "/");
+
+            //    return new PropertyValidationResult
+            //    {
+            //        Tag = p.Tag,
+            //        Src = srcProp,
+            //        Dst = dstProp,
+            //        IsValid = isValid
+            //    };
+            //});
+        }
+    }
+
+    internal static class SPGroupExtensions
+    {
+        public static string GetOwnerLogin(this Group group)
+        {
+            if (!group.IsPropertyAvailable("Owner"))
+            {
+                var owner = group.Owner;
+
+                group.Context.Load(owner, g => g.LoginName);
+                group.Context.ExecuteQuery();
+
+                return owner.LoginName;
+            }
+
+            return group.Owner.LoginName;
+        }
+
+        public static string GetDefaultUserLoginName(this Group group)
+        {
+            if (!group.IsPropertyAvailable("Users"))
+            {
+                var users = group.Users;
+
+                group.Context.Load(users, g => g.Include(gg => gg.LoginName));
+                group.Context.ExecuteQuery();
+
+                return users[0].LoginName;
+            }
+
+            return group.Users[0].LoginName;
         }
     }
 }

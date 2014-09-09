@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Assertion;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
+using System.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -12,45 +14,43 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
-            var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
 
             var context = list.Context;
 
             context.Load(list, l => l.Views);
             context.ExecuteQuery();
+            var spObject = FindViewByTitle(list.Views, definition.Title);
 
-            TraceUtils.WithScope(traceScope =>
+            var assert = ServiceFactory.AssertService
+                          .NewAssert(definition, spObject)
+                              .ShouldBeEqual(m => m.Title, o => o.Title)
+                              .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
+                              .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                              .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
+                              .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+
+            assert.ShouldBeEqual((p, s, d) =>
             {
-                var currentView = FindViewByTitle(list.Views, listViewModel.Title);
-                traceScope.WriteLine(string.Format("Validate model:[{0}] list view:[{1}]", listViewModel, currentView));
+                var srcProp = s.GetExpressionValue(def => def.Fields);
+                var dstProp = d.GetExpressionValue(ct => ct.ViewFields);
 
-                traceScope.WithTraceIndent(trace =>
+                var hasAllFields = true;
+
+                foreach (var srcField in s.Fields)
                 {
-                    trace.WriteLine(string.Format("Validate Title: model:[{0}] list view:[{1}]", listViewModel.Title, currentView.Title));
-                    Assert.AreEqual(listViewModel.Title, currentView.Title);
+                    if (!d.ViewFields.ToList().Contains(srcField))
+                        hasAllFields = false;
+                }
 
-                    trace.WriteLine(string.Format("Validate RowLimit: model:[{0}] list view:[{1}]", listViewModel.RowLimit, currentView.RowLimit));
-                    Assert.AreEqual((uint)listViewModel.RowLimit, (uint)currentView.RowLimit);
-
-                    trace.WriteLine(string.Format("Validate IsDefault: model:[{0}] list view:[{1}]", listViewModel.IsDefault, currentView.DefaultView));
-                    Assert.AreEqual(listViewModel.IsDefault, currentView.DefaultView);
-
-                    trace.WriteLine(string.Format("Validate fields.."));
-
-                    context.Load(currentView, v => v.ViewFields);
-                    context.ExecuteQuery();
-
-                    traceScope.WithTraceIndent(fieldTrace =>
-                    {
-                        foreach (var fieldName in listViewModel.Fields)
-                        {
-                            trace.WriteLine(string.Format("Validate field presence: [{0}]", fieldName));
-
-                            Assert.IsTrue(DoesFieldExist(currentView.ViewFields, fieldName));
-                            trace.WriteLine(string.Format("Field [{0}] exists in view. [OK].", fieldName));
-                        }
-                    });
-                });
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = hasAllFields
+                };
             });
         }
 
@@ -64,5 +64,13 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             return false;
         }
+    }
+
+    internal static class ViewDefault
+    {
+        //public static bool IsDefaul(this View view)
+        //{
+        //    return view.DefaultView.DefaultView.ID == view.Id;
+        //}
     }
 }

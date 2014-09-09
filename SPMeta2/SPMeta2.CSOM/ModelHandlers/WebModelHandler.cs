@@ -88,6 +88,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 };
 
                 action(tmpWebModelHost);
+
+                tmpWebContext.Web.Update();
+                webContext.ExecuteQuery();
             }
         }
 

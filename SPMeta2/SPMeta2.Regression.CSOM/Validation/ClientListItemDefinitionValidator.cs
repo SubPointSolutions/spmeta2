@@ -16,16 +16,23 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
         {
             var listModeHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
-            var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
             var list = listModeHost.HostList;
+            var spObject = GetListItem(list, definition);
 
-            ValidateModel(list, listItemModel);
-        }
+            if (!spObject.IsPropertyAvailable("Title"))
+            {
+                var context = spObject.Context;
 
-        private void ValidateModel(List list, ListItemDefinition listItemModel)
-        {
+                context.Load(spObject, o => o.DisplayName);
+                context.ExecuteQuery();
+            }
 
+            var assert = ServiceFactory.AssertService
+                             .NewAssert(definition, spObject)
+                                   .ShouldNotBeNull(spObject)
+                                   .ShouldBeEqual(m => m.Title, o => o.DisplayName);
         }
     }
 }

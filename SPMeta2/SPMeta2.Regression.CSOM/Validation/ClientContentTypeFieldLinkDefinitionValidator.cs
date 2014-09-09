@@ -26,7 +26,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var modelHostContext = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
-            var fieldlinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
 
             var site = modelHostContext.Site;
             var contentType = modelHostContext.ContentType;
@@ -36,19 +36,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(contentType, ct => ct.FieldLinks);
             context.ExecuteQuery();
 
-            var spFieldLink = FindFieldLinkById(contentType.FieldLinks, fieldlinkModel.FieldId);
+            var spObject = FindFieldLinkById(contentType.FieldLinks, definition.FieldId);
 
-            TraceUtils.WithScope(traceScope =>
-            {
-                Trace.WriteLine(string.Format("Validate model: {0} ContentType:{1}", fieldlinkModel, contentType));
-
-                // assert base properties
-                traceScope.WithTraceIndent(trace =>
-                {
-                    trace.WriteLine(string.Format("Validate FieldId: model:[{0}] ct field link:[{1}]", fieldlinkModel.FieldId, spFieldLink.Id));
-                    Assert.AreEqual(fieldlinkModel.FieldId, spFieldLink.Id);
-                });
-            });
+            var assert = ServiceFactory.AssertService
+                                       .NewAssert(definition, spObject)
+                                             .ShouldNotBeNull(spObject)
+                                             .ShouldBeEqual(m => m.FieldId, o => o.Id);
         }
     }
 }

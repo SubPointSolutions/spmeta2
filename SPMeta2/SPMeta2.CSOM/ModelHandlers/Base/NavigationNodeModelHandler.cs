@@ -47,6 +47,37 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             return modelHost is NavigationNodeModelHost;
         }
 
+        protected NavigationNode LookupNodeForHost(object modelHost, NavigationNodeDefinitionBase definition)
+        {
+            if (modelHost is WebModelHost)
+                return LookupNavigationNode(GetNavigationNodeCollection((modelHost as WebModelHost).HostWeb), definition);
+            else if (modelHost is NavigationNode)
+                return LookupNavigationNode((modelHost as NavigationNode).Children, definition);
+
+            throw new ArgumentException("modelHost needs to be SPWeb");
+        }
+
+        protected virtual NavigationNode LookupNavigationNode(NavigationNodeCollection nodes, NavigationNodeDefinitionBase definition)
+        {
+            var context = nodes.Context;
+
+            context.Load(nodes);
+            context.ExecuteQuery();
+
+            var currentNode = nodes
+                                .OfType<NavigationNode>()
+                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Title) && (n.Title.ToUpper() == definition.Title.ToUpper()));
+
+            if (currentNode == null)
+            {
+                currentNode = nodes
+                                .OfType<NavigationNode>()
+                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Url) && (n.Url.ToUpper().EndsWith(definition.Url.ToUpper())));
+            }
+
+            return currentNode;
+        }
+
         protected NavigationNode GetNavigationNode(
             NavigationNodeModelHost navigationNodeModelHost,
             NavigationNodeDefinitionBase quickLaunchNode)
@@ -59,8 +90,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             context.Load(quickLaunch);
             context.ExecuteQuery();
 
-            var existingNode = quickLaunch.OfType<NavigationNode>()
-                .FirstOrDefault(n => n.Url == quickLaunchNode.Url);
+            var existingNode = LookupNavigationNode(quickLaunch, quickLaunchNode);
 
             return existingNode;
         }
@@ -76,7 +106,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             context.Load(quickLaunch);
             context.ExecuteQuery();
 
-            var existingNode = GetNavigationNode(navigationNodeModelHost, quickLaunchNode);
+            var existingNode = LookupNavigationNode(quickLaunch, quickLaunchNode);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

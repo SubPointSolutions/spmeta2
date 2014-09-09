@@ -82,22 +82,26 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQuery();
             }
 
-           
+
         }
 
-        private ListItem EnsureListItem(List list, ListItemDefinition listItemModel)
+        protected ListItem GetListItem(List list, ListItemDefinition definition)
         {
-            var context = list.Context;
-
-            // TODO, lazy to query
             var items = list.GetItems(CamlQuery.CreateAllItemsQuery());
+
+            var context = list.Context;
 
             context.Load(items);
             context.ExecuteQuery();
 
             // BIG TODO, don't tell me, I know that
-            var currentItem = items.FirstOrDefault(i => i["Title"] != null &&
-                    (i["Title"].ToString() == listItemModel.Title));
+            return items.FirstOrDefault(i => i["Title"] != null && (i["Title"].ToString() == definition.Title));
+        }
+
+        private ListItem EnsureListItem(List list, ListItemDefinition listItemModel)
+        {
+            var context = list.Context;
+            var currentItem = GetListItem(list, listItemModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

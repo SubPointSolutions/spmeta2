@@ -77,11 +77,9 @@ namespace SPMeta2.Regression.SSOM.Validation
                 });
             }
         }
-
-
     }
 
-    public static class ContentTypeDefinitionValidatorUtils
+    internal static class ContentTypeDefinitionValidatorUtils
     {
         public static string GetId(this SPContentType c)
         {

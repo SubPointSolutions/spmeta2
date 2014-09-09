@@ -6,6 +6,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -16,7 +17,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
             var web = webModelHost.HostSite.RootWeb;
-            var securityRoleModel = model.WithAssertAndCast<SecurityRoleDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SecurityRoleDefinition>("model", value => value.RequireNotNull());
 
             var context = web.Context;
 
@@ -24,40 +25,39 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
             context.ExecuteQuery();
 
-            var currentRole = FindRoleDefinition(web.RoleDefinitions, securityRoleModel.Name);
+            var spObject = FindRoleDefinition(web.RoleDefinitions, definition.Name);
 
-            TraceUtils.WithScope(traceScope =>
-            {
-                traceScope.WriteLine(string.Format("Validate model:[{0}] security role:[{1}]", securityRoleModel, currentRole));
-                Assert.IsNotNull(currentRole);
+            var assert = ServiceFactory.AssertService
+                   .NewAssert(definition, spObject)
+                         .ShouldBeEqual(m => m.Name, o => o.Name)
+                         .ShouldBeEqual(m => m.Description, o => o.Description);
 
-                traceScope.WithTraceIndent(trace =>
-                {
-                    traceScope.WriteLine(string.Format("Validate Name: model:[{0}] list view:[{1}]", securityRoleModel.Name, currentRole.Name));
-                    Assert.AreEqual(securityRoleModel.Name, currentRole.Name);
+            assert
+               .ShouldBeEqual((p, s, d) =>
+               {
+                   var srcProp = s.GetExpressionValue(def => def.BasePermissions);
+                   var dstProp = d.GetExpressionValue(ct => ct.BasePermissions);
 
-                    traceScope.WriteLine(string.Format("Validate Description: model:[{0}] list view:[{1}]", securityRoleModel.Description, currentRole.Description));
-                    Assert.AreEqual(securityRoleModel.Description, currentRole.Description);
+                   var hasCorrectRights = true;
 
-                    // validate base permissions
-                    trace.WriteLine(string.Format("Validate permissions..."));
+                   foreach (var srcRight in s.BasePermissions)
+                   {
+                       var srcPermission = (PermissionKind)Enum.Parse(typeof(PermissionKind), srcRight);
 
-                    // 
-                    context.Load(currentRole, r => r.BasePermissions);
-                    context.ExecuteQuery();
+                       var tmpRight = d.BasePermissions.Has(srcPermission);
 
-                    traceScope.WithTraceIndent(permissionTrace =>
-                    {
-                        foreach (var permission in securityRoleModel.BasePermissions)
-                        {
-                            trace.WriteLine(string.Format("Validate permission presence: [{0}]", permission));
+                       if (tmpRight == false)
+                           hasCorrectRights = false;
+                   }
 
-                            var spPermission = (PermissionKind)Enum.Parse(typeof(PermissionKind), permission);
-                            Assert.IsTrue(currentRole.BasePermissions.Has(spPermission));
-                        }
-                    });
-                });
-            });
+                   return new PropertyValidationResult
+                   {
+                       Tag = p.Tag,
+                       Src = srcProp,
+                       Dst = dstProp,
+                       IsValid = hasCorrectRights
+                   };
+               });
         }
     }
 }

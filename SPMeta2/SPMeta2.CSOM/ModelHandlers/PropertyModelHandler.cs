@@ -32,36 +32,53 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected PropertyValues ExtractProperties(object modelHost)
         {
+            PropertyValues result = null;
+            ClientRuntimeContext context = null;
+
             if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
-
-            if (modelHost is WebModelHost)
-                return (modelHost as WebModelHost).HostWeb.AllProperties;
-
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostList.RootFolder.Properties;
-
-            if (modelHost is FolderModelHost)
-                return (modelHost as FolderModelHost).CurrentLibraryFolder.Properties;
-
-            if (modelHost is ListItem)
+            {
+                result = (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
+                context = (modelHost as SiteModelHost).HostSite.RootWeb.Context;
+            }
+            else if (modelHost is WebModelHost)
+            {
+                result = (modelHost as WebModelHost).HostWeb.AllProperties;
+                context = (modelHost as WebModelHost).HostWeb.Context;
+            }
+            else if (modelHost is ListModelHost)
+            {
+                result = (modelHost as ListModelHost).HostList.RootFolder.Properties;
+                context = (modelHost as ListModelHost).HostList.RootFolder.Context;
+            }
+            else if (modelHost is FolderModelHost)
+            {
+                result = (modelHost as FolderModelHost).CurrentLibraryFolder.Properties;
+                context = (modelHost as FolderModelHost).CurrentLibraryFolder.Context;
+            }
+            else if (modelHost is ListItem)
             {
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6343086-expose-properties-property-for-microsoft-sharepo
 
                 throw new SPMeta2NotImplementedException("ListItem properties provision is not supported yet.");
                 //DeployProperty(host, host.CurrentListItem.all, property);
             }
-
-            if (modelHost is File)
+            else if (modelHost is File)
             {
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6343087-expose-properties-property-for-microsoft-sharepo
 
                 throw new SPMeta2NotImplementedException("File properties provision is not supported yet.");
                 // DeployProperty(host, host.CurrentFile., property);
             }
+            else
+            {
+                throw new SPMeta2NotImplementedException(string.Format("Model host [{0}] is not supported yet.", modelHost));
+            }
 
-            throw new SPMeta2NotImplementedException(string.Format("Model host [{0}] is not supported yet.", modelHost));
 
+            context.Load(result);
+            context.ExecuteQuery();
+
+            return result;
         }
 
         protected virtual void DeployProperty(object modelHost, PropertyValues properties, PropertyDefinition property)

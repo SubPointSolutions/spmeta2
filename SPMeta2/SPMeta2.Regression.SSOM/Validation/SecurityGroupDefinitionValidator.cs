@@ -34,8 +34,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var srcProp = s.GetExpressionValue(def => def.Owner);
                 var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                var isValid = srcProp.Value.ToString().Replace("\\", "/") ==
-                              dstProp.Value.ToString().Replace("\\", "/");
+                var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
+                              dstProp.Value.ToString().ToUpper().Replace("\\", "/");
 
 
                 return new PropertyValidationResult
@@ -54,7 +54,6 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 var isValid = srcProp.Value.ToString().Replace("\\", "/") ==
                             dstProp.Value.ToString().Replace("\\", "/");
-
 
                 return new PropertyValidationResult
                 {

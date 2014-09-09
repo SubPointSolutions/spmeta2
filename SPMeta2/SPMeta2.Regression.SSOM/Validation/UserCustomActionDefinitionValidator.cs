@@ -23,7 +23,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             var site = siteModelHost.HostSite;
             var spObject = GetCurrentCustomUserAction(site, definition);
 
-
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, definition, spObject)
                                             .ShouldBeEqual(m => m.Name, o => o.Name)

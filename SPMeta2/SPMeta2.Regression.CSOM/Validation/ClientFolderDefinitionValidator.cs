@@ -19,39 +19,18 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
+
+            Folder spObject = null;
 
             if (ShouldDeployLibraryFolder(folderModelHost))
-                ValidateLibraryFolder(folderModelHost, folderModel);
+                spObject = GetLibraryFolder(folderModelHost, definition);
             else if (ShouldDeployListFolder(folderModelHost))
-                ValidateListFolder(folderModelHost, folderModel);
-        }
+                spObject = GetListFolder(folderModelHost, definition);
 
-        private void ValidateListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
-        {
-            var folder = GetListFolder(folderModelHost, folderModel);
-
-            ValidateFolderProps(folder, folderModel);
-        }
-
-        private void ValidateFolderProps(Folder folder, FolderDefinition folderModel)
-        {
-            TraceUtils.WithScope(traceScope =>
-            {
-                var pair = new ComparePair<FolderDefinition, Folder>(folderModel, folder);
-
-                traceScope.WriteLine(string.Format("Validating model:[{0}] folder:[{1}]", folderModel, folder));
-
-                traceScope.WithTraceIndent(trace => pair
-                    .ShouldBeEqual(trace, m => m.Name, o => o.Name));
-            });
-        }
-
-        private void ValidateLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
-        {
-            var folder = GetLibraryFolder(folderModelHost, folderModel);
-
-            ValidateFolderProps(folder, folderModel);
+            var assert = ServiceFactory.AssertService
+                               .NewAssert(definition, spObject)
+                                     .ShouldBeEqual(m => m.Name, o => o.Name);
         }
     }
 }
