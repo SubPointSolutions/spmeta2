@@ -27,7 +27,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = FindPublishingPage(folder, definition);
 
             var context = spObject.Context;
+
             context.Load(spObject);
+            context.Load(spObject, o => o.DisplayName);
+
             context.ExecuteQuery();
 
             var assert = ServiceFactory.AssertService
@@ -36,7 +39,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                                            .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
                                            .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
                                            .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
-                                           .ShouldBeEqual(m => m.Title, o => o.DisplayName);
+                                           .ShouldBeEqual(m => m.Title, o => o.GetTitle());
 
         }
 
@@ -45,6 +48,10 @@ namespace SPMeta2.Regression.CSOM.Validation
 
     public static class SPListItemHelper
     {
+        public static string GetTitle(this ListItem item)
+        {
+            return item["Title"] as string;
+        }
 
         public static string GetFileName(this ListItem item)
         {
@@ -58,11 +65,12 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         public static string GetPublishingPagePageLayoutFileName(this ListItem item)
         {
-            var value = item["PublishingPageLayout"].ToString();
+            var result = item["PublishingPageLayout"] as FieldUrlValue;
 
-            return value;
+            if (result != null)
+                return result.Url;
 
-
+            return string.Empty;
         }
     }
 }

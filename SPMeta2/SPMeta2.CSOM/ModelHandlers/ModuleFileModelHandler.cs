@@ -90,37 +90,56 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         //}
 
-        private void WithSafeFileOperation(List list, File file, Func<File, File> action)
-        {
-            var context = file.Context;
+        //public static void WithSafeFileOperation(List list, File file, Func<File, File> action)
+        //{
 
-            context.Load(file, f => f.Exists);
+        //}
+
+        public static void WithSafeFileOperation(List list, File file,
+          Func<File, File> action)
+        {
+            WithSafeFileOperation(list, file, action, null);
+        }
+
+        public static void WithSafeFileOperation(List list, File file,
+            Func<File, File> action,
+
+            Action<File> onCreated)
+        {
+            var context = list.Context;
+
+            context.Load(list, l => l.EnableMinorVersions);
+            context.Load(list, l => l.EnableModeration);
             context.ExecuteQuery();
 
-            if (file.Exists)
+            if (file != null)
             {
-                context.Load(file, f => f.CheckOutType);
-                context.Load(file, f => f.Level);
-
+                context.Load(file, f => f.Exists);
                 context.ExecuteQuery();
-            }
 
+                if (file.Exists)
+                {
+                    context.Load(file, f => f.CheckOutType);
+                    context.Load(file, f => f.Level);
+
+                    context.ExecuteQuery();
+                }
+            }
 
             // big todo with correct update and punblishing
             // get prev SPMeta2 impl for publishing pages
-            if (list != null && (file.Exists && file.CheckOutType != CheckOutType.None))
+            if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
                 file.UndoCheckOut();
 
-            if (list != null && (list.EnableMinorVersions) && (file.Exists && file.Level == FileLevel.Published))
+            if (list != null && file != null && (list.EnableMinorVersions) && (file.Exists && file.Level == FileLevel.Published))
                 file.UnPublish("Provision");
 
-            if (list != null && (file.Exists && file.CheckOutType == CheckOutType.None))
+            if (list != null && file != null && (file.Exists && file.CheckOutType == CheckOutType.None))
                 file.CheckOut();
 
             context.ExecuteQuery();
 
             var spFile = action(file);
-
             context.ExecuteQuery();
 
             context.Load(spFile, f => f.Exists);
@@ -128,19 +147,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (spFile.Exists)
             {
+                if (onCreated != null)
+                    onCreated(spFile);
+
                 context.Load(spFile, f => f.CheckOutType);
                 context.Load(spFile, f => f.Level);
 
                 context.ExecuteQuery();
             }
 
-            if (list != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
+            if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
                 spFile.CheckIn("", CheckinType.MajorCheckIn);
 
-            if (list != null && (list.EnableMinorVersions))
+            if (list != null && spFile != null && (list.EnableMinorVersions))
                 spFile.Publish("Provision");
 
-            if (list != null && (list.EnableModeration))
+            if (list != null && spFile != null && (list.EnableModeration))
                 spFile.Approve("Provision");
 
             context.ExecuteQuery();

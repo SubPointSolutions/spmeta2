@@ -237,7 +237,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             foreach (var list in listCollection)
             {
-                if (list.DefaultViewUrl.ToUpper().Contains(listUrl.ToUpper()))
+                if (list.DefaultViewUrl.ToUpper().Contains("/" + listUrl.ToUpper() + "/"))
                     return list;
             }
 

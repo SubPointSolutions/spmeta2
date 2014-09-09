@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
@@ -7,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Common;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -65,20 +67,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
+            var list = folderModelHost.CurrentList;
+
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
             var context = folder.Context;
 
             var pageName = GetSafePageFileName(publishingPageModel);
             var currentPageFile = GetCurrentPage(folder, pageName);
-
-            // #SPBug
-            // it turns out that there is no support for the web part page creating via CMOM
-            // we we need to get a byte array to 'hack' this pages out..
-            // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
-            // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
-
-            var currentPageFiles = GetCurrentPage(folder, pageName);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -91,37 +87,46 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if ((currentPageFile == null) || (currentPageFile != null && publishingPageModel.NeedOverride))
+            ModuleFileModelHandler.WithSafeFileOperation(list, currentPageFile, f =>
             {
                 var file = new FileCreationInformation();
                 var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
 
-                // TODO, need to be fixed
-                // add new page
-                var fileName = publishingPageModel.FileName;
-                if (!fileName.EndsWith(".aspx")) fileName += ".aspx";
-
-                file.Url = fileName;
+                file.Url = pageName;
                 file.Content = Encoding.UTF8.GetBytes(pageContent);
                 file.Overwrite = publishingPageModel.NeedOverride;
 
-                // just root folder is supported yet
-                //if (!string.IsNullOrEmpty(publishingPageModel.FolderUrl))
-                //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
+                return folder.Files.Add(file);
 
-                context.Load(folder.Files.Add(file));
+            },
+            newFile =>
+            {
+                var newFileItem = newFile.ListItemAllFields;
+                context.Load(newFileItem);
                 context.ExecuteQuery();
 
-                // TODO, setup publishing page properties
+                var site = folderModelHost.HostSite;
+                var currentPageLayoutItem = FindPageLayoutItem(site, publishingPageModel.PageLayoutFileName);
 
-            }
+                var currentPageLayoutItemContext = currentPageLayoutItem.Context;
+                var publishingFile = currentPageLayoutItem.File;
 
-            // TODO
-            // gosh, how we are supposed to get Master Page gallery with publishing template having just list here?
-            // no SPWeb.ParentSite/Site -> RootWeb..
+                currentPageLayoutItemContext.Load(currentPageLayoutItem);
+                currentPageLayoutItemContext.Load(currentPageLayoutItem, i => i.DisplayName);
+                currentPageLayoutItemContext.Load(publishingFile);
 
-            //newPage["PublishingPageContent"] = "Yea!";
-            //newPage["PublishingPageLayout"] = "/auto-tests/csom-application/_catalogs/masterpage/ArticleLinks.aspx";
+                currentPageLayoutItemContext.ExecuteQuery();
+
+                newFileItem["Title"] = publishingPageModel.Title;
+                newFileItem["Comments"] = publishingPageModel.Description;
+
+                newFileItem["PublishingPageLayout"] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
+                newFileItem["ContentTypeId"] = currentPageLayoutItem["PublishingAssociatedContentType"];
+
+                newFileItem.Update();
+
+                context.ExecuteQuery();
+            });
 
             currentPageFile = GetCurrentPage(folder, pageName);
 
@@ -136,9 +141,39 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            //currentPageFile..ite();//
-
             context.ExecuteQuery();
+        }
+
+        private ListItem FindPageLayoutItem(Site site, string pageLayoutFileName)
+        {
+            ListItem currentPageLayoutItem = null;
+
+            var pageLayoutContentType = BuiltInPublishingContentTypeId.PageLayout.ToUpper();
+
+
+            var rootWeb = site.RootWeb;
+            var layoutsList = rootWeb.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+
+            // TODO, performance
+            var pageLayouts = layoutsList.GetItems(CamlQuery.CreateAllItemsQuery());
+            var context = layoutsList.Context;
+
+            context.Load(pageLayouts);
+            context.ExecuteQuery();
+
+            var tmpPageLayouts = pageLayouts.ToList()
+                                            .Where(i => i["ContentTypeId"].ToString().ToUpper().StartsWith(pageLayoutContentType));
+
+            foreach (var pageLayout in tmpPageLayouts)
+            {
+                if (pageLayout["FileLeafRef"].ToString().ToUpper() == pageLayoutFileName.ToUpper())
+                {
+                    currentPageLayoutItem = pageLayout;
+                    break;
+                }
+            }
+
+            return currentPageLayoutItem;
         }
 
         #endregion
