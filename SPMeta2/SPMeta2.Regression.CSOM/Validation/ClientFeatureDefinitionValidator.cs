@@ -13,6 +13,7 @@ using SPMeta2.Regression.Common.Utils;
 using SPMeta2.Regression.SSOM.Utils;
 using SPMeta2.Utils;
 using FeatureDefinitionScope = SPMeta2.Definitions.FeatureDefinitionScope;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -20,70 +21,98 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var featureModel = model.WithAssertAndCast<FeatureDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FeatureDefinition>("model", value => value.RequireNotNull());
 
             if (!IsValidHost(modelHost))
                 throw new Exception("model host needs to be SPFarm, SPWebApplication, SPSit or SPWeb instance");
 
-            ValidateFeatureModel(modelHost, featureModel);
-        }
 
-        private void ValidateFeatureModel(object modelHost, FeatureDefinition featureModel)
-        {
-            switch (featureModel.Scope)
+            FeatureCollection features = null;
+            Feature spObject = null;
+
+            var assert = ServiceFactory.AssertService
+                   .NewAssert(definition, spObject);
+
+            switch (definition.Scope)
             {
                 case FeatureDefinitionScope.Farm:
-                    throw new NotSupportedException("Farm features are not supported with CSOM.");
+                    throw new SPMeta2NotImplementedException("Farm features are not supported in CSOM.");
+                    break;
 
                 case FeatureDefinitionScope.WebApplication:
-                    throw new NotSupportedException("Web application features are not supported with CSOM.");
+
+                    throw new SPMeta2NotImplementedException("WebApplication features are not supported in CSOM.");
+                    break;
 
                 case FeatureDefinitionScope.Site:
-                    ValidateSiteFeature(modelHost, featureModel);
+
+                    assert.SkipProperty(m => m.Scope, "Correct site scope");
+
+                    var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+                    features = siteModelHost.HostSite.Features;
+
+                    var siteContext = siteModelHost.HostSite.Context;
+                    siteContext.Load(features);
+                    siteContext.ExecuteQuery();
+
+
                     break;
 
                 case FeatureDefinitionScope.Web:
-                    ValidateWebFeature(modelHost, featureModel);
+
+                    assert.SkipProperty(m => m.Scope, "Correct web scope");
+
+                    var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                    features = webModelHost.HostWeb.Features;
+
+                    var webContext = webModelHost.HostWeb.Context;
+                    webContext.Load(features);
+                    webContext.ExecuteQuery();
+
                     break;
+            }
+
+            spObject = GetFeature(features, definition);
+            assert.Dst = spObject;
+
+            assert
+                .ShouldBeEqual(m => m.Id, o => o.DefinitionId);
+
+            if (definition.ForceActivate)
+            {
+                assert
+                    .SkipProperty(m => m.Enable, "ForceActivate = true. Expect not null feature instance.")
+                    .ShouldNotBeNull(spObject);
+            }
+            else
+            {
+                assert
+                  .SkipProperty(m => m.ForceActivate, "ForceActivate = false. Skipping.");
+            }
+
+
+            if (definition.Enable)
+            {
+                assert
+                    .SkipProperty(m => m.Enable, "Enable = true. Expect not null feature instance.")
+                    .ShouldNotBeNull(spObject);
+            }
+            else
+            {
+                assert
+                  .SkipProperty(m => m.Enable, "Enable = false. Expect null feature instance.")
+                  .ShouldBeNull(spObject);
             }
         }
 
-        private void ValidateWebFeature(object modelHost, FeatureDefinition featureModel)
-        {
-            var host = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var features = LoadWebFeatures(host);
 
-            var currentFeature = GetFeature(features, featureModel);
-
-            Trace(featureModel, currentFeature);
-        }
-
-        private void ValidateSiteFeature(object modelHost, FeatureDefinition featureModel)
-        {
-            var host = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var features = LoadSiteFeatures(host);
-
-            var currentFeature = GetFeature(features, featureModel);
-
-            Trace(featureModel, currentFeature);
-        }
-
-        private void Trace(FeatureDefinition featureModel, Feature currentFeature)
-        {
-            var featureActivated = currentFeature != null;
-
-            TraceUtils.WithScope(traceScope =>
-            {
-                traceScope.WriteLine(string.Format("Validating model:[{0}] feature:[{1}]", featureModel, currentFeature));
-
-                traceScope.WriteLine(string.Format("Model prop [{0}] on obj prop [{1}]: model:[{2}] obj:[{3}]",
-                 "Enable",
-                 "Enable",
-                 featureModel.Enable,
-                 featureActivated));
-
-                Assert.AreEqual(featureModel.Enable, featureActivated);
-            });
-        }
     }
+
+    //internal static class SPFeatureExtensions
+    //{
+    //    public static Guid GetFeatureId(this Feature feature)
+    //    {
+    //        return feature.DefinitionId;
+    //    }
+    //}
 }

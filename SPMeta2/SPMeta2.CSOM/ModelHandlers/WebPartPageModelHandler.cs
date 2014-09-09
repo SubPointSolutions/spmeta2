@@ -166,7 +166,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return fileName;
         }
 
-        protected virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
+        public static string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
         {
             // gosh! would u like to offer a better way?
             switch (webPartPageModel.PageLayoutTemplate)
