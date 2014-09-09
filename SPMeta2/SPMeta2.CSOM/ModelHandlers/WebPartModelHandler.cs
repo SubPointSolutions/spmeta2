@@ -17,6 +17,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using System.Text;
 using System.IO;
+using SPMeta2.Common.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -34,6 +35,29 @@ namespace SPMeta2.CSOM.ModelHandlers
         #endregion
 
         #region methods
+
+
+        protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
+             Action<WebPart> action)
+        {
+            var context = listItem.Context;
+            var filePath = listItem["FileRef"].ToString();
+
+            var web = listItem.ParentList.ParentWeb;
+
+            var pageFile = web.GetFileByServerRelativeUrl(filePath);
+            var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            // web part on the page
+            var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
+            var webPartDefenitions = context.LoadQuery(webpartOnPage);
+
+            context.ExecuteQuery();
+
+            var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
+
+            action(existingWebPart);
+        }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
@@ -121,6 +145,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
 
+
+                webPartXML = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXML)
+                                                  .SetTitle(webPartModel.Title)
+                                                  .ToString();
+
+                // set common properties as title
+
                 var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
                 var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
 
@@ -141,7 +172,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
-                // BIG TODO
+                // BIG TODO for CSOM, delete/export and re import web part?
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

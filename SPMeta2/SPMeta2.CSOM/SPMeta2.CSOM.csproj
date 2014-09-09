@@ -139,6 +139,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Common\SPMeta2.Common.csproj">
+      <Project>{3c2dceeb-8c4e-4663-bad9-41f536371a85}</Project>
+      <Name>SPMeta2.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
