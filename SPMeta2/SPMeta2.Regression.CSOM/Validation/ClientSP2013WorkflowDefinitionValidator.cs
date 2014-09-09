@@ -19,11 +19,23 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var spObject = GetCurrentWorkflowDefinition(webModelHost.HostWeb, definition);
 
+            if (!spObject.IsPropertyAvailable("Xaml"))
+            {
+                var spObjectContext = spObject.Context;
+
+                spObjectContext.Load(spObject, o => o.Xaml);
+                spObjectContext.ExecuteQuery();
+            }
+
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
+                                 .SkipProperty(m => m.Override, "Override is not supported yet.")
+                                 .ShouldBeEqual(m => m.Xaml, o => o.Xaml)
                                  .ShouldBeEqual(m => m.DisplayName, o => o.DisplayName);
 
+
+            // TODO, check Override later
         }
     }
 }
