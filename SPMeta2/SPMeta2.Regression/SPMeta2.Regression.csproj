@@ -66,6 +66,7 @@
     <Compile Include="DefinitionGenerators\SandboxSolutionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SecurityRoleLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PrefixDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SP2013WorkflowDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
@@ -101,6 +102,11 @@
     <Compile Include="Services\ModelGeneratorService.cs" />
     <Compile Include="Services\RandomService.cs" />
     <Compile Include="Services\Rnd\DefaultRandomService.cs" />
+    <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowXAMLDefinitions.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Regression.Common\SPMeta2.Regression.Common.csproj">
@@ -120,6 +126,10 @@
     <EmbeddedResource Include="DefaultWebpartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultWebpartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowXAMLDefinitions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

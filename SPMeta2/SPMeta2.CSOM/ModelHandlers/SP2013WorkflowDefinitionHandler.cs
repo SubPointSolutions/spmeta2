@@ -33,9 +33,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             DeployWorkflowDefinition(webModelHost, web, workflowDefinitionModel);
         }
 
-        private void DeployWorkflowDefinition(WebModelHost host,
-            Web web,
-            SP2013WorkflowDefinition workflowDefinitionModel)
+        protected WorkflowDefinition GetCurrentWorkflowDefinition(Web web, SP2013WorkflowDefinition workflowDefinitionModel)
         {
             var clientContext = web.Context;
 
@@ -50,7 +48,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ));
             clientContext.ExecuteQuery();
 
-            var currentWorkflowDefinition = publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
+            return publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
+
+        }
+
+        private void DeployWorkflowDefinition(WebModelHost host,
+            Web web,
+            SP2013WorkflowDefinition workflowDefinitionModel)
+        {
+            var clientContext = web.Context;
+
+            var workflowServiceManager = new WorkflowServicesManager(clientContext, web);
+            var workflowDeploymentService = workflowServiceManager.GetWorkflowDeploymentService();
+
+            var currentWorkflowDefinition = GetCurrentWorkflowDefinition(web, workflowDefinitionModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -72,7 +83,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 };
 
                 clientContext.Load(workflowDefinition);
-                workflowDeploymentService.SaveDefinition(workflowDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -84,6 +94,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = workflowDefinitionModel,
                     ModelHost = host
                 });
+
+                workflowDeploymentService.SaveDefinition(workflowDefinition);
+                clientContext.ExecuteQuery();
 
                 workflowDeploymentService.PublishDefinition(workflowDefinition.Id);
                 clientContext.ExecuteQuery();

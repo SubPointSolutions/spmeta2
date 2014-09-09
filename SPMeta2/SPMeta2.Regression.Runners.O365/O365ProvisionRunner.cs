@@ -7,6 +7,8 @@ using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
+using Microsoft.SharePoint.WorkflowServices;
+using Microsoft.SharePoint.Client.WorkflowServices;
 
 namespace SPMeta2.Regression.Runners.O365
 {
@@ -44,6 +46,7 @@ namespace SPMeta2.Regression.Runners.O365
         public override string ResolveFullTypeName(string typeName, string assemblyName)
         {
             var type = typeof(Field);
+            var workflow = typeof(WorkflowDefinition);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
