@@ -117,7 +117,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             throw new ArgumentException(string.Format("Cannot resolve role definition for role definition link model:[{0}]", rolDefinitionModel));
-
         }
 
         private void ProcessSPSecurableObjectHost(SPSecurableObject targetSecurableObject, SPGroup securityGroup,

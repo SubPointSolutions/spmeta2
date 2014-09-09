@@ -21,7 +21,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        protected Web GetWebFromSPSecurableObject(SecurableObject securableObject)
+        protected Web ExtractWeb(SecurableObject securableObject)
         {
             if (securableObject is Web)
                 return securableObject as Web;
@@ -43,7 +43,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var securableObject = securityGroupModelHost.SecurableObject;
 
             var group = securityGroupModelHost.SecurityGroup;
-            var web = GetWebFromSPSecurableObject(securityGroupModelHost.SecurableObject);
+            var web = ExtractWeb(securityGroupModelHost.SecurableObject);
 
             var context = group.Context;
             var existingRoleAssignments = web.RoleAssignments;
@@ -63,12 +63,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
 
-            var roleDefinitions = web.RoleDefinitions;
 
-            context.Load(roleDefinitions, r => r.Include(l => l.Name, l => l.Id));
-            context.ExecuteQuery();
-
-            var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleLinkModel);
+            var currentRoleDefinition = ResolveSecurityRole(web, securityRoleLinkModel);
 
             context.Load(currentRoleDefinition, r => r.Id, r => r.Name);
             context.ExecuteQuery();
@@ -153,8 +149,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private RoleDefinition FindRoleDefinition(RoleDefinitionCollection roleDefinitions, SecurityRoleLinkDefinition rolDefinitionModel)
+        protected RoleDefinition ResolveSecurityRole(Web web, SecurityRoleLinkDefinition rolDefinitionModel)
         {
+            var context = web.Context;
+            var roleDefinitions = web.RoleDefinitions;
+
+            context.Load(roleDefinitions, r => r.Include(l => l.Name, l => l.Id));
+            context.ExecuteQuery();
 
             if (!string.IsNullOrEmpty(rolDefinitionModel.SecurityRoleName))
             {

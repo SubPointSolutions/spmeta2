@@ -1,6 +1,10 @@
-﻿using SPMeta2.CSOM.ModelHandlers;
+﻿using System;
+using System.Linq;
+using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.Assertion;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -10,45 +14,79 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securityGroupModelHost = modelHost.WithAssertAndCast<SecurityGroupModelHost>("modelHost", value => value.RequireNotNull());
-            var securityRoleLinkModel = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());
 
-            //context.Load(web, tmpWeb => tmpWeb.SiteGroups);
-            //context.ExecuteQuery();
+            var securableObject = securityGroupModelHost.SecurableObject;
+            var securityGroup = securityGroupModelHost.SecurityGroup;
+            var securityRole = ResolveSecurityRole(ExtractWeb(securableObject), definition);
 
-            //var currentRole = FindRoleDefinition(web.RoleDefinitions, securityRoleModel.Name);
+            var securityRoleContext = securityRole.Context;
+            securityRoleContext.Load(securityRole);
+            securityRoleContext.ExecuteQuery();
 
-            //TraceUtils.WithScope(traceScope =>
-            //{
-            //    traceScope.WriteLine(string.Format("Validate model:[{0}] security role:[{1}]", securityRoleModel, currentRole));
-            //    Assert.IsNotNull(currentRole);
+            var spObject = securableObject.RoleAssignments
+                                          .OfType<RoleAssignment>()
+                                          .FirstOrDefault(r => r.Member.Id == securityGroup.Id);
 
-            //    traceScope.WithTraceIndent(trace =>
-            //    {
-            //        traceScope.WriteLine(string.Format("Validate Name: model:[{0}] list view:[{1}]", securityRoleModel.Name, currentRole.Name));
-            //        Assert.AreEqual(securityRoleModel.Name, currentRole.Name);
+            var context = spObject.Context;
+            context.Load(spObject, o => o.RoleDefinitionBindings);
+            context.ExecuteQuery();
 
-            //        traceScope.WriteLine(string.Format("Validate Description: model:[{0}] list view:[{1}]", securityRoleModel.Description, currentRole.Description));
-            //        Assert.AreEqual(securityRoleModel.Description, currentRole.Description);
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
-            //        // validate base permissions
-            //        trace.WriteLine(string.Format("Validate permissions..."));
+            assert
+                 .ShouldNotBeNull(spObject);
 
-            //        // 
-            //        context.Load(currentRole, r => r.BasePermissions);
-            //        context.ExecuteQuery();
+            if (!string.IsNullOrEmpty(definition.SecurityRoleName))
+            {
 
-            //        traceScope.WithTraceIndent(permissionTrace =>
-            //        {
-            //            foreach (var permission in securityRoleModel.BasePermissions)
-            //            {
-            //                trace.WriteLine(string.Format("Validate permission presence: [{0}]", permission));
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SecurityRoleName, "SecurityRoleName is null or empty. Skipping.");
+            }
 
-            //                var spPermission = (PermissionKind)Enum.Parse(typeof(PermissionKind), permission);
-            //                Assert.IsTrue(currentRole.BasePermissions.Has(spPermission));
-            //            }
-            //        });
-            //    });
-            //});
+            if (!string.IsNullOrEmpty(definition.SecurityRoleType))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.SecurityRoleType);
+                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+
+                    var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
+                                                           .FirstOrDefault(b => b.Id == securityRole.Id) != null;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = hasRoleDefinitionBinding
+                    };
+                });
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SecurityRoleType, "SecurityRoleType is null or empty. Skipping.");
+            }
+
+            if (definition.SecurityRoleId > 0)
+            {
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SecurityRoleId, "SecurityRoleId == 0. Skipping.");
+            }
+        }
+    }
+
+    internal static class SPRoleAssignmentExtensinos
+    {
+        public static string GetRoleDefinitionBindings(this RoleAssignment assignment)
+        {
+            return assignment.RoleDefinitionBindings.ToString();
         }
     }
 }
