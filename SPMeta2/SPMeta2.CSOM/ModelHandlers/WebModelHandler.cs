@@ -194,10 +194,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Url = webModel.Url,
                     Description = webModel.Description ?? string.Empty,
                     WebTemplate = webModel.WebTemplate,
-                    UseSamePermissionsAsParentSite = !webModel.UseUniquePermission
+                    UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
+                    Language = (int)webModel.LCID
                 };
 
-                parentWeb.Webs.Add(newWebInfo);
+                var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQuery();
             }
 

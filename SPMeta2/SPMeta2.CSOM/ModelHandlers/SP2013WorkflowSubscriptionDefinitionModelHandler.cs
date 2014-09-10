@@ -68,6 +68,41 @@ namespace SPMeta2.CSOM.ModelHandlers
             return subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
         }
 
+        protected WorkflowDefinition GetWorkflowDefinition(SP2013WorkflowSubscriptionModelHost host,
+             ClientContext hostClientContext,
+            SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
+        {
+            var context = host.HostList.Context; ;
+            //var web = list.ParentWeb;
+
+            var workflowServiceManager = new WorkflowServicesManager(hostClientContext, hostClientContext.Web);
+
+            //context.Load(web);
+            //context.Load(list);
+
+            context.ExecuteQuery();
+
+            hostClientContext.Load(workflowServiceManager);
+            hostClientContext.ExecuteQuery();
+
+            var workflowSubscriptionService = workflowServiceManager.GetWorkflowSubscriptionService();
+            var workflowDeploymentService = workflowServiceManager.GetWorkflowDeploymentService();
+            var tgtwis = workflowServiceManager.GetWorkflowInstanceService();
+
+            hostClientContext.Load(workflowSubscriptionService);
+            hostClientContext.Load(workflowDeploymentService);
+            hostClientContext.Load(tgtwis);
+
+            hostClientContext.ExecuteQuery();
+
+            var publishedWorkflows = workflowDeploymentService.EnumerateDefinitions(true);
+
+            hostClientContext.Load(publishedWorkflows);
+            hostClientContext.ExecuteQuery();
+
+            return publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowSubscriptionModel.WorkflowDisplayName);
+        }
+
         private void DeployWorkflowSubscriptionDefinition(
             SP2013WorkflowSubscriptionModelHost host,
             ClientContext hostClientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
@@ -138,8 +173,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 newSubscription.EventSourceId = list.Id;
 
                 // lookup task and history lists, probaly need to think ab otehr strategy
-                var taskList = WebExtensions.QueryAndGetListByUrl(web, workflowSubscriptionModel.TaskListUrl);
-                var historyList = WebExtensions.QueryAndGetListByUrl(web, workflowSubscriptionModel.HistoryListUrl);
+                var taskList = GetTaskList(web, workflowSubscriptionModel);
+                var historyList = GetHistoryList(web, workflowSubscriptionModel);
 
                 newSubscription.SetProperty("HistoryListId", historyList.Id.ToString());
                 newSubscription.SetProperty("TaskListId", taskList.Id.ToString());
@@ -184,6 +219,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 workflowSubscriptionService.PublishSubscription(currentSubscription);
                 hostClientContext.ExecuteQuery();
             }
+        }
+
+        protected List GetTaskList(Web web, SP2013WorkflowSubscriptionDefinition definition)
+        {
+            return WebExtensions.QueryAndGetListByUrl(web, definition.TaskListUrl);
+        }
+
+        protected List GetHistoryList(Web web, SP2013WorkflowSubscriptionDefinition definition)
+        {
+            return WebExtensions.QueryAndGetListByUrl(web, definition.HistoryListUrl);
         }
 
         #endregion

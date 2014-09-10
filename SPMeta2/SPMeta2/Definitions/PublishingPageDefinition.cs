@@ -12,7 +12,7 @@ namespace SPMeta2.Definitions
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]

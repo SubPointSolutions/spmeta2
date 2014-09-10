@@ -42,8 +42,8 @@ namespace SPMeta2.Regression.DefinitionGenerators
 
                 // a big TODO as these list don't exist yet
 
-                def.HistoryListUrl = "/WorkflowTasks";
-                def.TaskListUrl = "/Lists/List";
+                def.HistoryListUrl = "/Lists/List";
+                def.TaskListUrl = "/WorkflowTasks";
             });
         }
 

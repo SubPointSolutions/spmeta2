@@ -64,12 +64,12 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string TaskListUrl { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        public Guid EventSourceId { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// 
+        //[ExpectValidation]
+        //public Guid EventSourceId { get; set; }
 
         /// <summary>
         /// Set of the events to trigger on.

@@ -176,6 +176,17 @@ namespace SPMeta2.Regression.Services
                 var targetNode = definitionSandbox
                                         .FindNodes(model =>
                                         {
+                                            var featureDefinition = definition as FeatureDefinition;
+
+                                            if (featureDefinition != null)
+                                            {
+                                                if (featureDefinition.Scope == FeatureDefinitionScope.Web)
+                                                    return model.Value.GetType() == typeof(WebDefinition);
+
+                                                if (featureDefinition.Scope == FeatureDefinitionScope.Site)
+                                                    return model.Value.GetType() == typeof(SiteDefinition);
+                                            }
+
                                             return model.Value.GetType() == parentHostType;
                                         })
                                         .FirstOrDefault();

@@ -28,6 +28,23 @@ namespace SPMeta2.Regression.DefinitionGenerators
             });
         }
 
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            var sitePublishing = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure
+                               .Inherit(f =>
+                               {
+                                   f.Enable = true;
+                               });
+
+            var webPublishing = BuiltInWebFeatures.SharePointServerPublishing
+                              .Inherit(f =>
+                              {
+                                  f.Enable = true;
+                              });
+
+            return new[] { sitePublishing, webPublishing };
+        }
+
         public override DefinitionBase GetCustomParenHost()
         {
             return BuiltInListDefinitions.Pages.Inherit<ListDefinition>(def =>
