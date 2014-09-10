@@ -143,23 +143,22 @@ namespace SPMeta2.Regression.Tests.Base
             return new EventHooks();
         }
 
-        protected void ResolveHook(EventHooks eventHooks)
+        protected void ResolveHook(EventHooks eventHooks, string start)
         {
             TraceUtils.WithScope(traceScope =>
             {
-                traceScope.WriteLine(string.Format("Validation OnProvisioning/OnProvisioned hist for model: [{0}] and OM:[{1}]",
-                        eventHooks.ModelNode,
-                        eventHooks.Tag));
+                if (eventHooks.OnProvisioning)
+                    traceScope.WriteLine(string.Format("[INF]{0} [VALIDATED] - [OnProvisioning]", start));
+                else
+                    traceScope.WriteLine(string.Format("[ERR]{0} [MISSED] - [OnProvisioning]", start));
 
-                traceScope.WriteLine("Definition:" + eventHooks.ModelNode.Value.ToString());
+                if (eventHooks.OnProvisioned)
+                    traceScope.WriteLine(string.Format("[INF]{0} [VALIDATED] - [OnProvisioned]", start));
+                else
+                    traceScope.WriteLine(string.Format("[IERR]{0} [MISSED] - [OnProvisioned]", start));
 
-                traceScope.WriteLine(string.Format("Validating OnProvisioning event hit."));
                 Assert.AreEqual(true, eventHooks.OnProvisioning);
-                traceScope.WriteLine(string.Format("    - done"));
-
-                traceScope.WriteLine(string.Format("Validating OnProvisioned event hit."));
                 Assert.AreEqual(true, eventHooks.OnProvisioned);
-                traceScope.WriteLine(string.Format("    - done"));
             });
         }
 
@@ -251,26 +250,28 @@ namespace SPMeta2.Regression.Tests.Base
                 if (definitionSandbox.Value.GetType() == typeof(WebDefinition))
                     runner.DeployWebModel(definitionSandbox);
 
-                foreach (var hook in hooks)
-                    ResolveHook(hook);
-
-                var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox);
+                var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
                 Assert.IsFalse(hasMissedOrInvalidProps);
             });
 
         }
 
-        private bool ResolveModelValidation(ModelNode modelNode)
+        private bool ResolveModelValidation(ModelNode modelNode, List<EventHooks> hooks)
         {
-            return ResolveModelValidation(modelNode, "     ");
+            return ResolveModelValidation(modelNode, "     ", hooks);
         }
 
-        private bool ResolveModelValidation(ModelNode modelNode, string start)
+        //foreach (var hook in hooks)
+        //           ResolveHook(hook);
+
+        private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
         {
+            Trace.WriteLine(string.Format(""));
+
             var hasMissedOrInvalidProps = false;
 
             var model = modelNode.Value;
-            Trace.WriteLine(string.Format("{2}Checking validation result for model [{0}]:{1}", model.GetType(), model.ToString(), start));
+            Trace.WriteLine(string.Format("[INF]{2}MODEL CHECK [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
 
             if (model.RequireSelfProcessing)
             {
@@ -284,7 +285,7 @@ namespace SPMeta2.Regression.Tests.Base
 
                 if (modelValidationResult == null)
                 {
-                    Trace.WriteLine(string.Format("{2}Missing validation result for model [{0}]:{1}", model.GetType(), model.ToString(), start));
+                    Trace.WriteLine(string.Format("[ERR]{2} Missing validation for model [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
 
                     hasMissedOrInvalidProps = true;
                     return hasMissedOrInvalidProps;
@@ -292,25 +293,24 @@ namespace SPMeta2.Regression.Tests.Base
 
                 foreach (var property in modelValidationResult.Properties)
                 {
-                    Trace.WriteLine(string.Format("{6}IS VALID:[{4}] - Src prop:[{0}] Src value:[{1}] Dst prop:[{2}] Dst value:[{3}] - Message:[{5}]",
+                    Trace.WriteLine(string.Format("[INF]{6} [{4}] - Src prop: [{0}] Src value: [{1}] Dst prop: [{2}] Dst value: [{3}] Message:[{5}]",
                         new object[]{
-                        property.Src != null ? property.Src.Name : string.Empty,
-                        property.Src != null ? property.Src.Value : string.Empty,
+                            property.Src != null ? property.Src.Name : string.Empty,
+                            property.Src != null ? property.Src.Value : string.Empty,
 
-                        property.Dst != null ? property.Dst.Name : string.Empty,
-                        property.Dst != null ? property.Dst.Value : string.Empty,
+                            property.Dst != null ? property.Dst.Name : string.Empty,
+                            property.Dst != null ? property.Dst.Value : string.Empty,
 
-                        property.IsValid,
-                        property.Message,
-                        start
-
+                            property.IsValid,
+                            property.Message,
+                            start
                     }));
 
                     if (!property.IsValid)
                         hasMissedOrInvalidProps = true;
                 }
 
-                Trace.WriteLine(string.Format("{0}Checking if property has been validated", start));
+                Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
 
                 foreach (var shouldBeValidatedProp in shouldBeValidatedProperties)
                 {
@@ -320,29 +320,51 @@ namespace SPMeta2.Regression.Tests.Base
                     if (validationResult != null)
                     {
                         hasValidation = true;
-                        // Assert.IsTrue(validationResult.IsValid);
                     }
                     else
                     {
                         hasMissedOrInvalidProps = true;
                         hasValidation = false;
-                        //Assert.IsNotNull(validationResult);
                     }
 
-                    Trace.WriteLine(string.Format("{2}[{1}] - [{0}]",
-                        shouldBeValidatedProp.Name,
-                        hasValidation.ToString().ToUpper(),
-                        start));
+                    if (hasValidation)
+                    {
+                        Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
+                            "VALIDATED",
+                            shouldBeValidatedProp.Name,
+                            start));
+                    }
+                    else
+                    {
+                        Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
+                          "MISSIED",
+                          shouldBeValidatedProp.Name,
+                          start));
+                    }
+                }
+
+
+                Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
+
+                var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
+
+                if (hook != null)
+                {
+                    ResolveHook(hook, start);
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
                 }
             }
             else
             {
-                Trace.WriteLine(string.Format("{0}Skipping due RequireSelfProcessing ==  FALSE", start));
+                Trace.WriteLine(string.Format("[INF]{0} Skipping due RequireSelfProcessing ==  FALSE", start));
             }
 
             foreach (var childModel in modelNode.ChildModels)
             {
-                var tmp = ResolveModelValidation(childModel, start + start);
+                var tmp = ResolveModelValidation(childModel, start + start, hooks);
 
                 if (tmp == true)
                     hasMissedOrInvalidProps = true;
