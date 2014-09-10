@@ -39,48 +39,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public static void Init(TestContext context)
         {
             InternalInit();
-
-           
-
-            //ReportService.OnReportItemAdded += OnReportItemAdded;
         }       
 
         [ClassCleanupAttribute]
         public static void Cleanup()
         {
             InternalCleanup();
-
-            //var testReports = TestReports;
-
-            //var testClassReport = new TestClassReport();
-
-            //testClassReport.ClassName = typeof(RandomDefinitionTest).FullName;
-
-            //var methods = typeof(RandomDefinitionTest).GetMethods();
-
-            //foreach (var method in methods)
-            //{
-            //    var testReport = TestReports.FirstOrDefault(r => r.TestName == method.Name);
-
-            //    if (testReport != null)
-            //    {
-            //        testClassReport.AddTestReportItem(testReport);
-            //    }
-            //}
-
-            //var extraTypes = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(
-            //    new Assembly[] { typeof(FieldDefinition).Assembly });
-
-            //var testReportXml = XmlSerializerUtils.SerializeToString(testClassReport, extraTypes);
-
-            //Console.Write("");
         }
-
-        //private static void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
-        //{
-        //    ReportNodes.Add(e.Node);
-
-        //}
 
         [TestMethod]
         [TestCategory("Regression.Rnd")]

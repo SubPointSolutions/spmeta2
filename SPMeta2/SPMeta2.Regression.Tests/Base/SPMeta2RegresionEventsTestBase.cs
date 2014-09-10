@@ -209,6 +209,12 @@ namespace SPMeta2.Regression.Tests.Base
         }
 
         protected void TestRandomDefinition<TDefinition>()
+           where TDefinition : DefinitionBase, new()
+        {
+            TestRandomDefinition<TDefinition>(null);
+        }
+
+        protected void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
             where TDefinition : DefinitionBase, new()
         {
             var frame = new StackFrame(1);
@@ -230,6 +236,9 @@ namespace SPMeta2.Regression.Tests.Base
                 var additionalDefinitions = sandboxService.GetAdditionalDefinition<TDefinition>();
 
                 sandboxService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, omModelType);
+
+                if (definitionSetup != null)
+                    definitionSetup(sandboxService.CurrentDefinition as TDefinition);
 
                 var hooks = GetHooks(definitionSandbox);
 
@@ -337,7 +346,7 @@ namespace SPMeta2.Regression.Tests.Base
                     else
                     {
                         Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
-                          "MISSIED",
+                          "MISSED",
                           shouldBeValidatedProp.Name,
                           start));
                     }

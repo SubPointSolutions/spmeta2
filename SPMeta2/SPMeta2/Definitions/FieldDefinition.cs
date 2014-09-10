@@ -67,6 +67,8 @@ namespace SPMeta2.Definitions
         /// Type of the target field.
         /// BuiltInFieldTypes class can be used to utilize out of the box SharePoint fields.
         /// </summary>
+        /// 
+        [ExpectValidation]
         public string FieldType { get; set; }
 
         /// <summary>

@@ -61,6 +61,8 @@ namespace SPMeta2.Regression.Services
             return GetAdditionalDefinitions(typeof(TDefinition));
         }
 
+        public DefinitionBase CurrentDefinition { get; set; }
+
         public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
              where TDefinition : DefinitionBase, new()
         {
@@ -70,6 +72,9 @@ namespace SPMeta2.Regression.Services
             var parentHostType = GetParentHostType<TDefinition>(objectModelType);
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
+
+            CurrentDefinition = currentDefinition;
+
             var defs = new List<GeneratedArtifact>();
 
             LookupModelTree<TDefinition>(rootHostType, defs, objectModelType);

@@ -25,6 +25,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                                  .ShouldBeEqual(m => m.Title, o => o.Title)
                                  .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
                                  .ShouldBeEqual(m => m.Group, o => o.Group)
+                                 .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                                  .ShouldBeEqual(m => m.Id, o => o.Id)
                                  .ShouldBeEqual(m => m.Description, o => o.Description)
                                  .ShouldBeEqual(m => m.Required, o => o.Required);
