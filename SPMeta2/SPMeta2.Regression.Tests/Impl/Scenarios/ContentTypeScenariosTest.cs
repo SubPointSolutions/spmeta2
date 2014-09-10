@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region tests
+        #region default
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ContentTypes")]
@@ -51,6 +51,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+
+        #endregion
+
+        #region hierarchical content types
+
+        // TODO
 
         #endregion
     }

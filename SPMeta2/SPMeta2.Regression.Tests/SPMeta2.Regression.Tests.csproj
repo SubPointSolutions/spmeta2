@@ -58,10 +58,20 @@
     <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
     <Compile Include="Common\EventHits.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
+    <Compile Include="Impl\Scenarios\BreakRoleInheritanceScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ContentTypeFieldLinkScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\FieldScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\FolderScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ListFieldLinkScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ListItemScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\ListViewScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
+    <Compile Include="Impl\Upgrade\ListViewUpgradeTest.cs" />
+    <Compile Include="Impl\Upgrade\ContentTypeUpgradeTest.cs" />
+    <Compile Include="Impl\Upgrade\FieldUpgradeTest.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
@@ -187,9 +197,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Impl\Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

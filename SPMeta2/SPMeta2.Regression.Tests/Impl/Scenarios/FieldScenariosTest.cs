@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region fields
+        #region default
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields")]
@@ -210,6 +210,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.FieldType = BuiltInFieldTypes.User;
             });
         }
+
+        #endregion
+
+        #region field to site
+
+        // TODO
+
+        #endregion
+
+        #region field to list
+
+        // TODO
 
         #endregion
     }
