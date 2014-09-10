@@ -62,14 +62,23 @@ namespace SPMeta2.Extensions
 
         public static List<ModelNode> FindNodes(this ModelNode model, DefinitionBase definition)
         {
+            return FindNodes(model, modelNode =>
+              {
+                  return modelNode.Value == definition;
+              });
+        }
+
+        public static List<ModelNode> FindNodes(this ModelNode model, Func<ModelNode, bool> match)
+        {
             var result = new List<ModelNode>();
 
-            if (model.Value == definition)
+            //if (model.Value == definition)
+            if (match(model))
                 result.Add(model);
 
             foreach (var node in model.ChildModels)
             {
-                var tmpNodes = FindNodes(node, definition);
+                var tmpNodes = FindNodes(node, match);
 
                 foreach (var tmpNode in tmpNodes)
                 {

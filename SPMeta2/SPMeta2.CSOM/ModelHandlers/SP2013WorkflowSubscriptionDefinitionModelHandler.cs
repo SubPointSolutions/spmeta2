@@ -38,6 +38,36 @@ namespace SPMeta2.CSOM.ModelHandlers
             DeployWorkflowSubscriptionDefinition(workflowSubscriptionModelHost, hostClientContext, list, workflowSubscriptionModel);
         }
 
+
+        protected WorkflowSubscription GetCurrentWorkflowSubscription(
+             SP2013WorkflowSubscriptionModelHost host,
+             ClientContext hostClientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
+        {
+            var context = list.Context;
+            var web = list.ParentWeb;
+
+            var workflowServiceManager = new WorkflowServicesManager(hostClientContext, hostClientContext.Web);
+
+            context.Load(web);
+            context.Load(list);
+
+            context.ExecuteQuery();
+
+            hostClientContext.Load(workflowServiceManager);
+            hostClientContext.ExecuteQuery();
+
+            var workflowSubscriptionService = workflowServiceManager.GetWorkflowSubscriptionService();
+
+            var subscriptions = workflowSubscriptionService.EnumerateSubscriptionsByList(list.Id);
+
+            hostClientContext.Load(subscriptions);
+            hostClientContext.ExecuteQuery();
+
+            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
+
+            return subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
+        }
+
         private void DeployWorkflowSubscriptionDefinition(
             SP2013WorkflowSubscriptionModelHost host,
             ClientContext hostClientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)

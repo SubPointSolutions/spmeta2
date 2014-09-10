@@ -18,6 +18,8 @@ using System.Reflection;
 using SPMeta2.Exceptions;
 using SPMeta2.Attributes;
 
+using SPMeta2.Extensions;
+
 namespace SPMeta2.Regression.Services
 {
     public class ModelGeneratorService
@@ -52,6 +54,11 @@ namespace SPMeta2.Regression.Services
             public DefinitionBase Definition { get; set; }
             public IEnumerable<string> AdditionalDefinitions { get; set; }
 
+        }
+
+        public IEnumerable<DefinitionBase> GetAdditionalDefinition<TDefinition>()
+        {
+            return GetAdditionalDefinitions(typeof(TDefinition));
         }
 
         public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
@@ -153,6 +160,35 @@ namespace SPMeta2.Regression.Services
         private void LookupModelTree<TDefinition>(Type rootHostType, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
         {
             LookupModelTree(rootHostType, typeof(TDefinition), defs, objectModelType);
+        }
+
+        public void ComposeModelWithAdditionalDefinitions(ModelNode definitionSandbox,
+            IEnumerable<DefinitionBase> additionalDefinitions,
+             SPObjectModelType objectModelType)
+        {
+            if (additionalDefinitions == null)
+                return;
+
+            foreach (var definition in additionalDefinitions)
+            {
+                var parentHostType = GetParentHostType(definition.GetType(), objectModelType);
+
+                var targetNode = definitionSandbox
+                                        .FindNodes(model =>
+                                        {
+                                            return model.Value.GetType() == parentHostType;
+                                        })
+                                        .FirstOrDefault();
+
+                targetNode
+                    .AddDefinitionNode(definition);
+
+            }
+        }
+
+        private ModelNode LookupNodelNodeForDefinition(ModelNode node)
+        {
+            return null;
         }
 
         private void LookupModelTree(Type rootHostType, Type type, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
@@ -300,5 +336,7 @@ namespace SPMeta2.Regression.Services
             throw new SPMeta2NotImplementedException(string.Format("Unsupporter SPObjectModelType:[{0}]", objectModelType));
 
         }
+
+
     }
 }

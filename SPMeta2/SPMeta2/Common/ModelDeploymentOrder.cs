@@ -10,7 +10,7 @@ namespace SPMeta2.Common
     /// </summary>
     public class ModelWeigh
     {
-        #region contructors
+        #region constructors
 
         public ModelWeigh()
         {
@@ -20,6 +20,7 @@ namespace SPMeta2.Common
         public ModelWeigh(Type model, IEnumerable<Type> childModels)
         {
             Model = model;
+            ChildModels = new Dictionary<Type, int>();
 
             var index = 0;
 

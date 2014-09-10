@@ -32,6 +32,7 @@ namespace SPMeta2.Common
                 typeof(WebDefinition),
                 new[]{
                      typeof(FeatureDefinition),
+                     typeof(SP2013WorkflowDefinition),
                      typeof(ListDefinition)
                 }));
 
@@ -40,6 +41,7 @@ namespace SPMeta2.Common
                 typeof(ListDefinition),
                 new[]{
                      typeof(ContentTypeLinkDefinition),
+                     typeof(SP2013WorkflowSubscriptionDefinition),
                      typeof(FolderDefinition),
                      typeof(ListViewDefinition),
                      typeof(ModuleFileDefinition),

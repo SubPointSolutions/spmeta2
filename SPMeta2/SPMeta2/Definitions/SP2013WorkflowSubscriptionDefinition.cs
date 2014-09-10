@@ -36,14 +36,15 @@ namespace SPMeta2.Definitions
         #region properties
 
         /// <summary>
-        /// Name of the target SharePoint 2013 workflow.
+        /// Name of the target SharePoint 2013 workflow binding in the list or library.
         /// </summary>
         /// 
         [ExpectValidation]
         public string Name { get; set; }
 
         /// <summary>
-        /// Display name of the target SharePoint 2013 workflow in the list or library.
+        /// Display name of the target SharePoint 2013 workflow to be bindind to the list.
+        /// WorkflowDisplayName is used to lookup workflow from the current web and bind it to the list. 
         /// </summary>
         /// 
         [ExpectValidation]

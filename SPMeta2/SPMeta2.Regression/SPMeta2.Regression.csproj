@@ -67,6 +67,7 @@
     <Compile Include="DefinitionGenerators\SecurityRoleLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PrefixDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SP2013WorkflowDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />

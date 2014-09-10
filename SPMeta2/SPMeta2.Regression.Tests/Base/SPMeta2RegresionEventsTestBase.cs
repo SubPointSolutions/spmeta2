@@ -228,6 +228,9 @@ namespace SPMeta2.Regression.Tests.Base
                 var sandboxService = new ModelGeneratorService();
 
                 var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
+                var additionalDefinitions = sandboxService.GetAdditionalDefinition<TDefinition>();
+
+                sandboxService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, omModelType);
 
                 var hooks = GetHooks(definitionSandbox);
 

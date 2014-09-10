@@ -130,7 +130,7 @@ namespace SPMeta2.Services
         #endregion
 
         #region internal
-        
+
         #endregion
 
         #region methods
@@ -219,9 +219,33 @@ namespace SPMeta2.Services
             // deployment chain with changes from SPWeb to SPList
 
             // sort out child models by types
+            var modelWeights = GetModelWeighs();
+
             var childModelTypes = modelNode.ChildModels
                                        .Select(m => m.Value.GetType())
-                                       .GroupBy(t => t);
+                                       .GroupBy(t => t)
+                                       .ToList();
+
+
+            var currentModelWeights = modelWeights.FirstOrDefault(w => w.Model == modelDefinition.GetType());
+
+            if (currentModelWeights != null)
+            {
+                childModelTypes.Sort(delegate(IGrouping<Type, Type> p1, IGrouping<Type, Type> p2)
+                {
+                    var srcW = int.MaxValue;
+                    var dstW = int.MaxValue;
+
+                    if (currentModelWeights.ChildModels.ContainsKey(p1.Key))
+                        srcW = currentModelWeights.ChildModels[p1.Key];
+
+                    if (currentModelWeights.ChildModels.ContainsKey(p2.Key))
+                        dstW = currentModelWeights.ChildModels[p2.Key];
+
+                    return srcW.CompareTo(dstW);
+                });
+            }
+
 
             foreach (var childModelType in childModelTypes)
             {
