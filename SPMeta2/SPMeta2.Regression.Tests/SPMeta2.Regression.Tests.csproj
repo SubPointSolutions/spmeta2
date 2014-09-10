@@ -58,13 +58,12 @@
     <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
     <Compile Include="Common\EventHits.cs" />
     <Compile Include="Impl\Definitions\ContentTypeLinksTests.cs" />
-    <Compile Include="Impl\Definitions\ContentTypeTests.cs" />
     <Compile Include="Impl\Definitions\FieldLinksTests.cs" />
-    <Compile Include="Impl\Definitions\FieldTests.cs" />
     <Compile Include="Impl\Definitions\FolderTests.cs" />
-    <Compile Include="Impl\Definitions\ListTests.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
+    <Compile Include="Impl\Scenarios\ContentTypeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\FieldScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\ListScenariosTest.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
