@@ -9,7 +9,7 @@ namespace SPMeta2.SSOM.ModelHosts
 {
     public class SiteModelHost : SSOMModelHostBase
     {
-        #region contructors
+        #region constructors
 
         public SiteModelHost()
         {

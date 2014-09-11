@@ -19,18 +19,7 @@ namespace SPMeta2.ModelHosts
 
         #endregion
 
-        #region properties
-
-        public bool ShouldUpdateHost { get; set; }
-
-        #endregion
-
-        #region methods
-
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        #region static
 
         public static ModelHostBase Inherit(ModelHostBase modelHost)
         {
@@ -74,6 +63,21 @@ namespace SPMeta2.ModelHosts
                     propSetter.Invoke(target, new[] { valueToSet });
                 }
             }
+        }
+
+        #endregion
+
+        #region properties
+
+        public bool ShouldUpdateHost { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
 
         #endregion

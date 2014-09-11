@@ -3,10 +3,10 @@
     /// <summary>
     /// Internal usage only.
     /// </summary>
-    public class SiteModel : ModelBase
-    {
-        #region properties
+    //public class SiteModel : ModelBase
+    //{
+    //    #region properties
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

@@ -24,7 +24,7 @@ namespace SPMeta2.Definitions
 
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public SP2013WorkflowSubscriptionDefinition()
         {

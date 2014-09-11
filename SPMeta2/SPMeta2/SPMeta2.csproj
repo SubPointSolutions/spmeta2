@@ -53,13 +53,14 @@
     <Compile Include="Attributes\Regression\ExpectValidation.cs" />
     <Compile Include="Attributes\Regression\ParentHostAttribute.cs" />
     <Compile Include="Attributes\SPObjectType.cs" />
+    <Compile Include="Attributes\SPObjectTypeAttribute.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInFolderDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
-    <Compile Include="Common\DefaultModelWegh.cs" />
-    <Compile Include="Common\ModelDeploymentOrder.cs" />
-    <Compile Include="Common\ModelEvents.cs" />
-    <Compile Include="Common\ModelHandlerContext.cs" />
+    <Compile Include="Common\DefaultModelWeigh.cs" />
+    <Compile Include="Common\ModelEventType.cs" />
+    <Compile Include="Common\ModelWeigh.cs" />
+    <Compile Include="Common\ModelEventArgs.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />
-    <Compile Include="Extensions\ModelServiceBaseExtensions.cs" />
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelBase.cs" />
@@ -145,6 +145,7 @@
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
+    <Compile Include="Utils\WebpartXmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

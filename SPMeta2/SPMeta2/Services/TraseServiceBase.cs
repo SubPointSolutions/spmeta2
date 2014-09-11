@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Services
 {
-    public class TraseServiceBase
-    {
-        #region methods
+    //public class TraseServiceBase
+    //{
+    //    #region methods
         
-        //public virtual void Trace(string) 
+    //    //public virtual void Trace(string) 
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

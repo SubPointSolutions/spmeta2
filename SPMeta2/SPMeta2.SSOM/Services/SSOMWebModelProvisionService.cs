@@ -9,34 +9,34 @@ using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.Services
 {
-    public class SSOMWebModelProvisionService : ModelProvisionServiceBase
-    {
-        #region methods
+    //public class SSOMWebModelProvisionService : ModelProvisionServiceBase
+    //{
+    //    #region methods
 
-        protected override void InternalDeploySiteModel(ProvisionServiceContext context)
-        {
-            var site = context.Context as SPSite;
-            var model = context.Model;
+    //    protected override void InternalDeploySiteModel(ProvisionServiceContext context)
+    //    {
+    //        var site = context.Context as SPSite;
+    //        var model = context.Model;
 
-            ModelService.DeployModel(SiteModelHost.FromSite(site), model);
-        }
+    //        ModelService.DeployModel(SiteModelHost.FromSite(site), model);
+    //    }
 
-        protected override void InternalDeployRootWebModel(ProvisionServiceContext context)
-        {
-            var web = context.Context as SPWeb;
-            var model = context.Model;
+    //    protected override void InternalDeployRootWebModel(ProvisionServiceContext context)
+    //    {
+    //        var web = context.Context as SPWeb;
+    //        var model = context.Model;
 
-            ModelService.DeployModel(WebModelHost.FromWeb(web), model);
-        }
+    //        ModelService.DeployModel(WebModelHost.FromWeb(web), model);
+    //    }
 
-        protected override void InternalDeployWebModel(ProvisionServiceContext context)
-        {
-            var web = context.Context as SPWeb;
-            var model = context.Model;
+    //    protected override void InternalDeployWebModel(ProvisionServiceContext context)
+    //    {
+    //        var web = context.Context as SPWeb;
+    //        var model = context.Model;
 
-            ModelService.DeployModel(WebModelHost.FromWeb(web), model);
-        }
+    //        ModelService.DeployModel(WebModelHost.FromWeb(web), model);
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

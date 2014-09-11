@@ -71,7 +71,7 @@ namespace SPMeta2.Services
 
         protected virtual List<ModelWeigh> GetModelWeighs()
         {
-            return DefaultModelWegh.Weighs;
+            return DefaultModelWeigh.Weighs;
         }
 
         #endregion

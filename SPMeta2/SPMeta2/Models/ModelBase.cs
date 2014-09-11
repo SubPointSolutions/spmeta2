@@ -1,8 +1,7 @@
 ﻿namespace SPMeta2.Models
 {
-    public abstract class ModelBase 
-    {
+    //public abstract class ModelBase 
+    //{
        
-
-    }
+    //}
 }

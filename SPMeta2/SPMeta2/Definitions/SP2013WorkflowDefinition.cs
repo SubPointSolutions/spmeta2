@@ -22,7 +22,7 @@ namespace SPMeta2.Definitions
 
     public class SP2013WorkflowDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public SP2013WorkflowDefinition()
         {

@@ -84,7 +84,7 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.DefaultWebpartTemplates.resources
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.WorkflowXAMLDefinitions.resources
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.WorkflowXAMLDefinitions.resources

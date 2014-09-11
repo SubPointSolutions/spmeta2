@@ -8,22 +8,22 @@ namespace SPMeta2.Models
     /// <summary>
     /// Internal usage only.
     /// </summary>
-    public abstract class WebModel : ModelBase
-    {
-        #region constructors
+    //public abstract class WebModel : ModelBase
+    //{
+    //    #region constructors
 
-        #endregion
+    //    #endregion
 
-        #region properties
+    //    #region properties
 
-        #endregion
+    //    #endregion
 
-        #region methods
+    //    #region methods
 
-        public abstract ModelNode GetSiteModel();
-        public abstract ModelNode GetRootWebModel();
-        public abstract ModelNode GetWebModel();
+    //    public abstract ModelNode GetSiteModel();
+    //    public abstract ModelNode GetRootWebModel();
+    //    public abstract ModelNode GetWebModel();
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

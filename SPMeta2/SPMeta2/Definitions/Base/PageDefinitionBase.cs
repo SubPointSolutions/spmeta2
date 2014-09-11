@@ -10,7 +10,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     public abstract class PageDefinitionBase : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public PageDefinitionBase()
         {

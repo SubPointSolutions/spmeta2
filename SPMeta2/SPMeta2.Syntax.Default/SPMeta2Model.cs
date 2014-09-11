@@ -7,6 +7,9 @@ using System.Text;
 
 namespace SPMeta2.Syntax.Default
 {
+    /// <summary>
+    /// Initial entry to start model build up process.
+    /// </summary>
     public static class SPMeta2Model
     {
         #region farm

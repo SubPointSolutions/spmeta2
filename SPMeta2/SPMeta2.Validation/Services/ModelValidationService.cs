@@ -19,7 +19,7 @@ namespace SPMeta2.Validation.Services
 {
     public class ModelValidationService : ModelServiceBase
     {
-        #region contructors
+        #region constructors
 
         public ModelValidationService()
         {

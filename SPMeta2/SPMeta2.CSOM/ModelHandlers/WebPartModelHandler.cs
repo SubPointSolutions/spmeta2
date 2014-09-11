@@ -17,7 +17,6 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using System.Text;
 using System.IO;
-using SPMeta2.Common.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -35,8 +34,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         #endregion
 
         #region methods
-
-
+        
         protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
              Action<WebPart> action)
         {

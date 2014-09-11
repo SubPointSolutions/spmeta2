@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions
 
     public class WebPartDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public WebPartDefinition()
         {

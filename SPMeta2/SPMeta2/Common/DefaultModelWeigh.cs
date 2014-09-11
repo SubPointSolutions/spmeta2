@@ -9,11 +9,11 @@ namespace SPMeta2.Common
     /// <summary>
     /// Internal usage only.
     /// </summary>
-    public static class DefaultModelWegh
+    public static class DefaultModelWeigh
     {
         #region static
 
-        static DefaultModelWegh()
+        static DefaultModelWeigh()
         {
             Weighs = new List<ModelWeigh>();
 

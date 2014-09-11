@@ -72,7 +72,6 @@ namespace SPMeta2.Extensions
         {
             var result = new List<ModelNode>();
 
-            //if (model.Value == definition)
             if (match(model))
                 result.Add(model);
 

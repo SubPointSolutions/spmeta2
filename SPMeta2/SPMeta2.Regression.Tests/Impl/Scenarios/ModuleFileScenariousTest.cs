@@ -12,7 +12,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
     [TestClass]
     public class ModuleFileScenariousTest : SPMeta2RegresionScenarioTestBase
     {
-        #region contructors
+        #region constructors
 
         public ModuleFileScenariousTest()
         {

@@ -11,36 +11,6 @@ namespace SPMeta2.Syntax.Default.Modern
 {
     public static class ModernSyntax
     {
-        //public static ModelNode OnCreated<TObjectType>(this ModelNode model,
-        //    Action<OnCreatingContext<TObjectType, DefinitionBase>> action)
-        //{
-        //    return OnCreated<TObjectType, DefinitionBase>(model, action);
-        //}
-
-        //public static ModelNode OnCreated<TObjectType, TDefinitionType>(this ModelNode model,
-        //    Action<OnCreatingContext<TObjectType, TDefinitionType>> action)
-        //    where TDefinitionType : DefinitionBase
-        //{
-        //    model.RegisterModelContextEvent(ModelEventType.OnUpdated, action);
-
-        //    return model;
-        //}
-
-        //public static ModelNode OnCreating<TObjectType>(this ModelNode model,
-        //    Action<OnCreatingContext<TObjectType, DefinitionBase>> action)
-        //{
-        //    return OnCreating<TObjectType, DefinitionBase>(model, action);
-        //}
-
-        //public static ModelNode OnCreating<TObjectType, TDefinitionType>(this ModelNode model,
-        //    Action<OnCreatingContext<TObjectType, TDefinitionType>> action)
-        //    where TDefinitionType : DefinitionBase
-        //{
-        //    model.RegisterModelContextEvent(ModelEventType.OnUpdating, action);
-
-        //    return model;
-        //}
-
         #region on error
 
         public static ModelNode OnError<TObjectType>(this ModelNode model,

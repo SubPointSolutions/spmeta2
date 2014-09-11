@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     public class WebPartPageDefinition : PageDefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public WebPartPageDefinition()
         {

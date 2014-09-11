@@ -34,22 +34,5 @@ namespace SPMeta2.Common
         #endregion
     }
 
-    /// <summary>
-    /// Internal usage only.
-    /// </summary>
-    public enum ModelEventType
-    {
-        Unknown,
-
-        OnProvisioning,
-        OnProvisioned,
-
-        OnUpdating,
-        OnUpdated,
-
-        OnRetracting,
-        OnRetracted,
-
-        OnError
-    }
+   
 }

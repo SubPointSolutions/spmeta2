@@ -10,10 +10,11 @@ namespace SPMeta2.Syntax.Default.Extensions
 {
     public static class ModelNodeExtensions
     {
+        #region methods
+
         public static ModelNode AddDefinitionNode(this ModelNode node, DefinitionBase definition)
         {
             return AddDefinitionNode(node, definition, null);
-
         }
 
         public static ModelNode AddDefinitionNode(this ModelNode node,
@@ -29,5 +30,7 @@ namespace SPMeta2.Syntax.Default.Extensions
 
             return node;
         }
+
+        #endregion
     }
 }

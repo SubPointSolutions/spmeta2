@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SPMeta2.Attributes
+{
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class SPObjectTypeAttribute : Attribute
+    {
+        #region constructors
+
+        public SPObjectTypeAttribute(SPObjectModelType objectModelType, string className, string assemblyName)
+        {
+            ObjectModelType = objectModelType;
+
+            ClassName = className;
+            AssemblyName = assemblyName;
+        }
+
+        #endregion
+
+        #region properties
+
+        public SPObjectModelType ObjectModelType { get; set; }
+
+        public string ClassName { get; set; }
+        public string AssemblyName { get; set; }
+
+        #endregion
+    }
+}

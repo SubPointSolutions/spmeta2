@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     public class SecurityRoleDefinition : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public SecurityRoleDefinition()
         {

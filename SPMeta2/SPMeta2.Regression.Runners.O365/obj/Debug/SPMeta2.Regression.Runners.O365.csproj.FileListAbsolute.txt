@@ -25,12 +25,12 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regres
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.Reports.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.Runners.O365.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.Runners.O365.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.Runners.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Syntax.Default.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.CSOM.pdb
@@ -41,5 +41,3 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\obj\Debug\SPMeta2.Regression.Runners.O365.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\obj\Debug\SPMeta2.Regression.Runners.O365.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\obj\Debug\SPMeta2.Regression.Runners.O365.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Common.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Common.pdb

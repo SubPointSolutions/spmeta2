@@ -14,7 +14,7 @@ namespace SPMeta2.SSOM.Services
 {
     public class SSOMProvisionService : ModelServiceBase
     {
-        #region contructors
+        #region constructors
 
         public SSOMProvisionService()
         {
