@@ -20,7 +20,7 @@ namespace SPMeta2.Regression.Services.Rnd
             return String(32);
         }
 
-        public override string String(int lenght)
+        public override string String(long lenght)
         {
             var iterations = (lenght / 32) + 1;
 
@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.Services.Rnd
             for (var i = 0; i < iterations; i++)
                 result += System.Guid.NewGuid().ToString("N");
 
-            return result.Substring(0, lenght);
+            return result.Substring(0, (int)lenght);
         }
 
         public override int Int()
@@ -86,9 +86,9 @@ namespace SPMeta2.Regression.Services.Rnd
             return Content(32);
         }
 
-        public override byte[] Content(int lenght)
+        public override byte[] Content(long lenght)
         {
-            return Encoding.UTF8.GetBytes(String());
+            return Encoding.UTF8.GetBytes(String(lenght));
         }
 
         public override string DbServerName()

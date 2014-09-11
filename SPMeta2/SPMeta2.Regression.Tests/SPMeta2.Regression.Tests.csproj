@@ -58,6 +58,7 @@
     <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
     <Compile Include="Common\EventHits.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
+    <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\BreakRoleInheritanceScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeFieldLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Impl\Scenarios\ListItemScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\ListViewScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ModuleFileScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
     <Compile Include="Impl\Upgrade\ListViewUpgradeTest.cs" />
     <Compile Include="Impl\Upgrade\ContentTypeUpgradeTest.cs" />

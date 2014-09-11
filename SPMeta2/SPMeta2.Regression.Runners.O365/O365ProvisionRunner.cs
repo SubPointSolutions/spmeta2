@@ -72,24 +72,30 @@ namespace SPMeta2.Regression.Runners.O365
 
         public override void DeploySiteModel(ModelNode model)
         {
-            WithO365Context(context =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                WithO365Context(context =>
+                {
+                    _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
 
-                if (EnableDefinitionValidation)
-                    _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
-            });
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
+            }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            WithO365Context(context =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                WithO365Context(context =>
+                {
+                    _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-                if (EnableDefinitionValidation)
-                    _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-            });
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                });
+            }
         }
 
         #endregion

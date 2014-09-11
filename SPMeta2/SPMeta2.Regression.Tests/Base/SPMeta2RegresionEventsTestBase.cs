@@ -28,17 +28,17 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionEventsTestBase()
         {
+           
+
             //EnableDefinitionValidation = false;
 
             //ReportService.OnReportItemAdded += OnReportItemAdded;
         }
 
-        //private void OnReportItemAdded(object sender, OnTestReportNodeAddedEventArgs e)
-        //{
-        //    ReportNodes.Add(e.Node);
-        //}
 
         #endregion
+
+        
 
         internal class ModelValidationResult
         {

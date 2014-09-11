@@ -2,6 +2,7 @@
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,17 @@ using System.Threading.Tasks;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class FieldScenariosTest : SPMeta2RegresionEventsTestBase
+    public class FieldScenariosTest : SPMeta2RegresionScenarioTestBase
     {
+        #region constructors
+
+        public FieldScenariosTest()
+        {
+            ProvisionGenerationCount = 1;
+        }
+
+        #endregion
+
         #region internal
 
         [ClassInitializeAttribute]

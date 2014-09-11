@@ -51,38 +51,54 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         public override void DeployFarmModel(ModelNode model)
         {
-            WithSSOMFarmContext(farm =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
-                _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
-            });
+                WithSSOMFarmContext(farm =>
+                {
+
+                    _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
+                    _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
+
+                });
+            }
         }
 
         public override void DeployWebApplicationModel(ModelNode model)
         {
-            WithSSOMWebApplicationContext(webApp =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
-                _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
-            });
+                WithSSOMWebApplicationContext(webApp =>
+                {
+
+                    _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+                    _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+
+                });
+            }
         }
 
         public override void DeploySiteModel(ModelNode model)
         {
-            WithSSOMSiteAndWebContext((site, web) =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
-                _validationService.DeployModel(SiteModelHost.FromSite(site), model);
-            });
+                WithSSOMSiteAndWebContext((site, web) =>
+                {
+                    _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+                    _validationService.DeployModel(SiteModelHost.FromSite(site), model);
+                });
+            }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            WithSSOMSiteAndWebContext((site, web) =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
-                _validationService.DeployModel(WebModelHost.FromWeb(web), model);
-            });
+                WithSSOMSiteAndWebContext((site, web) =>
+                {
+                    _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+                    _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                });
+            }
         }
 
         #endregion

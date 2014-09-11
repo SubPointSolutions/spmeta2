@@ -19,6 +19,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
+            ProvisionGenerationCount = 1;
+
             ProvisionRunners = new List<ProvisionRunnerBase>();
             ProvisionRunnerAssemblies = new List<string>();
 
@@ -30,6 +32,8 @@ namespace SPMeta2.Regression.Tests.Base
         #endregion
 
         #region properties
+
+        public int ProvisionGenerationCount { get; set; }
 
         protected void InitLazyRunnerConnection()
         {
@@ -114,11 +118,15 @@ namespace SPMeta2.Regression.Tests.Base
             {
                 var type = provisionRunner.GetType().FullName;
 
+                provisionRunner.ProvisionGenerationCount = ProvisionGenerationCount;
                 provisionRunner.EnableDefinitionValidation = EnableDefinitionValidation;
 
                 CurrentProvisionRunner = provisionRunner;
 
                 Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
+                Trace.WriteLine(string.Format(" ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
+                Trace.WriteLine(string.Format(" EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
+
                 action(new ProvisionRunnerContext
                 {
                     Runner = provisionRunner

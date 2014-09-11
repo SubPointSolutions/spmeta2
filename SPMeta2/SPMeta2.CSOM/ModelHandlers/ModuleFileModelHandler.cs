@@ -243,9 +243,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var fileCreatingInfo = new FileCreationInformation
                 {
                     Url = fileName,
-                    Content = fileContent,
                     Overwrite = file.Exists
                 };
+
+                if(fileContent.Length < 1024 * 1024 * 1.5)
+                {
+                    fileCreatingInfo.Content = fileContent;
+                }
+                else
+                {
+                    fileCreatingInfo.ContentStream = new System.IO.MemoryStream(fileContent);
+                }
+
 
                 return folder.Files.Add(fileCreatingInfo);
 

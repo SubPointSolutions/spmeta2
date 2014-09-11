@@ -72,29 +72,35 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         public override void DeploySiteModel(ModelNode model)
         {
-            WithO365Context(context =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                WithCSOMContext(context =>
+                {
+                    _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
 
-                if (EnableDefinitionValidation)
-                    _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
-            });
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
+            }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            WithO365Context(context =>
+            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
             {
-                _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                WithCSOMContext(context =>
+                {
+                    _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-                if (EnableDefinitionValidation)
-                    _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-            });
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                });
+            }
         }
 
         #endregion
 
-       
+
 
 
         #region utils
@@ -114,18 +120,17 @@ namespace SPMeta2.Regression.Runners.CSOM
         #endregion
 
 
-
-        public void WithO365Context(Action<ClientContext> action)
+        public void WithCSOMContext(Action<ClientContext> action)
         {
-            WithO365Context(SiteUrl, action);
+            WithCSOMContext(SiteUrl, action);
         }
 
-        public void WithO365Context(string siteUrl, Action<ClientContext> action)
+        public void WithCSOMContext(string siteUrl, Action<ClientContext> action)
         {
-            WithO365Context(siteUrl, UserName, UserPassword, action);
+            WithCSOMContext(siteUrl, UserName, UserPassword, action);
         }
 
-        private void WithO365Context(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
+        private void WithCSOMContext(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
             if (_lazyContext != null)
             {
@@ -135,6 +140,7 @@ namespace SPMeta2.Regression.Runners.CSOM
             {
                 using (var context = new ClientContext(siteUrl))
                 {
+                    // TODO, setup correct credentials for CSOM
                     //context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
 
                     action(context);

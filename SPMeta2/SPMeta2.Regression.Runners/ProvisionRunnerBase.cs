@@ -9,10 +9,21 @@ namespace SPMeta2.Regression.Runners
 {
     public class ProvisionRunnerBase
     {
+        #region constructors
+
+        public ProvisionRunnerBase()
+        {
+            ProvisionGenerationCount = 1;
+        }
+
+        #endregion
+
         #region properties
 
         public string Name { get; set; }
         public bool EnableDefinitionValidation { get; set; }
+
+        public int ProvisionGenerationCount { get; set; }
 
         #endregion
 

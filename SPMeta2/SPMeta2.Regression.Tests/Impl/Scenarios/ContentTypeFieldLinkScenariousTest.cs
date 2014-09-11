@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class ContentTypeFieldLinkScenariousTest : SPMeta2RegresionEventsTestBase
+    public class ContentTypeFieldLinkScenariousTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 
@@ -28,6 +30,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #endregion
 
         #region default
+
+        
 
         // add OOTB field, TODO
         // add OOTB fields, TODO
