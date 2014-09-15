@@ -77,9 +77,7 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.Common.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Syntax.Default.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression\obj\Debug\SPMeta2.Regression.csprojResolveAssemblyReference.cache

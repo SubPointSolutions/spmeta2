@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Models;
-using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Utils;
 using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Syntax.Default.Modern;
@@ -28,7 +28,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionEventsTestBase()
         {
-           
+
 
             //EnableDefinitionValidation = false;
 
@@ -37,8 +37,6 @@ namespace SPMeta2.Regression.Tests.Base
 
 
         #endregion
-
-        
 
         internal class ModelValidationResult
         {
@@ -217,9 +215,6 @@ namespace SPMeta2.Regression.Tests.Base
         protected void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
             where TDefinition : DefinitionBase, new()
         {
-            var frame = new StackFrame(1);
-            var parentMethod = frame.GetMethod();
-
             var allHooks = new List<EventHooks>();
 
             WithProvisionRunnerContext(runnerContext =>
@@ -269,9 +264,6 @@ namespace SPMeta2.Regression.Tests.Base
         {
             return ResolveModelValidation(modelNode, "     ", hooks);
         }
-
-        //foreach (var hook in hooks)
-        //           ResolveHook(hook);
 
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
         {

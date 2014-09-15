@@ -6,9 +6,8 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
-using SPMeta2.Regression.Common;
-using SPMeta2.Regression.Common.Utils;
-using SPMeta2.Regression.SSOM.Utils;
+
+using SPMeta2.Regression.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation

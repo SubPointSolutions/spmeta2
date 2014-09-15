@@ -6,7 +6,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Utils;
 using System;
 using SPMeta2.Regression.Assertion;
 

@@ -5,7 +5,7 @@ using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
-using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SPMeta2.Regression.CSOM.Validation

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
-using SPMeta2.Regression.Common.Utils;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
