@@ -20,7 +20,11 @@ namespace SPMeta2.Enumerations
         public static readonly string Discussion = "0x012002";
         public static readonly string DisplayTemplateJS = "0x0101002039C03B61C64EC4A04F5361F3851068";
         public static readonly string Document = "0x0101";
+
+        [Obsolete("Correct 'Document Set' content type ID is '0x0120D520. Please use DocumentSet_Correct property instead. More details - https://github.com/SubPointSolutions/spmeta2/issues/157'"]
         public static readonly string DocumentSet = "0x0120D5";
+        public static readonly string DocumentSet_Correct = "0x0120D520";
+
         public static readonly string DocumentWorkflowItem = "0x010107";
         public static readonly string DomainGroup = "0x010C";
         public static readonly string DublinCoreName = "0x01010B";

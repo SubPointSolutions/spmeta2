@@ -26,6 +26,7 @@ using SPMeta2.Regression.Exceptions;
 using System.IO;
 using SPMeta2.Validation.Services;
 using SPMeta2.Regression.Assertion;
+using SPMeta2.Regression.Runners.Config;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
@@ -38,13 +39,63 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public static void Init(TestContext context)
         {
             InternalInit();
-        }       
+        }
 
         [ClassCleanupAttribute]
         public static void Cleanup()
         {
             InternalCleanup();
         }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd1")]
+        public void CanCreateEnvironment()
+        {
+
+            var config = new EnvironmentConfig();
+
+            var webApp = new WebApplicationConfig
+            {
+                Url = "http://sp2013dev",
+                Port = 31415
+            };
+
+            config.WebApplications.Add(webApp);
+
+            var rootSite = new SiteCollectionConfig
+            {
+                Url = "/",
+            };
+
+            var subSite = new SiteCollectionConfig
+            {
+                Url = "/",
+                Prefix = "sites"
+            };
+
+            var rootWeb = new WebConfig
+            {
+                Url = "/"
+            };
+
+            var rootWeb = new WebConfig
+            {
+                Url = "/first"
+            };
+
+            var rootWeb = new WebConfig
+            {
+                Url = "/second"
+            };
+
+            webApp.SiteCollections.Add(rootSite);
+            webApp.SiteCollections.Add(subSite);
+
+            var xml = XmlSerializerUtils.SerializeToString(config);
+
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd")]

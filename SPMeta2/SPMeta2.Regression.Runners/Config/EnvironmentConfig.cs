@@ -38,6 +38,7 @@ namespace SPMeta2.Regression.Runners.Config
         #region properties
 
         public string Url { get; set; }
+        public int Port { get; set; }
 
         public List<SiteCollectionConfig> SiteCollections { get; set; }
 
@@ -58,6 +59,7 @@ namespace SPMeta2.Regression.Runners.Config
         #region properties
 
         public string Url { get; set; }
+        public string Prefix { get; set; }
 
         public List<WebConfig> Webs { get; set; }
 
