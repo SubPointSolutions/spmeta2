@@ -27,7 +27,7 @@ function SPM2_SetRegressionEnvironment(
 	Write-Host "`tSetting up O365 user password to [$o365UserPassword]" -ForegroundColor Yellow
 	[Environment]::SetEnvironmentVariable("SPMeta2_O365_Password", $o365UserPassword, "Machine")
 
-	$runnerString = [string]::Join(",", $runnerAssemblies)
+	$runnerString = [string]::Join(",", $runnerAssemblies)	
 	Write-Host "`tSetting up runner assemblies to [$runnerString]" -ForegroundColor Yellow
 		
 	[Environment]::SetEnvironmentVariable("SPMeta2_RunnerLibraries", $runnerString, "Machine")
