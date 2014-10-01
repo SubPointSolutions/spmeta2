@@ -10,7 +10,8 @@ namespace SPMeta2.Regression.Runners.Consts
     {
         #region properties
 
-        public const string O365_SiteUrl = "SPMeta2_O365_SiteUrl";
+        public const string O365_SiteUrls = "SPMeta2_O365_SiteUrls";
+        public const string O365_WebUrls = "SPMeta2_O365_WebUrls";
         public const string O365_UserName = "SPMeta2_O365_UserName";
         public const string O365_Password = "SPMeta2_O365_Password";
 

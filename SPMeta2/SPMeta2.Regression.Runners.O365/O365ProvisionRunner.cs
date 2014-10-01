@@ -9,6 +9,8 @@ using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
 using Microsoft.SharePoint.WorkflowServices;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SPMeta2.Regression.Runners.O365
 {
@@ -20,20 +22,33 @@ namespace SPMeta2.Regression.Runners.O365
         {
             Name = "O365";
 
-            SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_SiteUrl);
+            SiteUrls = new List<string>();
+            WebUrls = new List<string>();
+
+            LoadEnvironmentConfig();
+
             UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
             UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+        }
+
+        private void LoadEnvironmentConfig()
+        {
+            SiteUrls.Clear();
+            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.O365_SiteUrls));
+
+            WebUrls.Clear();
+            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
         }
 
         #endregion
 
         #region properties
 
+        public List<string> SiteUrls { get; set; }
+        public List<string> WebUrls { get; set; }
+
         public string UserName { get; set; }
         public string UserPassword { get; set; }
-
-        public string SiteUrl { get; set; }
-        public string WebUrl { get; set; }
 
         private readonly CSOMProvisionService _provisionService = new CSOMProvisionService();
         private readonly CSOMValidationService _validationService = new CSOMValidationService();
@@ -51,50 +66,41 @@ namespace SPMeta2.Regression.Runners.O365
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
 
-        private ClientContext _lazyContext;
-
-        public override void InitLazyRunnerConnection()
-        {
-            _lazyContext = new ClientContext(SiteUrl)
-            {
-                Credentials = new SharePointOnlineCredentials(UserName, GetSecurePasswordString(UserPassword))
-            };
-        }
-
-        public override void DisposeLazyRunnerConnection()
-        {
-            if (_lazyContext != null)
-            {
-                _lazyContext.Dispose();
-                _lazyContext = null;
-            }
-        }
-
         public override void DeploySiteModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var siteUrl in SiteUrls)
             {
-                WithO365Context(context =>
-                {
-                    _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
-                });
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithO365Context(siteUrl, context =>
+                    {
+                        _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                    });
+                }
             }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var webUrl in WebUrls)
             {
-                WithO365Context(context =>
-                {
-                    _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                });
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithO365Context(webUrl, context =>
+                    {
+                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                    });
+                }
             }
         }
 
@@ -116,11 +122,6 @@ namespace SPMeta2.Regression.Runners.O365
 
         #endregion
 
-        public void WithO365Context(Action<ClientContext> action)
-        {
-            WithO365Context(SiteUrl, action);
-        }
-
         public void WithO365Context(string siteUrl, Action<ClientContext> action)
         {
             WithO365Context(siteUrl, UserName, UserPassword, action);
@@ -128,18 +129,10 @@ namespace SPMeta2.Regression.Runners.O365
 
         private void WithO365Context(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
-            if (_lazyContext != null)
+            using (var context = new ClientContext(siteUrl))
             {
-                action(_lazyContext);
-            }
-            else
-            {
-                using (var context = new ClientContext(siteUrl))
-                {
-                    context.Credentials = new SharePointOnlineCredentials(userName,
-                        GetSecurePasswordString(userPassword));
-                    action(context);
-                }
+                context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
+                action(context);
             }
         }
 
