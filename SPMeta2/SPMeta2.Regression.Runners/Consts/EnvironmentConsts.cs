@@ -18,7 +18,8 @@ namespace SPMeta2.Regression.Runners.Consts
         public const string SSOM_SiteUrls = "SPMeta2_SSOM_SiteUrls";
         public const string SSOM_WebUrls = "SPMeta2_SSOM_WebUrls";
 
-        public const string CSOM_SiteUrl = "SPMeta2_CSOM_SiteUrl";
+        public const string CSOM_SiteUrls = "SPMeta2_CSOM_SiteUrls";
+        public const string CSOM_WebUrls = "SPMeta2_CSOM_WebUrls";
         public const string CSOM_UserName = "SPMeta2_CSOM_UserName";
         public const string CSOM_Password = "SPMeta2_CSOM_Password";
 

@@ -10,6 +10,8 @@ using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Regression.CSOM;
 using Microsoft.SharePoint.WorkflowServices;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SPMeta2.Regression.Runners.CSOM
 {
@@ -21,9 +23,22 @@ namespace SPMeta2.Regression.Runners.CSOM
         {
             Name = "CSOM";
 
-            SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.CSOM_SiteUrl);
+            SiteUrls = new List<string>();
+            WebUrls = new List<string>();
+
+            LoadEnvironmentConfig();
+
             UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.CSOM_UserName);
             UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.CSOM_Password);
+        }
+
+        private void LoadEnvironmentConfig()
+        {
+            SiteUrls.Clear();
+            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.CSOM_SiteUrls));
+
+            WebUrls.Clear();
+            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.CSOM_WebUrls));
         }
 
         #endregion
@@ -33,8 +48,8 @@ namespace SPMeta2.Regression.Runners.CSOM
         public string UserName { get; set; }
         public string UserPassword { get; set; }
 
-        public string SiteUrl { get; set; }
-        public string WebUrl { get; set; }
+        public List<string> SiteUrls { get; set; }
+        public List<string> WebUrls { get; set; }
 
         private readonly CSOMProvisionService _provisionService = new CSOMProvisionService();
         private readonly CSOMValidationService _validationService = new CSOMValidationService();
@@ -51,57 +66,46 @@ namespace SPMeta2.Regression.Runners.CSOM
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
 
-        private ClientContext _lazyContext;
-
-        public override void InitLazyRunnerConnection()
-        {
-            _lazyContext = new ClientContext(SiteUrl)
-            {
-                Credentials = new SharePointOnlineCredentials(UserName, GetSecurePasswordString(UserPassword))
-            };
-        }
-
-        public override void DisposeLazyRunnerConnection()
-        {
-            if (_lazyContext != null)
-            {
-                _lazyContext.Dispose();
-                _lazyContext = null;
-            }
-        }
-
         public override void DeploySiteModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var siteUrl in SiteUrls)
             {
-                WithCSOMContext(context =>
-                {
-                    _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
-                });
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithCSOMContext(siteUrl, context =>
+                    {
+                        _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                    });
+                }
+
             }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var webUrl in WebUrls)
             {
-                WithCSOMContext(context =>
-                {
-                    _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                });
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithCSOMContext(webUrl, context =>
+                    {
+                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                    });
+                }
             }
         }
 
         #endregion
-
-
-
 
         #region utils
 
@@ -119,12 +123,6 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         #endregion
 
-
-        public void WithCSOMContext(Action<ClientContext> action)
-        {
-            WithCSOMContext(SiteUrl, action);
-        }
-
         public void WithCSOMContext(string siteUrl, Action<ClientContext> action)
         {
             WithCSOMContext(siteUrl, UserName, UserPassword, action);
@@ -132,19 +130,9 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         private void WithCSOMContext(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
-            if (_lazyContext != null)
+            using (var context = new ClientContext(siteUrl))
             {
-                action(_lazyContext);
-            }
-            else
-            {
-                using (var context = new ClientContext(siteUrl))
-                {
-                    // TODO, setup correct credentials for CSOM
-                    //context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
-
-                    action(context);
-                }
+                action(context);
             }
         }
 

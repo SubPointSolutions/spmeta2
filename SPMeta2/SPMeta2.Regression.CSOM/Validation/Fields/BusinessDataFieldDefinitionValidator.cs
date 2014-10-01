@@ -43,6 +43,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                     .ShouldBeEqual(m => m.Id, o => o.Id)
                     .ShouldBeEqual(m => m.Required, o => o.Required)
                     .ShouldBeEqual(m => m.Description, o => o.Description)
+                    .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                     .ShouldBeEqual(m => m.Group, o => o.Group)
 
                     .ShouldBeEqual(m => m.SystemInstanceName, o => o.GetSystemInstanceName())

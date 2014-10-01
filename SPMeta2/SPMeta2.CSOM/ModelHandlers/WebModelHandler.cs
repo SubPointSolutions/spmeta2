@@ -8,6 +8,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
+using SPMeta2.CSOM.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -26,25 +27,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private string GetCurrentWebUrl(ClientRuntimeContext context, Web parentWeb, WebDefinition webModel)
         {
-            // TOSDO, need to have "safe" url concats here, CSOM is doomed
-            // WOOOOOOOOOHOAAAAAAAAA how bad is this?! :)
-
-            // @tarurar fix
-            // "GetCurrentWebUrl fix (didn't work for root url sites)"
-            // https://github.com/tarurar/spmeta2/commit/580172bb008742131ec5fb771f61af617b0e5f46
-
-            var fullUrl = context.Url.ToLower();
-            var serverUrl = fullUrl.EndsWith(parentWeb.ServerRelativeUrl.ToLower())
-                ? fullUrl.Substring(0, fullUrl.LastIndexOf(parentWeb.ServerRelativeUrl.ToLower()))
-                : fullUrl;
-            var isParentWebRootUrl = parentWeb.ServerRelativeUrl.Trim('/').Length == 0;
-            var currentWebUrl = serverUrl +
-                                (isParentWebRootUrl
-                                    ? String.Empty
-                                    : parentWeb.ServerRelativeUrl +
-                                      (webModel.Url.StartsWith("/") ? webModel.Url : "/" + webModel.Url));
-
-            return currentWebUrl.ToLower();
+            var result = UrlUtility.CombineUrl(parentWeb.Url, webModel.Url);
+            return result.ToLower();
         }
 
         protected Web ExtractWeb(object modelHost)
@@ -68,6 +52,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
+            context.Load(parentWeb, w => w.Url);
             context.Load(parentWeb, w => w.RootFolder);
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
@@ -154,6 +139,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
+            context.Load(parentWeb, w => w.Url);
             context.Load(parentWeb, w => w.RootFolder);
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
