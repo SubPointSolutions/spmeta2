@@ -23,6 +23,7 @@ $g_port = "31415"
 
 $g_machineName = [Environment]::MachineName
 $g_DomainName = [Environment]::UserDomainName
+$g_UserName = [Environment]::UserName
 
 # web app settings
 
@@ -189,6 +190,9 @@ function EnsureSPMeta2SandboxSiteCollections($recreate) {
 
 		$webUrls = $g_siteRelativeWebUrls
 		$rootWeb  = $site.RootWeb
+
+        $rootWeb.EnsureUser($g_DomainName + "\" + $g_UserName)
+        $rootWeb.CreateDefaultAssociatedGroups($g_DomainName + "\" + $g_UserName, "", "")
 
 	    # MDS
 		DisableFeature  $rootWeb "87294c72-f260-42f3-a41b-981a2ffce37a"

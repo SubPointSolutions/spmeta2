@@ -123,9 +123,9 @@ namespace SPMeta2.Regression.Tests.Base
 
                 CurrentProvisionRunner = provisionRunner;
 
-                Trace.WriteLine(string.Format("Testing with runner impl: [{0}]", type));
-                Trace.WriteLine(string.Format(" ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
-                Trace.WriteLine(string.Format(" EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
+                Trace.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
+                Trace.WriteLine(string.Format("[INF]        - ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
+                Trace.WriteLine(string.Format("[INF]        - EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
 
                 action(new ProvisionRunnerContext
                 {

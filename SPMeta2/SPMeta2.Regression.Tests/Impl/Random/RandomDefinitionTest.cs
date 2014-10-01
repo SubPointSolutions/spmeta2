@@ -47,56 +47,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             InternalCleanup();
         }
 
-
-        [TestMethod]
-        [TestCategory("Regression.Rnd1")]
-        public void CanCreateEnvironment()
-        {
-
-            var config = new EnvironmentConfig();
-
-            var webApp = new WebApplicationConfig
-            {
-                Url = "http://sp2013dev",
-                Port = 31415
-            };
-
-            config.WebApplications.Add(webApp);
-
-            var rootSite = new SiteCollectionConfig
-            {
-                Url = "/",
-            };
-
-            var subSite = new SiteCollectionConfig
-            {
-                Url = "/",
-                Prefix = "sites"
-            };
-
-            var rootWeb = new WebConfig
-            {
-                Url = "/"
-            };
-
-            var rootWeb = new WebConfig
-            {
-                Url = "/first"
-            };
-
-            var rootWeb = new WebConfig
-            {
-                Url = "/second"
-            };
-
-            webApp.SiteCollections.Add(rootSite);
-            webApp.SiteCollections.Add(subSite);
-
-            var xml = XmlSerializerUtils.SerializeToString(config);
-
-        }
-
-
         [TestMethod]
         [TestCategory("Regression.Rnd")]
         public void SelfDiagnostic_TestShouldHaveAllDefinitions()

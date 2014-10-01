@@ -12,6 +12,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
 using Microsoft.SharePoint.Administration;
 using System.Web.UI.WebControls.WebParts;
+using System.Diagnostics;
 
 namespace SPMeta2.Regression.Runners.SSOM
 {
@@ -23,16 +24,32 @@ namespace SPMeta2.Regression.Runners.SSOM
         {
             Name = "SSOM";
 
-            WebApplicationUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.SSOM_WebApplicationUrl);
-            SiteUrl = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.SSOM_SiteUrl);
+            WebApplicationUrls = new List<string>();
+            SiteUrls = new List<string>();
+            WebUrls = new List<string>();
+
+            LoadEnvironmentConfig();
+        }
+
+        private void LoadEnvironmentConfig()
+        {
+            WebApplicationUrls.Clear();
+            WebApplicationUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebApplicationUrls));
+
+            SiteUrls.Clear();
+            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_SiteUrls));
+
+            WebUrls.Clear();
+            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebUrls));
         }
 
         #endregion
 
         #region properties
 
-        public string WebApplicationUrl { get; set; }
-        public string SiteUrl { get; set; }
+        public List<string> WebApplicationUrls { get; set; }
+        public List<string> SiteUrls { get; set; }
+        public List<string> WebUrls { get; set; }
 
         private readonly SSOMProvisionService _provisionService = new SSOMProvisionService();
         private readonly SSOMValidationService _validationService = new SSOMValidationService();
@@ -65,39 +82,54 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         public override void DeployWebApplicationModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var webAppUrl in WebApplicationUrls)
             {
-                WithSSOMWebApplicationContext(webApp =>
+                Trace.WriteLine(string.Format("[INF]    Running on web app: [{0}]", webAppUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
+                    WithSSOMWebApplicationContext(webAppUrl, webApp =>
+                    {
 
-                    _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
-                    _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+                        _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+                        _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
 
-                });
+                    });
+                }
             }
         }
 
         public override void DeploySiteModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var siteUrl in SiteUrls)
             {
-                WithSSOMSiteAndWebContext((site, web) =>
+                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
-                    _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
-                    _validationService.DeployModel(SiteModelHost.FromSite(site), model);
-                });
+                    WithSSOMSiteAndWebContext(siteUrl, (site, web) =>
+                    {
+                        _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+                        _validationService.DeployModel(SiteModelHost.FromSite(site), model);
+                    });
+                }
             }
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var webUrl in WebUrls)
             {
-                WithSSOMSiteAndWebContext((site, web) =>
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
-                    _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
-                    _validationService.DeployModel(WebModelHost.FromWeb(web), model);
-                });
+                    WithSSOMSiteAndWebContext(webUrl, (site, web) =>
+                    {
+                        _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+                        _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                    });
+                }
             }
         }
 
@@ -105,9 +137,9 @@ namespace SPMeta2.Regression.Runners.SSOM
 
         #region utils
 
-        private void WithSSOMWebApplicationContext(Action<SPWebApplication> action)
+        private void WithSSOMWebApplicationContext(string webAppUrl, Action<SPWebApplication> action)
         {
-            var webApp = SPWebApplication.Lookup(new Uri(WebApplicationUrl));
+            var webApp = SPWebApplication.Lookup(new Uri(webAppUrl));
 
             action(webApp);
         }
@@ -119,9 +151,9 @@ namespace SPMeta2.Regression.Runners.SSOM
             action(farm);
         }
 
-        private void WithSSOMSiteAndWebContext(Action<SPSite, SPWeb> action)
+        private void WithSSOMSiteAndWebContext(string siteUrl, Action<SPSite, SPWeb> action)
         {
-            using (var site = new SPSite(SiteUrl))
+            using (var site = new SPSite(siteUrl))
             {
                 using (var web = site.OpenWeb())
                 {
