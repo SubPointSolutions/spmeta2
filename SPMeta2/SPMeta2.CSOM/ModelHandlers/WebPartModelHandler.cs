@@ -34,7 +34,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         #endregion
 
         #region methods
-        
+
         protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
              Action<WebPart> action)
         {
@@ -69,122 +69,141 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var web = listItem.ParentList.ParentWeb;
 
-            var pageFile = web.GetFileByServerRelativeUrl(filePath);
-            var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
+            var currentPageFile = web.GetFileByServerRelativeUrl(filePath);
 
-            // web part on the page
-            var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
-            var webPartDefenitions = context.LoadQuery(webpartOnPage);
-
-            context.ExecuteQuery();
-
-            var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
-
-            InvokeOnModelEvent(this, new ModelEventArgs
+            ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
             {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioning,
-                Object = existingWebPart,
-                ObjectType = typeof(WebPart),
-                ObjectDefinition = webPartModel,
-                ModelHost = modelHost
-            });
+                var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
-            if (existingWebPart == null)
-            {
-                string webPartXML = string.Empty;
+                // web part on the page
+                var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
+                var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
-                // TODO
-                // another one 'GOSH' as xml has to be used to add web parts
-                // wll be replaced with dynamic xml generation via behaviours later and putting the needed type of the webpart inside
-                // this is really PITA
+                context.ExecuteQuery();
 
-                // extracting class name
-                // Microsoft.SharePoint.WebPartPages.ContentEditorWebPart, Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c
-                if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
+                var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
-                    var rootWeb = listItemModelHost.HostSite.RootWeb;
-                    var rootWebContext = rootWeb.Context;
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioning,
+                    Object = existingWebPart,
+                    ObjectType = typeof(WebPart),
+                    ObjectDefinition = webPartModel,
+                    ModelHost = modelHost
+                });
 
-                    var webPartCatalog = rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Calalogs.Wp.GetListUrl());
-                    var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
+                if (existingWebPart == null)
+                {
+                    string webPartXML = string.Empty;
 
-                    rootWebContext.Load(webParts);
-                    rootWebContext.ExecuteQuery();
+                    // TODO
+                    // another one 'GOSH' as xml has to be used to add web parts
+                    // wll be replaced with dynamic xml generation via behaviours later and putting the needed type of the webpart inside
+                    // this is really PITA
 
-                    ListItem targetWebPart = null;
-
-                    foreach (var webPart in webParts)
-                        if (webPart["FileLeafRef"].ToString().ToUpper() == webPartModel.WebpartFileName.ToUpper())
-                            targetWebPart = webPart;
-
-                    if (targetWebPart == null)
-                        throw new SPMeta2Exception(string.Format("Cannot find web part file by name:[{0}]", webPartModel.WebpartFileName));
-
-                    var webPartFile = targetWebPart.File;
-
-                    rootWebContext.Load(webPartFile);
-                    rootWebContext.ExecuteQuery();
-
-                    var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostClientContext, webPartFile.ServerRelativeUrl);
-
-                    using (var reader = new StreamReader(fileInfo.Stream))
+                    // extracting class name
+                    // Microsoft.SharePoint.WebPartPages.ContentEditorWebPart, Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c
+                    if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
                     {
-                        webPartXML = reader.ReadToEnd();
+                        var rootWeb = listItemModelHost.HostSite.RootWeb;
+                        var rootWebContext = rootWeb.Context;
+
+                        var webPartCatalog = rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Calalogs.Wp.GetListUrl());
+                        var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
+
+                        rootWebContext.Load(webParts);
+                        rootWebContext.ExecuteQuery();
+
+                        ListItem targetWebPart = null;
+
+                        foreach (var webPart in webParts)
+                            if (webPart["FileLeafRef"].ToString().ToUpper() == webPartModel.WebpartFileName.ToUpper())
+                                targetWebPart = webPart;
+
+                        if (targetWebPart == null)
+                            throw new SPMeta2Exception(string.Format("Cannot find web part file by name:[{0}]", webPartModel.WebpartFileName));
+
+                        var webPartFile = targetWebPart.File;
+
+                        rootWebContext.Load(webPartFile);
+                        rootWebContext.ExecuteQuery();
+
+
+                        // does not work for apps - https://github.com/SubPointSolutions/spmeta2/issues/174
+                        //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostClientContext, webPartFile.ServerRelativeUrl);
+
+                        //using (var reader = new StreamReader(fileInfo.Stream))
+                        //{
+                        //    webPartXML = reader.ReadToEnd();
+                        //}
+
+                        ClientResult<Stream> data = webPartFile.OpenBinaryStream();
+
+                        // Load the Stream data for the file
+                        context.Load(webPartFile);
+                        context.ExecuteQuery();
+
+                        using (var reader = new StreamReader(data.Value))
+                        {
+                            webPartXML = reader.ReadToEnd();
+                        }
                     }
+
+                    if (!string.IsNullOrEmpty(webPartModel.WebpartType))
+                        throw new Exception("WebpartType is not supported yet.");
+
+                    if (!string.IsNullOrEmpty(webPartModel.WebpartXmlTemplate))
+                        webPartXML = webPartModel.WebpartXmlTemplate;
+
+                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
+
+
+                    webPartXML = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXML)
+                                                      .SetTitle(webPartModel.Title)
+                                                      .ToString();
+
+                    // set common properties as title
+
+                    var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
+                    var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
+
+                    existingWebPart = webPartDefinition.WebPart;
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = existingWebPart,
+                        ObjectType = typeof(WebPart),
+                        ObjectDefinition = webPartModel,
+                        ModelHost = modelHost
+                    });
+
+                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
+                }
+                else
+                {
+                    // BIG TODO for CSOM, delete/export and re import web part?
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = existingWebPart,
+                        ObjectType = typeof(WebPart),
+                        ObjectDefinition = webPartModel,
+                        ModelHost = modelHost
+                    });
                 }
 
-                if (!string.IsNullOrEmpty(webPartModel.WebpartType))
-                    throw new Exception("WebpartType is not supported yet.");
+                context.ExecuteQuery();
 
-                if (!string.IsNullOrEmpty(webPartModel.WebpartXmlTemplate))
-                    webPartXML = webPartModel.WebpartXmlTemplate;
-
-                InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
-
-
-                webPartXML = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXML)
-                                                  .SetTitle(webPartModel.Title)
-                                                  .ToString();
-
-                // set common properties as title
-
-                var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
-                var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
-
-                existingWebPart = webPartDefinition.WebPart;
-
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioned,
-                    Object = existingWebPart,
-                    ObjectType = typeof(WebPart),
-                    ObjectDefinition = webPartModel,
-                    ModelHost = modelHost
-                });
-
-                InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
-            }
-            else
-            {
-                // BIG TODO for CSOM, delete/export and re import web part?
-
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioned,
-                    Object = existingWebPart,
-                    ObjectType = typeof(WebPart),
-                    ObjectDefinition = webPartModel,
-                    ModelHost = modelHost
-                });
-            }
-
-            context.ExecuteQuery();
+                return pageFile;
+            });
         }
 
         protected WebPart FindExistingWebPart(IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,

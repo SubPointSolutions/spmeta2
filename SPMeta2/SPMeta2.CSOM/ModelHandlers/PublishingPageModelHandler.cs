@@ -9,6 +9,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.Enumerations;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -24,6 +25,42 @@ namespace SPMeta2.CSOM.ModelHandlers
         #endregion
 
         #region methods
+
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        {
+            var folderModelHost = modelHost as FolderModelHost;
+            var pageDefinition = model as PublishingPageDefinition;
+
+            Folder folder = folderModelHost.CurrentLibraryFolder;
+
+            if (folder != null && pageDefinition != null)
+            {
+                var context = folder.Context;
+                var currentPage = GetCurrentPage(folder, GetSafePageFileName(pageDefinition));
+
+                var currentListItem = currentPage.ListItemAllFields;
+                context.Load(currentListItem);
+                context.ExecuteQuery();
+
+                if (childModelType == typeof(WebPartDefinition))
+                {
+                    var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
+                    {
+                        itemHost.HostListItem = currentListItem;
+                    });
+
+                    action(listItemHost);
+
+                    //currentListItem.Update();
+                }
+
+                //context.ExecuteQuery();
+            }
+            else
+            {
+                action(modelHost);
+            }
+        }
 
         protected string GetSafePageFileName(PageDefinitionBase page)
         {

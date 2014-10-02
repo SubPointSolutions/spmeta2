@@ -51,6 +51,12 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static XDocument SetShowTimelineIfAvailable(this XDocument webpartXmlDocument, bool value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
         public static XDocument SetTitle(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
@@ -186,7 +192,7 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        private static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName,
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName,
             string propValue)
         {
             if (IsV3version(webpartXmlDocument))
