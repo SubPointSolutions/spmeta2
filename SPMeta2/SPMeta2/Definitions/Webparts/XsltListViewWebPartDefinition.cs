@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
-    public class XsltListViewWebPartDefinition : WebPartDefinitionBase
+    public class XsltListViewWebPartDefinition : WebPartDefinition
     {
         #region properties
 

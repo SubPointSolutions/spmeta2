@@ -10,7 +10,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Webparts
 {
-    public class XsltListViewWebPartModelHandler : WebPartModelHandler
+    public class XsltListViewWebPartDefinitionValidator : WebPartModelHandler
     {
         #region classes
 
