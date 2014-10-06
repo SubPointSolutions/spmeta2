@@ -241,11 +241,7 @@ namespace SPMeta2.Regression.Services
             }
         }
 
-        private TDefinition GetRandomDefinition<TDefinition>()
-            where TDefinition : DefinitionBase
-        {
-            return (TDefinition)GetRandomDefinition(typeof(TDefinition));
-        }
+
 
         private DefinitionBase GetDefinitionParentHost(Type type)
         {
@@ -257,7 +253,24 @@ namespace SPMeta2.Regression.Services
             return definitionGenrator.GetCustomParenHost();
         }
 
-        private DefinitionBase GetRandomDefinition(Type type)
+        public TDefinition GetRandomDefinition<TDefinition>()
+            where TDefinition : DefinitionBase
+        {
+            return GetRandomDefinition<TDefinition>(null);
+        }
+
+        public TDefinition GetRandomDefinition<TDefinition>(Action<TDefinition> action)
+           where TDefinition : DefinitionBase
+        {
+            var result = (TDefinition)GetRandomDefinition(typeof(TDefinition));
+
+            if (action != null)
+                action(result);
+
+            return result;
+        }
+
+        public DefinitionBase GetRandomDefinition(Type type)
         {
             if (!DefinitionGenerators.ContainsKey(type))
                 throw new SPMeta2NotImplementedException(string.Format("Cannot find definition generator for type:[{0}]", type.AssemblyQualifiedName));

@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FarmSolutionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListItemFieldValueDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ManagedAccountDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SandboxSolutionDefinitionGenerator.cs" />

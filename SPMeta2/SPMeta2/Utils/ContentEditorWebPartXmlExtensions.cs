@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace SPMeta2.Utils
 {
     /// <summary>
-    /// Helper class to work with webCEWP xml properties.
+    /// Helper class to work with CEWP xml properties.
     /// Allows to setup ContentLink, Content, PartStorage and other props with xmlns="http://schemas.microsoft.com/WebPart/v2/ContentEditor"
     /// </summary>
     public static class ContentEditorWebPartXmlExtensions

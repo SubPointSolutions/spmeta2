@@ -38,6 +38,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         #endregion
 
+        #region properties
+
+        protected ModelGeneratorService ModelGeneratorService = new ModelGeneratorService();
+
+        #endregion
+
         internal class ModelValidationResult
         {
             public ModelValidationResult()
@@ -116,7 +122,7 @@ namespace SPMeta2.Regression.Tests.Base
             }
         }
 
-        protected virtual void AssertEventHooks<TObj>(ModelNode modelNode, EventHooks hooks)
+        protected virtual void AssertEvenktHooks<TObj>(ModelNode modelNode, EventHooks hooks)
         {
             modelNode.OnProvisioning<TObj>(context =>
             {
@@ -212,6 +218,8 @@ namespace SPMeta2.Regression.Tests.Base
             TestRandomDefinition<TDefinition>(null);
         }
 
+
+
         protected void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
             where TDefinition : DefinitionBase, new()
         {
@@ -225,15 +233,15 @@ namespace SPMeta2.Regression.Tests.Base
 
                 var omModelType = GetRunnerType(runner);
 
-                var sandboxService = new ModelGeneratorService();
 
-                var definitionSandbox = sandboxService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
-                var additionalDefinitions = sandboxService.GetAdditionalDefinition<TDefinition>();
 
-                sandboxService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, omModelType);
+                var definitionSandbox = ModelGeneratorService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
+                var additionalDefinitions = ModelGeneratorService.GetAdditionalDefinition<TDefinition>();
+
+                ModelGeneratorService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, omModelType);
 
                 if (definitionSetup != null)
-                    definitionSetup(sandboxService.CurrentDefinition as TDefinition);
+                    definitionSetup(ModelGeneratorService.CurrentDefinition as TDefinition);
 
                 var hooks = GetHooks(definitionSandbox);
 

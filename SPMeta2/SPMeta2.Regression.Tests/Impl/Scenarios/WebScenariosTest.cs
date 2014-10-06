@@ -93,25 +93,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                              .NewWebModel(web =>
                              {
                                  web
-                                     .AddWeb(SampleWebs.Archive)
-                                     .AddWeb(SampleWebs.Blog)
-                                     .AddWeb(SampleWebs.CIO, cioWeb =>
+                                     .AddWeb(RegWebs.Archive)
+                                     .AddWeb(RegWebs.Blog)
+                                     .AddWeb(RegWebs.CIO, cioWeb =>
                                      {
                                          cioWeb
-                                             .AddWeb(SampleWebs.Blog);
+                                             .AddWeb(RegWebs.Blog);
                                      })
-                                     .AddWeb(SampleWebs.Departments, departmentsWeb =>
+                                     .AddWeb(RegWebs.Departments, departmentsWeb =>
                                      {
                                          departmentsWeb
-                                           .AddWeb(SampleWebs.HR)
-                                           .AddWeb(SampleWebs.IT)
-                                           .AddWeb(SampleWebs.Delivery)
-                                           .AddWeb(SampleWebs.Sales)
-                                           .AddWeb(SampleWebs.PR);
+                                           .AddWeb(RegWebs.HR)
+                                           .AddWeb(RegWebs.IT)
+                                           .AddWeb(RegWebs.Delivery)
+                                           .AddWeb(RegWebs.Sales)
+                                           .AddWeb(RegWebs.PR);
                                      })
-                                     .AddWeb(SampleWebs.Projects)
-                                     .AddWeb(SampleWebs.Wiki)
-                                     .AddWeb(SampleWebs.FAQ);
+                                     .AddWeb(RegWebs.Projects)
+                                     .AddWeb(RegWebs.Wiki)
+                                     .AddWeb(RegWebs.FAQ);
 
                              });
 

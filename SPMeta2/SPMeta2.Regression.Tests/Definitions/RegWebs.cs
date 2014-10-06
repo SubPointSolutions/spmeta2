@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.Tests.Definitions
 {
-    public static class SampleWebs
+    public static class RegWebs
     {
         #region properties
 

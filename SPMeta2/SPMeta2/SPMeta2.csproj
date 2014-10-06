@@ -118,6 +118,7 @@
     <Compile Include="Enumerations\BuiltInSiteContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInSiteFeatures.cs" />
     <Compile Include="Enumerations\BuiltInSP2013WorkflowEventTypes.cs" />
+    <Compile Include="Enumerations\BuiltInStandardNavigationSource.cs" />
     <Compile Include="Enumerations\BuiltInWebApplicationFeatures.cs" />
     <Compile Include="Enumerations\BuiltInWebFeatures.cs" />
     <Compile Include="Enumerations\BuiltInWebpartFileNames.cs" />
