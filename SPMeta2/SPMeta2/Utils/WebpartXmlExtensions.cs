@@ -156,19 +156,24 @@ namespace SPMeta2.Utils
 
         #region set routines
 
-        private static XElement GetV3Node(this XDocument webpartXmlDocument, string propName)
+        internal static XElement GetV3Node(this XDocument webpartXmlDocument, string propName)
+        {
+            return GetV3Node(webpartXmlDocument, propName, WebPartNamespaceV3);
+        }
+
+        internal static XElement GetV3Node(this XDocument webpartXmlDocument, string propName, string propXlmns)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
 
-            var propNodePath = "{" + WebPartNamespaceV3 + "}property";
+            var propNodePath = "{" + propXlmns + "}property";
             return propsNode.Descendants(propNodePath)
                                             .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == propName);
         }
 
-        private static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
-            var propNode = GetV3Node(webpartXmlDocument, propName);
+            var propNode = GetV3Node(webpartXmlDocument, propName, propXlmns);
 
             if (propNode == null)
             {
@@ -203,21 +208,27 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        private static XElement GetV2Node(this XDocument webpartXmlDocument, string propName)
+        internal static XElement GetV2Node(this XDocument webpartXmlDocument, string propName)
+        {
+            return GetV2Node(webpartXmlDocument, propName, WebPartNamespaceV2);
+        }
+
+        internal static XElement GetV2Node(this XDocument webpartXmlDocument, string propName, string propXlmns)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
             if (webPartNode == null) throw new ArgumentException("Web part xml template is very wrong");
 
-            var propNodePath = "{" + WebPartNamespaceV2 + "}" + propName;
+            var propNodePath = "{" + propXlmns + "}" + propName;
             return webPartNode.Descendants(propNodePath).FirstOrDefault();
         }
 
-        private static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
+
+        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
 
-            var propNodePath = "{" + WebPartNamespaceV2 + "}" + propName;
-            var propNode = GetV2Node(webpartXmlDocument, propName);
+            var propNodePath = "{" + propXlmns + "}" + propName;
+            var propNode = GetV2Node(webpartXmlDocument, propName, propXlmns);
 
             if (propNode == null)
             {
@@ -249,12 +260,23 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
+            bool isCData)
         {
             if (IsV3version(webpartXmlDocument))
-                SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, isCData);
+                return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV3, isCData);
             else if (IsV2version(webpartXmlDocument))
-                SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, isCData);
+                return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV2, isCData);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        internal static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        {
+            if (IsV3version(webpartXmlDocument))
+                SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propXlmns, isCData);
+            else if (IsV2version(webpartXmlDocument))
+                SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, propXlmns, isCData);
             else
                 throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
 
@@ -277,12 +299,22 @@ namespace SPMeta2.Utils
 
         public static string GetProperty(this XDocument webpartXmlDocument, string propName)
         {
+            if (IsV3version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, propName, WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, propName, WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        internal static string GetProperty(this XDocument webpartXmlDocument, string propName, string xlmns)
+        {
             XElement propNode = null;
 
             if (IsV3version(webpartXmlDocument))
-                propNode = GetV3Node(webpartXmlDocument, propName);
+                propNode = GetV3Node(webpartXmlDocument, propName, xlmns);
             else if (IsV2version(webpartXmlDocument))
-                propNode = GetV2Node(webpartXmlDocument, propName);
+                propNode = GetV2Node(webpartXmlDocument, propName, xlmns);
             else
                 throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
 
@@ -296,4 +328,7 @@ namespace SPMeta2.Utils
 
         #endregion
     }
+
+   
+
 }

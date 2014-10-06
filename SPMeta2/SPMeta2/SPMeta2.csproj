@@ -144,6 +144,7 @@
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\TraseServiceBase.cs" />
+    <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />

@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
     <Compile Include="Common\EventHits.cs" />
+    <Compile Include="Consts\RegWebparts.cs" />
     <Compile Include="Definitions\SampleWebs.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
@@ -191,6 +192,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Templates\Webparts\v2\News Feed.dwp" />
     <EmbeddedResource Include="Templates\Webparts\v3\Team Tasks.webpart" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\Webparts\Base\ContentEditor.webpart" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
