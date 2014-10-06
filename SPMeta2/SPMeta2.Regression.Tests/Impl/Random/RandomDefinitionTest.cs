@@ -171,6 +171,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
+        public void CanDeployRandom_FarmSolutionDefinition()
+        {
+            TestRandomDefinition<FarmSolutionDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_ContentTypeDefinition()
         {
             TestRandomDefinition<ContentTypeDefinition>();

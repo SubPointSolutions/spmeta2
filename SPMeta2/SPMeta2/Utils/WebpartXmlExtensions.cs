@@ -150,7 +150,7 @@ namespace SPMeta2.Utils
             return webPartNode != null;
         }
 
-        private static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue)
+        private static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
 
@@ -164,19 +164,34 @@ namespace SPMeta2.Utils
 
                 newNode.SetAttributeValue("name", propName);
                 newNode.SetAttributeValue("type", "string");
-                newNode.Value = propValue;
+
+                if (isCData)
+                {
+                    newNode.Add(new XCData(propValue));
+                }
+                else
+                {
+                    newNode.Value = propValue;
+                }
 
                 propsNode.Add(newNode);
             }
             else
             {
-                propNode.Value = propValue;
+                if (isCData)
+                {
+                    propNode.ReplaceNodes(new XCData(propValue));
+                }
+                else
+                {
+                    propNode.Value = propValue;
+                }
             }
 
             return webpartXmlDocument;
         }
 
-        private static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue)
+        private static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
             if (webPartNode == null) throw new ArgumentException("Web part xml template is very wrong");
@@ -185,25 +200,57 @@ namespace SPMeta2.Utils
             var propNode = webPartNode.Descendants(propNodePath).FirstOrDefault();
 
             if (propNode == null)
-                webPartNode.Add(new XElement(propNodePath, propValue));
+            {
+                var newNode = new XElement(propNodePath, propValue);
+
+                if (isCData)
+                {
+                    newNode.Add(new XCData(propValue));
+                }
+                else
+                {
+                    newNode.Value = propValue;
+                }
+
+                webPartNode.Add(newNode);
+            }
             else
-                propNode.Value = propValue;
+            {
+                if (isCData)
+                {
+                    propNode.ReplaceNodes(new XCData(propValue));
+                }
+                else
+                {
+                    propNode.Value = propValue;
+                }
+            }
 
             return webpartXmlDocument;
         }
 
-        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName,
-            string propValue)
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
         {
             if (IsV3version(webpartXmlDocument))
-                SetOrUpdateV3Property(webpartXmlDocument, propName, propValue);
+                SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, isCData);
             else if (IsV2version(webpartXmlDocument))
-                SetOrUpdateV2Property(webpartXmlDocument, propName, propValue);
+                SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, isCData);
             else
                 throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
 
             return webpartXmlDocument;
         }
+
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue)
+        {
+            return SetOrUpdateProperty(webpartXmlDocument, propName, propValue, false);
+        }
+
+        public static XDocument SetOrUpdateCDataProperty(this XDocument webpartXmlDocument, string propName, string propValue)
+        {
+            return SetOrUpdateProperty(webpartXmlDocument, propName, propValue, true);
+        }
+
 
         #endregion
     }

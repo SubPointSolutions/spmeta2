@@ -62,7 +62,9 @@
     <Compile Include="Common\ModelWeigh.cs" />
     <Compile Include="Common\ModelEventArgs.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\SolutionDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
+    <Compile Include="Definitions\FarmSolutionDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />

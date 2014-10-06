@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
     <Compile Include="Common\EventHits.cs" />
+    <Compile Include="Definitions\SampleWebs.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\BreakRoleInheritanceScenariousTest.cs" />

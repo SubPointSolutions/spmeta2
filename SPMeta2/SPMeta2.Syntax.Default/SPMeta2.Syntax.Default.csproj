@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BreakRoleInheritanceDefinitionSyntax.cs" />
+    <Compile Include="FarmSolutionDefinitionSyntax.cs" />
+    <Compile Include="PropertyDefinitionSyntax.cs" />
     <Compile Include="ContentTypeDefinitionSyntax.cs" />
     <Compile Include="ContentTypeLinkDefinitionSyntax.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="ModuleFileDefinitionSyntax.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageDefinitionSyntax.cs" />
+    <Compile Include="SandboxSolutionDefinitionSyntax.cs" />
     <Compile Include="TopNavigationSyntax.cs" />
     <Compile Include="QuickLaunchNavigationSyntax.cs" />
     <Compile Include="SecurityGroupDefinitionSyntax.cs" />

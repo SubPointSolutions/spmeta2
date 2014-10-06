@@ -1,10 +1,12 @@
-﻿using SPMeta2.Attributes;
+﻿using System.Net.Mail;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {
@@ -20,7 +22,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
 
-    public class SandboxSolutionDefinition : DefinitionBase
+    public class SandboxSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors
 
@@ -34,23 +36,8 @@ namespace SPMeta2.Definitions
         #region properties
 
         /// <summary>
-        /// Target sandbox solutions file name.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        public string FileName { get; set; }
-
-        /// <summary>
-        /// Target sandbox solution content.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        public byte[] Content { get; set; }
-
-        /// <summary>
         /// Should the solution be activated.
         /// </summary>
-        /// 
         [ExpectValidation]
         public bool Activate { get; set; }
 

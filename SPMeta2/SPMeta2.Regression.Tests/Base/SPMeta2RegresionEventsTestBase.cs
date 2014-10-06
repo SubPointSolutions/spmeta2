@@ -260,6 +260,41 @@ namespace SPMeta2.Regression.Tests.Base
 
         }
 
+        protected void TestModel(ModelNode model)
+        {
+            var allHooks = new List<EventHooks>();
+
+            WithProvisionRunnerContext(runnerContext =>
+            {
+                var runner = runnerContext.Runner;
+
+                //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
+
+                var omModelType = GetRunnerType(runner);
+                var hooks = GetHooks(model);
+
+                foreach (var hook in hooks)
+                    hook.Tag = runner.Name;
+
+                allHooks.AddRange(hooks);
+
+                if (model.Value.GetType() == typeof(FarmDefinition))
+                    runner.DeployFarmModel(model);
+
+                if (model.Value.GetType() == typeof(WebApplicationDefinition))
+                    runner.DeployWebApplicationModel(model);
+
+                if (model.Value.GetType() == typeof(SiteDefinition))
+                    runner.DeploySiteModel(model);
+
+                if (model.Value.GetType() == typeof(WebDefinition))
+                    runner.DeployWebModel(model);
+
+                var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                Assert.IsFalse(hasMissedOrInvalidProps);
+            });
+        }
+
         private bool ResolveModelValidation(ModelNode modelNode, List<EventHooks> hooks)
         {
             return ResolveModelValidation(modelNode, "     ", hooks);

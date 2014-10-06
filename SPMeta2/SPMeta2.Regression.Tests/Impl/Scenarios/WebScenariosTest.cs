@@ -2,7 +2,9 @@
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Regression.Tests.Definitions;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Syntax.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +82,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.WebTemplate = BuiltInWebTemplates.Collaboration.WikiSite;
             });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_WebHierarchy()
+        {
+            var model = SPMeta2Model
+                             .NewWebModel(web =>
+                             {
+                                 web
+                                     .AddWeb(SampleWebs.Archive)
+                                     .AddWeb(SampleWebs.Blog)
+                                     .AddWeb(SampleWebs.CIO, cioWeb =>
+                                     {
+                                         cioWeb
+                                             .AddWeb(SampleWebs.Blog);
+                                     })
+                                     .AddWeb(SampleWebs.Departments, departmentsWeb =>
+                                     {
+                                         departmentsWeb
+                                           .AddWeb(SampleWebs.HR)
+                                           .AddWeb(SampleWebs.IT)
+                                           .AddWeb(SampleWebs.Delivery)
+                                           .AddWeb(SampleWebs.Sales)
+                                           .AddWeb(SampleWebs.PR);
+                                     })
+                                     .AddWeb(SampleWebs.Projects)
+                                     .AddWeb(SampleWebs.Wiki)
+                                     .AddWeb(SampleWebs.FAQ);
+
+                             });
+
+            TestModel(model);
         }
 
         #endregion

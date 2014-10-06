@@ -108,7 +108,7 @@ namespace SPMeta2.Syntax.Default
 
             return model;
         }
-        
+
         public static ModelNode WithListViews(this ModelNode model, Action<ModelNode> action)
         {
             action(model);
@@ -177,7 +177,26 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
+
         #endregion
+
+        #endregion
+
+        #region solutions
+
+        public static ModelNode WithFarmSolutions(this ModelNode model, Action<ModelNode> action)
+        {
+            action(model);
+
+            return model;
+        }
+
+        public static ModelNode WithSandboxSolutions(this ModelNode model, Action<ModelNode> action)
+        {
+            action(model);
+
+            return model;
+        }
 
         #endregion
     }
