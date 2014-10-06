@@ -128,6 +128,7 @@
     <Compile Include="Enumerations\BuiltInWebpartFileNames.cs" />
     <Compile Include="Enumerations\BuiltInWebpartPageTemplateId.cs" />
     <Compile Include="Enumerations\BuiltInWebPartPageTemplates.cs" />
+    <Compile Include="Enumerations\BuiltInWebpartTemplates.cs" />
     <Compile Include="Enumerations\BuiltInWebTemplates.cs" />
     <Compile Include="Events\ModelDefinitionEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessedEventArgs.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Services\TraseServiceBase.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
+    <Compile Include="Utils\ResourceUtils.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
     <Compile Include="Utils\WebpartXmlExtensions.cs" />
@@ -159,6 +161,7 @@
   <ItemGroup>
     <None Include="Properties\SPMeta2.pfx" />
     <None Include="SPMeta2.snk" />
+    <EmbeddedResource Include="Templates\Webparts\ContentEditor.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

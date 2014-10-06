@@ -21,8 +21,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
-            var webPartModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
+
 
         }
 

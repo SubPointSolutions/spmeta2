@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Common;
@@ -381,6 +382,29 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region webparts
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_ContentEditorWebPartDefinition()
+        {
+            TestRandomDefinition<ContentEditorWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_ListViewWebPartDefinition()
+        {
+            TestRandomDefinition<ListViewWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_XsltListViewWebPartDefinition()
+        {
+            TestRandomDefinition<XsltListViewWebPartDefinition>();
+        }
+
+        #endregion
     }
 }

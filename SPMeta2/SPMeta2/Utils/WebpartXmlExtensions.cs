@@ -188,7 +188,7 @@ namespace SPMeta2.Utils
                 }
                 else
                 {
-                    newNode.Value = propValue;
+                    newNode.Value = propValue ?? string.Empty;
                 }
 
                 propsNode.Add(newNode);
@@ -201,7 +201,7 @@ namespace SPMeta2.Utils
                 }
                 else
                 {
-                    propNode.Value = propValue;
+                    propNode.Value = propValue ?? string.Empty;
                 }
             }
 
@@ -240,7 +240,7 @@ namespace SPMeta2.Utils
                 }
                 else
                 {
-                    newNode.Value = propValue;
+                    newNode.Value = propValue ?? string.Empty;
                 }
 
                 webPartNode.Add(newNode);
@@ -253,7 +253,7 @@ namespace SPMeta2.Utils
                 }
                 else
                 {
-                    propNode.Value = propValue;
+                    propNode.Value = propValue ?? string.Empty;
                 }
             }
 
@@ -329,6 +329,6 @@ namespace SPMeta2.Utils
         #endregion
     }
 
-   
+
 
 }

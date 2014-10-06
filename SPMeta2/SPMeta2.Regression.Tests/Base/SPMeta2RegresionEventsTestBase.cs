@@ -233,8 +233,6 @@ namespace SPMeta2.Regression.Tests.Base
 
                 var omModelType = GetRunnerType(runner);
 
-
-
                 var definitionSandbox = ModelGeneratorService.GenerateModelTreeForDefinition<TDefinition>(omModelType);
                 var additionalDefinitions = ModelGeneratorService.GetAdditionalDefinition<TDefinition>();
 
@@ -263,6 +261,7 @@ namespace SPMeta2.Regression.Tests.Base
                     runner.DeployWebModel(definitionSandbox);
 
                 var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
+
                 Assert.IsFalse(hasMissedOrInvalidProps);
             });
 

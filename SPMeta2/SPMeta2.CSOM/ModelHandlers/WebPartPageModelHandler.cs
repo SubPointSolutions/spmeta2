@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.Common;
@@ -40,7 +41,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQuery();
 
-                if (childModelType == typeof(WebPartDefinition))
+                if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {

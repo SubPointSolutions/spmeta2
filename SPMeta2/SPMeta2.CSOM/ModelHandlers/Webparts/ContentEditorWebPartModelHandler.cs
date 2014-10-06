@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Webparts
@@ -23,11 +25,16 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         #region methods
 
-        public override void DeployModel(object modelHost, DefinitionBase model)
+        protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
-            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
-            var webPartModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
+            var wpModel = webPartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("model", value => value.RequireNotNull());
+            var wpXml = WebpartXmlExtensions
+                .LoadWebpartXmlDocument(BuiltInWebpartTemplates.ContentEditorWebPart)
+                .SetOrUpdateContentEditorWebPartProperty("Content", wpModel.Content, true)
+                .SetOrUpdateContentEditorWebPartProperty("ContentLink", wpModel.ContentLink)
+                .ToString();
 
+            return wpXml;
         }
 
         #endregion
