@@ -92,7 +92,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                        .AddRandomWebpart()
                                        .AddRandomWebpart();
                                })
-                               .AddRandomWebPartPage(page =>
+                               .AddRandomPublishingPage(page =>
                                {
                                    page
                                        .AddRandomWebpart()

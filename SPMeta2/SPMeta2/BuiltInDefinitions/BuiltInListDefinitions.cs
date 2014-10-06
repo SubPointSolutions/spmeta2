@@ -65,7 +65,7 @@ namespace SPMeta2.BuiltInDefinitions
         public static ListDefinition Pages = new ListDefinition
         {
             Title = "Pages",
-            TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+            TemplateType = 850,
             Url = "Pages",
             ContentTypesEnabled = true
         };

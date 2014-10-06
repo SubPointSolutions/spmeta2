@@ -84,6 +84,14 @@ namespace SPMeta2.Regression.Tests.Definitions
             WebTemplate = BuiltInWebTemplates.Collaboration.Blog
         };
 
+        public static WebDefinition CIOBlog = new WebDefinition
+        {
+            Title = "Blog",
+            Url = "Blog",
+            Description = "Blog site.",
+            WebTemplate = BuiltInWebTemplates.Collaboration.Blog
+        };
+
         public static WebDefinition Wiki = new WebDefinition
         {
             Title = "Wiki",

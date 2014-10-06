@@ -98,7 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                      .AddWeb(RegWebs.CIO, cioWeb =>
                                      {
                                          cioWeb
-                                             .AddWeb(RegWebs.Blog);
+                                             .AddWeb(RegWebs.CIOBlog);
                                      })
                                      .AddWeb(RegWebs.Departments, departmentsWeb =>
                                      {

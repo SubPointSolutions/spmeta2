@@ -39,14 +39,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultWebpartTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\BusinessDataFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FarmDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FarmSolutionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FeatureDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\FolderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\JobDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListFieldLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListItemDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListItemFieldValueDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ListViewDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ManagedAccountDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ModuleFileDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PrefixDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PropertyDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\QuickLaunchNavigationNodeDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SandboxSolutionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SecurityGroupDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SecurityGroupLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SecurityRoleDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SecurityRoleLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SiteDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SP2013WorkflowDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomContainersSyntax.cs" />
+    <Compile Include="Services\Base\DefinitionGeneratorServiceBase.cs" />
+    <Compile Include="Services\Base\TypedDefinitionGeneratorServiceBase.cs" />
+    <Compile Include="Services\ModelGeneratorService.cs" />
+    <Compile Include="Services\RandomService.cs" />
+    <Compile Include="Services\Rnd\DefaultRandomService.cs" />
+    <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowXAMLDefinitions.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2\SPMeta2.Regression\SPMeta2.Regression.csproj">
-      <Project>{2B5CA105-8D61-4704-B9CE-C1CBA53AAAB0}</Project>
-      <Name>SPMeta2.Regression</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
@@ -55,6 +103,16 @@
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultWebpartTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultWebpartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowXAMLDefinitions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

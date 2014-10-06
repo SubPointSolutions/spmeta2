@@ -31,7 +31,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 // asmx calls are required to get additional information about the current web parts
 
                 assert
-                    .ShouldBeEqual(m => m.ZoneIndex, o => o.ZoneIndex)
+                    .SkipProperty(m => m.ZoneIndex, "Property is not available in CSOM. Skipping.")
 
                     .SkipProperty(m => m.Id, "Property is not available in CSOM. Skipping.")
                     .SkipProperty(m => m.ZoneId, "Property is not available in CSOM. Skipping.")

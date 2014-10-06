@@ -68,7 +68,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var filePath = listItem["FileRef"].ToString();
 
             var web = listItem.ParentList.ParentWeb;
-
+                
             var currentPageFile = web.GetFileByServerRelativeUrl(filePath);
 
             ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>

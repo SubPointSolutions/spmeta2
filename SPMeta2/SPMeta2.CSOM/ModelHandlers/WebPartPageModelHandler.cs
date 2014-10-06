@@ -49,7 +49,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     action(listItemHost);
 
-                    currentListItem.Update();
+                    //currentListItem.Update();
                 }
 
                 context.ExecuteQuery();

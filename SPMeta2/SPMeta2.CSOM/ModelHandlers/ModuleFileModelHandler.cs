@@ -120,14 +120,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (file.Exists)
                 {
                     context.Load(file, f => f.CheckOutType);
+                    context.Load(file, f => f.CheckedOutByUser);
                     context.Load(file, f => f.Level);
 
                     context.ExecuteQuery();
                 }
             }
 
-            // big todo with correct update and punblishing
-            // get prev SPMeta2 impl for publishing pages
             if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
                 file.UndoCheckOut();
 
@@ -157,7 +156,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
-                spFile.CheckIn("", CheckinType.MajorCheckIn);
+                spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
 
             if (list != null && spFile != null && (list.EnableMinorVersions))
                 spFile.Publish("Provision");
@@ -246,7 +245,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Overwrite = file.Exists
                 };
 
-                if(fileContent.Length < 1024 * 1024 * 1.5)
+                if (fileContent.Length < 1024 * 1024 * 1.5)
                 {
                     fileCreatingInfo.Content = fileContent;
                 }
