@@ -1,6 +1,8 @@
 ﻿using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
+using SPMeta2.Definitions.Base;
+
 namespace SPMeta2.Definitions
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
 
-    public class WebPartDefinition : DefinitionBase
+    public class WebPartDefinition : WebPartDefinitionBase
     {
         #region constructors
 
@@ -28,38 +30,6 @@ namespace SPMeta2.Definitions
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// Title of the target web part.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-
-        public string Title { get; set; }
-
-        /// <summary>
-        /// ID of the target web part.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-
-        public string Id { get; set; }
-
-        /// <summary>
-        /// ZoneId of the target web part.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-
-        public string ZoneId { get; set; }
-
-        /// <summary>
-        /// ZoneIndex of the target web part.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-
-        public int ZoneIndex { get; set; }
 
         /// <summary>
         /// File name of the target web part definition from the web part gallery.

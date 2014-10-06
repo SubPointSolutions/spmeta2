@@ -17,6 +17,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using System.Text;
 using System.IO;
+using File = Microsoft.SharePoint.Client.File;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -57,6 +58,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             action(existingWebPart);
         }
 
+        protected File GetCurrentPageFile(ListItemModelHost listItemModelHost)
+        {
+            var listItem = listItemModelHost.HostListItem;
+            var filePath = listItem["FileRef"].ToString();
+
+            var web = listItem.ParentList.ParentWeb;
+            return web.GetFileByServerRelativeUrl(filePath);
+        }
+
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
@@ -65,11 +75,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listItem = listItemModelHost.HostListItem;
 
             var context = listItem.Context;
-            var filePath = listItem["FileRef"].ToString();
-
-            var web = listItem.ParentList.ParentWeb;
-                
-            var currentPageFile = web.GetFileByServerRelativeUrl(filePath);
+            var currentPageFile = GetCurrentPageFile(listItemModelHost);
 
             ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
             {

@@ -63,12 +63,16 @@
     <Compile Include="Common\ModelEventArgs.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
     <Compile Include="Definitions\Base\SolutionDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\WebPartDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\FarmSolutionDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ContentEditorWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ListViewWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\XsltListViewWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInCustomActionLocationId.cs" />
     <Compile Include="Enumerations\BuiltInInternalFieldNames.cs" />
     <Compile Include="Enumerations\BuiltInPrefixTypes.cs" />
