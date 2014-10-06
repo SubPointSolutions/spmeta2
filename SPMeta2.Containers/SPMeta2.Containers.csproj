@@ -78,7 +78,8 @@
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\ContentEditorWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\XsltListViewWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\ContentEditorWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />

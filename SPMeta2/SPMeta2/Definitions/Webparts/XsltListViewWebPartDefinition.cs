@@ -20,7 +20,7 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
-        public string ListName { get; set; }
+        public string ListTitle { get; set; }
         public string ListUrl { get; set; }
         public Guid? ListId { get; set; }
 

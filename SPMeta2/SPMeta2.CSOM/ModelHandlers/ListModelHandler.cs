@@ -233,7 +233,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQuery();
         }
 
-        protected List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
+        public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
         {
             foreach (var list in listCollection)
             {

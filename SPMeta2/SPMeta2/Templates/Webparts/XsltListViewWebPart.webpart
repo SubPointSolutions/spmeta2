@@ -1,0 +1,90 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="ShowWithSampleData" type="bool">False</property>
+        <property name="Default" type="string" />
+        <property name="NoDefaultStyle" type="string" null="true" />
+        <property name="CacheXslStorage" type="bool">True</property>
+        <property name="ViewContentTypeId" type="string" />
+        <property name="XmlDefinitionLink" type="string" />
+        <property name="ManualRefresh" type="bool">False</property>
+        <property name="ListUrl" type="string" />
+        <property name="ListId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">9468774b-3418-4dc1-835a-38888ba7224b</property>
+        <property name="TitleUrl" type="string"></property>
+        <property name="EnableOriginalValue" type="bool">False</property>
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="ServerRender" type="bool">False</property>
+        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">Html, TabularView, Hidden, Mobile</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="ListName" type="string"></property>
+        <property name="ListDisplayName" type="string" />
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+        <property name="DisableSaveAsNewViewButton" type="bool">False</property>
+        <property name="ViewFlag" type="string" />
+        <property name="DataSourceID" type="string" />
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="AutoRefresh" type="bool">False</property>
+        <property name="FireInitialRow" type="bool">True</property>
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="Description" type="string" />
+        <property name="HelpMode" type="helpmode">Modeless</property>
+        <property name="BaseXsltHashKey" type="string" null="true" />
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="CacheXslTimeOut" type="int">86400</property>
+        <property name="ChromeType" type="chrometype">Default</property>
+        <property name="Xsl" type="string" null="true" />
+        <property name="JSLink" type="string" null="true" />
+        <property name="CatalogIconImageUrl" type="string">/_layouts/15/images/itissue.png?rev=23</property>
+        <property name="SampleData" type="string" null="true" />
+        <property name="UseSQLDataSourcePaging" type="bool">True</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="PageSize" type="int">-1</property>
+        <property name="ShowTimelineIfAvailable" type="bool">True</property>
+        <property name="Width" type="string" />
+        <property name="DataFields" type="string" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="Title" type="string" />
+        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
+        <property name="DataSourcesString" type="string" />
+        <property name="AllowClose" type="bool">True</property>
+        <property name="InplaceSearchEnabled" type="bool">False</property>
+        <property name="WebId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">00000000-0000-0000-0000-000000000000</property>
+        <property name="Height" type="string" />
+        <property name="GhostedXslLink" type="string">main.xsl</property>
+        <property name="DisableViewSelectorMenu" type="bool">False</property>
+        <property name="DisplayName" type="string" />
+        <property name="IsClientRender" type="bool">False</property>
+        <property name="XmlDefinition" type="string">&lt;View Name="{460638EF-2AF9-422A-9144-D2804E294F8F}" MobileView="TRUE" Type="HTML" Hidden="TRUE" DisplayName="" Url="/dev/dev/t-1/SitePages/landing.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=23" &gt;&lt;Query&gt;&lt;OrderBy&gt;&lt;FieldRef Name="ID"/&gt;&lt;/OrderBy&gt;&lt;/Query&gt;&lt;ViewFields&gt;&lt;FieldRef Name="LinkIssueIDNoMenu"/&gt;&lt;FieldRef Name="LinkTitle"/&gt;&lt;FieldRef Name="AssignedTo"/&gt;&lt;FieldRef Name="Status"/&gt;&lt;FieldRef Name="Priority"/&gt;&lt;FieldRef Name="DueDate"/&gt;&lt;/ViewFields&gt;&lt;RowLimit Paged="TRUE"&gt;30&lt;/RowLimit&gt;&lt;JSLink&gt;clienttemplates.js&lt;/JSLink&gt;&lt;XslLink Default="TRUE"&gt;main.xsl&lt;/XslLink&gt;&lt;Toolbar Type="Standard"/&gt;&lt;/View&gt;</property>
+        <property name="InitialAsyncDataFetch" type="bool">False</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="ParameterBindings" type="string">
+
+          &lt;ParameterBinding Name="dvt_sortdir" Location="Postback;Connection"/&gt;
+          &lt;ParameterBinding Name="dvt_sortfield" Location="Postback;Connection"/&gt;
+          &lt;ParameterBinding Name="dvt_startposition" Location="Postback" DefaultValue=""/&gt;
+          &lt;ParameterBinding Name="dvt_firstrow" Location="Postback;Connection"/&gt;
+          &lt;ParameterBinding Name="OpenMenuKeyAccessible" Location="Resource(wss,OpenMenuKeyAccessible)" /&gt;
+          &lt;ParameterBinding Name="open_menu" Location="Resource(wss,open_menu)" /&gt;
+          &lt;ParameterBinding Name="select_deselect_all" Location="Resource(wss,select_deselect_all)" /&gt;
+          &lt;ParameterBinding Name="idPresEnabled" Location="Resource(wss,idPresEnabled)" /&gt; &lt;ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" /&gt;
+          &lt;ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(core,noXinviewofY_DEFAULT)" /&gt;
+          &lt;ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" /&gt;
+          &lt;ParameterBinding Name="MoreAnnouncements" Location="Resource(wss,moreItemsParen)" /&gt;
+        </property>
+        <property name="DataSourceMode" type="Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">List</property>
+        <property name="AutoRefreshInterval" type="int">60</property>
+        <property name="AsyncRefresh" type="bool">False</property>
+        <property name="HelpUrl" type="string" />
+        <property name="MissingAssembly" type="string">Cannot import this Web Part.</property>
+        <property name="XslLink" type="string" null="true" />
+        <property name="SelectParameters" type="string" />
+      </properties>
+    </data>
+  </webPart>
+</webParts>

@@ -2,9 +2,8 @@
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
-using SPMeta2.Enumerations;
 
-namespace SPMeta2.Containers.DefinitionGenerators
+namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 {
     public class ContentEditorWebPartDefinitionGenerator : TypedDefinitionGeneratorServiceBase<ContentEditorWebPartDefinition>
     {
