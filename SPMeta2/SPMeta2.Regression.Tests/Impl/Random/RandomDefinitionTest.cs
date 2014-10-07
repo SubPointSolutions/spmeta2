@@ -407,6 +407,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_ContactFieldControlDefinition()
+        {
+            TestRandomDefinition<ContactFieldControlDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
         public void CanDeployRandom_ListViewWebPartDefinition()
         {
             TestRandomDefinition<ListViewWebPartDefinition>();

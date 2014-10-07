@@ -70,6 +70,7 @@
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ScriptEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentEditorWebPartDefinition.cs" />
@@ -169,6 +170,7 @@
     <EmbeddedResource Include="Templates\Webparts\ScriptEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\SiteFeedWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ListViewWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\ContactFieldControl.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
