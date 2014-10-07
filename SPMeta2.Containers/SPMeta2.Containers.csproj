@@ -78,6 +78,7 @@
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SiteFeedWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ScriptEditorWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\XsltListViewWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentEditorWebPartDefinitionGenerator.cs" />
