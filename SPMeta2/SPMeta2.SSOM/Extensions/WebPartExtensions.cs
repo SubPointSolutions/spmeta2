@@ -79,9 +79,9 @@ namespace SPMeta2.SSOM.Extensions
         }
 
         public static void DeployWebPartsToPage(SPLimitedWebPartManager webPartManager,
-            IEnumerable<WebPartDefinition> webpartDefinitions)
+            WebPartDefinition webpartDefinitions)
         {
-            DeployWebPartsToPage(webPartManager, webpartDefinitions, null, null);
+            DeployWebPartToPage(webPartManager, webpartDefinitions, null, null);
         }
 
         public static void WithExistingWebPart(SPListItem targetPage,
@@ -116,73 +116,82 @@ namespace SPMeta2.SSOM.Extensions
 
         }
 
-        public static void DeployWebPartsToPage(SPLimitedWebPartManager webPartManager,
-            IEnumerable<WebPartDefinition> webpartDefinitions,
+        public static void DeployWebPartToPage(SPLimitedWebPartManager webPartManager,
+            WebPartDefinition webpartDefinitions,
             Action<WebPart> onUpdating,
             Action<WebPart> onUpdated)
         {
-            foreach (var webpartModel in webpartDefinitions)
+            DeployWebPartToPage(webPartManager, webpartDefinitions, onUpdating, onUpdated, null);
+        }
+
+        public static void DeployWebPartToPage(SPLimitedWebPartManager webPartManager,
+            WebPartDefinition webpartModel,
+            Action<WebPart> onUpdating,
+            Action<WebPart> onUpdated,
+            Action<WebPart, WebPartDefinition> onProcessCommonProperties)
+        {
+            var site = webPartManager.Web.Site;
+            var webPartInstance = ResolveWebPartInstance(site, webPartManager, webpartModel);
+
+            if (onUpdating != null)
+                onUpdating(webPartInstance);
+
+            // webpartModel.InvokeOnModelUpdatingEvents<WebPartDefinition, AspWebPart.WebPart>(webPartInstance);
+
+            var needUpdate = false;
+            var targetWebpartType = webPartInstance.GetType();
+
+            foreach (System.Web.UI.WebControls.WebParts.WebPart existingWebpart in webPartManager.WebParts)
             {
-                var site = webPartManager.Web.Site;
-                var webPartInstance = ResolveWebPartInstance(site, webPartManager, webpartModel);
-
-                if (onUpdating != null)
-                    onUpdating(webPartInstance);
-
-                // webpartModel.InvokeOnModelUpdatingEvents<WebPartDefinition, AspWebPart.WebPart>(webPartInstance);
-
-                var needUpdate = false;
-                var targetWebpartType = webPartInstance.GetType();
-
-                foreach (System.Web.UI.WebControls.WebParts.WebPart existingWebpart in webPartManager.WebParts)
+                if (existingWebpart.ID == webpartModel.Id && existingWebpart.GetType() == targetWebpartType)
                 {
-                    if (existingWebpart.ID == webpartModel.Id && existingWebpart.GetType() == targetWebpartType)
-                    {
-                        webPartInstance = existingWebpart;
-                        needUpdate = true;
-                        break;
-                    }
+                    webPartInstance = existingWebpart;
+                    needUpdate = true;
+                    break;
                 }
-
-                // process common properties
-                webPartInstance.Title = webpartModel.Title;
-                webPartInstance.ID = webpartModel.Id;
-
-                // faking context for CQWP deployment
-                var webDeploymentAction = new Action(delegate()
-                {
-                    // webpartModel.InvokeOnModelUpdatedEvents<WebPartDefinition, AspWebPart.WebPart>(webPartInstance);
-
-                    if (!needUpdate)
-                    {
-                        if (onUpdating != null)
-                            onUpdating(webPartInstance);
-
-                        if (onUpdated != null)
-                            onUpdated(webPartInstance);
-
-                        webPartManager.AddWebPart(webPartInstance, webpartModel.ZoneId, webpartModel.ZoneIndex);
-                    }
-                    else
-                    {
-                        if (webPartInstance.ZoneIndex != webpartModel.ZoneIndex)
-                            webPartManager.MoveWebPart(webPartInstance, webpartModel.ZoneId, webpartModel.ZoneIndex);
-
-                        if (onUpdating != null)
-                            onUpdating(webPartInstance);
-
-                        if (onUpdated != null)
-                            onUpdated(webPartInstance);
-
-                        webPartManager.SaveChanges(webPartInstance);
-                    }
-                });
-
-                if (SPContext.Current == null)
-                    SPContextExtensions.WithFakeSPContextScope(webPartManager.Web, webDeploymentAction);
-                else
-                    webDeploymentAction();
             }
+
+            // process common properties
+            webPartInstance.Title = webpartModel.Title;
+            webPartInstance.ID = webpartModel.Id;
+
+            if (onProcessCommonProperties != null)
+                onProcessCommonProperties(webPartInstance, webpartModel);
+
+            // faking context for CQWP deployment
+            var webDeploymentAction = new Action(delegate()
+            {
+                // webpartModel.InvokeOnModelUpdatedEvents<WebPartDefinition, AspWebPart.WebPart>(webPartInstance);
+
+                if (!needUpdate)
+                {
+                    if (onUpdating != null)
+                        onUpdating(webPartInstance);
+
+                    if (onUpdated != null)
+                        onUpdated(webPartInstance);
+
+                    webPartManager.AddWebPart(webPartInstance, webpartModel.ZoneId, webpartModel.ZoneIndex);
+                }
+                else
+                {
+                    if (webPartInstance.ZoneIndex != webpartModel.ZoneIndex)
+                        webPartManager.MoveWebPart(webPartInstance, webpartModel.ZoneId, webpartModel.ZoneIndex);
+
+                    if (onUpdating != null)
+                        onUpdating(webPartInstance);
+
+                    if (onUpdated != null)
+                        onUpdated(webPartInstance);
+
+                    webPartManager.SaveChanges(webPartInstance);
+                }
+            });
+
+            if (SPContext.Current == null)
+                SPContextExtensions.WithFakeSPContextScope(webPartManager.Web, webDeploymentAction);
+            else
+                webDeploymentAction();
         }
 
         public static void WithLimitedWebPartManager(SPListItem targetPage, Action<SPLimitedWebPartManager> action)
@@ -193,11 +202,9 @@ namespace SPMeta2.SSOM.Extensions
             }
         }
 
-        public static void DeployWebPartsToPage(SPListItem targetPage, IEnumerable<WebPartDefinition> webpartDefinitions)
+        public static void DeployWebPartToPage(SPListItem targetPage, WebPartDefinition webpartDefinitions)
         {
             var webPartModels = webpartDefinitions;
-
-            if (!webPartModels.Any()) return;
 
             WithLimitedWebPartManager(targetPage, webPartManager =>
             {

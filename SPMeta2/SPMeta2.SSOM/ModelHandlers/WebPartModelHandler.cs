@@ -37,13 +37,20 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WebPartDefinition); }
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        protected virtual void ProcessWebpartProperties(WebPart webpartInstance, WebPartDefinition webpartModel)
+        {
+
+        }
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
-            var webpartPageModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
+            var webpartModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
+
+            OnBeforeDeployModel(host, webpartModel);
 
             InvokeOnModelEvent<FieldDefinition, SPField>(null, ModelEventType.OnUpdating);
-            WebPartExtensions.DeployWebPartsToPage(host.SPLimitedWebPartManager, new[] { webpartPageModel },
+            WebPartExtensions.DeployWebPartToPage(host.SPLimitedWebPartManager, webpartModel,
                 onUpdatingWebpartInstnce =>
                 {
 
@@ -75,7 +82,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                     });
 
                     InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
-                });
+                },
+                ProcessWebpartProperties);
+        }
+
+        protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)
+        {
 
         }
 
