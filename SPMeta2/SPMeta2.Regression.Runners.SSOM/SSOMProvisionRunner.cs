@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Regression.SSOM;
+using SPMeta2.Regression.SSOM.Standard.Validation.Webparts;
+using SPMeta2.SSOM.ModelHandlers.Webparts;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
 using Microsoft.SharePoint.Administration;
 using System.Web.UI.WebControls.WebParts;
 using System.Diagnostics;
+using SPMeta2.SSOM.Standard.ModelHandlers.Webparts;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Runners.SSOM
 {
@@ -29,6 +34,23 @@ namespace SPMeta2.Regression.Runners.SSOM
             WebUrls = new List<string>();
 
             LoadEnvironmentConfig();
+            InitServices();
+        }
+
+        private void InitServices()
+        {
+            _provisionService = new SSOMProvisionService();
+            _validationService = new SSOMValidationService();
+
+            var ssomStandartAsm = typeof(ContactFieldControlModelHandler).Assembly;
+
+            foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(ssomStandartAsm))
+                _provisionService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
+
+            var ssomStandartValidationAsm = typeof(SiteFeedWebPartDefinitionValidator).Assembly;
+
+            foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(ssomStandartValidationAsm))
+                _validationService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
         }
 
         private void LoadEnvironmentConfig()
@@ -51,8 +73,8 @@ namespace SPMeta2.Regression.Runners.SSOM
         public List<string> SiteUrls { get; set; }
         public List<string> WebUrls { get; set; }
 
-        private readonly SSOMProvisionService _provisionService = new SSOMProvisionService();
-        private readonly SSOMValidationService _validationService = new SSOMValidationService();
+        private SSOMProvisionService _provisionService;
+        private SSOMValidationService _validationService;
 
         public override string ResolveFullTypeName(string typeName, string assemblyName)
         {
@@ -72,10 +94,8 @@ namespace SPMeta2.Regression.Runners.SSOM
             {
                 WithSSOMFarmContext(farm =>
                 {
-
                     _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
                     _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
-
                 });
             }
         }

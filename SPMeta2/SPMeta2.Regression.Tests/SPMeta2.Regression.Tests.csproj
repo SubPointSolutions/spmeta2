@@ -189,6 +189,14 @@
       <Link>SPMeta2.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Regression.SSOM.Standard\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll">
+      <Link>SPMeta2.Regression.SSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.SSOM.Standard\bin\Debug\SPMeta2.SSOM.Standard.dll">
+      <Link>SPMeta2.SSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.dll">
       <Link>SPMeta2.Syntax.Default.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
