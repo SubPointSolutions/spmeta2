@@ -89,7 +89,8 @@
     <Compile Include="Validation\PublishingPageDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartPageDefinitionValidator.cs" />
-    <Compile Include="Validation\Webparts\XsltLIstViewWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\ListViewWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\XsltListViewWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ScriptEditorWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentEditorWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />

@@ -8,13 +8,13 @@ using SPMeta2.Definitions.Webparts;
 
 namespace SPMeta2.Regression.SSOM.Validation.Webparts
 {
-    public class XsltListViewWebPartDefinitionValidator : WebPartDefinitionValidator
+    public class ListViewWebPartDefinitionValidator : WebPartDefinitionValidator
     {
         #region properties
 
         public override Type TargetType
         {
-            get { return typeof(XsltListViewWebPartDefinition); }
+            get { return typeof(ListViewWebPartDefinition); }
         }
 
         #endregion

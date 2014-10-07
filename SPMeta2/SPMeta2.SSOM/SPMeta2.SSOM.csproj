@@ -106,6 +106,9 @@
     <Compile Include="ModelHandlers\SiteModelHandler.cs" />
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />
