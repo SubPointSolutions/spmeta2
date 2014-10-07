@@ -27,12 +27,21 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
+            if (!listItemModelHost.HostWeb.IsObjectPropertyInstantiated("Id"))
+            {
+                var webContext = listItemModelHost.HostWeb.Context;
+                webContext.Load(listItemModelHost.HostWeb, w => w.Id);
+                webContext.ExecuteQuery();
+            }
+
+            var webId = listItemModelHost.HostWeb.Id.ToString();
+
             var wpModel = webPartModel.WithAssertAndCast<ClientWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions
                 .LoadWebpartXmlDocument(BuiltInWebpartTemplates.ClientWebPart)
                 .SetOrUpdateProperty("FeatureId", wpModel.FeatureId.ToString())
                 .SetOrUpdateProperty("ProductId", wpModel.ProductId.ToString())
-                .SetOrUpdateProperty("ProductWebId", wpModel.ProductWebId.ToString())
+                .SetOrUpdateProperty("ProductWebId", webId)
                 .ToString();
 
             return wpXml;

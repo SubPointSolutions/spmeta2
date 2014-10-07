@@ -22,7 +22,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 
                 def.ProductId = new Guid("6d97b0a9-84a5-4bf6-a831-99c5f83f9686");
                 def.FeatureId = new Guid("6d97b0a9-84a5-4bf6-a831-99c5f83f9687");
-                def.ProductWebId = new Guid("fae61eea-5448-4428-94b9-baf82ac3e818");
+                //def.ProductWebId = new Guid("fae61eea-5448-4428-94b9-baf82ac3e818");
             });
         }
     }
