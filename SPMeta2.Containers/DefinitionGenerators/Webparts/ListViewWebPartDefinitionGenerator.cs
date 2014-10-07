@@ -17,7 +17,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
-                def.ListUrl = "Style Library";
+                def.ListUrl = "SitePages";
             });
         }
     }
