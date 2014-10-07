@@ -64,6 +64,7 @@
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
+    <Compile Include="Impl\Issues\Issues_2014_10.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\BreakRoleInheritanceScenariousTest.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Impl\Upgrade\ContentTypeUpgradeTest.cs" />
     <Compile Include="Impl\Upgrade\FieldUpgradeTest.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
-    <Compile Include="Misc\BuiltInWebpartTemplatesTest.cs" />
+    <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
     <Compile Include="Services\ServiceFactory.cs" />

@@ -1,4 +1,6 @@
 ﻿
+using SPMeta2.Regression.Services;
+
 namespace SPMeta2.Regression.Tests.Services
 {
     internal static class ServiceFactory
@@ -7,12 +9,14 @@ namespace SPMeta2.Regression.Tests.Services
 
         static ServiceFactory()
         {
+            ModelGeneratorService = new ModelGeneratorService();
         }
 
         #endregion
 
         #region properties
 
+        public static ModelGeneratorService ModelGeneratorService { get; set; }
 
         #endregion
     }

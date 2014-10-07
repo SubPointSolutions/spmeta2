@@ -1,13 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 
-namespace SPMeta2.Regression.Tests.Misc
+namespace SPMeta2.Regression.Tests.Impl.Misc
 {
     [TestClass]
     public class BuiltInWebpartTemplatesTest
