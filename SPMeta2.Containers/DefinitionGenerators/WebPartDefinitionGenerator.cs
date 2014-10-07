@@ -11,7 +11,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.Id = Rnd.String();
+                // ID must be more than 32 due ScriptEditorWebPart issue
+                // it calculated hidden field name as 'this.ID.Substring(this.ID.Length - 36);'
+                def.Id = Rnd.String(64);
                 def.Title = Rnd.String();
 
                 def.ZoneId = "FullPage";
