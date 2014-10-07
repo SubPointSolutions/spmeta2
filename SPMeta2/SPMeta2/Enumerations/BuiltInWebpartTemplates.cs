@@ -23,6 +23,7 @@ namespace SPMeta2.Enumerations
             SiteFeedWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SiteFeedWebPart.webpart");
             ListViewWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ListViewWebPart.webpart");
             ContactFieldControl = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ContactFieldControl.webpart");
+            ClientWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ClientWebPart.webpart");
         }
 
         #endregion
@@ -35,7 +36,9 @@ namespace SPMeta2.Enumerations
         public static string SiteFeedWebPart { get; set; }
         public static string ListViewWebPart { get; set; }
         public static string ContactFieldControl { get; set; }
+        public static string ClientWebPart { get; set; }
 
         #endregion
     }
 }
+
