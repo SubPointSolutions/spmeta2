@@ -17,6 +17,7 @@ namespace SPMeta2.Enumerations
 
             ContentEditorWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ContentEditorWebPart.webpart");
             XsltListViewWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.XsltListViewWebPart.webpart");
+            ScriptEditorWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ScriptEditorWebPart.webpart");
         }
 
         #endregion
@@ -25,6 +26,7 @@ namespace SPMeta2.Enumerations
 
         public static string ContentEditorWebPart { get; set; }
         public static string XsltListViewWebPart { get; set; }
+        public static string ScriptEditorWebPart { get; set; }
 
         #endregion
     }

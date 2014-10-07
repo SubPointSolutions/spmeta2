@@ -103,6 +103,7 @@
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />

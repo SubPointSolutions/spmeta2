@@ -70,6 +70,7 @@
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ScriptEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ListViewWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\XsltListViewWebPartDefinition.cs" />
@@ -163,6 +164,7 @@
     <None Include="SPMeta2.snk" />
     <EmbeddedResource Include="Templates\Webparts\ContentEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\XsltListViewWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\ScriptEditorWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
