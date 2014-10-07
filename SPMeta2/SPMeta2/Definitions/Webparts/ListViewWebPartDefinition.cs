@@ -16,11 +16,11 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
-    public class ListViewWebPartDefinition : WebPartDefinitionBase
+    public class ListViewWebPartDefinition : WebPartDefinition
     {
         #region properties
 
-        public string ListName { get; set; }
+        public string ListTitle { get; set; }
         public string ListUrl { get; set; }
         public Guid? ListId { get; set; }
 

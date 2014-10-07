@@ -94,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationModelHost.cs" />
+    <Compile Include="Validation\Webparts\ClientListViewWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ScriptEditorWebParttDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientXsltListViewWebPartDefinitionValidator.cs" />

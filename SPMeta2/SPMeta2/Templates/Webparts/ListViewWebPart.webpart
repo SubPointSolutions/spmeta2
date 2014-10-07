@@ -1,0 +1,36 @@
+﻿<WebPart xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Title>Style Library</Title>
+  <FrameType>Default</FrameType>
+  <Description />
+  <IsIncluded>true</IsIncluded>
+  <PartOrder>6</PartOrder>
+  <FrameState>Normal</FrameState>
+  <Height />
+  <Width />
+  <AllowRemove>true</AllowRemove>
+  <AllowZoneChange>true</AllowZoneChange>
+  <AllowMinimize>true</AllowMinimize>
+  <AllowConnect>true</AllowConnect>
+  <AllowEdit>true</AllowEdit>
+  <AllowHide>true</AllowHide>
+  <IsVisible>true</IsVisible>
+  <DetailLink>/Style Library</DetailLink>
+  <HelpLink />
+  <HelpMode>Modeless</HelpMode>
+  <Dir>Default</Dir>
+  <PartImageSmall />
+  <MissingAssembly>Cannot import this Web Part.</MissingAssembly>
+  <PartImageLarge />
+  <IsIncludedFilter />
+  <ExportControlledProperties>false</ExportControlledProperties>
+  <Assembly>Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.SharePoint.WebPartPages.ListViewWebPart</TypeName>
+  <ConnectionID>00000000-0000-0000-0000-000000000000</ConnectionID>
+  <WebId xmlns="http://schemas.microsoft.com/WebPart/v2/ListView">00000000-0000-0000-0000-000000000000</WebId>
+  <ListViewXml xmlns="http://schemas.microsoft.com/WebPart/v2/ListView">&lt;View Name=&quot;{063490C4-B4A6-49A0-9187-7A6C838F88B6}&quot; MobileView=&quot;TRUE&quot; Type=&quot;HTML&quot; Hidden=&quot;TRUE&quot; DisplayName=&quot;&quot; Url=&quot;/SitePages/b6c07dafc10741b586286aada9a41a6d.aspx&quot; Level=&quot;1&quot; BaseViewID=&quot;1&quot; ContentTypeID=&quot;0x&quot; ImageUrl=&quot;/_layouts/15/images/dlicon.png?rev=23&quot;&gt;&lt;ViewFields&gt;&lt;FieldRef Name=&quot;DocIcon&quot; /&gt;&lt;FieldRef Name=&quot;LinkFilename&quot; /&gt;&lt;FieldRef Name=&quot;Modified&quot; /&gt;&lt;FieldRef Name=&quot;Editor&quot; /&gt;&lt;FieldRef Name=&quot;CheckoutUser&quot; /&gt;&lt;/ViewFields&gt;&lt;XslLink Default=&quot;TRUE&quot;&gt;main.xsl&lt;/XslLink&gt;&lt;JSLink&gt;clienttemplates.js&lt;/JSLink&gt;&lt;RowLimit Paged=&quot;TRUE&quot;&gt;30&lt;/RowLimit&gt;&lt;Toolbar Type=&quot;Standard&quot; /&gt;&lt;ParameterBindings&gt;&lt;ParameterBinding Name=&quot;NoAnnouncements&quot; Location=&quot;Resource(wss,noitemsinview_doclibrary)&quot; /&gt;&lt;ParameterBinding Name=&quot;NoAnnouncementsHowTo&quot; Location=&quot;Resource(wss,noitemsinview_doclibrary_howto2)&quot; /&gt;&lt;/ParameterBindings&gt;&lt;Query&gt;&lt;OrderBy&gt;&lt;FieldRef Name=&quot;FileLeafRef&quot; /&gt;&lt;/OrderBy&gt;&lt;/Query&gt;&lt;/View&gt;</ListViewXml>
+  <ListName xmlns="http://schemas.microsoft.com/WebPart/v2/ListView"></ListName>
+  <ListId xmlns="http://schemas.microsoft.com/WebPart/v2/ListView"></ListId>
+  <ViewFlag xmlns="http://schemas.microsoft.com/WebPart/v2/ListView">8388621</ViewFlag>
+  <ViewFlags xmlns="http://schemas.microsoft.com/WebPart/v2/ListView">Html TabularView Hidden Mobile</ViewFlags>
+  <ViewContentTypeId xmlns="http://schemas.microsoft.com/WebPart/v2/ListView">0x</ViewContentTypeId>
+</WebPart>
