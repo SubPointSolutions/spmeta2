@@ -459,16 +459,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Taxonomy")]
-        public void CanDeployRandom_TaxonomyGroupDefinition()
+        public void CanDeployRandom_TaxonomyTermGroupDefinition()
         {
-            TestRandomDefinition<TaxonomyGroupDefinition>();
+            TestRandomDefinition<TaxonomyTermGroupDefinition>();
         }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Taxonomy")]
-        public void CanDeployRandom_TaxonomyStoreDefinition()
+        public void CanDeployRandom_TaxonomyTermStoreDefinition()
         {
-            TestRandomDefinition<TaxonomyStoreDefinition>();
+            TestRandomDefinition<TaxonomyTermStoreDefinition>();
         }
 
         [TestMethod]

@@ -19,7 +19,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var termStoreModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<TaxonomyGroupDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindGroup(termStoreModelHost.HostTermStore, definition);
 

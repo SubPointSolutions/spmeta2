@@ -6,7 +6,7 @@ using SPMeta2.Definitions.Taxonomy;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Taxonomy
 {
-    public class TaxonomyStoreDefinitionGenerator : TypedDefinitionGeneratorServiceBase<TaxonomyStoreDefinition>
+    public class TaxonomyStoreDefinitionGenerator : TypedDefinitionGeneratorServiceBase<TaxonomyTermStoreDefinition>
     {
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {

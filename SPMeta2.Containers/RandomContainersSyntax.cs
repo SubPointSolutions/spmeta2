@@ -100,12 +100,12 @@ namespace SPMeta2.Containers
 
         public static ModelNode AddRandomTermStore(this ModelNode model, Action<ModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyStoreDefinition>(action);
+            return model.AddRandomDefinition<TaxonomyTermStoreDefinition>(action);
         }
 
         public static ModelNode AddRandomTermGroup(this ModelNode model, Action<ModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyGroupDefinition>(action);
+            return model.AddRandomDefinition<TaxonomyTermGroupDefinition>(action);
         }
 
         public static ModelNode AddRandomTermSet(this ModelNode model, Action<ModelNode> action)

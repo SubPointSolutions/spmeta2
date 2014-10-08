@@ -20,7 +20,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override Type TargetType
         {
-            get { return typeof(TaxonomyStoreDefinition); }
+            get { return typeof(TaxonomyTermStoreDefinition); }
         }
 
         #endregion
@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
-            var termStoreModel = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
+            var termStoreModel = model.WithAssertAndCast<TaxonomyTermStoreDefinition>("model", value => value.RequireNotNull());
 
             var termStore = FindTermStore(siteModelHost, termStoreModel);
 
@@ -42,7 +42,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             termStore.CommitAll();
         }
 
-        protected TermStore FindTermStore(SiteModelHost siteModelHost, TaxonomyStoreDefinition termStoreModel)
+        protected TermStore FindTermStore(SiteModelHost siteModelHost, TaxonomyTermStoreDefinition termStoreModel)
         {
             var site = siteModelHost.HostSite;
 
@@ -60,7 +60,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
-            var termStoreModel = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
+            var termStoreModel = model.WithAssertAndCast<TaxonomyTermStoreDefinition>("model", value => value.RequireNotNull());
 
             var termStore = FindTermStore(siteModelHost, termStoreModel);
 

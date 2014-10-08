@@ -21,7 +21,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override Type TargetType
         {
-            get { return typeof(TaxonomyGroupDefinition); }
+            get { return typeof(TaxonomyTermGroupDefinition); }
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
-            var groupModel = model.WithAssertAndCast<TaxonomyGroupDefinition>("model", value => value.RequireNotNull());
+            var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
             DeployTaxonomyGroup(modelHost, siteModelHost, groupModel);
         }
@@ -39,7 +39,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
             var storeModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
-            var groupModel = model.WithAssertAndCast<TaxonomyGroupDefinition>("model", value => value.RequireNotNull());
+            var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
             var termStore = storeModelHost.HostTermStore;
             var currentGroup = FindGroup(termStore, groupModel);
@@ -51,7 +51,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             });
         }
 
-        protected Group FindGroup(TermStore termStore, TaxonomyGroupDefinition groupModel)
+        protected Group FindGroup(TermStore termStore, TaxonomyTermGroupDefinition groupModel)
         {
             Group currentGroup = null;
 
@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             return currentGroup;
         }
 
-        private void DeployTaxonomyGroup(object modelHost, TermStoreModelHost siteModelHost, TaxonomyGroupDefinition groupModel)
+        private void DeployTaxonomyGroup(object modelHost, TermStoreModelHost siteModelHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = siteModelHost.HostTermStore;
             var currentGroup = FindGroup(termStore, groupModel);

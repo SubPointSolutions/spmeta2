@@ -14,7 +14,7 @@ namespace SPMeta2.Definitions.Taxonomy
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TermSet", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermSet", "Microsoft.SharePoint.Client.Taxonomy")]
 
-    [DefaultParentHost(typeof(TaxonomyGroupDefinition))]
+    [DefaultParentHost(typeof(TaxonomyTermGroupDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]

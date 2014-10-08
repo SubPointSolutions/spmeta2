@@ -11,7 +11,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<TaxonomyTermStoreDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindTermStore(siteModelHost, definition);
 

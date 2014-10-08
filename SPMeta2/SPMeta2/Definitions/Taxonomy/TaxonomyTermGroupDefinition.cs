@@ -14,11 +14,11 @@ namespace SPMeta2.Definitions.Taxonomy
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.Group", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermGroup", "Microsoft.SharePoint.Client.Taxonomy")]
 
-    [DefaultParentHost(typeof(TaxonomyStoreDefinition))]
+    [DefaultParentHost(typeof(TaxonomyTermStoreDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
-    public class TaxonomyGroupDefinition : DefinitionBase
+    public class TaxonomyTermGroupDefinition : DefinitionBase
     {
         #region properties
 

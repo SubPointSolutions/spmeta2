@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions.Taxonomy
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
-    public class TaxonomyStoreDefinition : DefinitionBase
+    public class TaxonomyTermStoreDefinition : DefinitionBase
     {
         #region properties
 
