@@ -76,6 +76,8 @@
     <Compile Include="DefinitionGenerators\SiteDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SP2013WorkflowDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermSetDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyGroupDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyStoreDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />

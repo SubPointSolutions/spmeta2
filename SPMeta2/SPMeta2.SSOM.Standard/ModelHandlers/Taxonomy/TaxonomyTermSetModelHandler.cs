@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var groupModelHost = model.WithAssertAndCast<TermGroupModelHost>("modelHost", value => value.RequireNotNull());
+            var groupModelHost = modelHost.WithAssertAndCast<TermGroupModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyTermSetDefinition>("model", value => value.RequireNotNull());
 
             DeployTaxonomyTermSet(modelHost, groupModelHost, groupModel);
@@ -38,13 +38,15 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var groupModelHost = model.WithAssertAndCast<TermGroupModelHost>("modelHost", value => value.RequireNotNull());
+            var groupModelHost = modelHost.WithAssertAndCast<TermGroupModelHost>("modelHost", value => value.RequireNotNull());
             var termSetModel = model.WithAssertAndCast<TaxonomyTermSetDefinition>("model", value => value.RequireNotNull());
 
             var currentTermSet = FindTermSet(groupModelHost.HostGroup, termSetModel);
 
             action(new TermSetModelHost
             {
+                HostGroup = groupModelHost.HostGroup,
+                HostTermStore = groupModelHost.HostTermStore,
                 HostTermSet = currentTermSet
             });
         }
@@ -83,8 +85,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ObjectDefinition = termSetModel,
                     ModelHost = modelHost
                 });
-
-                termStore.CommitAll();
             }
             else
             {
@@ -101,7 +101,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             }
         }
 
-        private TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)
+        protected TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)
         {
             TermSet result = null;
 

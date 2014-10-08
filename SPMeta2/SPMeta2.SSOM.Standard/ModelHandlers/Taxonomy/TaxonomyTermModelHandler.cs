@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var termSetMModelHost = model.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
+            var termSetMModelHost = modelHost.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
             var termModel = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
             DeployTaxonomyTerm(modelHost, termSetMModelHost, termModel);
@@ -38,7 +38,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var groupModelHost = model.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
+            var groupModelHost = modelHost.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
             var termSetModel = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
             var currentTermSet = FindTerm(groupModelHost.HostTermSet, termSetModel);
@@ -72,8 +72,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (currentTerm == null)
             {
                 currentTerm = termModel.Id.HasValue
-                    ? currentTerm.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
-                    : currentTerm.CreateTerm(termModel.Name, termModel.LCID);
+                    ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
+                    : termSet.CreateTerm(termModel.Name, termModel.LCID);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -101,7 +101,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             }
         }
 
-        private Term FindTerm(TermSet termSet, TaxonomyTermDefinition termModel)
+        protected Term FindTerm(TermSet termSet, TaxonomyTermDefinition termModel)
         {
             Term result = null;
 
