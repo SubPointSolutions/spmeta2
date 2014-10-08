@@ -11,6 +11,7 @@ namespace SPMeta2.Definitions.Taxonomy
         #region properties
 
         public string Name { get; set; }
+        public Guid? Id { get; set; }
 
         #endregion
     }
