@@ -37,7 +37,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                new XAttribute("BdcField", "Title"));
         }
 
-        protected override Type GetTargetFieldType()
+        protected override Type GetTargetFieldType(FieldDefinition model)
         {
             return typeof(SPBusinessDataField);
         }
@@ -89,13 +89,5 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
         #endregion
     }
 
-    internal static class XElementHelper
-    {
-        public static XElement SetAttribute(this XElement element, string attrName, string attrValue)
-        {
-            element.Attribute(attrName).Value = attrValue;
-
-            return element;
-        }
-    }
+   
 }

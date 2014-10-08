@@ -67,6 +67,7 @@
     <Compile Include="Definitions\Base\WebPartDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\FarmSolutionDefinition.cs" />
+    <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
     <Compile Include="Utils\WebpartXmlExtensions.cs" />
+    <Compile Include="Utils\XElementHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

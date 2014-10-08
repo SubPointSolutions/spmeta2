@@ -23,8 +23,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #region methods
 
+        // TODO
+
+        protected object ModelHost { get; set; }
+
+        protected SPSite GetCurrentSite()
+        {
+            if (ModelHost is SiteModelHost)
+                return (ModelHost as SiteModelHost).HostSite;
+
+            if (ModelHost is ListModelHost)
+                return (ModelHost as ListModelHost).HostList.ParentWeb.Site;
+
+            return null;
+        }
+
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
+            ModelHost = modelHost;
+
             CheckValidModelHost(modelHost);
 
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
@@ -56,7 +73,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = field,
-                ObjectType = GetTargetFieldType(),
+                ObjectType = GetTargetFieldType(fieldModel),
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
@@ -127,7 +144,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                                                                          });
         }
 
-        protected virtual Type GetTargetFieldType()
+        protected virtual Type GetTargetFieldType(FieldDefinition fieldModel)
         {
             return typeof(SPField);
         }
@@ -146,7 +163,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = currentField,
-                    ObjectType = GetTargetFieldType(),
+                    ObjectType = GetTargetFieldType(fieldModel),
                     ObjectDefinition = fieldModel,
                     ModelHost = modelHost
                 });
@@ -165,7 +182,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = currentField,
-                    ObjectType = GetTargetFieldType(),
+                    ObjectType = GetTargetFieldType(fieldModel),
                     ObjectDefinition = fieldModel,
                     ModelHost = modelHost
                 });

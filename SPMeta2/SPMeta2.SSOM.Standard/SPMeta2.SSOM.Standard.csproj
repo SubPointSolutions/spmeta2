@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SharePoint.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -58,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

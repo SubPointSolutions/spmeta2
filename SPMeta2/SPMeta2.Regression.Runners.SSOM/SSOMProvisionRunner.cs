@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Taxonomy;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.Runners.Consts;
@@ -80,6 +82,8 @@ namespace SPMeta2.Regression.Runners.SSOM
         {
             var sp = typeof(SPField);
             var wp = typeof(WebPart);
+
+            var tax = typeof(TaxonomyField);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

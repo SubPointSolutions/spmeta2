@@ -46,7 +46,8 @@
     </Compile>
     <Compile Include="DefinitionGenerators\AppPrincipalDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\BusinessDataFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\BusinessDataFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeLinkDefinitionGenerator.cs" />
