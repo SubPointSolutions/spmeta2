@@ -72,6 +72,10 @@
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
+    <Compile Include="Definitions\Taxonomy\TaxonomyStoreDefinition.cs" />
+    <Compile Include="Definitions\Taxonomy\TaxonomyTermSetDefinition.cs" />
+    <Compile Include="Definitions\Taxonomy\TaxonomyTermDefinition.cs" />
+    <Compile Include="Definitions\Taxonomy\TaxonomyGroupDefinition.cs" />
     <Compile Include="Definitions\Webparts\ClientWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
