@@ -23,7 +23,7 @@
         <property name="AllowConnect" type="bool">True</property>
         <property name="Width" type="unit" />
         <property name="Height" type="unit" />
-        <property name="WebPartName" type="string">NewTeamSiteForm</property>
+        <property name="WebPartName" type="string"></property>
         <property name="HelpMode" type="helpmode">Navigate</property>
         <property name="AllowEdit" type="bool">True</property>
         <property name="AllowMinimize" type="bool">True</property>

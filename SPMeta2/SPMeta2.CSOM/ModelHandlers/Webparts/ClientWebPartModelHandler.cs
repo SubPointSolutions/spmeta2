@@ -41,6 +41,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 .LoadWebpartXmlDocument(BuiltInWebpartTemplates.ClientWebPart)
                 .SetOrUpdateProperty("FeatureId", wpModel.FeatureId.ToString())
                 .SetOrUpdateProperty("ProductId", wpModel.ProductId.ToString())
+                .SetOrUpdateProperty("WebPartName", wpModel.WebPartName)
                 .SetOrUpdateProperty("ProductWebId", webId)
                 .ToString();
 

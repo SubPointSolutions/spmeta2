@@ -24,6 +24,8 @@ namespace SPMeta2.Definitions.Webparts
         public Guid ProductId { get; set; }
         public Guid ProductWebId { get; set; }
 
+        public string WebPartName { get; set; }
+
         #endregion
     }
 }
