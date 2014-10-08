@@ -1,5 +1,6 @@
 ﻿using System;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.Models;
 using SPMeta2.Regression.Services;
 using SPMeta2.Syntax.Default.Extensions;
@@ -91,6 +92,30 @@ namespace SPMeta2.Containers
         public static ModelNode AddRandomWebpart(this ModelNode model, Action<ModelNode> action)
         {
             return model.AddRandomDefinition<WebPartDefinition>(action);
+        }
+
+        #endregion
+
+        #region taxonomy
+
+        public static ModelNode AddRandomTermStore(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<TaxonomyStoreDefinition>(action);
+        }
+
+        public static ModelNode AddRandomTermGroup(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<TaxonomyGroupDefinition>(action);
+        }
+
+        public static ModelNode AddRandomTermSet(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<TaxonomyTermSetDefinition>(action);
+        }
+
+        public static ModelNode AddRandomTerm(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<TaxonomyTermDefinition>(action);
         }
 
         #endregion

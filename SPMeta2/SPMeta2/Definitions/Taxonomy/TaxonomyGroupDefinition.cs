@@ -12,7 +12,7 @@ namespace SPMeta2.Definitions.Taxonomy
     /// Allows to define and taxonomy store.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.Group", "Microsoft.SharePoint.Taxonomy")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.Group", "Microsoft.SharePoint.Client.Taxonomy")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermGroup", "Microsoft.SharePoint.Client.Taxonomy")]
 
     [DefaultParentHost(typeof(TaxonomyStoreDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]

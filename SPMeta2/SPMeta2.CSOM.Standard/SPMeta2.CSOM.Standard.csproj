@@ -60,7 +60,15 @@
   <ItemGroup>
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" />
+    <Compile Include="ModelHosts\TermGroupModelHost.cs" />
+    <Compile Include="ModelHosts\TermModelHost.cs" />
+    <Compile Include="ModelHosts\TermSetModelHost.cs" />
+    <Compile Include="ModelHosts\TermStoreModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
