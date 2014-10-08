@@ -85,8 +85,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ObjectDefinition = termModel,
                     ModelHost = modelHost
                 });
-
-                termStore.CommitAll();
             }
             else
             {

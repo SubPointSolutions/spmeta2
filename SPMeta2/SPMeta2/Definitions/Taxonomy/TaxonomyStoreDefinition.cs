@@ -9,7 +9,7 @@ using SPMeta2.Attributes.Regression;
 namespace SPMeta2.Definitions.Taxonomy
 {
     /// <summary>
-    /// Allows to define and deploy SharePoint field.
+    /// Allows to define and taxonomy store.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TermStore", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermStore", "Microsoft.SharePoint.Client.Taxonomy")]

@@ -29,7 +29,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var siteModelHost = model.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
             var termStoreModel = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
 
             var termStore = FindTermStore(siteModelHost, termStoreModel);
@@ -38,6 +38,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             {
                 HostTermStore = termStore
             });
+
+            termStore.CommitAll();
         }
 
         protected TermStore FindTermStore(SiteModelHost siteModelHost, TaxonomyStoreDefinition termStoreModel)

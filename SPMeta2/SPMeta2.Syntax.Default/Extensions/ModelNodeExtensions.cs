@@ -21,12 +21,12 @@ namespace SPMeta2.Syntax.Default.Extensions
             DefinitionBase definition,
             Action<ModelNode> action)
         {
-            var contentTypeModelNode = new ModelNode { Value = definition };
+            var modelNode = new ModelNode { Value = definition };
 
-            node.ChildModels.Add(contentTypeModelNode);
+            node.ChildModels.Add(modelNode);
 
             if (action != null)
-                action(contentTypeModelNode);
+                action(modelNode);
 
             return node;
         }

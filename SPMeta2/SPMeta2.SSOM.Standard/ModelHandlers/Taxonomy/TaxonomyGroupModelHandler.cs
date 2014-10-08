@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = model.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyGroupDefinition>("model", value => value.RequireNotNull());
 
             DeployTaxonomyGroup(modelHost, siteModelHost, groupModel);
@@ -38,7 +38,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var storeModelHost = model.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
+            var storeModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyGroupDefinition>("model", value => value.RequireNotNull());
 
             var termStore = storeModelHost.HostTermStore;
