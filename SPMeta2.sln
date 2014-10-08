@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.SSOM.Standard", "SP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Regression.SSOM.Standard", "SPMeta2\SPMeta2.Regression.SSOM.Standard\SPMeta2.Regression.SSOM.Standard.csproj", "{D81AE83A-BEEF-4099-B354-0B88D7396B25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Regression.CSOM.Standard", "SPMeta2\SPMeta2.Regression.CSOM.Standard\SPMeta2.Regression.CSOM.Standard.csproj", "{33B40E92-C649-41FC-B774-53D259801B3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -217,6 +219,10 @@ Global
 		{D81AE83A-BEEF-4099-B354-0B88D7396B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81AE83A-BEEF-4099-B354-0B88D7396B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81AE83A-BEEF-4099-B354-0B88D7396B25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33B40E92-C649-41FC-B774-53D259801B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B40E92-C649-41FC-B774-53D259801B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B40E92-C649-41FC-B774-53D259801B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33B40E92-C649-41FC-B774-53D259801B3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,5 +263,6 @@ Global
 		{091C48FB-27E3-4F84-897C-5DE7BB55A2D3} = {E79C8EBA-BB08-4D47-882E-2E9D5E04F4B5}
 		{7D095A0D-0BDE-446D-8093-13E5685F1D3C} = {94191759-5F75-41E2-AA43-E1BF6B151C96}
 		{D81AE83A-BEEF-4099-B354-0B88D7396B25} = {AA39B47D-287D-4DAC-A1B6-CBEE826B0D83}
+		{33B40E92-C649-41FC-B774-53D259801B3B} = {AA39B47D-287D-4DAC-A1B6-CBEE826B0D83}
 	EndGlobalSection
 EndGlobal

@@ -86,14 +86,4 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         #endregion
     }
-
-    internal static class XElementHelper
-    {
-        public static XElement SetAttribute(this XElement element, string attrName, string attrValue)
-        {
-            element.Attribute(attrName).Value = attrValue;
-
-            return element;
-        }
-    }
 }

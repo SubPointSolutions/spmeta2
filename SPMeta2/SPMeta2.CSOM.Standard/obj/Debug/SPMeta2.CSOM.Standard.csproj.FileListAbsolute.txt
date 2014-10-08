@@ -21,9 +21,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\Microsoft.SharePoint.Cli
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
@@ -31,3 +28,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb

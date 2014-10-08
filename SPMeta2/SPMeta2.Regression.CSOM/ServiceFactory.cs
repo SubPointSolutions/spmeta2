@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.CSOM
 {
-    internal static class ServiceFactory
+    public static class ServiceFactory
     {
         #region static
 
