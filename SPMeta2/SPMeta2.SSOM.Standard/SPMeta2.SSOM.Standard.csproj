@@ -69,6 +69,8 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
+    <Compile Include="ModelHosts\TermModelHost.cs" />
+    <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />
     <Compile Include="ModelHosts\TermStoreModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

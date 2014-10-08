@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
@@ -450,6 +451,38 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_XsltListViewWebPartDefinition()
         {
             TestRandomDefinition<XsltListViewWebPartDefinition>();
+        }
+
+        #endregion
+
+        #region taxonomy
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Taxonomy")]
+        public void CanDeployRandom_TaxonomyGroupDefinition()
+        {
+            TestRandomDefinition<TaxonomyGroupDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Taxonomy")]
+        public void CanDeployRandom_TaxonomyStoreDefinition()
+        {
+            TestRandomDefinition<TaxonomyStoreDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Taxonomy")]
+        public void CanDeployRandom_TaxonomyTermDefinition()
+        {
+            TestRandomDefinition<TaxonomyTermDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Taxonomy")]
+        public void CanDeployRandom_TaxonomyTermSetDefinition()
+        {
+            TestRandomDefinition<TaxonomyTermSetDefinition>();
         }
 
         #endregion

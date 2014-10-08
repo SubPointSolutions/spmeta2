@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Taxonomy;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.SSOM.ModelHandlers;
@@ -31,16 +32,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             var siteModelHost = model.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
             var termStoreModel = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
 
-            var site = siteModelHost.HostSite;
-
-            var session = new TaxonomySession(site);
-            TermStore termStore = null;
-
-
-            if (termStoreModel.Id.HasValue)
-                termStore = session.TermStores[termStoreModel.Id.Value];
-            else if (!string.IsNullOrEmpty(termStoreModel.Name))
-                termStore = session.TermStores[termStoreModel.Name];
+            var termStore = FindTermStore(siteModelHost, termStoreModel);
 
             action(new TermStoreModelHost
             {
@@ -48,11 +40,49 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             });
         }
 
+        protected TermStore FindTermStore(SiteModelHost siteModelHost, TaxonomyStoreDefinition termStoreModel)
+        {
+            var site = siteModelHost.HostSite;
+
+            var session = new TaxonomySession(site);
+            TermStore termStore = null;
+
+            if (termStoreModel.Id.HasValue && termStoreModel.Id != default(Guid))
+                termStore = session.TermStores[termStoreModel.Id.Value];
+            else if (!string.IsNullOrEmpty(termStoreModel.Name))
+                termStore = session.TermStores[termStoreModel.Name];
+
+            return termStore;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var site = model.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
             var termStoreModel = model.WithAssertAndCast<TaxonomyStoreDefinition>("model", value => value.RequireNotNull());
 
+            var termStore = FindTermStore(siteModelHost, termStoreModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = termStore,
+                ObjectType = typeof(TermStore),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = termStore,
+                ObjectType = typeof(TermStore),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
         }
 
         #endregion

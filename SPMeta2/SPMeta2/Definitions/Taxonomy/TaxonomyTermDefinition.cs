@@ -20,6 +20,8 @@ namespace SPMeta2.Definitions.Taxonomy
         #region properties
 
         public string Name { get; set; }
+        public Guid? Id { get; set; }
+
         public int LCID { get; set; }
 
         #endregion
