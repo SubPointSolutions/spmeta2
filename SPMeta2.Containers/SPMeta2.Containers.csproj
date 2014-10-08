@@ -44,6 +44,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\AppPrincipalDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BusinessDataFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />

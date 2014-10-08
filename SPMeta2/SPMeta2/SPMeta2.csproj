@@ -61,6 +61,7 @@
     <Compile Include="Common\ModelEventType.cs" />
     <Compile Include="Common\ModelWeigh.cs" />
     <Compile Include="Common\ModelEventArgs.cs" />
+    <Compile Include="Definitions\AppPrincipalDefinition.cs" />
     <Compile Include="Definitions\Base\NavigationNodeDefinitionBase.cs" />
     <Compile Include="Definitions\Base\SolutionDefinitionBase.cs" />
     <Compile Include="Definitions\Base\WebPartDefinitionBase.cs" />
