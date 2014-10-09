@@ -197,6 +197,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
+        [TestCategory("Regression.Rnd.Site.ContentTypes")]
+        public void CanDeployRandom_HideContentTypeFieldLinksDefinition()
+        {
+            TestRandomDefinition<HideContentTypeFieldLinksDefinition>();
+        }
+
+
+        [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_ContentTypeFieldLinkDefinition()
         {
@@ -324,22 +332,23 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ListViewDefinition>();
         }
 
+
         [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
+        [TestCategory("Regression.Rnd.List.ContentTypes")]
         public void CanDeployRandom_UniqueContentTypeOrderDefinition()
         {
             TestRandomDefinition<UniqueContentTypeOrderDefinition>();
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
+        [TestCategory("Regression.Rnd.List.ContentTypes")]
         public void CanDeployRandom_HideContentTypeLinksDefinition()
         {
             TestRandomDefinition<HideContentTypeLinksDefinition>();
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
+        [TestCategory("Regression.Rnd.List.ContentTypes")]
         public void CanDeployRandom_RemoveContentTypeLinksDefinition()
         {
             TestRandomDefinition<RemoveContentTypeLinksDefinition>();

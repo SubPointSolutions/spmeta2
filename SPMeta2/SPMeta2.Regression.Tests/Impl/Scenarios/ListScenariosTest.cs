@@ -133,10 +133,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     listModel
                        .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
                        {
-                           ContentTypes = new List<ContentTypeValue>
+                           ContentTypes = new List<ContentTypeLinkValue>
                            {
-                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
                        });
                 });
@@ -170,10 +170,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     listModel
                        .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
                        {
-                           ContentTypes = new List<ContentTypeValue>
+                           ContentTypes = new List<ContentTypeLinkValue>
                            {
-                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
                        });
                 });
@@ -209,10 +209,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     listModel
                        .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
                        {
-                           ContentTypes = new List<ContentTypeValue>
+                           ContentTypes = new List<ContentTypeLinkValue>
                            {
-                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
                        });
                 });
@@ -245,10 +245,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     listModel
                        .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
                        {
-                           ContentTypes = new List<ContentTypeValue>
+                           ContentTypes = new List<ContentTypeLinkValue>
                            {
-                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
                        });
                 });
@@ -285,11 +285,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     listModel
                       .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
                       {
-                          ContentTypes = new List<ContentTypeValue>
+                          ContentTypes = new List<ContentTypeLinkValue>
                           {
-                                              new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                              new ContentTypeValue { ContentTypeName = e.Third.Name },
-                                              new ContentTypeValue { ContentTypeName = e.First.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.Third.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                           }
                       });
                 });
@@ -321,11 +321,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      listModel
                        .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
                        {
-                           ContentTypes = new List<ContentTypeValue>
+                           ContentTypes = new List<ContentTypeLinkValue>
                           {
-                                              new ContentTypeValue { ContentTypeName = e.Second.Name },
-                                              new ContentTypeValue { ContentTypeName = e.Third.Name },
-                                              new ContentTypeValue { ContentTypeName = e.First.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.Third.Name },
+                                              new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                           }
                        });
                  });

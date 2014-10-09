@@ -5,10 +5,16 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
-    public class ContentTypeValue
+    public class ContentTypeLinkValue
     {
         public string ContentTypeName { get; set; }
         public string ContentTypeId { get; set; }
+    }
+
+    public class FieldLinkValue
+    {
+        public string InternalName { get; set; }
+        public Guid? Id { get; set; }
     }
 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFolder", "Microsoft.SharePoint")]
@@ -24,14 +30,14 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public UniqueContentTypeOrderDefinition()
         {
-            ContentTypes = new List<ContentTypeValue>();
+            ContentTypes = new List<ContentTypeLinkValue>();
         }
 
         #endregion
 
         #region properties
 
-        public List<ContentTypeValue> ContentTypes { get; set; }
+        public List<ContentTypeLinkValue> ContentTypes { get; set; }
 
         #endregion
     }

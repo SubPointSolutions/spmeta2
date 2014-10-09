@@ -66,6 +66,7 @@
     <Compile Include="Definitions\Base\SolutionDefinitionBase.cs" />
     <Compile Include="Definitions\Base\WebPartDefinitionBase.cs" />
     <Compile Include="Definitions\BreakRoleInheritanceDefinition.cs" />
+    <Compile Include="Definitions\ContentTypes\HideContentTypeFieldLinksDefinition.cs" />
     <Compile Include="Definitions\FarmSolutionDefinition.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />

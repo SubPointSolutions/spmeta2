@@ -70,7 +70,9 @@
     <Compile Include="Extensions\WebPartExtensions.cs" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeFieldLinksModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeLinksModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\HideContentTypeFieldLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />

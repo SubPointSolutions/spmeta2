@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="FarmSolutionDefinitionSyntax.cs" />
+    <Compile Include="HideContentTypeFieldLinksDefinitionSyntax.cs" />
     <Compile Include="RemoveContentTypeLinksDefinitionSyntax.cs" />
     <Compile Include="PropertyDefinitionSyntax.cs" />
     <Compile Include="ContentTypeDefinitionSyntax.cs" />
