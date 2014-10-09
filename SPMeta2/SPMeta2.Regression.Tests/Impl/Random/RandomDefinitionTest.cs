@@ -322,6 +322,18 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             TestRandomDefinition<ListViewDefinition>();
         }
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_UniqueContentTypeOrderDefinition()
+        {
+            TestRandomDefinition<UniqueContentTypeOrderDefinition>();
+        }
+
+        #endregion
+
+        #region list settings
+
+
 
         #endregion
 

@@ -96,6 +96,34 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region fields
+
+        public static ModelNode AddRandomField(this ModelNode model)
+        {
+            return AddRandomField(model, null);
+        }
+
+        public static ModelNode AddRandomField(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<FieldDefinition>(action);
+        }
+
+        #endregion
+
+        #region content types
+
+        public static ModelNode AddRandomContentType(this ModelNode model)
+        {
+            return AddRandomContentType(model, null);
+        }
+
+        public static ModelNode AddRandomContentType(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<ContentTypeDefinition>(action);
+        }
+
+        #endregion
+
         #region taxonomy
 
         public static ModelNode AddRandomTermStore(this ModelNode model)

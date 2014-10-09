@@ -57,6 +57,7 @@
     <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FolderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\JobDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\UniqueContentTypeOrderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListItemDefinitionGenerator.cs" />

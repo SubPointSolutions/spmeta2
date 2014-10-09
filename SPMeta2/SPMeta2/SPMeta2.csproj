@@ -69,6 +69,7 @@
     <Compile Include="Definitions\FarmSolutionDefinition.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\BusinessDataFieldDefinition.cs" />
+    <Compile Include="Definitions\ContentTypes\RemoveContentTypeLinksDefinition.cs" />
     <Compile Include="Definitions\JobDefinition.cs" />
     <Compile Include="Definitions\ManagedAccountDefinition.cs" />
     <Compile Include="Definitions\SandboxSolutionDefinition.cs" />
@@ -76,6 +77,8 @@
     <Compile Include="Definitions\Taxonomy\TaxonomyTermSetDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermGroupDefinition.cs" />
+    <Compile Include="Definitions\ContentTypes\HideContentTypeLinksDefinition.cs" />
+    <Compile Include="Definitions\ContentTypes\UniqueContentTypeOrderDefinition.cs" />
     <Compile Include="Definitions\Webparts\ClientWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
