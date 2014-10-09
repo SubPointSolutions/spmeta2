@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
@@ -322,11 +323,26 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             TestRandomDefinition<ListViewDefinition>();
         }
+
         [TestMethod]
         [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_UniqueContentTypeOrderDefinition()
         {
             TestRandomDefinition<UniqueContentTypeOrderDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_HideContentTypeLinksDefinition()
+        {
+            TestRandomDefinition<HideContentTypeLinksDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_RemoveContentTypeLinksDefinition()
+        {
+            TestRandomDefinition<RemoveContentTypeLinksDefinition>();
         }
 
         #endregion

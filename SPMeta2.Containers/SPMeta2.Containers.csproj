@@ -46,6 +46,8 @@
     </Compile>
     <Compile Include="DefinitionGenerators\AppPrincipalDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\BusinessDataFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
@@ -57,7 +59,7 @@
     <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FolderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\JobDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\UniqueContentTypeOrderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeOrderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListFieldLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListItemDefinitionGenerator.cs" />

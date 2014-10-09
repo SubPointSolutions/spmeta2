@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="FarmSolutionDefinitionSyntax.cs" />
+    <Compile Include="RemoveContentTypeLinksDefinitionSyntax.cs" />
     <Compile Include="PropertyDefinitionSyntax.cs" />
     <Compile Include="ContentTypeDefinitionSyntax.cs" />
     <Compile Include="ContentTypeLinkDefinitionSyntax.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="SP2013WorkflowDefinitionSyntax.cs" />
     <Compile Include="SP2013WorkflowSubscriptionDefinitionSyntax.cs" />
     <Compile Include="SPMeta2Model.cs" />
+    <Compile Include="HideContentTypeLinksDefinitionSyntax.cs" />
     <Compile Include="UserCustomActionSyntax.cs" />
     <Compile Include="Utils\ModuleFileUtils.cs" />
     <Compile Include="WebDefinitionSyntax.cs" />

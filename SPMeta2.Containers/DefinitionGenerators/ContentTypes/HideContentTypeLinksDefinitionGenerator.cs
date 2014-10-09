@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
-using SPMeta2.Enumerations;
-using SPMeta2.Syntax.Default;
+using SPMeta2.Definitions.ContentTypes;
 
-namespace SPMeta2.Containers.DefinitionGenerators
+namespace SPMeta2.Containers.DefinitionGenerators.ContentTypes
 {
-    public class UniqueContentTypeOrderDefinitionGenerator : TypedDefinitionGeneratorServiceBase<UniqueContentTypeOrderDefinition>
+    public class HideContentTypeLinksDefinitionGenerator : TypedDefinitionGeneratorServiceBase<HideContentTypeLinksDefinition>
     {
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {

@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Enumerations;
+using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -32,20 +34,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region content type order
-
-
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
-        public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary()
+        protected class ContentTypeEnvironment
         {
+            public ContentTypeDefinition First { get; set; }
+            public ContentTypeDefinition Second { get; set; }
+            public ContentTypeDefinition Third { get; set; }
 
+            public ListDefinition List { get; set; }
+
+            public ModelNode SiteModel { get; set; }
+            public ModelNode WebModel { get; set; }
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
-        public void CanDeploy_CanSetupUniqueContentTypeOrderForList()
+        private ContentTypeEnvironment GetContentTypeLinksSandbox(
+            Action<ModelNode, ContentTypeEnvironment> siteModelConfig,
+            Action<ModelNode, ContentTypeEnvironment> webModelConfig,
+            Action<ModelNode, ContentTypeEnvironment> listModelConfig)
         {
+            var result = new ContentTypeEnvironment();
+
+            // site model
+
             ContentTypeDefinition ctFirst = null;
             ContentTypeDefinition ctSecond = null;
             ContentTypeDefinition ctThird = null;
@@ -63,31 +72,266 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             ctSecond.Name = "second_" + ctSecond.Name;
             ctThird.Name = "third_" + ctThird.Name;
 
-            TestModel(siteModel);
+            result.First = ctFirst;
+            result.Second = ctSecond;
+            result.Third = ctThird;
 
+            result.SiteModel = siteModel;
+
+            if (siteModelConfig != null)
+                siteModelConfig(result.SiteModel, result);
+
+            // web model
             var webModel = SPMeta2Model
-                  .NewWebModel(web =>
-                  {
-                      web
-                          .AddRandomList(list =>
-                          {
-                              list
-                                  .AddContentTypeLink(ctFirst)
-                                  .AddContentTypeLink(ctSecond)
-                                  .AddContentTypeLink(ctThird)
-                                  .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
-                                  {
-                                      ContentTypes = new List<UniqueContentTypeOrderValue>
-                                      {
-                                          new UniqueContentTypeOrderValue { ContentTypeName = ctSecond.Name },
-                                          new UniqueContentTypeOrderValue { ContentTypeName = ctThird.Name },
-                                          new UniqueContentTypeOrderValue { ContentTypeName = ctFirst.Name },
-                                      }
-                                  });
-                          });
-                  });
+                 .NewWebModel(web =>
+                 {
+                     web
+                         .AddRandomList(list =>
+                         {
+                             list
+                                 .AddContentTypeLink(ctFirst)
+                                 .AddContentTypeLink(ctSecond)
+                                 .AddContentTypeLink(ctThird);
 
-            TestModel(webModel);
+                             result.List = list.Value as ListDefinition;
+
+                             if (listModelConfig != null)
+                                 listModelConfig(list, result);
+                         });
+                 });
+
+            result.WebModel = webModel;
+
+            if (webModelConfig != null)
+                webModelConfig(result.WebModel, result);
+
+            return result;
+        }
+
+        #region removing content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanRemoveContentTypeLinksInLibrary()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeValue>
+                           {
+                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+
+            // we need to skip ct links validation
+            TestModel(env.WebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanRemoveContentTypeLinksInList()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeValue>
+                           {
+                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+        #endregion
+
+        #region hiding content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanHideContentTypeLinksInLibrary()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeValue>
+                           {
+                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanHideContentTypeLinksInList()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeValue>
+                           {
+                                          new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                          new ContentTypeValue { ContentTypeName = e.First.Name },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+        #endregion
+
+        #region content type order
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                      .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                      {
+                          ContentTypes = new List<ContentTypeValue>
+                          {
+                                              new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                              new ContentTypeValue { ContentTypeName = e.Third.Name },
+                                              new ContentTypeValue { ContentTypeName = e.First.Name },
+                          }
+                      });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForList()
+        {
+            var env = GetContentTypeLinksSandbox(
+                 (siteModel, e) =>
+                 {
+                     e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                     e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                     e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                 },
+                 (webModel, e) =>
+                 {
+
+                 },
+                 (listModel, e) =>
+                 {
+                     e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                     e.List.ContentTypesEnabled = true;
+
+                     listModel
+                       .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                       {
+                           ContentTypes = new List<ContentTypeValue>
+                          {
+                                              new ContentTypeValue { ContentTypeName = e.Second.Name },
+                                              new ContentTypeValue { ContentTypeName = e.Third.Name },
+                                              new ContentTypeValue { ContentTypeName = e.First.Name },
+                          }
+                       });
+                 });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
         }
 
 

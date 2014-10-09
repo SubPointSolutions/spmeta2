@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 
-namespace SPMeta2.Definitions
+namespace SPMeta2.Definitions.ContentTypes
 {
     public class ContentTypeValue
     {
         public string ContentTypeName { get; set; }
         public string ContentTypeId { get; set; }
-    }
-
-    public class UniqueContentTypeOrderValue : ContentTypeValue
-    {
     }
 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFolder", "Microsoft.SharePoint")]
@@ -31,14 +24,14 @@ namespace SPMeta2.Definitions
 
         public UniqueContentTypeOrderDefinition()
         {
-            ContentTypes = new List<UniqueContentTypeOrderValue>();
+            ContentTypes = new List<ContentTypeValue>();
         }
 
         #endregion
 
         #region properties
 
-        public List<UniqueContentTypeOrderValue> ContentTypes { get; set; }
+        public List<ContentTypeValue> ContentTypes { get; set; }
 
         #endregion
     }

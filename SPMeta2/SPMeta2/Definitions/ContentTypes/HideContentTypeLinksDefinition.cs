@@ -18,16 +18,14 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public HideContentTypeLinksDefinition()
         {
-            IncludeContentTypes = new List<ContentTypeValue>();
-            ExcludeContentTypes = new List<ContentTypeValue>();
+            ContentTypes = new List<ContentTypeValue>();
         }
 
         #endregion
 
         #region properties
 
-        public List<ContentTypeValue> IncludeContentTypes { get; set; }
-        public List<ContentTypeValue> ExcludeContentTypes { get; set; }
+        public List<ContentTypeValue> ContentTypes { get; set; }
 
         #endregion
     }
