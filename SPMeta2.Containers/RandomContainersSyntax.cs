@@ -98,9 +98,19 @@ namespace SPMeta2.Containers
 
         #region taxonomy
 
+        public static ModelNode AddRandomTermStore(this ModelNode model)
+        {
+            return AddRandomTermStore(model, null);
+        }
+
         public static ModelNode AddRandomTermStore(this ModelNode model, Action<ModelNode> action)
         {
             return model.AddRandomDefinition<TaxonomyTermStoreDefinition>(action);
+        }
+
+        public static ModelNode AddRandomTermGroup(this ModelNode model)
+        {
+            return AddRandomTermGroup(model, null);
         }
 
         public static ModelNode AddRandomTermGroup(this ModelNode model, Action<ModelNode> action)
@@ -108,9 +118,19 @@ namespace SPMeta2.Containers
             return model.AddRandomDefinition<TaxonomyTermGroupDefinition>(action);
         }
 
+        public static ModelNode AddRandomTermSet(this ModelNode model)
+        {
+            return AddRandomTermSet(model, null);
+        }
+
         public static ModelNode AddRandomTermSet(this ModelNode model, Action<ModelNode> action)
         {
             return model.AddRandomDefinition<TaxonomyTermSetDefinition>(action);
+        }
+
+        public static ModelNode AddRandomTerm(this ModelNode model)
+        {
+            return AddRandomTerm(model, null);
         }
 
         public static ModelNode AddRandomTerm(this ModelNode model, Action<ModelNode> action)
