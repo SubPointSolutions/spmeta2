@@ -111,7 +111,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region removing content types
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanRemoveContentTypeLinksInLibrary()
         {
             var env = GetContentTypeLinksSandbox(
@@ -148,7 +148,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanRemoveContentTypeLinksInList()
         {
             var env = GetContentTypeLinksSandbox(
@@ -187,7 +187,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region hiding content types
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanHideContentTypeLinksInLibrary()
         {
             var env = GetContentTypeLinksSandbox(
@@ -223,7 +223,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanHideContentTypeLinksInList()
         {
             var env = GetContentTypeLinksSandbox(
@@ -263,7 +263,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary()
         {
             var env = GetContentTypeLinksSandbox(
@@ -299,7 +299,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists")]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
         public void CanDeploy_CanSetupUniqueContentTypeOrderForList()
         {
             var env = GetContentTypeLinksSandbox(

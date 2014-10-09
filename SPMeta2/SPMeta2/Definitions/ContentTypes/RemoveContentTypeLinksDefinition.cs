@@ -6,7 +6,7 @@ using SPMeta2.Attributes.Regression;
 namespace SPMeta2.Definitions.ContentTypes
 {
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.SPList", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]

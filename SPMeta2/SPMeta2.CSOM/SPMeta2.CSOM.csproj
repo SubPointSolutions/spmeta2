@@ -78,6 +78,10 @@
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeLinksModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeLinksModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\CSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
