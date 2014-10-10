@@ -111,7 +111,68 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webparts")]
         public void CanDeploy_WebpartToPublishingPageContent()
         {
-            throw new NotImplementedException();
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddList(BuiltInListDefinitions.Pages, list =>
+                       {
+                           list
+                               .AddRandomPublishingPage(page =>
+                               {
+                                   var id_1 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+                                   var id_2 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+
+                                   var id_3 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+
+                                   var wpId11 = id_1
+                       .Replace("g_", string.Empty)
+                       .Replace("_", "-");
+
+                                   var wpId22 = id_2
+                       .Replace("g_", string.Empty)
+                       .Replace("_", "-");
+
+                                   var pageTemplate = new StringBuilder();
+
+                                   pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                                   pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId11);
+                                   pageTemplate.AppendFormat("     </div>");
+                                   pageTemplate.AppendFormat("</div>");
+
+                                   pageTemplate.AppendFormat("<div>");
+                                   pageTemplate.AppendFormat(" SPMeta2 publishing page.");
+                                   pageTemplate.AppendFormat("</div>");
+
+                                   pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                                   pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId22);
+                                   pageTemplate.AppendFormat("     </div>");
+                                   pageTemplate.AppendFormat("</div>");
+
+                                   (page.Value as PublishingPageDefinition).Content = pageTemplate.ToString();
+
+                                   page
+                                       .AddRandomWebpart(wp =>
+                                       {
+                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
+                                           (wp.Value as WebPartDefinition).Id = id_1;
+                                       })
+                                        .AddRandomWebpart(wp =>
+                                        {
+                                            (wp.Value as WebPartDefinition).ZoneId = "wpz";
+                                            (wp.Value as WebPartDefinition).Id = id_2;
+                                        })
+                                       .AddRandomWebpart(wp =>
+                                       {
+                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
+                                           (wp.Value as WebPartDefinition).Id = id_3;
+                                       });
+                               });
+                       });
+
+               });
+
+            TestModel(webModel);
         }
 
         [TestMethod]
@@ -140,23 +201,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        .Replace("g_", string.Empty)
                        .Replace("_", "-");
 
-                                   var wikiTemplate = new StringBuilder();
+                                   var pageTemplate = new StringBuilder();
 
-                                   wikiTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
-                                   wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId11);
-                                   wikiTemplate.AppendFormat("     </div>");
-                                   wikiTemplate.AppendFormat("</div>");
+                                   pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                                   pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId11);
+                                   pageTemplate.AppendFormat("     </div>");
+                                   pageTemplate.AppendFormat("</div>");
 
-                                   wikiTemplate.AppendFormat("<div>");
-                                   wikiTemplate.AppendFormat(" HA HA HA HA HA");
-                                   wikiTemplate.AppendFormat("</div>");
+                                   pageTemplate.AppendFormat("<div>");
+                                   pageTemplate.AppendFormat(" SPMeta2 wiki page.");
+                                   pageTemplate.AppendFormat("</div>");
 
-                                   wikiTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
-                                   wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId22);
-                                   wikiTemplate.AppendFormat("     </div>");
-                                   wikiTemplate.AppendFormat("</div>");
+                                   pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                                   pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId22);
+                                   pageTemplate.AppendFormat("     </div>");
+                                   pageTemplate.AppendFormat("</div>");
 
-                                   (page.Value as WikiPageDefinition).Content = wikiTemplate.ToString();
+                                   (page.Value as WikiPageDefinition).Content = pageTemplate.ToString();
 
                                    page
                                        .AddRandomWebpart(wp =>

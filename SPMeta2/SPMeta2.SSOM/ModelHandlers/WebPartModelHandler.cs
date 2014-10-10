@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
@@ -66,14 +67,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-
-
                     InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
 
                 },
                 onUpdatedWebpartInstnce =>
                 {
-                    HandleWikiPageProvision(host, webpartModel);
+                    HandleWikiOrPublishingPageProvision(host, webpartModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -91,46 +90,54 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ProcessWebpartProperties);
         }
 
-        private static void HandleWikiPageProvision(WebpartPageModelHost host, WebPartDefinition webpartModel)
+        private static void HandleWikiOrPublishingPageProvision(WebpartPageModelHost host, WebPartDefinition webpartModel)
         {
+            var targetFieldId = Guid.Empty;
+
             if (host.PageListItem.Fields.Contains(SPBuiltInFieldId.WikiField))
+                targetFieldId = SPBuiltInFieldId.WikiField;
+            else if (host.PageListItem.Fields.Contains(BuiltInPublishingFieldId.PageLayout) && webpartModel.AddToPublishingPageContent)
+                targetFieldId = BuiltInPublishingFieldId.PublishingPageContent;
+            else
             {
-                var wikiTemplate = new StringBuilder();
+                return;
+            }
 
-                var wpId = webpartModel.Id
-                    .Replace("g_", string.Empty)
-                    .Replace("_", "-");
+            var wpRichTextTemplate = new StringBuilder();
 
-                var content = host.PageListItem[SPBuiltInFieldId.WikiField] == null
-                    ? string.Empty
-                    : host.PageListItem[SPBuiltInFieldId.WikiField].ToString();
+            var wpId = webpartModel.Id
+                                   .Replace("g_", string.Empty)
+                                   .Replace("_", "-");
 
-                wikiTemplate.AppendFormat(
-                    "​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
-                wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
-                wikiTemplate.AppendFormat("     </div>");
-                wikiTemplate.AppendFormat("</div>");
+            var content = host.PageListItem[targetFieldId] == null
+                ? string.Empty
+                : host.PageListItem[targetFieldId].ToString();
 
-                var wikiResult = wikiTemplate.ToString();
+            wpRichTextTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+            wpRichTextTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
+            wpRichTextTemplate.AppendFormat("     </div>");
+            wpRichTextTemplate.AppendFormat("</div>");
 
-                if (string.IsNullOrEmpty(content))
+            var wikiResult = wpRichTextTemplate.ToString();
+
+            if (string.IsNullOrEmpty(content))
+            {
+                content = wikiResult;
+
+                host.PageListItem[targetFieldId] = content;
+                host.PageListItem.Update();
+            }
+            else
+            {
+                if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
                 {
-                    content = wikiResult;
+                    content += wikiResult;
 
-                    host.PageListItem[SPBuiltInFieldId.WikiField] = content;
+                    host.PageListItem[targetFieldId] = content;
                     host.PageListItem.Update();
                 }
-                else
-                {
-                    if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
-                    {
-                        content += wikiResult;
-
-                        host.PageListItem[SPBuiltInFieldId.WikiField] = content;
-                        host.PageListItem.Update();
-                    }
-                }
             }
+
         }
 
         protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)

@@ -91,6 +91,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     pageItem[BuiltInPublishingFieldId.Contact] = list.ParentWeb.CurrentUser;
 
+                    pageItem[BuiltInPublishingFieldId.PublishingPageContent] = publishingPageModel.Content;
+
                     pageItem[BuiltInFieldId.ContentTypeId] = currentPageLayoutItem[BuiltInPublishingFieldId.AssociatedContentType];
                     pageItem[BuiltInPublishingFieldId.PageLayout] = new SPFieldUrlValue()
                     {

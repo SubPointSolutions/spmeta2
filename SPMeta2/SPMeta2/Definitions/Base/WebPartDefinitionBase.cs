@@ -75,6 +75,11 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         public string WebpartXmlTemplate { get; set; }
 
+        /// <summary>
+        /// Indicated if the web part should be added to the publishing page content area.
+        /// </summary>
+        public bool AddToPublishingPageContent { get; set; }
+
         #endregion
 
         #region methods

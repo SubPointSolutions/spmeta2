@@ -35,6 +35,11 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string Description { get; set; }
 
+        /// <summary>
+        /// Content of the target publishing page.
+        /// </summary>
+        public string Content { get; set; }
+
         #endregion
 
         #region methods
