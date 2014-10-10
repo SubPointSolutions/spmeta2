@@ -62,8 +62,10 @@
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\HideContentTypeFieldLinksDefinitionValidator.cs" />
+    <Compile Include="Validation\ContentTypes\RemoveContentTypeFieldLinksDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\RemoveContentTypeLinksDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\HideContentTypeLinksDefinitionValidator.cs" />
+    <Compile Include="Validation\ContentTypes\UniqueContentTypeFieldsOrderDefinitionValidator.cs" />
     <Compile Include="Validation\FarmDefinitionValidator.cs" />
     <Compile Include="Validation\FeatureDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\UniqueContentTypeOrderDefinitionValidator.cs" />

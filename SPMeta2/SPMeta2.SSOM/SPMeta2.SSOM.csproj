@@ -73,8 +73,10 @@
     <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeFieldLinksModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeLinksModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeFieldLinksModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeFieldLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeFieldsOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />

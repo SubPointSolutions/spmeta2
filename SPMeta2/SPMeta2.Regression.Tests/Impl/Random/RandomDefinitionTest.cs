@@ -203,6 +203,20 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<HideContentTypeFieldLinksDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.ContentTypes")]
+        public void CanDeployRandom_RemoveContentTypeFieldLinksDefinition()
+        {
+            TestRandomDefinition<RemoveContentTypeFieldLinksDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.ContentTypes")]
+        public void CanDeployRandom_UniqueContentTypeFieldsOrderDefinition()
+        {
+            TestRandomDefinition<UniqueContentTypeFieldsOrderDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
