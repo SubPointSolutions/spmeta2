@@ -88,7 +88,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
                 newpage.ListItemAllFields[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
-                
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -106,7 +105,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+                if (wikiPageModel.NeedOverride)
+                    pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

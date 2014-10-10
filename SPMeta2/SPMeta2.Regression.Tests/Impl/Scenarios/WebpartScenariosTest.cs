@@ -156,7 +156,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                    wikiTemplate.AppendFormat("     </div>");
                                    wikiTemplate.AppendFormat("</div>");
 
-                                   //(page.Value as WikiPageDefinition).Content = wikiTemplate.ToString();
+                                   (page.Value as WikiPageDefinition).Content = wikiTemplate.ToString();
 
                                    page
                                        .AddRandomWebpart(wp =>

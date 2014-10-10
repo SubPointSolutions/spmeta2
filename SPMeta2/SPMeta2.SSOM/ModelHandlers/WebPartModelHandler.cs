@@ -73,41 +73,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 },
                 onUpdatedWebpartInstnce =>
                 {
-                    var wikiTemplate = new StringBuilder();
-
-                    var wpId = webpartModel.Id
-                        .Replace("g_", string.Empty)
-                        .Replace("_", "-");
-
-                    var content = host.PageListItem[SPBuiltInFieldId.WikiField] == null ?
-                        string.Empty :
-                         host.PageListItem[SPBuiltInFieldId.WikiField].ToString();
-
-
-                    wikiTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
-                    wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
-                    wikiTemplate.AppendFormat("     </div>");
-                    wikiTemplate.AppendFormat("</div>");
-
-                    var wikiResult = wikiTemplate.ToString();
-
-                    if (string.IsNullOrEmpty(content))
-                    {
-                        content = wikiResult;
-
-                        host.PageListItem[SPBuiltInFieldId.WikiField] = content;
-                        host.PageListItem.Update();
-                    }
-                    else
-                    {
-                        if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
-                        {
-                            content += wikiResult;
-
-                            host.PageListItem[SPBuiltInFieldId.WikiField] = content;
-                            host.PageListItem.Update();
-                        }
-                    }
+                    HandleWikiPageProvision(host, webpartModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -123,6 +89,48 @@ namespace SPMeta2.SSOM.ModelHandlers
                     InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
                 },
                 ProcessWebpartProperties);
+        }
+
+        private static void HandleWikiPageProvision(WebpartPageModelHost host, WebPartDefinition webpartModel)
+        {
+            if (host.PageListItem.Fields.Contains(SPBuiltInFieldId.WikiField))
+            {
+                var wikiTemplate = new StringBuilder();
+
+                var wpId = webpartModel.Id
+                    .Replace("g_", string.Empty)
+                    .Replace("_", "-");
+
+                var content = host.PageListItem[SPBuiltInFieldId.WikiField] == null
+                    ? string.Empty
+                    : host.PageListItem[SPBuiltInFieldId.WikiField].ToString();
+
+                wikiTemplate.AppendFormat(
+                    "​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
+                wikiTemplate.AppendFormat("     </div>");
+                wikiTemplate.AppendFormat("</div>");
+
+                var wikiResult = wikiTemplate.ToString();
+
+                if (string.IsNullOrEmpty(content))
+                {
+                    content = wikiResult;
+
+                    host.PageListItem[SPBuiltInFieldId.WikiField] = content;
+                    host.PageListItem.Update();
+                }
+                else
+                {
+                    if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
+                    {
+                        content += wikiResult;
+
+                        host.PageListItem[SPBuiltInFieldId.WikiField] = content;
+                        host.PageListItem.Update();
+                    }
+                }
+            }
         }
 
         protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)

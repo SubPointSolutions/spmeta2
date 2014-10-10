@@ -10,6 +10,7 @@ using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using WebPartDefinition = SPMeta2.Definitions.WebPartDefinition;
@@ -131,6 +132,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             return WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXml)
                                                .SetTitle(webPartModel.Title)
+                                               .SetID(webPartModel.Id)
                                                .ToString();
         }
 
@@ -172,6 +174,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var webPartXML = GetWebpartXmlDefinition(listItemModelHost, webPartModel);
                     webPartXML = ProcessCommonWebpartProperties(webPartXML, webPartModel);
 
+                    // handle wiki page
+
+                    HandleWikiPageProvision(listItemModelHost, webPartModel);
+
                     var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
                     var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
 
@@ -196,6 +202,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     // BIG TODO for CSOM, delete/export and re import web part?
 
+                    HandleWikiPageProvision(listItemModelHost, webPartModel);
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
@@ -212,6 +220,55 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 return pageFile;
             });
+        }
+
+        private void HandleWikiPageProvision(ListItemModelHost host, WebPartDefinitionBase webpartModel)
+        {
+            var listItem = host.HostListItem;
+            var context = listItem.Context;
+
+            if (listItem.FieldValues.ContainsKey(BuiltInInternalFieldNames.WikiField))
+            {
+                var wikiTemplate = new StringBuilder();
+
+                var wpId = webpartModel.Id
+                    .Replace("g_", string.Empty)
+                    .Replace("_", "-");
+
+                var content = listItem[BuiltInInternalFieldNames.WikiField] == null
+                    ? string.Empty
+                    : listItem[BuiltInInternalFieldNames.WikiField].ToString();
+
+                wikiTemplate.AppendFormat(
+                    "​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
+                wikiTemplate.AppendFormat("     </div>");
+                wikiTemplate.AppendFormat("</div>");
+
+                var wikiResult = wikiTemplate.ToString();
+
+                if (string.IsNullOrEmpty(content))
+                {
+                    content = wikiResult;
+
+                    listItem[BuiltInInternalFieldNames.WikiField] = content;
+                    listItem.Update();
+
+                    context.ExecuteQuery();
+                }
+                else
+                {
+                    if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
+                    {
+                        content += wikiResult;
+
+                        listItem[BuiltInInternalFieldNames.WikiField] = content;
+                        listItem.Update();
+
+                        context.ExecuteQuery();
+                    }
+                }
+            }
         }
 
         protected WebPart FindExistingWebPart(IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,

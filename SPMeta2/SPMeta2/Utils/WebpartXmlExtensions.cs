@@ -93,6 +93,12 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static XDocument SetID(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
         public static XDocument SetItemStyle(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);

@@ -2,7 +2,10 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
+using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
@@ -29,9 +32,27 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = folderModelHost.CurrentList.ParentWeb;
             var folder = folderModelHost.CurrentLibraryFolder;
 
-            var file = GetWikiPageFile(web, folder, wikiPageModel);
+            var currentPage = GetWikiPageFile(web, folder, wikiPageModel);
 
-            action(file);
+            var context = folder.Context;
+
+            var currentListItem = currentPage.ListItemAllFields;
+            context.Load(currentListItem);
+            context.ExecuteQuery();
+
+            if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
+            {
+                var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
+                {
+                    itemHost.HostListItem = currentListItem;
+                });
+
+                action(listItemHost);
+
+                //currentListItem.Update();
+            }
+
+            context.ExecuteQuery();
         }
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
@@ -74,7 +95,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var newPageFile = folder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
 
+                //newPageFile.ListItemAllFields
+
                 context.Load(newPageFile);
+
+                var currentListItem = newPageFile.ListItemAllFields;
+                context.Load(currentListItem);
+                context.ExecuteQuery();
+
+                currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                currentListItem.Update();
+
+                context.ExecuteQuery();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -94,6 +126,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 // TODO,override if force
 
+                if (wikiPageModel.NeedOverride)
+                {
+                    var currentListItem = file.ListItemAllFields;
+                    context.Load(currentListItem);
+                    context.ExecuteQuery();
+
+                    currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                    currentListItem.Update();
+                }
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -104,6 +146,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = wikiPageModel,
                     ModelHost = folder
                 });
+
+                context.ExecuteQuery();
             }
         }
 

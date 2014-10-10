@@ -9,6 +9,7 @@ using SPMeta2.Models;
 
 namespace SPMeta2.CSOM
 {
+    [Obsolete]
     public static class ListItemDefinitionSyntax
     {
         #region methods
