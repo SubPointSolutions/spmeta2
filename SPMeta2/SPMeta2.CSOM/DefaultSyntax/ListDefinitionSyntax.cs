@@ -86,6 +86,10 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.DiscussionBoard:
                 case ListTemplateType.ExternalList:
                 case ListTemplateType.Links:
+                case ListTemplateType.WorkflowHistory:
+                case ListTemplateType.Facility:
+                case ListTemplateType.GanttTasks:
+                case ListTemplateType.Posts:
 
                     return "Lists/" + listDefinition.Url;
 
@@ -98,8 +102,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.Decision:
                 case ListTemplateType.DocumentLibrary:
 
-                case ListTemplateType.Facility:
-                case ListTemplateType.GanttTasks:
+                
                 case ListTemplateType.HealthReports:
                 case ListTemplateType.HealthRules:
                 case ListTemplateType.Holidays:
@@ -117,7 +120,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.NoCodeWorkflows:
                 case ListTemplateType.NoListTemplate:
                 case ListTemplateType.PictureLibrary:
-                case ListTemplateType.Posts:
+                
                 case ListTemplateType.SolutionCatalog:
                 case ListTemplateType.Survey:
                 case ListTemplateType.TextBox:
@@ -129,7 +132,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.WebPartCatalog:
                 case ListTemplateType.WebTemplateCatalog:
                 case ListTemplateType.Whereabouts:
-                case ListTemplateType.WorkflowHistory:
+                
                 case ListTemplateType.WorkflowProcess:
                 case ListTemplateType.XMLForm:
 

@@ -23,9 +23,9 @@ namespace SPMeta2.Containers.Services.Base
             return WithEmptyDefinition(null);
         }
 
-        protected virtual TModelDefinition WithEmptyDefinition<TModelDefinition>(Action<TModelDefinition> action)
+        protected virtual TModelDefinition WithEmptyDefinition<TModelDefinition>()
         {
-            return WithEmptyDefinition(action);
+            return (TModelDefinition)Activator.CreateInstance<TModelDefinition>();
         }
 
         protected virtual TModelDefinition WithEmptyDefinition(Action<TModelDefinition> action)

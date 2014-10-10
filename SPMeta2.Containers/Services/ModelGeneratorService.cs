@@ -196,8 +196,9 @@ namespace SPMeta2.Regression.Services
                                         })
                                         .FirstOrDefault();
 
+                // additonal definitions should be 'first' 
                 targetNode
-                    .AddDefinitionNode(definition);
+                    .ChildModels.Insert(0, new ModelNode { Value = definition });
 
             }
         }

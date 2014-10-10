@@ -244,7 +244,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Web")]
+        [TestCategory("Regression.Rnd.SP2013Workflow")]
         public void CanDeployRandom_SP2013WorkflowDefinition()
         {
             TestRandomDefinition<SP2013WorkflowDefinition>();
@@ -326,7 +326,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
+        [TestCategory("Regression.Rnd.SP2013Workflow")]
         public void CanDeployRandom_SP2013WorkflowSubscriptionDefinition()
         {
             TestRandomDefinition<SP2013WorkflowSubscriptionDefinition>();
