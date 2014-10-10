@@ -1,0 +1,93 @@
+﻿using System;
+using System.Linq;
+using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
+using SPMeta2.CSOM.Common;
+using SPMeta2.CSOM.ModelHandlers.ContentTypes.Base;
+using SPMeta2.Definitions;
+using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Utils;
+
+namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
+{
+    public class HideContentTypeFieldLinksModelHandler : ContentTypeFieldLinksModelHandlerBase
+    {
+        #region properties
+
+        public override Type TargetType
+        {
+            get { return typeof(HideContentTypeFieldLinksDefinition); }
+        }
+
+        #endregion
+
+        #region methods
+
+        protected ContentType ExtractContentTypeFromHost(object host)
+        {
+            return (host as ModelHostContext).ContentType;
+        }
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var contentTypeHost = modelHost.WithAssertAndCast<ModelHostContext>("model", value => value.RequireNotNull());
+            var hideContentTypeFieldLinksDefinition = model.WithAssertAndCast<HideContentTypeFieldLinksDefinition>("model", value => value.RequireNotNull());
+
+            var contentType = ExtractContentTypeFromHost(contentTypeHost);
+
+            DeployHideContentTypeLinks(modelHost, contentType, hideContentTypeFieldLinksDefinition);
+        }
+
+        private void DeployHideContentTypeLinks(object modelHost, ContentType contentType, HideContentTypeFieldLinksDefinition hideFieldLinksModel)
+        {
+            var context = contentType.Context;
+
+            context.Load(contentType, c => c.FieldLinks);
+            context.ExecuteQuery();
+
+            var fieldLinks = contentType.FieldLinks.ToList();
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = contentType,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = hideFieldLinksModel,
+                ModelHost = modelHost
+            });
+
+            // re-order
+            foreach (var srcFieldLink in hideFieldLinksModel.Fields)
+            {
+                FieldLink currentFieldLink = null;
+
+                if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
+
+                if (currentFieldLink == null && srcFieldLink.Id.HasValue)
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
+
+                if (currentFieldLink != null)
+                {
+                    currentFieldLink.Required = false;
+                    currentFieldLink.Hidden = true;
+                }
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = contentType,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = hideFieldLinksModel,
+                ModelHost = modelHost
+            });
+        }
+
+        #endregion
+    }
+}
