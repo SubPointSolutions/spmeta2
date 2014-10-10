@@ -1,76 +1,94 @@
-﻿namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
+using SPMeta2.CSOM.Common;
+using SPMeta2.CSOM.ModelHandlers.ContentTypes.Base;
+using SPMeta2.Definitions;
+using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Utils;
+
+namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 {
-    //public class UniqueContentTypeFieldsOrderModelHandler : ContentTypeFieldLinksModelHandlerBase
-    //{
-    //    #region properties
+    public class UniqueContentTypeFieldsOrderModelHandler : ContentTypeFieldLinksModelHandlerBase
+    {
+        #region properties
 
-    //    public override Type TargetType
-    //    {
-    //        get { return typeof(UniqueContentTypeFieldsOrderDefinition); }
-    //    }
+        public override Type TargetType
+        {
+            get { return typeof(UniqueContentTypeFieldsOrderDefinition); }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    #region methods
+        #region methods
 
-    //    public override void DeployModel(object modelHost, DefinitionBase model)
-    //    {
-    //        var contentType = modelHost as SPContentType;
-    //        var contentTypeOrderDefinition = model.WithAssertAndCast<UniqueContentTypeFieldsOrderDefinition>("model", value => value.RequireNotNull());
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var contentTypeHost = modelHost.WithAssertAndCast<ModelHostContext>("model", value => value.RequireNotNull());
+            var contentTypeOrderDefinition = model.WithAssertAndCast<UniqueContentTypeFieldsOrderDefinition>("model", value => value.RequireNotNull());
 
-    //        DeployContentTypeOrder(modelHost, contentType, contentTypeOrderDefinition);
-    //    }
+            var contentType = ExtractContentTypeFromHost(modelHost);
 
-    //    private void DeployContentTypeOrder(object modelHost, SPContentType contentType, UniqueContentTypeFieldsOrderDefinition reorderFieldLinksModel)
-    //    {
-    //        var fieldLinks = contentType.FieldLinks.OfType<SPFieldLink>().ToList();
+            DeployContentTypeOrder(modelHost, contentType, contentTypeOrderDefinition);
+        }
 
-    //        InvokeOnModelEvent(this, new ModelEventArgs
-    //        {
-    //            CurrentModelNode = null,
-    //            Model = null,
-    //            EventType = ModelEventType.OnProvisioning,
-    //            Object = contentType,
-    //            ObjectType = typeof(SPContentType),
-    //            ObjectDefinition = reorderFieldLinksModel,
-    //            ModelHost = modelHost
-    //        });
+        private void DeployContentTypeOrder(object modelHost, ContentType contentType, UniqueContentTypeFieldsOrderDefinition reorderFieldLinksModel)
+        {
+            var context = contentType.Context;
 
-    //        var newOrder = new List<string>();
+            context.Load(contentType, c => c.FieldLinks);
+            context.ExecuteQuery();
 
-    //        // re-order
-    //        foreach (var srcFieldLink in reorderFieldLinksModel.Fields)
-    //        {
-    //            SPFieldLink currentFieldLink = null;
+            var fieldLinks = contentType.FieldLinks.ToList();
 
-    //            if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
-    //                currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = contentType,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = reorderFieldLinksModel,
+                ModelHost = modelHost
+            });
 
-    //            if (currentFieldLink == null && srcFieldLink.Id.HasValue)
-    //                currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
+            var newOrder = new List<string>();
 
-    //            if (currentFieldLink != null)
-    //            {
-    //                if (!newOrder.Contains(currentFieldLink.Name))
-    //                    newOrder.Add(currentFieldLink.Name);
-    //            }
-    //        }
+            // re-order
+            foreach (var srcFieldLink in reorderFieldLinksModel.Fields)
+            {
+                FieldLink currentFieldLink = null;
 
-    //        if (newOrder.Count > 0)
-    //            contentType.FieldLinks.Reorder(newOrder.ToArray());
+                if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
 
-    //        InvokeOnModelEvent(this, new ModelEventArgs
-    //        {
-    //            CurrentModelNode = null,
-    //            Model = null,
-    //            EventType = ModelEventType.OnProvisioned,
-    //            Object = contentType,
-    //            ObjectType = typeof(SPContentType),
-    //            ObjectDefinition = reorderFieldLinksModel,
-    //            ModelHost = modelHost
-    //        });
-    //    }
+                if (currentFieldLink == null && srcFieldLink.Id.HasValue)
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
 
-    //    #endregion
-    //}
+                if (currentFieldLink != null)
+                {
+                    if (!newOrder.Contains(currentFieldLink.Name))
+                        newOrder.Add(currentFieldLink.Name);
+                }
+            }
+
+            if (newOrder.Count > 0)
+                contentType.FieldLinks.Reorder(newOrder.ToArray());
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = contentType,
+                ObjectType = typeof(ContentType),
+                ObjectDefinition = reorderFieldLinksModel,
+                ModelHost = modelHost
+            });
+        }
+
+        #endregion
+    }
 }

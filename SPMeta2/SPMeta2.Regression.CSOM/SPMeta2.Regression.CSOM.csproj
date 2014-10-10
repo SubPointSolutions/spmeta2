@@ -94,7 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\ContentTypes\HideContentTypeFieldLinksDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\HideContentTypeLinksDefinitionValidator.cs" />
+    <Compile Include="Validation\ContentTypes\RemoveContentTypeFieldLinksDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\RemoveContentTypeLinksDefinitionValidator.cs" />
+    <Compile Include="Validation\ContentTypes\UniqueContentTypeFieldsOrderDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\UniqueContentTypeOrderDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationModelHost.cs" />

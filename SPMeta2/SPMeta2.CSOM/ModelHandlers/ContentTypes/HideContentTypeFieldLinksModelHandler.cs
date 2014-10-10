@@ -23,11 +23,6 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 
         #region methods
 
-        protected ContentType ExtractContentTypeFromHost(object host)
-        {
-            return (host as ModelHostContext).ContentType;
-        }
-
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var contentTypeHost = modelHost.WithAssertAndCast<ModelHostContext>("model", value => value.RequireNotNull());
