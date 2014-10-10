@@ -11,6 +11,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Enumerations;
+using System.Web.UI.WebControls.WebParts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -145,7 +146,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             return FindPublishingPage(folder, publishingPageModel);
         }
 
-
         protected string GetSafePublishingPageFileName(PublishingPageDefinition pageModel)
         {
             var webPartPageName = pageModel.FileName;
@@ -154,6 +154,40 @@ namespace SPMeta2.SSOM.ModelHandlers
                 webPartPageName += ".aspx";
 
             return webPartPageName;
+        }
+
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        {
+            var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+
+            var folder = listModelHost.CurrentLibraryFolder;
+            var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
+
+
+            var targetPage = FindPublishingPage(folder, publishingPageModel);
+
+            ModuleFileModelHandler.WithSafeFileOperation(listModelHost.CurrentLibrary, folder,
+                targetPage.Url,
+                GetSafePublishingPageFileName(publishingPageModel),
+                Encoding.UTF8.GetBytes(PublishingPageTemplates.RedirectionPageMarkup),
+                false,
+                null,
+                afterFile =>
+                {
+                    using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                    {
+                        var webpartPageHost = new WebpartPageModelHost
+                        {
+                            PageListItem = targetPage,
+                            SPLimitedWebPartManager = webPartManager
+                        };
+
+                        action(webpartPageHost);
+                    }
+                });
+
+           
+
         }
 
         protected SPListItem FindPublishingPage(SPFolder folder, PublishingPageDefinition webpartPageModel)

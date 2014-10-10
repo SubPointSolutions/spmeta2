@@ -54,6 +54,20 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region wiki pages
+
+        public static ModelNode AddRandomWikiPage(this ModelNode model)
+        {
+            return AddRandomWikiPage(model, null);
+        }
+
+        public static ModelNode AddRandomWikiPage(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<WikiPageDefinition>(action);
+        }
+
+        #endregion
+
         #region publishing pages
 
         public static ModelNode AddRandomPublishingPage(this ModelNode model)

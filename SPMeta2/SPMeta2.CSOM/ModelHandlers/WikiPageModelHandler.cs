@@ -23,10 +23,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            action(modelHost);
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+            var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
-            // modelHost change should be implemented later to allow web part provision on the wiki page
+            var web = folderModelHost.CurrentList.ParentWeb;
+            var folder = folderModelHost.CurrentLibraryFolder;
+
+            var file = GetWikiPageFile(web, folder, wikiPageModel);
+
+            action(file);
         }
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)

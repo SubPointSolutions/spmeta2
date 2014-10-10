@@ -44,6 +44,9 @@
   <ItemGroup>
     <Content Include="ClosedXML\ClosedXML.dll" />
     <Content Include="ClosedXML\DocumentFormat.OpenXml.dll" />
+    <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.dll" />
+    <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.pdb" />
+    <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.xml" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.Portable.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.dll" />

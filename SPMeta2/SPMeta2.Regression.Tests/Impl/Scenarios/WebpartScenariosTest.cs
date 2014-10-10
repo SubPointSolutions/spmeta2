@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToPublishingPage()
+        public void CanDeploy_WebpartToPublishingPageWebPartZone()
         {
             var siteModel = SPMeta2Model
                                 .NewSiteModel(site =>
@@ -105,11 +105,36 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(webModel);
         }
 
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWikiPage()
+        public void CanDeploy_WebpartToPublishingPageContent()
         {
             throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartToWikiPageContent()
+        {
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddList(BuiltInListDefinitions.SitePages, list =>
+                       {
+                           list
+                               .AddRandomWikiPage(page =>
+                               {
+                                   page
+                                       .AddRandomWebpart()
+                                       .AddRandomWebpart();
+                               });
+                       });
+
+               });
+
+            TestModel(webModel);
         }
 
         #endregion

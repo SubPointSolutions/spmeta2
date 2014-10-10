@@ -73,18 +73,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             // gosh, it really does not have a title
             //targetPage[SPBuiltInFieldId.Title] = webpartPageModel.Title;
 
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = targetPage == null ? null : targetPage.File,
-                ObjectType = typeof(SPFile),
-                ObjectDefinition = webpartPageModel,
-                ModelHost = modelHost
-            });
 
-            targetPage.Update();
+
+            //targetPage.Update();
         }
 
         protected SPListItem FindWebPartPage(SPFolder folder, WebPartPageDefinition webpartPageModel)
@@ -147,10 +138,37 @@ namespace SPMeta2.SSOM.ModelHandlers
                   webPartPageName,
                   fileContent,
                   true,
-                  null,
+                    file =>
+                    {
+                        InvokeOnModelEvent(this, new ModelEventArgs
+                        {
+                            CurrentModelNode = null,
+                            Model = null,
+                            EventType = ModelEventType.OnProvisioned,
+                            Object = file,
+                            ObjectType = typeof(SPFile),
+                            ObjectDefinition = webpartPageModel,
+                            ModelHost = modelHost
+                        });
+                    },
                   null);
 
                 targetPage = FindWebPartPage(folder, webpartPageModel);
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = targetPage == null ? null : targetPage.File,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = webpartPageModel,
+                    ModelHost = modelHost
+                });
+
+                targetPage.Update();
             }
 
             return targetPage;
