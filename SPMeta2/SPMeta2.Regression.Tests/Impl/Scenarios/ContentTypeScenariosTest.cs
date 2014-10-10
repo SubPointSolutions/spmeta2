@@ -116,8 +116,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             return result;
         }
 
+
+
+        #endregion
+
+        #region content type fields links
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypes")]
+        [TestCategory("Regression.Scenarios.ContentTypes.FieldLinks")]
         public void CanDeploy_CanHideContentTypeFieldLinks()
         {
             var env = GetContentTypeSandbox(
@@ -140,6 +146,59 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(env.SiteModel);
         }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.FieldLinks")]
+        public void CanDeploy_CanRemoveContentTypeFieldLinks()
+        {
+            var env = GetContentTypeSandbox(
+                (siteModel, e) =>
+                {
+
+                },
+                (contentTypeModel, e) =>
+                {
+                    contentTypeModel
+                       .AddRemoveContentTypeFieldLinks(new RemoveContentTypeFieldLinksDefinition
+                       {
+                           Fields = new List<FieldLinkValue>
+                           {
+                                          new FieldLinkValue { InternalName = e.Second.InternalName },
+                                          new FieldLinkValue { InternalName = e.First.InternalName },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.FieldLinks")]
+        public void CanDeploy_CanSetupUniqueContentTypeFieldsOrder()
+        {
+            var env = GetContentTypeSandbox(
+                (siteModel, e) =>
+                {
+
+                },
+                (contentTypeModel, e) =>
+                {
+                    contentTypeModel
+                       .AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
+                       {
+                           
+                           Fields = new List<FieldLinkValue>
+                           {
+                                          new FieldLinkValue { InternalName = e.Second.InternalName },
+                                          new FieldLinkValue { InternalName = e.First.InternalName },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+        }
+
+        // 
 
         #endregion
 
