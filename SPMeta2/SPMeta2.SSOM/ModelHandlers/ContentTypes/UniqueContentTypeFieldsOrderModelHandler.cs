@@ -47,22 +47,28 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
                 ModelHost = modelHost
             });
 
+            var newOrder = new List<string>();
+
             // re-order
-            //foreach (var srcFieldLink in hideFieldLinksModel.Fields)
-            //{
-            //    SPFieldLink currentFieldLink = null;
+            foreach (var srcFieldLink in reorderFieldLinksModel.Fields)
+            {
+                SPFieldLink currentFieldLink = null;
 
-            //    if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
-            //        currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
+                if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
 
-            //    if (currentFieldLink == null && srcFieldLink.Id.HasValue)
-            //        currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
+                if (currentFieldLink == null && srcFieldLink.Id.HasValue)
+                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
 
-            //    if (currentFieldLink != null)
-            //    {
-            //        contentType.FieldLinks.Delete(currentFieldLink.Id);
-            //    }
-            //}
+                if (currentFieldLink != null)
+                {
+                    if (!newOrder.Contains(currentFieldLink.Name))
+                        newOrder.Add(currentFieldLink.Name);
+                }
+            }
+
+            if (newOrder.Count > 0)
+                contentType.FieldLinks.Reorder(newOrder.ToArray());
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
