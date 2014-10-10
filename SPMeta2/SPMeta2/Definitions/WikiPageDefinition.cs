@@ -20,6 +20,8 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        public string Content { get; set; }
+
         #endregion
     }
 }

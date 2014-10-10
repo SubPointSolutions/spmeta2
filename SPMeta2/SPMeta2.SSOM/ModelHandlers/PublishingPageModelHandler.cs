@@ -163,7 +163,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var folder = listModelHost.CurrentLibraryFolder;
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
-
             var targetPage = FindPublishingPage(folder, publishingPageModel);
 
             ModuleFileModelHandler.WithSafeFileOperation(listModelHost.CurrentLibrary, folder,
@@ -185,9 +184,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         action(webpartPageHost);
                     }
                 });
-
-           
-
         }
 
         protected SPListItem FindPublishingPage(SPFolder folder, PublishingPageDefinition webpartPageModel)

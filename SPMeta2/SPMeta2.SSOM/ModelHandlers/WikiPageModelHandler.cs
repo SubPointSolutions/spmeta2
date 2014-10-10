@@ -5,6 +5,8 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using System.Text;
+using System.Web.UI.WebControls.WebParts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -17,7 +19,39 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WikiPageDefinition); }
         }
 
-        protected string FindWikiPartPage(WikiPageDefinition wikiPageModel)
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        {
+            var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
+            var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
+
+            var folder = folderModelHost.CurrentLibraryFolder;
+
+            var targetPage = FindWikiPageItem(folder, wikiPageModel);
+
+            ModuleFileModelHandler.WithSafeFileOperation(folderModelHost.CurrentLibrary, folder,
+                targetPage.Url,
+                GetWikiPageName(wikiPageModel),
+                Encoding.UTF8.GetBytes(PublishingPageTemplates.RedirectionPageMarkup),
+                false,
+                null,
+                afterFile =>
+                {
+                    using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                    {
+                        var webpartPageHost = new WebpartPageModelHost
+                        {
+                            PageListItem = targetPage,
+                            SPLimitedWebPartManager = webPartManager
+                        };
+
+                        action(webpartPageHost);
+
+                        targetPage.Update();
+                    }
+                });
+        }
+
+        protected string GetWikiPageName(WikiPageDefinition wikiPageModel)
         {
             var pageName = wikiPageModel.FileName;
             if (!pageName.EndsWith(".aspx")) pageName += ".aspx";
@@ -53,6 +87,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
+                newpage.ListItemAllFields[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+                
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -64,11 +101,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+                newpage.ListItemAllFields.Update();
                 newpage.Update();
             }
             else
             {
-                // pageItem.Title = wikiPageModel.Title;
+                pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -81,6 +119,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+                pageItem.Update();
                 pageItem.File.Update();
             }
         }
