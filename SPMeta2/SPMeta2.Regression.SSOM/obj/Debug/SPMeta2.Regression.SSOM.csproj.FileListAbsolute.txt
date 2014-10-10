@@ -58,7 +58,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSO
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.Security.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.SharePoint.WorkflowServicesBase.dll
@@ -67,7 +66,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.ApplicationS
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.ApplicationServer.Caching.Client.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.WindowsFabric.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.WindowsFabric.Data.Common.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.SSOM.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Syntax.Default.xml
@@ -91,3 +89,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\Microsoft.Web.CommandUI.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.pdb

@@ -59,3 +59,4 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\Microsoft.Web.CommandUI.dll

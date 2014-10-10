@@ -7,7 +7,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regres
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Validation.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.CSOM.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.CSOM.xml
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.pdb
@@ -18,14 +17,9 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.xml
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Syntax.Default.xml
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Common.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Reports.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Reports.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Runners.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Runners.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
@@ -50,3 +44,9 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.CSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.CSOM.Standard.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.pdb
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.pdb

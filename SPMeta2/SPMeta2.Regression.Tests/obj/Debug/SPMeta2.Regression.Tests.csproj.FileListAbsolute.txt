@@ -1,4 +1,3 @@
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.Behaviours.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.DocumentManagement.dll
@@ -10,7 +9,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.Taxonomy.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.CSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.CSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.O365.dll
@@ -21,15 +19,9 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Syntax.Defaul
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Tests.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Tests.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Common.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Model.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Validation.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Common.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Common.xml
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Common.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Model.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Syntax.Default.pdb
@@ -41,8 +33,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.xml
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.dll
@@ -81,3 +71,9 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Tests.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Tests.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.SSOM.Standard.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.dll
+C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.pdb
