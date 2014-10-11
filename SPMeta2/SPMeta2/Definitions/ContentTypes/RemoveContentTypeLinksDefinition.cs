@@ -5,6 +5,9 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
+    /// <summary>
+    /// Allows to remove content types from the particular list.
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
 

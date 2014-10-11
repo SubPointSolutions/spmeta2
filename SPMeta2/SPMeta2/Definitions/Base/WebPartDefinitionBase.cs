@@ -7,6 +7,9 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions.Base
 {
+    /// <summary>
+    /// Base definitino for web part definitions - generic web part and all other 'typed' web parts.
+    /// </summary>
     public abstract class WebPartDefinitionBase : DefinitionBase
     {
         #region properties

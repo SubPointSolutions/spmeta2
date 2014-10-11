@@ -77,6 +77,7 @@ namespace SPMeta2.BuiltInDefinitions
 
         #endregion
 
+        #region catalogs
 
         /// <summary>
         /// Out of the box SharePoint list and libraries under "_catalogs" category.
@@ -136,6 +137,8 @@ namespace SPMeta2.BuiltInDefinitions
                 TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
                 Url = "_catalogs/wp"
             };
-        }
+        } 
+        
+        #endregion
     }
 }

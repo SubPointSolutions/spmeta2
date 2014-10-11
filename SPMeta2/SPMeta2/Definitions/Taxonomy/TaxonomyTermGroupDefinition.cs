@@ -9,7 +9,7 @@ using SPMeta2.Attributes.Regression;
 namespace SPMeta2.Definitions.Taxonomy
 {
     /// <summary>
-    /// Allows to define and taxonomy store.
+    /// Allows to define and taxonomy term group.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.Group", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermGroup", "Microsoft.SharePoint.Client.Taxonomy")]

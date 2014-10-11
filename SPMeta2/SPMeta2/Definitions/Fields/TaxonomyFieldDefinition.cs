@@ -14,7 +14,7 @@ namespace SPMeta2.Definitions.Fields
     /// </summary>
     /// 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Taxonomy")]
-    //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Client.Taxonomy")]
 
     [DefaultParentHostAttribute(typeof(SiteDefinition))]
     [DefaultRootHostAttribute(typeof(SiteDefinition))]

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Attributes
 {
+    /// <summary>
+    /// Used internally by regression testing infrastructure.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class SPObjectTypeAttribute : Attribute
     {

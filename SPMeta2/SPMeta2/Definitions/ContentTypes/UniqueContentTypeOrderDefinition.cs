@@ -17,6 +17,9 @@ namespace SPMeta2.Definitions.ContentTypes
         public Guid? Id { get; set; }
     }
 
+    /// <summary>
+    /// Allows to reorder content types in the particular list.
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFolder", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Folder", "Microsoft.SharePoint.Client")]
 

@@ -9,6 +9,9 @@ using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions.Webparts
 {
+    /// <summary>
+    /// Allows to define and deploy 'apps part' web part.
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "System.Web.UI.WebControls.WebParts.WebPart", "System.Web")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WebParts.WebPart", "Microsoft.SharePoint.Client")]
 

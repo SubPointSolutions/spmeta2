@@ -12,6 +12,8 @@ namespace SPMeta2.BuiltInDefinitions
     /// </summary>
     public static class BuiltInFolderDefinitions
     {
+        #region properties
+
         /// <summary>
         /// Forms folder in the libraries and lists.
         /// </summary>
@@ -19,5 +21,7 @@ namespace SPMeta2.BuiltInDefinitions
         {
             Name = "Forms"
         };
+
+        #endregion
     }
 }
