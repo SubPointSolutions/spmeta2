@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.Extensions;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using System.Web.UI.WebControls.WebParts;
 using SPMeta2.SSOM.ModelHosts;
@@ -92,11 +93,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private static void HandleWikiOrPublishingPageProvision(WebpartPageModelHost host, WebPartDefinition webpartModel)
         {
+            if (!webpartModel.AddToPageContent)
+                return;
+
             var targetFieldId = Guid.Empty;
 
             if (host.PageListItem.Fields.Contains(SPBuiltInFieldId.WikiField))
                 targetFieldId = SPBuiltInFieldId.WikiField;
-            else if (host.PageListItem.Fields.Contains(BuiltInPublishingFieldId.PageLayout) && webpartModel.AddToPublishingPageContent)
+            else if (host.PageListItem.Fields.Contains(BuiltInPublishingFieldId.PageLayout) && webpartModel.AddToPageContent)
                 targetFieldId = BuiltInPublishingFieldId.PublishingPageContent;
             else
             {

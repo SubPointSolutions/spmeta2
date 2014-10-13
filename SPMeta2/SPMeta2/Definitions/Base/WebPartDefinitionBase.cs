@@ -79,9 +79,9 @@ namespace SPMeta2.Definitions.Base
         public string WebpartXmlTemplate { get; set; }
 
         /// <summary>
-        /// Indicated if the web part should be added to the publishing page content area.
+        /// Indicated if the web part should be added to the publishing or wiki page content area.
         /// </summary>
-        public bool AddToPublishingPageContent { get; set; }
+        public bool AddToPageContent { get; set; }
 
         #endregion
 

@@ -148,6 +148,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
             {
+                ///var fileContext = pageFile.Context;
+                var fileListItem = pageFile.ListItemAllFields;
+                var fileContext = pageFile.Context;
+
+                fileContext.Load(fileListItem);
+
+                fileContext.ExecuteQuery();
+
                 var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
                 // web part on the page
@@ -176,7 +184,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     // handle wiki page
 
-                    HandleWikiPageProvision(listItemModelHost, webPartModel);
+                    HandleWikiPageProvision(fileListItem, webPartModel);
 
                     var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
                     var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
@@ -202,7 +210,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     // BIG TODO for CSOM, delete/export and re import web part?
 
-                    HandleWikiPageProvision(listItemModelHost, webPartModel);
+                    HandleWikiPageProvision(fileListItem, webPartModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -222,51 +230,61 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
         }
 
-        private void HandleWikiPageProvision(ListItemModelHost host, WebPartDefinitionBase webpartModel)
+        private void HandleWikiPageProvision(ListItem listItem, WebPartDefinitionBase webpartModel)
         {
-            var listItem = host.HostListItem;
+            if (!webpartModel.AddToPageContent)
+                return;
+
             var context = listItem.Context;
 
+            var targetFieldName = string.Empty;
+
             if (listItem.FieldValues.ContainsKey(BuiltInInternalFieldNames.WikiField))
+                targetFieldName = BuiltInInternalFieldNames.WikiField;
+            else if (listItem.FieldValues.ContainsKey(BuiltInInternalFieldNames.PublishingPageLayout))
+                targetFieldName = BuiltInInternalFieldNames.PublishingPageContent;
+            else
             {
-                var wikiTemplate = new StringBuilder();
+                return;
+            }
 
-                var wpId = webpartModel.Id
-                    .Replace("g_", string.Empty)
-                    .Replace("_", "-");
+            var wikiTemplate = new StringBuilder();
 
-                var content = listItem[BuiltInInternalFieldNames.WikiField] == null
-                    ? string.Empty
-                    : listItem[BuiltInInternalFieldNames.WikiField].ToString();
+            var wpId = webpartModel.Id
+                .Replace("g_", string.Empty)
+                .Replace("_", "-");
 
-                wikiTemplate.AppendFormat(
-                    "​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
-                wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
-                wikiTemplate.AppendFormat("     </div>");
-                wikiTemplate.AppendFormat("</div>");
+            var content = listItem[targetFieldName] == null
+                ? string.Empty
+                : listItem[targetFieldName].ToString();
 
-                var wikiResult = wikiTemplate.ToString();
+            wikiTemplate.AppendFormat(
+                "​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+            wikiTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId);
+            wikiTemplate.AppendFormat("     </div>");
+            wikiTemplate.AppendFormat("</div>");
 
-                if (string.IsNullOrEmpty(content))
+            var wikiResult = wikiTemplate.ToString();
+
+            if (string.IsNullOrEmpty(content))
+            {
+                content = wikiResult;
+
+                listItem[targetFieldName] = content;
+                listItem.Update();
+
+                context.ExecuteQuery();
+            }
+            else
+            {
+                if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
                 {
-                    content = wikiResult;
+                    content += wikiResult;
 
-                    listItem[BuiltInInternalFieldNames.WikiField] = content;
+                    listItem[targetFieldName] = content;
                     listItem.Update();
 
                     context.ExecuteQuery();
-                }
-                else
-                {
-                    if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
-                    {
-                        content += wikiResult;
-
-                        listItem[BuiltInInternalFieldNames.WikiField] = content;
-                        listItem.Update();
-
-                        context.ExecuteQuery();
-                    }
                 }
             }
         }

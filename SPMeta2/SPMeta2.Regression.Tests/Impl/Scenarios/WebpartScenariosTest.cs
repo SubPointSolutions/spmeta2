@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
@@ -46,6 +47,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     web
                         .AddList(BuiltInListDefinitions.SitePages, list =>
                         {
+
+                            list.Value.RequireSelfProcessing = false;
+
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
@@ -86,6 +90,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        .AddFeature(RegWebFeatures.Publishing)
                        .AddList(BuiltInListDefinitions.Pages, list =>
                        {
+                           list.Value.RequireSelfProcessing = false;
+
                            list
                                .AddRandomPublishingPage(page =>
                                {
@@ -117,6 +123,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    web
                        .AddList(BuiltInListDefinitions.Pages, list =>
                        {
+                           list.Value.RequireSelfProcessing = false;
+
                            list
                                .AddRandomPublishingPage(page =>
                                {
@@ -152,20 +160,29 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                    (page.Value as PublishingPageDefinition).Content = pageTemplate.ToString();
 
                                    page
-                                       .AddRandomWebpart(wp =>
+                                       .AddRandomWebpart(wpNode =>
                                        {
-                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                           (wp.Value as WebPartDefinition).Id = id_1;
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.ZoneId = "wpz";
+                                           wp.Id = id_1;
+                                           wp.AddToPageContent = true;
                                        })
-                                        .AddRandomWebpart(wp =>
+                                        .AddRandomWebpart(wpNode =>
                                         {
-                                            (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                            (wp.Value as WebPartDefinition).Id = id_2;
+                                            var wp = wpNode.Value as WebPartDefinition;
+
+                                            wp.ZoneId = "wpz";
+                                            wp.Id = id_2;
+                                            wp.AddToPageContent = true;
                                         })
-                                       .AddRandomWebpart(wp =>
+                                       .AddRandomWebpart(wpNode =>
                                        {
-                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                           (wp.Value as WebPartDefinition).Id = id_3;
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.ZoneId = "wpz";
+                                           wp.Id = id_3;
+                                           wp.AddToPageContent = true;
                                        });
                                });
                        });
@@ -185,6 +202,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    web
                        .AddList(BuiltInListDefinitions.SitePages, list =>
                        {
+                           list.Value.RequireSelfProcessing = false;
+
                            list
                                .AddRandomWikiPage(page =>
                                {
@@ -220,20 +239,29 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                    (page.Value as WikiPageDefinition).Content = pageTemplate.ToString();
 
                                    page
-                                       .AddRandomWebpart(wp =>
+                                       .AddRandomWebpart(wpNode =>
                                        {
-                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                           (wp.Value as WebPartDefinition).Id = id_1;
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.ZoneId = "wpz";
+                                           wp.Id = id_1;
+                                           wp.AddToPageContent = true;
                                        })
-                                        .AddRandomWebpart(wp =>
+                                        .AddRandomWebpart(wpNode =>
                                         {
-                                            (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                            (wp.Value as WebPartDefinition).Id = id_2;
+                                            var wp = wpNode.Value as WebPartDefinition;
+
+                                            wp.ZoneId = "wpz";
+                                            wp.Id = id_2;
+                                            wp.AddToPageContent = true;
                                         })
-                                       .AddRandomWebpart(wp =>
+                                       .AddRandomWebpart(wpNode =>
                                        {
-                                           (wp.Value as WebPartDefinition).ZoneId = "wpz";
-                                           (wp.Value as WebPartDefinition).Id = id_3;
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.ZoneId = "wpz";
+                                           wp.Id = id_3;
+                                           wp.AddToPageContent = true;
                                        });
                                });
                        });

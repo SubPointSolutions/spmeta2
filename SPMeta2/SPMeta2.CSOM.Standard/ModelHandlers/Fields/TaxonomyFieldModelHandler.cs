@@ -47,6 +47,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 termStore = session.TermStores.GetById(taxFieldModel.SspId.Value);
             else if (!string.IsNullOrEmpty(taxFieldModel.SspName))
                 termStore = session.TermStores.GetByName(taxFieldModel.SspName);
+            else
+            {
+                context.Load(session.TermStores);
+                context.ExecuteQuery();
+
+                termStore = session.TermStores.ToList().FirstOrDefault();
+            }
+
+            if (termStore == null)
+                throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
 
             context.Load(termStore, s => s.Id);
 
@@ -64,8 +74,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 termSet = termSets.FirstOrDefault();
             }
 
-            taxField.SspId = termStore.Id;
-            taxField.TermSetId = termSet.Id;
+            if (termStore != null)
+                taxField.SspId = termStore.Id;
+
+            if (termSet != null)
+                taxField.TermSetId = termSet.Id;
         }
 
         #endregion

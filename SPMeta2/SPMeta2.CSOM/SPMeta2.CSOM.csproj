@@ -133,6 +133,7 @@
     <Compile Include="ModelHosts\SecurityGroupModelHost.cs" />
     <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
     <Compile Include="ModelHosts\WebModelHost.cs" />
+    <Compile Include="ModelHosts\WebpartPageModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
