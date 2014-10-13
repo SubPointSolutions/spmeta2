@@ -58,8 +58,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.WebPartTemplates.res
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.csproj.GenerateResource.Cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.pdb
-C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\Microsoft.SharePoint.Client.dll
-C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll

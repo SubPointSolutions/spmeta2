@@ -6,7 +6,7 @@ using SPMeta2.Definitions;
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
     /// <summary>
-    /// Allows to define and taxonomy store.
+    /// Allows to define and taxonomy termset.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TermSet", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermSet", "Microsoft.SharePoint.Client.Taxonomy")]

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Attributes.Regression
 {
+    /// <summary>
+    /// Used by regression testing infrastructure to build up a 'sandbox' model tree for the given definition.
+    /// This attribute indicates parent definition to the given definition.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class DefaultParentHostAttribute : Attribute
     {
@@ -17,6 +21,10 @@ namespace SPMeta2.Attributes.Regression
         public Type HostType { get; set; }
     }
 
+    /// <summary>
+    /// Used by regression testing infrastructure to build up a 'sandbox' model tree for the given definition.
+    /// This attribute indicates root hos (site, web, farm, etc) definition to the given definition.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class DefaultRootHostAttribute : Attribute
     {
@@ -28,6 +36,10 @@ namespace SPMeta2.Attributes.Regression
         public Type HostType { get; set; }
     }
 
+    /// <summary>
+    /// Used by regression testing infrastructure to build up a 'sandbox' model tree for the given definition.
+    /// This attribute indicates CSOM related parent for the given definition.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class CSOMParentHostAttribute : DefaultParentHostAttribute
     {
@@ -38,6 +50,8 @@ namespace SPMeta2.Attributes.Regression
         }
     }
 
+    /// Used by regression testing infrastructure to build up a 'sandbox' model tree for the given definition.
+    /// This attribute indicates CSOM related root (web, site, etc) for the given definition.
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class CSOMRootHostAttribute : DefaultRootHostAttribute
     {

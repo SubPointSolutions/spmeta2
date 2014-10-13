@@ -5,6 +5,9 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
+    /// <summary>
+    /// Allows to define and deploy taxonomy term.
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.Term", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.Term", "Microsoft.SharePoint.Client.Taxonomy")]
 

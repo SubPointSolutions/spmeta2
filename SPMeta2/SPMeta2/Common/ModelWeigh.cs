@@ -6,7 +6,8 @@ using System.Text;
 namespace SPMeta2.Common
 {
     /// <summary>
-    /// Internal usage only.
+    /// Indicates default model ordering while provision process.
+    /// For instance, fields are to be provisioned before content types, workflow definitions before list definitions, etc.
     /// </summary>
     public class ModelWeigh
     {

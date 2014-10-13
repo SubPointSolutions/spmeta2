@@ -33,6 +33,4 @@ namespace SPMeta2.Common
 
         #endregion
     }
-
-   
 }

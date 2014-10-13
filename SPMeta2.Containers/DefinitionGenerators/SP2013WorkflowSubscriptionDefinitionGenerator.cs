@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.BuiltInDefinitions;
 
 namespace SPMeta2.Containers.DefinitionGenerators
 {
@@ -13,6 +14,20 @@ namespace SPMeta2.Containers.DefinitionGenerators
         public SP2013WorkflowSubscriptionDefinitionGenerator()
         {
             WorkflowName = Rnd.String();
+
+            HistoryList = new ListDefinition
+            {
+                Title = Rnd.String(),
+                TemplateType = BuiltInListTemplateTypeId.WorkflowHistory,
+                Url = Rnd.String()
+            };
+
+            TaskList = new ListDefinition
+            {
+                Title = Rnd.String(),
+                TemplateType = BuiltInListTemplateTypeId.Tasks,
+                Url = Rnd.String()
+            };
         }
 
         #endregion
@@ -20,6 +35,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
         #region properties
 
         public string WorkflowName { get; set; }
+
+        public ListDefinition HistoryList { get; set; }
+        public ListDefinition TaskList { get; set; }
 
         #endregion
 
@@ -39,8 +57,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 // a big TODO as these list don't exist yet
 
-                def.HistoryListUrl = "/Lists/List";
-                def.TaskListUrl = "/WorkflowTasks";
+
+                def.HistoryListUrl = "/lists/" + HistoryList.Url;
+                def.TaskListUrl = "/lists/" + TaskList.Url;
             });
         }
 
@@ -51,7 +70,10 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
             workflowDefinition.DisplayName = WorkflowName;
 
-            return new[] { workflowDefinition };
+            return new[] { workflowDefinition, 
+                        TaskList as DefinitionBase,
+                        HistoryList as DefinitionBase
+            };
         }
 
         #endregion

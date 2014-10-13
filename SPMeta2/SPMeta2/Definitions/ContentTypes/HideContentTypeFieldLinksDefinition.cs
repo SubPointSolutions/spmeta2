@@ -5,6 +5,9 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
+    /// <summary>
+    /// Allows to hide particular fields in the target content type.
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
 

@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SSOM", "SSOM", "{94191759-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_3rd party", "_3rd party", "{EE9BD842-2CA9-45B2-AB7C-A8EB0353AAB7}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
 		SPMeta2.snk = SPMeta2.snk
 	EndProjectSection

@@ -7,6 +7,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 {
     /// <summary>
     /// Allows to define and taxonomy store.
+    /// Does not actualy deploy new taxonomy store, but used as 'model host' for other taxonomy related models - term roups, termsets, terms.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TermStore", "Microsoft.SharePoint.Taxonomy")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TermStore", "Microsoft.SharePoint.Client.Taxonomy")]

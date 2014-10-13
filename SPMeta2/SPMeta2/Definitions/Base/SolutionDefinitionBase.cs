@@ -7,10 +7,11 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions.Base
 {
+    /// <summary>
+    /// Base definition for farm and sandbox solution definitions.
+    /// </summary>
     public abstract class SolutionDefinitionBase : DefinitionBase
     {
-       
-
         #region properties
 
         /// <summary>

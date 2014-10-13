@@ -22,7 +22,7 @@ bld/
 *.ide/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
+[Tt]est[Rr]esult*/d
 [Bb]uild[Ll]og.*
 
 #NUNIT
@@ -181,3 +181,5 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+/SPMeta2.Docs/documentation
+/SPMeta2.Docs
