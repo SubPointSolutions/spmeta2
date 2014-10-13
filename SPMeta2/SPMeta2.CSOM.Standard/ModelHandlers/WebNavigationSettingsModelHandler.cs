@@ -8,6 +8,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.Definitions;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
@@ -68,7 +69,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 currentNavigationIncludeTypes = 1;
 
             if (currentNavigationIncludeTypes != null)
-                web.AllProperties["__CurrentNavigationIncludeTypes"] = currentNavigationIncludeTypes;
+                web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes;
 
             int? globalNavigationIncludeTypes = null;
 
@@ -84,9 +85,18 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 globalNavigationIncludeTypes = 1;
 
             if (globalNavigationIncludeTypes != null)
-                web.AllProperties["__GlobalNavigationIncludeTypes"] = globalNavigationIncludeTypes;
+                web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes;
 
-            if (currentNavigationIncludeTypes != null || globalNavigationIncludeTypes != null)
+            if (navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.HasValue)
+                web.AllProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
+
+            if (navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
+                web.AllProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
+
+            if (currentNavigationIncludeTypes != null ||
+                globalNavigationIncludeTypes != null ||
+                navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.HasValue ||
+                navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
             {
                 web.Update();
                 context.ExecuteQuery();

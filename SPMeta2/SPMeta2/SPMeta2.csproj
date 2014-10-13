@@ -141,6 +141,7 @@
     <Compile Include="Enumerations\BuiltInWebpartPageTemplateId.cs" />
     <Compile Include="Enumerations\BuiltInWebPartPageTemplates.cs" />
     <Compile Include="Enumerations\BuiltInWebpartTemplates.cs" />
+    <Compile Include="Enumerations\BuiltInWebPropertyId.cs" />
     <Compile Include="Enumerations\BuiltInWebTemplates.cs" />
     <Compile Include="Events\ModelDefinitionEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessedEventArgs.cs" />

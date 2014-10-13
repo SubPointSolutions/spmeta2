@@ -36,17 +36,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 null,
                 afterFile =>
                 {
-                    using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                    using (var webPartManager = afterFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
                     {
                         var webpartPageHost = new WebpartPageModelHost
                         {
+                            HostFile =afterFile,
                             PageListItem = targetPage,
                             SPLimitedWebPartManager = webPartManager
                         };
 
                         action(webpartPageHost);
 
-                        targetPage.Update();
+                       // targetPage.Update();
                     }
                 });
         }

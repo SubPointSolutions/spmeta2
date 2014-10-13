@@ -12,6 +12,7 @@ namespace SPMeta2.SSOM.ModelHosts
     {
         #region properties
 
+        public SPFile HostFile { get; set; }
         public SPLimitedWebPartManager SPLimitedWebPartManager { get; set; }
         public SPListItem PageListItem { get; set; }
 

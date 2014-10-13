@@ -53,7 +53,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var webpartPageHost = new WebpartPageModelHost
                 {
-                    PageListItem = targetPage,
+                    HostFile =  targetPage.File,
+                    PageListItem =  targetPage,
                     SPLimitedWebPartManager = webPartManager
                 };
 
