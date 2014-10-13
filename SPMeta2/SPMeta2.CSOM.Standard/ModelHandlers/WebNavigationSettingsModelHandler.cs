@@ -38,13 +38,59 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var web = webModelHost.HostWeb;
             var context = web.Context;
 
-            var thisWebNavSettings = new WebNavigationSettings(context, web);
+            if (!string.IsNullOrEmpty(navigationModel.GlobalNavigationSource) ||
+                !string.IsNullOrEmpty(navigationModel.CurrentNavigationSource))
+            {
+                var thisWebNavSettings = new WebNavigationSettings(context, web);
 
-            thisWebNavSettings.GlobalNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.GlobalNavigationSource);
-            thisWebNavSettings.CurrentNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.CurrentNavigationSource);
+                if (!string.IsNullOrEmpty(navigationModel.GlobalNavigationSource))
+                    thisWebNavSettings.GlobalNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.GlobalNavigationSource);
 
-            thisWebNavSettings.Update(null);
-            context.ExecuteQuery();
+                if (!string.IsNullOrEmpty(navigationModel.CurrentNavigationSource))
+                    thisWebNavSettings.CurrentNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.CurrentNavigationSource);
+
+                thisWebNavSettings.Update(null);
+                context.ExecuteQuery();
+            }
+
+            // update include types
+            int? currentNavigationIncludeTypes = null;
+
+            if (navigationModel.CurrentNavigationShowPages == false &&
+                navigationModel.CurrentNavigationShowSubsites == false)
+                currentNavigationIncludeTypes = 0;
+            else if (navigationModel.CurrentNavigationShowPages == true &&
+               navigationModel.CurrentNavigationShowSubsites == true)
+                currentNavigationIncludeTypes = 3;
+            else if (navigationModel.CurrentNavigationShowPages == true)
+                currentNavigationIncludeTypes = 2;
+            else if (navigationModel.CurrentNavigationShowSubsites == true)
+                currentNavigationIncludeTypes = 1;
+
+            if (currentNavigationIncludeTypes != null)
+                web.AllProperties["__CurrentNavigationIncludeTypes"] = currentNavigationIncludeTypes;
+
+            int? globalNavigationIncludeTypes = null;
+
+            if (navigationModel.GlobalNavigationShowPages == false &&
+                navigationModel.GlobalNavigationShowSubsites == false)
+                globalNavigationIncludeTypes = 0;
+            else if (navigationModel.GlobalNavigationShowPages == true &&
+               navigationModel.GlobalNavigationShowSubsites == true)
+                globalNavigationIncludeTypes = 3;
+            else if (navigationModel.GlobalNavigationShowPages == true)
+                globalNavigationIncludeTypes = 2;
+            else if (navigationModel.GlobalNavigationShowSubsites == true)
+                globalNavigationIncludeTypes = 1;
+
+            if (globalNavigationIncludeTypes != null)
+                web.AllProperties["__GlobalNavigationIncludeTypes"] = globalNavigationIncludeTypes;
+
+            if (currentNavigationIncludeTypes != null || globalNavigationIncludeTypes != null)
+            {
+                web.Update();
+                context.ExecuteQuery();
+            }
         }
 
         #endregion

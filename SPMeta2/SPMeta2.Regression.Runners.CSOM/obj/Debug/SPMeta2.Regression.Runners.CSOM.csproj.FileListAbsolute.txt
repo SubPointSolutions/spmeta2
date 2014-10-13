@@ -50,3 +50,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\obj\Debug\SPMeta2.Regression.Runners.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.CSOM.Standard.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Standard.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Standard.pdb

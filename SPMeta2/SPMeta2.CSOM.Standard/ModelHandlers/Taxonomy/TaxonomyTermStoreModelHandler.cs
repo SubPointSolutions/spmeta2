@@ -5,7 +5,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Taxonomy;
+using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy

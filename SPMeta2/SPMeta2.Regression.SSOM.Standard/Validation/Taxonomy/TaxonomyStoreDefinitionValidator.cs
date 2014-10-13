@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Taxonomy;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy;
+using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy

@@ -34,3 +34,4 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SP
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.xml

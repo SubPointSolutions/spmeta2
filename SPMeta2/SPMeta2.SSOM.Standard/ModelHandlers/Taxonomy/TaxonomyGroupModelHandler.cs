@@ -7,10 +7,10 @@ using Microsoft.SharePoint;
 using Microsoft.SharePoint.Taxonomy;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHosts;
+using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy

@@ -96,6 +96,10 @@
       <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
       <Name>SPMeta2.Containers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SPMeta2.Standard\SPMeta2.Standard.csproj">
+      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
+      <Name>SPMeta2.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
       <Project>{C69C8205-B0C7-4FDB-B1F6-F4FA77FF95AB}</Project>
       <Name>SPMeta2.Regression.Runners</Name>

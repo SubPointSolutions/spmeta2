@@ -80,6 +80,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\SPMeta2.Standard\SPMeta2.Standard.csproj">
+      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
+      <Name>SPMeta2.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
       <Project>{fbd78ac1-b766-4332-a9b1-c73ee64fd5c6}</Project>
       <Name>SPMeta2.SSOM</Name>

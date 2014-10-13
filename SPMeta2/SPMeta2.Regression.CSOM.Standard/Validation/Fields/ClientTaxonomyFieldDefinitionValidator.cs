@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Exceptions;
+using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields

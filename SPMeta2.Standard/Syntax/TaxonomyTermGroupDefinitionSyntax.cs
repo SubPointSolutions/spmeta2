@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPMeta2.Definitions.Taxonomy;
 using SPMeta2.Models;
+using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default.Extensions;
 
-namespace SPMeta2.Syntax.Default
+namespace SPMeta2.Standard.Syntax
 {
     public static class TaxonomyTermGroupDefinitionSyntax
     {

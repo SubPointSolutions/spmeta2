@@ -2,7 +2,7 @@
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Definitions.Taxonomy;
+using SPMeta2.Standard.Definitions.Taxonomy;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Taxonomy
 {

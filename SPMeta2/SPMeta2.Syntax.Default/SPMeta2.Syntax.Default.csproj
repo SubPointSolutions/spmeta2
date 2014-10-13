@@ -75,10 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageDefinitionSyntax.cs" />
     <Compile Include="SandboxSolutionDefinitionSyntax.cs" />
-    <Compile Include="TaxonomyTermDefinitionSyntax.cs" />
-    <Compile Include="TaxonomyTermGroupDefinitionSyntax.cs" />
-    <Compile Include="TaxonomyTermSetDefinitionSyntax.cs" />
-    <Compile Include="TaxonomyTermStoreDefinitionSyntax.cs" />
     <Compile Include="TopNavigationSyntax.cs" />
     <Compile Include="QuickLaunchNavigationSyntax.cs" />
     <Compile Include="SecurityGroupDefinitionSyntax.cs" />

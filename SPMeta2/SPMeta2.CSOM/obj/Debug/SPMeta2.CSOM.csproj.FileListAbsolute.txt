@@ -74,3 +74,4 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.xml

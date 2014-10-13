@@ -1,23 +1,20 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SPMeta2.Definitions.Fields
+namespace SPMeta2.Standard.Definitions.Fields
 {
     /// <summary>
     /// Allows to define and deploy taxonomy field.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Taxonomy")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Taxonomy")]
     //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
 
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     public class TaxonomyFieldDefinition : FieldDefinition
