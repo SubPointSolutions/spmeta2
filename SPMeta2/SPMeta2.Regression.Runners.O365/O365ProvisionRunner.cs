@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing.Navigation;
+using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Services;
 using SPMeta2.Models;
@@ -62,6 +64,8 @@ namespace SPMeta2.Regression.Runners.O365
         {
             var type = typeof(Field);
             var workflow = typeof(WorkflowDefinition);
+            var store = typeof(TermStore);
+            var publishing = typeof(WebNavigationSettings);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Publishing.Navigation;
 using Microsoft.SharePoint.Taxonomy;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.ModelHandlers;
@@ -82,6 +83,7 @@ namespace SPMeta2.Regression.Runners.SSOM
         {
             var sp = typeof(SPField);
             var wp = typeof(WebPart);
+            var publishing = typeof (WebNavigationSettings);
 
             var tax = typeof(TaxonomyField);
 

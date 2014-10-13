@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Publishing.Navigation;
+using Microsoft.SharePoint.Publishing.Navigation;
 using SPMeta2.Common;
-using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 
-namespace SPMeta2.CSOM.Standard.ModelHandlers
+namespace SPMeta2.SSOM.Standard.ModelHandlers
 {
-    public class WebNavigationSettingsModelHandler : CSOMModelHandlerBase
+    public class WebNavigationSettingsModelHandler : SSOMModelHandlerBase
     {
         #region properties
 
@@ -39,12 +34,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         protected WebNavigationSettings GetWebNavigationSettings(WebModelHost webModelHost, WebNavigationSettingsDefinition navigationModel)
         {
             var web = webModelHost.HostWeb;
-
-            var context = web.Context;
-            var thisWebNavSettings = new WebNavigationSettings(context, web);
-
-            context.Load(thisWebNavSettings);
-            context.ExecuteQuery();
+            var thisWebNavSettings = new WebNavigationSettings(web);
 
             return thisWebNavSettings;
         }
@@ -52,8 +42,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         private void DeployNavigationSettings(object modelHost, WebModelHost webModelHost, WebNavigationSettingsDefinition navigationModel)
         {
             var web = webModelHost.HostWeb;
-            var context = web.Context;
-
             var thisWebNavSettings = GetWebNavigationSettings(webModelHost, navigationModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -94,7 +82,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 !string.IsNullOrEmpty(navigationModel.CurrentNavigationSource))
             {
                 thisWebNavSettings.Update(null);
-                context.ExecuteQuery();
             }
 
             // update include types
@@ -142,7 +129,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
             {
                 web.Update();
-                context.ExecuteQuery();
             }
         }
 

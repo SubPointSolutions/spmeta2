@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers.Standard.DefinitionGenerators
 {
@@ -21,6 +24,23 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
 
                 // TODO, source
             });
+        }
+
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            var sitePublishing = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure
+                               .Inherit(f =>
+                               {
+                                   f.Enable = true;
+                               });
+
+            var webPublishing = BuiltInWebFeatures.SharePointServerPublishing
+                              .Inherit(f =>
+                              {
+                                  f.Enable = true;
+                              });
+
+            return new[] { sitePublishing, webPublishing };
         }
     }
 }
