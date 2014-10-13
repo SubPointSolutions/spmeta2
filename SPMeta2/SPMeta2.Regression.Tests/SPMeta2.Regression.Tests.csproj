@@ -92,6 +92,10 @@
     <Compile Include="Utils\ResourceReaderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">
+      <Project>{5793019f-7514-4b1f-b31d-a5e472fd034d}</Project>
+      <Name>SPMeta2.Containers.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SPMeta2.Containers\SPMeta2.Containers.csproj">
       <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
       <Name>SPMeta2.Containers</Name>

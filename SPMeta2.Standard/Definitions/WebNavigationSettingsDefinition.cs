@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Standard.Definitions.Taxonomy;
 
-namespace SPMeta2.CSOM.Standard.Definitions
+namespace SPMeta2.Standard.Definitions
 {
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Publishing.Navigation.WebNavigationSettings", "Microsoft.SharePoint.Publishing")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Publishing.Navigation.WebNavigationSettings", "Microsoft.SharePoint.Client.Publishing")]
+
+    [DefaultParentHost(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+
+    [Serializable]
     public class WebNavigationSettingsDefinition : DefinitionBase
     {
         #region constructors
-
 
 
         #endregion

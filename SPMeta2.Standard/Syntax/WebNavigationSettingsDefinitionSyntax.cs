@@ -1,6 +1,6 @@
 ﻿using System;
-using SPMeta2.CSOM.Standard.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Services.Base;
+using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Models;
 using SPMeta2.Regression.Utils;
 using SPMeta2.Regression.Tests.Common;
@@ -13,11 +16,11 @@ using SPMeta2.Definitions;
 using System.Reflection;
 using System.Diagnostics;
 using SPMeta2.Regression.Exceptions;
-using SPMeta2.Regression.Services;
 using SPMeta2.Attributes;
 using SPMeta2.Regression.Runners;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Assertion;
+using SPMeta2.Utils;
 using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Base
@@ -28,11 +31,29 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionEventsTestBase()
         {
-
+            InitModelGeneratorService();
 
             //EnableDefinitionValidation = false;
+        }
 
-            //ReportService.OnReportItemAdded += OnReportItemAdded;
+        private void InitModelGeneratorService()
+        {
+            ModelGeneratorService = new ModelGeneratorService();
+
+            var handlerTypes = ReflectionUtils
+                .GetTypesFromAssembly<DefinitionGeneratorServiceBase>(typeof(WebNavigationSettingsDefinitionGenerator).Assembly);
+
+
+            foreach (var handlerType in handlerTypes)
+            {
+                var handlerInstance = Activator.CreateInstance(handlerType) as DefinitionGeneratorServiceBase;
+
+                if (handlerInstance != null)
+                {
+                    if (!ModelGeneratorService.DefinitionGenerators.ContainsKey(handlerInstance.TargetType))
+                        ModelGeneratorService.DefinitionGenerators.Add(handlerInstance.TargetType, handlerInstance);
+                }
+            }
         }
 
 
@@ -40,7 +61,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         #region properties
 
-        protected ModelGeneratorService ModelGeneratorService = new ModelGeneratorService();
+        protected ModelGeneratorService ModelGeneratorService { get; set; }
 
         #endregion
 

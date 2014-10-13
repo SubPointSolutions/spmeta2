@@ -12,6 +12,7 @@ using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Common;
+using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default;
@@ -24,7 +25,6 @@ using SPMeta2.Attributes.Regression;
 
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Enumerations;
-using SPMeta2.Regression.Services;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.Exceptions;
 using System.IO;
@@ -58,7 +58,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             var methods = GetType().GetMethods();
 
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
-            var allDefinitions = ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaAssembly);
+            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
+
+            var allDefinitions = ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaAssembly)
+                                                .ToList();
+
+            allDefinitions.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaStandardAssembly)
+                .ToList());
 
             foreach (var def in allDefinitions)
             {
@@ -535,6 +541,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_TaxonomyTermSetDefinition()
         {
             TestRandomDefinition<TaxonomyTermSetDefinition>();
+        }
+
+        #endregion
+
+        #region web navigation
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web.Navigation")]
+        public void CanDeployRandom_WebNavigationSettingsDefinition()
+        {
+            TestRandomDefinition<WebNavigationSettingsDefinition>();
         }
 
         #endregion

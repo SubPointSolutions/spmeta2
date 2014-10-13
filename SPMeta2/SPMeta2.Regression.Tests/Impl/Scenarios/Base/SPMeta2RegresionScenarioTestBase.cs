@@ -1,6 +1,5 @@
 ﻿using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Rnd;
-using SPMeta2.Regression.Services;
 using SPMeta2.Regression.Tests.Base;
 using System;
 using System.Collections.Generic;

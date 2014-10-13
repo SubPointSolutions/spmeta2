@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing.Navigation;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
-using SPMeta2.CSOM.Standard.Definitions;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
@@ -34,21 +36,58 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             DeployNavigationSettings(modelHost, webModelHost, navigationModel);
         }
 
+        protected WebNavigationSettings GetWebNavigationSettings(WebModelHost webModelHost, WebNavigationSettingsDefinition navigationModel)
+        {
+            var web = webModelHost.HostWeb;
+
+            var context = web.Context;
+            var thisWebNavSettings = new WebNavigationSettings(context, web);
+
+            context.Load(thisWebNavSettings);
+            context.ExecuteQuery();
+
+            return thisWebNavSettings;
+        }
+
         private void DeployNavigationSettings(object modelHost, WebModelHost webModelHost, WebNavigationSettingsDefinition navigationModel)
         {
             var web = webModelHost.HostWeb;
             var context = web.Context;
 
+            var thisWebNavSettings = GetWebNavigationSettings(webModelHost, navigationModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = thisWebNavSettings,
+                ObjectType = typeof(WebNavigationSettings),
+                ObjectDefinition = navigationModel,
+                ModelHost = modelHost
+            });
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = thisWebNavSettings,
+                ObjectType = typeof(WebNavigationSettings),
+                ObjectDefinition = navigationModel,
+                ModelHost = modelHost
+            });
+
             if (!string.IsNullOrEmpty(navigationModel.GlobalNavigationSource) ||
                 !string.IsNullOrEmpty(navigationModel.CurrentNavigationSource))
             {
-                var thisWebNavSettings = new WebNavigationSettings(context, web);
-
                 if (!string.IsNullOrEmpty(navigationModel.GlobalNavigationSource))
                     thisWebNavSettings.GlobalNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.GlobalNavigationSource);
 
                 if (!string.IsNullOrEmpty(navigationModel.CurrentNavigationSource))
                     thisWebNavSettings.CurrentNavigation.Source = (StandardNavigationSource)Enum.Parse(typeof(StandardNavigationSource), navigationModel.CurrentNavigationSource);
+
+
 
                 thisWebNavSettings.Update(null);
                 context.ExecuteQuery();

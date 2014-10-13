@@ -1,41 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
-using SPMeta2.Models;
-using SPMeta2.Attributes.Regression;
-
-using SPMeta2.Syntax.Default;
-using SPMeta2.Syntax.Default.Modern;
-using SPMeta2.Syntax.Default.Extensions;
-using SPMeta2.Syntax.Default.Utils;
-using SPMeta2.Enumerations;
-using SPMeta2.Utils;
-using System.Reflection;
 using SPMeta2.Exceptions;
-using SPMeta2.Attributes;
-
 using SPMeta2.Extensions;
+using SPMeta2.Models;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Extensions;
+using SPMeta2.Utils;
 
-namespace SPMeta2.Regression.Services
+namespace SPMeta2.Containers.Services
 {
     public class ModelGeneratorService
     {
         public ModelGeneratorService()
         {
+            DefinitionGenerators = new Dictionary<Type, DefinitionGeneratorServiceBase>();
             RegisterDefinitionGenerators();
         }
 
-        private Dictionary<Type, DefinitionGeneratorServiceBase> DefinitionGenerators = new Dictionary<Type, DefinitionGeneratorServiceBase>();
+        public Dictionary<Type, DefinitionGeneratorServiceBase> DefinitionGenerators { get; set; }
 
         private void RegisterDefinitionGenerators()
         {
             DefinitionGenerators.Clear();
 
-            var handlerTypes = ReflectionUtils.GetTypesFromAssembly<DefinitionGeneratorServiceBase>(Assembly.GetExecutingAssembly());
+            var handlerTypes = ReflectionUtils
+                .GetTypesFromAssembly<DefinitionGeneratorServiceBase>(Assembly.GetExecutingAssembly());
+
 
             foreach (var handlerType in handlerTypes)
             {

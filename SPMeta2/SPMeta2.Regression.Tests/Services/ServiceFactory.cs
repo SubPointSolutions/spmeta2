@@ -1,5 +1,5 @@
 ﻿
-using SPMeta2.Regression.Services;
+using SPMeta2.Containers.Services;
 
 namespace SPMeta2.Regression.Tests.Services
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using SPMeta2.Containers.Services.Rnd;
-using SPMeta2.Regression.Services;
 
 namespace SPMeta2.Containers.Services.Base
 {
