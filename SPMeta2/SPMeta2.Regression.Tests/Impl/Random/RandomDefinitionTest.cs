@@ -513,6 +513,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region welcome page
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WelcomePage")]
+        public void CanDeployRandom_WelcomePageDefinition()
+        {
+            TestRandomDefinition<WelcomePageDefinition>();
+        }
+
+        #endregion
+
         #region taxonomy
 
         [TestMethod]

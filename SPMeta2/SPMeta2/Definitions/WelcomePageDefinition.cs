@@ -9,7 +9,7 @@ using SPMeta2.Attributes.Regression;
 namespace SPMeta2.Definitions
 {
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFolder", "Microsoft.SharePoint")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.SPFolder", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Folder", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
