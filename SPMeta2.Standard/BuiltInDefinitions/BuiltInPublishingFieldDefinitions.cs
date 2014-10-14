@@ -10,7 +10,6 @@ namespace SPMeta2.Standard.BuiltInDefinitions
     public static class BuiltInPublishingFieldDefinitions
     {
         #region properties
-
         /// <summary>
         /// Corresponds to built-in field with Title [Number of Ratings], ID [b1996002-9167-45e5-a4df-b2c41c6723c7] and Group: [Content Feedback]'
         /// </summary>
@@ -20,7 +19,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "RatingCount",
             Description = "Number of ratings submitted",
             Group = "Content Feedback",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.RatingCount,
             Id = new Guid("b1996002-9167-45e5-a4df-b2c41c6723c7"),
             Required = false
         };
@@ -34,7 +33,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingPageImage",
             Description = "Page Image is a site column created by the Publishing feature. It is used on the Article Page Content Type as the primary image of the page.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Image,
             Id = new Guid("3de94b06-4120-41a5-b907-88773e493458"),
             Required = false
         };
@@ -118,7 +117,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "SummaryLinks2",
             Description = "Summary Links 2 is a site column created by the Publishing feature. It is used on the Welcome Page Content Type to display a second set of links.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.SummaryLinks,
             Id = new Guid("27761311-936a-40ba-80cd-ca5e7a540a36"),
             Required = false
         };
@@ -146,7 +145,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingStartDate",
             Description = "Scheduling Start Date is a site column created by the Publishing feature. It is used to specify the date and time on which this page will first appear to site visitors.",
             Group = "Publishing Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.PublishingScheduleStartDateFieldType,
             Id = new Guid("51d39414-03dc-4bd0-b777-d3e20cb350f7"),
             Required = false
         };
@@ -160,7 +159,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "_dlc_Exempt",
             Description = "",
             Group = "Document and Record Management Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.ExemptField,
             Id = new Guid("b0227f1a-b179-4d45-855b-a18f03706bcb"),
             Required = false
         };
@@ -202,7 +201,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "HeaderStyleDefinitions",
             Description = "",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.HTML,
             Id = new Guid("a932ec3f-94c1-48b1-b6dc-41aaa6eb7e54"),
             Required = false
         };
@@ -216,7 +215,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingPageIcon",
             Description = "Page Icon is a site column created by the Publishing feature. It is used on the Page Content Type as the icon image for the page.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Image,
             Id = new Guid("3894ec3f-4674-4924-a440-8872bec40cf9"),
             Required = false
         };
@@ -244,7 +243,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingExpirationDate",
             Description = "Scheduling End Date is a site column created by the Publishing feature. It is used to specify the date and time on which this page will no longer appear to site visitors.",
             Group = "Publishing Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.PublishingScheduleEndDateFieldType,
             Id = new Guid("a990e64f-faa3-49c1-aafa-885fda79de62"),
             Required = false
         };
@@ -258,7 +257,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingAssociatedVariations",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.LayoutVariationsField,
             Id = new Guid("d211d750-4fe6-4d92-90e8-eb16dff196c8"),
             Required = false
         };
@@ -370,7 +369,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "Audience",
             Description = "Target Audiences is a site column created by the Publishing feature. It is used to specify audiences to which this page will be targeted.",
             Group = "Publishing Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.TargetTo,
             Id = new Guid("61cbb965-1e04-4273-b658-eedaa662f48d"),
             Required = false
         };
@@ -496,7 +495,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingPageContent",
             Description = "Page Content is a site column created by the Publishing feature. It is used on the Article Page Content Type as the content of the page.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.HTML,
             Id = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8"),
             Required = false
         };
@@ -636,7 +635,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "AverageRating",
             Description = "Average value of all the ratings that have been submitted",
             Group = "Content Feedback",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.AverageRating,
             Id = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c742"),
             Required = false
         };
@@ -664,7 +663,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "ReusableHtml",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.HTML,
             Id = new Guid("82dd22bf-433e-4260-b26e-5b8360dd9105"),
             Required = false
         };
@@ -678,7 +677,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingAssociatedContentType",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.ContentTypeIdFieldType,
             Id = new Guid("b510aac1-bba3-4652-ab70-2d756c29540f"),
             Required = false
         };
@@ -762,7 +761,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingRollupImage",
             Description = "Rollup Image is a site column created by the Publishing feature. It is used on the Page Content Type as the image for the page shown in content roll-ups such as the Content By Search web part.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Image,
             Id = new Guid("543bc2cf-1f30-488e-8f25-6fe3b689d9ac"),
             Required = false
         };
@@ -860,7 +859,7 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "PublishingImageCaption",
             Description = "Image Caption is a site column created by the Publishing feature. It is used on the Article Page Content Type as the caption for the primary image displayed on the page.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.HTML,
             Id = new Guid("66f500e9-7955-49ab-abb1-663621727d10"),
             Required = false
         };
@@ -902,10 +901,11 @@ namespace SPMeta2.Standard.BuiltInDefinitions
             InternalName = "SummaryLinks",
             Description = "Summary Links is a site column created by the Publishing feature. It is used on the Welcome Page Content Type to display a set of links.",
             Group = "Page Layout Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.SummaryLinks,
             Id = new Guid("b3525efe-59b5-4f0f-b1e4-6e26cb6ef6aa"),
             Required = false
         };
+
 
 
 

@@ -117,6 +117,7 @@
     <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\WelcomePageModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHosts\ListItemFieldValueModelHost.cs" />

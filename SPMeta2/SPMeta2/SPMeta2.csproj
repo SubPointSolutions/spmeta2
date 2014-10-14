@@ -86,6 +86,7 @@
     <Compile Include="Definitions\Webparts\ContentEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ListViewWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\XsltListViewWebPartDefinition.cs" />
+    <Compile Include="Definitions\WelcomePageDefinition.cs" />
     <Compile Include="Enumerations\BuiltInCustomActionLocationId.cs" />
     <Compile Include="Enumerations\BuiltInInternalFieldNames.cs" />
     <Compile Include="Enumerations\BuiltInPrefixTypes.cs" />

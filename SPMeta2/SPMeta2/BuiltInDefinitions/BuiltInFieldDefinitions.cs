@@ -94,7 +94,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "TaxKeyword",
             Description = "Enterprise Keywords are shared with other users and applications to allow for ease of search and filtering, as well as metadata consistency and reuse",
             Group = "Enterprise Keywords Group",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.TaxonomyFieldTypeMulti,
             Id = new Guid("23f27201-bee3-471e-b2e7-b64fd8b7ca38"),
             Required = false
         };
@@ -122,7 +122,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "RatingCount",
             Description = "Number of ratings submitted",
             Group = "Content Feedback",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.RatingCount,
             Id = new Guid("b1996002-9167-45e5-a4df-b2c41c6723c7"),
             Required = false
         };
@@ -780,7 +780,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "_dlc_Exempt",
             Description = "",
             Group = "Document and Record Management Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.ExemptField,
             Id = new Guid("b0227f1a-b179-4d45-855b-a18f03706bcb"),
             Required = false
         };
@@ -822,7 +822,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "V4CallTo",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.CallTo,
             Id = new Guid("7111aa1b-e7ae-4b69-acaf-db669b76e03a"),
             Required = false
         };
@@ -1396,7 +1396,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "LikesCount",
             Description = "",
             Group = "Content Feedback",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Likes,
             Id = new Guid("6e4d832b-f610-41a8-b3e0-239608efda41"),
             Required = false
         };
@@ -3580,7 +3580,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "ContactInfo",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.ContactInfo,
             Id = new Guid("e1a85174-b8d0-4962-9ce6-758f8b612725"),
             Required = false
         };
@@ -4574,7 +4574,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "Whereabout",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Whereabout,
             Id = new Guid("e2a07293-596a-4c59-9089-5c4f9339077f"),
             Required = false
         };
@@ -5428,7 +5428,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "AverageRating",
             Description = "Average value of all the ratings that have been submitted",
             Group = "Content Feedback",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.AverageRating,
             Id = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c742"),
             Required = false
         };
@@ -6184,7 +6184,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "HashTags",
             Description = "Some description",
             Group = "Custom Columns",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.TaxonomyFieldTypeMulti,
             Id = new Guid("333b1bc2-0532-4872-96f1-bbbdead35a56"),
             Required = false
         };
@@ -6842,7 +6842,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "Overbook",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Overbook,
             Id = new Guid("d8cd5bcf-3768-4d6c-a8aa-fefa3c793d8d"),
             Required = false
         };
@@ -7430,7 +7430,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "Facilities",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.Facilities,
             Id = new Guid("a4e7b3e1-1b0a-4ffa-8426-c94d4cb8cc57"),
             Required = false
         };
@@ -8270,7 +8270,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "FreeBusy",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.FreeBusy,
             Id = new Guid("393003f9-6ccb-4ea9-9623-704aa4748dec"),
             Required = false
         };
@@ -8424,7 +8424,7 @@ namespace SPMeta2.BuiltInDefinitions
             InternalName = "RelatedItems",
             Description = "",
             Group = "_Hidden",
-            FieldType = BuiltInFieldTypes.Invalid,
+            FieldType = BuiltInFieldTypes.RelatedItems,
             Id = new Guid("d2a04afc-9a05-48c8-a7fa-fa98f9496141"),
             Required = false
         };

@@ -89,6 +89,7 @@
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WelcomePageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ClientWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContactFieldControlDefinitionGenerator.cs" />
