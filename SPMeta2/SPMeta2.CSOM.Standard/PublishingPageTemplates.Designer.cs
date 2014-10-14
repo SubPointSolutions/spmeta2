@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SPMeta2.CSOM {
+namespace SPMeta2.CSOM.Standard {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SPMeta2.CSOM {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SPMeta2.CSOM.PublishingPageTemplates", typeof(PublishingPageTemplates).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SPMeta2.CSOM.Standard.PublishingPageTemplates", typeof(PublishingPageTemplates).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

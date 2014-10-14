@@ -71,17 +71,10 @@
     <Compile Include="ModelHosts\TermStoreModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
-      <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="PublishingPageTemplates.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PublishingPageTemplates.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SPMeta2.Standard\SPMeta2.Standard.csproj">
@@ -96,6 +89,12 @@
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PublishingPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PublishingPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
