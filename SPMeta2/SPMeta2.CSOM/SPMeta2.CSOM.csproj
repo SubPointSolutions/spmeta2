@@ -99,7 +99,6 @@
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
     <Compile Include="ModelHandlers\PageDefinition.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
-    <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupModelHandler.cs" />

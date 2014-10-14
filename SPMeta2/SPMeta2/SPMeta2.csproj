@@ -55,6 +55,7 @@
     <Compile Include="Attributes\Regression\ParentHostAttribute.cs" />
     <Compile Include="Attributes\SPObjectType.cs" />
     <Compile Include="Attributes\SPObjectTypeAttribute.cs" />
+    <Compile Include="BuiltInDefinitions\BuiltInFieldDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInFolderDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
@@ -109,7 +110,6 @@
     <Compile Include="Definitions\ListDefinition.cs" />
     <Compile Include="Definitions\ListViewDefinition.cs" />
     <Compile Include="Definitions\Base\PageDefinitionBase.cs" />
-    <Compile Include="Definitions\PublishingPageDefinition.cs" />
     <Compile Include="Definitions\SecurityGroupDefinition.cs" />
     <Compile Include="Definitions\SecurityGroupLinkDefinition.cs" />
     <Compile Include="Definitions\SecurityRoleDefinition.cs" />
@@ -125,9 +125,6 @@
     <Compile Include="Enumerations\BuiltInFieldId.cs" />
     <Compile Include="Enumerations\BuiltInFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInListTemplateTypeId.cs" />
-    <Compile Include="Enumerations\BuiltInPublishingContentTypeId.cs" />
-    <Compile Include="Enumerations\BuiltInPublishingFieldId.cs" />
-    <Compile Include="Enumerations\BuiltInPublishingPageLayoutNames.cs" />
     <Compile Include="Enumerations\BuiltInRegistrationTypes.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleNames.cs" />
     <Compile Include="Enumerations\BuiltInSecurityRoleTypes.cs" />

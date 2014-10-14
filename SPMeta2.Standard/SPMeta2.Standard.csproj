@@ -45,13 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
+    <Compile Include="Definitions\PublishingPageDefinition.cs" />
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInInternalPublishingFieldNames.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingContentTypeId.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingFieldId.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingPageLayoutNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermGroupDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermSetDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermStoreDefinition.cs" />
+    <Compile Include="Syntax\PublishingPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermGroupDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermSetDefinitionSyntax.cs" />

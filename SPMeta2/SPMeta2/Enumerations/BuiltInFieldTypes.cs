@@ -49,5 +49,15 @@ namespace SPMeta2.Enumerations
         public static readonly string TaxonomyFieldTypeMulti = "TaxonomyFieldTypeMulti";
 
         public static readonly string BusinessData = "BusinessData";
+
+        //public static string Overbook = "Overbook";
+        //public static string Whereabout = "Whereabout";
+        //public static string UserMulti = "UserMulti";
+        //public static string RelatedItems = "RelatedItems";
+        //public static string CallTo = "CallTo";
+        //public static string FreeBusy = "FreeBusy";
+        //public static string Likes = "Likes";
+        //public static string RatingCount = "RatingCount";
+        //public static string LookupMulti = "UserMulti";
     }
 }

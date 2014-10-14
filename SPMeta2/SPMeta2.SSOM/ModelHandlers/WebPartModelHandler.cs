@@ -91,6 +91,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ProcessWebpartProperties);
         }
 
+        private static Guid PageLayout = new Guid("0f800910-b30d-4c8f-b011-8189b2297094");
+        private static Guid PublishingPageContent = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8");
+
         private static void HandleWikiOrPublishingPageProvision(SPListItem listItem, WebPartDefinition webpartModel)
         {
             if (!webpartModel.AddToPageContent)
@@ -100,8 +103,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (listItem.Fields.Contains(SPBuiltInFieldId.WikiField))
                 targetFieldId = SPBuiltInFieldId.WikiField;
-            else if (listItem.Fields.Contains(BuiltInPublishingFieldId.PageLayout) && webpartModel.AddToPageContent)
-                targetFieldId = BuiltInPublishingFieldId.PublishingPageContent;
+            else if (listItem.Fields.Contains(PageLayout) && webpartModel.AddToPageContent)
+                targetFieldId = PublishingPageContent;
             else
             {
                 return;

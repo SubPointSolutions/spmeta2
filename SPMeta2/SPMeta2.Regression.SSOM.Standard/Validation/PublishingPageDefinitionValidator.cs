@@ -1,13 +1,12 @@
 ﻿using Microsoft.SharePoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
-using SPMeta2.Enumerations;
-using SPMeta2.Regression.Utils;
-using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.SSOM.Standard.ModelHandlers;
+using SPMeta2.Standard.Definitions;
+using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
 
-namespace SPMeta2.Regression.SSOM.Validation
+namespace SPMeta2.Regression.SSOM.Standard.Validation
 {
     public class PublishingPageDefinitionValidator : PublishingPageModelHandler
     {

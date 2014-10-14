@@ -1,7 +1,9 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
-using System;
-namespace SPMeta2.Definitions
+using SPMeta2.Definitions;
+
+namespace SPMeta2.Standard.Definitions
 {
 
     /// <summary>
@@ -9,11 +11,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable]
 

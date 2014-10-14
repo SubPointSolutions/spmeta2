@@ -93,7 +93,6 @@
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ModuleFileModelHandler.cs" />
     <Compile Include="ModelHandlers\PrefixModelHandler.cs" />
-    <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\SandboxSolutionModelHandler.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />

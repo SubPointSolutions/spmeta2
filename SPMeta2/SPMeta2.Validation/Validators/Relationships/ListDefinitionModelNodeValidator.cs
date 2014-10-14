@@ -26,7 +26,8 @@ namespace SPMeta2.Validation.Validators.Relationships
                     typeof (ListItemDefinition),
 
                     typeof (WikiPageDefinition),
-                    typeof (PublishingPageDefinition),
+                    // TODO, remove to SPMeta2.Standard.Validation
+                    //typeof (PublishingPageDefinition),
                     typeof (WebPartPageDefinition),
                 }, result);
         }

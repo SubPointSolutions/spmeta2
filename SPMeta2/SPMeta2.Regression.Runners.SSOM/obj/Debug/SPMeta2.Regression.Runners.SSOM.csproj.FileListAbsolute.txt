@@ -36,6 +36,7 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\System.Web.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Runners.pdb
@@ -44,11 +45,10 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\obj\Debug\SPMeta2.Regression.Runners.SSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.xml
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Standard.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Standard.pdb

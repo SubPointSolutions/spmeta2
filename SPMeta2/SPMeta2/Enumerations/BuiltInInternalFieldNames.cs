@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Enumerations
 {
+    /// <summary>
+    /// Out of the box SharePoint internal field name.
+    /// </summary>
     public static class BuiltInInternalFieldNames
     {
         #region properties

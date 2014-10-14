@@ -55,34 +55,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             DeployModuleFile(1024 * 1024 * 1);
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
-        public void CanDeploy_5Mb_ModuleFile()
-        {
-            DeployModuleFile(1024 * 1024 * 5);
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Rnd.List")]
+        //public void CanDeploy_5Mb_ModuleFile()
+        //{
+        //    DeployModuleFile(1024 * 1024 * 5);
+        //}
 
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
-        public void CanDeploy_15Mb_ModuleFile()
-        {
-            DeployModuleFile(1024 * 1024 * 15);
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Rnd.List")]
+        //public void CanDeploy_15Mb_ModuleFile()
+        //{
+        //    DeployModuleFile(1024 * 1024 * 15);
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
-        public void CanDeploy_25Mb_ModuleFile()
-        {
-            DeployModuleFile(1024 * 1024 * 25);
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Rnd.List")]
+        //public void CanDeploy_25Mb_ModuleFile()
+        //{
+        //    DeployModuleFile(1024 * 1024 * 25);
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd.List")]
-        public void CanDeploy_50Mb_ModuleFile()
-        {
-            DeployModuleFile(1024 * 1024 * 50);
-        }
+        //[TestMethod]
+        //[TestCategory("Regression.Rnd.List")]
+        //public void CanDeploy_50Mb_ModuleFile()
+        //{
+        //    DeployModuleFile(1024 * 1024 * 50);
+        //}
 
         #endregion
     }

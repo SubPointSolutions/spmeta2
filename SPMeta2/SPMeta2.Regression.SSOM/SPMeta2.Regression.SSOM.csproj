@@ -93,7 +93,6 @@
     <Compile Include="Validation\UserCustomActionDefinitionValidator.cs" />
     <Compile Include="Validation\WebDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartDefinitionValidator.cs" />
-    <Compile Include="Validation\PublishingPageDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartPageDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartDefinitionValidator.cs" />

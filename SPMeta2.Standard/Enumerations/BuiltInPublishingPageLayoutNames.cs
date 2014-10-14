@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SPMeta2.Enumerations
+﻿namespace SPMeta2.Standard.Enumerations
 {
     /// <summary>
     /// Out of the box SharePoint publishing layout names.

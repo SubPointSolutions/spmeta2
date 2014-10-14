@@ -1,13 +1,10 @@
-﻿using System;
-using Microsoft.SharePoint;
+﻿using Microsoft.SharePoint.Administration;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-using SPMeta2.Regression.SSOM;
-using Microsoft.SharePoint.Administration;
 
-namespace SPMeta2.Regression.Validation.ServerModelHandlers
+namespace SPMeta2.Regression.SSOM.Validation
 {
     public class PrefixDefinitionValidator : PrefixModelHandler
     {

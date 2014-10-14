@@ -55,6 +55,7 @@ namespace SPMeta2.SSOM.DefaultSyntax
             {
                 case SPListTemplateType.Events:
                 case SPListTemplateType.Tasks:
+                case SPListTemplateType.TasksWithTimelineAndHierarchy:
                 case SPListTemplateType.GenericList:
                 case SPListTemplateType.AdminTasks:
                 case SPListTemplateType.Agenda:
@@ -64,6 +65,10 @@ namespace SPMeta2.SSOM.DefaultSyntax
                 case SPListTemplateType.DiscussionBoard:
                 case SPListTemplateType.ExternalList:
                 case SPListTemplateType.Links:
+                case SPListTemplateType.WorkflowHistory:
+                case SPListTemplateType.HealthRules:
+                case SPListTemplateType.GanttTasks:
+                case SPListTemplateType.ListTemplateCatalog:
 
                     return "Lists/" + listDefinition.Url;
 
@@ -77,16 +82,16 @@ namespace SPMeta2.SSOM.DefaultSyntax
                 case SPListTemplateType.DocumentLibrary:
 
                 case SPListTemplateType.Facility:
-                case SPListTemplateType.GanttTasks:
+
                 case SPListTemplateType.HealthReports:
-                case SPListTemplateType.HealthRules:
+
                 case SPListTemplateType.Holidays:
                 case SPListTemplateType.HomePageLibrary:
                 case SPListTemplateType.IMEDic:
                 case SPListTemplateType.InvalidType:
                 case SPListTemplateType.IssueTracking:
 
-                case SPListTemplateType.ListTemplateCatalog:
+
                 case SPListTemplateType.MasterPageCatalog:
                 case SPListTemplateType.MeetingObjective:
                 case SPListTemplateType.MeetingUser:
@@ -107,7 +112,7 @@ namespace SPMeta2.SSOM.DefaultSyntax
                 case SPListTemplateType.WebPartCatalog:
                 case SPListTemplateType.WebTemplateCatalog:
                 case SPListTemplateType.Whereabouts:
-                case SPListTemplateType.WorkflowHistory:
+
                 case SPListTemplateType.WorkflowProcess:
                 case SPListTemplateType.XMLForm:
 

@@ -60,6 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\PublishingPageDefinitionValidator.cs">
+      <SubType>
+      </SubType>
+    </Compile>
     <Compile Include="Validation\Fields\TaxonomyFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyTermSetDefinitionValidator.cs" />

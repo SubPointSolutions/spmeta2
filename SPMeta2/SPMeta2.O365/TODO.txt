@@ -1,2 +1,0 @@
-﻿http://www.vrdmn.com/2014/03/create-site-collections-with-csom-in.html
-http://levalencia-public.sharepoint.com/Pages/2014/05/Create-site-collections-with-CSOM-on-premises-and-Sharepoint-Online.aspx
