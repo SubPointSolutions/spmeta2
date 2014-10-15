@@ -34,7 +34,8 @@ namespace SPMeta2.Common
                 new[]{
                      typeof(FeatureDefinition),
                      typeof(SP2013WorkflowDefinition),
-                     typeof(ListDefinition)
+                     typeof(ListDefinition),
+                     typeof(WelcomePageDefinition)
                 }));
 
             // list
