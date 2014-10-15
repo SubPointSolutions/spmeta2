@@ -13,12 +13,12 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWelcomePag(this ModelNode model, WelcomePageDefinition definition)
+        public static ModelNode AddWelcomePage(this ModelNode model, WelcomePageDefinition definition)
         {
-            return AddWelcomePag(model, definition, null);
+            return AddWelcomePage(model, definition, null);
         }
 
-        public static ModelNode AddWelcomePag(this ModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
+        public static ModelNode AddWelcomePage(this ModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
         }
