@@ -29,7 +29,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
         {
             var wpModel = webPartModel.WithAssertAndCast<SiteFeedWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions
-                .LoadWebpartXmlDocument(BuiltInWebpartTemplates.SiteFeedWebPart)
+                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.SiteFeedWebPart)
                 .ToString();
 
             return wpXml;

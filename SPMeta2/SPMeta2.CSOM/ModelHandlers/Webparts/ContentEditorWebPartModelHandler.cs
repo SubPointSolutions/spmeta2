@@ -29,7 +29,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
         {
             var wpModel = webPartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions
-                .LoadWebpartXmlDocument(BuiltInWebpartTemplates.ContentEditorWebPart)
+                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentEditorWebPart)
                 .SetOrUpdateContentEditorWebPartProperty("Content", wpModel.Content, true)
                 .SetOrUpdateContentEditorWebPartProperty("ContentLink", wpModel.ContentLink)
                 .ToString();

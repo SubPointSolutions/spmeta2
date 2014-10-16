@@ -45,7 +45,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             var bindContext = LookupBindContext(listItemModelHost, wpModel);
 
-            var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebpartTemplates.ListViewWebPart)
+            var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.ListViewWebPart)
                                          .SetOrUpdateListVieweWebPartProperty("ListName", bindContext.ListId.ToString("B"))
                                          .SetOrUpdateListVieweWebPartProperty("ListId", bindContext.ListId.ToString("D").ToLower())
                                          .SetOrUpdateListVieweWebPartProperty("ViewGuid", bindContext.ViewId.ToString("D").ToLower())

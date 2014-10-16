@@ -76,9 +76,9 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Validation.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Validation.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.pdb

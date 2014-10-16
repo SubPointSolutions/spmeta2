@@ -24,7 +24,8 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
 
                 // hardcoded yet
 
-                def.SspName = "Managed Metadata Application";
+                // 
+                //def.SspName = "Managed Metadata Application";
                 def.TermSetName = "Maps";
             });
         }

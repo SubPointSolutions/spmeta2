@@ -12,7 +12,7 @@ namespace SPMeta2.Regression.Tests.Impl.Misc
         [TestCategory("Regression.Misc")]
         public void CanCreate_BuiltInWebpartTemplates()
         {
-            var tmp = BuiltInWebpartTemplates.XsltListViewWebPart;
+            var tmp = BuiltInWebPartTemplates.XsltListViewWebPart;
         }
 
         #endregion

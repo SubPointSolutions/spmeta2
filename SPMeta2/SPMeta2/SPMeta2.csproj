@@ -60,6 +60,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
+    <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />
@@ -184,6 +185,7 @@
     <EmbeddedResource Include="Templates\Webparts\ListViewWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ContactFieldControl.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ClientWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\ContentByQueryWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

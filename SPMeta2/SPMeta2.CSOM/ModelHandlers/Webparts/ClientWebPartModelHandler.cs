@@ -38,7 +38,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             var wpModel = webPartModel.WithAssertAndCast<ClientWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions
-                .LoadWebpartXmlDocument(BuiltInWebpartTemplates.ClientWebPart)
+                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.ClientWebPart)
                 .SetOrUpdateProperty("FeatureId", wpModel.FeatureId.ToString())
                 .SetOrUpdateProperty("ProductId", wpModel.ProductId.ToString())
                 .SetOrUpdateProperty("WebPartName", wpModel.WebPartName)

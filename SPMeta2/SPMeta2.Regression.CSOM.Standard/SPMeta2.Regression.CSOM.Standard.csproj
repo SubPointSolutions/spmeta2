@@ -65,10 +65,6 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SPMeta2.Standard\SPMeta2.Standard.csproj">
-      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
-      <Name>SPMeta2.Standard</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
       <Project>{5E592EAA-E21F-4BF4-8EDF-6F6452DC916A}</Project>
       <Name>SPMeta2.CSOM.Standard</Name>
@@ -85,10 +81,17 @@
       <Project>{2B5CA105-8D61-4704-B9CE-C1CBA53AAAB0}</Project>
       <Name>SPMeta2.Regression</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Standard\SPMeta2.Standard.csproj">
+      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
+      <Name>SPMeta2.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validation\Webparts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
