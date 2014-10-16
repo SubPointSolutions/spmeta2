@@ -71,7 +71,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                     break;
             }
 
-            spObject = GetFeature(features, definition);
+            var featureId = definition.Id;
+
+            spObject = features.GetById(featureId);
+            features.Context.Load(spObject, o => o.DefinitionId);
+            features.Context.ExecuteQuery();
+        
             assert.Dst = spObject;
 
             assert

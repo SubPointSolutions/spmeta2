@@ -16,7 +16,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeLinkDefinition); }
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
@@ -32,13 +32,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var web = list.ParentWeb;
 
-                context.Load(web, w => w.AvailableContentTypes);
+                // context.Load(web, w => w.AvailableContentTypes);
                 context.Load(list, l => l.ContentTypes);
 
                 context.ExecuteQuery();
 
-                var targetContentType = FindSiteContentType(web, contentTypeLinkModel);
+                var targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
                 var listContentType = FindListContentType(list, contentTypeLinkModel);
+
+                context.Load(targetContentType);
+                context.ExecuteQuery();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -138,21 +141,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             //    contentTypeLinkModel.ContentTypeName, contentTypeLinkModel.ContentTypeId));
         }
 
-        protected ContentType FindSiteContentType(Web web, ContentTypeLinkDefinition contentTypeLinkModel)
-        {
-            ContentType targetContentType = null;
+        //protected ContentType FindSiteContentType(Web web, ContentTypeLinkDefinition contentTypeLinkModel)
+        //{
+        //    ContentType targetContentType = null;
 
-            if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
-                targetContentType = web.AvailableContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
+        //    if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+        //        targetContentType = web.AvailableContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
 
-            if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
-                targetContentType = web.AvailableContentTypes.FindById(contentTypeLinkModel.ContentTypeId);
+        //    if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
+        //        targetContentType = web.AvailableContentTypes.FindById(contentTypeLinkModel.ContentTypeId);
 
-            if (targetContentType == null)
-                throw new Exception(string.Format("Cannot find content type specified by model: id:[{0}] name:[{1}]",
-                                            contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName));
+        //    if (targetContentType == null)
+        //        throw new Exception(string.Format("Cannot find content type specified by model: id:[{0}] name:[{1}]",
+        //                                    contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName));
 
-            return targetContentType;
-        }
+        //    return targetContentType;
+        //}
     }
 }

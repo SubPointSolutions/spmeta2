@@ -11,7 +11,7 @@ namespace SPMeta2.Syntax.Default
         public static TDefinition Inherit<TDefinition>(this DefinitionBase definition)
             where TDefinition : DefinitionBase, new()
         {
-            return Inherit < TDefinition>(definition, null);
+            return Inherit<TDefinition>(definition, null);
         }
 
         public static TDefinition Inherit<TDefinition>(this DefinitionBase definition, Action<TDefinition> config)
@@ -100,6 +100,13 @@ namespace SPMeta2.Syntax.Default
         public static FeatureDefinition Enable(this FeatureDefinition definition)
         {
             definition.Enable = true;
+
+            return definition;
+        }
+
+        public static FeatureDefinition Disable(this FeatureDefinition definition)
+        {
+            definition.Enable = false;
 
             return definition;
         }

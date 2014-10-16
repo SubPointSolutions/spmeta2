@@ -11,10 +11,13 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var hostClientContext = ExtractHostClientContext(modelHost);
+
             var parentWeb = ExtractWeb(modelHost);
             var definition = model.WithAssertAndCast<WebDefinition>("model", value => value.RequireNotNull());
 
-            var spObject = GetWeb(parentWeb, definition);
+            var currentWebUrl = GetCurrentWebUrl(parentWeb.Context, parentWeb, definition);
+            var spObject = GetExistingWeb(hostClientContext.Site, parentWeb, currentWebUrl);
             var context = spObject.Context;
 
             if (!spObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))

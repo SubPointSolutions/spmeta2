@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
@@ -35,7 +36,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (folder != null && webPartPageDefinition != null)
             {
                 var context = folder.Context;
-                var currentPage = GetCurrentWebPartPage(folder, GetSafeWebPartPageFileName(webPartPageDefinition));
+                var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageDefinition));
 
                 var currentListItem = currentPage.ListItemAllFields;
                 context.Load(currentListItem);
@@ -61,21 +62,59 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected File GetCurrentWebPartPage(Folder folder, string pageName)
+        protected ListItem SearchItemByName(List list, Folder folder, string pageName)
+        {
+            var context = list.Context;
+
+            if (folder != null)
+            {
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    folder.Context.ExecuteQuery();
+                }
+            }
+
+            var dQuery = new CamlQuery();
+
+            string QueryString = "<View><Query><Where>" +
+                             "<Eq>" +
+                               "<FieldRef Name=\"FileLeafRef\"/>" +
+                                "<Value Type=\"Text\">" + pageName + "</Value>" +
+                             "</Eq>" +
+                            "</Where></Query></View>";
+
+            dQuery.ViewXml = QueryString;
+
+            if (folder != null)
+                dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+
+            var collListItems = list.GetItems(dQuery);
+
+            context.Load(collListItems);
+            context.ExecuteQuery();
+
+            return collListItems.FirstOrDefault();
+
+        }
+
+        protected File GetCurrentWebPartPage(List list, Folder folder, string pageName)
         {
             var context = folder.Context;
 
-            var files = folder.Files;
-            context.Load(files);
-            context.ExecuteQuery();
+            //var files = folder.Files;
+            //context.Load(files);
+            //context.ExecuteQuery();
 
-            foreach (var file in files)
-            {
-                if (file.Name.ToUpper() == pageName.ToUpper())
-                    return file;
-            }
+            //foreach (var file in files)
+            //{
+            //    if (file.Name.ToUpper() == pageName.ToUpper())
+            //        return file;
+            //}
 
-            return null;
+            var item = SearchItemByName(list, folder, pageName);
+
+            return item != null ? item.File : null;
         }
 
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
@@ -96,7 +135,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
-            var currentPage = GetCurrentWebPartPage(folder, GetSafeWebPartPageFileName(webPartPageModel));
+            var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageModel));
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

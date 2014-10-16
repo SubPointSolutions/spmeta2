@@ -69,6 +69,45 @@ namespace SPMeta2.CSOM.ModelHandlers
             return web.GetFileByServerRelativeUrl(filePath);
         }
 
+        protected ListItem SearchItemByName(List list, Folder folder, string pageName)
+        {
+            var context = list.Context;
+
+            if (folder != null)
+            {
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    folder.Context.ExecuteQuery();
+                }
+            }
+
+            var dQuery = new CamlQuery();
+
+            string QueryString = "<View><Query><Where>" +
+                             "<Eq>" +
+                               "<FieldRef Name=\"FileLeafRef\"/>" +
+                                "<Value Type=\"Text\">" + pageName + "</Value>" +
+                             "</Eq>" +
+                            "</Where></Query></View>";
+
+            dQuery.ViewXml = QueryString;
+
+            if (folder != null)
+                dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+
+            var collListItems = list.GetItems(dQuery);
+
+            context.Load(collListItems);
+            context.ExecuteQuery();
+
+            return collListItems.FirstOrDefault();
+
+        }
+
+        private static Dictionary<string, string> _wpCache = new Dictionary<string, string>();
+        private static object _wpCacheLock = new object();
+
         protected virtual string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var result = string.Empty;
@@ -76,46 +115,65 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
             {
-                var rootWeb = listItemModelHost.HostSite.RootWeb;
-                var rootWebContext = rootWeb.Context;
-
-                var webPartCatalog = rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Calalogs.Wp.GetListUrl());
-                var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
-
-                rootWebContext.Load(webParts);
-                rootWebContext.ExecuteQuery();
-
-                ListItem targetWebPart = null;
-
-                foreach (var webPart in webParts)
-                    if (webPart["FileLeafRef"].ToString().ToUpper() == webPartModel.WebpartFileName.ToUpper())
-                        targetWebPart = webPart;
-
-                if (targetWebPart == null)
-                    throw new SPMeta2Exception(string.Format("Cannot find web part file by name:[{0}]", webPartModel.WebpartFileName));
-
-                var webPartFile = targetWebPart.File;
-
-                rootWebContext.Load(webPartFile);
-                rootWebContext.ExecuteQuery();
-
-
-                // does not work for apps - https://github.com/SubPointSolutions/spmeta2/issues/174
-                //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostClientContext, webPartFile.ServerRelativeUrl);
-
-                //using (var reader = new StreamReader(fileInfo.Stream))
-                //{
-                //    webPartXML = reader.ReadToEnd();
-                //}
-
-                var data = webPartFile.OpenBinaryStream();
-
-                context.Load(webPartFile);
-                context.ExecuteQuery();
-
-                using (var reader = new StreamReader(data.Value))
+                lock (_wpCacheLock)
                 {
-                    result = reader.ReadToEnd();
+                    var wpKey = webPartModel.WebpartFileName.ToLower();
+
+                    if (_wpCache.ContainsKey(wpKey))
+                        result = _wpCache[wpKey];
+                    else
+                    {
+
+                        var rootWeb = listItemModelHost.HostSite.RootWeb;
+                        var rootWebContext = rootWeb.Context;
+
+                        var webPartCatalog =
+                            rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Calalogs.Wp.GetListUrl());
+                        //var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
+
+                        //rootWebContext.Load(webParts);
+                        //rootWebContext.ExecuteQuery();
+
+                        ListItem targetWebPart = SearchItemByName(webPartCatalog, webPartCatalog.RootFolder,
+                            webPartModel.WebpartFileName);
+
+                        //foreach (var webPart in webParts)
+                        //    if (webPart["FileLeafRef"].ToString().ToUpper() == webPartModel.WebpartFileName.ToUpper())
+                        //        targetWebPart = webPart;
+
+                        if (targetWebPart == null)
+                            throw new SPMeta2Exception(string.Format("Cannot find web part file by name:[{0}]",
+                                webPartModel.WebpartFileName));
+
+                        var webPartFile = targetWebPart.File;
+
+                        rootWebContext.Load(webPartFile);
+                        rootWebContext.ExecuteQuery();
+
+
+                        // does not work for apps - https://github.com/SubPointSolutions/spmeta2/issues/174
+                        //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostClientContext, webPartFile.ServerRelativeUrl);
+
+                        //using (var reader = new StreamReader(fileInfo.Stream))
+                        //{
+                        //    webPartXML = reader.ReadToEnd();
+                        //}
+
+                        var data = webPartFile.OpenBinaryStream();
+
+                        context.Load(webPartFile);
+                        context.ExecuteQuery();
+
+                        using (var reader = new StreamReader(data.Value))
+                        {
+                            result = reader.ReadToEnd();
+                        }
+
+                        if (!_wpCache.ContainsKey(wpKey))
+                            _wpCache.Add(wpKey, result);
+                        else
+                            _wpCache[wpKey] = result;
+                    }
                 }
             }
 

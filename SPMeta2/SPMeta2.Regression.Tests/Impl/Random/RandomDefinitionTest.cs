@@ -37,6 +37,11 @@ namespace SPMeta2.Regression.Tests.Impl.Random
     [TestClass]
     public class RandomDefinitionTest : SPMeta2RegresionEventsTestBase
     {
+        public RandomDefinitionTest()
+        {
+            this.ProvisionGenerationCount = 2;
+        }
+
         #region common
 
         [ClassInitializeAttribute]
@@ -557,6 +562,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region web navigation
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web.MasterPage")]
+        public void CanDeployRandom_MasterPageSettingsDefinition()
+        {
+            TestRandomDefinition<MasterPageSettingsDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web.Navigation")]

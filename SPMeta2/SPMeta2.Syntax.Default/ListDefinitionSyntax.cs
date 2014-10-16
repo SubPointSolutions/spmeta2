@@ -20,5 +20,21 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region host override
+
+        public static ModelNode AddHostList(this ModelNode model, ListDefinition definition)
+        {
+            return AddHostList(model, definition, null);
+        }
+
+        public static ModelNode AddHostList(this ModelNode model, ListDefinition definition, Action<ModelNode> action)
+        {
+            definition.RequireSelfProcessing = false;
+
+            return model.AddList(definition, action);
+        }
+
+        #endregion
     }
 }

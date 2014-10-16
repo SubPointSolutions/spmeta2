@@ -25,9 +25,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        private string GetCurrentWebUrl(ClientRuntimeContext context, Web parentWeb, WebDefinition webModel)
+        protected string GetCurrentWebUrl(ClientRuntimeContext context, Web parentWeb, WebDefinition webModel)
         {
-            var result = UrlUtility.CombineUrl(parentWeb.Url, webModel.Url);
+            var result = UrlUtility.CombineUrl(parentWeb.ServerRelativeUrl, webModel.Url);
             return result.ToLower();
         }
 
@@ -53,12 +53,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = parentWeb.Context;
 
             context.Load(parentWeb, w => w.Url);
-            context.Load(parentWeb, w => w.RootFolder);
+            //context.Load(parentWeb, w => w.RootFolder);
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
 
             var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
-            var currentWeb = GetExistingWeb(parentWeb, currentWebUrl);
+            var currentWeb = GetExistingWeb(hostSite, parentWeb, currentWebUrl);
 
             var tmpWebModelHost = new WebModelHost
             {
@@ -85,7 +85,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         }
 
-        private ClientContext ExtractHostClientContext(object modelHost)
+        protected ClientContext ExtractHostClientContext(object modelHost)
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostClientContext;
@@ -111,21 +111,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             return parentWeb;
         }
 
-        protected Web GetWeb(Web parentWeb, WebDefinition definition)
-        {
-            var currentWebUrl = GetCurrentWebUrl(parentWeb.Context, parentWeb, definition);
+        //protected Web GetWeb(Web parentWeb, WebDefinition definition)
+        //{
+        //    var currentWebUrl = GetCurrentWebUrl(parentWeb.Context, parentWeb, definition);
 
-            var tmp = new ClientContext(currentWebUrl);
+        //    var tmp = new ClientContext(currentWebUrl);
 
-            tmp.Credentials = parentWeb.Context.Credentials;
+        //    tmp.Credentials = parentWeb.Context.Credentials;
 
-            tmp.Load(tmp.Web);
-            tmp.ExecuteQuery();
+        //    tmp.Load(tmp.Web);
+        //    tmp.ExecuteQuery();
 
-            return tmp.Web;
-        }
+        //    return tmp.Web;
+        //}
 
-        protected Web GetExistingWeb(Web parentWeb, string currentWebUrl)
+        protected Web GetExistingWeb(Site site, Web parentWeb, string currentWebUrl)
         {
             var result = false;
             var srcUrl = currentWebUrl.ToLower().Trim('/').Trim('\\');
@@ -136,16 +136,31 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
-            var subWebs = parentWeb.Webs;
-            context.Load(subWebs);
+            Web web = null;
+
+            var scope = new ExceptionHandlingScope(context);
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    web = site.OpenWeb(currentWebUrl);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
             context.ExecuteQuery();
 
-            foreach (var subWeb in subWebs)
+            if (!scope.HasException && web != null && web.ServerObjectIsNull == false)
             {
-                if (subWeb.Url.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
-                {
-                    return subWeb;
-                }
+                context.Load(web);
+                context.ExecuteQuery();
+
+                return web;
             }
 
             return null;
@@ -160,13 +175,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = parentWeb.Context;
 
             context.Load(parentWeb, w => w.Url);
-            context.Load(parentWeb, w => w.RootFolder);
+            //context.Load(parentWeb, w => w.RootFolder);
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
 
             var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
 
-            Web currentWeb = GetExistingWeb(parentWeb, currentWebUrl);
+            Web currentWeb = GetExistingWeb(hostClientContext.Site, parentWeb, currentWebUrl);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

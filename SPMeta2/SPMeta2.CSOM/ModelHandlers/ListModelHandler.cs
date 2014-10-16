@@ -5,6 +5,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
@@ -21,24 +22,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType,
+            Action<object> action)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
 
             var web = webModelHost.HostWeb;
             var listDefinition = model as ListDefinition;
+            var context = web.Context;
+
+            context.Load(web, w => w.ServerRelativeUrl);
+            context.ExecuteQuery();
 
             if (web != null && listDefinition != null)
             {
                 // TODO
                 // no no no no... not a TITLE! 
 
-                var context = web.Context;
+               
 
-                var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
-                context.ExecuteQuery();
-
-                var list = FindListByUrl(lists, listDefinition.GetListUrl());
+                var list = LoadCurrentList(web, listDefinition);
 
                 var listModelHost = ModelHostBase.Inherit<ListModelHost>(webModelHost, c =>
                 {
@@ -102,10 +105,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else if (childModelType == typeof(SP2013WorkflowSubscriptionDefinition))
                 {
-                    var sp2013WorkflowSubscriptionModelHost = ModelHostBase.Inherit<SP2013WorkflowSubscriptionModelHost>(webModelHost, host =>
-                    {
-                        host.HostList = list;
-                    });
+                    var sp2013WorkflowSubscriptionModelHost =
+                        ModelHostBase.Inherit<SP2013WorkflowSubscriptionModelHost>(webModelHost, host =>
+                        {
+                            host.HostList = list;
+                        });
 
                     action(sp2013WorkflowSubscriptionModelHost);
                 }
@@ -148,7 +152,53 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        private static List LoadCurrentList(Web web, ListDefinition listModel)
+        {
+            var context = web.Context;
+
+            List currentList = null;
+
+            var listUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, listModel.GetListUrl());
+
+            Folder folder = null;
+
+            var scope = new ExceptionHandlingScope(context);
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    folder = web.GetFolderByServerRelativeUrl(listUrl);
+                    context.Load(folder);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            context.ExecuteQuery();
+
+            if (!scope.HasException && folder != null && folder.ServerObjectIsNull != true)
+            {
+                folder = web.GetFolderByServerRelativeUrl(listUrl);
+                context.Load(folder.Properties);
+                context.ExecuteQuery();
+
+                var listId = new Guid(folder.Properties["vti_listname"].ToString());
+                var list = web.Lists.GetById(listId);
+
+                context.Load(list);
+                context.ExecuteQuery();
+
+                currentList = list;
+            }
+
+            return currentList;
+        }
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
 
@@ -157,12 +207,33 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = web.Context;
 
-            //context.Load(web, w => w.Lists);
+            // 1
             context.Load(web, w => w.ServerRelativeUrl);
-            var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
             context.ExecuteQuery();
 
+            //context.Load(web, w => w.Lists);
+            //context.Load(web, w => w.ServerRelativeUrl);
+            //var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
+            //context.ExecuteQuery();
+
+
+
             List currentList = null;
+
+
+            var loadedList = LoadCurrentList(web, listModel);
+
+            if (loadedList != null)
+                currentList = loadedList;
+
+
+            //Folder d;
+
+            ////d.ListItemAllFields.pa
+
+            //context.Load(lists, all => all.Where(l => l.RootFolder.ServerRelativeUrl == listUrl).Include(l => l.Id));
+            //context.ExecuteQuery();
+            //var list = lists.FirstOrDefault();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -177,7 +248,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdating);
 
             // gosh!
-            currentList = FindListByUrl(lists, listModel.GetListUrl());
+            //currentList = FindListByUrl(lists, listModel.GetListUrl());
 
             if (currentList == null)
             {
@@ -199,7 +270,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.ExecuteQuery();
 
                     // gosh..
-                    var listTemplate = FindListTemplateByName(web.ListTemplates, listModel.TemplateName);
+                    var listTemplate = FindListTemplateByInternalName(web.ListTemplates, listModel.TemplateName);
 
                     listInfo.TemplateFeatureId = listTemplate.FeatureId;
                     listInfo.TemplateType = listTemplate.ListTemplateTypeKind;
@@ -209,7 +280,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     throw new ArgumentException("Either TemplateType or TemplateName has to bbe specified.");
                 }
 
-                currentList = web.Lists.Add(listInfo);
+                var newList = web.Lists.Add(listInfo);
+                currentList = newList;
             }
 
             currentList.Title = listModel.Title;
@@ -255,11 +327,11 @@ namespace SPMeta2.CSOM.ModelHandlers
         //    return null;
         //}
 
-        protected ListTemplate FindListTemplateByName(IEnumerable<ListTemplate> listTemplateCollection, string listTemplateName)
+        protected ListTemplate FindListTemplateByInternalName(IEnumerable<ListTemplate> listTemplateCollection, string listTemplateInternalName)
         {
             foreach (var listTemplate in listTemplateCollection)
             {
-                if (System.String.Compare(listTemplate.Name, listTemplateName, System.StringComparison.OrdinalIgnoreCase) == 0)
+                if (System.String.Compare(listTemplate.InternalName, listTemplateInternalName, System.StringComparison.OrdinalIgnoreCase) == 0)
                     return listTemplate;
             }
 

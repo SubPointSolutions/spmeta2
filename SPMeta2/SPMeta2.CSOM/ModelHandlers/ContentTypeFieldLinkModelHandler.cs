@@ -15,29 +15,58 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeFieldLinkDefinition); }
         }
 
+        private Field FindExistingSiteField(Web rootWeb, Guid id)
+        {
+            var context = rootWeb.Context;
+            var scope = new ExceptionHandlingScope(context);
+
+            Field field = null;
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    rootWeb.AvailableFields.GetById(id);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            context.ExecuteQuery();
+
+            if (!scope.HasException)
+            {
+                field = rootWeb.AvailableFields.GetById(id);
+                context.Load(field);
+                context.ExecuteQuery();
+            }
+
+            return field;
+        }
+
         protected override void DeployModelInternal(object modelHost, DefinitionBase model)
         {
-            var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
-            var contentTypeFieldLinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
+            var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost",
+                value => value.RequireNotNull());
+            var contentTypeFieldLinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model",
+                value => value.RequireNotNull());
 
             var site = modelHostWrapper.Site;
             var rootWeb = site.RootWeb;
             var contentType = modelHostWrapper.ContentType;
 
-            var fields = rootWeb.AvailableFields;
+            var context = contentType.Context;
 
-            var context = site.Context;
-
-            // TODO, ad better validation
-
-            var fieldLinks = contentType.FieldLinks;
-
-            context.Load(fields);
-            context.Load(fieldLinks);
-
+            var tmp = contentType.FieldLinks.GetById(contentTypeFieldLinkModel.FieldId);
             context.ExecuteQuery();
 
-            var fieldLink = FindContentTypeFieldLink(fieldLinks, contentTypeFieldLinkModel.FieldId);
+            FieldLink fieldLink = null;
+
+            if (tmp != null && tmp.ServerObjectIsNull.HasValue && !tmp.ServerObjectIsNull.Value)
+                fieldLink = tmp;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -52,9 +81,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (fieldLink == null)
             {
-                var targetField = FindField(fields, contentTypeFieldLinkModel.FieldId);
+                var targetField = FindExistingSiteField(rootWeb, contentTypeFieldLinkModel.FieldId);
 
-                fieldLink = fieldLinks.Add(new FieldLinkCreationInformation
+                fieldLink = contentType.FieldLinks.Add(new FieldLinkCreationInformation
                 {
                     Field = targetField
                 });
@@ -73,28 +102,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             contentType.Update(true);
             context.ExecuteQuery();
-        }
-
-        private Field FindField(FieldCollection fields, Guid guid)
-        {
-            foreach (var field in fields)
-            {
-                if (field.Id == guid)
-                    return field;
-            }
-
-            return null;
-        }
-
-        private FieldLink FindContentTypeFieldLink(FieldLinkCollection fieldLinks, Guid guid)
-        {
-            foreach (var fieldlink in fieldLinks)
-            {
-                if (fieldlink.Id == guid)
-                    return fieldlink;
-            }
-
-            return null;
         }
     }
 }

@@ -10,7 +10,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using System.Xml.Linq; 
+using System.Xml.Linq;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -30,15 +30,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (site != null && contentTypeModel != null)
             {
-                var context = site.Context;
                 var rootWeb = site.RootWeb;
+                var context = rootWeb.Context;
 
-                context.Load(rootWeb, w => w.ContentTypes);
-                context.Load(rootWeb, w => w.ServerRelativeUrl);
+                var id = contentTypeModel.GetContentTypeId();
 
+                var currentContentType = rootWeb.ContentTypes.GetById(id);
                 context.ExecuteQuery();
-
-                var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -73,9 +71,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
                 }
 
-                // doublt update to promote change tpo the list 
-                // have no idea why it does not work from the first time
-
                 currentContentType.Update(true);
                 context.ExecuteQuery();
             }
@@ -85,22 +80,19 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
             var site = siteModelHost.HostSite;
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
-            var context = site.Context;
             var rootWeb = site.RootWeb;
+            var context = rootWeb.Context;
 
-            var contentTypes = rootWeb.ContentTypes;
+            var contentTypeId = contentTypeModel.GetContentTypeId();
 
-            context.Load(rootWeb);
-            context.Load(contentTypes);
-
+            var tmp = rootWeb.ContentTypes.GetById(contentTypeId);
             context.ExecuteQuery();
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -108,32 +100,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
-                Object = null,
+                Object = tmp,
                 ObjectType = typeof(ContentType),
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
+
             InvokeOnModelEvent<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
 
-            //var currentContentType = rootWeb.ContentTypes.FindByName(contentTypeModel.Name);
-            var contentTypeId = contentTypeModel.GetContentTypeId();
-            var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
+            ContentType currentContentType = null;
 
-            if (currentContentType == null)
+            if (tmp == null || tmp.ServerObjectIsNull == null || tmp.ServerObjectIsNull.Value)
             {
-                // here we have 2 cases
-                // (1) OOTB parent content types might be resolved by ID
-                // (2) custom content types have to be resolved by NAME as id is always different :(
-                //var parentContentType = rootWeb.ContentTypes.GetById(contentTypeModel.ParentContentTypeId);
-
                 currentContentType = rootWeb.ContentTypes.Add(new ContentTypeCreationInformation
                 {
-                    //ParentContentType = parentContentType,
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
                     Group = contentTypeModel.Group,
                     Id = contentTypeId
                 });
+            }
+            else
+            {
+                currentContentType = tmp;
             }
 
             currentContentType.Name = contentTypeModel.Name;
@@ -155,8 +144,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             currentContentType.Update(true);
             context.ExecuteQuery();
-
-
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)
@@ -187,4 +174,5 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
     }
+
 }

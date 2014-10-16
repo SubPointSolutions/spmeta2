@@ -71,6 +71,7 @@
     <Compile Include="DefinitionGenerators\ManagedAccountDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ModuleFileDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PrefixDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\MasterPageSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PropertyDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\QuickLaunchNavigationNodeDefinitionGenerator.cs" />

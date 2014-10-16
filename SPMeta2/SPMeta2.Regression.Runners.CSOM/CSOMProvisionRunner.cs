@@ -87,7 +87,7 @@ namespace SPMeta2.Regression.Runners.CSOM
             var type = typeof(Field);
             var workflow = typeof(WorkflowDefinition);
             var store = typeof(TermStore);
-            var publishing = typeof (WebNavigationSettings);
+            var publishing = typeof(WebNavigationSettings);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
@@ -108,7 +108,6 @@ namespace SPMeta2.Regression.Runners.CSOM
                             _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
                     });
                 }
-
             }
         }
 
@@ -118,16 +117,18 @@ namespace SPMeta2.Regression.Runners.CSOM
             {
                 Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                WithCSOMContext(webUrl, context =>
                 {
-                    WithCSOMContext(webUrl, context =>
+                    for (var provisionGeneration = 0;
+                        provisionGeneration < ProvisionGenerationCount;
+                        provisionGeneration++)
                     {
                         _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
                         if (EnableDefinitionValidation)
                             _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                    });
-                }
+                    }
+                });
             }
         }
 

@@ -37,7 +37,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             if (folder != null && pageDefinition != null)
             {
                 var context = folder.Context;
-                var currentPage = GetCurrentPage(folder, GetSafePageFileName(pageDefinition));
+                var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(pageDefinition));
 
                 var currentListItem = currentPage.ListItemAllFields;
                 context.Load(currentListItem);
@@ -72,27 +72,56 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         }
 
 
-        protected File GetCurrentPage(Folder folder, string pageName)
+        protected File GetCurrentPage(List list, Folder folder, string pageName)
         {
-            var context = folder.Context;
+            var item = SearchItemByName(list, folder, pageName);
 
-            var files = folder.Files;
-            context.Load(files);
-            context.ExecuteQuery();
-
-            foreach (var file in files)
-            {
-                if (file.Name.ToUpper() == pageName.ToUpper())
-                    return file;
-            }
+            if (item != null)
+                return item.File;
 
             return null;
         }
 
-        protected ListItem FindPublishingPage(Folder folder, PublishingPageDefinition definition)
+        protected ListItem SearchItemByName(List list, Folder folder, string pageName)
+        {
+            var context = list.Context;
+
+            if (folder != null)
+            {
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    folder.Context.ExecuteQuery();
+                }
+            }
+
+            var dQuery = new CamlQuery();
+
+            string QueryString = "<View><Query><Where>" +
+                             "<Eq>" +
+                               "<FieldRef Name=\"FileLeafRef\"/>" +
+                                "<Value Type=\"Text\">" + pageName + "</Value>" +
+                             "</Eq>" +
+                            "</Where></Query></View>";
+
+            dQuery.ViewXml = QueryString;
+
+            if (folder != null)
+                dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+
+            var collListItems = list.GetItems(dQuery);
+
+            context.Load(collListItems);
+            context.ExecuteQuery();
+
+            return collListItems.FirstOrDefault();
+
+        }
+
+        protected ListItem FindPublishingPage(List list, Folder folder, PublishingPageDefinition definition)
         {
             var pageName = GetSafePageFileName(definition);
-            var file = GetCurrentPage(folder, pageName);
+            var file = GetCurrentPage(list, folder, pageName);
 
             if (file != null)
                 return file.ListItemAllFields;
@@ -112,7 +141,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var context = folder.Context;
 
             var pageName = GetSafePageFileName(publishingPageModel);
-            var currentPageFile = GetCurrentPage(folder, pageName);
+            var currentPageFile = GetCurrentPage(list, folder, pageName);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -166,7 +195,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.ExecuteQuery();
             });
 
-            currentPageFile = GetCurrentPage(folder, pageName);
+            currentPageFile = GetCurrentPage(folderModelHost.CurrentList, folder, pageName);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -182,36 +211,21 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQuery();
         }
 
+
+
+        //if (item != null)
+        //    return item.File;
+
+        //return null;
+
         private ListItem FindPageLayoutItem(Site site, string pageLayoutFileName)
         {
-            ListItem currentPageLayoutItem = null;
-
-            var pageLayoutContentType = BuiltInPublishingContentTypeId.PageLayout.ToUpper();
-
-
             var rootWeb = site.RootWeb;
             var layoutsList = rootWeb.GetCatalog((int)ListTemplateType.MasterPageCatalog);
 
-            // TODO, performance
-            var pageLayouts = layoutsList.GetItems(CamlQuery.CreateAllItemsQuery());
-            var context = layoutsList.Context;
+            var layoutItem = SearchItemByName(layoutsList, layoutsList.RootFolder, pageLayoutFileName);
 
-            context.Load(pageLayouts);
-            context.ExecuteQuery();
-
-            var tmpPageLayouts = pageLayouts.ToList()
-                                            .Where(i => i["ContentTypeId"].ToString().ToUpper().StartsWith(pageLayoutContentType));
-
-            foreach (var pageLayout in tmpPageLayouts)
-            {
-                if (pageLayout["FileLeafRef"].ToString().ToUpper() == pageLayoutFileName.ToUpper())
-                {
-                    currentPageLayoutItem = pageLayout;
-                    break;
-                }
-            }
-
-            return currentPageLayoutItem;
+            return layoutItem;
         }
 
         #endregion

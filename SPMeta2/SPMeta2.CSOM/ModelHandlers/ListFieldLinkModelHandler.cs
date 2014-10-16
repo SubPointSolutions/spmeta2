@@ -34,6 +34,38 @@ namespace SPMeta2.CSOM.ModelHandlers
             DeployListFieldLink(modelHost, list, listFieldLinkModel);
         }
 
+        private Field FindExistingSiteField(Web rootWeb, Guid id)
+        {
+            var context = rootWeb.Context;
+            var scope = new ExceptionHandlingScope(context);
+
+            Field field = null;
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    rootWeb.AvailableFields.GetById(id);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            context.ExecuteQuery();
+
+            if (!scope.HasException)
+            {
+                field = rootWeb.AvailableFields.GetById(id);
+                context.Load(field);
+                context.ExecuteQuery();
+            }
+
+            return field;
+        }
+
         private void DeployListFieldLink(object modelHost, List list, ListFieldLinkDefinition listFieldLinkModel)
         {
             var web = list.ParentWeb;
@@ -44,7 +76,23 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(fields);
             context.ExecuteQuery();
 
-            var existingListField = fields.OfType<Field>().FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);
+            Field existingListField = null;
+
+            Field tmp = null;
+            try
+            {
+                 tmp = list.Fields.GetById(listFieldLinkModel.FieldId);
+                context.ExecuteQuery();
+            }
+            catch (Exception exception)
+            {
+                // TODO
+            }
+            finally
+            {
+                if (tmp != null && tmp.ServerObjectIsNull.HasValue && !tmp.ServerObjectIsNull.Value)
+                    existingListField = tmp;
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -59,12 +107,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (existingListField == null)
             {
-                var avialableField = web.AvailableFields;
+                //var avialableField = web.AvailableFields;
 
-                context.Load(avialableField);
-                context.ExecuteQuery();
+                //context.Load(avialableField);
+                //context.ExecuteQuery();
 
-                var siteField = avialableField.OfType<Field>().FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);
+                var siteField = FindExistingSiteField(web, listFieldLinkModel.FieldId);
 
                 fields.Add(siteField);
 

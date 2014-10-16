@@ -56,17 +56,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected FeatureCollection LoadWebFeatures(WebModelHost webModelHost)
-        {
-            var web = webModelHost.HostWeb;
-            var context = web.Context;
-
-            context.Load(web, w => w.Features);
-            context.ExecuteQuery();
-
-            return web.Features;
-        }
-
         private void DeployWebFeature(object modelHost, FeatureDefinition featureModel)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
@@ -74,23 +63,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = webModelHost.HostWeb;
             var context = web.Context;
 
-            var features = LoadWebFeatures(webModelHost);
+            //var features = LoadWebFeatures(webModelHost);
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
             // http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.featurecollection.add%28v=office.15%29.aspx
-            ProcessFeature(modelHost, context, features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
-        }
-
-        protected FeatureCollection LoadSiteFeatures(SiteModelHost siteModelHost)
-        {
-            var site = siteModelHost.HostSite;
-            var context = site.Context;
-
-            context.Load(site, w => w.Features);
-            context.ExecuteQuery();
-
-            return site.Features;
+            ProcessFeature(modelHost, context, web.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
         }
 
         private void DeploySiteFeature(object modelHost, FeatureDefinition featureModel)
@@ -100,21 +78,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             var site = siteModelHost.HostSite;
             var context = site.Context;
 
-            var features = LoadSiteFeatures(siteModelHost);
-
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
-            ProcessFeature(modelHost, context, features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
+            ProcessFeature(modelHost, context, site.Features, featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope.Farm);
         }
 
-        protected Feature GetFeature(FeatureCollection features, FeatureDefinition featureModel)
+        protected bool IsFeatureActivated(Feature feature)
         {
-            return features.FirstOrDefault(f => f.DefinitionId == featureModel.Id);
-        }
-
-        protected bool IsFeatureActivated(FeatureCollection features, FeatureDefinition featureModel)
-        {
-            return GetFeature(features, featureModel) != null;
+            return feature != null && feature.ServerObjectIsNull == false;
         }
 
         private void ProcessFeature(
@@ -124,8 +95,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     FeatureDefinition featureModel,
                     Microsoft.SharePoint.Client.FeatureDefinitionScope scope)
         {
-            var currentFeature = GetFeature(features, featureModel);
-            var featureActivated = IsFeatureActivated(features, featureModel);
+            var featureId = featureModel.Id;
+
+            var currentFeature = features.GetById(featureId);
+            features.Context.ExecuteQuery();
+
+            var featureActivated = IsFeatureActivated(currentFeature);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -149,7 +124,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    tmpFeature = GetFeature(features, featureModel);
+                    tmpFeature = features.GetById(featureId);
+                    features.Context.ExecuteQuery();
                 }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -201,7 +177,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    var tmpFeature = GetFeature(features, featureModel);
+                    var tmpFeature = features.GetById(featureId);
+                    features.Context.ExecuteQuery();
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {

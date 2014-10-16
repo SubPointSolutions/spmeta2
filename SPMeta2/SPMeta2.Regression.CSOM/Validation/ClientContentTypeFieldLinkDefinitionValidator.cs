@@ -33,10 +33,9 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = site.Context;
 
-            context.Load(contentType, ct => ct.FieldLinks);
+            var spObject = contentType.FieldLinks.GetById(definition.FieldId);
+            context.Load(spObject);
             context.ExecuteQuery();
-
-            var spObject = FindFieldLinkById(contentType.FieldLinks, definition.FieldId);
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)

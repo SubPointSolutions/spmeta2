@@ -18,7 +18,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         public FieldScenariosTest()
         {
-            ProvisionGenerationCount = 1;
+            ProvisionGenerationCount = 2;
         }
 
         #endregion
