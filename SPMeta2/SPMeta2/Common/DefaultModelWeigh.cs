@@ -23,6 +23,7 @@ namespace SPMeta2.Common
                 typeof(SiteDefinition),
                 new[]{
                      typeof(FeatureDefinition),
+                     typeof(PropertyDefinition),
                      typeof(FieldDefinition),
                      typeof(ContentTypeDefinition),
                      typeof(WebDefinition)
@@ -33,6 +34,9 @@ namespace SPMeta2.Common
                 typeof(WebDefinition),
                 new[]{
                      typeof(FeatureDefinition),
+                     typeof(PropertyDefinition),
+                     typeof(FieldDefinition),
+                     typeof(ContentTypeDefinition),
                      typeof(SP2013WorkflowDefinition),
                      typeof(ListDefinition),
                      typeof(WelcomePageDefinition)
@@ -42,11 +46,18 @@ namespace SPMeta2.Common
             Weighs.Add(new ModelWeigh(
                 typeof(ListDefinition),
                 new[]{
+                    typeof(PropertyDefinition),
                      typeof(ContentTypeLinkDefinition),
                      typeof(SP2013WorkflowSubscriptionDefinition),
                      typeof(FolderDefinition),
                      typeof(ListViewDefinition),
                      typeof(ModuleFileDefinition),
+                }));
+
+            Weighs.Add(new ModelWeigh(
+                typeof(FolderDefinition),
+                new[]{
+                    typeof(PropertyDefinition)
                 }));
         }
 

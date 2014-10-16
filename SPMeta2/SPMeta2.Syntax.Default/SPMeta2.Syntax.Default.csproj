@@ -90,6 +90,7 @@
     <Compile Include="UniqueContentTypeOrderDefinitionSyntax.cs" />
     <Compile Include="WebPartDefinitionSyntax.cs" />
     <Compile Include="WebPartPageDefinitionSyntax.cs" />
+    <Compile Include="MasterPageSettingsDefinitionSyntax.cs" />
     <Compile Include="WelcomePageDefinitionSyntax.cs" />
     <Compile Include="WikiPageDefinitionSyntax.cs" />
   </ItemGroup>

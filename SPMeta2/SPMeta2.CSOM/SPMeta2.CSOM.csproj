@@ -97,6 +97,7 @@
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
     <Compile Include="ModelHandlers\ListPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
+    <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PageDefinition.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
