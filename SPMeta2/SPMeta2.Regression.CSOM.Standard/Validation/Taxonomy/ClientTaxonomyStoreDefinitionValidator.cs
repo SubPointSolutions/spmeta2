@@ -17,8 +17,9 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name);
+                                 .ShouldNotBeNull(spObject);
+
+            // TODO
 
         }
     }

@@ -107,12 +107,47 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             context.Load(termGroup.TermSets);
             context.ExecuteQuery();
 
-            if (termSetModel.Id.HasValue)
-                result = termGroup.TermSets.FirstOrDefault(t => t.Id == termSetModel.Id.Value);
-            else if (!string.IsNullOrEmpty(termSetModel.Name))
-                result = termGroup.TermSets.FirstOrDefault(t => t.Name.ToUpper() == termSetModel.Name.ToUpper());
+            //if (termSetModel.Id.HasValue)
+            //    result = termGroup.TermSets.FirstOrDefault(t => t.Id == termSetModel.Id.Value);
+            //else if (!string.IsNullOrEmpty(termSetModel.Name))
+            //    result = termGroup.TermSets.FirstOrDefault(t => t.Name.ToUpper() == termSetModel.Name.ToUpper());
 
-            return result;
+            if (termSetModel.Id.HasValue)
+            {
+                result = termGroup.TermSets.GetById(termSetModel.Id.Value);
+            }
+            else if (!string.IsNullOrEmpty(termSetModel.Name))
+            {
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        result = termGroup.TermSets.GetByName(termSetModel.Name);
+                        context.Load(result);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+            }
+
+            context.ExecuteQuery();
+
+            if (result != null && result.ServerObjectIsNull == false)
+            {
+                context.Load(result);
+                //context.Load(result, g => g.Id);
+                //context.Load(result, g => g.Name);
+
+                context.ExecuteQuery();
+
+                return result;
+            }
+
+            return null;
         }
 
         #endregion

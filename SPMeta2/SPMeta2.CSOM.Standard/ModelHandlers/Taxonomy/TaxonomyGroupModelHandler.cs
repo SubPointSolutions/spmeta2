@@ -57,21 +57,35 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 currentGroup = termStore.GetGroup(groupModel.Id.Value);
             else if (!string.IsNullOrEmpty(groupModel.Name))
             {
-                context.Load(termStore.Groups, g => g.Include(t => t.Name));
-                context.ExecuteQuery();
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        currentGroup = termStore.Groups.GetByName(groupModel.Name);
+                        context.Load(currentGroup);
+                    }
 
-                currentGroup = termStore.Groups.FirstOrDefault(g => g.Name.ToUpper() == groupModel.Name.ToUpper());
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
             }
 
-            if (currentGroup != null)
+            context.ExecuteQuery();
+
+            if (currentGroup != null && currentGroup.ServerObjectIsNull == false)
             {
                 context.Load(currentGroup, g => g.Id);
                 context.Load(currentGroup, g => g.Name);
 
                 context.ExecuteQuery();
+
+                return currentGroup;
             }
 
-            return currentGroup;
+            return null;
         }
 
         private void DeployTaxonomyGroup(object modelHost, TermStoreModelHost siteModelHost, TaxonomyTermGroupDefinition groupModel)

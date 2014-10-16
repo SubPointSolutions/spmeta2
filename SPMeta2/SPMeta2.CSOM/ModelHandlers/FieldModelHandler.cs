@@ -33,10 +33,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        protected SiteModelHost CurrentSiteModelHost { get; set; }
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             if (!(modelHost is SiteModelHost || modelHost is List))
                 throw new ArgumentException("modelHost needs to be SiteModelHost/List instance.");
+
+            CurrentSiteModelHost = modelHost as SiteModelHost;
 
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 

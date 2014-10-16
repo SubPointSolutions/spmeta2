@@ -37,6 +37,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public string SspName { get; set; }
         public Guid? SspId { get; set; }
+        public bool? UseDefaultSiteCollectionTermStore { get; set; }
 
         public string TermSetName { get; set; }
         public Guid? TermSetId { get; set; }

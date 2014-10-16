@@ -23,6 +23,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public string Name { get; set; }
         public Guid? Id { get; set; }
 
+        public bool? UseDefaultSiteCollectionTermStore { get; set; }
+
         #endregion
     }
 }

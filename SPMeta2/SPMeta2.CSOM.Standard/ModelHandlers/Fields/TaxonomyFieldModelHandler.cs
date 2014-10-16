@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -39,21 +40,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             taxFieldModel.Description = fieldModel.Description;
 
             // get values
-            var session = TaxonomySession.GetTaxonomySession(context);
+           // var session = TaxonomySession.GetTaxonomySession(context);
 
-            TermStore termStore = null;
-
-            if (taxFieldModel.SspId.HasValue)
-                termStore = session.TermStores.GetById(taxFieldModel.SspId.Value);
-            else if (!string.IsNullOrEmpty(taxFieldModel.SspName))
-                termStore = session.TermStores.GetByName(taxFieldModel.SspName);
-            else
-            {
-                context.Load(session.TermStores);
-                context.ExecuteQuery();
-
-                termStore = session.TermStores.ToList().FirstOrDefault();
-            }
+            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(this.CurrentSiteModelHost,
+              taxFieldModel.SspName,
+              taxFieldModel.SspId,
+             taxFieldModel.UseDefaultSiteCollectionTermStore);
 
             if (termStore == null)
                 throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
@@ -67,7 +59,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
             {
-                var termSets = session.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
+                var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
                 context.Load(termSets);
                 context.ExecuteQuery();
 

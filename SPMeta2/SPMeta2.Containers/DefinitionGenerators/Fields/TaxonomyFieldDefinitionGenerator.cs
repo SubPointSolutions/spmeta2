@@ -22,9 +22,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
-                // hardcoded yet
-
-                // 
+                def.UseDefaultSiteCollectionTermStore = true;
                 //def.SspName = "Managed Metadata Application";
                 def.TermSetName = "Maps";
             });

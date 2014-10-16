@@ -14,8 +14,11 @@ namespace SPMeta2.Containers.DefinitionGenerators.Taxonomy
             {
                 // hardcoded yet
 
-                def.Name = "Managed Metadata Application";
-                def.Id = null;
+                //def.Name = "Managed Metadata Application";
+                //def.Id = null;
+
+                def.UseDefaultSiteCollectionTermStore = true;
+                //def.Name = "Managed Metadata Application";
             });
         }
     }
