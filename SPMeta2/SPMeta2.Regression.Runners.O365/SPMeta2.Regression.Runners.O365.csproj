@@ -63,10 +63,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
+      <Project>{5E592EAA-E21F-4BF4-8EDF-6F6452DC916A}</Project>
+      <Name>SPMeta2.CSOM.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
       <Project>{6F7EBF0C-7124-44D6-B9EC-302A54A19FE4}</Project>
       <Name>SPMeta2.CSOM</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.CSOM.Standard\SPMeta2.Regression.CSOM.Standard.csproj">
+      <Project>{33B40E92-C649-41FC-B774-53D259801B3B}</Project>
+      <Name>SPMeta2.Regression.CSOM.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression.CSOM\SPMeta2.Regression.CSOM.csproj">
       <Project>{5A1B98BF-4EA4-4DEE-988F-FA62EEFC9EB0}</Project>

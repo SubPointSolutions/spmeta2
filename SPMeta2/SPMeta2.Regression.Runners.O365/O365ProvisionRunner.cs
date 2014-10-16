@@ -5,14 +5,18 @@ using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Services;
+using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
+using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
+using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
 using Microsoft.SharePoint.WorkflowServices;
 using Microsoft.SharePoint.Client.WorkflowServices;
 using System.Collections.Generic;
 using System.Diagnostics;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Runners.O365
 {
@@ -28,9 +32,26 @@ namespace SPMeta2.Regression.Runners.O365
             WebUrls = new List<string>();
 
             LoadEnvironmentConfig();
+            InitServices();
 
             UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
             UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+        }
+
+        private void InitServices()
+        {
+            _provisionService = new CSOMProvisionService();
+            _validationService = new CSOMValidationService();
+
+            var csomStandartAsm = typeof(TaxonomyFieldModelHandler).Assembly;
+
+            foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(csomStandartAsm))
+                _provisionService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
+
+            var csomtandartValidationAsm = typeof(ClientTaxonomyFieldDefinitionValidator).Assembly;
+
+            foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(csomtandartValidationAsm))
+                _validationService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
         }
 
         private void LoadEnvironmentConfig()
@@ -52,8 +73,8 @@ namespace SPMeta2.Regression.Runners.O365
         public string UserName { get; set; }
         public string UserPassword { get; set; }
 
-        private readonly CSOMProvisionService _provisionService = new CSOMProvisionService();
-        private readonly CSOMValidationService _validationService = new CSOMValidationService();
+        private CSOMProvisionService _provisionService;
+        private CSOMValidationService _validationService;
 
 
         #endregion
