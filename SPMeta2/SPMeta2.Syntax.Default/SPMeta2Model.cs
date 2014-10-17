@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 using System;
 using System.Collections.Generic;

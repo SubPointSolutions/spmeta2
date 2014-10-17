@@ -1,5 +1,6 @@
 ﻿using SPMeta2.Attributes.Regression;
 using System;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {

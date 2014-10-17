@@ -2,6 +2,7 @@
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
@@ -14,7 +15,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class ContentTypeDefinitionValidator : ContentTypeModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());

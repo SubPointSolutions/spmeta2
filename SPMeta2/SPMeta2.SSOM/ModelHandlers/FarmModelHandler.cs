@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Administration;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
@@ -26,7 +27,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             farmModelHost.HostFarm.Update();
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
             var farmModel = model.WithAssertAndCast<FarmDefinition>("model", value => value.RequireNotNull());

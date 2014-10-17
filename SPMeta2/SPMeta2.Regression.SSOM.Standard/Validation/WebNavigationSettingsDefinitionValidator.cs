@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;

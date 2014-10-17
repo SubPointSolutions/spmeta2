@@ -2,6 +2,7 @@
 using System;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 
@@ -20,7 +21,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemFieldValueModelHost>("modelHost", value => value.RequireNotNull());
             var fieldValue = model.WithAssertAndCast<ListItemFieldValueDefinition>("model", value => value.RequireNotNull());

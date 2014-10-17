@@ -1,4 +1,5 @@
-﻿using SPMeta2.SSOM.ModelHandlers;
+﻿using SPMeta2.Definitions.Base;
+using SPMeta2.SSOM.ModelHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<FarmDefinition>("model", value => value.RequireNotNull());

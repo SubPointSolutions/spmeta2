@@ -163,7 +163,12 @@ namespace SPMeta2.Services
             {
                 modelHandler.OnModelEvent += (s, e) =>
                 {
-                    if (_activeModelNode != null)
+                    if (e.CurrentModelNode != null)
+                    {
+                        e.CurrentModelNode.InvokeOnModelEvents(e.Object, e.EventType);
+                        e.CurrentModelNode.InvokeOnModelContextEvents(s, e);
+                    }
+                    else if (_activeModelNode != null)
                     {
                         _activeModelNode.InvokeOnModelEvents(e.Object, e.EventType);
                         _activeModelNode.InvokeOnModelContextEvents(s, e);
@@ -262,15 +267,26 @@ namespace SPMeta2.Services
                 //});
 
                 /// V2, less optimized version
-                var childModels =
-                       modelNode.GetChildModels(childModelType.Key);
+                var childModels = modelNode.GetChildModels(childModelType.Key);
 
                 foreach (var childModel in childModels)
                 {
-                    modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
+                    modelHandler.WithResolvingModelHost(new ModelHostResolveContext
                     {
-                        ProcessModelDeployment(childModelHost, childModel);
+                        ModelHost = modelHost,
+                        Model = modelDefinition,
+                        ChildModelType = childModelType.Key,
+                        ModelNode = modelNode,
+                        Action = childModelHost =>
+                        {
+                            ProcessModelDeployment(childModelHost, childModel);
+                        }
                     });
+
+                    //modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
+                    //{
+                    //    ProcessModelDeployment(childModelHost, childModel);
+                    //});
                 }
             }
         }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
 using SPMeta2.Common;

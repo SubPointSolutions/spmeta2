@@ -30,6 +30,10 @@ namespace SPMeta2.Definitions
 
         #region methods
 
+        /// <summary>
+        /// Create a clone of the current model definition.
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
             return MemberwiseClone();

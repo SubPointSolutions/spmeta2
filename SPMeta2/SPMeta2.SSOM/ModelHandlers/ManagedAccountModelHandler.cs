@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #region methods
 
-        public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
             var managedAccountDefinition = model.WithAssertAndCast<ManagedAccountDefinition>("model", value => value.RequireNotNull());

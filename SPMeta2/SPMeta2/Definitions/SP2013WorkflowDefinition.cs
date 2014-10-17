@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Configuration;
 using System.Text;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {

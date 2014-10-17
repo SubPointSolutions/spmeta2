@@ -42,8 +42,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             throw new SPMeta2NotSupportedException(string.Format("New web canonot be created under model host of type:[{0}]", modelHost.GetType()));
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var parentWeb = ExtractWeb(modelHost);
             var hostClientContext = ExtractHostClientContext(modelHost);
             var hostSite = ExtractHostSite(modelHost);
@@ -60,6 +65,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentWebUrl = GetCurrentWebUrl(context, parentWeb, webModel);
             var currentWeb = GetExistingWeb(hostSite, parentWeb, currentWebUrl);
 
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = modelHostContext.ModelNode,
+                Model = null,
+                EventType = ModelEventType.OnModelHostResolving,
+                Object = parentWeb,
+                ObjectType = typeof(Web),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
             var tmpWebModelHost = new WebModelHost
             {
                 HostClientContext = hostClientContext,
@@ -68,6 +84,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             };
 
             action(tmpWebModelHost);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = modelHostContext.ModelNode,
+                Model = null,
+                EventType = ModelEventType.OnModelHostResolved,
+                Object = parentWeb,
+                ObjectType = typeof(Web),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
 
             currentWeb.Update();
             context.ExecuteQuery();

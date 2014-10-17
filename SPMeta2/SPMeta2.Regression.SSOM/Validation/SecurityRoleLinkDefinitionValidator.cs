@@ -13,7 +13,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var modelHostContext = modelHost.WithAssertAndCast<SPMeta2.SSOM.ModelHosts.SecurityGroupModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<SecurityRoleLinkDefinition>("model", value => value.RequireNotNull());

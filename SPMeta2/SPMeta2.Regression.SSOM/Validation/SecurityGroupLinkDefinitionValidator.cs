@@ -2,6 +2,7 @@
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.Utils;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
@@ -13,7 +14,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         #region methods
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
             var definition = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());

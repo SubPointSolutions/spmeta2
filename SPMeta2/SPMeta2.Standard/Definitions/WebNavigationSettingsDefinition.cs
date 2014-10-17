@@ -2,6 +2,7 @@
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Standard.Definitions.Taxonomy;
 
 namespace SPMeta2.Standard.Definitions

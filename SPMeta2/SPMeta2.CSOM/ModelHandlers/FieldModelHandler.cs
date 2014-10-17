@@ -307,7 +307,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
     //#region methods
 
-    //    protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+    //    public override void DeployModel(object modelHost, DefinitionBase model)
     //    {
     //        if (!(modelHost is SiteModelHost || modelHost is List))
     //            throw new ArgumentException("modelHost needs to be SiteModelHost/List instance.");

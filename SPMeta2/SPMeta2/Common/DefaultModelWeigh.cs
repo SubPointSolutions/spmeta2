@@ -18,54 +18,80 @@ namespace SPMeta2.Common
         {
             Weighs = new List<ModelWeigh>();
 
-            // site
-            Weighs.Add(new ModelWeigh(
-                typeof(SiteDefinition),
-                new[]{
-                     typeof(FeatureDefinition),
-                     typeof(PropertyDefinition),
-                     typeof(FieldDefinition),
-                     typeof(ContentTypeDefinition),
-                     typeof(WebDefinition)
-                }));
-
-            // web
-            Weighs.Add(new ModelWeigh(
-                typeof(WebDefinition),
-                new[]{
-                     typeof(FeatureDefinition),
-                     typeof(PropertyDefinition),
-                     typeof(FieldDefinition),
-                     typeof(ContentTypeDefinition),
-                     typeof(SP2013WorkflowDefinition),
-                     typeof(ListDefinition),
-                     typeof(WelcomePageDefinition)
-                }));
-
-            // list
-            Weighs.Add(new ModelWeigh(
-                typeof(ListDefinition),
-                new[]{
-                    typeof(PropertyDefinition),
-                     typeof(ContentTypeLinkDefinition),
-                     typeof(SP2013WorkflowSubscriptionDefinition),
-                     typeof(FolderDefinition),
-                     typeof(ListViewDefinition),
-                     typeof(ModuleFileDefinition),
-                }));
-
-            Weighs.Add(new ModelWeigh(
-                typeof(FolderDefinition),
-                new[]{
-                    typeof(PropertyDefinition)
-                }));
+            InitSiteScope();
+            InitWebScope();
+            InitListScope();
+            InitFolderScope();
         }
 
         #endregion
 
         #region properties
 
+        /// <summary>
+        /// Default weighs for correct model provision order.
+        /// </summary>
         public static List<ModelWeigh> Weighs { get; set; }
+
+        #endregion
+
+        #region methods
+
+        private static void InitFolderScope()
+        {
+            Weighs.Add(new ModelWeigh(
+                typeof(FolderDefinition),
+                new[]
+                {
+                    typeof (PropertyDefinition)
+                }));
+        }
+
+        private static void InitListScope()
+        {
+            Weighs.Add(new ModelWeigh(
+                typeof(ListDefinition),
+                new[]
+                {
+                    typeof (PropertyDefinition),
+                    typeof (ContentTypeLinkDefinition),
+                    typeof (SP2013WorkflowSubscriptionDefinition),
+                    typeof (FolderDefinition),
+                    typeof (ListViewDefinition),
+                    typeof (ModuleFileDefinition),
+                }));
+        }
+
+        private static void InitWebScope()
+        {
+            Weighs.Add(new ModelWeigh(
+                typeof(WebDefinition),
+                new[]
+                {
+                    typeof (FeatureDefinition),
+                    typeof (PropertyDefinition),
+                    typeof (FieldDefinition),
+                    typeof (ContentTypeDefinition),
+                    typeof (SP2013WorkflowDefinition),
+                    typeof (ListDefinition),
+                    typeof (WelcomePageDefinition)
+                }));
+        }
+
+        private static void InitSiteScope()
+        {
+            // site scope
+            Weighs.Add(new ModelWeigh(
+                typeof(SiteDefinition),
+                new[]
+                {
+                    typeof (FeatureDefinition),
+                    typeof (PropertyDefinition),
+                    typeof (FieldDefinition),
+                    typeof (ContentTypeDefinition),
+                    typeof (WebDefinition)
+                }));
+        }
 
         #endregion
     }

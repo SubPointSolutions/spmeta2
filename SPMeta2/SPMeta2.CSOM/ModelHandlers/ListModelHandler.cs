@@ -22,9 +22,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType,
-            Action<object> action)
+        //public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        //override with
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
 
             var web = webModelHost.HostWeb;
@@ -39,9 +46,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // TODO
                 // no no no no... not a TITLE! 
 
-               
-
                 var list = LoadCurrentList(web, listDefinition);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = modelHostContext.ModelNode,
+                    Model = null,
+                    EventType = ModelEventType.OnModelHostResolving,
+                    Object = list,
+                    ObjectType = typeof(List),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
 
                 var listModelHost = ModelHostBase.Inherit<ListModelHost>(webModelHost, c =>
                 {
@@ -142,6 +158,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     action(listModelHost);
                 }
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = modelHostContext.ModelNode,
+                    Model = null,
+                    EventType = ModelEventType.OnModelHostResolved,
+                    Object = list,
+                    ObjectType = typeof(List),
+                    ObjectDefinition = model,
+                    ModelHost = modelHost
+                });
 
                 if (listModelHost.ShouldUpdateHost)
                     list.Update();

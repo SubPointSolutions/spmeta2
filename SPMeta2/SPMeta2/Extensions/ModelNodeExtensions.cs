@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,25 @@ namespace SPMeta2.Extensions
             }
 
             return result;
+        }
+
+        public static ModelNode WithNodesOfType<TModelDefinition>(this ModelNode model, Action<ModelNode> action)
+           where TModelDefinition : DefinitionBase
+        {
+            if (action == null)
+                return model;
+
+            var nodes = FindNodes(model, modelNode =>
+            {
+                return modelNode.Value is TModelDefinition;
+            });
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                action(nodes[i]);
+            }
+
+            return model;
         }
 
         #endregion

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.Utils;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
@@ -14,7 +15,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class ListViewDefinitionValidator : ListViewModelHandler
     {
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());

@@ -1,5 +1,6 @@
 ﻿using SPMeta2.CSOM.ModelHandlers.ContentTypes;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Utils;
 

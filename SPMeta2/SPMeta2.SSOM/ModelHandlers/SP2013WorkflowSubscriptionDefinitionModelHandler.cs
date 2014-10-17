@@ -8,6 +8,7 @@ using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 

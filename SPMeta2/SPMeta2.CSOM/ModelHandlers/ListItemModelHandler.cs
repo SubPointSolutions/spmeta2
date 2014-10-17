@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModeHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());

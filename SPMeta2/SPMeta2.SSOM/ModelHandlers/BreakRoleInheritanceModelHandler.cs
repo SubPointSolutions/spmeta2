@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;

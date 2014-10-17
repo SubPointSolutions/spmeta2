@@ -28,7 +28,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
-            var context = field.Context;
+            var context = CurrentSiteModelHost.HostClientContext;
 
             var taxFieldModel = fieldModel.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
             var taxField = context.CastTo<TaxonomyField>(field);
@@ -40,9 +40,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             taxFieldModel.Description = fieldModel.Description;
 
             // get values
-           // var session = TaxonomySession.GetTaxonomySession(context);
+            // var session = TaxonomySession.GetTaxonomySession(context);
 
-            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(this.CurrentSiteModelHost,
+            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(CurrentSiteModelHost,
               taxFieldModel.SspName,
               taxFieldModel.SspId,
              taxFieldModel.UseDefaultSiteCollectionTermStore);
@@ -50,9 +50,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             if (termStore == null)
                 throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
 
-            context.Load(termStore, s => s.Id);
+            var storeContext = CurrentSiteModelHost.HostClientContext;
 
-            context.ExecuteQuery();
+            storeContext.Load(termStore, s => s.Id);
+            storeContext.ExecuteQuery();
 
             // TODO
             TermSet termSet = null;
@@ -60,8 +61,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
             {
                 var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
-                context.Load(termSets);
-                context.ExecuteQuery();
+
+                storeContext.Load(termSets);
+                storeContext.ExecuteQuery();
 
                 termSet = termSets.FirstOrDefault();
             }

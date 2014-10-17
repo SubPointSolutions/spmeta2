@@ -6,6 +6,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.ModelHandlers.ContentTypes.Base;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Utils;
 

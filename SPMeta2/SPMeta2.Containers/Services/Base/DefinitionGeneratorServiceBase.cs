@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Containers.Services.Base
 {

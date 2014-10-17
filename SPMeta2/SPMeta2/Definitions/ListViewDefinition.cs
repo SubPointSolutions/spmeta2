@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.ObjectModel;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {

@@ -222,7 +222,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQuery();
 
-                var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
+                Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition;
+
+                WebPart existingWebPart = null;
+
+                // TODO
+                var tmpWp = FindExistingWebPart(webPartDefenitions, webPartModel, out wpDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -234,6 +239,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = webPartModel,
                     ModelHost = modelHost
                 });
+
+                if (wpDefinition != null)
+                {
+                    wpDefinition.DeleteWebPart();
+                    wpDefinition.Context.ExecuteQuery();
+                }
+                else
+                {
+                    existingWebPart = tmpWp;
+                }
 
                 if (existingWebPart == null)
                 {
@@ -347,9 +362,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected WebPart FindExistingWebPart(IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,
-                                              WebPartDefinitionBase webPartModel)
+        protected WebPart FindExistingWebPart(
+            IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,
+            WebPartDefinitionBase webPartModel)
         {
+            Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition = null;
+
+            return FindExistingWebPart(webPartDefenitions, webPartModel, out wpDefinition);
+        }
+
+        protected WebPart FindExistingWebPart(IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,
+                                              WebPartDefinitionBase webPartModel,
+                                              out Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition)
+        {
+            wpDefinition = null;
+
             // gosh, you got to be kidding
             // internally, SharePoint returns StorageKey as ID. hence.. no ability to trace unique web part on the page
             // the only thing is comparing Titles an utilize them as a primary key
@@ -358,6 +385,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (String.Compare(webPartDefinition.WebPart.Title, webPartModel.Title, System.StringComparison.OrdinalIgnoreCase) == 0)
                 {
+                    wpDefinition = webPartDefinition;
+
                     return webPartDefinition.WebPart;
                 }
             }

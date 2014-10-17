@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Webparts

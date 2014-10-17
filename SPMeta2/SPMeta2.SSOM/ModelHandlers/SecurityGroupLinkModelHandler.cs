@@ -98,7 +98,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             return securityGroup;
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var securableObject = ExtractSecurableObject(modelHost);
             var securityGroupLinkModel = model.WithAssertAndCast<SecurityGroupLinkDefinition>("model", value => value.RequireNotNull());

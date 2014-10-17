@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 
@@ -47,7 +48,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return field;
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost",
                 value => value.RequireNotNull());

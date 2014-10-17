@@ -117,7 +117,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return item != null ? item.File : null;
         }
 
-        protected override void DeployModelInternal(object modelHost, DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost as FolderModelHost;
             var webPartPageModel = model as WebPartPageDefinition;

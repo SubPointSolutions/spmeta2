@@ -1,6 +1,7 @@
 ﻿using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 

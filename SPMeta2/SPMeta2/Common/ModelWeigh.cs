@@ -39,7 +39,14 @@ namespace SPMeta2.Common
 
         #region properties
 
+        /// <summary>
+        /// Target model type.
+        /// </summary>
         public Type Model { get; set; }
+
+        /// <summary>
+        /// Child model types and their weighs.
+        /// </summary>
         public Dictionary<Type, int> ChildModels { get; set; }
 
         #endregion

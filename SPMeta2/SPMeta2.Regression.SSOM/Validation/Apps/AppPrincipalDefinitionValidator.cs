@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.Assertion;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;

@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Exceptions;
 using SPMeta2.Standard.Definitions.Fields;

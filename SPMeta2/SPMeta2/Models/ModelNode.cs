@@ -5,16 +5,34 @@ using System.Runtime.Remoting;
 using System.Xml.Serialization;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Models
 {
+    /// <summary>
+    /// Internal usage only.
+    /// </summary>
     public enum ModelNodeState
     {
+        /// <summary>
+        /// Model node has not been changed.
+        /// </summary>
         None,
+
+        /// <summary>
+        /// Model node is being processed.
+        /// </summary>
         Processing,
+
+        /// <summary>
+        /// Model node has been processed.
+        /// </summary>
         Processed
     }
 
+    /// <summary>
+    /// Base tree model node implementation. 
+    /// </summary>
     [Serializable]
     public class ModelNode
     {
@@ -167,23 +185,64 @@ namespace SPMeta2.Models
         #endregion
     }
 
+    /// <summary>
+    /// Internal usage only.
+    /// Indicates the strategy for the provision exception handling.
+    /// </summary>
     public enum ContinuationOptions
     {
+        /// <summary>
+        /// Throw an exception
+        /// </summary>
         StopAndThrowException,
+
+        /// <summary>
+        /// Silently continue.
+        /// </summary>
         Continue,
+
+        /// <summary>
+        /// Silently stop.
+        /// </summary>
         Stop,
     }
 
+    /// <summary>
+    /// Model creaeting/creating context.
+    /// </summary>
+    /// <typeparam name="TObjectType"></typeparam>
+    /// <typeparam name="TDefinitionType"></typeparam>
     public class OnCreatingContext<TObjectType, TDefinitionType>
         where TDefinitionType : DefinitionBase
     {
+        /// <summary>
+        /// Typed SharePoint object instance.
+        /// </summary>
         public TObjectType Object { get; set; }
+
+        /// <summary>
+        /// Current model definition.
+        /// </summary>
         public TDefinitionType ObjectDefinition { get; set; }
 
+        /// <summary>
+        /// Current model, the root node.
+        /// </summary>
         public ModelNode Model { get; set; }
+
+        /// <summary>
+        /// Current model node.
+        /// </summary>
         public ModelNode CurrentModelNode { get; set; }
 
+        /// <summary>
+        /// Exception handling options.
+        /// </summary>
         public ContinuationOptions ContinuationOption { get; set; }
+
+        /// <summary>
+        /// Aggregated exception, if any.
+        /// </summary>
         public AggregateException Error { get; set; }
     }
 }

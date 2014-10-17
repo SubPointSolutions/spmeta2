@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;

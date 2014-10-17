@@ -5,6 +5,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Utils;
 using SPMeta2.Utils;

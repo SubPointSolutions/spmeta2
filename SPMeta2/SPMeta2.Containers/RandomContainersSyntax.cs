@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Containers.Services;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Taxonomy;
