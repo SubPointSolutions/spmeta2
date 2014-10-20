@@ -1,17 +1,11 @@
-﻿using SPMeta2.Common;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.SSOM.ModelHosts;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using SPMeta2.Common;
+using SPMeta2.Definitions;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
-namespace SPMeta2.SSOM.ModelHandlers.Base
+namespace SPMeta2.SSOM.ModelHandlers
 {
     public class PropertyModelHandler : SSOMModelHandlerBase
     {

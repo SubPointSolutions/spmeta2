@@ -35,6 +35,9 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [ExpectValidation]
+        public Guid SolutionId { get; set; }
+
         /// <summary>
         /// Should the solution be activated.
         /// </summary>

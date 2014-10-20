@@ -61,6 +61,7 @@
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />
