@@ -46,11 +46,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 .NewWebModel(web =>
                 {
                     web
-                        .AddList(BuiltInListDefinitions.SitePages, list =>
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
                         {
-
-                            list.Value.RequireSelfProcessing = false;
-
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
@@ -89,10 +86,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                {
                    web
                        .AddFeature(RegWebFeatures.Publishing)
-                       .AddList(BuiltInListDefinitions.Pages, list =>
+                       .AddHostList(BuiltInListDefinitions.Pages, list =>
                        {
-                           list.Value.RequireSelfProcessing = false;
-
                            list
                                .AddRandomPublishingPage(page =>
                                {
@@ -122,10 +117,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                .NewWebModel(web =>
                {
                    web
-                       .AddList(BuiltInListDefinitions.Pages, list =>
+                       .AddHostList(BuiltInListDefinitions.Pages, list =>
                        {
-                           list.Value.RequireSelfProcessing = false;
-
                            list
                                .AddRandomPublishingPage(page =>
                                {
@@ -201,10 +194,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                .NewWebModel(web =>
                {
                    web
-                       .AddList(BuiltInListDefinitions.SitePages, list =>
+                       .AddHostList(BuiltInListDefinitions.SitePages, list =>
                        {
-                           list.Value.RequireSelfProcessing = false;
-
                            list
                                .AddRandomWikiPage(page =>
                                {

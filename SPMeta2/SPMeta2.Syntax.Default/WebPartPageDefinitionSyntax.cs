@@ -21,12 +21,17 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-        #region model
+        #region host override
 
-        //public static IEnumerable<WebPartPageDefinition> GetWebPartPages(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<WebPartPageDefinition>();
-        //}
+        public static ModelNode AddHostWebPartPage(this ModelNode model, WebPartPageDefinition definition)
+        {
+            return AddHostWebPartPage(model, definition, null);
+        }
+
+        public static ModelNode AddHostWebPartPage(this ModelNode model, WebPartPageDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

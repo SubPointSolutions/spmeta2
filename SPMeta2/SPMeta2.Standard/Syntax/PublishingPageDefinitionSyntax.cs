@@ -7,6 +7,8 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class PublishingPageDefinitionSyntax
     {
+        #region publishing page
+
         public static ModelNode AddPublishingPage(this ModelNode model, PublishingPageDefinition definition)
         {
             return AddPublishingPage(model, definition, null);
@@ -16,5 +18,21 @@ namespace SPMeta2.Standard.Syntax
         {
             return model.AddDefinitionNode(definition, action);
         }
+
+        #endregion
+
+        #region host override
+
+        public static ModelNode AddHostPublishingPage(this ModelNode model, PublishingPageDefinition definition)
+        {
+            return AddHostPublishingPage(model, definition, null);
+        }
+
+        public static ModelNode AddHostPublishingPage(this ModelNode model, PublishingPageDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        #endregion
     }
 }

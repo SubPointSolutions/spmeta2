@@ -23,5 +23,19 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region host override
+
+        public static ModelNode AddHostWeb(this ModelNode model, WebDefinition definition)
+        {
+            return AddHostWeb(model, definition, null);
+        }
+
+        public static ModelNode AddHostWeb(this ModelNode model, WebDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        #endregion
     }
 }

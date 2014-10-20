@@ -224,6 +224,9 @@ namespace SPMeta2.Syntax.Default
         {
             var newModelNode = new ModelNode { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
 
+            // levacy
+            newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
+
             if (action != null)
                 action(newModelNode);
 

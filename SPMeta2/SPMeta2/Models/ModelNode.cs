@@ -31,6 +31,51 @@ namespace SPMeta2.Models
     }
 
     /// <summary>
+    /// Allows to adjust particular mode node processing behaviour.
+    /// </summary>
+    [Serializable]
+    public class ModelNodeOptions
+    {
+        #region constructors
+
+        public ModelNodeOptions()
+        {
+            RequireSelfProcessing = true;
+        }
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Indicates of model node needs to be processed by model handler.
+        /// </summary>
+        public bool RequireSelfProcessing { get; set; }
+
+        #endregion
+
+        #region static
+
+
+        public static ModelNodeOptions New()
+        {
+            return new ModelNodeOptions();
+        }
+
+        #endregion
+    }
+
+    public static class ModelNodeOptionsSyntax
+    {
+        public static ModelNodeOptions NoSelfProcessing(this ModelNodeOptions options)
+        {
+            options.RequireSelfProcessing = false;
+
+            return options;
+        }
+    }
+
+    /// <summary>
     /// Base tree model node implementation. 
     /// </summary>
     [Serializable]
@@ -41,6 +86,7 @@ namespace SPMeta2.Models
         public ModelNode()
         {
             ChildModels = new Collection<ModelNode>();
+            Options = new ModelNodeOptions();
 
             ModelEvents = new Dictionary<ModelEventType, List<object>>();
             ModelContextEvents = new Dictionary<ModelEventType, List<object>>();
@@ -62,6 +108,11 @@ namespace SPMeta2.Models
         }
 
         #endregion
+
+        /// <summary>
+        /// Allows to adjust particular mode node processing behaviour.
+        /// </summary>
+        public ModelNodeOptions Options { get; set; }
 
         public DefinitionBase Value { get; set; }
         public Collection<ModelNode> ChildModels { get; set; }

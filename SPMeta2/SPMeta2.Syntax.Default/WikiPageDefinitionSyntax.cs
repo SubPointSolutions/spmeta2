@@ -20,5 +20,19 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region host override
+
+        public static ModelNode AddHostWikiPage(this ModelNode model, WikiPageDefinition definition)
+        {
+            return AddHostWikiPage(model, definition, null);
+        }
+
+        public static ModelNode AddHostWikiPage(this ModelNode model, WikiPageDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        #endregion
     }
 }

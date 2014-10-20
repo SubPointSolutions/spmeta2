@@ -202,7 +202,7 @@ namespace SPMeta2.Services
             // spsite -> spweb -> spcontentype -> spcontentypelink
 
             // process current model
-            if (modelDefinition.RequireSelfProcessing)
+            if (modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
             {
                 _activeModelNode = modelNode;
 

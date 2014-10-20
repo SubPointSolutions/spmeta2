@@ -23,7 +23,7 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Internal usage only. Will be removed in future versions of SPMeta2 library.
         /// </summary>
-        [Obsolete]
+        [Obsolete("Please use AddHostXXX syntax to setup RequireSelfProcessing on the particular model node. RequireSelfProcessing property will be removed from the future releases of SPMeta2 library.")]
         public virtual bool RequireSelfProcessing { get; set; }
 
         #endregion

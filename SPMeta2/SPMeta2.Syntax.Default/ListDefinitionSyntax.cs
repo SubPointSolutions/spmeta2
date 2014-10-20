@@ -30,9 +30,7 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddHostList(this ModelNode model, ListDefinition definition, Action<ModelNode> action)
         {
-            definition.RequireSelfProcessing = false;
-
-            return model.AddList(definition, action);
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion
