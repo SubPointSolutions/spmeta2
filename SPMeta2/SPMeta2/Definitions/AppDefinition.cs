@@ -14,7 +14,7 @@ namespace SPMeta2.Definitions
     /// Allows to install SharePoint application to the target web.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPAppInstance", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.AppPrincipal", "Microsoft.SharePoint.Client")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.AppInstance", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
