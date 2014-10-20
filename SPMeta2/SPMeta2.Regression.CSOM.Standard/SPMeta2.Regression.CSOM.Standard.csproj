@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
+    <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ClientTaxonomyFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyGroupDefinitionValidator.cs" />

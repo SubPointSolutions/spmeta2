@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
@@ -35,9 +37,70 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             DeployImageRenditionSettings(modelHost, siteModelHost, navigationModel);
         }
 
-        private void DeployImageRenditionSettings(object modelHost, SiteModelHost siteModelHost, ImageRenditionDefinition navigationModel)
+        protected ImageRendition GetCurrentImageRendition(IList<ImageRendition> renditions, ImageRenditionDefinition imageRenditionModel)
         {
+            return renditions.FirstOrDefault(r =>
+               !string.IsNullOrEmpty(r.Name) &&
+               String.Equals(r.Name, imageRenditionModel.Name, StringComparison.CurrentCultureIgnoreCase));
+        }
 
+        private void DeployImageRenditionSettings(object modelHost, SiteModelHost siteModelHost,
+            ImageRenditionDefinition imageRenditionModel)
+        {
+            var context = siteModelHost.HostSite.Context;
+            var renditions = SiteImageRenditions.GetRenditions(siteModelHost.HostSite.Context);
+            context.ExecuteQuery();
+
+            var currentRendition = GetCurrentImageRendition(renditions, imageRenditionModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentRendition,
+                ObjectType = typeof(ImageRendition),
+                ObjectDefinition = imageRenditionModel,
+                ModelHost = modelHost
+            });
+
+            if (currentRendition == null)
+            {
+                var newRendition = new ImageRendition
+                 {
+                     Name = imageRenditionModel.Name,
+                     Width = imageRenditionModel.Width,
+                     Height = imageRenditionModel.Height
+                 };
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newRendition,
+                    ObjectType = typeof(ImageRendition),
+                    ObjectDefinition = imageRenditionModel,
+                    ModelHost = modelHost
+                });
+
+                renditions.Add(newRendition);
+                SiteImageRenditions.SetRenditions(context, renditions);
+                context.ExecuteQuery();
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentRendition,
+                    ObjectType = typeof(ImageRendition),
+                    ObjectDefinition = imageRenditionModel,
+                    ModelHost = modelHost
+                });
+            }
         }
 
 
