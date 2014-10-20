@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SPMeta2.Standard.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
+    <Compile Include="Definitions\ImageRenditionDefinition.cs" />
     <Compile Include="Definitions\PublishingPageDefinition.cs" />
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="Enumerations\BuiltInInternalPublishingFieldNames.cs" />

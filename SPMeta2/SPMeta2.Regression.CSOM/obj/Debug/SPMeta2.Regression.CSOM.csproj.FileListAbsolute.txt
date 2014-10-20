@@ -61,6 +61,7 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\Microsoft.SharePoint.C
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.Reports.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.Reports.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.XML
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
@@ -69,8 +70,11 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.CSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.CSOM.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\obj\Debug\SPMeta2.Regression.CSOM.csprojResolveAssemblyReference.cache

@@ -173,6 +173,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
+        public void CanDeployRandom_ImageRenditionDefinition()
+        {
+            TestRandomDefinition<ImageRenditionDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_BusinessDataFieldDefinition()
         {
             TestRandomDefinition<BusinessDataFieldDefinition>();

@@ -36,7 +36,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                 //
                 // We try to add new list, so SPListCollection is invalidated.
                 // Surely, we won't save this list.
-                var tmpList = web.Lists.Add(System.Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
+                try
+                {
+                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
+                    var tmpList = web.Lists[tmpListId];
+                    tmpList.Delete();
+                }
+                catch (Exception)
+                {
+                }
+
                 var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
 
                 var listModelHost = new ListModelHost

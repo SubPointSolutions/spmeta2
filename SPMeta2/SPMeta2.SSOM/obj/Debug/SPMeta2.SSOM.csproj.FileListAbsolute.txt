@@ -63,6 +63,7 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\Microsoft.SharePoint.Search.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\Microsoft.Web.CommandUI.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\W.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.PublishingPageTemplates.resources
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.WebPartPageTemplates.resources
