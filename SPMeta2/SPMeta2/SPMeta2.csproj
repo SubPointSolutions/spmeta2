@@ -62,7 +62,6 @@
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
-    <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />
@@ -86,8 +85,6 @@
     <Compile Include="Definitions\ContentTypes\HideContentTypeLinksDefinition.cs" />
     <Compile Include="Definitions\ContentTypes\UniqueContentTypeOrderDefinition.cs" />
     <Compile Include="Definitions\Webparts\ClientWebPartDefinition.cs" />
-    <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
-    <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ScriptEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentEditorWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ListViewWebPartDefinition.cs" />
@@ -164,6 +161,7 @@
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\TraseServiceBase.cs" />
+    <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />

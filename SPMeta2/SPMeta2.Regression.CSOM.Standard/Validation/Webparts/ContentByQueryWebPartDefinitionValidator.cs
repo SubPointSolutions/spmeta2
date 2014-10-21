@@ -4,6 +4,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts

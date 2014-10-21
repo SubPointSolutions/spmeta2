@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions.Base;
+using SPMeta2.Definitions;
 
-namespace SPMeta2.Definitions.Webparts
+namespace SPMeta2.Standard.Definitions.Webparts
 {
     /// <summary>
     /// Allows to define and deploy 'Contact' web part.

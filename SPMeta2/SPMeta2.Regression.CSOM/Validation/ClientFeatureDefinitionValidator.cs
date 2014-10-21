@@ -36,13 +36,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 case FeatureDefinitionScope.Farm:
                     throw new SPMeta2NotImplementedException("Farm features are not supported in CSOM.");
-                    break;
-
+                
                 case FeatureDefinitionScope.WebApplication:
 
                     throw new SPMeta2NotImplementedException("WebApplication features are not supported in CSOM.");
-                    break;
-
+            
                 case FeatureDefinitionScope.Site:
 
                     assert.SkipProperty(m => m.Scope, "Correct site scope");

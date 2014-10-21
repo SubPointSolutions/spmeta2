@@ -64,7 +64,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     {
                         Tag = p.Tag,
                         Src = srcProp,
-                        ///Dst = dstProp,
+                        //Dst = dstProp,
                         IsValid = isValidPageLayoutTemplate
                     };
                 });
@@ -96,7 +96,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     {
                         Tag = p.Tag,
                         Src = srcProp,
-                        ///Dst = dstProp,
+                        //Dst = dstProp,
                         IsValid = isValidPageLayoutTemplate
                     };
                 });

@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
 

@@ -120,6 +120,10 @@
       <Project>{2b5ca105-8d61-4704-b9ce-c1cba53aaab0}</Project>
       <Name>SPMeta2.Regression</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Standard\SPMeta2.Standard.csproj">
+      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
+      <Name>SPMeta2.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>

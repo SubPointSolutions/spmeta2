@@ -20,6 +20,9 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Runners.O365
 {
+    /// <summary>
+    /// O365 container runner implementation.
+    /// </summary>
     public class O365ProvisionRunner : ProvisionRunnerBase
     {
         #region constructors
@@ -67,10 +70,24 @@ namespace SPMeta2.Regression.Runners.O365
 
         #region properties
 
+        /// <summary>
+        /// Target site URLs
+        /// </summary>
         public List<string> SiteUrls { get; set; }
+
+        /// <summary>
+        /// Target web URLs
+        /// </summary>
         public List<string> WebUrls { get; set; }
 
+        /// <summary>
+        /// User name
+        /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// User password
+        /// </summary>
         public string UserPassword { get; set; }
 
         private CSOMProvisionService _provisionService;
@@ -81,6 +98,13 @@ namespace SPMeta2.Regression.Runners.O365
 
         #region methods
 
+
+        /// <summary>
+        /// Resolves full name of the target type.
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
         public override string ResolveFullTypeName(string typeName, string assemblyName)
         {
             var type = typeof(Field);
@@ -91,6 +115,10 @@ namespace SPMeta2.Regression.Runners.O365
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
 
+        /// <summary>
+        /// Deploys and validates target site model.
+        /// </summary>
+        /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
             foreach (var siteUrl in SiteUrls)
@@ -113,27 +141,31 @@ namespace SPMeta2.Regression.Runners.O365
             }
         }
 
+        /// <summary>
+        /// Deploys and validates target web model.
+        /// </summary>
+        /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
             foreach (var webUrl in WebUrls)
             {
                 Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-                
-                    WithO365Context(webUrl, context =>
+
+                WithO365Context(webUrl, context =>
+                {
+                    for (var provisionGeneration = 0;
+                        provisionGeneration < ProvisionGenerationCount;
+                        provisionGeneration++)
                     {
-                        for (var provisionGeneration = 0;
-                            provisionGeneration < ProvisionGenerationCount;
-                            provisionGeneration++)
-                        {
 
-                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-                            if (EnableDefinitionValidation)
-                                _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                        }
-                    });
-                
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                    }
+                });
+
             }
         }
 
@@ -155,11 +187,23 @@ namespace SPMeta2.Regression.Runners.O365
 
         #endregion
 
+        /// <summary>
+        /// Invokes target action under O365 client context.
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        /// <param name="action"></param>
         public void WithO365Context(string siteUrl, Action<ClientContext> action)
         {
             WithO365Context(siteUrl, UserName, UserPassword, action);
         }
 
+        /// <summary>
+        /// Invokes target action under O365 client context.
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        /// <param name="userName"></param>
+        /// <param name="userPassword"></param>
+        /// <param name="action"></param>
         private void WithO365Context(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
             using (var context = new ClientContext(siteUrl))

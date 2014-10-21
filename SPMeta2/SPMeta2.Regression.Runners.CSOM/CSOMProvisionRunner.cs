@@ -69,10 +69,24 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         #region properties
 
+        /// <summary>
+        /// User name
+        /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// User password
+        /// </summary>
         public string UserPassword { get; set; }
 
+        /// <summary>
+        /// Target site URLs
+        /// </summary>
         public List<string> SiteUrls { get; set; }
+
+        /// <summary>
+        /// Target web URLs
+        /// </summary>
         public List<string> WebUrls { get; set; }
 
         private CSOMProvisionService _provisionService;
@@ -82,6 +96,12 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         #region methods
 
+        /// <summary>
+        /// Resolves full name of the target type.
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
         public override string ResolveFullTypeName(string typeName, string assemblyName)
         {
             var type = typeof(Field);
@@ -92,6 +112,10 @@ namespace SPMeta2.Regression.Runners.CSOM
             return base.ResolveFullTypeName(typeName, assemblyName);
         }
 
+        /// <summary>
+        /// Deploys and validates target site model.
+        /// </summary>
+        /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
             foreach (var siteUrl in SiteUrls)
@@ -111,6 +135,11 @@ namespace SPMeta2.Regression.Runners.CSOM
             }
         }
 
+
+        /// <summary>
+        /// Deploys and validates target web model.
+        /// </summary>
+        /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
             foreach (var webUrl in WebUrls)
@@ -150,11 +179,23 @@ namespace SPMeta2.Regression.Runners.CSOM
 
         #endregion
 
+        /// <summary>
+        /// Invokes given action under CSOM client context.
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        /// <param name="action"></param>
         public void WithCSOMContext(string siteUrl, Action<ClientContext> action)
         {
             WithCSOMContext(siteUrl, UserName, UserPassword, action);
         }
 
+        /// <summary>
+        /// Invokes given action under CSOM client context.
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        /// <param name="userName"></param>
+        /// <param name="userPassword"></param>
+        /// <param name="action"></param>
         private void WithCSOMContext(string siteUrl, string userName, string userPassword, Action<ClientContext> action)
         {
             using (var context = new ClientContext(siteUrl))

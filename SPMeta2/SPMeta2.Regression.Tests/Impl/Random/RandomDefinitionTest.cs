@@ -16,6 +16,7 @@ using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Regression.Utils;
