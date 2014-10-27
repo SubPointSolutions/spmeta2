@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Configuration;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -54,6 +55,19 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public bool Override { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SP2013WorkflowDefinition>(this)
+                          .AddPropertyValue(p => p.DisplayName)
+                          .AddPropertyValue(p => p.Override)
+
+                          .ToString();
+        }
 
         #endregion
     }

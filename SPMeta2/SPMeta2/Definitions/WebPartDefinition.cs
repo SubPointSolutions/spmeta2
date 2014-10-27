@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -25,6 +26,27 @@ namespace SPMeta2.Definitions
         public WebPartDefinition()
         {
 
+        }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WebPartDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Id)
+                          .AddPropertyValue(p => p.ZoneId)
+                          .AddPropertyValue(p => p.ZoneIndex)
+
+                          .AddPropertyValue(p => p.WebpartFileName)
+                          .AddPropertyValue(p => p.WebpartType)
+                // TODO, this is too big to put into ToString()
+                //.AddPropertyValue(p => p.WebpartXmlTemplate)
+
+                          .AddPropertyValue(p => p.AddToPageContent)
+                          .ToString();
         }
 
         #endregion

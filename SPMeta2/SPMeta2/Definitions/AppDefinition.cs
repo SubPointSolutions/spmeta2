@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -37,6 +38,18 @@ namespace SPMeta2.Definitions
         /// A valid Version string of the target application.
         /// </summary>
         public string Version { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<AppDefinition>(this)
+                          .AddPropertyValue(p => p.ProductId)
+                          .AddPropertyValue(p => p.Version)
+                          .ToString();
+        }
 
         #endregion
     }

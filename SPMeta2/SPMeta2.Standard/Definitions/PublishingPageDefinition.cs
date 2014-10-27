@@ -2,6 +2,7 @@
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -48,8 +49,10 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return string.Format("Title:[{0}] FileName:[{1}] PageLayoutFileName:[{2}]",
-                new[] { Title, FileName, PageLayoutFileName });
+            return new ToStringResult<PublishingPageDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.PageLayoutFileName)
+                          .AddPropertyValue(p => p.Description)
+                          .ToString();
         }
 
         #endregion

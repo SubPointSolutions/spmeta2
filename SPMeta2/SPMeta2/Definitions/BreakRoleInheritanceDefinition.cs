@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -30,6 +31,19 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public bool ForceClearSubscopes { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<BreakRoleInheritanceDefinition>(this)
+                          .AddPropertyValue(p => p.CopyRoleAssignments)
+                          .AddPropertyValue(p => p.ClearSubscopes)
+                          .AddPropertyValue(p => p.ForceClearSubscopes)
+                          .ToString();
+        }
 
         #endregion
     }

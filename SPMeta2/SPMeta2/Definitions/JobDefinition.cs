@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -48,6 +49,19 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public string ScheduleString { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<JobDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.JobType)
+                          .AddPropertyValue(p => p.ScheduleString)
+                          .ToString();
+        }
 
         #endregion
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -71,6 +72,22 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public FeatureDefinitionScope Scope { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<FeatureDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Id)
+                          .AddPropertyValue(p => p.Scope)
+                          .AddPropertyValue(p => p.Enable)
+                          .AddPropertyValue(p => p.ForceActivate)
+
+                          .ToString();
+        }
 
         #endregion
     }

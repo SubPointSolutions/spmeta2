@@ -1,6 +1,8 @@
 ﻿using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
+using SPMeta2.Utils;
+
 namespace SPMeta2.Definitions
 {
     /// <summary>
@@ -21,6 +23,17 @@ namespace SPMeta2.Definitions
         #region properties
 
         public string Content { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WikiPageDefinition>(this, base.ToString())
+                         
+                          .ToString();
+        }
 
         #endregion
     }

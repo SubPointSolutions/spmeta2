@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -27,6 +28,17 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public string LoginName { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ManagedAccountDefinition>(this)
+                          .AddPropertyValue(p => p.LoginName)
+                          .ToString();
+        }
 
         #endregion
     }

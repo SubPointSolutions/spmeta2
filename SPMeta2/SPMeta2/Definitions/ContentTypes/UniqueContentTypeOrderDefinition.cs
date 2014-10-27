@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
@@ -16,6 +17,14 @@ namespace SPMeta2.Definitions.ContentTypes
     {
         public string InternalName { get; set; }
         public Guid? Id { get; set; }
+
+        public override string ToString()
+        {
+            return new ToStringResult<FieldLinkValue>(this)
+                         .AddPropertyValue(p => p.InternalName)
+                         .AddPropertyValue(p => p.Id)
+                         .ToString();
+        }
     }
 
     /// <summary>
@@ -42,6 +51,17 @@ namespace SPMeta2.Definitions.ContentTypes
         #region properties
 
         public List<ContentTypeLinkValue> ContentTypes { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<UniqueContentTypeOrderDefinition>(this)
+                          .AddPropertyValue(p => p.ContentTypes)
+                          .ToString();
+        }
 
         #endregion
     }

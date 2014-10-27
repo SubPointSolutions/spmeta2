@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -43,6 +44,19 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         public bool Activate { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SandboxSolutionDefinition>(this)
+                          .AddPropertyValue(p => p.FileName)
+                          .AddPropertyValue(p => p.SolutionId)
+                          .AddPropertyValue(p => p.Activate)
+                          .ToString();
+        }
 
         #endregion
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -22,6 +23,8 @@ namespace SPMeta2.Definitions
 
     public class WebApplicationDefinition : DefinitionBase
     {
+        #region properties
+
         /// <summary>
         /// Application pool is of the target web application.
         /// </summary>
@@ -103,5 +106,28 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public bool UseNTLMExclusively { get; set; }
+
+        #endregion
+
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WebApplicationDefinition>(this)
+                          .AddPropertyValue(p => p.HostHeader)
+                          .AddPropertyValue(p => p.Port)
+
+                          .AddPropertyValue(p => p.CreateNewDatabase)
+                          .AddPropertyValue(p => p.DatabaseServer)
+                          .AddPropertyValue(p => p.DatabaseName)
+
+                          .AddPropertyValue(p => p.ApplicationPoolId)
+                          .AddPropertyValue(p => p.UseSecureSocketsLayer)
+                          .AddPropertyValue(p => p.ManagedAccount)
+                          .ToString();
+        }
+
+        #endregion
     }
 }

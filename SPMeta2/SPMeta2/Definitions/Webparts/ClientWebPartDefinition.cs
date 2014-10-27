@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -28,6 +29,21 @@ namespace SPMeta2.Definitions.Webparts
         public Guid ProductWebId { get; set; }
 
         public string WebPartName { get; set; }
+
+        #endregion
+
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ClientWebPartDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.FeatureId)
+                          .AddPropertyValue(p => p.ProductId)
+                          .AddPropertyValue(p => p.ProductWebId)
+                          .AddPropertyValue(p => p.WebPartName)
+                          .ToString();
+        }
 
         #endregion
     }

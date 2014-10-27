@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -51,6 +52,20 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         public bool IsVisible { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<NavigationNodeDefinitionBase>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Url)
+                          .AddPropertyValue(p => p.IsExternal)
+                          .AddPropertyValue(p => p.IsVisible)
+                          .ToString();
+        }
 
         #endregion
     }

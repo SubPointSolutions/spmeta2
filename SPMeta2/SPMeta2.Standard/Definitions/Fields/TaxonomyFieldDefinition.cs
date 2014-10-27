@@ -3,6 +3,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions.Fields
 {
@@ -46,6 +47,31 @@ namespace SPMeta2.Standard.Definitions.Fields
         public string TermName { get; set; }
         public Guid? TermId { get; set; }
         public int TermLCID { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<TaxonomyFieldDefinition>(this, base.ToString())
+
+                          .AddPropertyValue(p => p.IsMulti)
+                
+                          .AddPropertyValue(p => p.SspName)
+                          .AddPropertyValue(p => p.SspId)
+                          .AddPropertyValue(p => p.UseDefaultSiteCollectionTermStore)
+
+                          .AddPropertyValue(p => p.TermSetName)
+                          .AddPropertyValue(p => p.TermSetId)
+                          .AddPropertyValue(p => p.TermSetLCID)
+
+                          .AddPropertyValue(p => p.TermName)
+                          .AddPropertyValue(p => p.TermId)
+                          .AddPropertyValue(p => p.TermLCID)
+
+                          .ToString();
+        }
 
         #endregion
     }

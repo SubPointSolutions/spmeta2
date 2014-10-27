@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -42,6 +43,20 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public bool Overwrite { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<PropertyDefinition>(this)
+                          .AddPropertyValue(p => p.Key)
+                          .AddPropertyValue(p => p.Value)
+                          .AddPropertyValue(p => p.Overwrite)
+
+                          .ToString();
+        }
 
         #endregion
     }

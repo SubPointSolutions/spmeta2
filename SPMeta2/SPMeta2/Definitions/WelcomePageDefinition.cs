@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -22,6 +23,18 @@ namespace SPMeta2.Definitions
         /// A web relative URL to the target page.
         /// </summary>
         public string Url { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WelcomePageDefinition>(this)
+                          .AddPropertyValue(p => p.Url)
+                        
+                          .ToString();
+        }
 
         #endregion
     }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -50,6 +51,18 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public object Value { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ListItemFieldValueDefinition>(this)
+                          .AddPropertyValue(p => p.FieldName)
+                          .AddPropertyValue(p => p.FieldId)
+                          .ToString();
+        }
 
         #endregion
     }

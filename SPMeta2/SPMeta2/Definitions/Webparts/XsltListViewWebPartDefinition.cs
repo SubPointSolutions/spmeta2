@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -29,6 +30,22 @@ namespace SPMeta2.Definitions.Webparts
 
         public string ViewName { get; set; }
         public Guid? ViewId { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<XsltListViewWebPartDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.ListTitle)
+                          .AddPropertyValue(p => p.ListUrl)
+                          .AddPropertyValue(p => p.ListId)
+
+                          .AddPropertyValue(p => p.ViewName)
+                          .AddPropertyValue(p => p.ViewId)
+                          .ToString();
+        }
 
         #endregion
     }

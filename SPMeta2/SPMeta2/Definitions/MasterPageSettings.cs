@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using System.Linq.Expressions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -28,5 +33,20 @@ namespace SPMeta2.Definitions
         public string SystemMasterPageInheritFromMaster { get; set; }
 
         #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<MasterPageSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.SiteMasterPageUrl)
+                          .AddPropertyValue(p => p.SiteMasterPageInheritFromMaster)
+                          .AddPropertyValue(p => p.SystemMasterPageUrl)
+                          .AddPropertyValue(p => p.SystemMasterPageInheritFromMaster)
+                          .ToString();
+        }
+
+        #endregion
     }
+
 }

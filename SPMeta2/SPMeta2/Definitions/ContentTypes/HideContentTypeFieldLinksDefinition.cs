@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
@@ -30,6 +31,17 @@ namespace SPMeta2.Definitions.ContentTypes
         #region properties
 
         public List<FieldLinkValue> Fields { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<HideContentTypeFieldLinksDefinition>(this)
+                          .AddPropertyValue(p => p.Fields)
+                          .ToString();
+        }
 
         #endregion
     }

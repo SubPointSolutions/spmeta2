@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -51,6 +52,19 @@ namespace SPMeta2.Definitions
         /// Overwrite flag
         /// </summary>
         public bool Overwrite { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ModuleFileDefinition>(this)
+                          .AddPropertyValue(p => p.FileName)
+                          .AddPropertyValue(p => p.Overwrite)
+
+                          .ToString();
+        }
 
         #endregion
     }

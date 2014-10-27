@@ -7,6 +7,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -79,6 +80,22 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public Collection<string> EventTypes { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SP2013WorkflowSubscriptionDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.WorkflowDisplayName)
+                          .AddPropertyValue(p => p.HistoryListUrl)
+                          .AddPropertyValue(p => p.TaskListUrl)
+                          .AddPropertyValue(p => p.EventTypes)
+
+                          .ToString();
+        }
 
         #endregion
     }

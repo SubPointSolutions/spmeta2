@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -64,6 +65,26 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
 
         public string BdcFieldName { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<BusinessDataFieldDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Description)
+                          .AddPropertyValue(p => p.InternalName)
+                          .AddPropertyValue(p => p.Id)
+                          .AddPropertyValue(p => p.Group)
+
+                          .AddPropertyValue(p => p.SystemInstanceName)
+                          .AddPropertyValue(p => p.EntityNamespace)
+                          .AddPropertyValue(p => p.EntityName)
+                          .AddPropertyValue(p => p.BdcFieldName)
+                          .ToString();
+        }
 
         #endregion
     }

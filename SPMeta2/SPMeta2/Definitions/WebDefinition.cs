@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -87,6 +88,24 @@ namespace SPMeta2.Definitions
         /// Custom web template name of the target web.
         /// </summary>
         public string CustomWebTemplate { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WebDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Description)
+                          .AddPropertyValue(p => p.LCID)
+                          .AddPropertyValue(p => p.UseUniquePermission)
+                          .AddPropertyValue(p => p.Url)
+                          .AddPropertyValue(p => p.WebTemplate)
+                          .AddPropertyValue(p => p.CustomWebTemplate)
+
+                          .ToString();
+        }
 
         #endregion
     }

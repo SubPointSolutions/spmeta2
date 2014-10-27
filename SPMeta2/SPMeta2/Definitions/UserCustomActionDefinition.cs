@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -121,6 +122,27 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public string RegistrationType { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<UserCustomActionDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.Url)
+                          .AddPropertyValue(p => p.Location)
+                          .AddPropertyValue(p => p.RegistrationId)
+                          .AddPropertyValue(p => p.RegistrationId)
+
+                          .AddPropertyValue(p => p.Sequence)
+
+                          .AddPropertyValue(p => p.ScriptSrc)
+                          .AddPropertyValue(p => p.ScriptBlock)
+                          .ToString();
+        }
 
         #endregion
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -37,6 +38,17 @@ namespace SPMeta2.Definitions
         public Guid FieldId { get; set; }
 
         #endregion
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ListFieldLinkDefinition>(this)
+                          .AddPropertyValue(p => p.FieldId)
+                          .ToString();
+        }
 
         #endregion
     }

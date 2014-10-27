@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -39,6 +41,18 @@ namespace SPMeta2.Definitions
         /// Locale for the current solution.
         /// </summary>
         public int LCID { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<FarmSolutionDefinition>(this)
+                          .AddPropertyValue(p => p.FileName)
+                          .AddPropertyValue(p => p.LCID)
+                          .ToString();
+        }
 
         #endregion
     }

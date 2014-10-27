@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -43,6 +44,18 @@ namespace SPMeta2.Standard.Definitions
 
         public int? CurrentNavigationMaximumNumberOfDynamicItems { get; set; }
 
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WebNavigationSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.GlobalNavigationSource)
+                          .AddPropertyValue(p => p.CurrentNavigationSource)
+                          .ToString();
+        }
 
         #endregion
     }

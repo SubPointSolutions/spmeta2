@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -40,6 +41,19 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public string PrefixType { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<PrefixDefinition>(this)
+                          .AddPropertyValue(p => p.Path)
+                          .AddPropertyValue(p => p.PrefixType)
+
+                          .ToString();
+        }
 
         #endregion
     }

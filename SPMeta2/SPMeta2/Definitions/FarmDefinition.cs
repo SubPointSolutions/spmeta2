@@ -5,6 +5,7 @@ using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Attributes;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -18,6 +19,16 @@ namespace SPMeta2.Definitions
     public class FarmDefinition : DefinitionBase
     {
         #region properties
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<FarmDefinition>(this)
+                          .ToString();
+        }
 
         #endregion
     }

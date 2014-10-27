@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,14 @@ namespace SPMeta2.Definitions
 
     public class QuickLaunchNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
+        #region methods
 
+        public override string ToString()
+        {
+            return new ToStringResult<QuickLaunchNavigationNodeDefinition>(this, base.ToString())
+                          .ToString();
+        }
+
+        #endregion
     }
 }

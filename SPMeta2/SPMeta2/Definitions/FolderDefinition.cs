@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -31,6 +32,18 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public string Name { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<FolderDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+
+                          .ToString();
+        }
 
         #endregion
     }

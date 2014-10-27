@@ -3,6 +3,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
@@ -33,6 +34,19 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public Guid? Id { get; set; }
 
         public int LCID { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<TaxonomyTermDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.Id)
+                          .AddPropertyValue(p => p.LCID)
+                          .ToString();
+        }
 
         #endregion
     }

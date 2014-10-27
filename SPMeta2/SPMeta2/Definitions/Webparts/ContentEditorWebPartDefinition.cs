@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -25,6 +26,18 @@ namespace SPMeta2.Definitions.Webparts
 
         public string Content { get; set; }
         public string ContentLink { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ContentEditorWebPartDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.Content)
+                          .AddPropertyValue(p => p.ContentLink)
+                          .ToString();
+        }
 
         #endregion
     }

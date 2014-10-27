@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -67,6 +68,21 @@ namespace SPMeta2.Definitions
         //public byte[] Content { get; set; }
 
         // TODO, serializable dictionary for propertied such as content type and so on
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ListItemDefinition>(this)
+                          .AddPropertyValue(p => p.Title)
+                          .AddPropertyValue(p => p.Overwrite)
+                          .AddPropertyValue(p => p.SystemUpdate)
+                          .AddPropertyValue(p => p.SystemUpdateIncrementVersionNumber)
+                          .AddPropertyValue(p => p.UpdateOverwriteVersion)
+                          .ToString();
+        }
 
         #endregion
     }

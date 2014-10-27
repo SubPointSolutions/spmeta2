@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -24,5 +25,14 @@ namespace SPMeta2.Definitions
 
     public class TopNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<TopNavigationNodeDefinition>(this, base.ToString())
+                          .ToString();
+        }
+
+        #endregion
     }
 }

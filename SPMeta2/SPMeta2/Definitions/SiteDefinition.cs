@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -129,7 +130,20 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string DatabaseName { get; set; }
 
+        #endregion
 
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SiteDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.Url)
+                          .AddPropertyValue(p => p.SiteTemplate)
+                          .AddPropertyValue(p => p.PrefixName)
+                          .AddPropertyValue(p => p.LCID)
+                          .ToString();
+        }
 
         #endregion
     }

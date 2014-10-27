@@ -2,6 +2,7 @@
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions.Webparts
 {
@@ -39,6 +40,30 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public string MainXslLink { get; set; }
         public string ItemXslLink { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ContentByQueryWebPartDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.DataMappings)
+                          .AddPropertyValue(p => p.DataMappingViewFields)
+
+                          .AddPropertyValue(p => p.ItemLimit)
+
+                          .AddPropertyValue(p => p.WebUrl)
+                          .AddPropertyValue(p => p.ListGuid)
+
+                          .AddPropertyValue(p => p.ItemStyle)
+                          .AddPropertyValue(p => p.GroupStyle)
+
+                          .AddPropertyValue(p => p.MainXslLink)
+                          .AddPropertyValue(p => p.ItemXslLink)
+
+                          .ToString();
+        }
 
         #endregion
     }
