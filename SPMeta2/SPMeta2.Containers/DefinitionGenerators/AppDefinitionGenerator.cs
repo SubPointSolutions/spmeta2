@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Resources;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers.DefinitionGenerators
 {
@@ -20,6 +23,22 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Content = ResourceReaderUtils.ReadFromResourceName(typeof(AppDefinitionGenerator).Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSPHostedApp.app");
             });
         }
+
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            // TODO
+            // sort out sideload feature for O365
+
+            var sideLoadFearture = new FeatureDefinition
+            {
+                Scope = FeatureDefinitionScope.Site,
+                Id = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D"),
+                Enable = true
+            };
+
+            return new[] { sideLoadFearture };
+        }
+
     }
 
     internal static class ResourceReaderUtils

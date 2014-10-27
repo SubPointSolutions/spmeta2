@@ -121,13 +121,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             //if (result == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
             //    result = list.ContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
 
-            /// trying to find by beat match
+            // trying to find by beat match
             if (result == null)
             {
                 // No SPContentTypeCollection.BestMatch() method avialable.
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6356289-expose-spcontenttypecollection-bestmatch-for-csom
 
-                /// TODO, correct best match impl
+                // TODO, correct best match impl
                 foreach (var contentType in list.ContentTypes)
                 {
                     if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeLinkModel.ContentTypeId.ToUpper()))

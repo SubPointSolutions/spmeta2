@@ -206,7 +206,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
             {
-                ///var fileContext = pageFile.Context;
+                //var fileContext = pageFile.Context;
                 var fileListItem = pageFile.ListItemAllFields;
                 var fileContext = pageFile.Context;
 

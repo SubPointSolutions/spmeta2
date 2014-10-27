@@ -93,6 +93,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
+          
             var tmp = rootWeb.ContentTypes.GetById(contentTypeId);
             context.ExecuteQuery();
 

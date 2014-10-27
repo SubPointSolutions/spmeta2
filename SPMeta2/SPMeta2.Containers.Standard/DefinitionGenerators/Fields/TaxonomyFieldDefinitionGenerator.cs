@@ -1,11 +1,9 @@
 ﻿using System;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Fields;
 
-namespace SPMeta2.Containers.DefinitionGenerators.Fields
+namespace SPMeta2.Containers.Standard.DefinitionGenerators.Fields
 {
     public class TaxonomyFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<TaxonomyFieldDefinition>
     {
@@ -23,8 +21,8 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
-                //def.UseDefaultSiteCollectionTermStore = true;
-                def.SspName = "Managed Metadata Application";
+                def.UseDefaultSiteCollectionTermStore = true;
+                //def.SspName = "Managed Metadata Application";
                 def.TermSetName = "Maps";
             });
         }

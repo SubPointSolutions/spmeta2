@@ -32,7 +32,11 @@ namespace SPMeta2.Syntax.Default.Extensions
 
             // TODO, should be extend later
             if (options != null)
+            {
                 modelNode.Options = options;
+
+                definition.RequireSelfProcessing = options.RequireSelfProcessing;
+            }
 
             node.ChildModels.Add(modelNode);
 

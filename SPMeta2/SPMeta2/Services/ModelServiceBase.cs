@@ -266,7 +266,7 @@ namespace SPMeta2.Services
                 //        ProcessModelDeployment(childModelHost, childModel);
                 //});
 
-                /// V2, less optimized version
+                // V2, less optimized version
                 var childModels = modelNode.GetChildModels(childModelType.Key);
 
                 foreach (var childModel in childModels)

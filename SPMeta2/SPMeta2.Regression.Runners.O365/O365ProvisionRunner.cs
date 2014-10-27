@@ -125,19 +125,23 @@ namespace SPMeta2.Regression.Runners.O365
             {
                 Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
-                WithO365Context(siteUrl, context =>
-                {
+               
                     for (var provisionGeneration = 0;
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
                     {
+                         WithO365Context(siteUrl, context =>
+                {
+
                         _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
 
                         if (EnableDefinitionValidation)
                             _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
 
-                    }
                 });
+
+                    }
+                
             }
         }
 
@@ -152,19 +156,21 @@ namespace SPMeta2.Regression.Runners.O365
                 Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
 
-                WithO365Context(webUrl, context =>
+
+                for (var provisionGeneration = 0;
+                    provisionGeneration < ProvisionGenerationCount;
+                    provisionGeneration++)
                 {
-                    for (var provisionGeneration = 0;
-                        provisionGeneration < ProvisionGenerationCount;
-                        provisionGeneration++)
-                    {
+                    WithO365Context(webUrl, context =>
+            {
+                _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                if (EnableDefinitionValidation)
+                    _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-                        if (EnableDefinitionValidation)
-                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                    }
-                });
+            });
+                }
+
 
             }
         }

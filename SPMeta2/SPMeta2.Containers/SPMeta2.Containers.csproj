@@ -53,7 +53,6 @@
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeFieldsOrderDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\BusinessDataFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
@@ -75,7 +74,6 @@
     <Compile Include="DefinitionGenerators\PrefixDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\MasterPageSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PropertyDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\QuickLaunchNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SandboxSolutionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SecurityGroupDefinitionGenerator.cs" />
@@ -85,10 +83,6 @@
     <Compile Include="DefinitionGenerators\SiteDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SP2013WorkflowDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermSetDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyGroupDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyStoreDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />

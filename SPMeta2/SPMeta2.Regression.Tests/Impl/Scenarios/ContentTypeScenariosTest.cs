@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -62,6 +63,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             public FieldDefinition Second { get; set; }
             public FieldDefinition Third { get; set; }
 
+            public ModelNode FirstLink { get; set; }
+            public ModelNode SecondLink { get; set; }
+            public ModelNode ThirdLink { get; set; }
+
             public ContentTypeDefinition ContentType { get; set; }
 
             public ModelNode SiteModel { get; set; }
@@ -99,9 +104,21 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                              result.ContentType = contentType.Value as ContentTypeDefinition;
 
                              contentType
-                                 .AddContentTypeFieldLink(fldFirst)
-                                 .AddContentTypeFieldLink(fldSecond)
-                                 .AddContentTypeFieldLink(fldThird);
+                                 .AddContentTypeFieldLink(fldFirst, link =>
+                                 {
+                                     result.FirstLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 })
+                                 .AddContentTypeFieldLink(fldSecond, link =>
+                                 {
+                                     result.SecondLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 })
+                                 .AddContentTypeFieldLink(fldThird, link =>
+                                 {
+                                     result.ThirdLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 });
 
                              if (contentTypeModelConfig != null)
                                  contentTypeModelConfig(contentType, result);
@@ -166,6 +183,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                           new FieldLinkValue { InternalName = e.Second.InternalName },
                                           new FieldLinkValue { InternalName = e.First.InternalName },
                            }
+                       }, m =>
+                       {
+                           m.OnProvisioned<object>(ctx =>
+                           {
+                               // disable validation on content type field links as they would be deleted by 'RemoveContentTypeFieldLinksDefinition'
+
+                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                           });
                        });
                 });
 
@@ -186,7 +213,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     contentTypeModel
                        .AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
                        {
-                           
+
                            Fields = new List<FieldLinkValue>
                            {
                                           new FieldLinkValue { InternalName = e.Second.InternalName },

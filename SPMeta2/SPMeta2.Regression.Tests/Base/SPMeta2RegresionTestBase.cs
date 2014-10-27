@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using SPMeta2.Models;
 using SPMeta2.Regression.Runners;
 using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Runners.Utils;
@@ -135,8 +136,10 @@ namespace SPMeta2.Regression.Tests.Base
         }
     }
 
+
     public class ProvisionRunnerContext
     {
         public ProvisionRunnerBase Runner { get; set; }
+
     }
 }

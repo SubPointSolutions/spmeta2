@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Standard;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;

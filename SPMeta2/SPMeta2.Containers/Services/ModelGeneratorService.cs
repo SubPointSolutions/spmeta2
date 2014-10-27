@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -21,17 +22,17 @@ namespace SPMeta2.Containers.Services
         public ModelGeneratorService()
         {
             DefinitionGenerators = new Dictionary<Type, DefinitionGeneratorServiceBase>();
-            RegisterDefinitionGenerators();
+
+            RegisterDefinitionGenerators(Assembly.GetExecutingAssembly());
+            RegisterDefinitionGenerators(typeof(ListViewDefinitionGenerator).Assembly);
         }
 
         public Dictionary<Type, DefinitionGeneratorServiceBase> DefinitionGenerators { get; set; }
 
-        private void RegisterDefinitionGenerators()
+        public void RegisterDefinitionGenerators(Assembly targetAssembly)
         {
-            DefinitionGenerators.Clear();
-
             var handlerTypes = ReflectionUtils
-                .GetTypesFromAssembly<DefinitionGeneratorServiceBase>(Assembly.GetExecutingAssembly());
+                .GetTypesFromAssembly<DefinitionGeneratorServiceBase>(targetAssembly);
 
 
             foreach (var handlerType in handlerTypes)

@@ -40,20 +40,7 @@ namespace SPMeta2.Regression.Tests.Base
         {
             ModelGeneratorService = new ModelGeneratorService();
 
-            var handlerTypes = ReflectionUtils
-                .GetTypesFromAssembly<DefinitionGeneratorServiceBase>(typeof(WebNavigationSettingsDefinitionGenerator).Assembly);
-
-
-            foreach (var handlerType in handlerTypes)
-            {
-                var handlerInstance = Activator.CreateInstance(handlerType) as DefinitionGeneratorServiceBase;
-
-                if (handlerInstance != null)
-                {
-                    if (!ModelGeneratorService.DefinitionGenerators.ContainsKey(handlerInstance.TargetType))
-                        ModelGeneratorService.DefinitionGenerators.Add(handlerInstance.TargetType, handlerInstance);
-                }
-            }
+            ModelGeneratorService.RegisterDefinitionGenerators(typeof(WebNavigationSettingsDefinitionGenerator).Assembly);
         }
 
 

@@ -64,6 +64,8 @@
     <Compile Include="Definitions\Taxonomy\TaxonomyTermSetDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermStoreDefinition.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPartBindingService.cs" />
+    <Compile Include="Services\Webparts\ContentByQueryWebPart\FilterValue.cs" />
+    <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
     <Compile Include="Syntax\ContentByQueryWebPartDefinitionSyntax.cs" />

@@ -9,7 +9,7 @@ namespace SPMeta2.SSOM.Extensions
         #region methods
 
         /// <summary>
-        /// SPBug, "name" & "Name" are different (sic!)
+        /// SPBug, "name" and "Name" are different (sic!)
         /// </summary>
         /// <param name="views"></param>
         /// <param name="viewName"></param>

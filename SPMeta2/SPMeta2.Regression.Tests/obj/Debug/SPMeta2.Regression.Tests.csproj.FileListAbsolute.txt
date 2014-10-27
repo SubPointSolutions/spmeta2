@@ -43,7 +43,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Te
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Reports.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.dll
@@ -91,5 +90,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Validation.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb

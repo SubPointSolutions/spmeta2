@@ -41,10 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ImageRenditionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomContainersSyntax.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyGroupDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyStoreDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermSetDefinitionGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">

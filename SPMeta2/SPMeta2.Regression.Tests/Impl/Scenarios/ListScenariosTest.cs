@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -41,6 +42,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             public ContentTypeDefinition Third { get; set; }
 
             public ListDefinition List { get; set; }
+
+            public ModelNode FirstLink { get; set; }
+            public ModelNode SecondLink { get; set; }
+            public ModelNode ThirdLink { get; set; }
 
             public ModelNode SiteModel { get; set; }
             public ModelNode WebModel { get; set; }
@@ -89,9 +94,21 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                          .AddRandomList(list =>
                          {
                              list
-                                 .AddContentTypeLink(ctFirst)
-                                 .AddContentTypeLink(ctSecond)
-                                 .AddContentTypeLink(ctThird);
+                                 .AddContentTypeLink(ctFirst, link =>
+                                 {
+                                     result.FirstLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 })
+                                 .AddContentTypeLink(ctSecond, link =>
+                                 {
+                                     result.SecondLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 })
+                                 .AddContentTypeLink(ctThird, link =>
+                                 {
+                                     result.ThirdLink = link;
+                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                 });
 
                              result.List = list.Value as ListDefinition;
 
@@ -138,6 +155,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                           new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
                                           new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
+                       }, m =>
+                       {
+                           m.OnProvisioned<object>(ctx =>
+                           {
+                               // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
+
+                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                           });
                        });
                 });
 
@@ -175,6 +202,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                           new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
                                           new ContentTypeLinkValue { ContentTypeName = e.First.Name },
                            }
+                       }, m =>
+                       {
+                           m.OnProvisioned<object>(ctx =>
+                           {
+                               // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
+
+                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                           });
                        });
                 });
 

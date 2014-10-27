@@ -13,9 +13,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
             {
                 // TODO
                 // name resolution does not work well with localization
-                //def.SecurityGroupName = "Approvers";
+                def.SecurityGroupName = "Approvers";
 
-                def.IsAssociatedMemberGroup = true;
+                //def.IsAssociatedMemberGroup = true;
             });
         }
     }

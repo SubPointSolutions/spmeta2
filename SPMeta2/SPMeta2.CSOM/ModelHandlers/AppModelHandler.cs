@@ -73,6 +73,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     // install new
                     var newAppInstance = web.LoadAndInstallApp(appPackage);
 
+                    var context = web.Context;
+
+                    context.Load(newAppInstance);
+                    context.ExecuteQuery();
+
                     if (newAppInstance != null && newAppInstance.Status == AppInstanceStatus.Initialized)
                     {
                         appId = newAppInstance.Id;

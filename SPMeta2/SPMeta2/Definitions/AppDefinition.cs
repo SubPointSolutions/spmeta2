@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPAppInstance", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.AppInstance", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
     public class AppDefinition : DefinitionBase
     {

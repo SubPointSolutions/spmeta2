@@ -68,11 +68,14 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\M
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.CSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.CSOM.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Syntax.Default.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.pdb
@@ -80,6 +83,3 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\obj\Debug\SPMeta2.Regression.CSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\obj\Debug\SPMeta2.Regression.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\obj\Debug\SPMeta2.Regression.CSOM.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Standard.xml

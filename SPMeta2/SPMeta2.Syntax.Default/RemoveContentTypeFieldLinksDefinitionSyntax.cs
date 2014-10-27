@@ -13,10 +13,10 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddRemoveContentTypeFieldLinks(this ModelNode model, RemoveContentTypeFieldLinksDefinition definition)
         {
-            return AddHideContentTypeFieldLinks(model, definition, null);
+            return AddRemoveContentTypeFieldLinks(model, definition, null);
         }
 
-        public static ModelNode AddHideContentTypeFieldLinks(this ModelNode model, RemoveContentTypeFieldLinksDefinition definition, Action<ModelNode> action)
+        public static ModelNode AddRemoveContentTypeFieldLinks(this ModelNode model, RemoveContentTypeFieldLinksDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
         }

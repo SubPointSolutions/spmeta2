@@ -2,6 +2,7 @@
 using System.Linq;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Services.Webparts.ContentByQueryWebPart;
+using System;
 
 namespace SPMeta2.Standard.Services.Webparts
 {
@@ -10,6 +11,15 @@ namespace SPMeta2.Standard.Services.Webparts
     /// </summary>
     public class ContentByQueryWebPartBindingService
     {
+        #region constructors
+
+        public ContentByQueryWebPartBindingService()
+        {
+           // Filters = new FilterValues();
+        }
+
+        #endregion
+
         #region properties
 
         private Dictionary<string, List<DataMappingValue>> dataMapping = new Dictionary<string, List<DataMappingValue>>();
@@ -144,6 +154,31 @@ namespace SPMeta2.Standard.Services.Webparts
             return string.Join(";|", resultValues) + ";|";
         }
 
+        public List<FilterPair> Pairs { get; set; }
+
+        public ContentByQueryWebPartBindingService ClearFilter()
+        {
+            //Filters.FilterValue1 = null;
+            //Filters.FilterValue2 = null;
+            //Filters.FilterValue3 = null;
+
+            return this;
+        }
+
+        public ContentByQueryWebPartBindingService Filter(Guid? fieldIs, string value, string displayName, string type, string filtertOperator)
+        {
+           // action(Filters);
+
+            return this;
+        }
+
         #endregion
+
+    }
+
+    public class FilterPair
+    {
+        public FilterValue FilterValue1 { get; set; }
+        public FilterValueChainingOperator FilterValue1ChainOperator { get; set; }
     }
 }

@@ -70,20 +70,6 @@ namespace SPMeta2.Containers
 
         #endregion
 
-        #region publishing pages
-
-        public static ModelNode AddRandomPublishingPage(this ModelNode model)
-        {
-            return AddRandomWebPartPage(model, null);
-        }
-
-        public static ModelNode AddRandomPublishingPage(this ModelNode model, Action<ModelNode> action)
-        {
-            return model.AddRandomDefinition<PublishingPageDefinition>(action);
-        }
-
-        #endregion
-
         #region lists
 
         public static ModelNode AddRandomList(this ModelNode model)
@@ -140,49 +126,7 @@ namespace SPMeta2.Containers
 
         #endregion
 
-        #region taxonomy
-
-        public static ModelNode AddRandomTermStore(this ModelNode model)
-        {
-            return AddRandomTermStore(model, null);
-        }
-
-        public static ModelNode AddRandomTermStore(this ModelNode model, Action<ModelNode> action)
-        {
-            return model.AddRandomDefinition<TaxonomyTermStoreDefinition>(action);
-        }
-
-        public static ModelNode AddRandomTermGroup(this ModelNode model)
-        {
-            return AddRandomTermGroup(model, null);
-        }
-
-        public static ModelNode AddRandomTermGroup(this ModelNode model, Action<ModelNode> action)
-        {
-            return model.AddRandomDefinition<TaxonomyTermGroupDefinition>(action);
-        }
-
-        public static ModelNode AddRandomTermSet(this ModelNode model)
-        {
-            return AddRandomTermSet(model, null);
-        }
-
-        public static ModelNode AddRandomTermSet(this ModelNode model, Action<ModelNode> action)
-        {
-            return model.AddRandomDefinition<TaxonomyTermSetDefinition>(action);
-        }
-
-        public static ModelNode AddRandomTerm(this ModelNode model)
-        {
-            return AddRandomTerm(model, null);
-        }
-
-        public static ModelNode AddRandomTerm(this ModelNode model, Action<ModelNode> action)
-        {
-            return model.AddRandomDefinition<TaxonomyTermDefinition>(action);
-        }
-
-        #endregion
+     
 
         #endregion
 
