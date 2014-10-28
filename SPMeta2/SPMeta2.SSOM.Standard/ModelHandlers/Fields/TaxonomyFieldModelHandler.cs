@@ -56,7 +56,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             var taxSession = new TaxonomySession(site);
             TermStore tesmStore = null;
 
-            if (taxFieldModel.SspId.HasValue)
+            if (taxFieldModel.UseDefaultSiteCollectionTermStore == true)
+                tesmStore = taxSession.DefaultSiteCollectionTermStore;
+            else if (taxFieldModel.SspId.HasValue)
                 tesmStore = taxSession.TermStores[taxFieldModel.SspId.Value];
             else if (!string.IsNullOrEmpty(taxFieldModel.SspName))
                 tesmStore = taxSession.TermStores[taxFieldModel.SspName];

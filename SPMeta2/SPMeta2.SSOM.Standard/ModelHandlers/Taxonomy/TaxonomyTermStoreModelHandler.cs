@@ -50,10 +50,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             var session = new TaxonomySession(site);
             TermStore termStore = null;
 
-            if (termStoreModel.Id.HasValue && termStoreModel.Id != default(Guid))
+            if (termStoreModel.UseDefaultSiteCollectionTermStore == true)
+                termStore = session.DefaultSiteCollectionTermStore;
+            else if (termStoreModel.Id.HasValue && termStoreModel.Id != default(Guid))
                 termStore = session.TermStores[termStoreModel.Id.Value];
             else if (!string.IsNullOrEmpty(termStoreModel.Name))
                 termStore = session.TermStores[termStoreModel.Name];
+
 
             return termStore;
         }
