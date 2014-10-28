@@ -41,7 +41,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         #endregion
     }
 
-    public static class SPListItemHelper
+    internal static class SPListItemHelper
     {
         public static string GetTitle(this ListItem item)
         {

@@ -36,7 +36,6 @@ namespace SPMeta2.SSOM.ModelHandlers
         private void DeploySandboxSolution(object modelHost, SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
         {
             var existingSolutions = FindExistingSolutionFile(siteModelHost, sandboxSolutionDefinition);
-
             var sandboxSolution = FindExistingSolution(siteModelHost, sandboxSolutionDefinition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -55,9 +54,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var solutionGallery = (SPDocumentLibrary)siteModelHost.HostSite.GetCatalog(SPListTemplateType.SolutionCatalog);
             var file = solutionGallery.RootFolder.Files.Add(sandboxSolutionDefinition.FileName, sandboxSolutionDefinition.Content, true);
-
-
-            
 
             if (sandboxSolutionDefinition.Activate)
             {

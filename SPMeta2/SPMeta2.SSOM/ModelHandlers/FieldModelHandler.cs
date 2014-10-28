@@ -195,7 +195,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected virtual void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
         {
             field.Title = fieldModel.Title;
-            field.Group = fieldModel.Group;
+            field.Group = fieldModel.Group ?? string.Empty;
 
             field.Required = fieldModel.Required;
 

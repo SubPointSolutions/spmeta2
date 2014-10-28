@@ -55,7 +55,7 @@ namespace SPMeta2.Utils
 
             var valueString = string.Empty;
 
-            if (value is IEnumerable)
+            if (value is IEnumerable && !(value is string))
             {
                 var enumerableValues = new List<string>();
 
