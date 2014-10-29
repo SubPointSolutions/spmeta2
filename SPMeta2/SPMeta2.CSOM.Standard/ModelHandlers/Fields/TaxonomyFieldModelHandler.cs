@@ -37,15 +37,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             base.ProcessFieldProperties(taxField, fieldModel);
             context.ExecuteQuery();
 
-            taxFieldModel.Description = fieldModel.Description;
-
-            // get values
-            // var session = TaxonomySession.GetTaxonomySession(context);
-
             var termStore = TaxonomyTermStoreModelHandler.FindTermStore(CurrentSiteModelHost,
-              taxFieldModel.SspName,
-              taxFieldModel.SspId,
-             taxFieldModel.UseDefaultSiteCollectionTermStore);
+                                  taxFieldModel.SspName,
+                                  taxFieldModel.SspId,
+                                  taxFieldModel.UseDefaultSiteCollectionTermStore);
 
             if (termStore == null)
                 throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");

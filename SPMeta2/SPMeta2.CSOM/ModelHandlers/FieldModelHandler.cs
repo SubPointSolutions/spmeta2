@@ -26,6 +26,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                     "Title=\"{3}\" " +
                                     "Name=\"{4}\" " +
                                     "Type=\"{5}\" " +
+                                    "Group=\"{6}\" " +
                                     "/>";
 
         #endregion
@@ -273,7 +274,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                                                                              fieldModel.Title,
                                                                              fieldModel.Title,
                                                                              fieldModel.InternalName,
-                                                                             fieldModel.FieldType
+                                                                             fieldModel.FieldType,
+                                                                             fieldModel.Group ?? string.Empty
                                                                          });
         }
 

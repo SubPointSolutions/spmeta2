@@ -65,7 +65,6 @@
     <Compile Include="Definitions\RegWebs.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
-    <Compile Include="Impl\Issues\Issues_2014_10.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\BreakRoleInheritanceScenariousTest.cs" />

@@ -15,6 +15,14 @@ namespace SPMeta2.SSOM.Behaviours
 
         public static SPField MakeChoices(this SPField field, IEnumerable<string> choices, bool clean = false)
         {
+            SetChoiceFieldChoices(field, choices, clean);
+            SetMultiChoiceFieldChoices(field, choices, clean);
+
+            return field;
+        }
+
+        private static SPField SetChoiceFieldChoices(this SPField field, IEnumerable<string> choices, bool clean = false)
+        {
             var choiceField = field as SPFieldChoice;
 
             if (choiceField != null)
@@ -23,7 +31,25 @@ namespace SPMeta2.SSOM.Behaviours
                     choiceField.Choices.Clear();
 
                 foreach (var choice in choices)
-                    choiceField.Choices.Add(choice);
+                    if (!choiceField.Choices.Contains(choice))
+                        choiceField.Choices.Add(choice);
+            }
+
+            return field;
+        }
+
+        private static SPField SetMultiChoiceFieldChoices(this SPField field, IEnumerable<string> choices, bool clean = false)
+        {
+            var choiceField = field as SPFieldMultiChoice;
+
+            if (choiceField != null)
+            {
+                if (clean)
+                    choiceField.Choices.Clear();
+
+                foreach (var choice in choices)
+                    if (!choiceField.Choices.Contains(choice))
+                        choiceField.Choices.Add(choice);
             }
 
             return field;
