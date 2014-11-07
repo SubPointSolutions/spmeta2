@@ -22,6 +22,7 @@ As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for
 <td valign="top" width="50%">
 <ul>
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">About</a></li>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">Documentation</a></li>
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/features">Features</a></li>
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/releases">Releases and roadmap</a></li>
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">Artefact provision</a></li>
@@ -31,7 +32,7 @@ As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for
 <ul>
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/license">License</a></li>
 <li><a style="color: #006adf;" href="http://subpointsolutions.com/services/support">Support</a></li>
-<li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Feature requests</a></li>
+<li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Ideas @ UserVoice</a></li>
 <li><a style="color: #006adf;" href="https://www.yammer.com/spmeta2feedback">Yammer Group</a></li>
 </ul>
 </td>
@@ -76,13 +77,3 @@ This allows us to write integration tests within minutes, make sure deployment a
 SPMeta2 uses [appveyor CI online service](http://www.appveyor.com/) at https://ci.appveyor.com/project/avishnyakov/spmeta2
 
 Learn more here - <a href="https://github.com/SubPointSolutions/spmeta2/wiki/Regression-and-CI">Regression and CI</a>.
-
-
-## Documentation and support
-<ul>
-                    <li><a target="_blank" href="https://github.com/SubPointSolutions/spmeta2">SPMeta2 @ GitHub</a></li>
-                    <li><a target="_blank" href="https://www.nuget.org/packages?q=spmeta2">SPMeta2 @ Nuget</a></li>
-                    <li><a target="_blank" href="https://github.com/SubPointSolutions/spmeta2/wiki">SPMeta2 Documentation Wiki</a></li>
-                    <li><a target="_blank" href="https://github.com/SubPointSolutions/spmeta2/issues">SPMeta2 Bugtracker</a></li>
-                    <li><a target="_blank" href="http://subpointsolutions.github.io/spmeta2/Help">SPMeta2 API Documentation</a></li>
-                </ul>
