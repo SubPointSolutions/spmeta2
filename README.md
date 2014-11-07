@@ -15,6 +15,30 @@ Struggling with SharePoint's API inconsistency, bugs, "by-design" behaviour, una
 
 As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. What's inside? 
 
+## Get started!
+<table style="color: #222222; height: 125px;" width="600">
+<tbody>
+<tr>
+<td valign="top" width="50%">
+<ul>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">About</a></li>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/features">Features</a></li>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/releases">Releases and roadmap</a></li>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">Artefact provision</a></li>
+</ul>
+</td>
+<td valign="top" width="50%">
+<ul>
+<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/license">License</a></li>
+<li><a style="color: #006adf;" href="http://subpointsolutions.com/services/support">Support</a></li>
+<li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Feature requests</a></li>
+<li><a style="color: #006adf;" href="https://www.yammer.com/spmeta2feedback">Yammer Group</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
 ## SPMeta2 philosophy and mission
 ### Fluent API and syntax extensions
 SPMeta2 API allows you to define SharePoint artifacts such as field, content type, list (and many more), define relationships between them and, finally, deploy them via SSOM/CSOM. You work with c# POCO objects defining your data model, we take care about the rest. 
