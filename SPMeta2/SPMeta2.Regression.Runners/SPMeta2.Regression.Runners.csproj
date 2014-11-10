@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\EnvironmentConfig.cs" />
     <Compile Include="Consts\EnvironmentConsts.cs" />
     <Compile Include="ProvisionRunnerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

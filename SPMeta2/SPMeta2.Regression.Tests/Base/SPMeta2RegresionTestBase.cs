@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Utils;
 using SPMeta2.Models;
 using SPMeta2.Regression.Runners;
 using SPMeta2.Regression.Runners.Consts;
-using SPMeta2.Regression.Runners.Utils;
 using SPMeta2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -88,7 +89,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected virtual void InitRunnerTypes()
         {
-            var runnerLibraries = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
+            var runnerLibraries = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
 
             Trace.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.Runners.Utils
 {
-    public static class RunnerEnvironment
+    public static class RunnerEnvironmentUtils
     {
         public static string GetEnvironmentVariable(string varName)
         {

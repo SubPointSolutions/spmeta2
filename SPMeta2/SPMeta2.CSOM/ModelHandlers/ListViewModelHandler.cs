@@ -40,7 +40,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var newView = new ViewCreationInformation
                 {
-                    Title = listViewModel.Title,
+                    Title = string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : listViewModel.Url,
                     RowLimit = (uint)listViewModel.RowLimit,
                     SetAsDefaultView = listViewModel.IsDefault,
                     Paged = listViewModel.IsPaged
@@ -53,6 +53,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     newView.ViewFields = listViewModel.Fields.ToArray();
 
                 currentView = list.Views.Add(newView);
+                currentView.Title = listViewModel.Title;
             }
             else
             {

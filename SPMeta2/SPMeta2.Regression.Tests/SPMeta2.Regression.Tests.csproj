@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -100,10 +101,6 @@
       <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
       <Name>SPMeta2.Containers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
-      <Project>{C69C8205-B0C7-4FDB-B1F6-F4FA77FF95AB}</Project>
-      <Name>SPMeta2.Regression.Runners</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
       <Project>{2b5ca105-8d61-4704-b9ce-c1cba53aaab0}</Project>
       <Name>SPMeta2.Regression</Name>
@@ -126,6 +123,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
+      <Link>SPMeta2.Containers.CSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.O365.dll">
+      <Link>SPMeta2.Containers.O365.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll">
       <Link>SPMeta2.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -182,18 +187,6 @@
       <Link>SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.Runners.CSOM\bin\Debug\SPMeta2.Regression.Runners.CSOM.dll">
-      <Link>SPMeta2.Regression.Runners.CSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Regression.Runners.O365\bin\Debug\SPMeta2.Regression.Runners.O365.dll">
-      <Link>SPMeta2.Regression.Runners.O365.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.Runners.SSOM.dll">
-      <Link>SPMeta2.Regression.Runners.SSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
       <Link>SPMeta2.Regression.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -216,6 +209,9 @@
     </Content>
     <Content Include="..\SPMeta2\bin\Debug\SPMeta2.dll">
       <Link>SPMeta2.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SPMeta2.Containers.SSOM.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

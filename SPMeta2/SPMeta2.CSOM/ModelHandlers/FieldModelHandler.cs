@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
 
@@ -34,6 +35,20 @@ namespace SPMeta2.CSOM.ModelHandlers
         #region methods
 
         protected SiteModelHost CurrentSiteModelHost { get; set; }
+
+        protected Field FindField(object modelHost, FieldDefinition definition)
+        {
+            if (modelHost is SiteModelHost)
+                return FindSiteField(modelHost as SiteModelHost, definition);
+
+            if (modelHost is ListModelHost)
+                return FindListField((modelHost as ListModelHost).HostList, definition);
+
+            throw new SPMeta2NotSupportedException(
+                string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
+                definition.GetType(),
+                modelHost.GetType()));
+        }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {

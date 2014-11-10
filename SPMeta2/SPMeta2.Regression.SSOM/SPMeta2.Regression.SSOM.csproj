@@ -60,6 +60,10 @@
     <Compile Include="Validation\AppDefinitionValidator.cs" />
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\NoteFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\TextFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\CurrencyFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />

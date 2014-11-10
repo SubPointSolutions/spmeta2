@@ -23,6 +23,8 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.ExecuteQuery();
             var spObject = FindViewByTitle(list.Views, definition.Title);
 
+            context.Load(spObject, l => l.ServerRelativeUrl);
+
             var assert = ServiceFactory.AssertService
                           .NewAssert(definition, spObject)
                               .ShouldBeEqual(m => m.Title, o => o.Title)
@@ -31,6 +33,11 @@ namespace SPMeta2.Regression.CSOM.Validation
                               .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                               .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
+
+            if (string.IsNullOrEmpty(definition.Url))
+                assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
+            else
+                assert.ShouldBePartOf(m => m.Url, o => o.ServerRelativeUrl);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
@@ -181,131 +182,136 @@ namespace SPMeta2.Services
 
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
-            InvokeOnModelNodeProcessing(this, new OnModelNodeProcessingEventArgs
+            try
             {
-                ModelNode = modelNode,
-                ModelHost = modelHost
-            });
+                InvokeOnModelNodeProcessing(this, new OnModelNodeProcessingEventArgs
+           {
+               ModelNode = modelNode,
+               ModelHost = modelHost
+           });
 
-            var modelDefinition = modelNode.Value as DefinitionBase;
-            var modelHandler = ResolveModelHandler(modelDefinition.GetType());
+                var modelDefinition = modelNode.Value as DefinitionBase;
+                var modelHandler = ResolveModelHandler(modelDefinition.GetType());
 
-            if (modelHandler == null)
-            {
-                throw new ArgumentNullException(
-                    string.Format("Can't find model handler for type:[{0}]. Current ModelService type: [{1}].",
-                        modelDefinition.GetType(),
-                        GetType()));
-            }
-
-            // modelHandler might change a model host to allow continiuation
-            // spsite -> spweb -> spcontentype -> spcontentypelink
-
-            // process current model
-            if (modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
-            {
-                _activeModelNode = modelNode;
-
-                modelNode.State = ModelNodeState.Processing;
-                modelHandler.DeployModel(modelHost, modelDefinition);
-                modelNode.State = ModelNodeState.Processed;
-
-                _activeModelNode = null;
-            }
-
-            InvokeOnModelNodeProcessed(this, new OnModelNodeProcessedEventArgs
-            {
-                ModelNode = modelNode,
-                ModelHost = modelHost
-            });
-
-            // TODO
-            // here must be a "context change" to provide an ability to continue the
-            // deployment chain with changes from SPWeb to SPList
-
-            // sort out child models by types
-            var modelWeights = GetModelWeighs();
-
-            var childModelTypes = modelNode.ChildModels
-                                       .Select(m => m.Value.GetType())
-                                       .GroupBy(t => t)
-                                       .ToList();
-
-
-            var currentModelWeights = modelWeights.FirstOrDefault(w => w.Model == modelDefinition.GetType());
-
-            if (currentModelWeights != null)
-            {
-                childModelTypes.Sort(delegate(IGrouping<Type, Type> p1, IGrouping<Type, Type> p2)
+                if (modelHandler == null)
                 {
-                    var srcW = int.MaxValue;
-                    var dstW = int.MaxValue;
+                    throw new ArgumentNullException(
+                        string.Format("Can't find model handler for type:[{0}]. Current ModelService type: [{1}].",
+                            modelDefinition.GetType(),
+                            GetType()));
+                }
 
-                    if (currentModelWeights.ChildModels.ContainsKey(p1.Key))
-                        srcW = currentModelWeights.ChildModels[p1.Key];
+                // modelHandler might change a model host to allow continiuation
+                // spsite -> spweb -> spcontentype -> spcontentypelink
 
-                    if (currentModelWeights.ChildModels.ContainsKey(p2.Key))
-                        dstW = currentModelWeights.ChildModels[p2.Key];
+                // process current model
+                if (modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
+                {
+                    _activeModelNode = modelNode;
 
-                    return srcW.CompareTo(dstW);
+                    modelNode.State = ModelNodeState.Processing;
+                    modelHandler.DeployModel(modelHost, modelDefinition);
+                    modelNode.State = ModelNodeState.Processed;
+
+                    _activeModelNode = null;
+                }
+
+                InvokeOnModelNodeProcessed(this, new OnModelNodeProcessedEventArgs
+                {
+                    ModelNode = modelNode,
+                    ModelHost = modelHost
                 });
-            }
+
+                // sort out child models by types
+                var modelWeights = GetModelWeighs();
+
+                var childModelTypes = modelNode.ChildModels
+                                           .Select(m => m.Value.GetType())
+                                           .GroupBy(t => t)
+                                           .ToList();
 
 
-            foreach (var childModelType in childModelTypes)
-            {
-                // V1, optimized one
-                // does not work with nintex workflow as 'List was modified and needs to be refreshed.'
+                var currentModelWeights = modelWeights.FirstOrDefault(w => w.Model == modelDefinition.GetType());
 
-                //var childModels =
-                //        modelNode.GetChildModels(childModelType.Key);
-
-                //modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
-                //{
-                //    foreach (var childModel in childModels)
-                //        ProcessModelDeployment(childModelHost, childModel);
-                //});
-
-                // V2, less optimized version
-                var childModels = modelNode.GetChildModels(childModelType.Key);
-
-                foreach (var childModel in childModels)
+                if (currentModelWeights != null)
                 {
-                    modelHandler.WithResolvingModelHost(new ModelHostResolveContext
+                    childModelTypes.Sort(delegate(IGrouping<Type, Type> p1, IGrouping<Type, Type> p2)
                     {
-                        ModelHost = modelHost,
-                        Model = modelDefinition,
-                        ChildModelType = childModelType.Key,
-                        ModelNode = modelNode,
-                        Action = childModelHost =>
-                        {
-                            ProcessModelDeployment(childModelHost, childModel);
-                        }
+                        var srcW = int.MaxValue;
+                        var dstW = int.MaxValue;
+
+                        if (currentModelWeights.ChildModels.ContainsKey(p1.Key))
+                            srcW = currentModelWeights.ChildModels[p1.Key];
+
+                        if (currentModelWeights.ChildModels.ContainsKey(p2.Key))
+                            dstW = currentModelWeights.ChildModels[p2.Key];
+
+                        return srcW.CompareTo(dstW);
                     });
+                }
+
+                foreach (var childModelType in childModelTypes)
+                {
+                    // V1, optimized one
+                    // does not work with nintex workflow as 'List was modified and needs to be refreshed.'
+
+                    //var childModels =
+                    //        modelNode.GetChildModels(childModelType.Key);
 
                     //modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
                     //{
-                    //    ProcessModelDeployment(childModelHost, childModel);
+                    //    foreach (var childModel in childModels)
+                    //        ProcessModelDeployment(childModelHost, childModel);
                     //});
+
+                    // V2, less optimized version
+                    var childModels = modelNode.GetChildModels(childModelType.Key);
+
+                    foreach (var childModel in childModels)
+                    {
+                        modelHandler.WithResolvingModelHost(new ModelHostResolveContext
+                        {
+                            ModelHost = modelHost,
+                            Model = modelDefinition,
+                            ChildModelType = childModelType.Key,
+                            ModelNode = modelNode,
+                            Action = childModelHost =>
+                            {
+                                ProcessModelDeployment(childModelHost, childModel);
+                            }
+                        });
+
+                        //modelHandler.WithResolvingModelHost(modelHost, modelDefinition, childModelType.Key, childModelHost =>
+                        //{
+                        //    ProcessModelDeployment(childModelHost, childModel);
+                        //});
+                    }
                 }
+            }
+            catch (Exception modelProvisionException)
+            {
+                throw new SPMeta2ModelDeploymentException("Model provision error", modelProvisionException)
+                {
+                    ModelNode = modelNode
+                };
             }
         }
 
         private void RetractSite(object modelHost, ModelNode model)
         {
-            var siteDefinition = model.Value as SiteDefinition;
-            var modelHandler = ResolveModelHandler(siteDefinition.GetType());
+            // var siteDefinition = model.Value as SiteDefinition;
+            // var modelHandler = ResolveModelHandler(siteDefinition.GetType());
         }
 
         private void RetractWeb(object modelHost, ModelNode model)
         {
-            var webDefinition = model.Value as WebDefinition;
-            var modelHandler = ResolveModelHandler(webDefinition.GetType());
+            //var webDefinition = model.Value as WebDefinition;
+            //var modelHandler = ResolveModelHandler(webDefinition.GetType());
 
-            if (modelHandler == null && webDefinition.RequireSelfProcessing)
-                throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", webDefinition.GetType()));
+            //if (modelHandler == null && webDefinition.RequireSelfProcessing)
+            //    throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", webDefinition.GetType()));
 
-            modelHandler.RetractModel(modelHost, webDefinition);
+            //modelHandler.RetractModel(modelHost, webDefinition);
         }
 
         #endregion

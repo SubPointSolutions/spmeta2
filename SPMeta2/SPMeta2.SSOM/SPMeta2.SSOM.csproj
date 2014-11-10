@@ -80,6 +80,10 @@
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeFieldsOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\TextFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\NoteFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\CurrencyFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />

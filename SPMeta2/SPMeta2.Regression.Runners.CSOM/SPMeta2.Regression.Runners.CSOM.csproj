@@ -80,10 +80,6 @@
       <Project>{5a1b98bf-4ea4-4dee-988f-fa62eefc9eb0}</Project>
       <Name>SPMeta2.Regression.CSOM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
-      <Project>{c69c8205-b0c7-4fdb-b1f6-f4fa77ff95ab}</Project>
-      <Name>SPMeta2.Regression.Runners</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Validation\SPMeta2.Validation.csproj">
       <Project>{114d2fe1-02ab-4b1b-bbb1-e184e731b28f}</Project>
       <Name>SPMeta2.Validation</Name>

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04EF5903-B379-4404-8DBC-B21ABE0D1099}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPMeta2.Containers.SSOM</RootNamespace>
+    <AssemblyName>SPMeta2.Containers.SSOM</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SSOMProvisionRunner.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
+      <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.CSOM\SPMeta2.Regression.CSOM.csproj">
+      <Project>{5A1B98BF-4EA4-4DEE-988F-FA62EEFC9EB0}</Project>
+      <Name>SPMeta2.Regression.CSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.SSOM.Standard\SPMeta2.Regression.SSOM.Standard.csproj">
+      <Project>{D81AE83A-BEEF-4099-B354-0B88D7396B25}</Project>
+      <Name>SPMeta2.Regression.SSOM.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression.SSOM\SPMeta2.Regression.SSOM.csproj">
+      <Project>{00E1581F-31D9-493E-AD16-C188AE966458}</Project>
+      <Name>SPMeta2.Regression.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj">
+      <Project>{7D095A0D-0BDE-446D-8093-13E5685F1D3C}</Project>
+      <Name>SPMeta2.SSOM.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
+      <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>
+      <Name>SPMeta2.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

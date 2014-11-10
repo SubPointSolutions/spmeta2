@@ -23,19 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<BusinessDataFieldDefinition>("model", value => value.RequireNotNull());
 
-            Field spObject = null;
-
-            if (modelHost is SiteModelHost)
-                spObject = FindSiteField(modelHost as SiteModelHost, definition);
-            else if (modelHost is ListModelHost)
-                spObject = FindListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new SPMeta2NotSupportedException(
-                    string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
-                    definition.GetType(),
-                    modelHost.GetType()));
-            }
+            var spObject = FindField(modelHost, definition);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 

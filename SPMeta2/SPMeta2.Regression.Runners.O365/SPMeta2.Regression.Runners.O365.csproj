@@ -82,11 +82,6 @@
       <Name>SPMeta2.Regression.CSOM</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
-      <Project>{C69C8205-B0C7-4FDB-B1F6-F4FA77FF95AB}</Project>
-      <Name>SPMeta2.Regression.Runners</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>

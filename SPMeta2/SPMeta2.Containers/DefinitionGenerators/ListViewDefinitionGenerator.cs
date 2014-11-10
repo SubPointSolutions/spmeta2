@@ -14,6 +14,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Title = Rnd.String();
                 def.RowLimit = Rnd.Int(30);
 
+                if (Rnd.Bool())
+                    def.Url = Rnd.String();
+
                 def.IsDefault = Rnd.Bool();
                 def.IsPaged = Rnd.Bool();
             });

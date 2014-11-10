@@ -36,8 +36,8 @@ namespace SPMeta2.Regression.Runners.CSOM
             LoadEnvironmentConfig();
             InitServices();
 
-            UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.CSOM_UserName);
-            UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.CSOM_Password);
+            UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_UserName);
+            UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_Password);
         }
 
         private void InitServices()
@@ -59,10 +59,10 @@ namespace SPMeta2.Regression.Runners.CSOM
         private void LoadEnvironmentConfig()
         {
             SiteUrls.Clear();
-            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.CSOM_SiteUrls));
+            SiteUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.CSOM_SiteUrls));
 
             WebUrls.Clear();
-            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.CSOM_WebUrls));
+            WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.CSOM_WebUrls));
         }
 
         #endregion

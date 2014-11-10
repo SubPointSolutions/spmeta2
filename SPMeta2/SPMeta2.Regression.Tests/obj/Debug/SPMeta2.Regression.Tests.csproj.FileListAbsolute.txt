@@ -57,9 +57,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.CSOM.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.CSOM.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.O365.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll
@@ -71,15 +68,12 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Validation.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.Standard.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.xml
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.Runners.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Regression.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Standard.pdb
@@ -93,3 +87,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.CSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.O365.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\SPMeta2.Containers.SSOM.dll

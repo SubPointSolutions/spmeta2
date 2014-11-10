@@ -61,6 +61,10 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\Fields\ChoiceFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\NoteFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\CurrencyFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\TextFieldDefinition.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
@@ -149,6 +153,7 @@
     <Compile Include="Events\ModelNodeProcessingEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessingEventArgs.cs" />
     <Compile Include="Exceptions\SPMeta2Exception.cs" />
+    <Compile Include="Exceptions\SPMeta2ModelDeploymentException.cs" />
     <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
     <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
@@ -159,7 +164,6 @@
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
-    <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\TraseServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />

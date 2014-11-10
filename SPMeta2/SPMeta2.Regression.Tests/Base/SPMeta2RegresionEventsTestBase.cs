@@ -424,7 +424,7 @@ namespace SPMeta2.Regression.Tests.Base
             return hasMissedOrInvalidProps;
         }
 
-        private void ValidateDefinitionHostRunnerSupport<T1>(Runners.ProvisionRunnerBase runner)
+        private void ValidateDefinitionHostRunnerSupport<T1>(ProvisionRunnerBase runner)
         {
             var attrs = typeof(T1).GetCustomAttributes()
                                              .OfType<SPObjectTypeAttribute>();

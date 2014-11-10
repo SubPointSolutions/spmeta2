@@ -24,6 +24,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviour
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\bin\Debug\SPMeta2.CSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\bin\Debug\SPMeta2.CSOM.Behaviours.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Behaviours\obj\Debug\SPMeta2.CSOM.Behaviours.csprojResolveAssemblyReference.cache

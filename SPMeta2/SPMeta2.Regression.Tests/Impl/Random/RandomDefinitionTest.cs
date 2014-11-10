@@ -32,7 +32,6 @@ using SPMeta2.Regression.Exceptions;
 using System.IO;
 using SPMeta2.Validation.Services;
 using SPMeta2.Regression.Assertion;
-using SPMeta2.Regression.Runners.Config;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
@@ -147,6 +146,40 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region site scope
+
+        #region fields
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_ChoiceFieldDefinition()
+        {
+            TestRandomDefinition<ChoiceFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_CurrencyFieldDefinition()
+        {
+            TestRandomDefinition<CurrencyFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_NoteFieldDefinition()
+        {
+            TestRandomDefinition<NoteFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_TextFieldDefinition()
+        {
+            TestRandomDefinition<TextFieldDefinition>();
+        }
+
+        #endregion
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
