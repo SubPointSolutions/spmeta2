@@ -183,3 +183,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 /SPMeta2.Docs/documentation
 /SPMeta2.Docs
+/SPMeta2/SPMeta2.SSOM/W.xml
