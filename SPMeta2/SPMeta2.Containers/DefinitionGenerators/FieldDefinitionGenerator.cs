@@ -23,6 +23,20 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
+
+                def.JSLink = Rnd.String(32);
+                def.DefaultValue = Rnd.String(32);
+                def.Hidden = Rnd.Bool();
+
+                def.ShowInDisplayForm = Rnd.Bool();
+                def.ShowInEditForm = Rnd.Bool();
+                def.ShowInListSettings = Rnd.Bool();
+                def.ShowInNewForm = Rnd.Bool();
+                def.ShowInVersionHistory = Rnd.Bool();
+                def.ShowInViewForms = Rnd.Bool();
+
+                def.AllowDeletion = Rnd.Bool();
+                def.Indexed = Rnd.Bool();
             });
         }
     }

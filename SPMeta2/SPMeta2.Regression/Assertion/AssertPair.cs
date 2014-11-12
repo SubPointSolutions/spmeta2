@@ -85,6 +85,12 @@ namespace SPMeta2.Regression.Assertion
             return this;
         }
 
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, bool?>> srcExp, Expression<Func<TDst, bool?>> dstExp)
+        {
+            return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
+        }
+
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
         {
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
@@ -132,9 +138,24 @@ namespace SPMeta2.Regression.Assertion
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
         }
 
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, bool?>> srcExp, Expression<Func<TSrc, bool?>> srcAlias, Expression<Func<TDst, bool?>> dstExp, Expression<Func<TDst, bool?>> dstAlias)
+        {
+            return InternalShouldBeEqual<bool?>(srcExp, srcAlias, dstExp, dstAlias);
+        }
+
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, bool>> srcExp, Expression<Func<TSrc, bool>> srcAlias, Expression<Func<TDst, bool>> dstExp, Expression<Func<TDst, bool>> dstAlias)
         {
             return InternalShouldBeEqual<bool>(srcExp, srcAlias, dstExp, dstAlias);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, int?>> srcExp, Expression<Func<TDst, int?>> dstExp)
+        {
+            return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, int?>> srcExp, Expression<Func<TSrc, int?>> srcAlias, Expression<Func<TDst, int?>> dstExp, Expression<Func<TDst, int?>> dstAlias)
+        {
+            return InternalShouldBeEqual<int?>(srcExp, srcExp, dstExp, dstExp);
         }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, int>> srcExp, Expression<Func<TDst, int>> dstExp)
@@ -171,7 +192,7 @@ namespace SPMeta2.Regression.Assertion
                     Tag = this.Tag,
                     Src = srcPropAlias,
                     Dst = dstPropAlias,
-                    IsValid = dstProp.Value.ToString().Contains(srcProp.Value.ToString())
+                    IsValid = dstProp.Value != null && dstProp.Value.ToString().Contains(srcProp.Value.ToString())
                 }
             });
 

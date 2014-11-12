@@ -79,6 +79,39 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public bool Required { get; set; }
 
+        [ExpectValidation]
+        public string JSLink { get; set; }
+
+        [ExpectValidation]
+        public string DefaultValue { get; set; }
+
+        [ExpectValidation]
+        public bool Hidden { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInDisplayForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInEditForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInListSettings { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInNewForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInVersionHistory { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInViewForms { get; set; }
+
+        [ExpectValidation]
+        public bool? AllowDeletion { get; set; }
+
+        [ExpectValidation]
+        public bool Indexed { get; set; }
+
         #endregion
 
         #region methods

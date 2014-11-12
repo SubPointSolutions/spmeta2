@@ -22,6 +22,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             get { return typeof(TextFieldDefinition); }
         }
 
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(FieldText);
+        }
+
         #endregion
 
         #region methods
@@ -31,15 +36,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
-            
+            var tmpField = field.Context.CastTo<FieldText>(field);
+
+            var spField = tmpField.WithAssertAndCast<FieldText>("field", value => value.RequireNotNull());
+            var typedFieldModel = fieldModel.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
+
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            var businessFieldModel = fieldModel.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
 
-            return string.Empty;
+            if (typedFieldModel.MaxLength.HasValue)
+                fieldTemplate
+                 .SetAttribute(BuiltInFieldAttributes.MaxLength, typedFieldModel.MaxLength.Value);
         }
 
         #endregion

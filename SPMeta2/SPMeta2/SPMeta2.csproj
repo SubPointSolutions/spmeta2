@@ -68,6 +68,7 @@
     <Compile Include="Definitions\MasterPageSettings.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
+    <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />
     <Compile Include="Common\ModelEventType.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\TraseServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
+    <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />

@@ -7,13 +7,76 @@ using System.Xml.Linq;
 
 namespace SPMeta2.Utils
 {
+    /// <summary>
+    /// XElement usefulness.
+    /// </summary>
     public static class XElementHelper
     {
+        #region methods
+
+        public static string GetAttributeValue(this XElement element, string attrName)
+        {
+            var upperName = attrName.ToUpper();
+            var attr = element.Attributes().FirstOrDefault(a => a.Name.ToString().ToUpper() == upperName);
+
+            if (attr != null)
+            {
+                return attr.Value;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public static XElement SetAttribute(this XElement element, string attrName, int attrValue)
+        {
+            return SetAttribute(element, attrName, attrValue.ToString());
+        }
+
+        public static XElement SetAttribute(this XElement element, string attrName, bool attrValue)
+        {
+            return SetAttribute(element, attrName, attrValue.ToString());
+        }
+
         public static XElement SetAttribute(this XElement element, string attrName, string attrValue)
         {
-            element.Attribute(attrName).Value = attrValue;
+            var upperName = attrName.ToUpper();
+            var attr = element.Attributes().FirstOrDefault(a => a.Name.ToString().ToUpper() == upperName);
+
+            if (attr != null)
+            {
+                attr.Value = attrValue;
+            }
+            else
+            {
+                var newAttr = new XAttribute(attrName, attrValue);
+                element.Add(newAttr);
+            }
 
             return element;
         }
+
+        public static XElement SetSubNode(this XElement element, string nodeName, string nodeValue)
+        {
+            var upperName = nodeName.ToUpper();
+            var node = element.Elements().FirstOrDefault(a => a.Name.ToString().ToUpper() == upperName);
+
+            if (node == null)
+            {
+                element.Add(new XElement(nodeName)
+                {
+                    Value = nodeValue
+                });
+            }
+            else
+            {
+                node.Value = nodeValue;
+            }
+
+            return element;
+        }
+
+        #endregion
     }
 }

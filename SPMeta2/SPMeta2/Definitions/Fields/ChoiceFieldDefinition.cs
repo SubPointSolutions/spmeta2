@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -21,5 +22,18 @@ namespace SPMeta2.Definitions.Fields
     [Serializable]
     public class ChoiceFieldDefinition : FieldDefinition
     {
+        #region constructors
+
+        public ChoiceFieldDefinition()
+        {
+            FieldType = BuiltInFieldTypes.Choice;
+        }
+
+        #endregion
+
+        #region properties
+
+
+        #endregion
     }
 }

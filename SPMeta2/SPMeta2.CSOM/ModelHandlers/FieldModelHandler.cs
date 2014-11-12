@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Utils;
@@ -18,17 +22,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(FieldDefinition); }
         }
 
-        // TODO, replace with XElement generation later.
-        private static string MinimalSPFieldTemplate =
-                                @"<Field " +
-                                    "ID=\"{0}\" " +
-                                    "StaticName=\"{1}\" " +
-                                    "DisplayName=\"{2}\" " +
-                                    "Title=\"{3}\" " +
-                                    "Name=\"{4}\" " +
-                                    "Type=\"{5}\" " +
-                                    "Group=\"{6}\" " +
-                                    "/>";
+        protected static XElement GetNewMinimalSPFieldTemplate()
+        {
+            return new XElement("Field",
+                new XAttribute(BuiltInFieldAttributes.ID, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.StaticName, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.DisplayName, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Title, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Name, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Type, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Group, String.Empty));
+        }
 
         #endregion
 
@@ -46,8 +50,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             throw new SPMeta2NotSupportedException(
                 string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
-                definition.GetType(),
-                modelHost.GetType()));
+                    definition.GetType(),
+                    modelHost.GetType()));
+        }
+
+        protected virtual Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(Field);
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -68,7 +77,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = null,
-                ObjectType = typeof(Field),
+                ObjectType = GetTargetFieldType(fieldModel),
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
@@ -89,15 +98,24 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentField = DeployListField(modelHost as List, fieldModel);
             }
 
-            currentField.Required = fieldModel.Required;
+            object typedField = null;
+
+            // emulate context.CastTo<>() call for typed field type
+            if (GetTargetFieldType(fieldModel) != currentField.GetType())
+            {
+                var method = context.GetType().GetMethod("CastTo");
+                var generic = method.MakeGenericMethod(GetTargetFieldType(fieldModel));
+
+                typedField = generic.Invoke(context, new object[] { currentField });
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
-                Object = currentField,
-                ObjectType = typeof(Field),
+                Object = typedField ?? currentField,
+                ObjectType = GetTargetFieldType(fieldModel),
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
@@ -184,9 +202,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             field.Description = fieldModel.Description ?? string.Empty;
             field.Group = fieldModel.Group ?? string.Empty;
+
+            field.Required = fieldModel.Required;
         }
 
-        private Field EnsureField(ClientRuntimeContext context, Field currentField, FieldCollection fieldCollection, FieldDefinition fieldModel)
+        private Field EnsureField(ClientRuntimeContext context, Field currentField, FieldCollection fieldCollection,
+            FieldDefinition fieldModel)
         {
             if (currentField == null)
             {
@@ -264,34 +285,63 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             return field;
-
-            //return FindExistingField(rootWeb.Fields, fieldModel.InternalName);
         }
 
-        //protected Field FindExistingField(FieldCollection fields, string internalFieldName)
-        //{
-        //    foreach (var field in fields)
-        //    {
-        //        if (String.Compare(field.InternalName, internalFieldName, StringComparison.OrdinalIgnoreCase) == 0)
-        //            return field;
-        //    }
+        protected virtual void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
+        {
+            // minimal set
+            fieldTemplate
+              .SetAttribute(BuiltInFieldAttributes.ID, fieldModel.Id.ToString("B"))
+              .SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName)
+              .SetAttribute(BuiltInFieldAttributes.DisplayName, fieldModel.Title)
+              .SetAttribute(BuiltInFieldAttributes.Title, fieldModel.Title)
+              .SetAttribute(BuiltInFieldAttributes.Name, fieldModel.InternalName)
+              .SetAttribute(BuiltInFieldAttributes.Type, fieldModel.FieldType)
+              .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
 
-        //    return null;
-        //}
+            // additions
+            if (!String.IsNullOrEmpty(fieldModel.JSLink))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
 
+            if (!string.IsNullOrEmpty(fieldModel.DefaultValue))
+                fieldTemplate.SetSubNode("Default", fieldModel.DefaultValue);
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Hidden, fieldModel.Hidden.ToString());
+
+            // ShowIn* settings
+            if (fieldModel.ShowInDisplayForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInDisplayForm, fieldModel.ShowInDisplayForm.Value);
+
+            if (fieldModel.ShowInEditForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInEditForm, fieldModel.ShowInEditForm.Value);
+
+            if (fieldModel.ShowInListSettings.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInListSettings, fieldModel.ShowInListSettings.Value);
+
+            if (fieldModel.ShowInNewForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInNewForm, fieldModel.ShowInNewForm.Value);
+
+            if (fieldModel.ShowInVersionHistory.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInVersionHistory, fieldModel.ShowInVersionHistory.Value);
+
+            if (fieldModel.ShowInViewForms.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInViewForms, fieldModel.ShowInViewForms.Value);
+
+            // misc
+            if (fieldModel.AllowDeletion.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDeletion, fieldModel.AllowDeletion.Value);
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed);
+
+        }
 
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
-            return string.Format(MinimalSPFieldTemplate, new string[]
-                                                                         {
-                                                                             fieldModel.Id.ToString("B"),
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.FieldType,
-                                                                             fieldModel.Group ?? string.Empty
-                                                                         });
+            var fieldTemplate = GetNewMinimalSPFieldTemplate();
+
+            ProcessSPFieldXElement(fieldTemplate, fieldModel);
+
+            return fieldTemplate.ToString();
         }
 
         #endregion

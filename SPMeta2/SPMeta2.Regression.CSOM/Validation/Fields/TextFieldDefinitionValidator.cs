@@ -16,27 +16,34 @@ using System.Xml.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
-    public class TextFieldDefinitionValidator : TextFieldModelHandler
+    public class TextFieldDefinitionValidator : ClientFieldDefinitionValidator
     {
+        public override Type TargetType
+        {
+            get
+            {
+                return typeof(TextFieldDefinition);
+            }
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
-
-            var spObject = FindField(modelHost, definition);
+            var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
+            var spObject = GetField(modelHost, definition);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
-            assert
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                    .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(m => m.Id, o => o.Id)
-                    .ShouldBeEqual(m => m.Required, o => o.Required)
-                    .ShouldBeEqual(m => m.Description, o => o.Description)
-                    .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-                    .ShouldBeEqual(m => m.Group, o => o.Group);
+            ValidateField(assert, spObject, definition);
 
-            // TODO
+            var textField = spObject.Context.CastTo<FieldText>(spObject);
+            var textDefinition = model.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
+
+            var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
+
+            if (textDefinition.MaxLength.HasValue)
+                textFieldAssert.ShouldBeEqual(m => m.MaxLength, o => o.MaxLength);
+            else
+                textFieldAssert.SkipProperty(m => m.MaxLength, "MaxLength is NULL. Skipping.");
         }
     }
 }
