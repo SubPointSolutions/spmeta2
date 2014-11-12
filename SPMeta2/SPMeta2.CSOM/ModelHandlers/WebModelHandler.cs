@@ -254,6 +254,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
+                currentWeb.Title = webModel.Title;
+                currentWeb.Description = webModel.Description ?? string.Empty;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -266,6 +268,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
                 InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdated);
+
+                currentWeb.Update();
             }
         }
 
