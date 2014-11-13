@@ -27,7 +27,7 @@ namespace SPMeta2.Definitions.Fields
     /// Allows to define and deploy note field.
     /// </summary>
     /// 
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldNote", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldMultiLineText", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldMultiLineText", "Microsoft.SharePoint.Client")]
 
     [DefaultParentHost(typeof(SiteDefinition))]

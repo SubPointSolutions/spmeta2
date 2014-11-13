@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Xml.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -13,7 +15,17 @@ namespace SPMeta2.SSOM.ModelHandlers
     {
         #region properties
 
-        protected const string MinimalSPFieldTemplate = "<Field ID=\"{0}\" StaticName=\"{1}\" DisplayName=\"{2}\" Title=\"{3}\" Name=\"{4}\" Type=\"{5}\" />";
+        protected static XElement GetNewMinimalSPFieldTemplate()
+        {
+            return new XElement("Field",
+                new XAttribute(BuiltInFieldAttributes.ID, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.StaticName, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.DisplayName, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Title, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Name, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Type, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.Group, String.Empty));
+        }
 
         public override Type TargetType
         {
@@ -132,17 +144,61 @@ namespace SPMeta2.SSOM.ModelHandlers
             return list.Fields[definition.Id];
         }
 
+        protected virtual void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
+        {
+            // minimal set
+            fieldTemplate
+              .SetAttribute(BuiltInFieldAttributes.ID, fieldModel.Id.ToString("B"))
+              .SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName)
+              .SetAttribute(BuiltInFieldAttributes.DisplayName, fieldModel.Title)
+              .SetAttribute(BuiltInFieldAttributes.Title, fieldModel.Title)
+              .SetAttribute(BuiltInFieldAttributes.Name, fieldModel.InternalName)
+              .SetAttribute(BuiltInFieldAttributes.Type, fieldModel.FieldType)
+              .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
+
+            // additions
+            if (!String.IsNullOrEmpty(fieldModel.JSLink))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
+
+            if (!string.IsNullOrEmpty(fieldModel.DefaultValue))
+                fieldTemplate.SetSubNode("Default", fieldModel.DefaultValue);
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Hidden, fieldModel.Hidden.ToString());
+
+            // ShowIn* settings
+            if (fieldModel.ShowInDisplayForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInDisplayForm, fieldModel.ShowInDisplayForm.Value);
+
+            if (fieldModel.ShowInEditForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInEditForm, fieldModel.ShowInEditForm.Value);
+
+            if (fieldModel.ShowInListSettings.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInListSettings, fieldModel.ShowInListSettings.Value);
+
+            if (fieldModel.ShowInNewForm.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInNewForm, fieldModel.ShowInNewForm.Value);
+
+            if (fieldModel.ShowInVersionHistory.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInVersionHistory, fieldModel.ShowInVersionHistory.Value);
+
+            if (fieldModel.ShowInViewForms.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInViewForms, fieldModel.ShowInViewForms.Value);
+
+            // misc
+            if (fieldModel.AllowDeletion.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDeletion, fieldModel.AllowDeletion.Value);
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed);
+
+        }
+
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
-            return string.Format(MinimalSPFieldTemplate, new string[]
-                                                                         {
-                                                                             fieldModel.Id.ToString("B"),
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.Title,
-                                                                             fieldModel.InternalName,
-                                                                             fieldModel.FieldType
-                                                                         });
+            var fieldTemplate = GetNewMinimalSPFieldTemplate();
+
+            ProcessSPFieldXElement(fieldTemplate, fieldModel);
+
+            return fieldTemplate.ToString();
         }
 
         protected virtual Type GetTargetFieldType(FieldDefinition fieldModel)

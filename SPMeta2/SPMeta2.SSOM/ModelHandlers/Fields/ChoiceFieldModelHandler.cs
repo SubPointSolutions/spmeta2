@@ -1,18 +1,14 @@
-﻿using SPMeta2.Definitions;
-using SPMeta2.Definitions.Fields;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPMeta2.Utils;
+﻿using System;
 using System.Xml.Linq;
-using SPMeta2.Enumerations;
 using Microsoft.SharePoint;
+using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers.Fields
 {
-    public class ChoiceFieldModelHandler : FieldModelHandler
+    public class ChoiceFieldModelHandler : MultiChoiceFieldModelHandler
     {
         #region properties
 
@@ -30,25 +26,15 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
         #region methods
 
-        protected override void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            // let base setting be setup
-            base.ProcessFieldProperties(field, fieldModel);
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
-            // TODO
-        }
-
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
-        {
             var typedFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
 
-            // TODOS
-
-            return string.Empty;
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.EditFormat, typedFieldModel.EditFormat);
         }
 
         #endregion
     }
-
-
 }

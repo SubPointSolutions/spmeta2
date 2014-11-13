@@ -131,6 +131,10 @@
       <Link>SPMeta2.Containers.O365.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Containers.SSOM\bin\Debug\SPMeta2.Containers.SSOM.dll">
+      <Link>SPMeta2.Containers.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll">
       <Link>SPMeta2.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -187,20 +191,20 @@
       <Link>SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
-      <Link>SPMeta2.Regression.SSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Regression.Runners.SSOM\bin\Debug\SPMeta2.SSOM.dll">
-      <Link>SPMeta2.SSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\SPMeta2.Regression.SSOM.Standard\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll">
       <Link>SPMeta2.Regression.SSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
+      <Link>SPMeta2.Regression.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.SSOM.Standard\bin\Debug\SPMeta2.SSOM.Standard.dll">
       <Link>SPMeta2.SSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll">
+      <Link>SPMeta2.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.dll">
@@ -209,9 +213,6 @@
     </Content>
     <Content Include="..\SPMeta2\bin\Debug\SPMeta2.dll">
       <Link>SPMeta2.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SPMeta2.Containers.SSOM.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

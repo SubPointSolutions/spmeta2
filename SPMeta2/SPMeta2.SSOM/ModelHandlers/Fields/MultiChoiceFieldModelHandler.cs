@@ -8,39 +8,51 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers.Fields
 {
-    public class CurrencyFieldModelHandler : FieldModelHandler
+    public class MultiChoiceFieldModelHandler : FieldModelHandler
     {
         #region properties
 
         public override Type TargetType
         {
-            get { return typeof(CurrencyFieldDefinition); }
+            get { return typeof(MultiChoiceFieldDefinition); }
         }
 
         protected override Type GetTargetFieldType(FieldDefinition model)
         {
-            return typeof(SPFieldCurrency);
+            return typeof(SPFieldMultiChoice);
         }
+
 
         #endregion
 
         #region methods
 
+
         protected override void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
         {
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
-
-
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
             base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
-            var typedFieldModel = fieldModel.WithAssertAndCast<CurrencyFieldDefinition>("model", value => value.RequireNotNull());
+            var typedFieldModel = fieldModel.WithAssertAndCast<MultiChoiceFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.CurrencyLocaleId, typedFieldModel.CurrencyLocaleId);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.FillInChoice, typedFieldModel.FillInChoice);
+
+            if (typedFieldModel.Choices.Count > 0)
+            {
+                var choicesNode = new XElement("CHOICES");
+
+                foreach (var choice in typedFieldModel.Choices)
+                {
+                    choicesNode.Add(new XElement("CHOICE", choice));
+                }
+
+                fieldTemplate.Add(choicesNode);
+            }
         }
 
         #endregion

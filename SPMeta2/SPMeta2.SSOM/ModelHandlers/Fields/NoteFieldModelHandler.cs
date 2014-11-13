@@ -1,14 +1,10 @@
-﻿using SPMeta2.Definitions;
-using SPMeta2.Definitions.Fields;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPMeta2.Utils;
+﻿using System;
 using System.Xml.Linq;
-using SPMeta2.Enumerations;
 using Microsoft.SharePoint;
+using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers.Fields
 {
@@ -35,20 +31,24 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
-            // TODO
+
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
+
             var typedFieldModel = fieldModel.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
 
-            // TODOS
+            if (typedFieldModel.NumberOfLines > 0)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.NumLines, typedFieldModel.NumberOfLines);
 
-            return string.Empty;
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichText, typedFieldModel.RichText);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichTextMode, typedFieldModel.RichTextMode);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.AppendOnly, typedFieldModel.AppendOnly);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.UnlimitedLengthInDocumentLibrary, typedFieldModel.UnlimitedLengthInDocumentLibrary.ToString().ToUpper());
         }
 
         #endregion
     }
-
-
 }
