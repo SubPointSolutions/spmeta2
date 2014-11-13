@@ -61,6 +61,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\Fields\MultiChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\ChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\NoteFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\CurrencyFieldDefinition.cs" />

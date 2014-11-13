@@ -54,6 +54,7 @@
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeFieldsOrderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\MultiChoiceFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\TextFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\NoteFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\CurrencyFieldDefinitionGenerator.cs" />

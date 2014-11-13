@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Exceptions;
@@ -16,27 +16,30 @@ using System.Xml.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
-    public class ChoiceFieldDefinitionValidator : ChoiceFieldModelHandler
+    public class ChoiceFieldDefinitionValidator : MultiChoiceFieldDefinitionValidator
     {
+        public override Type TargetType
+        {
+            get
+            {
+                return typeof(ChoiceFieldDefinition);
+            }
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
+            base.DeployModel(modelHost, model);
 
-            var spObject = FindField(modelHost, definition);
+            var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
+            var spObject = GetField(modelHost, definition);
 
-            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
+            var textField = spObject.Context.CastTo<FieldChoice>(spObject);
+            var textDefinition = model.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
 
-            assert
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                    .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(m => m.Id, o => o.Id)
-                    .ShouldBeEqual(m => m.Required, o => o.Required)
-                    .ShouldBeEqual(m => m.Description, o => o.Description)
-                    .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-                    .ShouldBeEqual(m => m.Group, o => o.Group);
+            var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
 
-            // TODO
+            textFieldAssert.ShouldBeEqual(m => m.EditFormat, o => o.GetEditFormat());
         }
     }
+
 }

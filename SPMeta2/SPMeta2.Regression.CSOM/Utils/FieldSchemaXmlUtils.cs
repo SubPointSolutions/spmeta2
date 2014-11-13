@@ -12,6 +12,13 @@ namespace SPMeta2.Regression.CSOM.Utils
 {
     internal static class FieldSchemaXmlUtils
     {
+        public static string GetEditFormat(this Field field)
+        {
+            var xml = field.SchemaXml;
+
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.EditFormat));
+        }
+
         public static int GetCurrencyLocaleId(this Field field)
         {
             var xml = field.SchemaXml;

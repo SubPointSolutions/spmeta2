@@ -46,8 +46,9 @@ namespace SPMeta2.Enumerations
         public static string AppendOnly = "AppendOnly";
 
         public static string CurrencyLocaleId = "LCID";
-        
 
+        public static string FillInChoice = "FillInChoice";
+        public static string EditFormat = "Format";
 
         #endregion
     }

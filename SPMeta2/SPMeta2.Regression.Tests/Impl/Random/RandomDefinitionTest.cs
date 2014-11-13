@@ -149,6 +149,12 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region fields
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_MultiChoiceFieldDefinition()
+        {
+            TestRandomDefinition<MultiChoiceFieldDefinition>();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site.TypedFields")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,19 +21,22 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
-    public class ChoiceFieldDefinition : FieldDefinition
+    public class ChoiceFieldDefinition : MultiChoiceFieldDefinition
     {
         #region constructors
 
         public ChoiceFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.Choice;
+            EditFormat = BuiltInChoiceFormatType.Dropdown;
         }
 
         #endregion
 
         #region properties
 
+        [ExpectValidation]
+        public string EditFormat { get; set; }
 
         #endregion
     }

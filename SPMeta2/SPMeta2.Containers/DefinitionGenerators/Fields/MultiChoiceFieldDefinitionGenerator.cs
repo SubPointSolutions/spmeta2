@@ -6,7 +6,7 @@ using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Fields
 {
-    public class ChoiceFieldFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<ChoiceFieldDefinition>
+    public class MultiChoiceFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<MultiChoiceFieldDefinition>
     {
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {
@@ -23,13 +23,13 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
-
                 var choiceCount = Rnd.Int(10) + 1;
 
                 for (var index = 0; index < choiceCount; index++)
                 {
                     def.Choices.Add(Rnd.String(8));
                 }
+
                 // TODO
             });
         }

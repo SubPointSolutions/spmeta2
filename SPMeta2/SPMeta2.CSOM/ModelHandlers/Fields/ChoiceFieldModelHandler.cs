@@ -13,7 +13,7 @@ using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
-    public class ChoiceFieldModelHandler : FieldModelHandler
+    public class ChoiceFieldModelHandler : MultiChoiceFieldModelHandler
     {
         #region properties
 
@@ -22,23 +22,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             get { return typeof(ChoiceFieldDefinition); }
         }
 
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(FieldChoice);
+        }
+
         #endregion
 
         #region methods
 
-        protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            // let base setting be setup
-            base.ProcessFieldProperties(field, fieldModel);
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
-        }
+            var typedFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
-        {
-            var businessFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
-
-
-            return string.Empty;
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.EditFormat, typedFieldModel.EditFormat);
         }
 
         #endregion
