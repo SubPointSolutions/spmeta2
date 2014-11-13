@@ -9,6 +9,19 @@ using SPMeta2.Enumerations;
 
 namespace SPMeta2.Definitions.Fields
 {
+
+    public static class BuiltInRichTextMode
+    {
+        #region properties
+
+        public static string Compatible = "Compatible";
+        public static string ThemeHtml = "ThemeHtml";
+        public static string HtmlAsXml = "HtmlAsXml";
+        public static string FullHtml = "FullHtml";
+
+        #endregion
+    }
+
     /// <summary>
     /// Allows to define and deploy note field.
     /// </summary>
@@ -22,17 +35,34 @@ namespace SPMeta2.Definitions.Fields
     [Serializable]
     public class NoteFieldDefinition : FieldDefinition
     {
-         #region constructors
+        #region constructors
 
         public NoteFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.Note;
+
+            NumberOfLines = 6;
+            RichTextMode = BuiltInRichTextMode.Compatible;
         }
 
         #endregion
 
         #region properties
 
+        [ExpectValidation]
+        public int NumberOfLines { get; set; }
+
+        [ExpectValidation]
+        public bool RichText { get; set; }
+
+        [ExpectValidation]
+        public string RichTextMode { get; set; }
+
+        [ExpectValidation]
+        public bool AppendOnly { get; set; }
+
+        [ExpectValidation]
+        public bool UnlimitedLengthInDocumentLibrary { get; set; }
 
         #endregion
     }

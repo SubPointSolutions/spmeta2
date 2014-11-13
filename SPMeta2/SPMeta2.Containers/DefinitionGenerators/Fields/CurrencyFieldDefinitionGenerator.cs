@@ -23,7 +23,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
-                // TODO
+                def.CurrencyLocaleId = 1040 + Rnd.Int(5);
             });
         }
     }

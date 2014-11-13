@@ -33,6 +33,8 @@ namespace SPMeta2.Definitions.Fields
 
         #region properties
 
+        [ExpectValidation]
+        public int CurrencyLocaleId { get; set; }
 
         #endregion
     }

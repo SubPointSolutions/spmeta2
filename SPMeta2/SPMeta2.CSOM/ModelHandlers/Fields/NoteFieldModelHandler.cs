@@ -22,6 +22,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             get { return typeof(NoteFieldDefinition); }
         }
 
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(FieldMultiLineText);
+        }
+
         #endregion
 
         #region methods
@@ -31,15 +36,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
-            
+
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            var businessFieldModel = fieldModel.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
 
-            return string.Empty;
+            if (typedFieldModel.NumberOfLines > 0)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.NumLines, typedFieldModel.NumberOfLines);
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichText, typedFieldModel.RichText);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichTextMode, typedFieldModel.RichTextMode);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.AppendOnly, typedFieldModel.AppendOnly);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.UnlimitedLengthInDocumentLibrary, typedFieldModel.UnlimitedLengthInDocumentLibrary);
         }
 
         #endregion

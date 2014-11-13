@@ -38,6 +38,17 @@ namespace SPMeta2.Enumerations
 
         public static string MaxLength = "MaxLength";
 
+        public static string UnlimitedLengthInDocumentLibrary = "UnlimitedLengthInDocumentLibrary";
+        public static string RichText = "RichText";
+        public static string RichTextMode = "RichTextMode";
+
+        public static string NumLines = "NumLines";
+        public static string AppendOnly = "AppendOnly";
+
+        public static string CurrencyLocaleId = "LCID";
+        
+
+
         #endregion
     }
 }

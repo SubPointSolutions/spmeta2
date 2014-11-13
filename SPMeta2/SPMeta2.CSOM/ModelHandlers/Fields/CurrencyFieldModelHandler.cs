@@ -22,6 +22,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             get { return typeof(CurrencyFieldDefinition); }
         }
 
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(FieldCurrency);
+        }
+
         #endregion
 
         #region methods
@@ -34,12 +39,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            var businessFieldModel = fieldModel.WithAssertAndCast<CurrencyFieldDefinition>("model", value => value.RequireNotNull());
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<CurrencyFieldDefinition>("model", value => value.RequireNotNull());
 
-            return string.Empty;
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.CurrencyLocaleId, typedFieldModel.CurrencyLocaleId);
         }
 
         #endregion

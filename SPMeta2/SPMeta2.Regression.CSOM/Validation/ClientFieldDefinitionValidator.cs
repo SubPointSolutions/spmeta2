@@ -10,6 +10,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Assertion;
+using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Regression.Utils;
 using SPMeta2.Utils;
 
@@ -114,57 +115,4 @@ namespace SPMeta2.Regression.CSOM.Validation
         }
     }
 
-
-
-    internal static class FieldXmlHelper
-    {
-        public static bool? GetShowInDisplayForm(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInDisplayForm));
-        }
-
-        public static bool? GetShowInEditForm(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInEditForm));
-        }
-
-        public static bool? GetShowInListSettings(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInListSettings));
-        }
-
-        public static bool? GetShowInNewForm(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInNewForm));
-        }
-
-        public static bool? GetShowInVersionHistory(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInVersionHistory));
-        }
-
-        public static bool? GetShowInViewForms(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowInViewForms));
-        }
-
-        public static bool? GetAllowDeletion(this Field field)
-        {
-            var xml = field.SchemaXml;
-
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.AllowDeletion));
-        }
-    }
 }

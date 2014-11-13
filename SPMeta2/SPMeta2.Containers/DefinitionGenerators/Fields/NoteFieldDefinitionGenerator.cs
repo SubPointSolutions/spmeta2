@@ -23,7 +23,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Group = Rnd.String();
                 def.Title = Rnd.String(32);
 
-                // TODO
+                def.NumberOfLines = Rnd.Int(20) + 1;
+                def.RichText = Rnd.Bool();
+                def.UnlimitedLengthInDocumentLibrary = Rnd.Bool();
             });
         }
     }
