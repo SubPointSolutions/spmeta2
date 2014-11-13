@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -63,6 +64,21 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         public bool UnlimitedLengthInDocumentLibrary { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<NoteFieldDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.NumberOfLines)
+                          .AddPropertyValue(p => p.RichText)
+                          .AddPropertyValue(p => p.RichTextMode)
+                          .AddPropertyValue(p => p.AppendOnly)
+                          .AddPropertyValue(p => p.UnlimitedLengthInDocumentLibrary)
+                          .ToString();
+        }
 
         #endregion
     }

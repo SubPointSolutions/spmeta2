@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -39,5 +40,18 @@ namespace SPMeta2.Definitions.Fields
         public string EditFormat { get; set; }
 
         #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ChoiceFieldDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.EditFormat)
+                          .ToString();
+        }
+
+        #endregion
     }
+
+
 }

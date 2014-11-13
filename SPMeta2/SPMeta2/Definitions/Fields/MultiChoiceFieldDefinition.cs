@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -46,6 +47,18 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         public bool FillInChoice { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<MultiChoiceFieldDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.FillInChoice)
+                          .AddPropertyValue(p => p.Choices)
+                          .ToString();
+        }
 
         #endregion
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -35,6 +36,17 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         public int CurrencyLocaleId { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<CurrencyFieldDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.CurrencyLocaleId)
+                          .ToString();
+        }
 
         #endregion
     }
