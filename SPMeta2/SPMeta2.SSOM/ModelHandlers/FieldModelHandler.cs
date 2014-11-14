@@ -153,6 +153,8 @@ namespace SPMeta2.SSOM.ModelHandlers
               .SetAttribute(BuiltInFieldAttributes.DisplayName, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Title, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Name, fieldModel.InternalName)
+              .SetAttribute(BuiltInFieldAttributes.Required, fieldModel.Required.ToString().ToUpper())
+              .SetAttribute(BuiltInFieldAttributes.Description, fieldModel.Description)
               .SetAttribute(BuiltInFieldAttributes.Type, fieldModel.FieldType)
               .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
 
@@ -167,26 +169,26 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // ShowIn* settings
             if (fieldModel.ShowInDisplayForm.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInDisplayForm, fieldModel.ShowInDisplayForm.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInDisplayForm, fieldModel.ShowInDisplayForm.Value.ToString().ToUpper());
 
             if (fieldModel.ShowInEditForm.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInEditForm, fieldModel.ShowInEditForm.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInEditForm, fieldModel.ShowInEditForm.Value.ToString().ToUpper());
 
             if (fieldModel.ShowInListSettings.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInListSettings, fieldModel.ShowInListSettings.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInListSettings, fieldModel.ShowInListSettings.Value.ToString().ToUpper());
 
             if (fieldModel.ShowInNewForm.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInNewForm, fieldModel.ShowInNewForm.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInNewForm, fieldModel.ShowInNewForm.Value.ToString().ToUpper());
 
             if (fieldModel.ShowInVersionHistory.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInVersionHistory, fieldModel.ShowInVersionHistory.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInVersionHistory, fieldModel.ShowInVersionHistory.Value.ToString().ToUpper());
 
             if (fieldModel.ShowInViewForms.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInViewForms, fieldModel.ShowInViewForms.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowInViewForms, fieldModel.ShowInViewForms.Value.ToString().ToUpper());
 
             // misc
             if (fieldModel.AllowDeletion.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDeletion, fieldModel.AllowDeletion.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDeletion, fieldModel.AllowDeletion.Value.ToString().ToUpper());
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed);
 

@@ -6,32 +6,26 @@ using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Fields
 {
-    public class ChoiceFieldFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<ChoiceFieldDefinition>
+    public class ChoiceFieldFieldDefinitionGenerator : FieldDefinitionGenerator
     {
-        public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
+        public override Type TargetType
         {
-            return WithEmptyDefinition(def =>
-            {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
-                def.Description = Rnd.String();
-                //def.FieldType = BuiltInFieldTypes.Text;
-
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
-
-                var choiceCount = Rnd.Int(10) + 1;
-
-                for (var index = 0; index < choiceCount; index++)
-                {
-                    def.Choices.Add(Rnd.String(8));
-                }
-                // TODO
-            });
+            get { return typeof(ChoiceFieldDefinition); }
         }
+
+        protected override FieldDefinition GetFieldDefinitionTemplate()
+        {
+            var def = new ChoiceFieldDefinition();
+
+            var choiceCount = Rnd.Int(10) + 1;
+
+            for (var index = 0; index < choiceCount; index++)
+            {
+                def.Choices.Add(Rnd.String(8));
+            }
+
+            return def;
+        }
+
     }
 }

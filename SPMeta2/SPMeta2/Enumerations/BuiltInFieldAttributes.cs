@@ -50,6 +50,14 @@ namespace SPMeta2.Enumerations
         public static string FillInChoice = "FillInChoice";
         public static string EditFormat = "Format";
 
+        public static string SystemInstance = "SystemInstance";
+        public static string EntityNamespace = "EntityNamespace";
+        public static string EntityName = "EntityName";
+        public static string BdcField = "BdcField";
+
+        public static string Required = "Required";
+        public static string Description = "Description";
+
         #endregion
     }
 }

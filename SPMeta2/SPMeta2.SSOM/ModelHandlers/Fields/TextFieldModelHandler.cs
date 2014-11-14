@@ -39,8 +39,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
 
             if (typedFieldModel.MaxLength.HasValue)
-                fieldTemplate
-                 .SetAttribute(BuiltInFieldAttributes.MaxLength, typedFieldModel.MaxLength.Value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.MaxLength, typedFieldModel.MaxLength.Value);
         }
 
         #endregion

@@ -6,25 +6,22 @@ using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Fields
 {
-    public class TextFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<TextFieldDefinition>
+    public class TextFieldDefinitionGenerator : FieldDefinitionGenerator
     {
-        public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
+        public override Type TargetType
         {
-            return WithEmptyDefinition(def =>
-            {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
-                def.Description = Rnd.String();
-                //def.FieldType = BuiltInFieldTypes.Text;
-
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
-                def.MaxLength = Rnd.Int(32) + 1;
-            });
+            get { return typeof(TextFieldDefinition); }
         }
+
+        protected override FieldDefinition GetFieldDefinitionTemplate()
+        {
+            var def = new TextFieldDefinition
+            {
+                MaxLength = Rnd.Int(32) + 1
+            };
+
+            return def;
+        }
+
     }
 }

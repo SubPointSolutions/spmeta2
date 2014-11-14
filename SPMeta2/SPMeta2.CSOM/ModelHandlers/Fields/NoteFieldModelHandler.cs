@@ -48,7 +48,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             if (typedFieldModel.NumberOfLines > 0)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.NumLines, typedFieldModel.NumberOfLines);
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichText, typedFieldModel.RichText);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichText, typedFieldModel.RichText.ToString().ToUpper());
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.RichTextMode, typedFieldModel.RichTextMode);
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.AppendOnly, typedFieldModel.AppendOnly);
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.UnlimitedLengthInDocumentLibrary, typedFieldModel.UnlimitedLengthInDocumentLibrary);

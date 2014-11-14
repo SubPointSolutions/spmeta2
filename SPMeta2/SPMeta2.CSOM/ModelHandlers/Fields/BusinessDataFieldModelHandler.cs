@@ -22,21 +22,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             get { return typeof(BusinessDataFieldDefinition); }
         }
 
-        protected virtual XElement GetMinimalBcsFieldXml()
-        {
-            return new XElement("Field",
-               new XAttribute("Type", BuiltInFieldTypes.BusinessData),
-               new XAttribute("Name", string.Empty),
-               new XAttribute("Title", string.Empty),
-               new XAttribute("StaticName", string.Empty),
-               new XAttribute("DisplayName", string.Empty),
-               new XAttribute("Required", "FALSE"),
-               new XAttribute("ID", String.Empty),
-               new XAttribute("SystemInstance", String.Empty),
-               new XAttribute("EntityNamespace", String.Empty),
-               new XAttribute("EntityName", String.Empty),
-               new XAttribute("BdcField", "Title"));
-        }
 
         #endregion
 
@@ -60,28 +45,17 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             //bcsField.BdcFieldName = bcsFieldModel.BdcFieldName;
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
+
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
+
             var businessFieldModel = fieldModel.WithAssertAndCast<BusinessDataFieldDefinition>("model", value => value.RequireNotNull());
-            var bcsFieldXml = GetMinimalBcsFieldXml();
 
-            bcsFieldXml
-                .SetAttribute("Title", businessFieldModel.Title)
-                .SetAttribute("DisplayName", businessFieldModel.Title)
-
-                .SetAttribute("Required", businessFieldModel.Required.ToString())
-
-                .SetAttribute("Name", businessFieldModel.InternalName)
-                .SetAttribute("StaticName", businessFieldModel.InternalName)
-
-                .SetAttribute("ID", businessFieldModel.Id.ToString("B"))
-
-                .SetAttribute("SystemInstance", businessFieldModel.SystemInstanceName)
-                .SetAttribute("EntityNamespace", businessFieldModel.EntityNamespace)
-                .SetAttribute("EntityName", businessFieldModel.EntityName)
-                .SetAttribute("BdcField", businessFieldModel.BdcFieldName);
-
-            return bcsFieldXml.ToString();
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.SystemInstance, businessFieldModel.SystemInstanceName);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.EntityNamespace, businessFieldModel.EntityNamespace);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.EntityName, businessFieldModel.EntityName);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.BdcField, businessFieldModel.BdcFieldName);
         }
 
         #endregion

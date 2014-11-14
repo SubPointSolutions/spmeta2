@@ -205,7 +205,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.Fields")]
         public void CanDeployRandom_FieldDefinition()
         {
             TestRandomDefinition<FieldDefinition>();
@@ -219,14 +219,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_BusinessDataFieldDefinition()
         {
             TestRandomDefinition<BusinessDataFieldDefinition>();
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_TaxonomyFieldDefinition()
         {
             TestRandomDefinition<TaxonomyFieldDefinition>();

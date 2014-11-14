@@ -21,18 +21,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             get { return typeof(TaxonomyFieldDefinition); }
         }
 
-        protected virtual XElement GetMinimalFieldXml()
-        {
-            return new XElement("Field",
-                new XAttribute("Type", BuiltInFieldTypes.TaxonomyFieldType),
-                new XAttribute("Name", string.Empty),
-                new XAttribute("Title", string.Empty),
-                new XAttribute("StaticName", string.Empty),
-                new XAttribute("DisplayName", string.Empty),
-                new XAttribute("Required", "FALSE"),
-                new XAttribute("ID", String.Empty));
-        }
-
         protected override Type GetTargetFieldType(FieldDefinition model)
         {
             return typeof(TaxonomyField);
@@ -85,24 +73,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
                 taxField.TermSetId = term.Id;
         }
 
-        protected override string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
-        {
-            var taxFieldModel = fieldModel.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
-            var taxFieldXml = GetMinimalFieldXml();
-
-            taxFieldXml
-                .SetAttribute("Title", taxFieldModel.Title)
-                .SetAttribute("DisplayName", taxFieldModel.Title)
-
-                .SetAttribute("Required", taxFieldModel.Required.ToString())
-
-                .SetAttribute("Name", taxFieldModel.InternalName)
-                .SetAttribute("StaticName", taxFieldModel.InternalName)
-
-                .SetAttribute("ID", taxFieldModel.Id.ToString("B"));
-
-            return taxFieldXml.ToString();
-        }
 
         #endregion
     }

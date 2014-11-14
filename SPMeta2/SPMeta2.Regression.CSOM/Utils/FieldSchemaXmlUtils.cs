@@ -12,10 +12,33 @@ namespace SPMeta2.Regression.CSOM.Utils
 {
     internal static class FieldSchemaXmlUtils
     {
+        public static string GetSystemInstanceName(this Field field)
+        {
+            var xml = field.SchemaXml;
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.SystemInstance));
+        }
+
+        public static string GetEntityNamespace(this Field field)
+        {
+            var xml = field.SchemaXml;
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.EntityNamespace));
+        }
+
+        public static string GetEntityName(this Field field)
+        {
+            var xml = field.SchemaXml;
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.EntityName));
+        }
+
+        public static string GetBdcFieldName(this Field field)
+        {
+            var xml = field.SchemaXml;
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.BdcField));
+        }
+
         public static string GetEditFormat(this Field field)
         {
             var xml = field.SchemaXml;
-
             return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.EditFormat));
         }
 

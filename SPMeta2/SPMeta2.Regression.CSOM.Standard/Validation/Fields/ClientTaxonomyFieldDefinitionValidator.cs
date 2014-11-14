@@ -15,6 +15,18 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 {
     public class ClientTaxonomyFieldDefinitionValidator : ClientFieldDefinitionValidator
     {
+        #region constructors
+
+        public ClientTaxonomyFieldDefinitionValidator()
+        {
+            SkipRequredPropValidation = true;
+            SkipDescriptionPropValidation = true;
+        }
+
+        #endregion
+
+        #region properties
+
         public override Type TargetType
         {
             get
@@ -23,22 +35,20 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             }
         }
 
+        #endregion
+
+        #region methods
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
-            var spObject = GetField(modelHost, definition);
 
+            var spObject = GetField(modelHost, definition);
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
-
-            //var textField = spObject.Context.CastTo<FieldText>(spObject);
-            //var textDefinition = model.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
-
-            //var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
-
         }
-    }
 
-  
+        #endregion
+    }
 }

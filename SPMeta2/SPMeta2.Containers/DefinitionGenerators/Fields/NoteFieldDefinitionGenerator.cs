@@ -6,27 +6,24 @@ using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Fields
 {
-    public class NoteFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<NoteFieldDefinition>
+    public class NoteFieldDefinitionGenerator : FieldDefinitionGenerator
     {
-        public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
+        public override Type TargetType
         {
-            return WithEmptyDefinition(def =>
-            {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
-                def.Description = Rnd.String();
-                //def.FieldType = BuiltInFieldTypes.Text;
-
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
-                def.NumberOfLines = Rnd.Int(20) + 1;
-                def.RichText = Rnd.Bool();
-                def.UnlimitedLengthInDocumentLibrary = Rnd.Bool();
-            });
+            get { return typeof(NoteFieldDefinition); }
         }
+
+        protected override FieldDefinition GetFieldDefinitionTemplate()
+        {
+            var def = new NoteFieldDefinition
+            {
+                NumberOfLines = Rnd.Int(20) + 1,
+                RichText = Rnd.Bool(),
+                UnlimitedLengthInDocumentLibrary = Rnd.Bool()
+            };
+
+            return def;
+        }
+
     }
 }

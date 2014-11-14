@@ -192,7 +192,9 @@ namespace SPMeta2.Regression.Assertion
                     Tag = this.Tag,
                     Src = srcPropAlias,
                     Dst = dstPropAlias,
-                    IsValid = dstProp.Value != null && dstProp.Value.ToString().Contains(srcProp.Value.ToString())
+                    IsValid = dstProp.Value != null &&
+                              srcProp.Value != null &&
+                              dstProp.Value.ToString().Contains(srcProp.Value.ToString())
                 }
             });
 

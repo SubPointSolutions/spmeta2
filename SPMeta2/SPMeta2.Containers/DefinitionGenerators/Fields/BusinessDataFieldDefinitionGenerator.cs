@@ -6,29 +6,22 @@ using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Fields
 {
-    public class BusinessDataFieldDefinitionDefinitionGenerator : TypedDefinitionGeneratorServiceBase<BusinessDataFieldDefinition>
+    public class BusinessDataFieldDefinitionDefinitionGenerator : FieldDefinitionGenerator
     {
-        public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
+        public override Type TargetType
         {
-            return WithEmptyDefinition(def =>
+            get { return typeof(BusinessDataFieldDefinition); }
+        }
+
+        protected override FieldDefinition GetFieldDefinitionTemplate()
+        {
+            return new BusinessDataFieldDefinition
             {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
-                def.Description = Rnd.String();
-                //def.FieldType = BuiltInFieldTypes.Text;
-
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
-                def.EntityName = Rnd.String();
-                def.EntityNamespace = Rnd.String();
-
-                def.BdcFieldName = Rnd.String();
-                def.SystemInstanceName = Rnd.String();
-            });
+                EntityName = Rnd.String(),
+                EntityNamespace = Rnd.String(),
+                BdcFieldName = Rnd.String(),
+                SystemInstanceName = Rnd.String()
+            };
         }
     }
 }

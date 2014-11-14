@@ -23,6 +23,7 @@ namespace SPMeta2.Definitions
         {
             // it needs to be string.Empty to avoid challenges with null VS string.Empty test cases for strings
             Description = string.Empty;
+            Group = string.Empty;
         }
 
         #endregion
