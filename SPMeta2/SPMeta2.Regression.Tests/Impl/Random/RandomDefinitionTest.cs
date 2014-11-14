@@ -172,6 +172,20 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_DateTimeFieldDefinition()
+        {
+            TestRandomDefinition<DateTimeFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_BooleanFieldDefinition()
+        {
+            TestRandomDefinition<BooleanFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_NoteFieldDefinition()
         {
             TestRandomDefinition<NoteFieldDefinition>();

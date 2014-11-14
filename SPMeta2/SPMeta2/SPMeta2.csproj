@@ -61,6 +61,8 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\Fields\DateTimeFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\BooleanFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\MultiChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\ChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\NoteFieldDefinition.cs" />
@@ -68,6 +70,9 @@
     <Compile Include="Definitions\Fields\TextFieldDefinition.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
+    <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
+    <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />
+    <Compile Include="Enumerations\BuiltInCalendarType.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />

@@ -58,6 +58,12 @@ namespace SPMeta2.Enumerations
         public static string Required = "Required";
         public static string Description = "Description";
 
+        public static string CalendarType = "CalType";
+        public static string DisplayFormat = "Format";
+        public static string FriendlyDisplayFormat = "FriendlyDisplayFormat";
+
         #endregion
+
+
     }
 }
