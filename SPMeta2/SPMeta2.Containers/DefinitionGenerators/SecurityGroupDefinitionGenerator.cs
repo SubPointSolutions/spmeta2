@@ -14,6 +14,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Name = Rnd.String();
                 def.Description = Rnd.String();
 
+                def.OnlyAllowMembersViewMembership = Rnd.Bool();
+
                 def.Owner = Rnd.UserLogin();
                 def.DefaultUser = Rnd.UserLogin();
             });

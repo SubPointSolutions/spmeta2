@@ -82,12 +82,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentGroup = web.SiteGroups.Add(new GroupCreationInformation
                 {
                     Title = securityGroupModel.Name,
-                    Description = securityGroupModel.Description ?? string.Empty
+                    Description = securityGroupModel.Description ?? string.Empty,
                 });
             }
 
             currentGroup.Title = securityGroupModel.Name;
             currentGroup.Description = securityGroupModel.Description ?? string.Empty;
+            currentGroup.OnlyAllowMembersViewMembership = securityGroupModel.OnlyAllowMembersViewMembership;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

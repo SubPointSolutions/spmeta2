@@ -30,6 +30,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                        .NewAssert(definition, spObject)
                              .ShouldNotBeNull(spObject)
                              .ShouldBeEqual(m => m.Name, o => o.Title)
+                             .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership)
                              .ShouldBeEqual(m => m.Description, o => o.Description);
 
 
