@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consts\EnvironmentConsts.cs" />
     <Compile Include="DefaultWebpartTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -53,6 +54,15 @@
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeFieldsOrderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\UserFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\LookupFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\BooleanFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\DateTimeFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\MultiChoiceFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\TextFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\NoteFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\CurrencyFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\ChoiceFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\BusinessDataFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypeFieldLinkDefinitionGenerator.cs" />
@@ -104,8 +114,10 @@
     <Compile Include="Services\Base\DefinitionGeneratorServiceBase.cs" />
     <Compile Include="Services\Base\TypedDefinitionGeneratorServiceBase.cs" />
     <Compile Include="Services\ModelGeneratorService.cs" />
+    <Compile Include="Services\ProvisionRunnerBase.cs" />
     <Compile Include="Services\RandomService.cs" />
     <Compile Include="Services\Rnd\DefaultRandomService.cs" />
+    <Compile Include="Utils\RunnerEnvironment.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -141,6 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Apps\SPMeta2.Sandbox.TestSandboxApp.wsp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\Apps\SPMeta2.Sandbox.TestFarmApp.wsp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

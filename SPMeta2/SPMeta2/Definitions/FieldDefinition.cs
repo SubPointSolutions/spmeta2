@@ -23,6 +23,7 @@ namespace SPMeta2.Definitions
         {
             // it needs to be string.Empty to avoid challenges with null VS string.Empty test cases for strings
             Description = string.Empty;
+            Group = string.Empty;
         }
 
         #endregion
@@ -78,6 +79,39 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         public bool Required { get; set; }
+
+        [ExpectValidation]
+        public string JSLink { get; set; }
+
+        [ExpectValidation]
+        public string DefaultValue { get; set; }
+
+        [ExpectValidation]
+        public bool Hidden { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInDisplayForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInEditForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInListSettings { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInNewForm { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInVersionHistory { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowInViewForms { get; set; }
+
+        [ExpectValidation]
+        public bool? AllowDeletion { get; set; }
+
+        [ExpectValidation]
+        public bool Indexed { get; set; }
 
         #endregion
 

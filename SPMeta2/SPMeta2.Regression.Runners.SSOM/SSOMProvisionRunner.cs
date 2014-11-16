@@ -59,13 +59,13 @@ namespace SPMeta2.Regression.Runners.SSOM
         private void LoadEnvironmentConfig()
         {
             WebApplicationUrls.Clear();
-            WebApplicationUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebApplicationUrls));
+            WebApplicationUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebApplicationUrls));
 
             SiteUrls.Clear();
-            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_SiteUrls));
+            SiteUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.SSOM_SiteUrls));
 
             WebUrls.Clear();
-            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebUrls));
+            WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.SSOM_WebUrls));
         }
 
         #endregion

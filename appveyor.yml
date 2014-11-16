@@ -7,3 +7,4 @@ environment:
     secure: HE7kgk9JwRjrFb2u1JBBTw==
   SPMeta2_RunnerLibraries:
     secure: fjM6KXFe9K4+sdSLrfrlvDYxZlLOQIgVLNZqlBBOf5Tqk2M5E7JLaPzNcUmE9eDz
+test: off

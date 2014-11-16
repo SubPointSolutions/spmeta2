@@ -35,11 +35,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeploySolution(farmModelHost, solutionModel);
         }
 
-        private void DeploySolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
+        protected SPSolution FindExistingSolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
         {
             var farm = modelHost.HostFarm;
 
-            var existringSolution = farm.Solutions.FirstOrDefault(s => s.Name.ToLower() == definition.FileName.ToLower());
+            return farm.Solutions.FirstOrDefault(s =>
+                s.Name.ToUpper() == definition.FileName.ToUpper() ||
+                definition.SolutionId != Guid.Empty && s.SolutionId == definition.SolutionId);
+        }
+
+        private void DeploySolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
+        {
+            var farm = modelHost.HostFarm;
+            var existringSolution = FindExistingSolution(modelHost, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -52,21 +60,21 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            var tmpWspDirectory = string.Format("{0}_{1}", Path.GetFileNameWithoutExtension(definition.FileName), Guid.NewGuid().ToString("N"));
+            var tmpWspDirectoryPath = Path.Combine(Path.GetTempPath(), tmpWspDirectory);
+
+            Directory.CreateDirectory(tmpWspDirectoryPath);
+
+            var tmpWspFilPath = Path.Combine(tmpWspDirectoryPath, definition.FileName);
+            File.WriteAllBytes(tmpWspFilPath, definition.Content);
+
             if (existringSolution == null)
             {
-                var tmpWspDirectory = string.Format("{0}_{1}", Path.GetFileNameWithoutExtension(definition.FileName), Guid.NewGuid().ToString("N"));
-                var tmpWspDirectoryPath = Path.Combine(Path.GetTempPath(), tmpWspDirectory);
-
-                Directory.CreateDirectory(tmpWspDirectoryPath);
-
-                var tmpWspFilPath = Path.Combine(tmpWspDirectoryPath, definition.FileName);
-                File.WriteAllBytes(tmpWspFilPath, definition.Content);
-
                 existringSolution = farm.Solutions.Add(tmpWspFilPath, (uint)definition.LCID);
             }
             else
             {
-
+                existringSolution.Upgrade(tmpWspFilPath);
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

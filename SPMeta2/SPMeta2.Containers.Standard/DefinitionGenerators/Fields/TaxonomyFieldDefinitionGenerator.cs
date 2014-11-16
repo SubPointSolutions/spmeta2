@@ -1,30 +1,25 @@
 ﻿using System;
+using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 
 namespace SPMeta2.Containers.Standard.DefinitionGenerators.Fields
 {
-    public class TaxonomyFieldDefinitionGenerator : TypedDefinitionGeneratorServiceBase<TaxonomyFieldDefinition>
+    public class TaxonomyFieldDefinitionGenerator : FieldDefinitionGenerator
     {
-        public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
+        public override Type TargetType
         {
-            return WithEmptyDefinition(def =>
+            get { return typeof(TaxonomyFieldDefinition); }
+        }
+
+        protected override FieldDefinition GetFieldDefinitionTemplate()
+        {
+            return new TaxonomyFieldDefinition
             {
-                def.Id = Rnd.Guid();
-                def.InternalName = Rnd.String(32);
-
-                def.Description = Rnd.String();
-
-                def.Required = Rnd.Bool();
-
-                def.Group = Rnd.String();
-                def.Title = Rnd.String(32);
-
-                def.UseDefaultSiteCollectionTermStore = true;
-                //def.SspName = "Managed Metadata Application";
-                def.TermSetName = "Maps";
-            });
+                UseDefaultSiteCollectionTermStore = true,
+                TermSetName = "Maps"
+            };
         }
     }
 }

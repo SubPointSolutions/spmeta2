@@ -52,11 +52,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                 viewFields.AddRange(viewModel.Fields.ToArray());
 
                 // TODO, handle personal view creation
-                currentView = targetList.Views.Add(viewModel.Title, viewFields,
+                currentView = targetList.Views.Add(
+                            string.IsNullOrEmpty(viewModel.Url) ? viewModel.Title : viewModel.Url,
+                            viewFields,
                             viewModel.Query,
                             (uint)viewModel.RowLimit,
                             viewModel.IsPaged,
                             viewModel.IsDefault);
+
+                currentView.Title = viewModel.Title;
             }
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);

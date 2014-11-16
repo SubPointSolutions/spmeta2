@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
@@ -181,6 +182,8 @@ namespace SPMeta2.Services
 
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
+            // try
+            // {
             InvokeOnModelNodeProcessing(this, new OnModelNodeProcessingEventArgs
             {
                 ModelNode = modelNode,
@@ -219,10 +222,6 @@ namespace SPMeta2.Services
                 ModelHost = modelHost
             });
 
-            // TODO
-            // here must be a "context change" to provide an ability to continue the
-            // deployment chain with changes from SPWeb to SPList
-
             // sort out child models by types
             var modelWeights = GetModelWeighs();
 
@@ -250,7 +249,6 @@ namespace SPMeta2.Services
                     return srcW.CompareTo(dstW);
                 });
             }
-
 
             foreach (var childModelType in childModelTypes)
             {
@@ -289,23 +287,31 @@ namespace SPMeta2.Services
                     //});
                 }
             }
+            //  }
+            //catch (Exception modelProvisionException)
+            //{
+            //    throw new SPMeta2ModelDeploymentException("Model provision error", modelProvisionException)
+            //    {
+            //        ModelNode = modelNode
+            //    };
+            //}
         }
 
         private void RetractSite(object modelHost, ModelNode model)
         {
-            var siteDefinition = model.Value as SiteDefinition;
-            var modelHandler = ResolveModelHandler(siteDefinition.GetType());
+            // var siteDefinition = model.Value as SiteDefinition;
+            // var modelHandler = ResolveModelHandler(siteDefinition.GetType());
         }
 
         private void RetractWeb(object modelHost, ModelNode model)
         {
-            var webDefinition = model.Value as WebDefinition;
-            var modelHandler = ResolveModelHandler(webDefinition.GetType());
+            //var webDefinition = model.Value as WebDefinition;
+            //var modelHandler = ResolveModelHandler(webDefinition.GetType());
 
-            if (modelHandler == null && webDefinition.RequireSelfProcessing)
-                throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", webDefinition.GetType()));
+            //if (modelHandler == null && webDefinition.RequireSelfProcessing)
+            //    throw new ArgumentNullException(string.Format("Can't find model handler for type:[{0}] ", webDefinition.GetType()));
 
-            modelHandler.RetractModel(modelHost, webDefinition);
+            //modelHandler.RetractModel(modelHost, webDefinition);
         }
 
         #endregion

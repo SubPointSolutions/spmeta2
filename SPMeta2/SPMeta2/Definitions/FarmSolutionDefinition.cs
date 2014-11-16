@@ -50,6 +50,7 @@ namespace SPMeta2.Definitions
         {
             return new ToStringResult<FarmSolutionDefinition>(this)
                           .AddPropertyValue(p => p.FileName)
+                          .AddPropertyValue(p => p.SolutionId)
                           .AddPropertyValue(p => p.LCID)
                           .ToString();
         }

@@ -63,10 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.Regression.Runners\SPMeta2.Regression.Runners.csproj">
-      <Project>{C69C8205-B0C7-4FDB-B1F6-F4FA77FF95AB}</Project>
-      <Name>SPMeta2.Regression.Runners</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Regression.SSOM.Standard\SPMeta2.Regression.SSOM.Standard.csproj">
       <Project>{d81ae83a-beef-4099-b354-0b88d7396b25}</Project>
       <Name>SPMeta2.Regression.SSOM.Standard</Name>

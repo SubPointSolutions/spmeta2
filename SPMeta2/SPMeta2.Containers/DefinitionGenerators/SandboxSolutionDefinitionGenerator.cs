@@ -17,7 +17,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Activate = Rnd.Bool();
 
                 def.SolutionId = new Guid("e34d1ce3-62da-4a73-a382-a49af8e5dde0");
-                def.Content = ResourceReaderUtils.ReadFromResourceName(typeof(AppDefinitionGenerator).Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSandboxApp.wsp");
+                def.Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSandboxApp.wsp");
             });
         }
     }

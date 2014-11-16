@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Exceptions;
@@ -16,26 +16,21 @@ using System.Xml.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
-    public class BusinessDataFieldDefinitionValidator : BusinessDataFieldModelHandler
+    public class BusinessDataFieldDefinitionValidator : ClientFieldDefinitionValidator
     {
+        public override Type TargetType
+        {
+            get { return typeof(BusinessDataFieldDefinition); }
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            base.DeployModel(modelHost, model);
+
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<BusinessDataFieldDefinition>("model", value => value.RequireNotNull());
 
-            Field spObject = null;
-
-            if (modelHost is SiteModelHost)
-                spObject = FindSiteField(modelHost as SiteModelHost, definition);
-            else if (modelHost is ListModelHost)
-                spObject = FindListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new SPMeta2NotSupportedException(
-                    string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
-                    definition.GetType(),
-                    modelHost.GetType()));
-            }
+            var spObject = FindField(modelHost, definition);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
@@ -56,30 +51,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
         }
     }
 
-    internal static class BCSFieldExt
-    {
-        public static string GetSystemInstanceName(this Field field)
-        {
-            var xml = XElement.Parse(field.SchemaXml);
-            return xml.Attribute("SystemInstance").Value;
-        }
-
-        public static string GetEntityNamespace(this Field field)
-        {
-            var xml = XElement.Parse(field.SchemaXml);
-            return xml.Attribute("EntityNamespace").Value;
-        }
-
-        public static string GetEntityName(this Field field)
-        {
-            var xml = XElement.Parse(field.SchemaXml);
-            return xml.Attribute("EntityName").Value;
-        }
-
-        public static string GetBdcFieldName(this Field field)
-        {
-            var xml = XElement.Parse(field.SchemaXml);
-            return xml.Attribute("BdcField").Value;
-        }
-    }
+    //internal static class BCSFieldExt
+    //{
+        
+    //}
 }

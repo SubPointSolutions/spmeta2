@@ -32,7 +32,6 @@ using SPMeta2.Regression.Exceptions;
 using System.IO;
 using SPMeta2.Validation.Services;
 using SPMeta2.Regression.Assertion;
-using SPMeta2.Regression.Runners.Config;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
@@ -148,6 +147,74 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region site scope
 
+        #region fields
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_MultiChoiceFieldDefinition()
+        {
+            TestRandomDefinition<MultiChoiceFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_ChoiceFieldDefinition()
+        {
+            TestRandomDefinition<ChoiceFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_CurrencyFieldDefinition()
+        {
+            TestRandomDefinition<CurrencyFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_DateTimeFieldDefinition()
+        {
+            TestRandomDefinition<DateTimeFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_BooleanFieldDefinition()
+        {
+            TestRandomDefinition<BooleanFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_UserFieldDefinition()
+        {
+            TestRandomDefinition<UserFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_LookupFieldDefinition()
+        {
+            TestRandomDefinition<LookupFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_NoteFieldDefinition()
+        {
+            TestRandomDefinition<NoteFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_TextFieldDefinition()
+        {
+            TestRandomDefinition<TextFieldDefinition>();
+        }
+
+        #endregion
+
+
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_SiteDefinition()
@@ -166,7 +233,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.Fields")]
         public void CanDeployRandom_FieldDefinition()
         {
             TestRandomDefinition<FieldDefinition>();
@@ -180,14 +247,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_BusinessDataFieldDefinition()
         {
             TestRandomDefinition<BusinessDataFieldDefinition>();
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Site")]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_TaxonomyFieldDefinition()
         {
             TestRandomDefinition<TaxonomyFieldDefinition>();

@@ -27,7 +27,11 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         public byte[] Content { get; set; }
 
-
+        /// <summary>
+        /// Target ID of the solution.
+        /// </summary>
+        [ExpectValidation]
+        public Guid SolutionId { get; set; }
 
         #endregion
     }

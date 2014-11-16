@@ -60,7 +60,17 @@
     <Compile Include="Validation\AppDefinitionValidator.cs" />
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\DateTimeFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\LookupFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\MultiChoiceFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\NoteFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\TextFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\CurrencyFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ChoiceFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\UserFieldDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\FarmSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />

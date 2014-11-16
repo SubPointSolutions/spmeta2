@@ -123,6 +123,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
             }
 
+            currentGroup.OnlyAllowMembersViewMembership = securityGroupModel.OnlyAllowMembersViewMembership;
             currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel);
             currentGroup.Description = securityGroupModel.Description;
 

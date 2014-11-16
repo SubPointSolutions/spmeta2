@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
@@ -68,7 +69,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
 
+                // by ID, by Name
                 var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
+
+                if (targetContentType == null)
+                {
+                    targetContentType = tmpRootWeb.ContentTypes
+                                                  .OfType<SPContentType>()
+                                                  .FirstOrDefault(f => f.Name.ToUpper() == contentTypeModel.Name.ToUpper());
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -103,7 +112,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = contentTypeModel,
                     ModelHost = modelHost
                 });
-                
+
                 targetContentType.Update();
 
                 tmpRootWeb.Update();

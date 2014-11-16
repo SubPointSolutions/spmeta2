@@ -37,8 +37,8 @@ namespace SPMeta2.Regression.Runners.O365
             LoadEnvironmentConfig();
             InitServices();
 
-            UserName = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
-            UserPassword = RunnerEnvironment.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+            UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
+            UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
         }
 
         private void InitServices()
@@ -60,10 +60,10 @@ namespace SPMeta2.Regression.Runners.O365
         private void LoadEnvironmentConfig()
         {
             SiteUrls.Clear();
-            SiteUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.O365_SiteUrls));
+            SiteUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_SiteUrls));
 
             WebUrls.Clear();
-            WebUrls.AddRange(RunnerEnvironment.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
+            WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
         }
 
         #endregion

@@ -91,6 +91,15 @@
     <Compile Include="ModelHandlers\CSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\LookupFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\BooleanFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\DateTimeFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\MultiChoiceFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\TextFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\NoteFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\CurrencyFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BusinessDataFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
