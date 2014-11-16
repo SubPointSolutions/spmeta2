@@ -29,6 +29,7 @@ namespace SPMeta2.Definitions.Fields
         public UserFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.User;
+            SelectionMode = BuiltInFieldUserSelectionMode.PeopleAndGroups;
         }
 
         #endregion
@@ -36,14 +37,24 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        public bool AllowMultipleValues { get; set; }
+
+        [ExpectValidation]
         public bool AllowDisplay { get; set; }
 
         [ExpectValidation]
         public bool Presence { get; set; }
 
+        /// <summary>
+        /// ID of the target security group.
+        /// Is not used during the provision, must be used maually after the provision to hook up the field with the particular group.
+        ///  </summary>
         [ExpectValidation]
-        public int SelectionGroup { get; set; }
+        public int? SelectionGroup { get; set; }
 
+        /// <summary>
+        /// Refers to SPFieldUserSelectionMode property.
+        /// </summary>
         [ExpectValidation]
         public string SelectionMode { get; set; }
 

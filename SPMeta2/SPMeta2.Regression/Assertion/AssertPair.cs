@@ -85,6 +85,10 @@ namespace SPMeta2.Regression.Assertion
             return this;
         }
 
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, Guid?>> srcExp, Expression<Func<TDst, Guid?>> dstExp)
+        {
+            return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
+        }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, bool?>> srcExp, Expression<Func<TDst, bool?>> dstExp)
         {
@@ -104,6 +108,11 @@ namespace SPMeta2.Regression.Assertion
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, uint>> srcExp, Expression<Func<TDst, uint>> dstExp)
         {
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, Guid?>> srcExp, Expression<Func<TSrc, Guid?>> srcAlias, Expression<Func<TDst, Guid?>> dstExp, Expression<Func<TDst, Guid?>> dstAlias)
+        {
+            return InternalShouldBeEqual<Guid?>(srcExp, srcAlias, dstExp, dstAlias);
         }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, uint>> srcExp, Expression<Func<TSrc, uint>> srcAlias, Expression<Func<TDst, uint>> dstExp, Expression<Func<TDst, uint>> dstAlias)

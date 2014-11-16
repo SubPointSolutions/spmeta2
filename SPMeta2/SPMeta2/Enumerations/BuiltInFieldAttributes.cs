@@ -38,6 +38,10 @@ namespace SPMeta2.Enumerations
 
         public static string MaxLength = "MaxLength";
 
+        public static string AllowDisplay = "ForcedDisplay";
+        public static string Presence = "Presence";
+        public static string SelectionGroup = "UserSelectionScope";
+
         public static string UnlimitedLengthInDocumentLibrary = "UnlimitedLengthInDocumentLibrary";
         public static string RichText = "RichText";
         public static string RichTextMode = "RichTextMode";
@@ -62,8 +66,15 @@ namespace SPMeta2.Enumerations
         public static string DisplayFormat = "Format";
         public static string FriendlyDisplayFormat = "FriendlyDisplayFormat";
 
+        public static string SelectionMode = "UserSelectionMode";
+
+        public static string AllowMultipleValues = "Mult";
+
+        public static string LookupList = "List";
+        public static string LookupWebId = "WebId";
+
+        public static string LookupField = "ShowField";
+
         #endregion
-
-
     }
 }

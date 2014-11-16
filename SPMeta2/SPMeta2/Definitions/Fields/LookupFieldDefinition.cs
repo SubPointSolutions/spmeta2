@@ -29,6 +29,7 @@ namespace SPMeta2.Definitions.Fields
         public LookupFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.Lookup;
+            LookupField = BuiltInInternalFieldNames.Title;
         }
 
         #endregion
@@ -36,16 +37,27 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        public bool AllowMultipleValues { get; set; }
+
+        /// <summary>
+        /// ID of the target web.
+        /// </summary>
+        [ExpectValidation]
         public Guid? LookupWebId { get; set; }
 
+        /// <summary>
+        /// Name or GUID of the target list.
+        /// Could be "Self", "UserInfo" or ID of the target list.
+        /// </summary>
         [ExpectValidation]
         public string LookupList { get; set; }
 
+        /// <summary>
+        /// References to 'ShowField' property.
+        /// Should be an internal name of the target field.
+        /// </summary>
         [ExpectValidation]
         public string LookupField { get; set; }
-
-        [ExpectValidation]
-        public string SelectionMode { get; set; }
 
         #endregion
 
@@ -57,7 +69,6 @@ namespace SPMeta2.Definitions.Fields
                           .AddPropertyValue(p => p.LookupWebId)
                           .AddPropertyValue(p => p.LookupList)
                           .AddPropertyValue(p => p.LookupField)
-                          .AddPropertyValue(p => p.SelectionMode)
                           .ToString();
         }
 
