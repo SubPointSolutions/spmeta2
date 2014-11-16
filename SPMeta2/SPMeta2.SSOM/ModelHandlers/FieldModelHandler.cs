@@ -165,7 +165,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(fieldModel.DefaultValue))
                 fieldTemplate.SetSubNode("Default", fieldModel.DefaultValue);
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Hidden, fieldModel.Hidden.ToString());
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Hidden, fieldModel.Hidden.ToString().ToUpper());
 
             // ShowIn* settings
             if (fieldModel.ShowInDisplayForm.HasValue)
@@ -190,7 +190,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (fieldModel.AllowDeletion.HasValue)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDeletion, fieldModel.AllowDeletion.Value.ToString().ToUpper());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed.ToString().ToUpper());
 
         }
 

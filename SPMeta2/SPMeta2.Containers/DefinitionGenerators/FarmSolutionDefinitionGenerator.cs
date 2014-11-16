@@ -13,13 +13,10 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.FileName = Rnd.String();
+                def.FileName = string.Format("{0}.wsp", Rnd.String());
+                def.SolutionId = new Guid("9591a597-da94-47b4-a3c6-2f8703d4de2b");
 
-                def.Content = ModuleFileUtils.FromResource(
-                        System.AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("SPMeta2.SSOM")),
-                        "SPMeta2.SSOM.SandboxApps.SPMeta2.Sandbox.TestApp.wsp");
-
-
+                def.Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestFarmApp.wsp");
             });
         }
     }
