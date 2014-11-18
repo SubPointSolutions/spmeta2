@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -23,6 +24,20 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
+
+            var textField = spObject as SPFieldComputed;
+            var textDefinition = model.WithAssertAndCast<ComputedFieldDefinition>("model", value => value.RequireNotNull());
+
+            var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
+
+            if (textDefinition.EnableLookup.HasValue)
+            {
+                textFieldAssert.ShouldBeEqual(m => m.EnableLookup, o => o.EnableLookup);
+            }
+            else
+            {
+                textFieldAssert.SkipProperty(m => m.EnableLookup, "EnableLookup is NULL. Skipping.");
+            }
         }
     }
 }

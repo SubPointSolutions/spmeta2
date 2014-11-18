@@ -29,7 +29,33 @@ namespace SPMeta2.Definitions.Fields
         public CalculatedFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.Calculated;
+            FieldReferences = new Collection<string>();
         }
+
+        #endregion
+
+        #region properties
+
+        [ExpectValidation]
+        public int? CurrencyLocaleId { get; set; }
+
+        [ExpectValidation]
+        public string DateFormat { get; set; }
+
+        [ExpectValidation]
+        public string DisplayFormat { get; set; }
+
+        [ExpectValidation]
+        public string Formula { get; set; }
+
+        [ExpectValidation]
+        public string OutputType { get; set; }
+
+        [ExpectValidation]
+        public bool? ShowAsPercentage { get; set; }
+
+        [ExpectValidation]
+        public Collection<string> FieldReferences { get; set; }
 
         #endregion
 

@@ -81,6 +81,8 @@ namespace SPMeta2.Enumerations
         public static string MaximumValue = "Max";
         public static string MinimumValue = "Min";
 
+        public static string EnableLookup = "EnableLookup";
+
         #endregion
     }
 }

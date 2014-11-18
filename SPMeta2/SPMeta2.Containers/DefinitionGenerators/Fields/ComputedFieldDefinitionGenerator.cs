@@ -15,10 +15,15 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
 
         protected override FieldDefinition GetFieldDefinitionTemplate()
         {
-            return new ComputedFieldDefinition
+            var def = new ComputedFieldDefinition
             {
 
             };
+
+            if (Rnd.Bool())
+                def.EnableLookup = Rnd.Bool();
+
+            return def;
         }
     }
 }

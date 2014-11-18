@@ -33,6 +33,13 @@ namespace SPMeta2.Definitions.Fields
 
         #endregion
 
+        #region properties
+
+        [ExpectValidation]
+        public bool? EnableLookup { get; set; }
+
+        #endregion
+
         #region methods
 
         public override string ToString()

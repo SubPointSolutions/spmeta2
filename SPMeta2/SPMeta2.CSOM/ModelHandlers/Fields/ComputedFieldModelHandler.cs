@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
@@ -37,6 +38,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
             var typedFieldModel = fieldModel.WithAssertAndCast<ComputedFieldDefinition>("model", value => value.RequireNotNull());
+
+            if (typedFieldModel.EnableLookup.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.EnableLookup, typedFieldModel.EnableLookup.ToString().ToUpper());
         }
 
         #endregion
