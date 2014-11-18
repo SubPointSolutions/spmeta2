@@ -61,6 +61,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                     .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                     .ShouldBeEqual(m => m.Group, o => o.Group);
 
+            assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
+            assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
+
             // taxonomy field seems to prodice issues w/ Required/Description validation
             if (!SkipRequredPropValidation)
                 assert.ShouldBeEqual(m => m.Required, o => o.Required);

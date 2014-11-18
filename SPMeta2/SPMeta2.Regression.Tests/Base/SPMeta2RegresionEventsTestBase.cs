@@ -342,7 +342,7 @@ namespace SPMeta2.Regression.Tests.Base
                     return hasMissedOrInvalidProps;
                 }
 
-                foreach (var property in modelValidationResult.Properties)
+                foreach (var property in modelValidationResult.Properties.OrderBy(p => p.Src != null ? p.Src.Name : p.ToString()))
                 {
                     Trace.WriteLine(string.Format("[INF]{6} [{4}] - Src prop: [{0}] Src value: [{1}] Dst prop: [{2}] Dst value: [{3}] Message:[{5}]",
                         new object[]{
@@ -363,7 +363,7 @@ namespace SPMeta2.Regression.Tests.Base
 
                 Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
 
-                foreach (var shouldBeValidatedProp in shouldBeValidatedProperties)
+                foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
                 {
                     var hasValidation = false;
                     var validationResult = modelValidationResult.Properties.FirstOrDefault(r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);

@@ -17,7 +17,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
         {
             return new CurrencyFieldDefinition
             {
-                CurrencyLocaleId = 1040 + Rnd.Int(5)
+                CurrencyLocaleId = 1040 + Rnd.Int(5),
+                ValidationMessage = string.Format("validatin_msg_{0}", Rnd.String()),
+                ValidationFormula = string.Format("=[ID] * {0}", Rnd.Int(100))
             };
         }
     }

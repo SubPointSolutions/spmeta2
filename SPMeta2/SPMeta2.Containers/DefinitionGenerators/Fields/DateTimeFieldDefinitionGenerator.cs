@@ -20,7 +20,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
             {
                 CalendarType = BuiltInCalendarType.Gregorian,
                 DisplayFormat = BuiltInDateTimeFieldFormatType.DateOnly,
-                FriendlyDisplayFormat = BuiltInDateTimeFieldFriendlyFormatType.Relative
+                FriendlyDisplayFormat = BuiltInDateTimeFieldFriendlyFormatType.Relative,
+                ValidationMessage = string.Format("validatin_msg_{0}", Rnd.String()),
+                ValidationFormula = string.Format("=[ID] * {0}", Rnd.Int(100))
             };
         }
     }

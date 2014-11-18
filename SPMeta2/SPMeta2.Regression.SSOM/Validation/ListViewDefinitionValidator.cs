@@ -36,6 +36,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.ShouldBePartOf(m => m.Url, o => o.ServerRelativeUrl);
 
+            assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+         
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(def => def.Fields);

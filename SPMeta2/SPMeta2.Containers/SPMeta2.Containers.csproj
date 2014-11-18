@@ -54,6 +54,10 @@
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeFieldsOrderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\GuidFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\ComputedFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\CalculatedFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\NumberFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\UserFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\LookupFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\BooleanFieldDefinitionGenerator.cs" />

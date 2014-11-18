@@ -19,6 +19,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.IsDefault = Rnd.Bool();
                 def.IsPaged = Rnd.Bool();
+
+                def.JSLink = string.Format("~sitecollection/style library/{0}.js", Rnd.String());
             });
         }
     }

@@ -37,6 +37,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
         {
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
+
+            field.ValidationMessage = fieldModel.ValidationMessage ?? string.Empty;
+            field.ValidationFormula = fieldModel.ValidationFormula ?? string.Empty;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

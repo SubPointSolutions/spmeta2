@@ -24,6 +24,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                 def.Choices.Add(Rnd.String(8));
             }
 
+            def.ValidationMessage = string.Format("validatin_msg_{0}", Rnd.String());
+            def.ValidationFormula = string.Format("=[ID] * {0}", Rnd.Int(100));
+
             return def;
         }
     }

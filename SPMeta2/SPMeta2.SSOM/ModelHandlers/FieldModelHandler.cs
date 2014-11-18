@@ -253,11 +253,11 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected virtual void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
         {
             field.Title = fieldModel.Title;
+
+            field.Description = fieldModel.Description ?? string.Empty;
             field.Group = fieldModel.Group ?? string.Empty;
 
             field.Required = fieldModel.Required;
-
-            field.Description = fieldModel.Description ?? string.Empty;
         }
 
         #endregion

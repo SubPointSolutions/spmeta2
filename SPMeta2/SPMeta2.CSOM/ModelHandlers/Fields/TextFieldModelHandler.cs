@@ -36,6 +36,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            field.ValidationMessage = fieldModel.ValidationMessage ?? string.Empty;
+            field.ValidationFormula = fieldModel.ValidationFormula ?? string.Empty;
+
             var tmpField = field.Context.CastTo<FieldText>(field);
 
             var spField = tmpField.WithAssertAndCast<FieldText>("field", value => value.RequireNotNull());

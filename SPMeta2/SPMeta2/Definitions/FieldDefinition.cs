@@ -113,6 +113,12 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public bool Indexed { get; set; }
 
+        [ExpectValidation]
+        public string ValidationFormula { get; set; }
+
+        [ExpectValidation]
+        public string ValidationMessage { get; set; }
+
         #endregion
 
         #region methods

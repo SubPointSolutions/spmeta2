@@ -15,9 +15,19 @@ namespace SPMeta2.Containers.DefinitionGenerators
             });
         }
 
+        protected virtual void PreProcessDefinitionTemplate(FieldDefinition action)
+        {
+        }
+
+        protected virtual void PostProcessDefinitionTemplate(FieldDefinition action)
+        {
+        }
+
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {
             var def = GetFieldDefinitionTemplate();
+
+            PreProcessDefinitionTemplate(def);
 
             def.Id = Rnd.Guid();
             def.InternalName = Rnd.String(32);
@@ -46,6 +56,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
             def.AllowDeletion = Rnd.Bool();
             def.Indexed = Rnd.Bool();
+
+            PostProcessDefinitionTemplate(def);
 
             if (action != null)
                 action(def);

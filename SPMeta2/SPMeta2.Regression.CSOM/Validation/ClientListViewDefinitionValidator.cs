@@ -33,7 +33,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                               .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                               .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
-
+            assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+         
             if (string.IsNullOrEmpty(definition.Url))
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
             else

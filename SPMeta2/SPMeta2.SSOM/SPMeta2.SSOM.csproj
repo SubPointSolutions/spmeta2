@@ -80,10 +80,14 @@
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeFieldsOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\DateTimeFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BooleanFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\GuidFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LookupFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\MultiChoiceFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\NumberFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\TextFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\NoteFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CurrencyFieldModelHandler.cs" />

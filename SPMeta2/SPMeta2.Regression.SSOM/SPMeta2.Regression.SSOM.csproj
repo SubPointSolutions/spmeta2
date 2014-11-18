@@ -61,10 +61,14 @@
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ComputedFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\DateTimeFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\GuidFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\LookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\MultiChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\NoteFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\NumberFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\TextFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\CurrencyFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ChoiceFieldDefinitionValidator.cs" />

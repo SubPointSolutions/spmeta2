@@ -212,6 +212,34 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<TextFieldDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_CalculatedFieldDefinition()
+        {
+            TestRandomDefinition<CalculatedFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_ComputedFieldDefinition()
+        {
+            TestRandomDefinition<ComputedFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_NumberFieldDefinition()
+        {
+            TestRandomDefinition<NumberFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_GuidFieldDefinition()
+        {
+            TestRandomDefinition<GuidFieldDefinition>();
+        }
+
         #endregion
 
 

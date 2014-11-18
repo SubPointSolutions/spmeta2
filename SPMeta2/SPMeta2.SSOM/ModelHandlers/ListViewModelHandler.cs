@@ -31,9 +31,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             ProcessView(modelHost, list, listViewModel);
         }
 
-        protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition viewModel)
+        protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)
         {
-            var currentView = targetList.Views.FindByName(viewModel.Title);
+            var currentView = targetList.Views.FindByName(listViewModel.Title);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -42,37 +42,40 @@ namespace SPMeta2.SSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = currentView,
                 ObjectType = typeof(SPView),
-                ObjectDefinition = viewModel,
+                ObjectDefinition = listViewModel,
                 ModelHost = modelHost
             });
 
             if (currentView == null)
             {
                 var viewFields = new StringCollection();
-                viewFields.AddRange(viewModel.Fields.ToArray());
+                viewFields.AddRange(listViewModel.Fields.ToArray());
 
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
-                            string.IsNullOrEmpty(viewModel.Url) ? viewModel.Title : viewModel.Url,
+                            string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : listViewModel.Url,
                             viewFields,
-                            viewModel.Query,
-                            (uint)viewModel.RowLimit,
-                            viewModel.IsPaged,
-                            viewModel.IsDefault);
+                            listViewModel.Query,
+                            (uint)listViewModel.RowLimit,
+                            listViewModel.IsPaged,
+                            listViewModel.IsDefault);
 
-                currentView.Title = viewModel.Title;
+                currentView.Title = listViewModel.Title;
             }
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);
 
             // if any fields specified, overwrite
-            if (viewModel.Fields.Any())
+            if (listViewModel.Fields.Any())
             {
                 currentView.ViewFields.DeleteAll();
 
-                foreach (var viewField in viewModel.Fields)
+                foreach (var viewField in listViewModel.Fields)
                     currentView.ViewFields.Add(viewField);
             }
+
+            if (!string.IsNullOrEmpty(listViewModel.JSLink))
+                currentView.JSLink = listViewModel.JSLink;
 
             // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
 
@@ -83,7 +86,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioned,
                 Object = currentView,
                 ObjectType = typeof(SPView),
-                ObjectDefinition = viewModel,
+                ObjectDefinition = listViewModel,
                 ModelHost = modelHost
             });
 

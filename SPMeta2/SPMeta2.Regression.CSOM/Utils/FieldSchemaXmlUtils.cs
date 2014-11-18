@@ -49,6 +49,58 @@ namespace SPMeta2.Regression.CSOM.Utils
             return ConvertUtils.ToInt(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.CurrencyLocaleId)).Value;
         }
 
+
+
+
+
+        public static bool GetShowAsPercentage(this Field field)
+        {
+            var xml = field.SchemaXml;
+
+            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowAsPercentage)).Value;
+        }
+
+        public static int GetDecimals(this Field field)
+        {
+            var xml = field.SchemaXml;
+
+            return ConvertUtils.ToInt(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Decimals)).Value;
+        }
+
+        public static string GetDecimalsAsString(this Field field)
+        {
+            var xml = field.SchemaXml;
+
+            return GetDecimalsValue(GetDecimals(field));
+        }
+
+        private static string GetDecimalsValue(int value)
+        {
+            if (value == -1)
+                return BuiltInNumberFormatTypes.Automatic;
+
+            if (value == 0)
+                return BuiltInNumberFormatTypes.NoDecimal;
+
+            if (value == 1)
+                return BuiltInNumberFormatTypes.OneDecimal;
+
+            if (value == 2)
+                return BuiltInNumberFormatTypes.TwoDecimals;
+
+            if (value == 3)
+                return BuiltInNumberFormatTypes.ThreeDecimals;
+
+            if (value == 4)
+                return BuiltInNumberFormatTypes.FourDecimals;
+
+            if (value == 5)
+                return BuiltInNumberFormatTypes.FiveDecimals;
+
+            throw new ArgumentException("Decimals");
+        }
+
+
         public static bool GetRichText(this Field field)
         {
             var xml = field.SchemaXml;

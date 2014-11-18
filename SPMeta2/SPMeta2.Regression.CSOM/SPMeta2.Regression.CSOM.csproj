@@ -102,6 +102,10 @@
     <Compile Include="Validation\ContentTypes\RemoveContentTypeLinksDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\UniqueContentTypeFieldsOrderDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\UniqueContentTypeOrderDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ComputedFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\GuidFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\NumberFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\UserFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\LookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />

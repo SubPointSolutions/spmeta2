@@ -29,28 +29,20 @@ namespace SPMeta2.Utils
             }
         }
 
-        public static XElement SetAttribute(this XElement element, string attrName, int attrValue)
-        {
-            return SetAttribute(element, attrName, attrValue.ToString());
-        }
-
-        public static XElement SetAttribute(this XElement element, string attrName, bool attrValue)
-        {
-            return SetAttribute(element, attrName, attrValue.ToString());
-        }
-
-        public static XElement SetAttribute(this XElement element, string attrName, string attrValue)
+        public static XElement SetAttribute(this XElement element, string attrName, object attrValue)
         {
             var upperName = attrName.ToUpper();
+            var attrStringValue = attrValue != null ? attrValue.ToString() : string.Empty;
+
             var attr = element.Attributes().FirstOrDefault(a => a.Name.ToString().ToUpper() == upperName);
 
             if (attr != null)
             {
-                attr.Value = attrValue;
+                attr.Value = attrStringValue;
             }
             else
             {
-                var newAttr = new XAttribute(attrName, attrValue);
+                var newAttr = new XAttribute(attrName, attrStringValue);
                 element.Add(newAttr);
             }
 

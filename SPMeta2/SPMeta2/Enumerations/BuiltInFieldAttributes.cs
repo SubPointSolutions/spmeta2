@@ -75,6 +75,12 @@ namespace SPMeta2.Enumerations
 
         public static string LookupField = "ShowField";
 
+        public static string Decimals = "Decimals";
+        public static string ShowAsPercentage = "Percentage";
+
+        public static string MaximumValue = "Max";
+        public static string MinimumValue = "Min";
+
         #endregion
     }
 }

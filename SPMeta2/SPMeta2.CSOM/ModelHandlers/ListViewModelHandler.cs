@@ -54,6 +54,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentView = list.Views.Add(newView);
                 currentView.Title = listViewModel.Title;
+
+                currentView.JSLink = listViewModel.JSLink;
             }
             else
             {
@@ -61,6 +63,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentView.RowLimit = (uint)listViewModel.RowLimit;
                 currentView.DefaultView = listViewModel.IsDefault;
                 currentView.Paged = listViewModel.IsPaged;
+
+                if (!string.IsNullOrEmpty(listViewModel.JSLink))
+                    currentView.JSLink = listViewModel.JSLink;
 
                 if (!string.IsNullOrEmpty(listViewModel.Query))
                     currentView.ViewQuery = listViewModel.Query;

@@ -88,6 +88,9 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public Collection<string> Fields { get; set; }
 
+        [ExpectValidation]
+        public string JSLink { get; set; }
+
         #endregion
 
         #region methods

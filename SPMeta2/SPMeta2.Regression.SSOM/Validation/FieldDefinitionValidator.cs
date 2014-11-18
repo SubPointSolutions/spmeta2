@@ -41,6 +41,9 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
 
+            assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
+            assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
+
             if (!string.IsNullOrEmpty(definition.DefaultValue))
                 assert.ShouldBePartOf(m => m.DefaultValue, o => o.DefaultValue);
             else
