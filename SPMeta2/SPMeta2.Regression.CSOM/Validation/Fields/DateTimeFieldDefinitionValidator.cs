@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
@@ -33,24 +34,6 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             textFieldAssert.ShouldBeEqual(m => m.CalendarType, o => o.GetCalendarType());
             textFieldAssert.ShouldBeEqual(m => m.FriendlyDisplayFormat, o => o.GetFriendlyDisplayFormat());
             textFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
-        }
-    }
-
-    internal static class SPFieldDateTimeUtils
-    {
-        public static string GetCalendarType(this FieldDateTime field)
-        {
-            return field.DateTimeCalendarType.ToString();
-        }
-
-        public static string GetFriendlyDisplayFormat(this FieldDateTime field)
-        {
-            return field.FriendlyDisplayFormat.ToString();
-        }
-
-        public static string GetDisplayFormat(this FieldDateTime field)
-        {
-            return field.DisplayFormat.ToString();
         }
     }
 }

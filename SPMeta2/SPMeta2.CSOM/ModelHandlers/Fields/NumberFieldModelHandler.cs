@@ -50,7 +50,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Decimals, GetDecimalsValue(typedFieldModel.DisplayFormat));
         }
 
-        protected static int GetDecimalsValue(string value)
+        internal static int GetDecimalsValue(string value)
         {
             if (value == BuiltInNumberFormatTypes.Automatic)
                 return -1;
