@@ -45,11 +45,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             if (!string.IsNullOrEmpty(typedFieldModel.CalendarType))
             {
                 var value = (CalendarType)Enum.Parse(typeof(CalendarType), typedFieldModel.CalendarType);
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.CalendarType, (int)value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.CalType, (int)value);
             }
 
             if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.DisplayFormat, typedFieldModel.DisplayFormat);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, typedFieldModel.DisplayFormat);
 
             if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.FriendlyDisplayFormat, typedFieldModel.FriendlyDisplayFormat);

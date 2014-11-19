@@ -37,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.EditFormat, typedFieldModel.EditFormat);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, typedFieldModel.EditFormat);
         }
 
         #endregion

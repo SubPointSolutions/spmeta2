@@ -44,11 +44,14 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             if (!string.IsNullOrEmpty(typedFieldModel.CalendarType))
             {
                 var value = (SPCalendarType)Enum.Parse(typeof(SPCalendarType), typedFieldModel.CalendarType);
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.CalendarType, (int)value);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.CalType, (int)value);
             }
 
             if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.DisplayFormat, typedFieldModel.DisplayFormat);
+            {
+                var value = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DisplayFormat);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, value);
+            }
 
             if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.FriendlyDisplayFormat, typedFieldModel.FriendlyDisplayFormat);

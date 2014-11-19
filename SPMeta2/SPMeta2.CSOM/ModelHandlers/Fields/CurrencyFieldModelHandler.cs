@@ -46,7 +46,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<CurrencyFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.CurrencyLocaleId, typedFieldModel.CurrencyLocaleId);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.LCID, typedFieldModel.CurrencyLocaleId);
         }
 
         #endregion

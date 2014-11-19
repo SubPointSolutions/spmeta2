@@ -39,14 +39,14 @@ namespace SPMeta2.Regression.CSOM.Utils
         public static string GetEditFormat(this Field field)
         {
             var xml = field.SchemaXml;
-            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.EditFormat));
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Format));
         }
 
         public static int GetCurrencyLocaleId(this Field field)
         {
             var xml = field.SchemaXml;
 
-            return ConvertUtils.ToInt(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.CurrencyLocaleId)).Value;
+            return ConvertUtils.ToInt(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.LCID)).Value;
         }
 
 
@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.CSOM.Utils
         {
             var xml = field.SchemaXml;
 
-            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.ShowAsPercentage)).Value;
+            return ConvertUtils.ToBool(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Percentage)).Value;
         }
 
         public static int GetDecimals(this Field field)

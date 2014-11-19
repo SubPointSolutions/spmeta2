@@ -39,16 +39,16 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowMultipleValues, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Mult, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
 
             if (typedFieldModel.LookupWebId.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.LookupWebId, typedFieldModel.LookupWebId.Value.ToString("B"));
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.WebId, typedFieldModel.LookupWebId.Value.ToString("B"));
 
             if (!string.IsNullOrEmpty(typedFieldModel.LookupList))
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.LookupList, typedFieldModel.LookupList);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, typedFieldModel.LookupList);
 
             if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.LookupField, typedFieldModel.LookupField);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);
         }
 
         #endregion

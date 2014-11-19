@@ -38,15 +38,15 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowMultipleValues, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.AllowDisplay, typedFieldModel.AllowDisplay.ToString().ToUpper());
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Mult, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.ForcedDisplay, typedFieldModel.AllowDisplay.ToString().ToUpper());
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Presence, typedFieldModel.Presence.ToString().ToUpper());
 
             if (typedFieldModel.SelectionGroup.HasValue)
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.SelectionGroup, typedFieldModel.SelectionGroup.ToString());
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.UserSelectionScope, typedFieldModel.SelectionGroup.ToString());
 
             if (!string.IsNullOrEmpty(typedFieldModel.SelectionMode))
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.SelectionMode, typedFieldModel.SelectionMode);
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.UserSelectionMode, typedFieldModel.SelectionMode);
         }
 
         #endregion

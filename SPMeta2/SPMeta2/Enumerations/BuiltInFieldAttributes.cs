@@ -38,9 +38,9 @@ namespace SPMeta2.Enumerations
 
         public static string MaxLength = "MaxLength";
 
-        public static string AllowDisplay = "ForcedDisplay";
+        public static string ForcedDisplay = "ForcedDisplay";
         public static string Presence = "Presence";
-        public static string SelectionGroup = "UserSelectionScope";
+        public static string UserSelectionScope = "UserSelectionScope";
 
         public static string UnlimitedLengthInDocumentLibrary = "UnlimitedLengthInDocumentLibrary";
         public static string RichText = "RichText";
@@ -49,10 +49,9 @@ namespace SPMeta2.Enumerations
         public static string NumLines = "NumLines";
         public static string AppendOnly = "AppendOnly";
 
-        public static string CurrencyLocaleId = "LCID";
+        public static string LCID = "LCID";
 
         public static string FillInChoice = "FillInChoice";
-        public static string EditFormat = "Format";
 
         public static string SystemInstance = "SystemInstance";
         public static string EntityNamespace = "EntityNamespace";
@@ -62,26 +61,30 @@ namespace SPMeta2.Enumerations
         public static string Required = "Required";
         public static string Description = "Description";
 
-        public static string CalendarType = "CalType";
-        public static string DisplayFormat = "Format";
+        public static string CalType = "CalType";
         public static string FriendlyDisplayFormat = "FriendlyDisplayFormat";
 
-        public static string SelectionMode = "UserSelectionMode";
+        public static string UserSelectionMode = "UserSelectionMode";
 
-        public static string AllowMultipleValues = "Mult";
+        public static string Mult = "Mult";
 
-        public static string LookupList = "List";
-        public static string LookupWebId = "WebId";
+        public static string List = "List";
+        public static string WebId = "WebId";
 
-        public static string LookupField = "ShowField";
+        public static string ShowField = "ShowField";
 
         public static string Decimals = "Decimals";
-        public static string ShowAsPercentage = "Percentage";
+        public static string Percentage = "Percentage";
 
-        public static string MaximumValue = "Max";
-        public static string MinimumValue = "Min";
+        public static string Max = "Max";
+        public static string Min = "Min";
 
         public static string EnableLookup = "EnableLookup";
+
+        public static string Formula = "Formula";
+        public static string ResultType = "ResultType";
+
+        public static string Format = "Format";
 
         #endregion
     }

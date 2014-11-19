@@ -65,6 +65,7 @@
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
+    <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
