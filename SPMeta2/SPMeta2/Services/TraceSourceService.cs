@@ -72,10 +72,11 @@ namespace SPMeta2.Services
             }
             else
             {
-                traceString = string.Format("{0}.");
+                traceString = string.Format("{0}.", messageString);
             }
 
             Trace.TraceEvent(messageType, id, traceString);
+            Trace.Flush();
         }
 
         #endregion

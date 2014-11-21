@@ -24,6 +24,7 @@ namespace SPMeta2.Services
         public ModelServiceBase()
         {
             ModelHandlers = new Dictionary<Type, ModelHandlerBase>();
+            TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
         }
 
         #endregion
@@ -59,8 +60,15 @@ namespace SPMeta2.Services
 
         #region properties
 
+        public TraceServiceBase TraceService { get; set; }
+
         private readonly List<ModelHandlerBase> ModelHandlerEvents = new List<ModelHandlerBase>();
         private ModelNode _activeModelNode = null;
+
+        public void RegisterModelHandlers(Assembly assembly)
+        {
+            RegisterModelHandlers<ModelHandlerBase>(this, assembly);
+        }
 
         public void RegisterModelHandler(ModelHandlerBase modelHandlerType)
         {
@@ -106,9 +114,13 @@ namespace SPMeta2.Services
 
         public virtual void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
+            TraceService.Verbose(1, string.Format("Entering DeployModel for model: [{0}]", model.Value));
+
             EnsureModelHandleEvents();
 
             ProcessModelDeployment(modelHost, model);
+
+            TraceService.Verbose(1, "Leaving DeployModel");
         }
 
         public virtual void RetractModel(ModelHostBase modelHost, ModelNode model)

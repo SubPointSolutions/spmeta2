@@ -184,6 +184,7 @@
     <Compile Include="Services\TraceSourceService.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
+    <Compile Include="ServiceContainer.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
