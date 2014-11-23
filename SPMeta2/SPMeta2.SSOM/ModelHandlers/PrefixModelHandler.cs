@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Exceptions;
@@ -58,8 +59,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (existingPrefix == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new prefix");
+
                 var prefixType = (SPPrefixType)Enum.Parse(typeof(SPPrefixType), prefixDefinition.PrefixType, true);
                 existingPrefix = webApp.Prefixes.Add(prefixDefinition.Path, prefixType);
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing prefix");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

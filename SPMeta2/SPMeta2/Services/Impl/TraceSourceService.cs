@@ -65,11 +65,21 @@ namespace SPMeta2.Services.Impl
 
             if (exception != null)
             {
-                traceString = string.Format("{0}. Exception: [{1}]", messageString, exception);
+                var subMessage = messageString;
+
+                if (!subMessage.EndsWith("."))
+                    subMessage += ".";
+
+                traceString = string.Format("{0} Exception: [{1}]", subMessage, exception);
             }
             else
             {
-                traceString = string.Format("{0}.", messageString);
+                var subMessage = messageString;
+
+                if (!subMessage.EndsWith("."))
+                    subMessage += ".";
+
+                traceString = string.Format("{0}", subMessage);
             }
 
             TraceSource.TraceEvent(messageType, id, traceString);

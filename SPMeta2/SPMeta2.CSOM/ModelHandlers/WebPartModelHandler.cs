@@ -286,7 +286,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    // BIG TODO for CSOM, delete/export and re import web part?
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part");
 
                     HandleWikiPageProvision(fileListItem, webPartModel);
 

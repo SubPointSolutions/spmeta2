@@ -1,5 +1,6 @@
 ﻿using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (existingListField == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list field");
+
                 var siteField = list.ParentWeb.AvailableFields[listFieldLinkModel.FieldId];
                 list.Fields.Add(siteField);
 
@@ -70,6 +73,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list field");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

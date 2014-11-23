@@ -8,6 +8,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -62,7 +63,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             if (existingAction == null)
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new user custom action");
                 existingAction = site.UserCustomActions.Add();
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing user custom action");
+            }
 
             MapCustomAction(existingAction, customActionModel);
 
@@ -82,6 +90,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapCustomAction(SPUserCustomAction existringAction, UserCustomActionDefinition customAction)
         {
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating user custom action properties.");
+
             existringAction.Description = customAction.Description;
             existringAction.Group = customAction.Group;
             existringAction.Location = customAction.Location;

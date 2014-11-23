@@ -6,6 +6,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using System.Web.UI.WebControls.WebParts;
@@ -122,6 +123,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (targetPage == null || webpartPageModel.NeedOverride)
             {
+                if (webpartPageModel.NeedOverride)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part page");
+                }
+
                 var webPartPageName = GetSafeWebPartPageFileName(webpartPageModel);
 
                 byte[] fileContent = null;
@@ -159,6 +170,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = false. Skipping replacing web part page.");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

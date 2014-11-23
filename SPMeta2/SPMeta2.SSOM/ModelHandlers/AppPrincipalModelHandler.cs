@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
@@ -60,9 +61,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-
             if (principal == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing app principal");
+
                 var endpoints = new List<string>();
                 endpoints.Add(appPrincipalModel.RedirectURI);
 
@@ -99,6 +101,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing app principal");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

@@ -239,7 +239,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentWeb == null)
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Current web is NULL. Creating one.");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web");
 
                 var newWebInfo = new WebCreationInformation
                 {
@@ -292,9 +292,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
                 InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdated);
 
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating web and calling ExecuteQuery()");
-
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "currentWeb.Update()");
                 currentWeb.Update();
+
                 context.ExecuteQueryWithTrace();
             }
         }

@@ -9,6 +9,7 @@ using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Common;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Definitions.Base;
 using Microsoft.SharePoint.Client;
@@ -246,6 +247,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             if (existingNode == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new navigation node");
+
                 existingNode = quickLaunch.Add(new NavigationNodeCreationInformation
                 {
                     Title = navigationNodeModel.Title,
@@ -255,6 +258,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                 });
 
                 context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing navigation node");
             }
 
             existingNode.Title = navigationNodeModel.Title;

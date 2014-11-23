@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -67,7 +68,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var isListField = false;
 
             if (modelHost is SiteModelHost)
-                field = EnsureSiteField((modelHost as SiteModelHost).HostSite, fieldModel);
+                field = DeploySiteField((modelHost as SiteModelHost).HostSite, fieldModel);
             else if (modelHost is SPList)
             {
                 field = DeployListField(modelHost as SPList, fieldModel);
@@ -114,11 +115,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPField DeployListField(SPList list, FieldDefinition fieldModel)
         {
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying list field");
+
+
             return EnsureFieldInFieldsCollection(list, list.Fields, fieldModel);
         }
 
-        private SPField EnsureSiteField(SPSite site, FieldDefinition fieldModel)
+        private SPField DeploySiteField(SPSite site, FieldDefinition fieldModel)
         {
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying site field");
+
             return EnsureFieldInFieldsCollection(site, site.RootWeb.Fields, fieldModel);
         }
 
@@ -136,11 +142,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPField GetSiteField(SPSite site, FieldDefinition definition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving site field by ID: [{0}]", definition.Id);
+
             return site.RootWeb.Fields[definition.Id];
         }
 
         private SPField GetListField(SPList list, FieldDefinition definition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving list field by ID: [{0}]", definition.Id);
+
             return list.Fields[definition.Id];
         }
 
@@ -216,6 +226,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!fields.ContainsFieldWithStaticName(fieldModel.InternalName))
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new field");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -229,10 +241,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
                 fields.AddFieldAsXml(fieldDef);
+
                 currentField = fields[fieldModel.Id];
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing field");
+
                 currentField = fields[fieldModel.Id];
 
                 InvokeOnModelEvent(this, new ModelEventArgs

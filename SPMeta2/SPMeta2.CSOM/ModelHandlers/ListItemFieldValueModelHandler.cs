@@ -45,8 +45,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(fieldValue.FieldName))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Processing field value with name: [{0}] and value: [{1}]",
-                    new[]
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Processing field value with Name: [{0}] and value: [{1}]",
+                    new object[]
                     {
                         fieldValue.FieldName,
                         fieldValue.Value

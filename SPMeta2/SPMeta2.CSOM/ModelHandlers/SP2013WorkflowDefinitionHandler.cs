@@ -81,7 +81,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentWorkflowDefinition == null)
             {
-
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new SP2013 workflow definition");
 
                 var workflowDefinition = new WorkflowDefinition(clientContext)

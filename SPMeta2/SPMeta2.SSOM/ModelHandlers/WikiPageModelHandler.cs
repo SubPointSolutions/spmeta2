@@ -4,6 +4,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using System.Text;
@@ -41,14 +42,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                     {
                         var webpartPageHost = new WebpartPageModelHost
                         {
-                            HostFile =afterFile,
+                            HostFile = afterFile,
                             PageListItem = targetPage,
                             SPLimitedWebPartManager = webPartManager
                         };
 
                         action(webpartPageHost);
 
-                       // targetPage.Update();
+                        // targetPage.Update();
                     }
                 });
         }
@@ -86,6 +87,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (pageItem == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new wiki page");
+
                 var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
@@ -107,8 +110,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing wiki page");
+
                 if (wikiPageModel.NeedOverride)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
                     pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = false. Skipping Updating wiki page content.");
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

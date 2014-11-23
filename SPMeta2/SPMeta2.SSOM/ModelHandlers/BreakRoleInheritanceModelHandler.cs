@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
@@ -42,10 +43,22 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             if (!securableObject.HasUniqueRoleAssignments)
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                   "HasUniqueRoleAssignments is FALSE. Breaking role inheritance with CopyRoleAssignments: [{0}] and ClearSubscopes: [{1}]",
+                   new object[]
+                    {
+                        breakRoleInheritanceModel.CopyRoleAssignments,
+                        breakRoleInheritanceModel.ClearSubscopes
+                    });
+
                 securableObject.BreakRoleInheritance(breakRoleInheritanceModel.CopyRoleAssignments, breakRoleInheritanceModel.ClearSubscopes);
+            }
 
             if (breakRoleInheritanceModel.ForceClearSubscopes)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ForceClearSubscopes is TRUE. Removing all role assignments.");
+
                 while (securableObject.RoleAssignments.Count > 0)
                     securableObject.RoleAssignments.Remove(0);
             }

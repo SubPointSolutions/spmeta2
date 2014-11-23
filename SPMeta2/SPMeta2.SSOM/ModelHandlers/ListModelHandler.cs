@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -120,7 +121,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             targetList.Title = listModel.Title;
 
             // SPBug, again & again, must not be null
-            targetList.Description = listModel.Description = listModel.Description ?? string.Empty;
+            targetList.Description = listModel.Description ?? string.Empty;
             targetList.ContentTypesEnabled = listModel.ContentTypesEnabled;
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -145,21 +146,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (result == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list");
+
                 var listId = default(Guid);
 
                 // "SPBug", there are two ways to create lists 
                 // (1) by TemplateName (2) by TemplateType 
                 if (listModel.TemplateType > 0)
                 {
-                    listId = web.Lists.Add(listModel.Url, listModel.Description,
-                        (SPListTemplateType)listModel.TemplateType);
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateType: [{0}]", listModel.TemplateType);
+
+                    listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
                 }
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
-                    // TODO, add some validation
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
+
                     var listTemplate = web.ListTemplates[listModel.TemplateName];
 
-                    listId = web.Lists.Add(listModel.Url, listModel.Description, listTemplate);
+                    listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, listTemplate);
                 }
                 else
                 {
@@ -181,6 +186,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

@@ -7,7 +7,10 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 
@@ -40,7 +43,9 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (IsDocumentLibray(list))
             {
-                throw new NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
+                TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "Please use ModuleFileDefinition to deploy files to the document libraries. Throwing SPMeta2NotImplementedException");
+
+                throw new SPMeta2NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
             }
 
             EnsureListItem(list, listItemModel);
@@ -73,9 +78,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentItem == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list item");
+
                 var newItem = list.AddItem();
 
-                newItem["Title"] = listItemModel.Title;
+                newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -94,7 +101,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                currentItem["Title"] = listItemModel.Title;
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list item");
+
+                currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

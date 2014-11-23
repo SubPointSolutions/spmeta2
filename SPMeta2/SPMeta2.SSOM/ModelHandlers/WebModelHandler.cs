@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -107,6 +108,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!currentWeb.Exists)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -128,6 +131,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Current web is not null. Updating Title/Description.");
+
                 currentWeb.Title = webModel.Title;
                 currentWeb.Description = webModel.Description ?? string.Empty;
 
@@ -142,6 +147,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = webModel
                 });
 
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "currentWeb.Update()");
                 currentWeb.Update();
             }
 

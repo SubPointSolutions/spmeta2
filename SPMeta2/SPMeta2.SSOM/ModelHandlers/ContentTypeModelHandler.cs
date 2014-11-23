@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
@@ -91,10 +92,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 if (targetContentType == null)
-                    targetContentType = tmpRootWeb
-                                            .ContentTypes
-                                            .Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type");
 
+                    targetContentType = tmpRootWeb
+                        .ContentTypes
+                        .Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing content type");
+                }
 
                 targetContentType.Name = contentTypeModel.Name;
                 targetContentType.Group = contentTypeModel.Group;
@@ -113,7 +121,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                targetContentType.Update();
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
+                targetContentType.UpdateIncludingSealedAndReadOnly(true);
 
                 tmpRootWeb.Update();
             }

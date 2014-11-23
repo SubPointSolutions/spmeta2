@@ -7,6 +7,7 @@ using Microsoft.SharePoint.Taxonomy;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHosts;
@@ -51,11 +52,20 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             TermStore termStore = null;
 
             if (termStoreModel.UseDefaultSiteCollectionTermStore == true)
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store as useDefaultSiteCollectionTermStore");
                 termStore = session.DefaultSiteCollectionTermStore;
+            }
             else if (termStoreModel.Id.HasValue && termStoreModel.Id != default(Guid))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by ID: [{0}]", termStoreModel.Id);
                 termStore = session.TermStores[termStoreModel.Id.Value];
+            }
             else if (!string.IsNullOrEmpty(termStoreModel.Name))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by Name: [{0}]", termStoreModel.Name);
                 termStore = session.TermStores[termStoreModel.Name];
+            }
 
 
             return termStore;

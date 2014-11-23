@@ -136,7 +136,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 };
 
                 // activate and remove
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Activating existing sandbox solution via DesignPackage.Install()");
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Activating sandbox solution via DesignPackage.Install()");
                 DesignPackage.Install(context, site, info, newFile.ServerRelativeUrl);
                 context.ExecuteQueryWithTrace();
 
@@ -189,11 +189,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQueryWithTrace();
 
             var fileItem = files.ToList().FirstOrDefault(f => f["FileLeafRef"].ToString() == sandboxSolutionDefinition.FileName);
-
-            //return solutionGallery.RootFolder
-            //    .Files
-            //    .OfType<SPFile>()
-            //    .FirstOrDefault(f => f.Name.ToUpper() == sandboxSolutionDefinition.FileName.ToUpper());
 
             return fileItem != null ? fileItem.File : null;
         }

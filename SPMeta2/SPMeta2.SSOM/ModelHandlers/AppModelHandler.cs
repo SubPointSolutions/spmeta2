@@ -9,6 +9,7 @@ using Microsoft.SharePoint.Administration;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
@@ -27,8 +28,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private const int MaxInstallAttempCount = 180;
         private const int WaitTimeInMillliseconds = 1000;
-
-
 
         #endregion
 
@@ -52,6 +51,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             var web = webHost.HostWeb;
             Guid appId = Guid.Empty;
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Creating memory stream on appModel.Content");
+
+
             using (var appPackage = new MemoryStream(appModel.Content))
             {
                 var currentApplications = FindExistingApps(webHost, appModel);
@@ -69,6 +71,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 if (currentApplications == null || currentApplications.Count == 0)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Cannot find application by productId. Loading and installing new instance.");
+
                     // install new
                     var newAppInstance = web.LoadAndInstallApp(appPackage);
 
@@ -81,6 +85,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                         do
                         {
+                            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                               "Waiting while app is being installed for [{0}] milliseconds.",
+                               WaitTimeInMillliseconds);
+
                             Thread.Sleep(WaitTimeInMillliseconds);
                             localInstance = web.GetAppInstanceById(appId);
 
@@ -107,6 +115,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing application");
+
                     for (int i = 0; i < currentApplications.Count; i++)
                     {
                         var upApp = currentApplications[i];

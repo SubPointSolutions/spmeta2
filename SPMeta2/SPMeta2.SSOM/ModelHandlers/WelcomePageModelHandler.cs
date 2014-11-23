@@ -3,6 +3,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -42,6 +43,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Changing welcome page to: [{0}]", welcomePgaeModel.Url);
             folder.WelcomePage = welcomePgaeModel.Url;
 
             InvokeOnModelEvent(this, new ModelEventArgs

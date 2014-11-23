@@ -7,6 +7,8 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -47,16 +49,29 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (fieldValue.FieldId.HasValue)
             {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Processing field value with ID: [{0}] and value: [{1}]",
+                   new object[]
+                    {
+                        fieldValue.FieldId,
+                        fieldValue.Value
+                    });
+
                 listItem[fieldValue.FieldId.Value] = fieldValue.Value;
             }
             else if (!string.IsNullOrEmpty(fieldValue.FieldName))
             {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Processing field value with Name: [{0}] and value: [{1}]",
+                   new object[]
+                    {
+                        fieldValue.FieldName,
+                        fieldValue.Value
+                    });
+
                 listItem[fieldValue.FieldName] = fieldValue.Value;
             }
             else
             {
-                // TODO
-                throw new ArgumentException("Eitehr FieldId or FieldName must be provided.");
+                throw new SPMeta2Exception("Either FieldId or FieldName must be provided.");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

@@ -9,6 +9,7 @@ using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 
@@ -75,7 +76,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentSubscription == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new SP2013 workflow subscription");
+
+
                 var newSubscription = new WorkflowSubscription();
+
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Setting subscription properties");
 
                 newSubscription.Name = workflowSubscriptionModel.Name;
                 newSubscription.DefinitionId = currentWorkflowDefinition.Id;
@@ -107,10 +113,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = host
                 });
 
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling PublishSubscription()");
                 var currentSubscriptionId = workflowSubscriptionService.PublishSubscription(newSubscription);
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing SP2013 workflow subscription");
+
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes.ToList();
 
                 InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
@@ -126,6 +135,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = host
                 });
 
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling PublishSubscription()");
                 workflowSubscriptionService.PublishSubscription(currentSubscription);
             }
         }

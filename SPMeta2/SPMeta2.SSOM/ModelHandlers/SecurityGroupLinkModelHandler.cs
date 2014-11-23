@@ -4,6 +4,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
@@ -77,24 +78,31 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (securityGroupLinkModel.IsAssociatedMemberGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedMemberGroup = true. Resolving AssociatedMemberGroup");
                 securityGroup = web.AssociatedMemberGroup;
             }
             else if (securityGroupLinkModel.IsAssociatedOwnerGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedOwnerGroup = true. Resolving IsAssociatedOwnerGroup");
                 securityGroup = web.AssociatedOwnerGroup;
             }
             else if (securityGroupLinkModel.IsAssociatedVisitorGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedVisitorGroup = true. Resolving IsAssociatedVisitorGroup");
                 securityGroup = web.AssociatedVisitorGroup;
             }
             else if (!string.IsNullOrEmpty(securityGroupLinkModel.SecurityGroupName))
             {
-                securityGroup =web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving group by name: [{0}]", securityGroupLinkModel.SecurityGroupName);
+                securityGroup = web.SiteGroups[securityGroupLinkModel.SecurityGroupName];
             }
             else
             {
-                throw new ArgumentException("securityGroupLinkModel");
+                TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedMemberGroup/IsAssociatedOwnerGroup/IsAssociatedVisitorGroup/SecurityGroupName should be defined. Throwing SPMeta2Exception");
+
+                throw new SPMeta2Exception("securityGroupLinkModel");
             }
+
             return securityGroup;
         }
 
@@ -105,7 +113,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!securableObject.HasUniqueRoleAssignments)
             {
-                throw new SPMeta2Exception("securableObject does not have HasUniqueRoleAssignments. Please use BreakRoleInheritanceDefinition object or break role inheritable manually before deploying SecurityGroupLinkDefinition.");
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "securableObject.HasUniqueRoleAssignments = false. Breaking with false-false options.");
+                securableObject.BreakRoleInheritance(false, false);
             }
 
             var web = GetWebFromSPSecurableObject(securableObject);
@@ -119,8 +128,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (roleAssignment == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject,
+                    "Processing new security group link");
+
                 roleAssignment = new SPRoleAssignment(securityGroup);
                 isNewRoleAssignment = true;
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security group link");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
@@ -57,6 +58,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             WebPartExtensions.DeployWebPartToPage(host.SPLimitedWebPartManager, webpartModel,
                 onUpdatingWebpartInstnce =>
                 {
+                    if (onUpdatingWebpartInstnce == null)
+                        TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part");
+                    else
+                        TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part");
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {

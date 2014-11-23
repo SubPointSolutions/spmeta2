@@ -6,6 +6,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
@@ -48,6 +49,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentView == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list view");
+
                 var viewFields = new StringCollection();
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
@@ -61,6 +64,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                             listViewModel.IsDefault);
 
                 currentView.Title = listViewModel.Title;
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
             }
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);
@@ -90,6 +97,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
             currentView.Update();
         }
 

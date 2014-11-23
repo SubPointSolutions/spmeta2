@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Navigation;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
@@ -147,8 +148,14 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
 
             if (existingNode == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new navigation node");
+
                 existingNode = new SPNavigationNode(rootNode.Title, rootNode.Url, rootNode.IsExternal);
                 quickLaunch.AddAsLast(existingNode);
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing navigation node");
             }
 
             existingNode.Title = rootNode.Title;

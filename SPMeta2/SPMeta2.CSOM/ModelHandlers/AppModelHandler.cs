@@ -124,7 +124,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "App update is not supported yet. Just calling regular event and continue provision.");
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing application. CSOM update is not supported yet.");
 
                     // R&D for update
                     // upApp.App is not available

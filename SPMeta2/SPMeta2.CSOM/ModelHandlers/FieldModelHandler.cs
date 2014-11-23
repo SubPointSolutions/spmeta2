@@ -101,8 +101,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is List)
             {
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying list field");
-
                 var listHost = modelHost as List;
                 context = listHost.Context;
 

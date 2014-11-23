@@ -54,9 +54,12 @@ namespace SPMeta2.Common
                 new[]
                 {
                     typeof (PropertyDefinition),
+                    
                     typeof (ContentTypeLinkDefinition),
                     typeof (SP2013WorkflowSubscriptionDefinition),
+                    
                     typeof (FolderDefinition),
+                    
                     typeof (ListViewDefinition),
                     typeof (ModuleFileDefinition),
                 }));
@@ -69,11 +72,16 @@ namespace SPMeta2.Common
                 new[]
                 {
                     typeof (FeatureDefinition),
+
                     typeof (PropertyDefinition),
+                    
                     typeof (FieldDefinition),
                     typeof (ContentTypeDefinition),
+                    
                     typeof (SP2013WorkflowDefinition),
                     typeof (ListDefinition),
+                    
+                    typeof (MasterPageSettingsDefinition),
                     typeof (WelcomePageDefinition)
                 }));
         }
@@ -85,10 +93,19 @@ namespace SPMeta2.Common
                 typeof(SiteDefinition),
                 new[]
                 {
+                    typeof (SandboxSolutionDefinition),
                     typeof (FeatureDefinition),
+
                     typeof (PropertyDefinition),
+
+                    typeof (SecurityGroupDefinition),
+                    typeof (SecurityRoleDefinition),
+
+                    typeof (UserCustomActionDefinition),
+
                     typeof (FieldDefinition),
                     typeof (ContentTypeDefinition),
+                    
                     typeof (WebDefinition)
                 }));
         }

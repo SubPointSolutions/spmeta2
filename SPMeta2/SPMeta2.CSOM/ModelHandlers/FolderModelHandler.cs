@@ -252,7 +252,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private Folder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
-            TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "EnsureLibraryFolder()");
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "EnsureLibraryFolder()");
 
             var parentFolder = folderModelHost.CurrentLibraryFolder;
             var context = parentFolder.Context;

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -37,6 +38,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected SPSolution FindExistingSolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                "Resolving farm solution by SolutionId: [{0}] and Name: [{1}]",
+                 new object[]
+                    {
+                        definition.SolutionId,
+                        definition.FileName
+                    });
+
             var farm = modelHost.HostFarm;
 
             return farm.Solutions.FirstOrDefault(s =>
@@ -70,10 +79,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (existringSolution == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new farm solution");
                 existringSolution = farm.Solutions.Add(tmpWspFilPath, (uint)definition.LCID);
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Upgrading existing farm solution");
                 existringSolution.Upgrade(tmpWspFilPath);
             }
 

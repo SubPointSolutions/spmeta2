@@ -1,5 +1,6 @@
 ﻿using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentAccount == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new managed account");
+
                 currentAccount = accounts.FindOrCreateAccount(loginName);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -89,6 +92,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing managed account");
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

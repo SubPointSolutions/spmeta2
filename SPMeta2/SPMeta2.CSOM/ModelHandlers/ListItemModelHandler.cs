@@ -3,6 +3,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using System;
@@ -99,7 +100,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
 
             // BIG TODO, don't tell me, I know that
-            return items.FirstOrDefault(i => i["Title"] != null && (i["Title"].ToString() == definition.Title));
+            return items.FirstOrDefault(i => i[BuiltInInternalFieldNames.Title] != null && (i[BuiltInInternalFieldNames.Title].ToString() == definition.Title));
         }
 
         private ListItem EnsureListItem(List list, ListItemDefinition listItemModel)
@@ -124,7 +125,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var newItem = list.AddItem(new ListItemCreationInformation());
 
-                newItem["Title"] = listItemModel.Title;
+                newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -147,7 +148,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list item");
 
-                currentItem["Title"] = listItemModel.Title;
+                currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

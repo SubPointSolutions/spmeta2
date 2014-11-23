@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -38,6 +39,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentRoleDefinition = web.RoleDefinitions[securityRoleModel.Name];
 
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security role");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -61,6 +64,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = securityRoleModel,
                     ModelHost = modelHost
                 });
+
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security role");
 
                 web.RoleDefinitions.Add(new SPRoleDefinition
                 {

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Utilities;
@@ -55,23 +56,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (existingSite == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new site");
+
                 var siteCollectionUrl = SPUrlUtility.CombineUrl(siteModel.PrefixName, siteModel.Url);
 
                 if (string.IsNullOrEmpty(siteModel.DatabaseName))
                 {
                     var newSite = webApp.Sites.Add(siteCollectionUrl,
-                     siteModel.Name,
-                     siteModel.Description,
-                     siteModel.LCID,
-                     siteModel.SiteTemplate,
+                        siteModel.Name,
+                        siteModel.Description,
+                        siteModel.LCID,
+                        siteModel.SiteTemplate,
 
-                     siteModel.OwnerLogin,
-                     siteModel.OwnerName,
-                     siteModel.OwnerEmail,
+                        siteModel.OwnerLogin,
+                        siteModel.OwnerName,
+                        siteModel.OwnerEmail,
 
-                     siteModel.SecondaryContactLogin,
-                     siteModel.SecondaryContactName,
-                     siteModel.SecondaryContactEmail);
+                        siteModel.SecondaryContactLogin,
+                        siteModel.SecondaryContactName,
+                        siteModel.SecondaryContactEmail);
 
                     // weird issue with second admin, needs to be setup manually
                     newSite.SecondaryContact = newSite.RootWeb.EnsureUser(siteModel.SecondaryContactLogin);
@@ -82,29 +85,33 @@ namespace SPMeta2.SSOM.ModelHandlers
                     var dbServerName = webApp.ContentDatabases[0].Server;
 
                     var newSite = webApp.Sites.Add(siteCollectionUrl,
-                       siteModel.Name,
-                       siteModel.Description,
-                       siteModel.LCID,
-                       siteModel.SiteTemplate,
+                        siteModel.Name,
+                        siteModel.Description,
+                        siteModel.LCID,
+                        siteModel.SiteTemplate,
 
-                       siteModel.OwnerLogin,
-                       siteModel.OwnerName,
-                       siteModel.OwnerEmail,
+                        siteModel.OwnerLogin,
+                        siteModel.OwnerName,
+                        siteModel.OwnerEmail,
 
-                       siteModel.SecondaryContactLogin,
-                       siteModel.SecondaryContactName,
-                       siteModel.SecondaryContactEmail,
+                        siteModel.SecondaryContactLogin,
+                        siteModel.SecondaryContactName,
+                        siteModel.SecondaryContactEmail,
 
-                       dbServerName,
-                       siteModel.DatabaseName,
-                       null,
-                       null);
+                        dbServerName,
+                        siteModel.DatabaseName,
+                        null,
+                        null);
 
                     // weird issue with second admin, needs to be setup manually
                     newSite.SecondaryContact = newSite.RootWeb.EnsureUser(siteModel.SecondaryContactLogin);
                 }
 
                 existingSite = GetExistingSite(webApp, siteModel);
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing XXX");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

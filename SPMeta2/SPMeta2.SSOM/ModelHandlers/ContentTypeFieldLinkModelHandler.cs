@@ -6,6 +6,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -43,11 +44,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentFieldLink == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type field link");
+
                 contentType.FieldLinks.Add(new SPFieldLink(rootWeb.AvailableFields[contentTypeFieldLinkModel.FieldId]));
 
                 currentFieldLink = contentType.FieldLinks
                 .OfType<SPFieldLink>()
                 .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing content type field link");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
