@@ -7,6 +7,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 
 namespace SPMeta2.Models
 {
@@ -86,6 +87,8 @@ namespace SPMeta2.Models
 
         public ModelNode()
         {
+            TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+
             ChildModels = new Collection<ModelNode>();
             Options = new ModelNodeOptions();
 
@@ -127,6 +130,9 @@ namespace SPMeta2.Models
         [XmlIgnore]
         public ModelNodeState State { get; set; }
 
+        [XmlIgnore]
+        protected TraceServiceBase TraceService { get; set; }
+
         #endregion
 
         #region events support
@@ -141,7 +147,15 @@ namespace SPMeta2.Models
             // type.. can be null, so?
             var spObjectType = eventArgs.ObjectType;
 
-            if (!ModelContextEvents.ContainsKey(eventType)) return;
+            if (!ModelContextEvents.ContainsKey(eventType))
+            {
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Cannot find ModelContextEvents for eventType: [{0}]", eventType);
+                return;
+            }
+            else
+            {
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Calling ModelContextEvents for eventType: [{0}]", eventType);
+            }
 
             var targetEvents = ModelContextEvents[eventType];
 
@@ -181,15 +195,25 @@ namespace SPMeta2.Models
 
                 if (modelContextInstance == null)
                 {
+                    TraceService.ErrorFormat((int)LogEventId.ModelTreeModelContextEventIsNull,
+                        "Cannot find model content instance for method: [{0}]. Throwing SPMeta2Exception.", action.Method);
+
                     throw new SPMeta2Exception("Cannot find a proper ModelContextEvents overload");
                 }
 
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [Model]: [{0}]", eventArgs.Model);
                 SetProperty(modelContextInstance, "Model", eventArgs.Model);
+
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [CurrentModelNode]: [{0}]", eventArgs.CurrentModelNode);
                 SetProperty(modelContextInstance, "CurrentModelNode", eventArgs.CurrentModelNode);
 
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [Object]: [{0}]", eventArgs.Object);
                 SetProperty(modelContextInstance, "Object", eventArgs.Object);
+
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [ObjectDefinition]: [{0}]", eventArgs.ObjectDefinition);
                 SetProperty(modelContextInstance, "ObjectDefinition", eventArgs.ObjectDefinition);
 
+                TraceService.Verbose((int)LogEventId.CoreCalls, "Invoking event.");
                 action.DynamicInvoke(modelContextInstance);
             }
         }
@@ -198,7 +222,6 @@ namespace SPMeta2.Models
         {
             var propertyInfo = obj.GetType().GetProperty(propName);
             propertyInfo.SetValue(obj, propValue, null);
-
         }
 
         public virtual void InvokeOnModelEvents(object rawObject, ModelEventType eventType)

@@ -52,11 +52,11 @@ C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\Microsoft.ApplicationS
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.SSOM.Behaviours.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\SPMeta2.xml
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb

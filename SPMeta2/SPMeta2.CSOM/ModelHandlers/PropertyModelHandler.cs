@@ -1,7 +1,9 @@
-﻿using SPMeta2.CSOM.ModelHosts;
+﻿using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
@@ -77,7 +79,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
             context.Load(result);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return result;
         }
@@ -99,6 +101,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentValue == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new property");
+
                 properties[property.Key] = property.Value;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -114,8 +118,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing property");
+
                 if (property.Overwrite)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwrite = true. Overwriting property.");
+
                     properties[property.Key] = property.Value;
 
                     InvokeOnModelEvent(this, new ModelEventArgs
@@ -131,6 +139,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwrite = false. Skipping property.");
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,

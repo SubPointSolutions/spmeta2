@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -39,11 +41,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected ClientObjectList<AppInstance> FindExistingApps(WebModelHost webHost, AppDefinition appModel)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "FindExistingApps() - finding app by productId: [{0}]", appModel.ProductId);
+
             var context = webHost.HostWeb.Context;
             var result = webHost.HostWeb.GetAppInstancesByProductId(appModel.ProductId);
 
             context.Load(result);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return result;
         }
@@ -52,6 +56,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var web = webHost.HostWeb;
             Guid appId = Guid.Empty;
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Creating memory stream on appModel.Content");
 
             using (var appPackage = new MemoryStream(appModel.Content))
             {
@@ -68,15 +74,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+
                 if (currentApplications == null || currentApplications.Count == 0)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Cannot find application by productId. Loading and installing new instance.");
+
                     // install new
                     var newAppInstance = web.LoadAndInstallApp(appPackage);
 
                     var context = web.Context;
 
                     context.Load(newAppInstance);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     if (newAppInstance != null && newAppInstance.Status == AppInstanceStatus.Initialized)
                     {
@@ -87,6 +96,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                         do
                         {
+                            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                                "Waiting while app is being installed for [{0}] milliseconds.",
+                                WaitTimeInMillliseconds);
+
                             Thread.Sleep(WaitTimeInMillliseconds);
                             localInstance = web.GetAppInstanceById(appId);
 
@@ -94,8 +107,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                         } while (localInstance != null &&
                                  localInstance.Status != AppInstanceStatus.Installed &&
                                  count < MaxInstallAttempCount);
-
-
                     }
 
                     newAppInstance = web.GetAppInstanceById(appId);
@@ -113,6 +124,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "App update is not supported yet. Just calling regular event and continue provision.");
+
                     // R&D for update
                     // upApp.App is not available
 

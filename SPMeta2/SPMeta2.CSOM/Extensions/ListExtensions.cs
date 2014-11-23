@@ -13,7 +13,7 @@ namespace SPMeta2.CSOM.Extensions
             var items = list.GetItems(CamlQueryTemplates.ItemByFileNameQuery(fileName));
 
             context.Load(items, i => i);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (items.Count < 1)
                 throw new Exception(string.Format("Can't find ListItem by filename:[{0}]", fileName));

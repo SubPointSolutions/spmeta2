@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -38,7 +41,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = folder.Context;
 
             context.Load(folder);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -50,6 +53,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = welcomePgaeModel,
                 ModelHost = modelHost
             });
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Changing welcome page to: [{0}]", welcomePgaeModel.Url);
 
             folder.WelcomePage = welcomePgaeModel.Url;
 
@@ -64,9 +69,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling folder.Update()");
             folder.Update();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected Folder ExtractFolderFromModelHost(object modelHost)
@@ -84,7 +91,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return (modelHost as FolderModelHost).CurrentLibraryFolder;
             }
 
-            throw new ArgumentException("modelHost shoue be web/list/folder model host");
+            TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall, "Unsupported model host of type: [{0}]. Throwing SPMeta2UnsupportedModelHostException",
+                    new[]
+                    {
+                        modelHost
+                    });
+
+            throw new SPMeta2UnsupportedModelHostException("modelHost should be web/list/folder model host");
         }
 
         #endregion

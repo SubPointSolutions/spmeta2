@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
@@ -35,7 +36,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             // let base setting be setup
             base.ProcessFieldProperties(taxField, fieldModel);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var termStore = TaxonomyTermStoreModelHandler.FindTermStore(CurrentSiteModelHost,
                                   taxFieldModel.SspName,
@@ -48,7 +49,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             var storeContext = CurrentSiteModelHost.HostClientContext;
 
             storeContext.Load(termStore, s => s.Id);
-            storeContext.ExecuteQuery();
+            storeContext.ExecuteQueryWithTrace();
 
             // TODO
             TermSet termSet = null;
@@ -58,7 +59,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
 
                 storeContext.Load(termSets);
-                storeContext.ExecuteQuery();
+                storeContext.ExecuteQueryWithTrace();
 
                 termSet = termSets.FirstOrDefault();
             }

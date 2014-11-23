@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
@@ -45,7 +47,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 HostTermStore = termStore
             });
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling termStore.CommitAll()");
             termStore.CommitAll();
+            termStore.Context.ExecuteQueryWithTrace();
         }
 
         private static Dictionary<string, TermStore> _storeCache = new Dictionary<string, TermStore>();
@@ -70,19 +74,29 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
                 if (!_storeCache.ContainsKey(key))
                 {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "First call to TermStore with cache key: [{0}]", key);
+
                     var session = TaxonomySession.GetTaxonomySession(siteModelHost.HostClientContext);
                     var client = siteModelHost.HostClientContext;
 
                     if (useDefaultSiteCollectionTermStore == true)
                     {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store as useDefaultSiteCollectionTermStore");
+
                         termStore = session.GetDefaultSiteCollectionTermStore();
                     }
                     else
                     {
                         if (termStoreId.HasValue && termStoreId != default(Guid))
+                        {
+                            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by ID: [{0}]", termStoreId.Value);
                             termStore = session.TermStores.GetById(termStoreId.Value);
+                        }
                         else if (!string.IsNullOrEmpty(termStoreName))
+                        {
+                            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by Name: [{0}]", termStoreName);
                             termStore = session.TermStores.GetByName(termStoreName);
+                        }
                     }
 
                     if (termStore != null)
@@ -90,12 +104,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                         client.Load(termStore, s => s.Id);
                         client.Load(termStore, s => s.Name);
 
-                        client.ExecuteQuery();
+                        client.ExecuteQueryWithTrace();
                     }
+
 
                     _storeCache.Add(key, termStore);
                 }
-
+                else
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving term store from internal cache with cache key: [{0}]", key);
+                }
 
                 return _storeCache[key];
             }

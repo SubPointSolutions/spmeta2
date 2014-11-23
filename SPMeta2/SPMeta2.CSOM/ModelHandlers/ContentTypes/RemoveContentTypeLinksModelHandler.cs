@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers.ContentTypes.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -36,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
             var context = list.Context;
 
             context.Load(list, l => l.ContentTypes);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var listContentTypes = list.ContentTypes.ToList();
 
@@ -87,7 +88,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                 ModelHost = modelHost
             });
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         #endregion

@@ -35,7 +35,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             var siteModel = model.WithAssertAndCast<SiteDefinition>("model", value => value.RequireNotNull());
 
             DeploySiteModel(modelHost, siteModelHost.HostSite, siteModel);
-
         }
 
         private void DeploySiteModel(object modelHost, Microsoft.SharePoint.Client.Site site, SiteDefinition siteModel)

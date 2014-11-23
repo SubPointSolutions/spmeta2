@@ -39,9 +39,9 @@ namespace SPMeta2.Regression.CSOM.Validation
         protected Field GetField(object modelHost, FieldDefinition definition)
         {
             if (modelHost is SiteModelHost)
-                return FindSiteField(modelHost as SiteModelHost, definition);
+                return FindExistingSiteField(modelHost as SiteModelHost, definition);
             else if (modelHost is ListModelHost)
-                return FindListField((modelHost as ListModelHost).HostList, definition);
+                return FindExistingListField((modelHost as ListModelHost).HostList, definition);
             else
             {
                 throw new SPMeta2NotSupportedException(

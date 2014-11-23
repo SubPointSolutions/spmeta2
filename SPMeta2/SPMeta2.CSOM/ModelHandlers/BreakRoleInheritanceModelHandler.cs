@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
 using SPMeta2.Common;
@@ -79,16 +81,28 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!securableObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))
             {
                 context.Load(securableObject, s => s.HasUniqueRoleAssignments);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             if (!securableObject.HasUniqueRoleAssignments)
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                    "HasUniqueRoleAssignments is FALSE. Breaking role inheritance with CopyRoleAssignments: [{0}] and ClearSubscopes: [{1}]",
+                    new object[]
+                    {
+                        breakRoleInheritanceModel.CopyRoleAssignments,
+                        breakRoleInheritanceModel.ClearSubscopes
+                    });
+
                 securableObject.BreakRoleInheritance(breakRoleInheritanceModel.CopyRoleAssignments, breakRoleInheritanceModel.ClearSubscopes);
+            }
 
             if (breakRoleInheritanceModel.ForceClearSubscopes)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ForceClearSubscopes is TRUE. Removing all role assignments.");
+
                 context.Load(securableObject.RoleAssignments);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 while (securableObject.RoleAssignments.Count > 0)
                     securableObject.RoleAssignments[0].DeleteObject();

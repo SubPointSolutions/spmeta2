@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -41,7 +43,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = site.Context;
 
             context.Load(site, s => s.UserCustomActions);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return site.UserCustomActions.FirstOrDefault(a => a.Name == model.Name);
         }
@@ -65,7 +67,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             if (existingAction == null)
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new user custom action");
                 existingAction = site.UserCustomActions.Add();
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing user custom action");
+            }
 
             MapCustomAction(existingAction, model);
 
@@ -80,13 +89,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling existingAction.Update()");
             existingAction.Update();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         private void MapCustomAction(UserCustomAction existringAction, UserCustomActionDefinition customAction)
         {
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating user custom action properties.");
+
             existringAction.Sequence = customAction.Sequence;
             existringAction.Description = customAction.Description;
             existringAction.Group = customAction.Group;

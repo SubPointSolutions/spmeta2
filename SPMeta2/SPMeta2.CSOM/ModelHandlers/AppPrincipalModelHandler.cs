@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -29,6 +31,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "AppPrincipal provision via CSOM is not supported by SharePoint. Throwing SPMeta2NotSupportedException");
+
             throw new SPMeta2NotSupportedException("AppPrincipal provision via CSOM is not supported by SharePoint.");
 
             var webHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
@@ -40,7 +44,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected virtual AppPrincipal FindExistingAppPrincipal(WebModelHost webHost, AppPrincipalDefinition appPrincipalModel)
         {
             var context = webHost.HostWeb.Context;
-            //var context = webHost.HostClientContext;
+            //var context = webHost.HostclientContext;
 
             var appPrincipalManager = AppPrincipalManager.GetManager(context, webHost.HostWeb);
             var appPrincipalProvider = AppPrincipalIdentityProvider.GetExternal(context);
@@ -49,7 +53,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var result = appPrincipalManager.LookupAppPrincipal(appPrincipalProvider, appPrincipalName);
 
             context.Load(result);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return result;
         }
@@ -61,7 +65,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var appPrincipalManager = AppPrincipalManager.GetManager(context, webHost.HostWeb);
             var principal = FindExistingAppPrincipal(webHost, appPrincipalModel);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

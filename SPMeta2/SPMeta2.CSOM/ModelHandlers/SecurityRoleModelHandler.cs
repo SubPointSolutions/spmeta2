@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -35,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var roleDefinitions = web.RoleDefinitions;
 
             context.Load(roleDefinitions);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var currentRoleDefinition = FindRoleDefinition(roleDefinitions, securityRoleModel.Name);
 
@@ -57,12 +59,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentRoleDefinition == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security role");
+
                 currentRoleDefinition = roleDefinitions.Add(new RoleDefinitionCreationInformation
                 {
                     Name = securityRoleModel.Name,
                     BasePermissions = basePermissions,
                     Description = securityRoleModel.Description ?? string.Empty
                 });
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security role");
             }
 
             // SPBug, 
@@ -83,27 +91,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             currentRoleDefinition.Update();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected RoleDefinition FindRoleDefinition(RoleDefinitionCollection roleDefinitions, string roleDefinitionName)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by Name: [{0}]", roleDefinitionName);
+
             foreach (var roleDefinition in roleDefinitions)
                 if (string.Compare(roleDefinition.Name, roleDefinitionName, true) == 0)
                     return roleDefinition;
-
-            return null;
-        }
-
-        private Group FindSecurityGroupByTitle(IEnumerable<Group> siteGroups, string securityGroupTitle)
-        {
-            // gosh, who cares ab GetById() methods?! Where GetByName()?!
-
-            foreach (var securityGroup in siteGroups)
-            {
-                if (System.String.Compare(securityGroup.Title, securityGroupTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
-                    return securityGroup;
-            }
 
             return null;
         }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -38,6 +40,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentView == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list view");
+
                 var newView = new ViewCreationInformation
                 {
                     Title = string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : listViewModel.Url,
@@ -59,6 +63,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
+
                 currentView.Title = listViewModel.Title;
                 currentView.RowLimit = (uint)listViewModel.RowLimit;
                 currentView.DefaultView = listViewModel.IsDefault;
@@ -90,12 +96,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
             currentView.Update();
-            list.Context.ExecuteQuery();
+
+            list.Context.ExecuteQueryWithTrace();
         }
 
         protected View FindViewByTitle(IEnumerable<View> viewCollection, string listViewTitle)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by Title: [{0}]", listViewTitle);
+
             foreach (var view in viewCollection)
             {
                 if (System.String.Compare(view.Title, listViewTitle, System.StringComparison.OrdinalIgnoreCase) == 0)

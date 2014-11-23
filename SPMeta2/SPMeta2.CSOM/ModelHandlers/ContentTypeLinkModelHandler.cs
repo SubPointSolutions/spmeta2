@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
@@ -27,22 +28,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = list.Context;
 
             context.Load(list, l => l.ContentTypesEnabled);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (list.ContentTypesEnabled)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "ContentTypesEnabled is TRUE. Processing content type link");
+
                 var web = list.ParentWeb;
 
                 // context.Load(web, w => w.AvailableContentTypes);
                 context.Load(list, l => l.ContentTypes);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
                 var listContentType = FindListContentType(list, contentTypeLinkModel);
 
                 context.Load(targetContentType);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -57,6 +60,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (targetContentType != null && listContentType == null)
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list content type link");
+
                     var ct = list.ContentTypes.Add(new ContentTypeCreationInformation
                     {
                         Description = targetContentType.Description,
@@ -76,11 +81,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "list.Update()");
                     list.Update();
-                    context.ExecuteQuery();
+
+                    context.ExecuteQueryWithTrace();
                 }
                 else
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list content type link");
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
@@ -92,9 +101,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "listContentType.Update(false)");
                     listContentType.Update(false);
-                    context.ExecuteQuery();
+
+                    context.ExecuteQueryWithTrace();
                 }
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "ContentTypesEnabled is FALSE. Provision might break.");
             }
         }
 
@@ -112,10 +127,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // trying to find by name
             if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+            {
+                TraceService.InformationFormat((int)LogEventId.ModelProvisionCoreCall,
+                    "ContentTypeName is not NULL. Trying to find list content type by ContentTypeName: [{0}]", contentTypeLinkModel.ContentTypeName);
+
                 result = list.ContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
+            }
 
             // trying to find by content type id
-            // will never be resilved, actually
+            // will never be resolved, actually
             // list content types have different ID
 
             //if (result == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
@@ -124,6 +144,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             // trying to find by beat match
             if (result == null)
             {
+                TraceService.InformationFormat((int)LogEventId.ModelProvisionCoreCall,
+                    "Trying to find list content type by ContentTypeId: [{0}]", contentTypeLinkModel.ContentTypeId);
+
                 // No SPContentTypeCollection.BestMatch() method avialable.
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6356289-expose-spcontenttypecollection-bestmatch-for-csom
 
@@ -136,27 +159,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             return result;
-
-            //throw new Exception(
-            //    string.Format("Either ContentTypeName or ContentTypeId must be provides. Can't lookup current list content type by Name:[{0}] and ContentTypeId:[{1}] provided.",
-            //    contentTypeLinkModel.ContentTypeName, contentTypeLinkModel.ContentTypeId));
         }
-
-        //protected ContentType FindSiteContentType(Web web, ContentTypeLinkDefinition contentTypeLinkModel)
-        //{
-        //    ContentType targetContentType = null;
-
-        //    if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
-        //        targetContentType = web.AvailableContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
-
-        //    if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
-        //        targetContentType = web.AvailableContentTypes.FindById(contentTypeLinkModel.ContentTypeId);
-
-        //    if (targetContentType == null)
-        //        throw new Exception(string.Format("Cannot find content type specified by model: id:[{0}] name:[{1}]",
-        //                                    contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName));
-
-        //    return targetContentType;
-        //}
     }
 }

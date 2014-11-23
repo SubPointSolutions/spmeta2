@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SPMeta2.Utils;
 
-namespace SPMeta2.Services
+namespace SPMeta2.Services.Impl
 {
     public class TraceSourceService : TraceServiceBase
     {
@@ -18,14 +15,14 @@ namespace SPMeta2.Services
 
         public TraceSourceService(string traceSourceName)
         {
-            Trace = new TraceSource("SPMeta2");
+            TraceSource = new TraceSource("SPMeta2");
         }
 
         #endregion
 
         #region properties
 
-        public TraceSource Trace = new TraceSource("SPMeta2");
+        public TraceSource TraceSource = new TraceSource("SPMeta2");
 
         #endregion
 
@@ -75,10 +72,34 @@ namespace SPMeta2.Services
                 traceString = string.Format("{0}.", messageString);
             }
 
-            Trace.TraceEvent(messageType, id, traceString);
-            Trace.Flush();
+            TraceSource.TraceEvent(messageType, id, traceString);
+            TraceSource.Flush();
         }
 
         #endregion
+
+        public override void TraceActivityStart(int id, object message)
+        {
+            TraceSource.TraceEvent(TraceEventType.Start, id, ConvertUtils.ToString(message));
+        }
+
+        public override void TraceActivityStop(int id, object message)
+        {
+            TraceSource.TraceEvent(TraceEventType.Stop, id, ConvertUtils.ToString(message));
+        }
+
+        public override void TraceActivityTransfer(int id, object message, Guid relatedActivityId)
+        {
+            TraceSource.TraceTransfer(id, ConvertUtils.ToString(message), relatedActivityId);
+        }
+
+        public override Guid CurrentActivityId
+        {
+            get
+            {
+                return Trace.CorrelationManager.ActivityId;
+            }
+            set { Trace.CorrelationManager.ActivityId = value; }
+        }
     }
 }

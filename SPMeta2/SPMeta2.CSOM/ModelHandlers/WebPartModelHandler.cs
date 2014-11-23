@@ -12,6 +12,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using WebPartDefinition = SPMeta2.Definitions.WebPartDefinition;
 using System.Xml;
@@ -53,7 +54,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
             var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
 
@@ -78,7 +79,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
@@ -99,7 +100,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var collListItems = list.GetItems(dQuery);
 
             context.Load(collListItems);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return collListItems.FirstOrDefault();
 
@@ -132,7 +133,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         //var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
 
                         //rootWebContext.Load(webParts);
-                        //rootWebContext.ExecuteQuery();
+                        //rootWebcontext.ExecuteQueryWithTrace();
 
                         ListItem targetWebPart = SearchItemByName(webPartCatalog, webPartCatalog.RootFolder,
                             webPartModel.WebpartFileName);
@@ -148,11 +149,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                         var webPartFile = targetWebPart.File;
 
                         rootWebContext.Load(webPartFile);
-                        rootWebContext.ExecuteQuery();
+                        rootWebContext.ExecuteQueryWithTrace();
 
 
                         // does not work for apps - https://github.com/SubPointSolutions/spmeta2/issues/174
-                        //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostClientContext, webPartFile.ServerRelativeUrl);
+                        //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(listItemModelHost.HostclientContext, webPartFile.ServerRelativeUrl);
 
                         //using (var reader = new StreamReader(fileInfo.Stream))
                         //{
@@ -162,7 +163,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         var data = webPartFile.OpenBinaryStream();
 
                         context.Load(webPartFile);
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         using (var reader = new StreamReader(data.Value))
                         {
@@ -212,7 +213,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 fileContext.Load(fileListItem);
 
-                fileContext.ExecuteQuery();
+                fileContext.ExecuteQueryWithTrace();
 
                 var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
@@ -220,7 +221,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
                 var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition;
 
@@ -242,8 +243,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (wpDefinition != null)
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Deleting current web part.");
+
                     wpDefinition.DeleteWebPart();
-                    wpDefinition.Context.ExecuteQuery();
+                    wpDefinition.Context.ExecuteQueryWithTrace();
                 }
                 else
                 {
@@ -252,6 +255,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (existingWebPart == null)
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part");
+
                     var webPartXML = GetWebpartXmlDefinition(listItemModelHost, webPartModel);
                     webPartXML = ProcessCommonWebpartProperties(webPartXML, webPartModel);
 
@@ -297,7 +302,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
                 }
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return pageFile;
             });
@@ -308,16 +313,27 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!webpartModel.AddToPageContent)
                 return;
 
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "AddToPageContent = true. Handling wiki/publishig page provision case.");
+
             var context = listItem.Context;
 
             var targetFieldName = string.Empty;
 
             if (listItem.FieldValues.ContainsKey(BuiltInInternalFieldNames.WikiField))
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "WikiField field is detected. Switching to wiki page web part provision.");
+
                 targetFieldName = BuiltInInternalFieldNames.WikiField;
+            }
             else if (listItem.FieldValues.ContainsKey(BuiltInInternalFieldNames.PublishingPageLayout))
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "PublishingPageLayout field is detected. Switching to publishin page web part provision.");
+
                 targetFieldName = BuiltInInternalFieldNames.PublishingPageContent;
+            }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Not PublishingPageLayout field, nor WikiField is detected. Skipping.");
                 return;
             }
 
@@ -341,23 +357,36 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (string.IsNullOrEmpty(content))
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Page content is empty Generating new one.");
+
                 content = wikiResult;
 
                 listItem[targetFieldName] = content;
                 listItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
                 if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
                 {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Replacing web part with ID: [{0}] on the page content.", wpId);
+
                     content += wikiResult;
 
                     listItem[targetFieldName] = content;
                     listItem.Update();
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
+                }
+                else
+                {
+                    TraceService.WarningFormat((int)LogEventId.ModelProvisionCoreCall,
+                        "Cannot find web part ID: [{0}] the page content. Provision won't add web part on the page content.",
+                        new object[]
+                        {
+                           wpId
+                        });
                 }
             }
         }
@@ -375,6 +404,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                                               WebPartDefinitionBase webPartModel,
                                               out Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving web part by Title: [{0}]", webPartModel.Title);
+
             wpDefinition = null;
 
             // gosh, you got to be kidding

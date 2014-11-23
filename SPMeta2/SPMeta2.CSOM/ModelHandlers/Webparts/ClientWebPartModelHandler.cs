@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -31,7 +32,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             {
                 var webContext = listItemModelHost.HostWeb.Context;
                 webContext.Load(listItemModelHost.HostWeb, w => w.Id);
-                webContext.ExecuteQuery();
+                webContext.ExecuteQueryWithTrace();
             }
 
             var webId = listItemModelHost.HostWeb.Id.ToString();

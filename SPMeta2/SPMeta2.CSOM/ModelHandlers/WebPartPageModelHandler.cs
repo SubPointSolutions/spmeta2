@@ -6,6 +6,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
@@ -40,7 +41,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var currentListItem = currentPage.ListItemAllFields;
                 context.Load(currentListItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
                 {
@@ -54,7 +55,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     //currentListItem.Update();
                 }
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
@@ -71,7 +72,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
@@ -92,7 +93,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var collListItems = list.GetItems(dQuery);
 
             context.Load(collListItems);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return collListItems.FirstOrDefault();
 
@@ -104,7 +105,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             //var files = folder.Files;
             //context.Load(files);
-            //context.ExecuteQuery();
+            //context.ExecuteQueryWithTrace();
 
             //foreach (var file in files)
             //{
@@ -150,6 +151,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if ((currentPage == null) || (currentPage != null && webPartPageModel.NeedOverride))
             {
+                if (webPartPageModel.NeedOverride)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part page");
+                }
+
                 var file = new FileCreationInformation();
 
                 var pageContent = string.Empty;
@@ -179,10 +190,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 context.Load(newFile);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = false. Skipping replacing web part page.");
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

@@ -4,6 +4,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Events;
 using SPMeta2.Models;
+using SPMeta2.Services;
 
 namespace SPMeta2.ModelHandlers
 {
@@ -14,11 +15,16 @@ namespace SPMeta2.ModelHandlers
     {
         #region constructors
 
+        public ModelHandlerBase()
+        {
+            TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+        }
 
         #endregion
 
         #region properties
 
+        protected static TraceServiceBase TraceService { get; set; }
 
         /// <summary>
         /// Type of the definition which is handled by current model handler.
@@ -89,10 +95,24 @@ namespace SPMeta2.ModelHandlers
         /// <param name="args"></param>
         protected void InvokeOnModelEvent(object sender, ModelEventArgs args)
         {
+            TraceService.InformationFormat((int)LogEventId.CoreCalls, "Entering InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
+                new object[] { sender, args });
+
             if (OnModelEvent != null)
             {
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls,
+                    "OnModelEvent is not NULL. Calling OnModelEvent with sender: [{0}] and args: [{1}]",
+                    new object[] { sender, args });
+
                 OnModelEvent.Invoke(this, args);
             }
+            else
+            {
+                TraceService.Verbose((int)LogEventId.CoreCalls, "OnModelEvent is NULL. Skipping.");
+            }
+
+            TraceService.InformationFormat((int)LogEventId.CoreCalls, "Leaving InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
+                 new object[] { sender, args });
         }
 
         /// <summary>

@@ -68,6 +68,7 @@
     <Compile Include="DefaultSyntax\WebPartDefinitionSyntax.cs" />
     <Compile Include="DefaultSyntax\WebtDefinitionSyntax.cs" />
     <Compile Include="Extensions\CamlQueryTemplates.cs" />
+    <Compile Include="Extensions\ClientRuntimeContextExtensions.cs" />
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
@@ -110,10 +111,8 @@
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
-    <Compile Include="ModelHandlers\ListPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
-    <Compile Include="ModelHandlers\PageDefinition.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
@@ -156,7 +155,6 @@
     </Compile>
     <Compile Include="Services\CSOMProvisionService.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
-    <Compile Include="Services\CSOMWebModelProvisionService.cs" />
     <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>

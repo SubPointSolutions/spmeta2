@@ -4,10 +4,12 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using File = Microsoft.SharePoint.Client.File;
 
@@ -32,7 +34,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var sandboxSolutionDefinition = model.WithAssertAndCast<SandboxSolutionDefinition>("model", value => value.RequireNotNull());
 
             if (!sandboxSolutionDefinition.Activate)
-                throw new SPMeta2NotSupportedException("Sandbox solution provision via CSOM required to have SandboxSolutionDefinition.Activate = true.");
+                throw new SPMeta2NotSupportedException("Sandbox solution provision via CSOM requires to have SandboxSolutionDefinition.Activate = true.");
 
             DeploySandboxSolution(modelHost, siteModelHost, sandboxSolutionDefinition);
         }
@@ -56,12 +58,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ModelHost = modelHost
             });
 
-
             if (existingSolution != null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing sandbox solution");
+
                 var fileItem = existingSolution.ListItemAllFields;
                 context.Load(fileItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var currentFileName = fileItem["FileLeafRef"].ToString();
 
@@ -83,18 +86,20 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 };
 
                 // deactivate and remove
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deleting existing sandbox solution via DesignPackage.UnInstall()");
                 DesignPackage.UnInstall(context, site, info);
-                context.ExecuteQuery();
+
+                context.ExecuteQueryWithTrace();
             }
 
             // TODO
-            // Site Assets list has to be there are the whole DesignPackage thing requires Publishing infrastrcutre to be activated.
+            // Site Assets list has to be there are the whole DesignPackage thing requires Publishing infrastructure to be activated.
             // list lookup should be changes later to URL based resolution
             var solutionGallery = site.RootWeb.Lists.GetByTitle("Site Assets");
             var folder = solutionGallery.RootFolder;
 
             context.Load(folder);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var fileCreatingInfo = new FileCreationInformation
             {
@@ -111,11 +116,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 fileCreatingInfo.ContentStream = new System.IO.MemoryStream(sandboxSolutionDefinition.Content);
             }
 
+
             var newFile = folder.Files.Add(fileCreatingInfo);
 
             context.Load(newFile);
             context.Load(newFile, f => f.ServerRelativeUrl);
-            context.ExecuteQuery();
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Uploading new sandbox solution to Site Assets library");
+            context.ExecuteQueryWithTrace();
 
             if (sandboxSolutionDefinition.Activate)
             {
@@ -128,12 +136,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 };
 
                 // activate and remove
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Activating existing sandbox solution via DesignPackage.Install()");
                 DesignPackage.Install(context, site, info, newFile.ServerRelativeUrl);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 // clean up the file
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deleting sandbox file from  Site Assets library");
                 newFile.DeleteObject();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -150,6 +160,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         protected File FindExistingSolution(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by SolutionId: [{0}]", sandboxSolutionDefinition.SolutionId);
+
             var site = siteModelHost.HostSite;
             var context = site.Context;
 
@@ -157,7 +169,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var files = solutionGallery.GetItems(CamlQuery.CreateAllItemsQuery());
 
             context.Load(files);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var fileItem = files.ToList().FirstOrDefault(f => new Guid(f["SolutionId"].ToString()) == sandboxSolutionDefinition.SolutionId);
             return fileItem != null ? fileItem.File : null;
@@ -165,6 +177,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         protected File FindExistingSolutionFile(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
         {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by FileName: [{0}]", sandboxSolutionDefinition.FileName);
+
             var site = siteModelHost.HostSite;
             var context = site.Context;
 
@@ -172,7 +186,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var files = solutionGallery.GetItems(CamlQuery.CreateAllItemsQuery());
 
             context.Load(files);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var fileItem = files.ToList().FirstOrDefault(f => f["FileLeafRef"].ToString() == sandboxSolutionDefinition.FileName);
 

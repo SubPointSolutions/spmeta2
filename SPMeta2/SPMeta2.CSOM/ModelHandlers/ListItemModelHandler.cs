@@ -1,13 +1,16 @@
 ﻿using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
@@ -42,7 +45,9 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             if (IsDocumentLibray(list))
             {
-                throw new NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
+                TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "Please use ModuleFileDefinition to deploy files to the document libraries. Throwing SPMeta2NotImplementedException");
+
+                throw new SPMeta2NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
             }
 
             ListItem currentItem = null;
@@ -69,7 +74,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var currentItem = list.GetItemById(item.Id);
 
                 context.Load(currentItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var listItemPropertyHost = new ListItemFieldValueModelHost
                 {
@@ -80,10 +85,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
-
-
         }
 
         protected ListItem GetListItem(List list, ListItemDefinition definition)
@@ -93,7 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = list.Context;
 
             context.Load(items);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             // BIG TODO, don't tell me, I know that
             return items.FirstOrDefault(i => i["Title"] != null && (i["Title"].ToString() == definition.Title));
@@ -117,6 +120,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentItem == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list item");
+
                 var newItem = list.AddItem(new ListItemCreationInformation());
 
                 newItem["Title"] = listItemModel.Title;
@@ -134,12 +139,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 newItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return newItem;
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list item");
+
                 currentItem["Title"] = listItemModel.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -155,7 +162,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return currentItem;
             }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -31,7 +33,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = web.Context;
 
                 context.Load(web, tmpWeb => tmpWeb.SiteGroups);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
@@ -43,7 +45,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 currentGroup.Update();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
@@ -62,7 +64,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // well, this should be pulled up to the site handler and init Load/Exec query
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
@@ -79,11 +81,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentGroup == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group");
+
                 currentGroup = web.SiteGroups.Add(new GroupCreationInformation
                 {
                     Title = securityGroupModel.Name,
                     Description = securityGroupModel.Description ?? string.Empty,
                 });
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security group");
             }
 
             currentGroup.Title = securityGroupModel.Name;
@@ -102,12 +110,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             currentGroup.Update();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected Group FindSecurityGroupByTitle(IEnumerable<Group> siteGroups, string securityGroupTitle)
         {
             // gosh, who cares ab GetById() methods?! Where GetByName()?!
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving security group by title: [{0}]", securityGroupTitle);
 
             foreach (var securityGroup in siteGroups)
             {

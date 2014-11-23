@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using FeatureDefinitionScope = SPMeta2.Definitions.FeatureDefinitionScope;
 
@@ -41,10 +44,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             switch (featureModel.Scope)
             {
                 case FeatureDefinitionScope.Farm:
-                    throw new NotSupportedException("Farm features are not supported with CSOM.");
+                    {
+                        TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "Farm features are not supported with CSOM. Throwing SPMeta2NotSupportedException.");
+                        throw new SPMeta2NotSupportedException("Farm features are not supported with CSOM.");
+                    }
 
                 case FeatureDefinitionScope.WebApplication:
-                    throw new NotSupportedException("Web application features are not supported with CSOM.");
+                    {
+                        TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "Web application features are not supported with CSOM. Throwing SPMeta2NotSupportedException.");
+                        throw new SPMeta2NotSupportedException("Web application features are not supported with CSOM.");
+                    }
 
                 case FeatureDefinitionScope.Site:
                     DeploySiteFeature(modelHost, featureModel);
@@ -63,7 +72,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = webModelHost.HostWeb;
             var context = web.Context;
 
-            //var features = LoadWebFeatures(webModelHost);
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying web feature.");
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
@@ -77,6 +86,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var site = siteModelHost.HostSite;
             var context = site.Context;
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying site feature.");
 
             // a bit unclear why it should be Farm scope
             // seems to be a scope to find feature definition in so that for sandbox solutions it would be Site?
@@ -98,9 +109,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             var featureId = featureModel.Id;
 
             var currentFeature = features.GetById(featureId);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryWithTrace();
 
             var featureActivated = IsFeatureActivated(currentFeature);
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Is feature activated: [{0}]", featureActivated);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -119,13 +132,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (featureModel.Enable)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Enabling feature");
                     tmpFeature = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
-                    context.ExecuteQuery();
+
+                    context.ExecuteQueryWithTrace();
                 }
                 else
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching feature by ID");
                     tmpFeature = features.GetById(featureId);
-                    features.Context.ExecuteQuery();
+
+                    features.Context.ExecuteQueryWithTrace();
                 }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -143,6 +160,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (featureModel.Enable && featureModel.ForceActivate)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Feature enabled, but ForceActivate = true. Force activating.");
+
                     var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
@@ -156,10 +175,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    context.ExecuteQuery();
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+                    context.ExecuteQueryWithTrace();
                 }
                 else if (!featureModel.Enable)
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Removing feature.");
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
@@ -173,12 +194,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
                 }
                 else
                 {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching feature by ID");
                     var tmpFeature = features.GetById(featureId);
-                    features.Context.ExecuteQuery();
+
+                    features.Context.ExecuteQueryWithTrace();
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {

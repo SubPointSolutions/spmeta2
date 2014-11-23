@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Services.Impl;
 
 namespace SPMeta2
 {
@@ -27,6 +28,7 @@ namespace SPMeta2
         private void InitServices()
         {
             Services.Add(typeof(TraceServiceBase), new TraceSourceService());
+            Services.Add(typeof(ModelWeighServiceBase), new DefaultModelWeighService());
         }
 
         #endregion

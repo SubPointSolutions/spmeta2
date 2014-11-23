@@ -90,7 +90,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             context.Load(list, l => l.Title);
             context.Load(list, l => l.DefaultView);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             result.ListId = list.Id;
             result.TitleUrl = list.DefaultViewUrl;

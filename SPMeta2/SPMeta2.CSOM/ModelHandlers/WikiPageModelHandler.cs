@@ -1,11 +1,13 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
@@ -38,7 +40,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentListItem = currentPage.ListItemAllFields;
             context.Load(currentListItem);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
             {
@@ -48,11 +50,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 action(listItemHost);
-
-                //currentListItem.Update();
             }
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
@@ -93,20 +93,20 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (file == null)
             {
-                var newPageFile = folder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new wiki page");
 
-                //newPageFile.ListItemAllFields
+                var newPageFile = folder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
 
                 context.Load(newPageFile);
 
                 var currentListItem = newPageFile.ListItemAllFields;
                 context.Load(currentListItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
                 currentListItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -119,21 +119,27 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = folder
                 });
 
-                context.ExecuteQuery();
-
+                context.ExecuteQueryWithTrace();
             }
             else
             {
                 // TODO,override if force
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing wiki page");
 
                 if (wikiPageModel.NeedOverride)
                 {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
+
                     var currentListItem = file.ListItemAllFields;
                     context.Load(currentListItem);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
                     currentListItem.Update();
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = false. Skipping Updating wiki page content.");
                 }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -147,7 +153,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = folder
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
         }
 
@@ -169,16 +175,23 @@ namespace SPMeta2.CSOM.ModelHandlers
             var pageName = GetSafeWikiPageFileName(wikiPageModel);
 
             context.Load(folder, l => l.ServerRelativeUrl);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             newWikiPageUrl = folder.ServerRelativeUrl + "/" + pageName;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving file with URL: [{0}]", newWikiPageUrl);
             var file = web.GetFileByServerRelativeUrl(newWikiPageUrl);
 
             context.Load(file, f => f.Exists);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (file.Exists)
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Returning existing file");
                 return file;
+            }
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "File does not exist. Returning NULL");
 
             return null;
         }

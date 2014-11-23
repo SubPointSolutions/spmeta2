@@ -1,4 +1,5 @@
-﻿using SPMeta2.CSOM.ModelHosts;
+﻿using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
@@ -55,13 +57,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (!scope.HasException)
             {
                 field = rootWeb.AvailableFields.GetById(id);
                 context.Load(field);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             return field;
@@ -75,19 +77,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             var fields = list.Fields;
 
             context.Load(fields);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             Field existingListField = null;
 
             Field tmp = null;
             try
             {
-                 tmp = list.Fields.GetById(listFieldLinkModel.FieldId);
-                context.ExecuteQuery();
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Fetching site field by ID: [{0}]", listFieldLinkModel.FieldId);
+
+                tmp = list.Fields.GetById(listFieldLinkModel.FieldId);
+                context.ExecuteQueryWithTrace();
             }
             catch (Exception exception)
             {
-                // TODO
+                TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find site field by ID: [{0}]. Provision might break.", listFieldLinkModel.FieldId);
             }
             finally
             {
@@ -108,10 +112,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (existingListField == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list field");
+
                 //var avialableField = web.AvailableFields;
 
                 //context.Load(avialableField);
-                //context.ExecuteQuery();
+                //context.ExecuteQueryWithTrace();
 
                 var siteField = FindExistingSiteField(web, listFieldLinkModel.FieldId);
 
@@ -128,10 +134,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list field");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

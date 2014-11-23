@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -41,7 +42,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 var currentListItem = currentPage.ListItemAllFields;
                 context.Load(currentListItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
                 {
@@ -55,7 +56,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     //currentListItem.Update();
                 }
 
-                //context.ExecuteQuery();
+                //context.ExecuteQueryWithTrace();
             }
             else
             {
@@ -91,7 +92,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
@@ -112,7 +113,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var collListItems = list.GetItems(dQuery);
 
             context.Load(collListItems);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return collListItems.FirstOrDefault();
 
@@ -170,7 +171,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             {
                 var newFileItem = newFile.ListItemAllFields;
                 context.Load(newFileItem);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var site = folderModelHost.HostSite;
                 var currentPageLayoutItem = FindPageLayoutItem(site, publishingPageModel.PageLayoutFileName);
@@ -182,7 +183,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 currentPageLayoutItemContext.Load(currentPageLayoutItem, i => i.DisplayName);
                 currentPageLayoutItemContext.Load(publishingFile);
 
-                currentPageLayoutItemContext.ExecuteQuery();
+                currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
                 newFileItem["Title"] = publishingPageModel.Title;
                 newFileItem["Comments"] = publishingPageModel.Description;
@@ -192,7 +193,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 newFileItem.Update();
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             });
 
             currentPageFile = GetCurrentPage(folderModelHost.CurrentList, folder, pageName);
@@ -208,7 +209,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ModelHost = modelHost
             });
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
 

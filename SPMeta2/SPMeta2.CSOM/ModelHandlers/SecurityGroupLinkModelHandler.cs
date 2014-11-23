@@ -5,7 +5,9 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -32,7 +34,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = web.Context;
 
                 context.Load(web, w => w.SiteGroups);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
 
@@ -70,12 +72,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(securableObject, s => s.HasUniqueRoleAssignments);
             context.Load(securableObject, s => s.RoleAssignments.Include(r => r.Member));
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             Group securityGroup = ResolveSecurityGroup(securityGroupLinkModel, web, context);
 
             if (!securableObject.HasUniqueRoleAssignments)
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "securableObject.HasUniqueRoleAssignments = false. Breaking with false-false options.");
                 securableObject.BreakRoleInheritance(false, false);
+            }
 
             var roleAssignment = FindRoleRoleAssignment(securableObject.RoleAssignments, securityGroup);
 
@@ -92,6 +97,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (roleAssignment == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group link");
+
                 var bindings = new RoleDefinitionBindingCollection(context);
                 bindings.Add(web.RoleDefinitions.GetByType(RoleType.Reader));
 
@@ -113,6 +120,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security group link");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -132,33 +141,45 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (securityGroupLinkModel.IsAssociatedMemberGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedMemberGroup = true. Resolving AssociatedMemberGroup");
+
                 context.Load(web, w => w.AssociatedMemberGroup);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 securityGroup = web.AssociatedMemberGroup;
             }
             else if (securityGroupLinkModel.IsAssociatedOwnerGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedOwnerGroup = true. Resolving IsAssociatedOwnerGroup");
+
                 context.Load(web, w => w.AssociatedOwnerGroup);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 securityGroup = web.AssociatedOwnerGroup;
             }
             else if (securityGroupLinkModel.IsAssociatedVisitorGroup)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "IsAssociatedVisitorGroup = true. Resolving IsAssociatedVisitorGroup");
+
                 context.Load(web, w => w.AssociatedVisitorGroup);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 securityGroup = web.AssociatedVisitorGroup;
             }
             else if (!string.IsNullOrEmpty(securityGroupLinkModel.SecurityGroupName))
             {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving group by name: [{0}]", securityGroupLinkModel.SecurityGroupName);
+
                 securityGroup = WebExtensions.FindGroupByName(web.SiteGroups, securityGroupLinkModel.SecurityGroupName);
             }
             else
             {
-                throw new ArgumentException("securityGroupLinkModel");
+                TraceService.Error((int)LogEventId.ModelProvisionCoreCall,
+                    "IsAssociatedMemberGroup/IsAssociatedOwnerGroup/IsAssociatedVisitorGroup/SecurityGroupName should be defined. Throwing SPMeta2Exception");
+
+                throw new SPMeta2Exception("securityGroupLinkModel");
             }
+
             return securityGroup;
         }
 

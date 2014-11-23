@@ -1,14 +1,17 @@
 ﻿using System.Runtime.Remoting.Lifetime;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 using SPMeta2.ModelHosts;
@@ -110,7 +113,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(folderModelHost.CurrentListItem, l => l.Folder);
             }
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             serverRelativeUrl = folderModelHost.CurrentListItem == null
                                                 ? list.RootFolder.ServerRelativeUrl
@@ -123,15 +126,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             try
             {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Loading list folder with URL: [{0}]", currentUrl);
+
                 context.Load(currentFolder, f => f.Name);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "List folder with URL does exist: [{0}]", currentUrl);
 
                 doesFolderExist = true;
             }
             catch (ServerException e)
             {
                 if (e.ServerErrorTypeName == "System.IO.FileNotFoundException")
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "List folder with URL does not exist: [{0}]", currentUrl);
                     doesFolderExist = false;
+                }
             }
 
             if (doesFolderExist)
@@ -142,11 +152,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private ListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
-            string serverRelativeUrl = string.Empty;
+            TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "EnsureListFolder()");
+
+            var serverRelativeUrl = string.Empty;
 
             var list = folderModelHost.CurrentList;
             var context = list.Context;
-
 
             var currentFolder = GetListFolder(folderModelHost, folderModel, out serverRelativeUrl);
             var currentFolderItem = folderModelHost.CurrentListItem;
@@ -162,10 +173,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = folderModelHost
             });
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (currentFolder == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list folder");
+
                 currentFolderItem = list.AddItem(new ListItemCreationInformation
                 {
                     FolderUrl = serverRelativeUrl,
@@ -173,23 +186,23 @@ namespace SPMeta2.CSOM.ModelHandlers
                     UnderlyingObjectType = FileSystemObjectType.Folder
                 });
 
-                currentFolderItem["Title"] = folderModel.Name;
+                currentFolderItem[BuiltInInternalFieldNames.Title] = folderModel.Name;
                 currentFolderItem.Update();
 
-                context.ExecuteQuery();
-
-
+                context.ExecuteQueryWithTrace();
 
                 context.Load(currentFolderItem.Folder);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 currentFolder = currentFolderItem.Folder;
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list folder");
+
                 context.Load(currentFolder, f => f.ListItemAllFields);
                 context.Load(currentFolder, f => f.Name);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 currentFolderItem = currentFolder.ListItemAllFields;
             }
@@ -214,7 +227,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = parentFolder.Context;
 
             context.Load(parentFolder, f => f.Folders);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             // dirty stuff, needs to be rewritten
             var currentFolder = parentFolder
@@ -225,7 +238,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (currentFolder != null)
             {
                 context.Load(currentFolder, f => f.Name);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does exist: [{0}]", folderModel.Name);
+            }
+            else
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does not exist: [{0}]", folderModel.Name);
             }
 
             return currentFolder;
@@ -233,6 +252,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private Folder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
+            TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "EnsureLibraryFolder()");
+
             var parentFolder = folderModelHost.CurrentLibraryFolder;
             var context = parentFolder.Context;
 
@@ -251,8 +272,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentFolder == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new library folder");
+
                 currentFolder = parentFolder.Folders.Add(folderModel.Name);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing library folder");
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -267,7 +294,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             currentFolder.Update();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return currentFolder;
         }

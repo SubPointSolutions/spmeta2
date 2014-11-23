@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -37,9 +40,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var sContext = site.Context;
             sContext.Load(site, s => s.ServerRelativeUrl);
-            sContext.ExecuteQuery();
+            sContext.ExecuteQueryWithTrace();
 
             var siteRelativeUrl = site.ServerRelativeUrl;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving server relative URL: [{0}]", siteRelativeUrl);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -53,10 +58,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
                 web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+            }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
                 web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+            }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||
                 !string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
@@ -72,8 +83,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling web.Update()");
                 web.Update();
-                web.Context.ExecuteQuery();
+
+                web.Context.ExecuteQueryWithTrace();
             }
             else
             {

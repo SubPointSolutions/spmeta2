@@ -21,7 +21,7 @@ namespace SPMeta2.CSOM.Extensions
             var list = web.Lists.GetByTitle(listTitle);
 
             context.Load(web, w => w.Lists);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return list;
         }
@@ -37,7 +37,7 @@ namespace SPMeta2.CSOM.Extensions
                     l => l.Title
                 ));
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             List result = null;
 

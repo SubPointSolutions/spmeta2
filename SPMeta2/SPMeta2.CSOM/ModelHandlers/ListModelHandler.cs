@@ -7,8 +7,10 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 
@@ -39,13 +41,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = web.Context;
 
             context.Load(web, w => w.ServerRelativeUrl);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (web != null && listDefinition != null)
             {
-                // TODO
-                // no no no no... not a TITLE! 
-
                 var list = LoadCurrentList(web, listDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -67,7 +66,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (childModelType == typeof(ListViewDefinition))
                 {
                     context.Load<List>(list, l => l.Views);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     action(list);
                 }
@@ -76,7 +75,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load<List>(list, l => l.RootFolder);
                     context.Load<List>(list, l => l.BaseType);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
                     {
@@ -100,7 +99,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load<List>(list, l => l.RootFolder);
                     context.Load<List>(list, l => l.BaseType);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
                     {
@@ -134,7 +133,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load<List>(list, l => l.RootFolder);
                     context.Load<List>(list, l => l.BaseType);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
                     {
@@ -205,19 +204,19 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (!scope.HasException && folder != null && folder.ServerObjectIsNull != true)
             {
                 folder = web.GetFolderByServerRelativeUrl(listUrl);
                 context.Load(folder.Properties);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var listId = new Guid(folder.Properties["vti_listname"].ToString());
                 var list = web.Lists.GetById(listId);
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 currentList = list;
             }
@@ -234,33 +233,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = web.Context;
 
-            // 1
             context.Load(web, w => w.ServerRelativeUrl);
-            context.ExecuteQuery();
-
-            //context.Load(web, w => w.Lists);
-            //context.Load(web, w => w.ServerRelativeUrl);
-            //var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
-            //context.ExecuteQuery();
-
-
+            context.ExecuteQueryWithTrace();
 
             List currentList = null;
-
 
             var loadedList = LoadCurrentList(web, listModel);
 
             if (loadedList != null)
                 currentList = loadedList;
-
-
-            //Folder d;
-
-            ////d.ListItemAllFields.pa
-
-            //context.Load(lists, all => all.Where(l => l.RootFolder.ServerRelativeUrl == listUrl).Include(l => l.Id));
-            //context.ExecuteQuery();
-            //var list = lists.FirstOrDefault();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -279,6 +260,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentList == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list");
+
                 // no support for the TemplateName yet
                 var listInfo = new ListCreationInformation
                 {
@@ -289,14 +272,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (listModel.TemplateType > 0)
                 {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateType: [{0}]", listModel.TemplateType);
+
                     listInfo.TemplateType = listModel.TemplateType;
                 }
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
-                    context.Load(web, tmpWeb => tmpWeb.ListTemplates);
-                    context.ExecuteQuery();
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
 
-                    // gosh..
+                    context.Load(web, tmpWeb => tmpWeb.ListTemplates);
+                    context.ExecuteQueryWithTrace();
+
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching all list templates and matching target one.");
                     var listTemplate = FindListTemplateByInternalName(web.ListTemplates, listModel.TemplateName);
 
                     listInfo.TemplateFeatureId = listTemplate.FeatureId;
@@ -304,11 +291,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    throw new ArgumentException("Either TemplateType or TemplateName has to bbe specified.");
+                    TraceService.Error((int)LogEventId.ModelProvisionCoreCall, "Either TemplateType or TemplateName has to be specified. Throwing SPMeta2Exception");
+
+                    throw new SPMeta2Exception("Either TemplateType or TemplateName has to be specified.");
                 }
 
                 var newList = web.Lists.Add(listInfo);
                 currentList = newList;
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list");
             }
 
             currentList.Title = listModel.Title;
@@ -325,11 +318,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
+
             InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdated);
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentList.Update()");
             currentList.Update();
-
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)

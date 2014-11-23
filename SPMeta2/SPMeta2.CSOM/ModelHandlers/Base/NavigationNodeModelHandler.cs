@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.ModelHandlers;
@@ -62,7 +63,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             var context = nodes.Context;
 
             context.Load(nodes);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var currentNode = nodes
                                 .OfType<NavigationNode>()
@@ -88,7 +89,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             var context = navigationNodeModelHost.HostWeb.Context;
 
             context.Load(quickLaunch);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var existingNode = LookupNavigationNode(quickLaunch, quickLaunchNode);
 
@@ -104,7 +105,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             var context = navigationNodeModelHost.HostWeb.Context;
 
             context.Load(quickLaunch);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var existingNode = LookupNavigationNode(quickLaunch, quickLaunchNode);
 
@@ -128,7 +129,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                     Url = quickLaunchNode.Url
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             existingNode.Title = quickLaunchNode.Title;
@@ -148,7 +149,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             existingNode.Update();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return existingNode;
         }
@@ -211,7 +212,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             rootNavigationNodes = GetNavigationNodeCollection(web);
 
             context.Load(rootNavigationNodes);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             // TODO, crazy URL matching to find 'resolved URL'
 
@@ -253,7 +254,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                     PreviousNode = previousNode
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             existingNode.Title = navigationNodeModel.Title;
@@ -273,7 +274,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             existingNode.Update();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return existingNode;
         }

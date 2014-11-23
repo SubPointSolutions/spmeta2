@@ -2,6 +2,7 @@
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Common
 {
@@ -31,6 +32,26 @@ namespace SPMeta2.Common
         public object ModelHost { get; set; }
         public ModelNode Model { get; set; }
         public ModelNode CurrentModelNode { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ModelEventArgs>(this)
+                         .AddPropertyValue(p => p.EventType)
+
+                         .AddPropertyValue(p => p.Object)
+                         .AddPropertyValue(p => p.ObjectType)
+
+                         .AddPropertyValue(p => p.ObjectDefinition)
+                         .AddPropertyValue(p => p.ModelHost)
+                         .AddPropertyValue(p => p.Model)
+                         .AddPropertyValue(p => p.CurrentModelNode)
+
+                         .ToString();
+        }
 
         #endregion
     }

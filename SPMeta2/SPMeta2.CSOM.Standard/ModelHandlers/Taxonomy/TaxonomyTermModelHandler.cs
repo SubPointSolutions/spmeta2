@@ -2,10 +2,12 @@
 using System.Linq;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
@@ -68,6 +70,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             if (currentTerm == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term");
+
                 currentTerm = termModel.Id.HasValue
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
@@ -85,6 +89,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -116,7 +122,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 });
 
                 context.Load(terms);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 result = terms.FirstOrDefault();
             }
@@ -124,7 +130,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             if (result != null)
             {
                 context.Load(result);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             return result;

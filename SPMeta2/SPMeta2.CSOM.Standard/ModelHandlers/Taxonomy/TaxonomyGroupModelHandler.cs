@@ -3,10 +3,12 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
@@ -74,14 +76,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 }
             }
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (currentGroup != null && currentGroup.ServerObjectIsNull == false)
             {
                 context.Load(currentGroup, g => g.Id);
                 context.Load(currentGroup, g => g.Name);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return currentGroup;
             }
@@ -107,6 +109,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             if (currentGroup == null)
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term Group");
+
                 currentGroup = groupModel.Id.HasValue
                                         ? termStore.CreateGroup(groupModel.Name, groupModel.Id.Value)
                                         : termStore.CreateGroup(groupModel.Name, Guid.NewGuid());
@@ -125,6 +129,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             else
             {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Group");
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

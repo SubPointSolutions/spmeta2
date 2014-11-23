@@ -3,6 +3,7 @@ using System;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 
@@ -44,6 +45,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(fieldValue.FieldName))
             {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Processing field value with name: [{0}] and value: [{1}]",
+                    new[]
+                    {
+                        fieldValue.FieldName,
+                        fieldValue.Value
+                    });
+
                 listItem[fieldValue.FieldName] = fieldValue.Value;
             }
 
