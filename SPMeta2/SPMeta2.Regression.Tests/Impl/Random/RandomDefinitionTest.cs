@@ -465,10 +465,9 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ListViewDefinition()
         {
-            TestRandomDefinition<ListViewDefinition>();
+            TestRandomDefinition<ListViewDefinition>(); 
         }
-
-
+        
         [TestMethod]
         [TestCategory("Regression.Rnd.List.ContentTypes")]
         public void CanDeployRandom_UniqueContentTypeOrderDefinition()
