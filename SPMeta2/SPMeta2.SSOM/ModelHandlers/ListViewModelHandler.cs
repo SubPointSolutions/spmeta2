@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
@@ -32,9 +33,31 @@ namespace SPMeta2.SSOM.ModelHandlers
             ProcessView(modelHost, list, listViewModel);
         }
 
+        protected string GetSafeViewUrl(string url)
+        {
+            return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
+        }
+
+        protected SPView FindView(SPList targetList, ListViewDefinition listViewModel)
+        {
+            // lookup by title
+            var currentView = targetList.Views.FindByName(listViewModel.Title);
+
+            // lookup by URL match
+            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
+
+                var safeUrl = listViewModel.Url.ToUpper();
+                currentView = targetList.Views.OfType<SPView>().FirstOrDefault(w => w.Url.ToUpper().EndsWith(safeUrl));
+            }
+
+            return currentView;
+        }
+
         protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)
         {
-            var currentView = targetList.Views.FindByName(listViewModel.Title);
+            var currentView = FindView(targetList, listViewModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -56,7 +79,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
-                            string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : listViewModel.Url,
+                            string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : GetSafeViewUrl(listViewModel.Url),
                             viewFields,
                             listViewModel.Query,
                             (uint)listViewModel.RowLimit,

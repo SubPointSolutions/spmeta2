@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
@@ -20,12 +21,44 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
+        protected string GetSafeViewUrl(string url)
+        {
+            return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
+        }
+
+
+        protected View FindView(List list, ListViewDefinition listViewModel)
+        {
+            // lookup by title
+            var currentView = FindViewByTitle(list.Views, listViewModel.Title);
+
+            // lookup by URL match
+            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
+
+                var safeUrl = listViewModel.Url.ToUpper();
+
+                foreach (var view in list.Views)
+                {
+                    if (view.ServerRelativeUrl.ToUpper().EndsWith(safeUrl))
+                    {
+                        return view;
+                    }
+                }
+
+                return null;
+            }
+
+            return currentView;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
             var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
 
-            var currentView = FindViewByTitle(list.Views, listViewModel.Title);
+            var currentView = FindView(list, listViewModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -44,7 +77,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var newView = new ViewCreationInformation
                 {
-                    Title = string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : listViewModel.Url,
+                    Title = string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : GetSafeViewUrl(listViewModel.Url),
                     RowLimit = (uint)listViewModel.RowLimit,
                     SetAsDefaultView = listViewModel.IsDefault,
                     Paged = listViewModel.IsPaged

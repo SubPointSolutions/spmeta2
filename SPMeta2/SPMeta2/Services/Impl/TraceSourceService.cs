@@ -15,7 +15,7 @@ namespace SPMeta2.Services.Impl
 
         public TraceSourceService(string traceSourceName)
         {
-            TraceSource = new TraceSource("SPMeta2");
+            TraceSource = new TraceSource(traceSourceName);
         }
 
         #endregion
