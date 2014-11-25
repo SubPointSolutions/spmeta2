@@ -6,7 +6,7 @@ We look after <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 libra
 
 With growing demaind of effective SharePoint artifact provision for SP2013 and O365, we are taking <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a> to the next level, offering <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a hre='http://subpointsolutions.com/services/support'>additional support</a> for our clients.
 
-Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a href='https://subpointsolutions.zendesk.com/forums/21123216-General-Question-Answer'>let us know how it works for you</a>.
+Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a> and <a href='https://subpointsolutions.uservoice.com/'>let us know how it works for you</a>.
 
 ## What is SPMeta2?
 SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
@@ -32,6 +32,7 @@ As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/license">License</a></li>
 <li><a style="color: #006adf;" href="http://subpointsolutions.com/services/support">Support</a></li>
 <li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Feature requests</a></li>
+<li><a style="color: #006adf;" href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a></li>
 </ul>
 </td>
 </tr>
