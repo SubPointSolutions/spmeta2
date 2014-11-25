@@ -29,7 +29,10 @@ As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for
 </td>
 <td valign="top" width="50%">
 <ul>
+
 <li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/license">License</a></li>
+<li><a style="color: #006adf;" href="https://www.nuget.org/profiles/SubPointSupport">SPMeta2 @ Nuget</a></li>
+<li><a style="color: #006adf;" href="https://github.com/SubPointSolutions/spmeta2.contoso">SPMeta2.Contoso - sample projects</li>
 <li><a style="color: #006adf;" href="http://subpointsolutions.com/services/support">Support</a></li>
 <li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Feature requests</a></li>
 <li><a style="color: #006adf;" href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a></li>
