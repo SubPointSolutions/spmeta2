@@ -42,6 +42,7 @@ namespace SPMeta2.Regression.Tests.Base
         {
             RegressionService = new RegressionTestService();
 
+            RegressionService.EnableDefinitionValidation = true;
             RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
         }
 

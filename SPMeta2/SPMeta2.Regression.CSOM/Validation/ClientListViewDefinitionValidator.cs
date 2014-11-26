@@ -19,22 +19,29 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = list.Context;
 
-            context.Load(list, l => l.Views);
+            context.Load(list, l => l.Views.Include(
+                v => v.ViewFields,
+                 o => o.Title,
+                o => o.DefaultView,
+                o => o.ViewQuery,
+                o => o.RowLimit,
+                o => o.Paged,
+                o => o.JSLink,
+                o => o.ServerRelativeUrl,
+                v => v.Title));
             context.ExecuteQuery();
+            
             var spObject = FindViewByTitle(list.Views, definition.Title);
-
-            context.Load(spObject, l => l.ServerRelativeUrl);
-
             var assert = ServiceFactory.AssertService
-                          .NewAssert(definition, spObject)
-                              .ShouldBeEqual(m => m.Title, o => o.Title)
-                              .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
-                              .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
-                              .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
-                              .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+                                      .NewAssert(definition, spObject)
+                                          .ShouldBeEqual(m => m.Title, o => o.Title)
+                                          .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
+                                          .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                                          .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
+                                          .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
             assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
-         
+
             if (string.IsNullOrEmpty(definition.Url))
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
             else

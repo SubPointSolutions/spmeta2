@@ -275,8 +275,23 @@ namespace SPMeta2.Containers.Services
                 throw new SPMeta2NotImplementedException(string.Format("Cannot find definition generator for type:[{0}]", type.AssemblyQualifiedName));
 
             var definitionGenrator = DefinitionGenerators[type];
+            var definition = definitionGenrator.GenerateRandomDefinition();
 
-            return definitionGenrator.GenerateRandomDefinition();
+            // this is a pure gold
+            // we need to check if generator creates exactly what it is supposed to create
+            // slips are about having inheritance such as Field -> ChoiceField -> MultiChoiceField
+            if (definition.GetType() == definitionGenrator.TargetType)
+            {
+                return definition;
+            }
+
+            throw new SPMeta2Exception(
+                string.Format("Definition generator type mismatch. Expected: [{0}] Actual: [{1}]",
+                new[]
+                {
+                    definitionGenrator.TargetType,
+                    definition.GetType()
+                }));
         }
 
         private IEnumerable<DefinitionBase> GetAdditionalDefinitions(Type type)

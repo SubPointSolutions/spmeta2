@@ -23,7 +23,7 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
     {
         public ArtifactDependenciesTest()
         {
-          RegressionService.ProvisionGenerationCount = 2;
+            RegressionService.ProvisionGenerationCount = 2;
         }
 
         #region common
@@ -82,7 +82,10 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
             var siteField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
             var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
 
-            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+            });
             var webListView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
             {
                 def.Fields = new Collection<string>
