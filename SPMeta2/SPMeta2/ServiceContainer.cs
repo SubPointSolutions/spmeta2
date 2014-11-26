@@ -28,6 +28,8 @@ namespace SPMeta2
         private void InitServices()
         {
             Services.Add(typeof(TraceServiceBase), new TraceSourceService());
+
+            Services.Add(typeof(ModelTreeTraverseServiceBase), new DefaultModelTreeTraverseService());
             Services.Add(typeof(ModelWeighServiceBase), new DefaultModelWeighService());
         }
 

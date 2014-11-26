@@ -277,37 +277,45 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            var allHooks = new List<EventHooks>();
+            TestModels(new[] { model });
+        }
 
-            WithProvisionRunnerContext(runnerContext =>
+        protected void TestModels(IEnumerable<ModelNode> models)
+        {
+            foreach (var model in models)
             {
-                var runner = runnerContext.Runner;
+                var allHooks = new List<EventHooks>();
 
-                //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
+                WithProvisionRunnerContext(runnerContext =>
+                {
+                    var runner = runnerContext.Runner;
 
-                var omModelType = GetRunnerType(runner);
-                var hooks = GetHooks(model);
+                    //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
-                foreach (var hook in hooks)
-                    hook.Tag = runner.Name;
+                    var omModelType = GetRunnerType(runner);
+                    var hooks = GetHooks(model);
 
-                allHooks.AddRange(hooks);
+                    foreach (var hook in hooks)
+                        hook.Tag = runner.Name;
 
-                if (model.Value.GetType() == typeof(FarmDefinition))
-                    runner.DeployFarmModel(model);
+                    allHooks.AddRange(hooks);
 
-                if (model.Value.GetType() == typeof(WebApplicationDefinition))
-                    runner.DeployWebApplicationModel(model);
+                    if (model.Value.GetType() == typeof(FarmDefinition))
+                        runner.DeployFarmModel(model);
 
-                if (model.Value.GetType() == typeof(SiteDefinition))
-                    runner.DeploySiteModel(model);
+                    if (model.Value.GetType() == typeof(WebApplicationDefinition))
+                        runner.DeployWebApplicationModel(model);
 
-                if (model.Value.GetType() == typeof(WebDefinition))
-                    runner.DeployWebModel(model);
+                    if (model.Value.GetType() == typeof(SiteDefinition))
+                        runner.DeploySiteModel(model);
 
-                var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
-                Assert.IsFalse(hasMissedOrInvalidProps);
-            });
+                    if (model.Value.GetType() == typeof(WebDefinition))
+                        runner.DeployWebModel(model);
+
+                    var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                    Assert.IsFalse(hasMissedOrInvalidProps);
+                });
+            }
         }
 
         private bool ResolveModelValidation(ModelNode modelNode, List<EventHooks> hooks)

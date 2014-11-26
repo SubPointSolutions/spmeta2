@@ -66,9 +66,10 @@ namespace SPMeta2.Enumerations
         public static readonly string WikiDocument = "0x010108";
         public static readonly string WorkflowHistory = "0x0109";
         public static readonly string WorkflowTask = "0x010801";
+
+        public static readonly string WorkflowTaskSharePoint2013 = "0x0108003365C4474CAE8C42BCE396314E88E51F";
+
         public static readonly string XMLDocument = "0x010101";
         public static readonly string XSLStyle = "0x010100734778F2B7DF462491FC91844AE431CF";
-
-
     }
 }

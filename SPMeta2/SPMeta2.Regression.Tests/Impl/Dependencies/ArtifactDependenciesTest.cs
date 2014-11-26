@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -72,6 +73,45 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
                 });
 
             TestModel(siteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Dependencies")]
+        public void ListContentTypes_Before_ListViews()
+        {
+            var siteField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var webListView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    siteField.InternalName
+                };
+            });
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    site.AddField(siteField);
+                    site.AddContentType(siteContentType, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(siteField);
+                    });
+                });
+
+            var webModel = SPMeta2Model
+               .NewWebModel(site =>
+               {
+                   site.AddList(webList, list =>
+                   {
+                       list.AddContentTypeLink(siteContentType);
+                       list.AddView(webListView);
+                   });
+               });
+
+            TestModels(new[] { siteModel, webModel });
         }
 
         #endregion
