@@ -30,6 +30,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
         {
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
+
+            var typedField = field.Context.CastTo<FieldUser>(field);
+            var typedFieldModel = fieldModel.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
+
+            typedField.AllowDisplay = typedFieldModel.AllowDisplay;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
