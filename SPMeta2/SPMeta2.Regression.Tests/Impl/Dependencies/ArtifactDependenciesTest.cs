@@ -23,7 +23,7 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
     {
         public ArtifactDependenciesTest()
         {
-            ProvisionGenerationCount = 2;
+          RegressionService.ProvisionGenerationCount = 2;
         }
 
         #region common

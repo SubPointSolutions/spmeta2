@@ -10,8 +10,8 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
+using SPMeta2.Regression.Services;
 using SPMeta2.Regression.Tests.Base;
-using SPMeta2.Regression.Tests.Common;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Taxonomy;
@@ -39,7 +39,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
     {
         public RandomDefinitionTest()
         {
-            this.ProvisionGenerationCount = 2;
+            RegressionService.ProvisionGenerationCount = 2;
         }
 
         #region common
@@ -65,11 +65,11 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            var allDefinitions = ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaAssembly)
-                                                .ToList();
-
-            allDefinitions.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaStandardAssembly)
-                .ToList());
+            var allDefinitions = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+                spMetaAssembly,
+                spMetaStandardAssembly
+            });
 
             foreach (var def in allDefinitions)
             {
@@ -78,7 +78,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
             foreach (var definition in allDefinitions)
             {
-                var hasTestMethod = HasTestMethod("CanDeployRandom_", definition, methods);
+                var hasTestMethod = RegressionService.HasTestMethod("CanDeployRandom_", definition, methods);
 
                 Assert.IsTrue(hasTestMethod);
             }
@@ -465,9 +465,9 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ListViewDefinition()
         {
-            TestRandomDefinition<ListViewDefinition>(); 
+            TestRandomDefinition<ListViewDefinition>();
         }
-        
+
         [TestMethod]
         [TestCategory("Regression.Rnd.List.ContentTypes")]
         public void CanDeployRandom_UniqueContentTypeOrderDefinition()

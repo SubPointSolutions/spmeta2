@@ -1,11 +1,6 @@
 ﻿using SPMeta2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SPMeta2.Regression.Tests.Common
+namespace SPMeta2.Regression.Common
 {
     public class EventHooks
     {

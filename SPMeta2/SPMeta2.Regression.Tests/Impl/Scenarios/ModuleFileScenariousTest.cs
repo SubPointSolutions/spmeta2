@@ -16,7 +16,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         public ModuleFileScenariousTest()
         {
-            ProvisionGenerationCount = 2;
+            RegressionService.ProvisionGenerationCount = 2;
         }
 
         #endregion

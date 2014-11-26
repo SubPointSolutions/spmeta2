@@ -53,8 +53,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Base\SPMeta2RegresionEventsTestBase.cs" />
-    <Compile Include="Common\EventHits.cs" />
     <Compile Include="Consts\RegWebparts.cs" />
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
