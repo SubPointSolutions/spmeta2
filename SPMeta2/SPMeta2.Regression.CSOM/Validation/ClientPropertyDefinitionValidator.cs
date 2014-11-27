@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using SPMeta2.Containers.Assertion;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
-using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {

@@ -69,6 +69,10 @@
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
+      <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
       <Project>{5E592EAA-E21F-4BF4-8EDF-6F6452DC916A}</Project>
       <Name>SPMeta2.CSOM.Standard</Name>
@@ -80,10 +84,6 @@
     <ProjectReference Include="..\SPMeta2.Regression.CSOM\SPMeta2.Regression.CSOM.csproj">
       <Project>{5A1B98BF-4EA4-4DEE-988F-FA62EEFC9EB0}</Project>
       <Name>SPMeta2.Regression.CSOM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
-      <Project>{2B5CA105-8D61-4704-B9CE-C1CBA53AAAB0}</Project>
-      <Name>SPMeta2.Regression</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Standard\SPMeta2.Standard.csproj">
       <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>

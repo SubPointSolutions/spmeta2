@@ -84,6 +84,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
     <Compile Include="Services\ServiceFactory.cs" />
+    <Compile Include="Services\VSAssertService.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,10 +103,6 @@
     <ProjectReference Include="..\SPMeta2.CSOM\SPMeta2.CSOM.csproj">
       <Project>{6f7ebf0c-7124-44d6-b9ec-302a54a19fe4}</Project>
       <Name>SPMeta2.CSOM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
-      <Project>{2b5ca105-8d61-4704-b9ce-c1cba53aaab0}</Project>
-      <Name>SPMeta2.Regression</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Standard\SPMeta2.Standard.csproj">
       <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>

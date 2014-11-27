@@ -1,16 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.SharePoint.Client;
-using SPMeta2.Common;
-using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
+﻿using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using SPMeta2.Regression.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {

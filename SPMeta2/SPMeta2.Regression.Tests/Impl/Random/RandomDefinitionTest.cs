@@ -10,7 +10,6 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
-using SPMeta2.Regression.Services;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
@@ -18,7 +17,6 @@ using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
-using SPMeta2.Regression.Utils;
 using System.Reflection;
 using SPMeta2.Attributes;
 using SPMeta2.Utils;
@@ -27,10 +25,8 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Enumerations;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Regression.Exceptions;
 using System.IO;
 using SPMeta2.Validation.Services;
-using SPMeta2.Regression.Assertion;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {

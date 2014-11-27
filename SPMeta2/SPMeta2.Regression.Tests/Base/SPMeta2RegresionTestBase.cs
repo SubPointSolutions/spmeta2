@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Exceptions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
-using SPMeta2.Regression.Assertion;
-using SPMeta2.Regression.Exceptions;
+
 using SPMeta2.Regression.Runners;
 using SPMeta2.Regression.Runners.Consts;
-using SPMeta2.Regression.Services;
+using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Validation.Services;
@@ -41,6 +42,8 @@ namespace SPMeta2.Regression.Tests.Base
         static SPMeta2RegresionEventsTestBase()
         {
             RegressionService = new RegressionTestService();
+
+            RegressionService.AssertService = new VSAssertService();
 
             RegressionService.EnableDefinitionValidation = true;
             RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
@@ -88,7 +91,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-
+            TestModels(new[] { model });
         }
 
         protected void TestModels(IEnumerable<ModelNode> models)

@@ -122,9 +122,9 @@
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
-      <Project>{2b5ca105-8d61-4704-b9ce-c1cba53aaab0}</Project>
-      <Name>SPMeta2.Regression</Name>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
+      <Name>SPMeta2.Containers</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
       <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>

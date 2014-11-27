@@ -1,4 +1,5 @@
-﻿using SPMeta2.Definitions;
+﻿using SPMeta2.Containers.Assertion;
+using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -12,7 +13,7 @@ using SPMeta2.Utils;
 using SPMeta2.SSOM.Extensions;
 using System.Web.UI.WebControls.WebParts;
 using SPMeta2.Exceptions;
-using SPMeta2.Regression.Assertion;
+
 using Microsoft.SharePoint;
 using System.IO;
 using System.Xml;

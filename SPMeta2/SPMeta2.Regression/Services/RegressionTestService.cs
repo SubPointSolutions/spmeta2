@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Attributes;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
@@ -24,6 +23,8 @@ namespace SPMeta2.Regression.Services
 {
     public class RegressionTestService
     {
+        public AssertService Assert { get; set; }
+
         public bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
         {
             var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
@@ -38,6 +39,8 @@ namespace SPMeta2.Regression.Services
         public RegressionTestService()
         {
             ModelGeneratorService = new ModelGeneratorService();
+            Assert = new AssertService();
+            
             //RegressionService = new RegressionTestService();
 
             //ModelGeneratorService.RegisterDefinitionGenerators(typeof(WebNavigationSettingsDefinitionGenerator).Assembly);

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.SharePoint;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Regression.Assertion;
+
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation.Fields

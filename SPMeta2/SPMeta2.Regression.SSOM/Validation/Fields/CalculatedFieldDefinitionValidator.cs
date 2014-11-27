@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Regression.Assertion;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
 

@@ -9,7 +9,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using SPMeta2.Regression.Utils;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SPMeta2.Regression.CSOM.Validation
