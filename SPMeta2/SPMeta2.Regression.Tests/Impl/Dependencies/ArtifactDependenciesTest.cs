@@ -19,7 +19,7 @@ using SPMeta2.Syntax.Default;
 namespace SPMeta2.Regression.Tests.Impl.Dependencies
 {
     [TestClass]
-    public class ArtifactDependenciesTest : SPMeta2RegresionEventsTestBase
+    public class ArtifactDependenciesTest : SPMeta2RegresionTestBase
     {
         public ArtifactDependenciesTest()
         {

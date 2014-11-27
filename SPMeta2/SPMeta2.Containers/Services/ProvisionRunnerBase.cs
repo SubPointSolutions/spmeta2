@@ -18,6 +18,8 @@ namespace SPMeta2.Containers.Services
         #region properties
 
         public string Name { get; set; }
+
+        public bool EnableDefinitionProvision { get; set; }
         public bool EnableDefinitionValidation { get; set; }
 
         public int ProvisionGenerationCount { get; set; }
@@ -67,5 +69,7 @@ namespace SPMeta2.Containers.Services
         {
 
         }
+
+
     }
 }

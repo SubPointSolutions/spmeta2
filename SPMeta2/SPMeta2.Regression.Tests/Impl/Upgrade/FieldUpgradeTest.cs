@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SPMeta2.Regression.Tests.Impl.Upgrade
 {
     [TestClass]
-    public class FieldUpgradeTest : SPMeta2RegresionEventsTestBase
+    public class FieldUpgradeTest : SPMeta2RegresionTestBase
     {
         #region internal
 

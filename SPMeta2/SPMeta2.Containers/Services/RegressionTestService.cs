@@ -6,12 +6,12 @@ using System.Reflection;
 using SPMeta2.Attributes;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Common;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Exceptions;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Models;
-using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 
@@ -36,7 +36,7 @@ namespace SPMeta2.Containers.Services
         {
             ModelGeneratorService = new ModelGeneratorService();
             //Assert = new AssertService();
-            
+
             //RegressionService = new RegressionTestService();
 
             //ModelGeneratorService.RegisterDefinitionGenerators(typeof(WebNavigationSettingsDefinitionGenerator).Assembly);
@@ -44,8 +44,10 @@ namespace SPMeta2.Containers.Services
             ProvisionRunnerAssemblies = new List<string>();
             ProvisionRunners = new List<ProvisionRunnerBase>();
 
-            InitConfig();
+            EnablePropertyValidation = true;
+            EnableEventValidation = true;
 
+            InitConfig();
         }
 
         #region properties
@@ -477,8 +479,13 @@ namespace SPMeta2.Containers.Services
 
         private static List<ModelValidationResult> ModelValidations = new List<ModelValidationResult>();
 
+        public bool EnablePropertyValidation { get; set; }
+        public bool EnableEventValidation { get; set; }
+
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
         {
+            // should be re-written with ModelTreeTraverseService
+
             Trace.WriteLine(string.Format(""));
 
             var hasMissedOrInvalidProps = false;
@@ -525,49 +532,69 @@ namespace SPMeta2.Containers.Services
 
                 Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
 
-                foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
+                if (EnablePropertyValidation)
                 {
-                    var hasValidation = false;
-                    var validationResult = modelValidationResult.Properties.FirstOrDefault(r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
+                    Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == true. Checking...", start));
 
-                    if (validationResult != null)
+                    foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
                     {
-                        hasValidation = true;
+                        var hasValidation = false;
+                        var validationResult =
+                            modelValidationResult.Properties.FirstOrDefault(
+                                r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
+
+                        if (validationResult != null)
+                        {
+                            hasValidation = true;
+                        }
+                        else
+                        {
+                            hasMissedOrInvalidProps = true;
+                            hasValidation = false;
+                        }
+
+                        if (hasValidation)
+                        {
+                            Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
+                                "VALIDATED",
+                                shouldBeValidatedProp.Name,
+                                start));
+                        }
+                        else
+                        {
+                            Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
+                                "MISSED",
+                                shouldBeValidatedProp.Name,
+                                start));
+                        }
                     }
-                    else
-                    {
-                        hasMissedOrInvalidProps = true;
-                        hasValidation = false;
-                    }
-
-                    if (hasValidation)
-                    {
-                        Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
-                            "VALIDATED",
-                            shouldBeValidatedProp.Name,
-                            start));
-                    }
-                    else
-                    {
-                        Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
-                          "MISSED",
-                          shouldBeValidatedProp.Name,
-                          start));
-                    }
-                }
-
-
-                Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
-
-                var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
-
-                if (hook != null)
-                {
-                    ResolveHook(hook, start);
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
+                    Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == false. Skipping...", start));
+                }
+
+                Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
+
+                if (EnableEventValidation)
+                {
+                    Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == true. Checking...", start));
+
+                    var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
+
+                    if (hook != null)
+                    {
+                        ResolveHook(hook, start);
+                    }
+                    else
+                    {
+                        Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )",
+                            model.GetType(), model.ToString(), start));
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == false. Skipping...", start));
                 }
             }
             else
@@ -612,6 +639,8 @@ namespace SPMeta2.Containers.Services
                 var type = provisionRunner.GetType().FullName;
 
                 provisionRunner.ProvisionGenerationCount = ProvisionGenerationCount;
+
+                provisionRunner.EnableDefinitionProvision = EnableDefinitionProvision;
                 provisionRunner.EnableDefinitionValidation = EnableDefinitionValidation;
 
                 CurrentProvisionRunner = provisionRunner;
@@ -657,9 +686,10 @@ namespace SPMeta2.Containers.Services
         }
 
         public int ProvisionGenerationCount { get; set; }
+
+        public bool EnableDefinitionProvision { get; set; }
         public bool EnableDefinitionValidation { get; set; }
-
-
+        
 
         #endregion
     }

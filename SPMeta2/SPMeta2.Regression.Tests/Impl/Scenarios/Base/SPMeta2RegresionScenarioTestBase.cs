@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
 {
-    public class SPMeta2RegresionScenarioTestBase : SPMeta2RegresionEventsTestBase
+    public class SPMeta2RegresionScenarioTestBase : SPMeta2RegresionTestBase
     {
         #region constructors
 

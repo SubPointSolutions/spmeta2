@@ -83,7 +83,6 @@
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
-    <Compile Include="Services\ServiceFactory.cs" />
     <Compile Include="Services\VSAssertService.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
   </ItemGroup>

@@ -11,8 +11,6 @@ using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 
-using SPMeta2.Regression.Runners;
-using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +18,7 @@ using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
-    public class SPMeta2RegresionEventsTestBase
+    public class SPMeta2RegresionTestBase
     {
         #region static
 
@@ -39,7 +37,7 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.OnModelPropertyValidated(sender, e);
         }
 
-        static SPMeta2RegresionEventsTestBase()
+        static SPMeta2RegresionTestBase()
         {
             RegressionService = new RegressionTestService();
 
@@ -55,14 +53,14 @@ namespace SPMeta2.Regression.Tests.Base
 
         public static RegressionTestService RegressionService { get; set; }
 
-        #endregion
-
-        #region properties
-
         public ModelGeneratorService ModelGeneratorService
         {
             get { return RegressionService.ModelGeneratorService; }
         }
+
+        #endregion
+
+        #region testing API
 
         protected void TestRandomDefinition<TDefinition>()
            where TDefinition : DefinitionBase, new()
@@ -76,7 +74,7 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.TestRandomDefinition(definitionSetup);
         }
 
-        protected void WithExcpectedCSOMnO365RunnerExceptions(Action action)
+        protected void WithExpectedUnsupportedCSOMnO365RunnerExceptions(Action action)
         {
             WithExcpectedExceptions(new Type[] {
                 typeof(SPMeta2UnsupportedCSOMRunnerException),

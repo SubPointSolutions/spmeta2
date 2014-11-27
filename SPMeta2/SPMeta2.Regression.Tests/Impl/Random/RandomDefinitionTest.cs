@@ -31,7 +31,7 @@ using SPMeta2.Validation.Services;
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
     [TestClass]
-    public class RandomDefinitionTest : SPMeta2RegresionEventsTestBase
+    public class RandomDefinitionTest : SPMeta2RegresionTestBase
     {
         public RandomDefinitionTest()
         {
@@ -88,7 +88,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Farm")]
         public void CanDeployRandom_FarmDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<FarmDefinition>();
             });
@@ -98,7 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Farm")]
         public void CanDeployRandom_ManagedAccountDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<ManagedAccountDefinition>();
             });
@@ -112,7 +112,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_WebApplicationDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<WebApplicationDefinition>();
             });
@@ -122,7 +122,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_JobDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<JobDefinition>();
             });
@@ -132,7 +132,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_PrefixDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<PrefixDefinition>();
             });
@@ -242,7 +242,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_SiteDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<SiteDefinition>();
             });
@@ -294,7 +294,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_FarmSolutionDefinition()
         {
-            WithExcpectedCSOMnO365RunnerExceptions(() =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<FarmSolutionDefinition>();
             });

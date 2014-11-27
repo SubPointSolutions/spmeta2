@@ -6,6 +6,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
 using SPMeta2.CSOM.ModelHosts;
@@ -15,7 +16,6 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
-using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Containers.CSOM
@@ -124,7 +124,8 @@ namespace SPMeta2.Containers.CSOM
                 {
                     WithCSOMContext(siteUrl, context =>
                     {
-                        _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
 
                         if (EnableDefinitionValidation)
                             _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
@@ -150,7 +151,8 @@ namespace SPMeta2.Containers.CSOM
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
                     {
-                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
 
                         if (EnableDefinitionValidation)
                             _validationService.DeployModel(WebModelHost.FromClientContext(context), model);

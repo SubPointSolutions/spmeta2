@@ -6,12 +6,12 @@ using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.Publishing.Navigation;
 using Microsoft.SharePoint.Taxonomy;
 using Microsoft.SharePoint.WebPartPages;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM.Validation.Webparts;
-using SPMeta2.Regression.Runners.Consts;
 using SPMeta2.Regression.SSOM;
 using SPMeta2.Regression.SSOM.Standard.Validation;
 using SPMeta2.SSOM.ModelHosts;
@@ -97,8 +97,11 @@ namespace SPMeta2.Containers.SSOM
             {
                 WithSSOMFarmContext(farm =>
                 {
-                    _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
-                    _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
+                    if (EnableDefinitionProvision)
+                        _provisionService.DeployModel(FarmModelHost.FromFarm(farm), model);
+
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(FarmModelHost.FromFarm(farm), model);
                 });
             }
         }
@@ -113,9 +116,11 @@ namespace SPMeta2.Containers.SSOM
                 {
                     WithSSOMWebApplicationContext(webAppUrl, webApp =>
                     {
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
 
-                        _provisionService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
-                        _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebApplicationModelHost.FromWebApplication(webApp), model);
 
                     });
                 }
@@ -132,8 +137,11 @@ namespace SPMeta2.Containers.SSOM
                 {
                     WithSSOMSiteAndWebContext(siteUrl, (site, web) =>
                     {
-                        _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
-                        _validationService.DeployModel(SiteModelHost.FromSite(site), model);
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(SiteModelHost.FromSite(site), model);
                     });
                 }
             }
@@ -149,8 +157,11 @@ namespace SPMeta2.Containers.SSOM
                 {
                     WithSSOMSiteAndWebContext(webUrl, (site, web) =>
                     {
-                        _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
-                        _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromWeb(web), model);
                     });
                 }
             }
