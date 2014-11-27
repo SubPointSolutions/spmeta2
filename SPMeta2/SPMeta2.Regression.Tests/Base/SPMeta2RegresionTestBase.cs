@@ -20,6 +20,16 @@ namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionTestBase
     {
+        #region constructors
+
+        public SPMeta2RegresionTestBase()
+        {
+            RegressionService.EnableDefinitionProvision = true;
+            RegressionService.EnableDefinitionValidation = true;
+        }
+
+        #endregion
+
         #region static
 
         protected static void InternalCleanup()
