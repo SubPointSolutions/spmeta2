@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Containers.DefinitionGenerators
 {
@@ -19,6 +21,12 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.IsDefault = Rnd.Bool();
                 def.IsPaged = Rnd.Bool();
+
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.FileLeafRef
+                };
 
                 def.JSLink = string.Format("~sitecollection/style library/{0}.js", Rnd.String());
             });

@@ -28,6 +28,7 @@ namespace SPMeta2.Definitions.Fields
 
         public UserFieldDefinition()
         {
+            AllowDisplay = true;
             FieldType = BuiltInFieldTypes.User;
             SelectionMode = BuiltInFieldUserSelectionMode.PeopleAndGroups;
         }

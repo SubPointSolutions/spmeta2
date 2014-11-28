@@ -4,143 +4,98 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
+using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Regression.Assertion;
+using SPMeta2.Regression.Exceptions;
 using SPMeta2.Regression.Runners;
 using SPMeta2.Regression.Runners.Consts;
+using SPMeta2.Regression.Services;
 using SPMeta2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
-    public class SPMeta2RegresionTestBase
+    public class SPMeta2RegresionEventsTestBase
     {
-        public TestContext TestContext { get; set; }
+        #region static
 
-        #region constructors
-
-        public SPMeta2RegresionTestBase()
+        protected static void InternalCleanup()
         {
-            ProvisionGenerationCount = 1;
 
-            ProvisionRunners = new List<ProvisionRunnerBase>();
-            ProvisionRunnerAssemblies = new List<string>();
+        }
 
-            EnableDefinitionValidation = true;
+        protected static void InternalInit()
+        {
+            RegressionAssertService.OnPropertyValidated += OnModelPropertyValidated;
+        }
 
-            InitConfig();
+        protected static void OnModelPropertyValidated(object sender, OnPropertyValidatedEventArgs e)
+        {
+            RegressionService.OnModelPropertyValidated(sender, e);
+        }
+
+        static SPMeta2RegresionEventsTestBase()
+        {
+            RegressionService = new RegressionTestService();
+
+            RegressionService.EnableDefinitionValidation = true;
+            RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
         }
 
         #endregion
 
         #region properties
 
-        public int ProvisionGenerationCount { get; set; }
-
-        protected void InitLazyRunnerConnection()
-        {
-            InitRunnerImplementations();
-
-            foreach (var runner in ProvisionRunners)
-                runner.InitLazyRunnerConnection();
-        }
-
-        protected void DisposeLazyRunnerConnection()
-        {
-            foreach (var runner in ProvisionRunners)
-                runner.DisposeLazyRunnerConnection();
-        }
-
-        protected bool EnableDefinitionValidation { get; set; }
-
-        public List<ProvisionRunnerBase> ProvisionRunners { get; set; }
-        public List<string> ProvisionRunnerAssemblies { get; set; }
+        public static RegressionTestService RegressionService { get; set; }
 
         #endregion
 
-        protected virtual void InitConfig()
+        #region properties
+
+        public ModelGeneratorService ModelGeneratorService
         {
-            InitRunnerTypes();
-            InitRunnerImplementations();
+            get { return RegressionService.ModelGeneratorService; }
         }
 
-        private bool _hasInit = false;
-
-        protected virtual void InitRunnerImplementations()
+        protected void TestRandomDefinition<TDefinition>()
+           where TDefinition : DefinitionBase, new()
         {
-            if (_hasInit) return;
-
-            foreach (var asmFileName in ProvisionRunnerAssemblies)
-            {
-                var asmImpl = Assembly.LoadFrom(asmFileName);
-
-                var types = ReflectionUtils.GetTypesFromAssembly<ProvisionRunnerBase>(asmImpl);
-
-                foreach (var type in types)
-                {
-                    var runnerImpl = Activator.CreateInstance(type) as ProvisionRunnerBase;
-
-                    ProvisionRunners.Add(runnerImpl);
-                }
-            }
-
-            _hasInit = true;
+            TestRandomDefinition<TDefinition>(null);
         }
 
-        protected virtual void InitRunnerTypes()
+        protected void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
+            where TDefinition : DefinitionBase, new()
         {
-            var runnerLibraries = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
-
-            Trace.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
-
-            if (!string.IsNullOrEmpty(runnerLibraries))
-            {
-                var libs = runnerLibraries.Split(',');
-
-                foreach (var lib in libs)
-                    ProvisionRunnerAssemblies.Add(lib);
-            }
-
-            if (ProvisionRunnerAssemblies.Count == 0)
-                throw new ArgumentException("Cannot find any test runners. Please configure test runners via SPMeta2.Regression.Environment.ps1 script.");
-
-            // Test runners should be managed via SPMeta2.Regression.Environment.ps1
-            // Manual adding is for internal use only.
-
-            //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
-            //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
-            //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+            RegressionService.TestRandomDefinition(definitionSetup);
         }
 
-        protected ProvisionRunnerBase CurrentProvisionRunner;
-
-        protected void WithProvisionRunnerContext(Action<ProvisionRunnerContext> action)
+        protected void WithExcpectedCSOMnO365RunnerExceptions(Action action)
         {
-            foreach (var provisionRunner in ProvisionRunners)
-            {
-                var type = provisionRunner.GetType().FullName;
-
-                provisionRunner.ProvisionGenerationCount = ProvisionGenerationCount;
-                provisionRunner.EnableDefinitionValidation = EnableDefinitionValidation;
-
-                CurrentProvisionRunner = provisionRunner;
-
-                Trace.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
-                Trace.WriteLine(string.Format("[INF]        - ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
-                Trace.WriteLine(string.Format("[INF]        - EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
-
-                action(new ProvisionRunnerContext
-                {
-                    Runner = provisionRunner
-                });
-            }
+            WithExcpectedExceptions(new Type[] {
+                typeof(SPMeta2UnsupportedCSOMRunnerException),
+                typeof(SPMeta2UnsupportedO365RunnerException)
+            }, action);
         }
-    }
 
+        protected void WithExcpectedExceptions(IEnumerable<Type> exceptionTypes, Action action)
+        {
+            RegressionService.WithExcpectedExceptions(exceptionTypes, action);
+        }
 
-    public class ProvisionRunnerContext
-    {
-        public ProvisionRunnerBase Runner { get; set; }
+        protected void TestModel(ModelNode model)
+        {
 
+        }
+
+        protected void TestModels(IEnumerable<ModelNode> models)
+        {
+            RegressionService.TestModels(models);
+        }
+
+        #endregion
     }
 }

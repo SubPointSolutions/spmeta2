@@ -15,7 +15,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
 
         public SPMeta2RegresionScenarioTestBase()
         {
-            ProvisionGenerationCount = 2;
+           RegressionService.ProvisionGenerationCount = 2;
             Rnd = new DefaultRandomService();
         }
 

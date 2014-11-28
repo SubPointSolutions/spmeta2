@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_3rd party", "_3rd party", 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
+		README.md = README.md
 		SPMeta2.snk = SPMeta2.snk
 	EndProjectSection
 EndProject

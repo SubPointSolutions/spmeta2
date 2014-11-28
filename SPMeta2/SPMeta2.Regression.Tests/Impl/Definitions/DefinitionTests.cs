@@ -33,8 +33,11 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            DefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaAssembly));
-            DefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(spMetaStandardAssembly));
+            DefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+             spMetaAssembly,
+             spMetaStandardAssembly
+            }));
         }
 
         [ClassCleanupAttribute]
@@ -46,8 +49,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         #endregion
 
         #region properties
-
-
 
         #endregion
 
