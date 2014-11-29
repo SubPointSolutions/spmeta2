@@ -51,6 +51,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusineddDataFieldDefinitionSyntax.cs" />
+    <Compile Include="ContentTypeFieldLinkDefinitionSyntax.cs" />
+    <Compile Include="PrefixDefinitionSyntax.cs" />
+    <Compile Include="WebApplicationDefinitionSyntax.cs" />
+    <Compile Include="SiteDefinitionSyntax.cs" />
+    <Compile Include="XsltListViewWebPartDefinitionSyntax.cs" />
+    <Compile Include="ScriptEditorWebPartDefinitionSyntax.cs" />
+    <Compile Include="ContentEditorWebPartDefinitionSyntax.cs" />
+    <Compile Include="ListViewWebPartDefinitionSyntax.cs" />
+    <Compile Include="ManagedAccountDefinitionSyntax.cs" />
+    <Compile Include="JobDefinitionSyntax.cs" />
+    <Compile Include="MultiChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="CurrencyFieldDefinitionSyntax.cs" />
+    <Compile Include="AppPrincipalDefinitionSyntax.cs" />
+    <Compile Include="ClientWebPartDefinitionSyntax.cs" />
+    <Compile Include="TextFieldDefinitionSyntax.cs" />
+    <Compile Include="NoteFieldDefinitionSyntax.cs" />
+    <Compile Include="DateTimeFieldDefinitionSyntax.cs" />
+    <Compile Include="BooleanFieldDefinitionSyntax.cs" />
+    <Compile Include="UserFieldDefinitionSyntax.cs" />
+    <Compile Include="ComputedFieldDefinitionSyntax.cs" />
+    <Compile Include="LookupFieldDefinitionSyntax.cs" />
     <Compile Include="GuidFieldDefinitionSyntax.cs" />
     <Compile Include="NumberFieldDefinitionSyntax.cs" />
     <Compile Include="CalculatedFieldDefinitionSyntax.cs" />

@@ -7,12 +7,24 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class TaxonomyTermSetDefinitionSyntax
     {
+        [Obsolete("Use AddTaxonomyTermSet() instead.")]
         public static ModelNode AddTermSet(this ModelNode model, TaxonomyTermSetDefinition definition)
         {
             return AddTermSet(model, definition, null);
         }
 
+        [Obsolete("Use AddTaxonomyTermSet() instead.")]
         public static ModelNode AddTermSet(this ModelNode model, TaxonomyTermSetDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNode(definition, action);
+        }
+
+        public static ModelNode AddTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition)
+        {
+            return AddTaxonomyTermSet(model, definition, null);
+        }
+
+        public static ModelNode AddTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
         }

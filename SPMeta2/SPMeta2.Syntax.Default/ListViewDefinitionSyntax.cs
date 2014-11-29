@@ -9,12 +9,28 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        [Obsolete("Use AddListView() methods instead")]
         public static ModelNode AddView(this ModelNode model, ListViewDefinition definition)
         {
             return AddView(model, definition, null);
         }
 
+        [Obsolete("Use AddListView() methods instead")]
         public static ModelNode AddView(this ModelNode model, ListViewDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region methods
+
+        public static ModelNode AddListView(this ModelNode model, ListViewDefinition definition)
+        {
+            return AddListView(model, definition, null);
+        }
+
+        public static ModelNode AddListView(this ModelNode model, ListViewDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
         }

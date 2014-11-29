@@ -108,9 +108,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldHaveXXX_DefinitionSyntax()
         {
-            // find all static extension methods
-
-            //AddList(this ModelNode model, ListDefinition definition)
+            var showTrace = false;
 
             var methods = GetModelNodeExtensionMethods(new[]
             {
@@ -119,8 +117,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 typeof(ListDefinitionSyntax).Assembly
             });
 
+            var hasAllXXX_DefinitionSyntax = true;
+
             foreach (var definitionType in DefinitionTypes)
             {
+                var currentMethodHasAllXXX_DefinitionSyntax = true;
+                var currentMethodHasAllXXXAction_DefinitionSyntax = true;
+
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
                 Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
@@ -134,29 +137,87 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
                 // 1. should be one with "(this ModelNode model, XXXDefinition definition)"
-                var normalAddMethod = targetMethods.FirstOrDefault(m => m.GetParameters().Count() == 2);
-                Assert.IsNotNull(normalAddMethod);
+                var normalAddMethod = targetMethods.FirstOrDefault(
+                    m =>
+                        m.GetParameters().Count() == 2 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == definitionType);
 
-                Assert.IsTrue(normalAddMethod.ReturnType == typeof(ModelNode));
+                if (normalAddMethod == null)
+                    currentMethodHasAllXXX_DefinitionSyntax = false;
 
-                var normalAddMethodParams = normalAddMethod.GetParameters();
-                Assert.IsTrue(normalAddMethodParams.Count() == 2);
-                Assert.IsTrue(normalAddMethodParams[0].ParameterType == typeof(ModelNode));
-                Assert.IsTrue(normalAddMethodParams[1].ParameterType == definitionType);
+                if (normalAddMethod != null)
+                {
+                    if (normalAddMethod.ReturnType != typeof(ModelNode))
+                        currentMethodHasAllXXX_DefinitionSyntax = false;
+
+                    var normalAddMethodParams = normalAddMethod.GetParameters();
+
+                    if (normalAddMethodParams.Count() != 2)
+                        currentMethodHasAllXXX_DefinitionSyntax = false;
+
+                    if (normalAddMethodParams[0].ParameterType != typeof(ModelNode))
+                        currentMethodHasAllXXX_DefinitionSyntax = false;
+
+                    if (normalAddMethodParams[1].ParameterType != definitionType)
+                        currentMethodHasAllXXX_DefinitionSyntax = false;
+                }
 
                 Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
                 // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
-                var actionAddMethod = targetMethods.FirstOrDefault(m => m.GetParameters().Count() == 3);
-                Assert.IsNotNull(actionAddMethod);
+                var actionAddMethod = targetMethods.FirstOrDefault(
+                    m =>
+                        m.GetParameters().Count() == 3 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == definitionType &&
+                        m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>));
 
-                Assert.IsTrue(actionAddMethod.ReturnType == typeof(ModelNode));
+                if (actionAddMethod == null)
+                    currentMethodHasAllXXXAction_DefinitionSyntax = false;
 
-                var actionAddMethodParams = actionAddMethod.GetParameters();
-                Assert.IsTrue(actionAddMethodParams.Count() == 3);
-                Assert.IsTrue(actionAddMethodParams[0].ParameterType == typeof(ModelNode));
-                Assert.IsTrue(actionAddMethodParams[1].ParameterType == definitionType);
-                Assert.IsTrue(actionAddMethodParams[2].ParameterType == typeof(Action<ModelNode>));
+                if (actionAddMethod != null)
+                {
+                    if (actionAddMethod.ReturnType != typeof(ModelNode))
+                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+
+                    var actionAddMethodParams = actionAddMethod.GetParameters();
+
+                    if (actionAddMethodParams.Count() != 3)
+                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+
+                    if (actionAddMethodParams[0].ParameterType != typeof(ModelNode))
+                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+
+                    if (actionAddMethodParams[1].ParameterType != definitionType)
+                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+
+                    if (actionAddMethodParams[2].ParameterType != typeof(Action<ModelNode>))
+                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+                }
+
+                // trace
+                if (currentMethodHasAllXXX_DefinitionSyntax != true)
+                    Trace.WriteLine(string.Format("    [FALSE] - Add{0}(this ModelNode model, {0}Definition definition))", definitionName));
+                else
+                {
+                    if (showTrace)
+                        Trace.WriteLine(string.Format("    [TRUE] - Add{0}(this ModelNode model, {0}Definition definition))", definitionName));
+                }
+
+                if (currentMethodHasAllXXXAction_DefinitionSyntax != true)
+                    Trace.WriteLine(string.Format("    [FALSE] - Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
+                else
+                {
+                    if (showTrace)
+                        Trace.WriteLine(string.Format("    [TRUE] - Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
+                }
+
+                // push back
+                if (currentMethodHasAllXXX_DefinitionSyntax != true || currentMethodHasAllXXXAction_DefinitionSyntax != true)
+                    hasAllXXX_DefinitionSyntax = false;
             }
+
+            Assert.IsTrue(hasAllXXX_DefinitionSyntax);
         }
 
         #endregion

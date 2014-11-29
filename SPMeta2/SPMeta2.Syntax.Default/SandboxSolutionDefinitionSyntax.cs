@@ -13,12 +13,12 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddFarmSolution(this ModelNode model, SandboxSolutionDefinition definition)
+        public static ModelNode AddSandboxSolution(this ModelNode model, SandboxSolutionDefinition definition)
         {
-            return AddFarmSolution(model, definition, null);
+            return AddSandboxSolution(model, definition, null);
         }
 
-        public static ModelNode AddFarmSolution(this ModelNode model, SandboxSolutionDefinition definition, Action<ModelNode> action)
+        public static ModelNode AddSandboxSolution(this ModelNode model, SandboxSolutionDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
         }
