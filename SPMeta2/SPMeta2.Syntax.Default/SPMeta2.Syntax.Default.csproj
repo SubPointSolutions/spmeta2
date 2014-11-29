@@ -51,6 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GuidFieldDefinitionSyntax.cs" />
+    <Compile Include="NumberFieldDefinitionSyntax.cs" />
+    <Compile Include="CalculatedFieldDefinitionSyntax.cs" />
+    <Compile Include="AppDefinitionSyntax.cs" />
     <Compile Include="BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="FarmSolutionDefinitionSyntax.cs" />
     <Compile Include="ListFieldLinkDefinitionSyntax.cs" />
