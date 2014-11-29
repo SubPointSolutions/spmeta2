@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
@@ -156,15 +157,31 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateType: [{0}]", listModel.TemplateType);
 
-                    listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
+                    //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
+                    listId = web.Lists.Add(
+                                    listModel.Url,
+                                    listModel.Description ?? string.Empty,
+                                    listModel.GetListUrl(),
+                                    string.Empty,
+                                    (int)listModel.TemplateType,
+                                    string.Empty);
                 }
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
 
-                    var listTemplate = web.ListTemplates[listModel.TemplateName];
+                    var listTemplate = web.ListTemplates
+                                           .OfType<SPListTemplate>()
+                                           .FirstOrDefault(t => t.InternalName == listModel.TemplateName);
 
-                    listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, listTemplate);
+                    //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, listTemplate);
+                    listId = web.Lists.Add(
+                                   listModel.Url,
+                                   listModel.Description ?? string.Empty,
+                                   listModel.GetListUrl(),
+                                   listTemplate.FeatureId.ToString(),
+                                   (int)listTemplate.Type,
+                                   listTemplate.DocumentTemplate);
                 }
                 else
                 {

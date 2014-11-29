@@ -18,12 +18,10 @@ namespace SPMeta2.Syntax.Default
         {
             var roleLinkDefinition = new SecurityRoleLinkDefinition
             {
-                SecurityRoleName = definition.Name,
-
-                
+                SecurityRoleName = definition.Name
             };
 
-            return model.AddDefinitionNode(roleLinkDefinition, action);
+            return model.AddSecurityRoleLink(roleLinkDefinition, action);
         }
 
         public static ModelNode AddSecurityRoleLink(this ModelNode model, string securityRoleName)
@@ -33,12 +31,22 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddSecurityRoleLink(this  ModelNode model, string securityRoleName, Action<ModelNode> action)
         {
-            var newSecurityRoleLink = new SecurityRoleLinkDefinition
+            var roleLinkDefinition = new SecurityRoleLinkDefinition
             {
                 SecurityRoleName = securityRoleName
             };
 
-            return model.AddDefinitionNode(newSecurityRoleLink, action);
+            return model.AddSecurityRoleLink(roleLinkDefinition, action);
+        }
+
+        public static ModelNode AddSecurityRoleLink(this ModelNode model, SecurityRoleLinkDefinition definition)
+        {
+            return AddSecurityRoleLink(model, definition, null);
+        }
+
+        public static ModelNode AddSecurityRoleLink(this  ModelNode model, SecurityRoleLinkDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion

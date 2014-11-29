@@ -1,10 +1,13 @@
 ﻿using Microsoft.SharePoint.Client;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.DefaultSyntax;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 
@@ -50,7 +53,26 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.TemplateName))
             {
-                throw new SPMeta2NotImplementedException("TemplateName validation for List is not supported yet.");
+                context.Load(web, tmpWeb => tmpWeb.ListTemplates);
+                context.ExecuteQueryWithTrace();
+
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching all list templates and matching target one.");
+                var listTemplate = FindListTemplateByInternalName(web.ListTemplates, definition.TemplateName);
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TemplateName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid =
+                            (spObject.TemplateFeatureId == listTemplate.FeatureId) &&
+                            (spObject.BaseTemplate == (int)listTemplate.ListTemplateTypeKind)
+                    };
+                });
             }
             else
             {

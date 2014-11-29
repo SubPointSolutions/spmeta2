@@ -436,6 +436,56 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_ListByTemplateName()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.Contacts.InternalName;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_ListWithDotURLsByTemplateName()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.Contacts.InternalName;
+                def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+            });
+        }
+
+        #endregion
+
+        #region list URLs
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_GenericListWithDotsInUrl()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_DocumentLibraryWithDotsInUrl()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+            });
+        }
+
+
         #endregion
     }
 }

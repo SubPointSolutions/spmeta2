@@ -1,6 +1,8 @@
-﻿using Microsoft.SharePoint;
+﻿using System.Linq;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 
@@ -39,8 +41,25 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
             {
                 assert
-                    //.ShouldBeEqual(m => m.TemplateName, o => (int)o.BaseTemplate)
-                    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateType should be > 0");
+                    .SkipProperty(m => m.TemplateType, "Skipping from validation. TemplateName should be empty");
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TemplateName);
+                    var listTemplate = web.ListTemplates
+                                          .OfType<SPListTemplate>()
+                                          .FirstOrDefault(t => t.InternalName == definition.TemplateName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid =
+                            (spObject.TemplateFeatureId == listTemplate.FeatureId) &&
+                            ((int)spObject.BaseTemplate == (int)listTemplate.Type)
+                    };
+                });
             }
         }
     }

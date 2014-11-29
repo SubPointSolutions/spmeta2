@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -672,7 +673,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
-
 
         #region web navigation
 
