@@ -16,6 +16,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DefaultParentHost(typeof(TaxonomyTermStoreDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
+    [ExpectAddHostExtensionMethod]
     [Serializable]
     public class TaxonomyTermGroupDefinition : DefinitionBase
     {

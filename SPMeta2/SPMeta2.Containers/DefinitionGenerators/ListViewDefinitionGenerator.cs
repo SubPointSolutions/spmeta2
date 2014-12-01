@@ -22,6 +22,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.IsDefault = Rnd.Bool();
                 def.IsPaged = Rnd.Bool();
 
+                def.Query = string.Format("<Where><Eq><FieldRef Name=\"{0}\" /><Value Type=\"Text\">{1}</Value></Eq></Where>", BuiltInInternalFieldNames.Title, Rnd.String());
+
                 def.Fields = new Collection<string>
                 {
                     BuiltInInternalFieldNames.ID,

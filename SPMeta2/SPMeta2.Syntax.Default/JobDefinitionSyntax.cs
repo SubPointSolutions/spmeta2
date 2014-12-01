@@ -10,16 +10,18 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddJob(this ModelNode siteModel, JobDefinition definition)
+        public static ModelNode AddJob(this ModelNode model, JobDefinition definition)
         {
-            return AddJob(siteModel, definition, null);
+            return AddJob(model, definition, null);
         }
 
-        public static ModelNode AddJob(this ModelNode model, JobDefinition fielDefinition, Action<ModelNode> action)
+        public static ModelNode AddJob(this ModelNode model, JobDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(fielDefinition, action);
+            return model.AddDefinitionNode(definition, action);
         }
 
         #endregion
+
+       
     }
 }

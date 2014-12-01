@@ -13,6 +13,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
+    [ExpectAddHostExtensionMethod]
     [Serializable]
     public class WebPartPageDefinition : PageDefinitionBase
     {

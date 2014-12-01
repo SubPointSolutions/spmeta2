@@ -10,6 +10,8 @@ namespace SPMeta2.Syntax.Default
 {
     public static class WebApplicationDefinitionSyntax
     {
+        #region methods
+
         public static ModelNode AddWebApplication(this ModelNode model, WebApplicationDefinition definition)
         {
             return AddWebApplication(model, definition, null);
@@ -19,5 +21,21 @@ namespace SPMeta2.Syntax.Default
         {
             return model.AddDefinitionNode(definition, action);
         }
+ 
+        #endregion
+
+        #region add host
+
+        public static ModelNode AddHostWebApplication(this ModelNode model, WebApplicationDefinition definition)
+        {
+            return AddHostWebApplication(model, definition, null);
+        }
+
+        public static ModelNode AddHostWebApplication(this ModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        } 
+
+        #endregion
     }
 }

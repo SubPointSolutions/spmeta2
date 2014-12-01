@@ -66,5 +66,20 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region add host
+
+        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition)
+        {
+            return AddHostContentType(model, definition, null);
+        }
+
+        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+
+        #endregion
     }
 }

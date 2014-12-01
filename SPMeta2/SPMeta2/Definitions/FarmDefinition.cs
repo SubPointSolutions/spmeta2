@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Attributes;
 using SPMeta2.Definitions.Base;
@@ -16,6 +17,7 @@ namespace SPMeta2.Definitions
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPFarm", "Microsoft.SharePoint")]
     [Serializable]
+    [ExpectAddHostExtensionMethod]
     public class FarmDefinition : DefinitionBase
     {
         #region properties

@@ -104,8 +104,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                     currentView.ViewFields.Add(viewField);
             }
 
+            currentView.Title = listViewModel.Title;
+            currentView.RowLimit = (uint)listViewModel.RowLimit;
+            currentView.DefaultView = listViewModel.IsDefault;
+            currentView.Paged = listViewModel.IsPaged;
+
             if (!string.IsNullOrEmpty(listViewModel.JSLink))
                 currentView.JSLink = listViewModel.JSLink;
+
+            if (!string.IsNullOrEmpty(listViewModel.Query))
+                currentView.Query = listViewModel.Query;
 
             // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
 

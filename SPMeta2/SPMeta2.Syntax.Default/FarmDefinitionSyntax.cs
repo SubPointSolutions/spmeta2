@@ -20,5 +20,19 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region methods
+
+        public static ModelNode AddHostFarm(this ModelNode model, FarmDefinition definition)
+        {
+            return AddHostFarm(model, definition, null);
+        }
+
+        public static ModelNode AddHostFarm(this ModelNode model, FarmDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        #endregion
     }
 }

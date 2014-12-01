@@ -19,6 +19,7 @@ namespace SPMeta2.Definitions
     [CSOMRootHostAttribute(typeof(SiteDefinition))]
     [CSOMParentHostAttribute(typeof(SiteDefinition))]
 
+    [ExpectAddHostExtensionMethod]
     [Serializable]
     public class SiteDefinition : DefinitionBase
     {

@@ -18,8 +18,9 @@ namespace SPMeta2.Syntax.Default
         {
             return model.AddDefinitionNode(definition, action);
         }
-
-
+        
         #endregion
+
+       
     }
 }

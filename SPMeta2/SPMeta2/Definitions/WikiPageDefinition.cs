@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
-
+    [ExpectAddHostExtensionMethod]
     public class WikiPageDefinition : PageDefinitionBase
     {
         #region properties

@@ -20,7 +20,16 @@ namespace SPMeta2.Syntax.Default
         public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
-        }      
+        }
 
+        public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition)
+        {
+            return AddHostModuleFile(model, definition, null);
+        }
+
+        public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }    
     }
 }

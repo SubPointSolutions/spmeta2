@@ -39,11 +39,13 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
+        [Obsolete("There is no sense to use list view as a host object. API will be removed.")]
         public static ModelNode AddHostView(this ModelNode model, ListViewDefinition definition)
         {
             return AddHostView(model, definition, null);
         }
 
+        [Obsolete("There is no sense to use list view as a host object. API will be removed.")]
         public static ModelNode AddHostView(this ModelNode model, ListViewDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());

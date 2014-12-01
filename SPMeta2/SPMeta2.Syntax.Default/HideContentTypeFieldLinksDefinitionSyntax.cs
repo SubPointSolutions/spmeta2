@@ -10,7 +10,6 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-
         public static ModelNode AddHideContentTypeFieldLinks(this ModelNode model, HideContentTypeFieldLinksDefinition definition)
         {
             return AddHideContentTypeFieldLinks(model, definition, null);
@@ -22,5 +21,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+      
     }
 }

@@ -18,6 +18,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
+    [ExpectAddHostExtensionMethod]
     [Serializable]
 
     public class PublishingPageDefinition : PageDefinitionBase

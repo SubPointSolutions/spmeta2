@@ -10,7 +10,6 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-
         public static ModelNode AddHideContentTypeLinks(this ModelNode model, HideContentTypeLinksDefinition definition)
         {
             return AddHideContentTypeLinks(model, definition, null);
@@ -22,5 +21,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+       
     }
 }

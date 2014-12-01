@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
-
+    [ExpectAddHostExtensionMethod]
     public class ContentTypeDefinition : DefinitionBase
     {
         #region properties

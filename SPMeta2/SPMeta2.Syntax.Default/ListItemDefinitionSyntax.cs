@@ -22,6 +22,19 @@ namespace SPMeta2.Syntax.Default
             return model.AddDefinitionNode(definition, action);
         }
 
+        #endregion
+
+        #region add host
+
+        public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition)
+        {
+            return AddHostListItem(model, definition, null);
+        }
+
+        public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

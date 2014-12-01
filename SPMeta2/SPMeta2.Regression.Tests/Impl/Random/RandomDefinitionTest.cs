@@ -565,7 +565,11 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Apps")]
         public void CanDeployRandom_AppPrincipalDefinition()
         {
-            TestRandomDefinition<AppPrincipalDefinition>();
+            WithSPMeta2NotSupportedExceptions(() =>
+            {
+                TestRandomDefinition<AppPrincipalDefinition>();
+            });
+
         }
 
         #endregion

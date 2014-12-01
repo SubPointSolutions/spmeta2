@@ -9,6 +9,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Models;
 
 using SPMeta2.Regression.Tests.Services;
@@ -82,6 +83,14 @@ namespace SPMeta2.Regression.Tests.Base
             where TDefinition : DefinitionBase, new()
         {
             RegressionService.TestRandomDefinition(definitionSetup);
+        }
+
+        protected void WithSPMeta2NotSupportedExceptions(Action action)
+        {
+            WithExcpectedExceptions(new Type[] {
+                typeof(SPMeta2NotSupportedException)
+             
+            }, action);
         }
 
         protected void WithExpectedUnsupportedCSOMnO365RunnerExceptions(Action action)

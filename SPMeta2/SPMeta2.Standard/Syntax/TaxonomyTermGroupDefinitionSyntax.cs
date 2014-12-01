@@ -28,5 +28,15 @@ namespace SPMeta2.Standard.Syntax
         {
             return model.AddDefinitionNode(definition, action);
         }
+
+        public static ModelNode AddHostTaxonomyTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition)
+        {
+            return AddHostTaxonomyTermGroup(model, definition, null);
+        }
+
+        public static ModelNode AddHostTaxonomyTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
     }
 }

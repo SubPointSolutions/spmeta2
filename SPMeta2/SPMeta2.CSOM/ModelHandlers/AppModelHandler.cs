@@ -103,6 +103,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                             Thread.Sleep(WaitTimeInMillliseconds);
                             localInstance = web.GetAppInstanceById(appId);
 
+                            context.Load(localInstance, l => l.Status);
+                            context.ExecuteQueryWithTrace();
+
                             count++;
                         } while (localInstance != null &&
                                  localInstance.Status != AppInstanceStatus.Installed &&

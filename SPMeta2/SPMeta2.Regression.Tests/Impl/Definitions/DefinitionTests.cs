@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Fields;
@@ -117,107 +118,98 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 typeof(ListDefinitionSyntax).Assembly
             });
 
-            var hasAllXXX_DefinitionSyntax = true;
+            var hasAllAddMethods = true;
 
             foreach (var definitionType in DefinitionTypes)
             {
-                var currentMethodHasAllXXX_DefinitionSyntax = true;
-                var currentMethodHasAllXXXAction_DefinitionSyntax = true;
-
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
                 Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
 
-                // validate AddXXX() methods
-                var addMethodName = string.Format("Add{0}", definitionName);
+                #region AddXXX()
 
-                Trace.WriteLine(string.Format("     MethodName: [{0}]", addMethodName));
-                var targetMethods = methods.Where(m => m.Name == addMethodName);
-
-
+                // validate (this ModelNode model, XXXDefinition definition)
                 Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
-                // 1. should be one with "(this ModelNode model, XXXDefinition definition)"
-                var normalAddMethod = targetMethods.FirstOrDefault(
-                    m =>
-                        m.GetParameters().Count() == 2 &&
-                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                        m.GetParameters()[1].ParameterType == definitionType);
+                var addDefinitionMethodName = string.Format("Add{0}", definitionName);
 
-                if (normalAddMethod == null)
-                    currentMethodHasAllXXX_DefinitionSyntax = false;
-
-                if (normalAddMethod != null)
-                {
-                    if (normalAddMethod.ReturnType != typeof(ModelNode))
-                        currentMethodHasAllXXX_DefinitionSyntax = false;
-
-                    var normalAddMethodParams = normalAddMethod.GetParameters();
-
-                    if (normalAddMethodParams.Count() != 2)
-                        currentMethodHasAllXXX_DefinitionSyntax = false;
-
-                    if (normalAddMethodParams[0].ParameterType != typeof(ModelNode))
-                        currentMethodHasAllXXX_DefinitionSyntax = false;
-
-                    if (normalAddMethodParams[1].ParameterType != definitionType)
-                        currentMethodHasAllXXX_DefinitionSyntax = false;
-                }
+                var hasAddDefinitionMethod = methods.FirstOrDefault(m =>
+                                                        m.Name == addDefinitionMethodName &&
+                                                        m.GetParameters().Count() == 2 &&
+                                                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                                                        m.GetParameters()[1].ParameterType == definitionType) != null;
 
                 Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
                 // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
-                var actionAddMethod = targetMethods.FirstOrDefault(
-                    m =>
+                var hasAddDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
+                                   m.Name == addDefinitionMethodName &&
+                                   m.GetParameters().Count() == 3 &&
+                                    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                                    m.GetParameters()[1].ParameterType == definitionType &&
+                                    m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
+
+
+                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
+                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
+
+
+                #endregion
+
+
+                #region AddHostXXX()
+
+                var shouldCheckAddHostOverload = definitionType.GetCustomAttributes(typeof(ExpectAddHostExtensionMethod)).Any();
+
+                var hasAddHostDefinitionMethod = true;
+                var hasAddHostDefinitionWithCallbackMethod = true;
+
+                if (shouldCheckAddHostOverload)
+                {
+                    // validate (this ModelNode model, XXXDefinition definition)
+                    Trace.WriteLine(string.Format("     AddHost{0}(this ModelNode model, {0}Definition definition)",
+                        definitionName));
+                    var addHostDefinitionMethodName = string.Format("AddHost{0}", definitionName);
+
+                    hasAddHostDefinitionMethod = methods.FirstOrDefault(m =>
+                        m.Name == addHostDefinitionMethodName &&
+                        m.GetParameters().Count() == 2 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == definitionType) != null;
+
+                    Trace.WriteLine(
+                        string.Format(
+                            "     AddHost{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))",
+                            definitionName));
+                    // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
+                    hasAddHostDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
+                        m.Name == addHostDefinitionMethodName &&
                         m.GetParameters().Count() == 3 &&
                         m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
                         m.GetParameters()[1].ParameterType == definitionType &&
-                        m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>));
+                        m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
 
-                if (actionAddMethod == null)
-                    currentMethodHasAllXXXAction_DefinitionSyntax = false;
 
-                if (actionAddMethod != null)
-                {
-                    if (actionAddMethod.ReturnType != typeof(ModelNode))
-                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
-
-                    var actionAddMethodParams = actionAddMethod.GetParameters();
-
-                    if (actionAddMethodParams.Count() != 3)
-                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
-
-                    if (actionAddMethodParams[0].ParameterType != typeof(ModelNode))
-                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
-
-                    if (actionAddMethodParams[1].ParameterType != definitionType)
-                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
-
-                    if (actionAddMethodParams[2].ParameterType != typeof(Action<ModelNode>))
-                        currentMethodHasAllXXXAction_DefinitionSyntax = false;
+                    Trace.WriteLine(
+                        string.Format("    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition))",
+                            hasAddHostDefinitionMethod.ToString().ToUpper(), definitionName));
+                    Trace.WriteLine(
+                        string.Format(
+                            "    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))",
+                            hasAddHostDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
                 }
-
-                // trace
-                if (currentMethodHasAllXXX_DefinitionSyntax != true)
-                    Trace.WriteLine(string.Format("    [FALSE] - Add{0}(this ModelNode model, {0}Definition definition))", definitionName));
                 else
                 {
-                    if (showTrace)
-                        Trace.WriteLine(string.Format("    [TRUE] - Add{0}(this ModelNode model, {0}Definition definition))", definitionName));
+                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddHostXXX() methods as there is no ExpectAddHostExtensionMethod attr"));
                 }
 
-                if (currentMethodHasAllXXXAction_DefinitionSyntax != true)
-                    Trace.WriteLine(string.Format("    [FALSE] - Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
-                else
-                {
-                    if (showTrace)
-                        Trace.WriteLine(string.Format("    [TRUE] - Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
-                }
+                #endregion
 
                 // push back
-                if (currentMethodHasAllXXX_DefinitionSyntax != true || currentMethodHasAllXXXAction_DefinitionSyntax != true)
-                    hasAllXXX_DefinitionSyntax = false;
+                if (hasAddDefinitionMethod != true || hasAddDefinitionWithCallbackMethod != true ||
+                    hasAddHostDefinitionMethod != true || hasAddHostDefinitionWithCallbackMethod != true)
+                    hasAllAddMethods = false;
             }
 
-            Assert.IsTrue(hasAllXXX_DefinitionSyntax);
+            Assert.IsTrue(hasAllAddMethods);
         }
 
         #endregion
