@@ -177,6 +177,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (currentSubscription == null)
             {
+                var taskList = GetTaskList(web, workflowSubscriptionModel);
+                var historyList = GetHistoryList(web, workflowSubscriptionModel);
+
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new SP2013 workflow subscription");
 
                 var newSubscription = new WorkflowSubscription(hostclientContext);
@@ -188,11 +191,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 newSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
                 newSubscription.EventSourceId = list.Id;
-
-                // lookup task and history lists, probaly need to think ab otehr strategy
-                var taskList = GetTaskList(web, workflowSubscriptionModel);
-                var historyList = GetHistoryList(web, workflowSubscriptionModel);
-
+                
                 newSubscription.SetProperty("HistoryListId", historyList.Id.ToString());
                 newSubscription.SetProperty("TaskListId", taskList.Id.ToString());
 
