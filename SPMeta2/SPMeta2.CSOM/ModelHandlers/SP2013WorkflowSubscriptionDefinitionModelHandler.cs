@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using System;
 using System.Collections.Generic;
@@ -30,19 +31,32 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var workflowSubscriptionModelHost = modelHost.WithAssertAndCast<SP2013WorkflowSubscriptionModelHost>("modelHost", value => value.RequireNotNull());
-
-            var list = workflowSubscriptionModelHost.HostList;
-            var hostclientContext = workflowSubscriptionModelHost.HostClientContext;
-
             var workflowSubscriptionModel = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
 
-            DeployWorkflowSubscriptionDefinition(workflowSubscriptionModelHost, hostclientContext, list, workflowSubscriptionModel);
+            if (modelHost is ListModelHost)
+            {
+                var listModelHost = (modelHost as ListModelHost);
+
+                var list = listModelHost.HostList;
+                var hostclientContext = listModelHost.HostClientContext;
+
+                DeployListWorkflowSubscriptionDefinition(listModelHost, hostclientContext, list, workflowSubscriptionModel);
+            }
+
+            if (modelHost is WebModelHost)
+            {
+                var webModelHost = (modelHost as WebModelHost);
+
+                var web = webModelHost.HostWeb;
+                var hostclientContext = webModelHost.HostClientContext;
+
+                DeployWebWorkflowSubscriptionDefinition(webModelHost, hostclientContext, web, workflowSubscriptionModel);
+            }
         }
 
 
         protected WorkflowSubscription GetCurrentWorkflowSubscription(
-             SP2013WorkflowSubscriptionModelHost host,
+             object host,
              ClientContext hostclientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
         {
             var context = list.Context;
@@ -70,13 +84,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             return subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
         }
 
-        protected WorkflowDefinition GetWorkflowDefinition(SP2013WorkflowSubscriptionModelHost host,
+        protected WorkflowDefinition GetWorkflowDefinition(object host,
              ClientContext hostclientContext,
             SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
         {
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving workflow definition by DisplayName: [{0}]", workflowSubscriptionModel.WorkflowDisplayName);
 
-            var context = host.HostList.Context; ;
+            var context = hostclientContext;
             //var web = list.ParentWeb;
 
             var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
@@ -116,8 +130,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             return result;
         }
 
-        private void DeployWorkflowSubscriptionDefinition(
-            SP2013WorkflowSubscriptionModelHost host,
+        private void DeployWebWorkflowSubscriptionDefinition(
+            object host,
+            ClientContext hostclientContext, Web list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
+        {
+
+        }
+
+        private void DeployListWorkflowSubscriptionDefinition(
+            object host,
             ClientContext hostclientContext, List list, SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
         {
             // hostclientContext - it must be clientContext, not ClientRuntimeContext - won't work and would give some weirs error with wg publishing
@@ -191,7 +212,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 newSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
                 newSubscription.EventSourceId = list.Id;
-                
+
                 newSubscription.SetProperty("HistoryListId", historyList.Id.ToString());
                 newSubscription.SetProperty("TaskListId", taskList.Id.ToString());
 

@@ -74,6 +74,7 @@
     <Compile Include="Impl\Scenarios\TaxonomyScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListViewScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ModuleFileScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\SP2013WorkflowScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebpartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
     <Compile Include="Impl\Upgrade\ListViewUpgradeTest.cs" />

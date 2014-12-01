@@ -118,16 +118,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     action(folderModelHost);
                 }
-                else if (childModelType == typeof(SP2013WorkflowSubscriptionDefinition))
-                {
-                    var sp2013WorkflowSubscriptionModelHost =
-                        ModelHostBase.Inherit<SP2013WorkflowSubscriptionModelHost>(webModelHost, host =>
-                        {
-                            host.HostList = list;
-                        });
+                //else if (childModelType == typeof(SP2013WorkflowSubscriptionDefinition))
+                //{
+                //    var sp2013WorkflowSubscriptionModelHost =
+                //        ModelHostBase.Inherit<SP2013WorkflowSubscriptionModelHost>(webModelHost, host =>
+                //        {
+                //            host.HostList = list;
+                //        });
 
-                    action(sp2013WorkflowSubscriptionModelHost);
-                }
+                //    action(sp2013WorkflowSubscriptionModelHost);
+                //}
                 else if (typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
                 {
                     context.Load<List>(list, l => l.RootFolder);

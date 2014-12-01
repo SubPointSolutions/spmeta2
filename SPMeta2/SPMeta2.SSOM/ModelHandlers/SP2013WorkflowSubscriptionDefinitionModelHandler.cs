@@ -9,6 +9,7 @@ using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
@@ -30,15 +31,36 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var workflowSubscriptionModel = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
+            if (modelHost is ListModelHost)
+            {
+                var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+                var list = listModelHost.HostList;
 
-            DeployWorkflowSubscriptionDefinition(modelHost, list, workflowSubscriptionModel);
+                DeployListWorkflowSubscriptionDefinition(modelHost, list, workflowSubscriptionModel);
+            }
+
+            if (modelHost is WebModelHost)
+            {
+                var listModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                var web = listModelHost.HostWeb;
+
+                DeployWebWorkflowSubscriptionDefinition(modelHost, web, workflowSubscriptionModel);
+            }
+
+            throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
         }
 
-        private void DeployWorkflowSubscriptionDefinition(
+        private void DeployWebWorkflowSubscriptionDefinition(
+            object host,
+            SPWeb list,
+            SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
+        {
+            throw new SPMeta2NotImplementedException("Web workflow accosiation is not implemented yet.");
+        }
+
+        private void DeployListWorkflowSubscriptionDefinition(
             object host,
             SPList list,
             SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
@@ -90,7 +112,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 newSubscription.EventTypes = workflowSubscriptionModel.EventTypes.ToList();
                 newSubscription.EventSourceId = list.ID;
-                
+
                 newSubscription.SetProperty("HistoryListId", historyList.ID.ToString());
                 newSubscription.SetProperty("TaskListId", taskList.ID.ToString());
 
