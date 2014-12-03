@@ -41,7 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.SP2013Workflow")]
-        public void CanDeploy_SP2013SiteWorkflowAccosiation()
+        public void CanDeploy_SP2013WebWorkflowAccosiation()
         {
             var workflow = ModelGeneratorService.GetRandomDefinition<SP2013WorkflowDefinition>();
 
