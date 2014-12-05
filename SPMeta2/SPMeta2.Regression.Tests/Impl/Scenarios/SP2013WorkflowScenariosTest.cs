@@ -99,7 +99,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 Url = Rnd.String()
             };
 
-
             var workflowEnableList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
 
             var model = SPMeta2Model

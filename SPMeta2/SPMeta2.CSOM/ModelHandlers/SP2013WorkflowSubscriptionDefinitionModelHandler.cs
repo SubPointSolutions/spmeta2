@@ -43,7 +43,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 DeployListWorkflowSubscriptionDefinition(listModelHost, hostclientContext, list, workflowSubscriptionModel);
             }
 
-            if (modelHost is WebModelHost)
+            else if (modelHost is WebModelHost)
             {
                 var webModelHost = (modelHost as WebModelHost);
 
@@ -51,6 +51,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var hostclientContext = webModelHost.HostClientContext;
 
                 DeployWebWorkflowSubscriptionDefinition(webModelHost, hostclientContext, web, workflowSubscriptionModel);
+            }
+            else
+            {
+                throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
             }
         }
 
