@@ -37,13 +37,22 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployWorkflowDefinition(modelHost, web, workflowDefinitionModel);
         }
 
-        private void DeployWorkflowDefinition(object host, SPWeb web, SP2013WorkflowDefinition workflowDefinitionModel)
+        protected WorkflowDefinition GetCurrentWorkflowDefinition(SPWeb web,
+            SP2013WorkflowDefinition workflowDefinitionModel)
         {
             var workflowServiceManager = new WorkflowServicesManager(web);
             var workflowDeploymentService = workflowServiceManager.GetWorkflowDeploymentService();
 
             var publishedWorkflows = workflowDeploymentService.EnumerateDefinitions(false);
-            var currentWorkflowDefinition = publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
+            return publishedWorkflows.FirstOrDefault(w => w.DisplayName == workflowDefinitionModel.DisplayName);
+        }
+
+        private void DeployWorkflowDefinition(object host, SPWeb web, SP2013WorkflowDefinition workflowDefinitionModel)
+        {
+            var workflowServiceManager = new WorkflowServicesManager(web);
+            var workflowDeploymentService = workflowServiceManager.GetWorkflowDeploymentService();
+
+            var currentWorkflowDefinition = GetCurrentWorkflowDefinition(web, workflowDefinitionModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

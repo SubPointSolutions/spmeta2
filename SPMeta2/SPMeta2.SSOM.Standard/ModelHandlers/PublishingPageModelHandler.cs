@@ -100,8 +100,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                         Url = currentPageLayoutItem.File.ServerRelativeUrl,
                         Description = currentPageLayoutItem.Title
                     };
-                    pageItem.Properties["PublishingPageLayoutName"] = currentPageLayoutItem.Name;
 
+                    pageItem.Properties["PublishingPageLayoutName"] = currentPageLayoutItem.Name;
 
                     pageItem.SystemUpdate();
                 });

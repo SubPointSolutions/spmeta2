@@ -40,10 +40,10 @@ namespace SPMeta2.Definitions.Fields
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
-        public double MaximumValue { get; set; }
+        public double? MaximumValue { get; set; }
 
         [ExpectValidation]
-        public double MinimumValue { get; set; }
+        public double? MinimumValue { get; set; }
 
         [ExpectValidation]
         public bool ShowAsPercentage { get; set; }

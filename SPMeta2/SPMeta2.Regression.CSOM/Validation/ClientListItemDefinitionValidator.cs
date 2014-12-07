@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 
@@ -22,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var list = listModeHost.HostList;
             var spObject = GetListItem(list, definition);
 
-            if (!spObject.IsPropertyAvailable("Title"))
+            if (!spObject.IsPropertyAvailable(BuiltInInternalFieldNames.Title))
             {
                 var context = spObject.Context;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using System.Collections.Generic;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.SSOM.Behaviours
 {
@@ -128,7 +129,7 @@ namespace SPMeta2.SSOM.Behaviours
                 lookupField.LookupWebId = targetList.ParentWeb.ID;
 
                 // ID by default
-                lookupField.LookupField = !string.IsNullOrEmpty(fieldToShow) ? fieldToShow : "ID";
+                lookupField.LookupField = !string.IsNullOrEmpty(fieldToShow) ? fieldToShow : BuiltInInternalFieldNames.ID;
             }
 
             return field;

@@ -6,6 +6,7 @@ using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.Publishing.Navigation;
 using Microsoft.SharePoint.Taxonomy;
 using Microsoft.SharePoint.WebPartPages;
+using Microsoft.SharePoint.WorkflowServices;
 using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
@@ -83,6 +84,7 @@ namespace SPMeta2.Containers.SSOM
             var publishing = typeof(WebNavigationSettings);
 
             var tax = typeof(TaxonomyField);
+            var wf = typeof(WorkflowDefinition);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

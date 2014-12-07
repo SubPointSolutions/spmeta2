@@ -8,6 +8,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
@@ -185,11 +186,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
-                newFileItem["Title"] = publishingPageModel.Title;
-                newFileItem["Comments"] = publishingPageModel.Description;
+                newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
+                newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
 
-                newFileItem["PublishingPageLayout"] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
-                newFileItem["ContentTypeId"] = currentPageLayoutItem["PublishingAssociatedContentType"];
+                newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
+                newFileItem[BuiltInInternalFieldNames.ContentTypeId] = currentPageLayoutItem[BuiltInInternalFieldNames.PublishingAssociatedContentType];
 
                 newFileItem.Update();
 

@@ -41,8 +41,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<NumberFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Min, typedFieldModel.MinimumValue);
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Max, typedFieldModel.MaximumValue);
+            if (typedFieldModel.MinimumValue.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Min, typedFieldModel.MinimumValue);
+
+            if (typedFieldModel.MaximumValue.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Max, typedFieldModel.MaximumValue);
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Percentage, typedFieldModel.ShowAsPercentage.ToString().ToUpper());
 
