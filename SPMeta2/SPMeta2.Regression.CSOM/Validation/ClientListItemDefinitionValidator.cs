@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using System;
@@ -17,11 +18,35 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModeHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModeHost.HostList;
-            var spObject = GetListItem(list, definition);
+            List list = null;
+            Folder rootFolder = null;
+
+            if (modelHost is ListModelHost)
+            {
+                list = (modelHost as ListModelHost).HostList;
+                rootFolder = (modelHost as ListModelHost).HostList.RootFolder;
+
+                if (!rootFolder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    rootFolder.Context.Load(rootFolder, f => f.ServerRelativeUrl);
+                    rootFolder.Context.ExecuteQueryWithTrace();
+                }
+            }
+            else if (modelHost is FolderModelHost)
+            {
+                list = (modelHost as FolderModelHost).CurrentList;
+                rootFolder = (modelHost as FolderModelHost).CurrentListItem.Folder;
+
+                if (!rootFolder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    rootFolder.Context.Load(rootFolder, f => f.ServerRelativeUrl);
+                    rootFolder.Context.ExecuteQueryWithTrace();
+                }
+            }
+
+            var spObject = GetListItem(list, rootFolder, definition);
 
             if (!spObject.IsPropertyAvailable(BuiltInInternalFieldNames.Title))
             {
