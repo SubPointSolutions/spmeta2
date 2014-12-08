@@ -44,6 +44,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 };
 
                 action(newContext);
+
+                currentFolder.Update();
             }
             else if (folderModelHost.CurrentList != null)
             {
@@ -56,6 +58,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 };
 
                 action(newContext);
+
+                currentListItem.Update();
             }
         }
 

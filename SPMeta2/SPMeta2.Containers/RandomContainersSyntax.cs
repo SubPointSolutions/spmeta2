@@ -42,6 +42,24 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region property bags
+
+        #region webs
+
+        public static ModelNode AddRandomPropertyBag(this ModelNode model)
+        {
+            return AddRandomPropertyBag(model, null);
+        }
+
+        public static ModelNode AddRandomPropertyBag(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<PropertyDefinition>(action);
+        }
+
+        #endregion
+
+        #endregion
+
         #region webpart pages
 
         public static ModelNode AddRandomWebPartPage(this ModelNode model)

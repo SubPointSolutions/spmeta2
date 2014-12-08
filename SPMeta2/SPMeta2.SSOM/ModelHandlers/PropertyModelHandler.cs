@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -41,10 +43,19 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return (modelHost as ListModelHost).HostList.RootFolder.Properties;
 
             if (modelHost is FolderModelHost)
-                return (modelHost as FolderModelHost).CurrentLibraryFolder.Properties;
+            {
+                var folderModelHost = (modelHost as FolderModelHost);
 
-            // TODO
-            return null;
+                if (folderModelHost.CurrentLibraryFolder != null)
+                    return folderModelHost.CurrentLibraryFolder.Properties;
+                else
+                    return folderModelHost.CurrentListItem.Properties;
+            }
+
+            if (modelHost is SPListItem)
+                return (modelHost as SPListItem).Properties;
+
+            throw new SPMeta2NotSupportedException(string.Format("model host of type [{0}] is not supported.", modelHost.GetType()));
         }
 
         protected virtual void DeployProperty(object modelHost, Hashtable properties, PropertyDefinition property)
