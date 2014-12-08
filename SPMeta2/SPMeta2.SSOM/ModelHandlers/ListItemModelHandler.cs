@@ -130,16 +130,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             var list = listModelHost.HostList;
             var item = EnsureListItem(list, listItemModel);
 
-            if (childModelType == typeof(ListItemFieldValueDefinition))
-            {
-                // naaaaah, just gonna get a new one list item
-                // keep it simple and safe, really really really safe with all that SharePoint stuff...
-                var currentItem = list.GetItemById(item.ID);
+            // naaaaah, just gonna get a new one list item
+            // keep it simple and safe, really really really safe with all that SharePoint stuff...
+            var currentItem = list.GetItemById(item.ID);
 
-                action(currentItem);
+            action(currentItem);
 
-                currentItem.Update();
-            }
+            currentItem.Update();
         }
 
 

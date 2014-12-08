@@ -84,6 +84,36 @@ namespace SPMeta2.Containers
 
         #endregion
 
+
+        #region list item
+
+        public static ModelNode AddRandomListItem(this ModelNode model)
+        {
+            return AddRandomListItem(model, null);
+        }
+
+        public static ModelNode AddRandomListItem(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<ListItemDefinition>(action);
+        }
+
+        #endregion
+
+        #region fodlers
+
+        public static ModelNode AddRandomFolder(this ModelNode model)
+        {
+            return AddRandomFolder(model, null);
+        }
+
+        public static ModelNode AddRandomFolder(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<FolderDefinition>(action);
+        }
+
+        #endregion
+
+
         #region web parts
 
         public static ModelNode AddRandomWebpart(this ModelNode model)
@@ -126,7 +156,7 @@ namespace SPMeta2.Containers
 
         #endregion
 
-     
+
 
         #endregion
 

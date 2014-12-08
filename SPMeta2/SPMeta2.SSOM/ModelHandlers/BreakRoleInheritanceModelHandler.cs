@@ -90,7 +90,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return (modelHost as ListModelHost).HostList;
 
             if (modelHost is FolderModelHost)
-                return (modelHost as FolderModelHost).CurrentLibraryFolder.Item;
+            {
+                var folderHost = (modelHost as FolderModelHost);
+
+                if (folderHost.CurrentLibraryFolder != null)
+                    return folderHost.CurrentLibraryFolder.Item;
+                else
+                    return folderHost.CurrentListItem;
+            }
 
             if (modelHost is WebpartPageModelHost)
                 return (modelHost as WebpartPageModelHost).PageListItem;

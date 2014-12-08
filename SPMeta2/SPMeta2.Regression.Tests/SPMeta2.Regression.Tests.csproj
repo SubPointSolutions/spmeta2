@@ -76,6 +76,7 @@
     <Compile Include="Impl\Scenarios\ModuleFileScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\SP2013WorkflowScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebpartScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
     <Compile Include="Impl\Upgrade\ListViewUpgradeTest.cs" />
     <Compile Include="Impl\Upgrade\ContentTypeUpgradeTest.cs" />
