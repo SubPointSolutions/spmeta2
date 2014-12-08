@@ -38,7 +38,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 secObject.Context.ExecuteQuery();
             }
 
-
             return secObject.RoleAssignments.Count == 0;
         }
 

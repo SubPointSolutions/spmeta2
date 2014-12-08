@@ -68,26 +68,29 @@ namespace SPMeta2.CSOM.ModelHandlers
             var item = EnsureListItem(list, listItemModel);
             var context = list.Context;
 
-            if (childModelType == typeof(ListItemFieldValueDefinition))
+            // naaaaah, just gonna get a new one list item
+            // keep it simple and safe, really really really safe with all that SharePoint stuff...
+            var currentItem = list.GetItemById(item.Id);
+
+            context.Load(currentItem);
+            context.ExecuteQueryWithTrace();
+
+            if (childModelType == typeof (ListItemFieldValueDefinition))
             {
-                // naaaaah, just gonna get a new one list item
-                // keep it simple and safe, really really really safe with all that SharePoint stuff...
-                var currentItem = list.GetItemById(item.Id);
-
-                context.Load(currentItem);
-                context.ExecuteQueryWithTrace();
-
                 var listItemPropertyHost = new ListItemFieldValueModelHost
                 {
                     CurrentItem = currentItem
                 };
 
                 action(listItemPropertyHost);
-
-                currentItem.Update();
-
-                context.ExecuteQueryWithTrace();
             }
+            else
+            {
+                action(currentItem);
+            }
+            
+            currentItem.Update();
+            context.ExecuteQueryWithTrace();
         }
 
         protected ListItem GetListItem(List list, ListItemDefinition definition)

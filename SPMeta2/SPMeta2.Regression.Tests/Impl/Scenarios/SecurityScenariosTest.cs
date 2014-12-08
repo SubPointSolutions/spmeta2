@@ -146,6 +146,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_BreakRoleInheritance_OnListItem()
@@ -155,7 +156,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     web.AddRandomWeb(rndWeb =>
                     {
-                        rndWeb.AddRandomList(rndList =>
+                        rndWeb.AddRandomList(rndList => 
                         {
                             rndList.AddRandomListItem(rndListItem =>
                             {
