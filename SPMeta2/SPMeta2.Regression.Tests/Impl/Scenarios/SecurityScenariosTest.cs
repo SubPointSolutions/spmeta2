@@ -35,7 +35,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region default
+        #region break role inheritance
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
@@ -146,7 +146,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
-
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_BreakRoleInheritance_OnListItem()
@@ -156,7 +155,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     web.AddRandomWeb(rndWeb =>
                     {
-                        rndWeb.AddRandomList(rndList => 
+                        rndWeb.AddRandomList(rndList =>
                         {
                             rndList.AddRandomListItem(rndListItem =>
                             {
@@ -173,6 +172,189 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(model);
         }
+
+        #endregion
+
+        #region add security group link
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnWeb()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web.AddRandomWeb(rndWeb =>
+                   {
+                       rndWeb.OnProvisioning<object>(context =>
+                       {
+                           TurnOffValidation(rndWeb);
+                       });
+
+                       rndWeb.AddSecurityGroupLink(securityGroup);
+                   });
+               });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnList()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web.AddRandomWeb(rndWeb =>
+                   {
+                       rndWeb.AddRandomList(rndList =>
+                       {
+                           rndList.OnProvisioning<object>(context =>
+                           {
+                               TurnOffValidation(rndList);
+                           });
+
+                           rndList.AddSecurityGroupLink(securityGroup);
+                       });
+                   });
+               });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnListFolder()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, rndList =>
+                        {
+                            rndList.AddRandomFolder(rndFolder =>
+                            {
+                                rndFolder.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndFolder);
+                                });
+
+                                rndFolder.AddSecurityGroupLink(securityGroup);
+                            });
+                        });
+                    });
+                });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnLibraryFolder()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, rndList =>
+                        {
+                            rndList.AddRandomFolder(rndFolder =>
+                            {
+                                rndFolder.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndFolder);
+                                });
+
+                                rndFolder.AddSecurityGroupLink(securityGroup);
+                            });
+                        });
+                    });
+                });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnListItem()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.OnProvisioning<object>(context =>
+                                 {
+                                     TurnOffValidation(rndListItem);
+                                 });
+
+                                 rndListItem.AddSecurityGroupLink(securityGroup);
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
 
         #endregion
 
