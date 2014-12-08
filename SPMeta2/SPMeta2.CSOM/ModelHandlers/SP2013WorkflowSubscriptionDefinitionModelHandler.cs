@@ -67,7 +67,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var context = web.Context;
 
-            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
+            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, web);
 
             context.Load(web);
             context.Load(web);
@@ -89,7 +89,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
         protected WorkflowDefinition GetWorkflowDefinition(object host,
-             ClientContext hostclientContext,
+            ClientContext hostclientContext,
+            Web web,
             SP2013WorkflowSubscriptionDefinition workflowSubscriptionModel)
         {
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving workflow definition by DisplayName: [{0}]", workflowSubscriptionModel.WorkflowDisplayName);
@@ -97,7 +98,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = hostclientContext;
             //var web = list.ParentWeb;
 
-            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
+            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, web);
 
             //context.Load(web);
             //context.Load(list);
@@ -144,7 +145,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = web.Context;
 
-            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
+            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, web);
 
             context.Load(web);
 

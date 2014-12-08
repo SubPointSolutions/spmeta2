@@ -12,7 +12,6 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 
-
 namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientSP2013WorkflowSubscriptionDefinitionValidator : SP2013WorkflowSubscriptionDefinitionModelHandler
@@ -45,11 +44,11 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 var spObject = GetCurrentWebWorkflowSubscriptioBySourceId(workflowSubscriptionModelHost,
                       workflowSubscriptionModelHost.HostClientContext,
-                      web,
+                      list.ParentWeb,
                       list.Id,
                       definition);
 
-                ValidateWorkflowSubscription(modelHost, workflowSubscriptionModelHost.HostClientContext, workflowSubscriptionModelHost.HostWeb, spObject, definition);
+                ValidateWorkflowSubscription(modelHost, workflowSubscriptionModelHost.HostClientContext, web, spObject, definition);
             }
         }
 
@@ -108,6 +107,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var workflowDefinition = GetWorkflowDefinition(modelHost,
                 clientContext,
+                web,
                 definition);
 
             assert.ShouldBeEqual((p, s, d) =>

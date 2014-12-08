@@ -113,7 +113,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (currentWorkflowDefinition == null)
                 throw new Exception(string.Format("Cannot lookup workflow definition with display name: [{0}] on web:[{1}]", workflowSubscriptionModel.WorkflowDisplayName, web.Url));
 
-            var subscriptions = workflowSubscriptionService.EnumerateSubscriptionsByEventSource(web.ID);
+            // EnumerateSubscriptionsByEventSource() somehow throws an exception
+            //var subscriptions = workflowSubscriptionService.EnumerateSubscriptionsByEventSource(web.ID);
+            var subscriptions = workflowSubscriptionService.EnumerateSubscriptions().Where(s => s.EventSourceId == web.ID);
 
             InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
 

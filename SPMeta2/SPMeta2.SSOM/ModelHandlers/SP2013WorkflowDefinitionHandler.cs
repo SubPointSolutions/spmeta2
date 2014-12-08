@@ -76,7 +76,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 };
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling SaveDefinition()");
-                workflowDeploymentService.SaveDefinition(workflowDefinition);
+                var wfId = workflowDeploymentService.SaveDefinition(workflowDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -90,7 +90,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling PublishDefinition()");
-                workflowDeploymentService.PublishDefinition(workflowDefinition.Id);
+                workflowDeploymentService.PublishDefinition(wfId);
             }
             else
             {
@@ -114,10 +114,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                     });
 
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling SaveDefinition()");
-                    workflowDeploymentService.SaveDefinition(currentWorkflowDefinition);
+                    var wfId = workflowDeploymentService.SaveDefinition(currentWorkflowDefinition);
 
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling PublishDefinition()");
-                    workflowDeploymentService.PublishDefinition(currentWorkflowDefinition.Id);
+                    workflowDeploymentService.PublishDefinition(wfId);
                 }
                 else
                 {
