@@ -48,6 +48,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 action(newContext);
+
+                currentFolder.Update();
+                currentFolder.Context.ExecuteQueryWithTrace();
+
             }
             else if (folderModelHost.CurrentList != null && folderModelHost.CurrentList.BaseType != BaseType.DocumentLibrary)
             {
@@ -61,6 +65,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 action(newContext);
+
+                currentListItem.Folder.Update();
+                currentListItem.Context.ExecuteQueryWithTrace();
             }
             else
             {
