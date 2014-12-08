@@ -269,12 +269,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = list.Context;
             var web = list.ParentWeb;
 
-            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
+            //This WorkflowServiceManager object is created for current web from client context, 
+            //but actually it has to be created for parent web of current web.
+            //Otherwise it uses wrong web for provisions with multiple webs
+            //var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
 
             context.Load(web);
             context.Load(list);
 
             context.ExecuteQueryWithTrace();
+
+            //This is creation of WorkflowServiceManager with right web
+            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, web);
 
             hostclientContext.Load(workflowServiceManager);
             hostclientContext.ExecuteQueryWithTrace();
