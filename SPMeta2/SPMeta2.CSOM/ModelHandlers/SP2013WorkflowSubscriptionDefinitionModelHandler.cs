@@ -144,11 +144,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = web.Context;
 
-            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
+            //var workflowServiceManager = new WorkflowServicesManager(hostclientContext, hostclientContext.Web);
 
             context.Load(web);
 
             context.ExecuteQueryWithTrace();
+
+            var workflowServiceManager = new WorkflowServicesManager(hostclientContext, web);
 
             hostclientContext.Load(workflowServiceManager);
             hostclientContext.ExecuteQueryWithTrace();
