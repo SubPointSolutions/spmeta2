@@ -16,11 +16,23 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 
-            var list = listModelHost.HostList;
-            var spObject = GetListItem(list, definition);
+            SPList list = null;
+            SPFolder rootFolder = null;
+
+            if (modelHost is ListModelHost)
+            {
+                list = (modelHost as ListModelHost).HostList;
+                rootFolder = (modelHost as ListModelHost).HostList.RootFolder;
+            }
+            else if (modelHost is FolderModelHost)
+            {
+                list = (modelHost as FolderModelHost).CurrentList;
+                rootFolder = (modelHost as FolderModelHost).CurrentListItem.Folder;
+            }
+
+            var spObject = GetListItem(list, rootFolder, definition);
 
             var assert = ServiceFactory.AssertService
                              .NewAssert(definition, spObject)
