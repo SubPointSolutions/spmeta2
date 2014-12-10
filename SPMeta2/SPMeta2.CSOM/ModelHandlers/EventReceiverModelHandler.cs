@@ -54,6 +54,9 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var receiverName = definition.Name.ToUpper();
 
+            receivers.Context.Load(receivers);
+            receivers.Context.ExecuteQuery();
+
             return receivers.OfType<Microsoft.SharePoint.Client.EventReceiverDefinition>()
                             .FirstOrDefault(r =>
                                 !string.IsNullOrEmpty(r.ReceiverName) &&
@@ -76,13 +79,24 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            bool isNew = false;
+
             if (existingReceiver == null)
+            {
+                isNew = true;
+
                 existingReceiver = eventReceivers.Add(new EventReceiverDefinitionCreationInformation
                 {
-
+                    ReceiverName = definition.Name,
+                    EventType = (EventReceiverType)Enum.Parse(typeof(EventReceiverType), definition.Type),
+                    Synchronization = (EventReceiverSynchronization)Enum.Parse(typeof(EventReceiverSynchronization), definition.Synchronization),
+                    ReceiverAssembly = definition.Assembly,
+                    ReceiverClass = definition.Class,
+                    SequenceNumber = definition.SequenceNumber,
                 });
+            }
 
-            MapEventReceiverProperties(definition, existingReceiver);
+            MapEventReceiverProperties(definition, existingReceiver, isNew);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -99,16 +113,10 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         private static void MapEventReceiverProperties(EventReceiverDefinition definition,
-            Microsoft.SharePoint.Client.EventReceiverDefinition existingReceiver)
+            Microsoft.SharePoint.Client.EventReceiverDefinition existingReceiver,
+            bool isNew)
         {
-            //existingReceiver.ReceiverName = definition.Name;
-            //existingReceiver.Re = definition.Data;
-
-            //existingReceiver.Type = (EventReceiverType)Enum.Parse(typeof(EventReceiverType), definition.Type);
-            //existingReceiver.Assembly = definition.Assembly;
-            //existingReceiver.Class = definition.Class;
-            //existingReceiver.SequenceNumber = definition.SequenceNumber;
-            //existingReceiver.Synchronization = (EventReceiverSynchronization)Enum.Parse(typeof(EventReceiverSynchronization), definition.Synchronization);
+            // nothing can be updated, shame :(
         }
 
         #endregion
