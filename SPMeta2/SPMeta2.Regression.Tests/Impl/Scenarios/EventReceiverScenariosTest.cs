@@ -2,6 +2,7 @@
 using SPMeta2.Containers;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -65,6 +66,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
 
             TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.EventReceivers")]
+        public void CanDeploy_ContentTypeEventReceiver()
+        {
+            WithExcpectedExceptions(new[] { typeof(SPMeta2UnsupportedModelHostException) }, () =>
+            {
+                var eventReceiver = ModelGeneratorService.GetRandomDefinition<EventReceiverDefinition>();
+
+                eventReceiver.Assembly = "Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+                eventReceiver.Class = "Microsoft.SharePoint.Help.HelpLibraryEventReceiver";
+
+                eventReceiver.Synchronization = BuiltInEventReceiverSynchronization.Synchronous;
+                eventReceiver.Type = BuiltInEventReceiverType.ItemAdded;
+
+                var model = SPMeta2Model
+                    .NewSiteModel(site =>
+                    {
+                        site.AddRandomContentType(contentType =>
+                        {
+                            contentType.AddEventReceiver(eventReceiver);
+                        });
+                    });
+
+                TestModel(model);
+            });
         }
 
         [TestMethod]

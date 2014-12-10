@@ -1,8 +1,10 @@
-﻿using SPMeta2.CSOM.ModelHandlers;
+﻿using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Utils;
+using EventReceiverDefinition = SPMeta2.Definitions.EventReceiverDefinition;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -17,6 +19,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                 spObject = FindEventReceiverDefinition((modelHost as ListModelHost).HostList.EventReceivers, definition);
             else if (modelHost is WebModelHost)
                 spObject = FindEventReceiverDefinition((modelHost as WebModelHost).HostWeb.EventReceivers, definition);
+            else if (modelHost is SiteModelHost)
+                spObject = FindEventReceiverDefinition((modelHost as SiteModelHost).HostSite.EventReceivers, definition);
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost or WebModelHost");

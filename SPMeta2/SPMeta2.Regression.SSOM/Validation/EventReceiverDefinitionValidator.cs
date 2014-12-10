@@ -27,6 +27,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                 spObject = FindEventReceiverDefinition((modelHost as WebModelHost).HostWeb.EventReceivers, definition);
             else if (modelHost is SiteModelHost)
                 spObject = FindEventReceiverDefinition((modelHost as SiteModelHost).HostSite.EventReceivers, definition);
+            else if (modelHost is SPContentType)
+                spObject = FindEventReceiverDefinition((modelHost as SPContentType).EventReceivers, definition);
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost or WebModelHost");

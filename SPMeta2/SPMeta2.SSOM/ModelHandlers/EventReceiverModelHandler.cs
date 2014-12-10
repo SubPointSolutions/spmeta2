@@ -35,10 +35,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                 DeployWebEventReceiver(modelHost, modelHost as WebModelHost, definition);
             else if (modelHost is SiteModelHost)
                 DeploySiteEventReceiver(modelHost, modelHost as SiteModelHost, definition);
+            else if (modelHost is SPContentType)
+                DeployContentTypeEventReceiver(modelHost, modelHost as SPContentType, definition);
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost/WebModelHost/SiteModelHost");
             }
+        }
+
+        private void DeployContentTypeEventReceiver(object modelHost, SPContentType contentType, EventReceiverDefinition definition)
+        {
+            DeployEventReceiver(modelHost, contentType.EventReceivers, definition);
         }
 
         private void DeploySiteEventReceiver(object modelHost, SiteModelHost siteModelHost, EventReceiverDefinition definition)
@@ -81,6 +88,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 result.HostType = SPEventHostType.List;
             else if (modelHost is SiteModelHost)
                 result.HostType = SPEventHostType.Site;
+            else if (modelHost is SPContentType)
+                result.HostType = SPEventHostType.ContentType;
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost/WebModelHost/SiteModelHost");

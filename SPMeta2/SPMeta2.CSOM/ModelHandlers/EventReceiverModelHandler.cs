@@ -34,10 +34,23 @@ namespace SPMeta2.CSOM.ModelHandlers
                 DeployListEventReceiver(modelHost, modelHost as ListModelHost, definition);
             else if (modelHost is WebModelHost)
                 DeployWebEventReceiver(modelHost, modelHost as WebModelHost, definition);
+            else if (modelHost is SiteModelHost)
+                DeploySiteEventReceiver(modelHost, modelHost as SiteModelHost, definition);
+            else if (modelHost is ContentType)
+            {
+                //https://officespdev.uservoice.com/forums/224641-general/suggestions/6825755-add-contenttype-eventreceivers-proprety-similar-to
+
+                throw new SPMeta2UnsupportedModelHostException("Adding event receiver to content types via CSOM is not supported by CSOM: https://officespdev.uservoice.com/forums/224641-general/suggestions/6825755-add-contenttype-eventreceivers-proprety-similar-to");
+            }
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost or WebModelHost");
             }
+        }
+
+        private void DeploySiteEventReceiver(object modelHost, SiteModelHost siteModelHost, EventReceiverDefinition definition)
+        {
+            DeployEventReceiver(modelHost, siteModelHost.HostSite.EventReceivers, definition);
         }
 
         private void DeployListEventReceiver(object modelHost, ListModelHost listModelHost, EventReceiverDefinition definition)
@@ -66,6 +79,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         private void DeployEventReceiver(object modelHost, EventReceiverDefinitionCollection eventReceivers,
             EventReceiverDefinition definition)
         {
+            var context = eventReceivers.Context;
+
             var existingReceiver = FindEventReceiverDefinition(eventReceivers, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -110,6 +125,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             existingReceiver.Update();
+            context.ExecuteQuery();
         }
 
         private static void MapEventReceiverProperties(EventReceiverDefinition definition,
