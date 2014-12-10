@@ -237,8 +237,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
-
-
+        
         [TestMethod]
         [TestCategory("Regression.Rnd.EventReceivers")]
         public void CanDeployRandom_EventReceiverDefinition()

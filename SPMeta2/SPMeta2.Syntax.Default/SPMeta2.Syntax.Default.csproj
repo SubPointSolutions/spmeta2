@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="BusineddDataFieldDefinitionSyntax.cs" />
     <Compile Include="ContentTypeFieldLinkDefinitionSyntax.cs" />
+    <Compile Include="EventReceiverDefinitionSyntax.cs" />
     <Compile Include="PrefixDefinitionSyntax.cs" />
     <Compile Include="WebApplicationDefinitionSyntax.cs" />
     <Compile Include="SiteDefinitionSyntax.cs" />
