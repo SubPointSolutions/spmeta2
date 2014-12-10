@@ -1,4 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers;
+using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
+using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -6,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -30,13 +35,84 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        // folder to list, TODO
+        protected void AttachFolderHierarchy(ModelNode node)
+        {
+            node
+                .AddRandomFolder(rootFolder =>
+                {
+                    rootFolder
+                         .AddRandomFolder(subFolder =>
+                         {
+                             subFolder
+                                 .AddRandomFolder()
+                                 .AddRandomFolder();
+                         })
+                        .AddRandomFolder(subFolder =>
+                        {
+                            subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                        });
+                })
+                .AddRandomFolder(rootFolder =>
+                {
+                    rootFolder
+                        .AddRandomFolder(subFolder =>
+                        {
+                            subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                        })
+                       .AddRandomFolder(subFolder =>
+                       {
+                           subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                       });
+                });
+        }
 
-        // folder to document library, TODO
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Folders")]
+        public void CanDeploy_FolderHierarchy_InList()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
 
-        // folder to folder, 1-2-3 level TODO
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, list => AttachFolderHierarchy(list));
+                    });
+                });
 
-        // folder to content type, , TODO
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Folders")]
+        public void CanDeploy_FolderHierarchy_InLibrary()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, list => AttachFolderHierarchy(list));
+                    });
+                });
+
+            TestModel(model);
+        }
 
         #endregion
     }
