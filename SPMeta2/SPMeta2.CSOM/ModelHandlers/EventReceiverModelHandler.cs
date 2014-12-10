@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
+using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
+using SPMeta2.Utils;
+using EventReceiverDefinition = SPMeta2.Definitions.EventReceiverDefinition;
+
+namespace SPMeta2.CSOM.ModelHandlers
+{
+    public class EventReceiverModelHandler : CSOMModelHandlerBase
+    {
+        #region properties
+
+        public override Type TargetType
+        {
+            get { return typeof(EventReceiverDefinition); }
+        }
+
+        #endregion
+
+        #region methods
+
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var definition = model.WithAssertAndCast<EventReceiverDefinition>("model", value => value.RequireNotNull());
+
+            if (modelHost is ListModelHost)
+                DeployListEventReceiver(modelHost, modelHost as ListModelHost, definition);
+            else if (modelHost is WebModelHost)
+                DeployWebEventReceiver(modelHost, modelHost as WebModelHost, definition);
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost or WebModelHost");
+            }
+        }
+
+        private void DeployListEventReceiver(object modelHost, ListModelHost listModelHost, EventReceiverDefinition definition)
+        {
+            DeployEventReceiver(modelHost, listModelHost.HostList.EventReceivers, definition);
+        }
+
+        private void DeployWebEventReceiver(object modelHost, WebModelHost listModelHost, EventReceiverDefinition definition)
+        {
+            DeployEventReceiver(modelHost, listModelHost.HostWeb.EventReceivers, definition);
+        }
+
+        protected Microsoft.SharePoint.Client.EventReceiverDefinition FindEventReceiverDefinition(EventReceiverDefinitionCollection receivers, EventReceiverDefinition definition)
+        {
+            var receiverName = definition.Name.ToUpper();
+
+            return receivers.OfType<Microsoft.SharePoint.Client.EventReceiverDefinition>()
+                            .FirstOrDefault(r =>
+                                !string.IsNullOrEmpty(r.ReceiverName) &&
+                                r.ReceiverName.ToUpper() == receiverName);
+        }
+
+        private void DeployEventReceiver(object modelHost, EventReceiverDefinitionCollection eventReceivers,
+            EventReceiverDefinition definition)
+        {
+            var existingReceiver = FindEventReceiverDefinition(eventReceivers, definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingReceiver,
+                ObjectType = typeof(Microsoft.SharePoint.Client.EventReceiverDefinition),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            if (existingReceiver == null)
+                existingReceiver = eventReceivers.Add(new EventReceiverDefinitionCreationInformation
+                {
+
+                });
+
+            MapEventReceiverProperties(definition, existingReceiver);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingReceiver,
+                ObjectType = typeof(Microsoft.SharePoint.Client.EventReceiverDefinition),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            existingReceiver.Update();
+        }
+
+        private static void MapEventReceiverProperties(EventReceiverDefinition definition,
+            Microsoft.SharePoint.Client.EventReceiverDefinition existingReceiver)
+        {
+            //existingReceiver.ReceiverName = definition.Name;
+            //existingReceiver.Re = definition.Data;
+
+            //existingReceiver.Type = (EventReceiverType)Enum.Parse(typeof(EventReceiverType), definition.Type);
+            //existingReceiver.Assembly = definition.Assembly;
+            //existingReceiver.Class = definition.Class;
+            //existingReceiver.SequenceNumber = definition.SequenceNumber;
+            //existingReceiver.Synchronization = (EventReceiverSynchronization)Enum.Parse(typeof(EventReceiverSynchronization), definition.Synchronization);
+        }
+
+        #endregion
+    }
+}

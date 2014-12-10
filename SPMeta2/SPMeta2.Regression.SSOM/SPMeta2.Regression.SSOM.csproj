@@ -85,6 +85,7 @@
     <Compile Include="Validation\Fields\CurrencyFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\UserFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\EventReceiverDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\FarmSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />

@@ -63,6 +63,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\EventReceiverDefinition.cs" />
     <Compile Include="Definitions\Fields\CalculatedFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\NumberFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\GuidFieldDefinition.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInCalendarType.cs" />
+    <Compile Include="Enumerations\BuiltInEventReceiverSynchronization.cs" />
+    <Compile Include="Enumerations\BuiltInEventReceiverType.cs" />
     <Compile Include="Enumerations\BuiltInFieldUserSelectionMode.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />

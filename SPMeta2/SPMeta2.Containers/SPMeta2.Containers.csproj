@@ -80,6 +80,7 @@
     <Compile Include="DefinitionGenerators\FarmSolutionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FeatureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\EventReceiverDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FolderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\JobDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeOrderDefinitionGenerator.cs" />
