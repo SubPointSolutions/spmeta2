@@ -35,7 +35,21 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.SecurityRoleName))
             {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.SecurityRoleName);
+                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
 
+                    var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings.Contains(securityRole);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = hasRoleDefinitionBinding
+                    };
+                });
             }
             else
             {

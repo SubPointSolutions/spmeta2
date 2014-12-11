@@ -356,6 +356,244 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new[] { siteModel, webModel });
         }
 
+        #endregion
+
+        #region role links options
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.RoleLinks")]
+        public void CanDeploy_SecurityRoleLink_ByName()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+            var securityRole = ModelGeneratorService.GetRandomDefinition<SecurityRoleDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site
+                                        .AddSecurityGroup(securityGroup)
+                                        .AddSecurityRole(securityRole);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(securityGroup, group =>
+                                 {
+                                     group.AddSecurityRoleLink(new SecurityRoleLinkDefinition
+                                     {
+                                         SecurityRoleName = securityRole.Name
+                                     });
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.RoleLinks")]
+        public void CanDeploy_SecurityRoleLink_BySecurityRoleType()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site
+                                        .AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(securityGroup, group =>
+                                 {
+                                     group.AddSecurityRoleLink(new SecurityRoleLinkDefinition
+                                     {
+                                         SecurityRoleType = BuiltInSecurityRoleTypes.Editor
+                                     });
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.RoleLinks")]
+        public void CanDeploy_SecurityRoleLink_BySecurityRoleId()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site
+                                        .AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(securityGroup, group =>
+                                 {
+                                     group.AddSecurityRoleLink(new SecurityRoleLinkDefinition
+                                     {
+                                         // bits of magic
+                                         // should be 'Full Control' role
+                                         SecurityRoleId = 1073741829
+                                     });
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+
+        #endregion
+
+        #region group link options
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.GroupLinks")]
+        public void CanDeploy_SecurityGroupLink_ByName()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
+                                 {
+                                     SecurityGroupName = securityGroup.Name
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.GroupLinks")]
+        public void CanDeploy_SecurityGroupLink_ByIsAssociatedMemberGroup()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
+                                 {
+                                     IsAssociatedMemberGroup = true
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.GroupLinks")]
+        public void CanDeploy_SecurityGroupLink_ByIsAssociatedOwnerGroup()
+        {
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
+                                 {
+                                     IsAssociatedOwnerGroup = true
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+            TestModels(new[] { webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.GroupLinks")]
+        public void CanDeploy_SecurityGroupLink_ByIsAssociatedVisitorGroup()
+        {
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddRandomList(rndList =>
+                         {
+                             rndList.AddRandomListItem(rndListItem =>
+                             {
+                                 rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
+                                 {
+                                     IsAssociatedVisitorGroup = true
+                                 });
+                             });
+                         });
+                     });
+                 });
+
+            TestModels(new[] { webModel });
+        }
 
         #endregion
 
