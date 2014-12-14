@@ -39,6 +39,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Title { get; set; }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public uint LCID { get; set; }
 
         /// <summary>

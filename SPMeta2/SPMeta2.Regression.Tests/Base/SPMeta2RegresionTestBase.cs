@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Exceptions;
 using SPMeta2.Containers.Services;
@@ -10,6 +11,7 @@ using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.Extensions;
 using SPMeta2.Models;
 
 using SPMeta2.Regression.Tests.Services;
@@ -27,6 +29,8 @@ namespace SPMeta2.Regression.Tests.Base
         {
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.EnableDefinitionValidation = true;
+
+            //EnablePropertyUpdateValidation = true;
         }
 
         #endregion
@@ -62,6 +66,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         #region properties
 
+        public bool EnablePropertyUpdateValidation { get; set; }
+
         public static RegressionTestService RegressionService { get; set; }
 
         public ModelGeneratorService ModelGeneratorService
@@ -82,7 +88,13 @@ namespace SPMeta2.Regression.Tests.Base
         protected void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
             where TDefinition : DefinitionBase, new()
         {
-            RegressionService.TestRandomDefinition(definitionSetup);
+            var model = RegressionService.TestRandomDefinition(definitionSetup);
+
+            if (EnablePropertyUpdateValidation)
+            {
+                ProcessPropertyUpdateValidation(new[] { model });
+                RegressionService.TestModels(new[] { model });
+            }
         }
 
         protected void WithSPMeta2NotSupportedExceptions(Action action)
@@ -114,8 +126,71 @@ namespace SPMeta2.Regression.Tests.Base
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
+
+            if (EnablePropertyUpdateValidation)
+            {
+                ProcessPropertyUpdateValidation(models);
+                RegressionService.TestModels(models);
+            }
+        }
+
+        private void ProcessPropertyUpdateValidation(IEnumerable<ModelNode> models)
+        {
+            foreach (var model in models)
+            {
+                model.WithNodesOfType<DefinitionBase>(node =>
+                {
+                    var def = node.Value;
+                    ProcessDefinitionsPropertyUpdateValidation(def);
+                });
+            }
+        }
+
+        private void ProcessDefinitionsPropertyUpdateValidation(DefinitionBase def)
+        {
+            var updatableProps = def.GetType()
+                .GetProperties()
+                .Where(p => p.GetCustomAttributes(typeof(ExpectUpdate), true).Count() > 0);
+
+
+            TraceUtils.WithScope(trace =>
+            {
+                trace.WriteLine("");
+
+                trace.WriteLine(string.Format("[INF]\tPROPERTY UPDATE VALIDATION"));
+                trace.WriteLine(string.Format("[INF]\tModel of type: [{0}] - [{1}]", def.GetType(), def));
+
+                if (updatableProps.Count() == 0)
+                {
+                    trace.WriteLine(string.Format("[INF]\tNo properties to be validated. Skipping."));
+                }
+                else
+                {
+                    foreach (var prop in updatableProps)
+                    {
+                        object newValue = null;
+
+                        if (prop.PropertyType == typeof(string))
+                            newValue = RegressionService.RndService.String();
+                        else if (prop.PropertyType == typeof(bool))
+                            newValue = RegressionService.RndService.Bool();
+                        else if (prop.PropertyType == typeof(bool?))
+                            newValue = RegressionService.RndService.Bool() ? (bool?)null : RegressionService.RndService.Bool();
+                        else
+                        {
+                            throw new NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
+                        }
+
+                        trace.WriteLine(string.Format("[INF]\t\tChanging property [{0}] from [{1}] to [{2}]", prop.Name, prop.GetValue(def), newValue));
+                        prop.SetValue(def, newValue);
+                    }
+                }
+
+                trace.WriteLine("");
+            });
         }
 
         #endregion
     }
 }
+

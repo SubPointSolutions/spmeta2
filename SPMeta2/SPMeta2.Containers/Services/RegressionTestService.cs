@@ -8,6 +8,7 @@ using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Common;
 using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Exceptions;
+using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
@@ -20,6 +21,7 @@ namespace SPMeta2.Containers.Services
     public class RegressionTestService
     {
         public AssertServiceBase AssertService { get; set; }
+        public RandomService RndService { get; set; }
 
         public bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
         {
@@ -36,6 +38,8 @@ namespace SPMeta2.Containers.Services
         {
             ModelGeneratorService = new ModelGeneratorService();
             //Assert = new AssertService();
+
+            RndService = new DefaultRandomService();
 
             //RegressionService = new RegressionTestService();
 
@@ -68,48 +72,7 @@ namespace SPMeta2.Containers.Services
 
         #endregion
 
-        public void TestModel(ModelNode model)
-        {
-            TestModels(new[] { model });
-        }
-
-        public void TestModels(IEnumerable<ModelNode> models)
-        {
-            foreach (var model in models)
-            {
-                var allHooks = new List<EventHooks>();
-
-                WithProvisionRunnerContext(runnerContext =>
-                {
-                    var runner = runnerContext.Runner;
-
-                    //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
-
-                    var omModelType = GetRunnerType(runner);
-                    var hooks = GetHooks(model);
-
-                    foreach (var hook in hooks)
-                        hook.Tag = runner.Name;
-
-                    allHooks.AddRange(hooks);
-
-                    if (model.Value.GetType() == typeof(FarmDefinition))
-                        runner.DeployFarmModel(model);
-
-                    if (model.Value.GetType() == typeof(WebApplicationDefinition))
-                        runner.DeployWebApplicationModel(model);
-
-                    if (model.Value.GetType() == typeof(SiteDefinition))
-                        runner.DeploySiteModel(model);
-
-                    if (model.Value.GetType() == typeof(WebDefinition))
-                        runner.DeployWebModel(model);
-
-                    var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
-                    AssertService.IsFalse(hasMissedOrInvalidProps);
-                });
-            }
-        }
+       
 
         public void OnModelPropertyValidated(object sender, OnPropertyValidatedEventArgs e)
         {
@@ -414,9 +377,60 @@ namespace SPMeta2.Containers.Services
             }
         }
 
-        public void TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
+        public void TestModel(ModelNode model)
+        {
+            TestModels(new[] { model });
+        }
+
+        public void TestModels(IEnumerable<ModelNode> models)
+        {
+            _hookMap.Clear();
+
+            foreach (var model in models)
+            {
+               
+
+                var allHooks = new List<EventHooks>();
+
+                WithProvisionRunnerContext(runnerContext =>
+                {
+                    var runner = runnerContext.Runner;
+
+                    //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
+
+                    var omModelType = GetRunnerType(runner);
+                    var hooks = GetHooks(model);
+
+                    foreach (var hook in hooks)
+                        hook.Tag = runner.Name;
+
+                    allHooks.AddRange(hooks);
+
+                    if (model.Value.GetType() == typeof(FarmDefinition))
+                        runner.DeployFarmModel(model);
+
+                    if (model.Value.GetType() == typeof(WebApplicationDefinition))
+                        runner.DeployWebApplicationModel(model);
+
+                    if (model.Value.GetType() == typeof(SiteDefinition))
+                        runner.DeploySiteModel(model);
+
+                    if (model.Value.GetType() == typeof(WebDefinition))
+                        runner.DeployWebModel(model);
+
+                    var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                    AssertService.IsFalse(hasMissedOrInvalidProps);
+                });
+            }
+        }
+
+        public ModelNode TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
           where TDefinition : DefinitionBase, new()
         {
+            _hookMap.Clear();
+
+            ModelNode result = null;
+
             var allHooks = new List<EventHooks>();
 
             WithProvisionRunnerContext(runnerContext =>
@@ -457,8 +471,11 @@ namespace SPMeta2.Containers.Services
                 var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
 
                 AssertService.IsFalse(hasMissedOrInvalidProps);
+
+                result = definitionSandbox;
             });
 
+            return result;
         }
 
         private bool ResolveModelValidation(ModelNode modelNode, List<EventHooks> hooks)
@@ -689,7 +706,7 @@ namespace SPMeta2.Containers.Services
 
         public bool EnableDefinitionProvision { get; set; }
         public bool EnableDefinitionValidation { get; set; }
-        
+
 
         #endregion
     }

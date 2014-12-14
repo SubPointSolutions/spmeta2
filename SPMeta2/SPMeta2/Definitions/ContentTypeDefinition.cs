@@ -53,6 +53,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Group { get; set; }
 
         /// <summary>

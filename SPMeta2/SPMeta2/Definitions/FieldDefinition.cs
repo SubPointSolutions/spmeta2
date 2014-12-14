@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Title { get; set; }
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         /// <summary>
@@ -56,6 +58,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Group { get; set; }
 
         /// <summary>
@@ -78,45 +81,59 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool Required { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string JSLink { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string DefaultValue { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool Hidden { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInDisplayForm { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInEditForm { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInListSettings { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInNewForm { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInVersionHistory { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowInViewForms { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? AllowDeletion { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool Indexed { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string ValidationFormula { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string ValidationMessage { get; set; }
 
         #endregion
