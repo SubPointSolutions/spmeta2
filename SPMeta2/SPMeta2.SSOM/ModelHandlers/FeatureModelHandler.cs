@@ -82,7 +82,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void DeployWebApplicationFeature(object modelHost, FeatureDefinition featureModel)
         {
-            var webApplication = modelHost.WithAssertAndCast<SPWebApplication>("modelHost", value => value.RequireNotNull());
+            var webApplicationModelHost = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
+            var webApplication = webApplicationModelHost.HostWebApplication;
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying web application feature.");
 
@@ -104,7 +105,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         private static bool IsValidHost(object modelHost)
         {
             return modelHost is SPFarm ||
-                   modelHost is SPWebApplication ||
+                   modelHost is SPWebApplication ||  modelHost is WebApplicationModelHost ||
                    modelHost is SiteModelHost ||
                    modelHost is WebModelHost;
         }

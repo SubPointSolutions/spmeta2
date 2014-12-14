@@ -38,8 +38,10 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                     assert.SkipProperty(m => m.Scope, "Correct web app scope");
 
-                    var webApplication = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
-                    features = webApplication.HostWebApplication.Features;
+                    var webApplicationModelHost = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
+                    var webApplication = webApplicationModelHost.HostWebApplication;
+
+                    features = webApplication.Features;
 
                     break;
 
@@ -69,7 +71,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (definition.ForceActivate)
             {
                 assert
-                    .SkipProperty(m => m.Enable, "ForceActivate = true. Expect not null feature instance.")
+                    .SkipProperty(m => m.ForceActivate, "ForceActivate = true. Expect not null feature instance.")
                     .ShouldNotBeNull(spObject);
             }
             else
