@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Administration;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
@@ -31,7 +32,13 @@ namespace SPMeta2.Regression.SSOM.Validation
                 case FeatureDefinitionScope.Farm:
                     assert.SkipProperty(m => m.Scope, "Correct farm scope");
 
-                    throw new SPMeta2NotImplementedException("Farm features are not supported yet.");
+                    var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
+                    var farm = farmModelHost.HostFarm;
+
+                    var adminService = SPWebService.AdministrationService;
+
+                    features = adminService.Features;
+
                     break;
 
                 case FeatureDefinitionScope.WebApplication:

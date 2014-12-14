@@ -94,18 +94,19 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying farm feature.");
 
-            throw new SPMeta2NotImplementedException("SPFarm feature activation has not implemented yet");
+            var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
+            var farm = farmModelHost.HostFarm;
 
-            //var farm = modelHost.WithAssertAndCast<SPFarm>("modelHost", value => value.RequireNotNull());
-            //ProcessFeature(farm.FeatureDefinitions, featureModel);
+            var adminService = SPWebService.AdministrationService;
+            ProcessFeature(modelHost, adminService.Features, featureModel);
         }
 
         #region utils
 
         private static bool IsValidHost(object modelHost)
         {
-            return modelHost is SPFarm ||
-                   modelHost is SPWebApplication ||  modelHost is WebApplicationModelHost ||
+            return modelHost is SPFarm || modelHost is FarmModelHost ||
+                   modelHost is SPWebApplication || modelHost is WebApplicationModelHost ||
                    modelHost is SiteModelHost ||
                    modelHost is WebModelHost;
         }
@@ -194,7 +195,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 else if (!featureModel.Enable)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Removing feature.");
-                   
+
                     features.Remove(featureModel.Id, featureModel.ForceActivate);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
