@@ -382,16 +382,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      {
                          rndWeb.AddRandomList(rndList =>
                          {
-                             rndList.AddRandomListItem(rndListItem =>
-                             {
-                                 rndListItem.AddSecurityGroupLink(securityGroup, group =>
+                            // rndList.AddRandomListItem(rndListItem =>
+                            // {
+                             rndList.AddBreakRoleInheritance(new BreakRoleInheritanceDefinition(),
+                                 secureListItem =>
                                  {
-                                     group.AddSecurityRoleLink(new SecurityRoleLinkDefinition
+                                     secureListItem.AddSecurityGroupLink(securityGroup, group =>
                                      {
-                                         SecurityRoleName = securityRole.Name
+                                         group.AddSecurityRoleLink(new SecurityRoleLinkDefinition
+                                         {
+                                             SecurityRoleName = securityRole.Name
+                                         });
                                      });
+
                                  });
-                             });
+
+
+                             // });
                          });
                      });
                  });

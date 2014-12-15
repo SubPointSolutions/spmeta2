@@ -7,11 +7,13 @@ using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.WorkflowServices;
 using SPMeta2.Containers.Consts;
+using SPMeta2.Containers.Exceptions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
@@ -134,6 +136,15 @@ namespace SPMeta2.Containers.CSOM
             }
         }
 
+        public override void DeployFarmModel(ModelNode model)
+        {
+            throw new SPMeta2UnsupportedCSOMRunnerException();
+        }
+
+        public override void DeployWebApplicationModel(ModelNode model)
+        {
+            throw new SPMeta2UnsupportedCSOMRunnerException();
+        }
 
         /// <summary>
         /// Deploys and validates target web model.

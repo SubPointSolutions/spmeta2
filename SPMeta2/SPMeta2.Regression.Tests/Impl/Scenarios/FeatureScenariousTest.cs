@@ -38,38 +38,44 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Features")]
         public void CanDeploy_FarmFeature()
         {
-            var model = SPMeta2Model
-                .NewFarmModel(farm =>
-                {
-                    farm.AddFeature(new FeatureDefinition
-                    {
-                        Enable = true,
-                        ForceActivate = true,
-                        Id = BuiltInFarmFeatures.DataConnectionLibrary.Id,
-                        Scope = FeatureDefinitionScope.Farm
-                    });
-                });
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var model = SPMeta2Model
+                   .NewFarmModel(farm =>
+                   {
+                       farm.AddFeature(new FeatureDefinition
+                       {
+                           Enable = true,
+                           ForceActivate = true,
+                           Id = BuiltInFarmFeatures.DataConnectionLibrary.Id,
+                           Scope = FeatureDefinitionScope.Farm
+                       });
+                   });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Features")]
         public void CanDeploy_WebApplicationFeature()
         {
-            var model = SPMeta2Model
-                .NewWebApplicationModel(webApp =>
-                {
-                    webApp.AddFeature(new FeatureDefinition
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var model = SPMeta2Model
+                    .NewWebApplicationModel(webApp =>
                     {
-                        Enable = true,
-                        ForceActivate = true,
-                        Id = BuiltInWebApplicationFeatures.DocumentSetsMetadataSynchronization.Id,
-                        Scope = FeatureDefinitionScope.WebApplication
+                        webApp.AddFeature(new FeatureDefinition
+                        {
+                            Enable = true,
+                            ForceActivate = true,
+                            Id = BuiltInWebApplicationFeatures.DocumentSetsMetadataSynchronization.Id,
+                            Scope = FeatureDefinitionScope.WebApplication
+                        });
                     });
-                });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         [TestMethod]

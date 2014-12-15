@@ -76,7 +76,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (definition.ForceActivate)
             {
                 assert
-                    .SkipProperty(m => m.Enable, "ForceActivate = true. Expect not null feature instance.")
+                    .SkipProperty(m => m.ForceActivate, "ForceActivate = true. Expect not null feature instance.")
                     .ShouldNotBeNull(spObject);
             }
             else

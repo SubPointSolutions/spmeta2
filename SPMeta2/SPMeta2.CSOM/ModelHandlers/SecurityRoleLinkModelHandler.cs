@@ -49,7 +49,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = ExtractWeb(securityGroupModelHost.SecurableObject);
 
             var context = group.Context;
-            var existingRoleAssignments = web.RoleAssignments;
+            var existingRoleAssignments = securableObject.RoleAssignments;
 
             context.Load(existingRoleAssignments, r => r.Include(d => d.Member, d => d.RoleDefinitionBindings));
             context.ExecuteQueryWithTrace();

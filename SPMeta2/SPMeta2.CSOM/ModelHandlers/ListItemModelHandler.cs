@@ -121,26 +121,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // naaaaah, just gonna get a new one list item
             // keep it simple and safe, really really really safe with all that SharePoint stuff...
-            var currentItem = list.GetItemById(item.Id);
+           // var currentItem = list.GetItemById(item.Id);
 
-            context.Load(currentItem);
-            context.ExecuteQueryWithTrace();
+            //context.Load(currentItem);
+            //context.ExecuteQueryWithTrace();
 
             if (childModelType == typeof(ListItemFieldValueDefinition))
             {
                 var listItemPropertyHost = new ListItemFieldValueModelHost
                 {
-                    CurrentItem = currentItem
+                    CurrentItem = item
                 };
 
                 action(listItemPropertyHost);
             }
             else
             {
-                action(currentItem);
+                action(item);
             }
 
-            currentItem.Update();
+            item.Update();
             context.ExecuteQueryWithTrace();
         }
 
