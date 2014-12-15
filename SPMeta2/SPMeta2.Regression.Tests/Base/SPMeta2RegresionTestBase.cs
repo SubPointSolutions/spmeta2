@@ -30,7 +30,7 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.EnableDefinitionValidation = true;
 
-            //EnablePropertyUpdateValidation = true;
+            EnablePropertyUpdateValidation = false;
         }
 
         #endregion
@@ -176,6 +176,14 @@ namespace SPMeta2.Regression.Tests.Base
                             newValue = RegressionService.RndService.Bool();
                         else if (prop.PropertyType == typeof(bool?))
                             newValue = RegressionService.RndService.Bool() ? (bool?)null : RegressionService.RndService.Bool();
+                        else if (prop.PropertyType == typeof(int))
+                            newValue = RegressionService.RndService.Int();
+                        else if (prop.PropertyType == typeof(int?))
+                            newValue = RegressionService.RndService.Bool() ? (int?)null : RegressionService.RndService.Int();
+                        else if (prop.PropertyType == typeof(uint))
+                            newValue = (uint)RegressionService.RndService.Int();
+                        else if (prop.PropertyType == typeof(uint?))
+                            newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
                         else
                         {
                             throw new NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));

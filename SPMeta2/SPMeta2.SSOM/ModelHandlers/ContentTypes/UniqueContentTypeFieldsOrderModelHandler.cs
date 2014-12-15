@@ -63,6 +63,9 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
 
                 if (currentFieldLink != null)
                 {
+                    //if (!newOrder.Contains(srcFieldLink.InternalName))
+                    //    newOrder.Add(srcFieldLink.InternalName);
+
                     if (!newOrder.Contains(currentFieldLink.Name))
                         newOrder.Add(currentFieldLink.Name);
                 }

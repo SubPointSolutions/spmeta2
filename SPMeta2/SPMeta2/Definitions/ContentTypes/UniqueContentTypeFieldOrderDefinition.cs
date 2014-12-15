@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         #region properties
 
+        [ExpectValidation]
         public List<FieldLinkValue> Fields { get; set; }
 
         #endregion
