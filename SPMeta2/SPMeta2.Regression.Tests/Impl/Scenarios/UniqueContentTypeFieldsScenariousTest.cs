@@ -31,8 +31,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
-
-
+        
         #region tests
 
         [TestMethod]
@@ -47,7 +46,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var model = SPMeta2Model
                 .NewSiteModel(site =>
                 {
-                    site.AddContentType(ctDef, contentType =>
+                    site.AddContentType(ctDef, contentType => 
                     {
                         contentType
                             .AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition

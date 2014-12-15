@@ -36,6 +36,7 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
         private void DeployContentTypeOrder(object modelHost, SPContentType contentType, UniqueContentTypeFieldsOrderDefinition reorderFieldLinksModel)
         {
             var fieldLinks = contentType.FieldLinks.OfType<SPFieldLink>().ToList();
+            var fields = contentType.Fields.OfType<SPField>().ToList();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -53,21 +54,21 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
             // re-order
             foreach (var srcFieldLink in reorderFieldLinksModel.Fields)
             {
-                SPFieldLink currentFieldLink = null;
+                SPField currentField = null;
 
                 if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
-                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
+                    currentField = fields.FirstOrDefault(c => c.InternalName == srcFieldLink.InternalName);
 
-                if (currentFieldLink == null && srcFieldLink.Id.HasValue)
-                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
+                if (currentField == null && srcFieldLink.Id.HasValue)
+                    currentField = fields.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
 
-                if (currentFieldLink != null)
+                if (currentField != null)
                 {
-                    //if (!newOrder.Contains(srcFieldLink.InternalName))
-                    //    newOrder.Add(srcFieldLink.InternalName);
+                    var ctField = contentType.Fields[currentField.Id];
 
-                    if (!newOrder.Contains(currentFieldLink.Name))
-                        newOrder.Add(currentFieldLink.Name);
+                    // must always be internal name of the field
+                    if (!newOrder.Contains(ctField.InternalName))
+                        newOrder.Add(ctField.InternalName);
                 }
             }
 

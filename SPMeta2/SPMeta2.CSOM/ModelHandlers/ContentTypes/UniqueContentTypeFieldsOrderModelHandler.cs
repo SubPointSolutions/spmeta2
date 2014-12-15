@@ -41,9 +41,12 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
             var context = contentType.Context;
 
             context.Load(contentType, c => c.FieldLinks);
+            context.Load(contentType, c => c.Fields);
+
             context.ExecuteQueryWithTrace();
 
             var fieldLinks = contentType.FieldLinks.ToList();
+            var fields = contentType.Fields.ToList();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -61,18 +64,19 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
             // re-order
             foreach (var srcFieldLink in reorderFieldLinksModel.Fields)
             {
-                FieldLink currentFieldLink = null;
+                Field currentField = null;
 
                 if (!string.IsNullOrEmpty(srcFieldLink.InternalName))
-                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Name == srcFieldLink.InternalName);
+                    currentField = fields.FirstOrDefault(c => c.InternalName == srcFieldLink.InternalName);
 
-                if (currentFieldLink == null && srcFieldLink.Id.HasValue)
-                    currentFieldLink = fieldLinks.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
+                if (currentField == null && srcFieldLink.Id.HasValue)
+                    currentField = fields.FirstOrDefault(c => c.Id == srcFieldLink.Id.Value);
 
-                if (currentFieldLink != null)
+                if (currentField != null)
                 {
-                    if (!newOrder.Contains(currentFieldLink.Name))
-                        newOrder.Add(currentFieldLink.Name);
+                    // must always be internal name of the field
+                    if (!newOrder.Contains(currentField.InternalName))
+                        newOrder.Add(currentField.InternalName);
                 }
             }
 
