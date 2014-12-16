@@ -69,9 +69,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is SiteModelHost)
                 field = DeploySiteField((modelHost as SiteModelHost).HostSite, fieldModel);
-            else if (modelHost is SPList)
+            else if (modelHost is ListModelHost)
             {
-                field = DeployListField(modelHost as SPList, fieldModel);
+                field = DeployListField((modelHost as ListModelHost).HostList, fieldModel);
                 isListField = true;
             }
             else
@@ -107,7 +107,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void CheckValidModelHost(object modelHost)
         {
-            if (!(modelHost is SiteModelHost || modelHost is SPList))
+            if (!(modelHost is SiteModelHost ||
+                  modelHost is ListModelHost ||
+                  modelHost is SPSite ||
+                  modelHost is SPList))
             {
                 throw new ArgumentException("modelHost needs to be SPSite/SPList");
             }
@@ -132,8 +135,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (modelHost is SiteModelHost)
                 return GetSiteField((modelHost as SiteModelHost).HostSite, definition);
-            else if (modelHost is SPList)
-                return GetListField(modelHost as SPList, definition);
+            else if (modelHost is ListModelHost)
+                return GetListField((modelHost as ListModelHost).HostList, definition);
             else
             {
                 throw new ArgumentException("modelHost needs to be SPSite/SPList");

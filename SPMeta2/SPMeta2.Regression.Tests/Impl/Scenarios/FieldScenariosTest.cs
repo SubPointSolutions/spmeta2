@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -223,15 +225,41 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region field to site
+        #region field scopes
 
-        // TODO
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_SiteScoped_Field()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
 
-        #endregion
+            var model = SPMeta2Model
+                   .NewSiteModel(site =>
+                   {
+                       site.AddField(field);
+                   });
 
-        #region field to list
+            TestModel(model);
+        }
 
-        // TODO
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_ListScoped_Field()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomList(list =>
+                       {
+                           list.AddField(field);
+                       });
+                   });
+
+            TestModel(model);
+        }
+
 
         #endregion
     }

@@ -69,8 +69,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            if (!(modelHost is SiteModelHost || modelHost is List))
-                throw new ArgumentException("modelHost needs to be SiteModelHost/List instance.");
+            if (!(modelHost is SiteModelHost || modelHost is ListModelHost))
+                throw new ArgumentException("modelHost needs to be SiteModelHost/ListModelHost instance.");
 
             CurrentSiteModelHost = modelHost as SiteModelHost;
 
@@ -99,12 +99,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentField = DeploySiteField(siteHost as SiteModelHost, fieldModel);
             }
-            else if (modelHost is List)
+            else if (modelHost is ListModelHost)
             {
-                var listHost = modelHost as List;
-                context = listHost.Context;
+                var listHost = modelHost as ListModelHost;
+                context = listHost.HostList.Context;
 
-                currentField = DeployListField(modelHost as List, fieldModel);
+                currentField = DeployListField(modelHost as ListModelHost, fieldModel);
             }
 
             object typedField = null;
@@ -141,10 +141,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
-        private Field DeployListField(List list, FieldDefinition fieldModel)
+        private Field DeployListField(ListModelHost modelHost, FieldDefinition fieldModel)
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying list field");
 
+            var list = modelHost.HostList;
             var context = list.Context;
 
             var scope = new ExceptionHandlingScope(context);
@@ -168,7 +169,21 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
             context.ExecuteQueryWithTrace();
 
-            return EnsureField(context, field, list.Fields, fieldModel);
+            if (!scope.HasException)
+            {
+                field = list.Fields.GetById(fieldModel.Id);
+                context.Load(field);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site list with Id: [{0}]", fieldModel.Id);
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+
+                context.ExecuteQueryWithTrace();
+
+                return EnsureField(context, field, list.Fields, fieldModel);
+            }
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find list field with Id: [{0}]", fieldModel.Id);
+            return EnsureField(context, null, list.Fields, fieldModel);
         }
 
         protected Field FindExistingSiteField(SiteModelHost siteHost, FieldDefinition fieldDefinition)
