@@ -58,6 +58,20 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region user custom action
+
+        public static ModelNode AddRandomUserCustomAction(this ModelNode model)
+        {
+            return AddRandomUserCustomAction(model, null);
+        }
+
+        public static ModelNode AddRandomUserCustomAction(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<UserCustomActionDefinition>(action);
+        }
+
+        #endregion
+
         #endregion
 
         #region webpart pages

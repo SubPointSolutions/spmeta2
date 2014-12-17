@@ -14,10 +14,7 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var definition = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-
-            var site = siteModelHost.HostSite;
-            var spObject = GetCurrentCustomUserAction(site, definition);
+            var spObject = GetCurrentCustomUserAction(modelHost, definition);
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, definition, spObject)
@@ -27,13 +24,28 @@ namespace SPMeta2.Regression.SSOM.Validation
                                             .ShouldBeEqual(m => m.Description, o => o.Description)
                                             .ShouldBeEqual(m => m.Group, o => o.Group)
                                             .ShouldBeEqual(m => m.Location, o => o.Location)
-                                            .ShouldBeEqual(m => m.ScriptSrc, o => o.ScriptSrc)
-                                            .ShouldBeEqual(m => m.ScriptBlock, o => o.ScriptBlock)
+
                                             .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
                                             .ShouldBeEqual(m => m.Url, o => o.Url)
-                                            .ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
+                //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
                                             .ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
 
+            assert
+                .ShouldBeEqual(m => m.ScriptSrc, o => o.ScriptSrc)
+                .ShouldBeEqual(m => m.ScriptBlock, o => o.ScriptBlock);
+
+            var registrationIdIsGuid = ConvertUtils.ToGuid(spObject.RegistrationId);
+
+            if (registrationIdIsGuid.HasValue)
+            {
+                // this is list scoped user custom action reg
+                // skipping validation
+                assert.SkipProperty(m => m.RegistrationId, "RegistrationId is GUID. List scope user custom action. Skipping validation.");
+            }
+            else
+            {
+                assert.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId);
+            }
 
             assert
                 .ShouldBeEqual((p, s, d) =>

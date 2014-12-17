@@ -67,6 +67,7 @@
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\EventReceiverScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\UserCustomActionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\FieldScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\FolderScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListFieldLinkScenariousTest.cs" />
