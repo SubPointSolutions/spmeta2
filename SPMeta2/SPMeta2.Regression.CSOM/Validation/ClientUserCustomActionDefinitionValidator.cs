@@ -19,13 +19,8 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            if (!IsValidHostModelHost(modelHost))
-                throw new Exception(string.Format("modelHost of type {0} is not supported.", modelHost.GetType()));
-
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
-
-            var spObject = GetCustomAction(siteModelHost, definition);
+            var spObject = GetCurrentCustomUserAction(modelHost, definition);
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, definition, spObject)
@@ -38,9 +33,21 @@ namespace SPMeta2.Regression.CSOM.Validation
                                             .ShouldBeEqual(m => m.ScriptBlock, o => o.ScriptBlock)
                                             .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
                                             .ShouldBeEqual(m => m.Url, o => o.Url)
-                                            .ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
+                                            //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
                                             .ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
 
+            var registrationIdIsGuid = ConvertUtils.ToGuid(spObject.RegistrationId);
+
+            if (registrationIdIsGuid.HasValue)
+            {
+                // this is list scoped user custom action reg
+                // skipping validation
+                assert.SkipProperty(m => m.RegistrationId, "RegistrationId is GUID. List scope user custom action. Skipping validation.");
+            }
+            else
+            {
+                assert.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId);
+            }
 
             assert
                 .ShouldBeEqual((p, s, d) =>

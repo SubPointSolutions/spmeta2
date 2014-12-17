@@ -27,7 +27,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                                             .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
                                             .ShouldBeEqual(m => m.Url, o => o.Url)
-                //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
+                                            //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
                                             .ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
 
             assert
