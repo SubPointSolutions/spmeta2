@@ -101,19 +101,30 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 if (jobDefinition.ConstructorParams.Count() == 0)
                 {
-                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, new object[]
-                    {
-                        jobDefinition.Name,
-                        webApp
-                    });
+                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType);
                 }
                 else
                 {
-                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, new object[]
+                    var parameters = new List<object>();
+
+                    foreach (var param in jobDefinition.ConstructorParams)
                     {
-                        jobDefinition.Name,
-                        webApp
-                    });
+                        switch (param)
+                        {
+                            case JobDefinitionCtorParams.JobName:
+                                parameters.Add(jobDefinition.Name);
+                                break;
+
+                            case JobDefinitionCtorParams.WebApplication:
+                                parameters.Add(webApp);
+                                break;
+
+                            default:
+                                throw new SPMeta2NotImplementedException(string.Format("Job cstr parameter [{0}] is not supported yet."));
+                        }
+                    }
+
+                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, parameters.ToArray());
                 }
 
                 if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))

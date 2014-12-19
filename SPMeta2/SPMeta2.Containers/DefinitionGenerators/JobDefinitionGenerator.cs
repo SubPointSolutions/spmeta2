@@ -20,10 +20,12 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 // TMP
                 def.JobType = "Microsoft.SharePoint.Administration.SPDeadSiteDeleteJobDefinition, Microsoft.SharePoint";
-                //def.ConstructorParams = new Collection<JobDefinitionCtorParams>()
-                //{
-                //    JobDefinitionCtorParams.WebApplication
-                //};
+
+                def.ConstructorParams = new Collection<JobDefinitionCtorParams>()
+                {
+                    JobDefinitionCtorParams.JobName,
+                    JobDefinitionCtorParams.WebApplication
+                };
             });
         }
     }
