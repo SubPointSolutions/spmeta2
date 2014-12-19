@@ -22,6 +22,12 @@ namespace SPMeta2.Services
         public Action<ModelNode> OnModelProcessing { get; set; }
         public Action<ModelNode> OnModelProcessed { get; set; }
 
+        public Action<ModelNode> OnModelFullyProcessing { get; set; }
+        public Action<ModelNode> OnModelFullyProcessed { get; set; }
+
+        public Action<ModelNode, Type, IEnumerable<ModelNode>> OnChildModelsProcessing { get; set; }
+        public Action<ModelNode, Type, IEnumerable<ModelNode>> OnChildModelsProcessed { get; set; }
+
         #endregion
     }
 }

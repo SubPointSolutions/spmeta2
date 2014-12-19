@@ -260,6 +260,27 @@ namespace SPMeta2.Services
                     _activeModelNode = null;
                 };
 
+                // on model fully-partially processed events
+                ModelTraverseService.OnModelFullyProcessing += (node) =>
+                {
+
+                };
+
+                ModelTraverseService.OnModelFullyProcessed += (node) =>
+                {
+
+                };
+
+                ModelTraverseService.OnChildModelsProcessing += (node, type, childNodels) =>
+                {
+
+                };
+
+                ModelTraverseService.OnChildModelsProcessed += (node, type, childNodels) =>
+                {
+
+                };
+
                 ModelTraverseService.Traverse(modelHost, modelNode);
             }
         }

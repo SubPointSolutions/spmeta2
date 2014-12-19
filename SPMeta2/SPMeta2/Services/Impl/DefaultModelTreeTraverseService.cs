@@ -41,6 +41,13 @@ namespace SPMeta2.Services.Impl
             var modelDefinition = modelNode.Value as DefinitionBase;
             var modelHandler = OnModelHandlerResolve(modelNode);
 
+            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessing for model: [{0}].", modelNode);
+
+            if (OnModelFullyProcessing != null)
+                OnModelFullyProcessing(modelNode);
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessing for model: [{0}].", modelNode);
+
             if (OnModelProcessing != null)
                 OnModelProcessing(modelNode);
 
@@ -48,6 +55,8 @@ namespace SPMeta2.Services.Impl
             {
                 modelHandler.DeployModel(modelHost, modelNode.Value);
             }
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessed for model: [{0}].", modelNode);
 
             if (OnModelProcessed != null)
                 OnModelProcessed(modelNode);
@@ -60,6 +69,11 @@ namespace SPMeta2.Services.Impl
 
                 var childModels = modelNode.GetChildModels(childModelType.Key);
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Found [{0}] models of type: [{1}].", new object[] { childModels.Count(), childModelType.Key });
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessing of type: [{0}].", new object[] { childModelType.Key });
+
+                if (OnChildModelsProcessing != null)
+                    OnChildModelsProcessing(modelNode, childModelType.Key, childModels);
 
                 foreach (var childModel in childModels)
                 {
@@ -80,8 +94,17 @@ namespace SPMeta2.Services.Impl
                     TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing resolving model host of type: [{0}].", new object[] { childModelType.Key });
                 }
 
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessed of type: [{0}].", new object[] { childModelType.Key });
+                if (OnChildModelsProcessed != null)
+                    OnChildModelsProcessed(modelNode, childModelType.Key, childModels);
+
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing processing child models of type: [{0}].", new object[] { childModelType.Key });
             }
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessed for model: [{0}].", modelNode);
+
+            if (OnModelFullyProcessed != null)
+                OnModelFullyProcessed(modelNode);
         }
 
         #endregion
