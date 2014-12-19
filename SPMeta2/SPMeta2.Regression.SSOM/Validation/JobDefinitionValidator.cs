@@ -28,7 +28,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                        .NewAssert(definition, spObject)
                        .ShouldNotBeNull(spObject)
-                       .ShouldBeEqual(m => m.Name, o => o.Name);
+                       .ShouldBeEqual(m => m.Name, o => o.Name)
+                       .ShouldBeEqual(m => m.Title, o => o.Title);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

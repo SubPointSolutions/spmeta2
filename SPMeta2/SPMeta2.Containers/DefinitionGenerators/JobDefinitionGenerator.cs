@@ -13,6 +13,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 def.Name = Rnd.String();
+                def.Title = Rnd.String();
 
                 // TODO, we need a helper here
                 //http://blogs.msdn.com/b/markarend/archive/2007/01/16/spschedule-fromstring-recurrencevalue-syntax-format-for-recurrence-value.aspx

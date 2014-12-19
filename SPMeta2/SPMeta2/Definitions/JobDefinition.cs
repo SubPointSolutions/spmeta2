@@ -42,6 +42,9 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string Name { get; set; }
 
+        [ExpectValidation]
+        public string Title { get; set; }
+
         /// <summary>
         /// Type of the target timer job.
         /// </summary>

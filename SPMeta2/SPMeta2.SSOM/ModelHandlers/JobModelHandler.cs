@@ -128,9 +128,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
 
                 if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
-                {
                     currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
-                }
+
+                currentJobInstance.Title = jobDefinition.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -148,9 +148,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             else
             {
                 if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
-                {
                     currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
-                }
+
+                currentJobInstance.Title = jobDefinition.Title;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
