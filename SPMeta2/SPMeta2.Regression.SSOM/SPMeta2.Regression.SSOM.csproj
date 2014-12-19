@@ -72,6 +72,7 @@
     <Compile Include="Validation\AppDefinitionValidator.cs" />
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
+    <Compile Include="Validation\JobDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ComputedFieldDefinitionValidator.cs" />

@@ -46,12 +46,39 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
+        protected SPJobDefinition FindWebApplicationJob(object modelHost, SPWebApplication webApp, JobDefinition jobDefinition)
+        {
+            var jobNameInUpperCase = jobDefinition.Name.ToUpper();
+            return webApp.JobDefinitions.FirstOrDefault(j => !string.IsNullOrEmpty(j.Name) && j.Name.ToUpper() == jobNameInUpperCase);
+        }
+
+        protected Type ResolveJobType(JobDefinition jobDefinition)
+        {
+            Type jobType = null;
+
+            var subType = jobDefinition.JobType.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (subType.Length == 2)
+            {
+                var typeName = subType[0].Trim();
+                var assemblyName = subType[1].Trim();
+
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+                var targetAssembly = assemblies.FirstOrDefault(a => a.FullName.Split(',')[0].ToUpper() == assemblyName.ToUpper());
+                jobType = targetAssembly.GetType(typeName);
+            }
+            else
+            {
+                jobType = Type.GetType(jobDefinition.JobType);
+            }
+
+            return jobType;
+        }
+
         private void DeployWebApplicationJob(object modelHost, SPWebApplication webApp, JobDefinition jobDefinition)
         {
-            var jobDefinitions = webApp.JobDefinitions;
-
-            var jobNameInUpperCase = jobDefinition.Name.ToUpper();
-            var currentJobInstance = jobDefinitions.FirstOrDefault(j => !string.IsNullOrEmpty(j.Name) && j.Name.ToUpper() == jobNameInUpperCase);
+            var currentJobInstance = FindWebApplicationJob(modelHost, webApp, jobDefinition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -66,30 +93,28 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentJobInstance == null)
             {
-                Type jobType = null;
-
                 // install one
-                var subType = jobDefinition.JobType.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                var jobType = ResolveJobType(jobDefinition);
 
-                if (subType.Length == 2)
+                // expecting only as timerjob is under web application
+                //public cstr(string jobName, SPWebApplication webapp)
+
+                if (jobDefinition.ConstructorParams.Count() == 0)
                 {
-                    var typeName = subType[0].Trim();
-                    var assemblyName = subType[1].Trim();
-
-                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                    var targetAssembly = assemblies.FirstOrDefault(a => a.FullName.Split(',')[0].ToUpper() == assemblyName.ToUpper());
-                    jobType = targetAssembly.GetType(typeName);
+                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, new object[]
+                    {
+                        jobDefinition.Name,
+                        webApp
+                    });
                 }
                 else
                 {
-                    jobType = Type.GetType(jobDefinition.JobType);
+                    currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, new object[]
+                    {
+                        jobDefinition.Name,
+                        webApp
+                    });
                 }
-
-                // TODO
-                // sort out job host - SPWebApp, SPServer
-                currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType);
-                //, jobDefinition.Name, webApp);
 
                 if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
                 {

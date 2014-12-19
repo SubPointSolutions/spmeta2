@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -18,7 +19,11 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.ScheduleString = "yearly at jan 1 09:00:00";
 
                 // TMP
-                def.JobType = "Microsoft.SharePoint.Administration.SPUpgradeJobDefinition, Microsoft.SharePoint";
+                def.JobType = "Microsoft.SharePoint.Administration.SPDeadSiteDeleteJobDefinition, Microsoft.SharePoint";
+                //def.ConstructorParams = new Collection<JobDefinitionCtorParams>()
+                //{
+                //    JobDefinitionCtorParams.WebApplication
+                //};
             });
         }
     }
