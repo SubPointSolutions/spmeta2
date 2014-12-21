@@ -143,6 +143,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region site scope
 
+        #region search
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.Search")]
+        public void CanDeployRandom_SearchConfigurationDefinition()
+        {
+            TestRandomDefinition<SearchConfigurationDefinition>();
+        }
+
+        #endregion
+
         #region fields
 
         [TestMethod]
