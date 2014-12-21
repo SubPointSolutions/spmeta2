@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Fields;
@@ -115,6 +116,53 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
                });
 
             TestModels(new[] { siteModel, webModel });
+        }
+
+        protected void EnsureListFieldScopedWeigh()
+        {
+            var listWeight = DefaultModelWeigh.Weighs.FirstOrDefault(w => w.Model == typeof(ListDefinition));
+
+            if (!listWeight.ChildModels.ContainsKey(typeof(FieldDefinition)))
+                listWeight.ChildModels.Add(typeof(FieldDefinition), 50);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Dependencies")]
+        public void ListFields_Before_ListViews()
+        {
+            var useListScopedeFix = true;
+
+            if (useListScopedeFix)
+            {
+                EnsureListFieldScopedWeigh();
+                EnsureListFieldScopedWeigh();
+            }
+
+            var listField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+            });
+            var webListView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    listField.InternalName
+                };
+            });
+
+            var webModel = SPMeta2Model
+               .NewWebModel(site =>
+               {
+                   site.AddList(webList, list =>
+                   {
+                       list.AddField(listField);
+                       list.AddView(webListView);
+                   });
+               });
+
+            TestModels(new[] { webModel });
         }
 
         #endregion

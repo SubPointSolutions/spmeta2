@@ -19,6 +19,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = list.Context;
 
+            context.Load(list, l => l.Fields);
             context.Load(list, l => l.Views.Include(
                 v => v.ViewFields,
                  o => o.Title,
@@ -30,7 +31,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.ServerRelativeUrl,
                 v => v.Title));
             context.ExecuteQuery();
-            
+
             var spObject = FindViewByTitle(list.Views, definition.Title);
             var assert = ServiceFactory.AssertService
                                       .NewAssert(definition, spObject)
@@ -56,7 +57,14 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 foreach (var srcField in s.Fields)
                 {
-                    if (!d.ViewFields.ToList().Contains(srcField))
+                    var listField = list.Fields.ToList().FirstOrDefault(f => f.StaticName == srcField);
+
+                    // if list-scoped field we need to check by internal name
+                    // internal name is changed for list scoped-fields
+                    // that's why to check by BOTH, definition AND real internal name
+
+                    if (!d.ViewFields.ToList().Contains(srcField) &&
+                         !d.ViewFields.ToList().Contains(listField.InternalName))
                         hasAllFields = false;
                 }
 

@@ -38,7 +38,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBePartOf(m => m.Url, o => o.ServerRelativeUrl);
 
             assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
-         
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(def => def.Fields);
@@ -48,7 +48,14 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 foreach (var srcField in s.Fields)
                 {
-                    if (!d.ViewFields.ToStringCollection().Contains(srcField))
+                    var listField = d.ParentList.Fields.OfType<SPField>().FirstOrDefault(f => f.StaticName == srcField);
+
+                    // if list-scoped field we need to check by internal name
+                    // internal name is changed for list scoped-fields
+                    // that's why to check by BOTH, definition AND real internal name
+
+                    if (!d.ViewFields.ToStringCollection().Contains(srcField) &&
+                        !d.ViewFields.ToStringCollection().Contains(listField.InternalName))
                         hasAllFields = false;
                 }
 
