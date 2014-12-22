@@ -9,7 +9,7 @@ using SPMeta2.Attributes.Regression;
 namespace SPMeta2.Definitions
 {
     /// <summary>
-    /// Allows to define and deploy sregional setting for target web site.
+    /// Allows to define and deploy regional setting for target web site.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRegionalSettings", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RegionalSettings", "Microsoft.SharePoint.Client")]
@@ -17,7 +17,6 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [ExpectAddHostExtensionMethod]
     [Serializable]
 
     public class RegionalSettingsDefinition : DefinitionBase

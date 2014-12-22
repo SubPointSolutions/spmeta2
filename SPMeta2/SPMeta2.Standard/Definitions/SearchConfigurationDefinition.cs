@@ -15,7 +15,6 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(SiteDefinition))]
 
-    [ExpectAddHostExtensionMethod]
     [Serializable]
 
     public class SearchConfigurationDefinition : DefinitionBase

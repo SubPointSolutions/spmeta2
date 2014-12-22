@@ -10,13 +10,15 @@ using SPMeta2.Definitions;
 namespace SPMeta2.Standard.Definitions
 {
 
+    /// <summary>
+    /// Allows to define and deploy SharePoint Search Result
+    /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.Office.Server.Search.Administration.Query.Source", "Microsoft.Office.Server.Search")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Search.Portability.SearchConfigurationPortability", "Microsoft.SharePoint.Client.Search")]
 
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(SiteDefinition))]
 
-    [ExpectAddHostExtensionMethod]
     [Serializable]
 
     public class SearchResultDefinition : DefinitionBase

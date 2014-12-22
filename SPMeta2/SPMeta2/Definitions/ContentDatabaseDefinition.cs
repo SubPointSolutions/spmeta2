@@ -18,7 +18,6 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebApplicationDefinition))]
 
     [Serializable]
-    [ExpectAddHostExtensionMethod]
     public class ContentDatabaseDefinition : DefinitionBase
     {
         #region constructors

@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RegionalSettingsDefinitionSyntax.cs" />
+    <Compile Include="ContentDatabaseDefinitionSyntax.cs" />
     <Compile Include="BusineddDataFieldDefinitionSyntax.cs" />
     <Compile Include="ContentTypeFieldLinkDefinitionSyntax.cs" />
     <Compile Include="EventReceiverDefinitionSyntax.cs" />
