@@ -67,23 +67,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected RegionalSettings GetCurrentRegionalSettings(Web web)
         {
-            //   return new RegionalSettings(web);
-            return null;
+            return web.RegionalSettings;
         }
 
         private void MapRegionalSettings(RegionalSettings settings, RegionalSettingsDefinition definition)
         {
-            // TODO
+            // TODO, CSOM does not support any operation for RegionalSetting yet
 
             //settings.AdjustHijriDays = definition.AdjustHijriDays;
             //settings.AlternateCalendarType = definition.AlternateCalendarType;
             //settings.CalendarType = definition.CalendarType;
             //settings.Collation = definition.Collation;
-            //settings.FirstWeekOfYear = definition.FirstWeekOfYear;
-            //settings.WorkDayEndHour = definition.WorkDayEndHour;
-            //settings.WorkDayStartHour = definition.WorkDayStartHour;
-            //settings.WorkDays = definition.WorkDays;
             //settings.FirstDayOfWeek = definition.FirstDayOfWeek;
+            //settings.FirstWeekOfYear = definition.FirstWeekOfYear;
+            //settings.LocaleId = definition.LocaleId;
+            //settings.WorkDayStartHour = definition.WorkDayStartHour;
+            //settings.WorkDayEndHour = definition.WorkDayEndHour;
+            //settings.WorkDays = definition.WorkDays;
+            //settings.ShowWeeks = definition.ShowWeeks;
+            //settings.Time24 = definition.Time24;
             //settings.LocaleId = definition.LocaleId;
         }
 
