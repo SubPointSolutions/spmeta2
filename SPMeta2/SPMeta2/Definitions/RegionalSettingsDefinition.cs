@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -58,6 +59,26 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public short WorkDayStartHour { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<RegionalSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.AdjustHijriDays)
+                          .AddPropertyValue(p => p.AlternateCalendarType)
+                          .AddPropertyValue(p => p.CalendarType)
+                          .AddPropertyValue(p => p.Collation)
+                          .AddPropertyValue(p => p.LocaleId)
+                          .AddPropertyValue(p => p.ShowWeeks)
+                          .AddPropertyValue(p => p.Time24)
+                          .AddPropertyValue(p => p.WorkDayStartHour)
+                          .AddPropertyValue(p => p.WorkDayEndHour)
+                          .AddPropertyValue(p => p.WorkDays)
+                          .ToString();
+        }
 
         #endregion
     }

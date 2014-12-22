@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -47,6 +48,20 @@ namespace SPMeta2.Definitions
         public int MaximumSiteCollectionNumber { get; set; }
 
         public int Status { get; set; }
+
+        #endregion
+
+        #region methods
+      
+        public override string ToString()
+        {
+            return new ToStringResult<ContentDatabaseDefinition>(this)
+                          .AddPropertyValue(p => p.ServerName)
+                          .AddPropertyValue(p => p.DbName)
+                          .AddPropertyValue(p => p.WarningSiteCollectionNumber)
+                          .AddPropertyValue(p => p.MaximumSiteCollectionNumber)
+                          .ToString();
+        }
 
         #endregion
     }

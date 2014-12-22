@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -51,6 +52,22 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         public Guid? ProviderId { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SearchResultDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.Description)
+                          .AddPropertyValue(p => p.ProviderName)
+                          .AddPropertyValue(p => p.ProviderId)
+                          .AddPropertyValue(p => p.IsDefault)
+                          .AddPropertyValue(p => p.Query)
+                          .ToString();
+        }
 
         #endregion
     }
