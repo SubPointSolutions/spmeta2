@@ -78,6 +78,7 @@
     <Compile Include="Definitions\Fields\CurrencyFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\TextFieldDefinition.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
+    <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />

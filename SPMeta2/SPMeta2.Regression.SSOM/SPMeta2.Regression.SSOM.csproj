@@ -89,6 +89,7 @@
     <Compile Include="Validation\EventReceiverDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\FarmSolutionDefinitionValidator.cs" />
+    <Compile Include="Validation\RegionalSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />

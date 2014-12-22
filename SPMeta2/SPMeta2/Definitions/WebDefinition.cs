@@ -9,7 +9,6 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows too define and deploy SharePoint web site.
     /// </summary>
-    /// 
 
     [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
     [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Web", "Microsoft.SharePoint.Client")]

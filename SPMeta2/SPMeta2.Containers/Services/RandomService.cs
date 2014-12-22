@@ -17,6 +17,7 @@ namespace SPMeta2.Containers.Services
         public abstract int Int();
         public abstract int Int(int maxValue);
 
+
         public abstract double Double();
         public abstract double Double(double maxValue);
 
@@ -29,4 +30,36 @@ namespace SPMeta2.Containers.Services
 
         public abstract string ManagedPath();
     }
+
+    public static class RandomServiceExtensions
+    {
+        #region methods
+
+        public static short Short(this RandomService service)
+        {
+            return service.Short(short.MaxValue);
+        }
+
+        public static short Short(this RandomService service, short maxValue)
+        {
+            return (short)service.Int(maxValue);
+        }
+
+
+        public static uint UInt(this RandomService service)
+        {
+            return service.UInt(uint.MaxValue);
+        }
+
+        public static uint UInt(this RandomService service, uint maxValue)
+        {
+            return (uint)service.Int((int)maxValue);
+        }
+
+        #endregion
+    }
+
+    //public abstract int Short();
+    //  public abstract int Short(int maxValue);
+
 }

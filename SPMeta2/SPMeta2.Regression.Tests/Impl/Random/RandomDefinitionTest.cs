@@ -248,7 +248,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
-        
+
         [TestMethod]
         [TestCategory("Regression.Rnd.EventReceivers")]
         public void CanDeployRandom_EventReceiverDefinition()
@@ -357,6 +357,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region web scope
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_RegionalSettingsDefinition()
+        {
+            TestRandomDefinition<RegionalSettingsDefinition>();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]

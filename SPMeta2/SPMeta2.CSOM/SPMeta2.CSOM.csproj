@@ -116,6 +116,7 @@
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityRoleLinkModelHandler.cs" />
