@@ -79,6 +79,10 @@
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">
+      <Project>{5793019F-7514-4B1F-B31D-A5E472FD034D}</Project>
+      <Name>SPMeta2.Containers.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
       <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
       <Name>SPMeta2.Containers</Name>

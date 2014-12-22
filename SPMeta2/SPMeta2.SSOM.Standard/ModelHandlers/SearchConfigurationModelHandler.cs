@@ -36,14 +36,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
         protected string GetCurrentSearchConfiguration(SPSite site)
         {
-            var owner = new SearchObjectOwner(SearchObjectLevel.SPWeb, site.RootWeb);
+            var owner = new SearchObjectOwner(SearchObjectLevel.SPSite, site.RootWeb);
             return new SearchConfigurationPortability(site).ExportSearchConfiguration(owner);
         }
 
         private void DeploySearchConfiguration(object modelHost, SPSite site, SearchConfigurationDefinition definition)
         {
             var conf = new SearchConfigurationPortability(site);
-            var owner = new SearchObjectOwner(SearchObjectLevel.SPWeb, site.RootWeb);
+            var owner = new SearchObjectOwner(SearchObjectLevel.SPSite, site.RootWeb);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -55,7 +55,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
-
 
             conf.ImportSearchConfiguration(owner, definition.SearchConfiguration);
 

@@ -1,4 +1,7 @@
-﻿using SPMeta2.CSOM.ModelHosts;
+﻿using System.Linq;
+using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Standard.DefinitionGenerators;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
@@ -15,14 +18,33 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<SearchConfigurationDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
+            var spObject = GetCurrentSearchConfiguration(siteModelHost.HostSite);
+            var assert = ServiceFactory.AssertService
+                           .NewAssert(definition, spObject)
+                                 .ShouldNotBeNull(spObject);
 
-            //var renditions = 
-            //var spObject = 
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.SearchConfiguration);
 
-            //var assert = ServiceFactory.AssertService
-            //               .NewAssert(definition, spObject)
-            //                     .ShouldNotBeNull(spObject);
+                var srcNode = SearchTemplatesUtils.GetSetSourceNode(s.SearchConfiguration);
+                var dstNodes = SearchTemplatesUtils.GetSetSourceNodes(d);
+
+                var dstNode = dstNodes.FirstOrDefault(
+                                    n => SearchTemplatesUtils.GetSetSourceName(n) ==
+                                        SearchTemplatesUtils.GetSetSourceName(srcNode));
+
+                var isValid = dstNode != null &&
+                    SearchTemplatesUtils.GetSetSourceDescription(dstNode) == SearchTemplatesUtils.GetSetSourceDescription(srcNode);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = null,
+                    IsValid = isValid
+                };
+            });
         }
 
         #endregion
