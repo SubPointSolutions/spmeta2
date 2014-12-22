@@ -34,7 +34,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             DeploySearchConfiguration(modelHost, site, definition);
         }
 
-        private void DeploySearchConfiguration(object modelHost, Microsoft.SharePoint.SPSite site, SearchConfigurationDefinition definition)
+        protected string GetCurrentSearchConfiguration(SPSite site)
+        {
+            var owner = new SearchObjectOwner(SearchObjectLevel.SPWeb, site.RootWeb);
+            return new SearchConfigurationPortability(site).ExportSearchConfiguration(owner);
+        }
+
+        private void DeploySearchConfiguration(object modelHost, SPSite site, SearchConfigurationDefinition definition)
         {
             var conf = new SearchConfigurationPortability(site);
             var owner = new SearchObjectOwner(SearchObjectLevel.SPWeb, site.RootWeb);
@@ -49,6 +55,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+
 
             conf.ImportSearchConfiguration(owner, definition.SearchConfiguration);
 

@@ -19,14 +19,11 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<SearchConfigurationDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
-
-            //var renditions = 
-            //var spObject = 
-
-            //var assert = ServiceFactory.AssertService
-            //               .NewAssert(definition, spObject)
-            //                     .ShouldNotBeNull(spObject);
+            var spObject = GetCurrentSearchConfiguration(siteModelHost.HostSite);
+            var assert = ServiceFactory.AssertService
+                           .NewAssert(definition, spObject)
+                                 .ShouldNotBeNull(spObject)
+                                 .SkipProperty(m => m.SearchConfiguration, "SearchConfiguration property is not validated yet.");
         }
 
         #endregion

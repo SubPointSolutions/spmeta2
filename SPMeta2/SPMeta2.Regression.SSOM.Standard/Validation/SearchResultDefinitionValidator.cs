@@ -10,7 +10,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation
 {
-    public class SearchResultDefinitionValidator : SearchConfigurationModelHandler
+    public class SearchResultDefinitionValidator : SearchResultModelHandler
     {
         #region methods
 
@@ -18,8 +18,6 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<SearchResultDefinition>("model", value => value.RequireNotNull());
-
-            // TODO
 
             //var assert = ServiceFactory.AssertService
             //               .NewAssert(definition, spObject)
