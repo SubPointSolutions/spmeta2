@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Security;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing.Navigation;
+using Microsoft.SharePoint.Client.Search.Portability;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.WorkflowServices;
 using SPMeta2.Containers.Consts;
@@ -108,6 +109,7 @@ namespace SPMeta2.Containers.CSOM
             var workflow = typeof(WorkflowDefinition);
             var store = typeof(TermStore);
             var publishing = typeof(WebNavigationSettings);
+            var search = typeof(SearchConfigurationPortability);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

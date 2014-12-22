@@ -189,6 +189,30 @@
       <Link>Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll">
+      <Link>Microsoft.Office.Server.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Applications.dll">
+      <Link>Microsoft.Office.Server.Search.Applications.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Connector.dll">
+      <Link>Microsoft.Office.Server.Search.Connector.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.dll">
+      <Link>Microsoft.Office.Server.Search.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.ExchangeAdapter.dll">
+      <Link>Microsoft.Office.Server.Search.ExchangeAdapter.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll">
+      <Link>Microsoft.Office.Server.UserProfiles.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\microsoft.sharepoint.WorkflowActions.dll">
       <Link>microsoft.sharepoint.WorkflowActions.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

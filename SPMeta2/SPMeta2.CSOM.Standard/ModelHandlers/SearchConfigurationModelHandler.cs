@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Administration;
 using Microsoft.SharePoint.Client.Search.Portability;
+using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -40,7 +41,29 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             var conf = new SearchConfigurationPortability(context);
             var owner = new SearchObjectOwner(context, SearchObjectLevel.SPWeb);
 
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = conf,
+                ObjectType = typeof(SearchConfigurationPortability),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
             conf.ImportSearchConfiguration(owner, definition.SearchConfiguration);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = conf,
+                ObjectType = typeof(SearchConfigurationPortability),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
 
             context.ExecuteQuery();
         }

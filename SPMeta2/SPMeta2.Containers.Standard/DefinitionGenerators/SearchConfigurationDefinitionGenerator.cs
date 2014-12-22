@@ -15,8 +15,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                // TMP
-                //def.SearchConfiguration = Rnd.String();
+                def.SearchConfiguration = SearchTemplates.DefaultSearchConfiguration;
             });
         }
     }

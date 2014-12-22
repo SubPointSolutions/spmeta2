@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Office.Server.Search.Administration;
 using Microsoft.Office.Server.Search.Portability;
+using Microsoft.SharePoint;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -37,7 +39,29 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             var conf = new SearchConfigurationPortability(site);
             var owner = new SearchObjectOwner(SearchObjectLevel.SPWeb, site.RootWeb);
 
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = conf,
+                ObjectType = typeof(SearchConfigurationPortability),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
             conf.ImportSearchConfiguration(owner, definition.SearchConfiguration);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = conf,
+                ObjectType = typeof(SearchConfigurationPortability),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
         }
 
         #endregion

@@ -51,6 +51,7 @@
     <Compile Include="Definitions\ImageRenditionDefinition.cs" />
     <Compile Include="Definitions\PublishingPageDefinition.cs" />
     <Compile Include="Definitions\SearchConfigurationDefinition.cs" />
+    <Compile Include="Definitions\SearchResultDefinition.cs" />
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />

@@ -94,6 +94,7 @@
     <Compile Include="ModelHandlers\Fields\CurrencyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />

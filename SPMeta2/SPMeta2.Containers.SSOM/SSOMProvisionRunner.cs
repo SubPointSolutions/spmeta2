@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Office.Server.Search.Portability;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.Publishing.Navigation;
@@ -85,6 +86,8 @@ namespace SPMeta2.Containers.SSOM
 
             var tax = typeof(TaxonomyField);
             var wf = typeof(WorkflowDefinition);
+
+            var search = typeof (SearchConfigurationPortability);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

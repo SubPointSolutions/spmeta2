@@ -52,6 +52,11 @@
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyStoreDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermSetDefinitionGenerator.cs" />
+    <Compile Include="SearchTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchTemplates.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
@@ -71,7 +76,12 @@
       <Name>SPMeta2</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="SearchTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

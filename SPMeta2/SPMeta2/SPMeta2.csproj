@@ -63,6 +63,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\EventReceiverDefinition.cs" />
     <Compile Include="Definitions\Fields\CalculatedFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\NumberFieldDefinition.cs" />

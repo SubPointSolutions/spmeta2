@@ -9,8 +9,8 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Standard.Definitions
 {
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.Office.Server.Search.Portability.SearchConfigurationPortability", "Microsoft.Office.Server.Search")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Search.Portability.SearchConfigurationPortability", "Microsoft.SharePoint.Client.Search")]
 
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(SiteDefinition))]

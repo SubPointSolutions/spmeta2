@@ -54,6 +54,7 @@
     <Compile Include="DefinitionGenerators\AppDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AppPrincipalDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\BreakRoleInheritanceDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ContentDatabaseDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeFieldLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeFieldLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
