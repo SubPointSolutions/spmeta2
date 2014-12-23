@@ -64,6 +64,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             webApp.WebConfigModifications.Add(existingWebConfig);
+            webApp.Update();
+
             webApp.Farm.Services.GetValue<SPWebService>().ApplyWebConfigModifications();
         }
 

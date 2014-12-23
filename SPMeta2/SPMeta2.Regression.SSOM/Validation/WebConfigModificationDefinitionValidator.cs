@@ -27,6 +27,9 @@ namespace SPMeta2.Regression.SSOM.Validation
                 .ShouldBeEqual(m => m.Name, o => o.Name)
                 .ShouldBeEqual(m => m.Owner, o => o.Owner)
                 .ShouldBeEqual(m => m.Path, o => o.Path)
+                .ShouldBeEqual(m => m.Value, o => o.Value)
+                .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
+                .ShouldBeEqual(m => m.Path, o => o.Path)
                 .ShouldBeEqual(m => m.Type, o => o.GetTypeAsString());
         }
     }
@@ -35,7 +38,7 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public static string GetTypeAsString(this SPWebConfigModification config)
         {
-            return config.ToString();
+            return config.Type.ToString();
         }
     }
 }

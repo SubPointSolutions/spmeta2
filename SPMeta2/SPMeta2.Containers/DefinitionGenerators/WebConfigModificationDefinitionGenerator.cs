@@ -13,11 +13,11 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.Path = string.Format("configuration/system.web/pages");
-                def.Name = string.Format("attr{0}", Rnd.String(4));
+                def.Path = string.Format("configuration/appSettings");
+                def.Name = string.Format("add [@key='k{0}'] [@value='{1}']", Rnd.String(8), Rnd.String(8));
                 def.Sequence = Rnd.UInt(100);
                 def.Owner = string.Format("WebConfigModifications{0}", Rnd.String(8));
-                def.Type = BuiltInWebConfigModificationType.EnsureAttribute;
+                def.Type = BuiltInWebConfigModificationType.EnsureChildNode;
                 def.Value = Rnd.Bool().ToString().ToLower();
             });
         }
