@@ -47,8 +47,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if (existingWebConfig == null)
-                existingWebConfig = new SPWebConfigModification();
+            if (existingWebConfig != null)
+                webApp.WebConfigModifications.Remove(existingWebConfig);
+
+            existingWebConfig = new SPWebConfigModification();
 
             MapConfig(existingWebConfig, definition);
 
@@ -64,9 +66,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             webApp.WebConfigModifications.Add(existingWebConfig);
-            webApp.Update();
 
-            webApp.Farm.Services.GetValue<SPWebService>().ApplyWebConfigModifications();
+            webApp.Update();
+            webApp.WebService.ApplyWebConfigModifications();
         }
 
         private void MapConfig(SPWebConfigModification config, WebConfigModificationDefinition definition)
@@ -79,10 +81,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             config.Value = definition.Value;
         }
 
-        protected SPWebConfigModification
-        GetCurrentSPWebConfigModification(SPWebApplication webApp, WebConfigModificationDefinition definition)
+        protected SPWebConfigModification GetCurrentSPWebConfigModification(SPWebApplication webApp, WebConfigModificationDefinition definition)
         {
-            return webApp.WebConfigModifications.FirstOrDefault(c => c.Name == definition.Name);
+            return webApp.WebConfigModifications.FirstOrDefault(c => c.Owner == definition.Owner);
         }
 
         #endregion

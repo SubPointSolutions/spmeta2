@@ -13,12 +13,15 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
+                var key = string.Format("key{0}", Rnd.String(8));
+                var value = string.Format("value{0}", Rnd.String(8));
+
                 def.Path = string.Format("configuration/appSettings");
-                def.Name = string.Format("add [@key='k{0}'] [@value='{1}']", Rnd.String(8), Rnd.String(8));
+                def.Name = string.Format("add[@key='{0}']", key);
                 def.Sequence = Rnd.UInt(100);
                 def.Owner = string.Format("WebConfigModifications{0}", Rnd.String(8));
                 def.Type = BuiltInWebConfigModificationType.EnsureChildNode;
-                def.Value = Rnd.Bool().ToString().ToLower();
+                def.Value = string.Format(@"<add key=""{0}"" value=""{1}"" />", key, value);
             });
         }
     }
