@@ -61,6 +61,7 @@
     <Compile Include="PrefixDefinitionSyntax.cs" />
     <Compile Include="WebApplicationDefinitionSyntax.cs" />
     <Compile Include="SiteDefinitionSyntax.cs" />
+    <Compile Include="WebConfigModificationDefinitionSyntax.cs" />
     <Compile Include="XsltListViewWebPartDefinitionSyntax.cs" />
     <Compile Include="ScriptEditorWebPartDefinitionSyntax.cs" />
     <Compile Include="ContentEditorWebPartDefinitionSyntax.cs" />

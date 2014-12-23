@@ -17,7 +17,6 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHost(typeof(WebApplicationDefinition))]
     [DefaultParentHost(typeof(WebApplicationDefinition))]
-    [ExpectAddHostExtensionMethod]
     [Serializable]
     [ExpectWithExtensionMethod]
     public class WebConfigModificationDefinition : DefinitionBase
