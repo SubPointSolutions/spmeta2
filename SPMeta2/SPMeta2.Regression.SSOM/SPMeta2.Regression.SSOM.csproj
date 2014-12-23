@@ -73,6 +73,8 @@
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />
     <Compile Include="Validation\ContentDatabaseDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\URLFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\InformationRightsManagementSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\JobDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />

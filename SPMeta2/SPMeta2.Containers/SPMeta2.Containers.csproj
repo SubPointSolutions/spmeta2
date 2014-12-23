@@ -60,6 +60,7 @@
     <Compile Include="DefinitionGenerators\ContentTypes\RemoveContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\HideContentTypeLinksDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeFieldsOrderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\URLFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\GuidFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\ComputedFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\CalculatedFieldDefinitionGenerator.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="DefinitionGenerators\FieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\EventReceiverDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\FolderDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\InformationRightsManagementSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\JobDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ContentTypes\UniqueContentTypeOrderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListDefinitionGenerator.cs" />

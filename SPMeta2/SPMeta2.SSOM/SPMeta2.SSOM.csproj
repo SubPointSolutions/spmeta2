@@ -81,6 +81,7 @@
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeFieldsOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\DateTimeFieldModelHandler.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
+    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />

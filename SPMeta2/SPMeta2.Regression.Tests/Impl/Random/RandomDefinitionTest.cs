@@ -153,6 +153,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region site scope
 
+        #region IRM
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.IRM")]
+        public void CanDeployRandom_InformationRightsManagementSettingsDefinition()
+        {
+            TestRandomDefinition<InformationRightsManagementSettingsDefinition>();
+        }
+
+        #endregion
+
         #region search
 
         [TestMethod]
@@ -262,6 +273,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_GuidFieldDefinition()
         {
             TestRandomDefinition<GuidFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_URLFieldDefinition()
+        {
+            TestRandomDefinition<URLFieldDefinition>();
         }
 
         #endregion

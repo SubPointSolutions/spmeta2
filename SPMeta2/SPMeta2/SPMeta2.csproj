@@ -70,6 +70,7 @@
     <Compile Include="Definitions\Fields\GuidFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\ComputedFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\LookupFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\URLFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\UserFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\DateTimeFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\BooleanFieldDefinition.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Definitions\Fields\NoteFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\CurrencyFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\TextFieldDefinition.cs" />
+    <Compile Include="Definitions\InformationRightsManagementSettingsDefinition.cs" />
     <Compile Include="Definitions\MasterPageSettings.cs" />
     <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\BuiltInNumberFormatTypes.cs" />
+    <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />
     <Compile Include="Common\ModelEventType.cs" />
