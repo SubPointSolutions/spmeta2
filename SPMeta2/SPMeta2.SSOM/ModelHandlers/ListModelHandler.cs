@@ -125,6 +125,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             targetList.Description = listModel.Description ?? string.Empty;
             targetList.ContentTypesEnabled = listModel.ContentTypesEnabled;
 
+            if (listModel.IrmEnabled.HasValue)
+                targetList.IrmEnabled = listModel.IrmEnabled.Value;
+
+            if (listModel.IrmExpire.HasValue)
+                targetList.IrmExpire = listModel.IrmExpire.Value;
+
+            if (listModel.IrmReject.HasValue)
+                targetList.IrmReject = listModel.IrmReject.Value;
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

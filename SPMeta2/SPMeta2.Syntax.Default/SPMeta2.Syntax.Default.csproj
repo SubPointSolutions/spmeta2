@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InformationRightsManagementSettingsDefinitionSyntax.cs" />
+    <Compile Include="URLFieldDefinitionSyntax.cs" />
     <Compile Include="RegionalSettingsDefinitionSyntax.cs" />
     <Compile Include="ContentDatabaseDefinitionSyntax.cs" />
     <Compile Include="BusineddDataFieldDefinitionSyntax.cs" />

@@ -39,6 +39,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 .ShouldBeEqual(m => m.Description, o => o.Description)
+                .ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled)
+                .ShouldBeEqual(m => m.IrmExpire, o => o.IrmExpire)
+                .ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
                 .ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 

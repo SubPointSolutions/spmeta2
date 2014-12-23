@@ -304,6 +304,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list");
             }
 
+            if (listModel.IrmEnabled.HasValue)
+                currentList.IrmEnabled = listModel.IrmEnabled.Value;
+
+            if (listModel.IrmExpire.HasValue)
+                currentList.IrmExpire = listModel.IrmExpire.Value;
+
+            if (listModel.IrmReject.HasValue)
+                currentList.IrmReject = listModel.IrmReject.Value;
+
             currentList.Title = listModel.Title;
             currentList.Description = listModel.Description ?? string.Empty;
             currentList.ContentTypesEnabled = listModel.ContentTypesEnabled;

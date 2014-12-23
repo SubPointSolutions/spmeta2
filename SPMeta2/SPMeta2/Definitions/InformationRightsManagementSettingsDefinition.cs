@@ -1,14 +1,15 @@
 ﻿using System;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPInformationRightsManagementSettings", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.InformationRightsManagementSettings", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHost(typeof(SiteDefinition))]
-    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable]
 
@@ -57,6 +58,22 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public string PolicyTitle { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<InformationRightsManagementSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.PolicyTitle)
+                          .AddPropertyValue(p => p.PolicyDescription)
+                          .AddPropertyValue(p => p.GroupName)
+                          .AddPropertyValue(p => p.AllowPrint)
+                          .AddPropertyValue(p => p.AllowScript)
+                          .AddPropertyValue(p => p.AllowWriteCopy)
+                          .ToString();
+        }
 
         #endregion
     }

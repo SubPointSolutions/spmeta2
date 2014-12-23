@@ -53,6 +53,9 @@ namespace SPMeta2.Containers.Assertion
             if (srcProp.Value is byte[] && dstProp.Value is byte[])
                 isValid = (srcProp.Value as byte[]).SequenceEqual((dstProp.Value as byte[]));
 
+            if (srcProp.Value is DateTime && dstProp.Value is DateTime)
+                isValid = DateTime.Equals(srcProp.Value, dstProp.Value);
+
             InvokeOnPropertyValidated(this, new OnPropertyValidatedEventArgs
             {
                 Result = new PropertyValidationResult
@@ -79,6 +82,11 @@ namespace SPMeta2.Containers.Assertion
             });
 
             return this;
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, DateTime>> srcExp, Expression<Func<TDst, DateTime>> dstExp)
+        {
+            return InternalShouldBeEqual<DateTime>(srcExp, srcExp, dstExp, dstExp);
         }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, double?>> srcExp, Expression<Func<TDst, double?>> dstExp)
