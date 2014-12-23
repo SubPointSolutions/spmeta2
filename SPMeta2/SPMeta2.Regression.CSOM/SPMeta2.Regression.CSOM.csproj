@@ -119,6 +119,7 @@
     <Compile Include="Validation\Fields\MultiChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BusinessDataFieldDefinitionValidator.cs" />
     <Compile Include="Validation\ClientRegionalSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientInformationRightsManagementSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationModelHost.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />

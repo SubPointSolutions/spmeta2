@@ -109,6 +109,7 @@
     <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BusinessDataFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />
+    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
