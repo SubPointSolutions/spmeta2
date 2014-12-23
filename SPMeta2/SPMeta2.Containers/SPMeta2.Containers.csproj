@@ -122,6 +122,7 @@
     <Compile Include="DefinitionGenerators\Webparts\ContentEditorWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WebConfigModificationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

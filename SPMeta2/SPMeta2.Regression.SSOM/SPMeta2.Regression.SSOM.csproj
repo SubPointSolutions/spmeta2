@@ -94,6 +94,7 @@
     <Compile Include="Validation\FarmSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\RegionalSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
+    <Compile Include="Validation\WebConfigModificationDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />

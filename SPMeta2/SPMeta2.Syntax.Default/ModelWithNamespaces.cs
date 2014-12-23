@@ -17,6 +17,11 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithWebConfigModifications(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithWebApplicationFeatures(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);
