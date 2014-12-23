@@ -107,6 +107,7 @@
     <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\GuidFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\NumberFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\URLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\UserFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\LookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\BooleanFieldDefinitionValidator.cs" />

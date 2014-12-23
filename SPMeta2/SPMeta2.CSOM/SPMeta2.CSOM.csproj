@@ -97,6 +97,7 @@
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\NumberFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\GuidFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LookupFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BooleanFieldModelHandler.cs" />
