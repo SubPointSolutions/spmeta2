@@ -21,7 +21,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(FarmDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class ManagedAccountDefinition : DefinitionBase
     {
         #region properties

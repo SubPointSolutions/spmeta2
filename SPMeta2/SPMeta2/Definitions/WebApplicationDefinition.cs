@@ -21,7 +21,7 @@ namespace SPMeta2.Definitions
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class WebApplicationDefinition : DefinitionBase
     {
         #region properties

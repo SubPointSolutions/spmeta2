@@ -30,7 +30,7 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.EnableDefinitionValidation = true;
 
-            EnablePropertyUpdateValidation = false;
+            //EnablePropertyUpdateValidation = false;
         }
 
         #endregion

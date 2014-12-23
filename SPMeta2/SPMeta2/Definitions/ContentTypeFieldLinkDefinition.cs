@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ContentTypeDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class ContentTypeFieldLinkDefinition : DefinitionBase
     {
         #region properties

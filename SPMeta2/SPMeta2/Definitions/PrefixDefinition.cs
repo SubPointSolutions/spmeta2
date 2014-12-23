@@ -21,7 +21,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class PrefixDefinition : DefinitionBase
     {
         #region properties

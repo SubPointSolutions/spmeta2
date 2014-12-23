@@ -17,6 +17,8 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
+
+    [ExpectWithExtensionMethod]
     public class EventReceiverDefinition : DefinitionBase
     {
         #region constructors

@@ -22,7 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(FarmDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class FarmSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors

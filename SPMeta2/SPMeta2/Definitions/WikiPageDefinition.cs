@@ -18,6 +18,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectAddHostExtensionMethod]
+    [ExpectWithExtensionMethod]
     public class WikiPageDefinition : PageDefinitionBase
     {
         #region properties

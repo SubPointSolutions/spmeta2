@@ -22,7 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class UserCustomActionDefinition : DefinitionBase
     {
         #region constructors

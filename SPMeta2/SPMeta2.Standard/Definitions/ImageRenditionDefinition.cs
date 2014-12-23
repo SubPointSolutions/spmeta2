@@ -20,6 +20,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class ImageRenditionDefinition : DefinitionBase
     {
         #region properties

@@ -20,7 +20,7 @@ namespace SPMeta2.Standard.Definitions
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class PublishingPageDefinition : PageDefinitionBase
     {
         #region properties

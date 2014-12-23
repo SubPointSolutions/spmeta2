@@ -22,7 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListItemDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class ListItemFieldValueDefinition : DefinitionBase
     {
         #region properties

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\Regression\ExpectWithExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectAddHostExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectUpdate.cs" />
     <Compile Include="Attributes\Regression\ExpectValidation.cs" />

@@ -15,6 +15,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class FieldDefinition : DefinitionBase
     {
         #region constructors

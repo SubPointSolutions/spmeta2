@@ -18,6 +18,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class ListViewDefinition : DefinitionBase
     {
         #region constructors

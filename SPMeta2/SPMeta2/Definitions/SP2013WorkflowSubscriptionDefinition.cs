@@ -23,7 +23,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
         #region constructors

@@ -21,7 +21,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultParentHost(typeof(SiteDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class SearchResultDefinition : DefinitionBase
     {
         #region constructors

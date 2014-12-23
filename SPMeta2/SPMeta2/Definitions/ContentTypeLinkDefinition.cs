@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class ContentTypeLinkDefinition : DefinitionBase
     {
         #region properties

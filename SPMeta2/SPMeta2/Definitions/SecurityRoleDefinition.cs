@@ -17,6 +17,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region constructors

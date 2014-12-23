@@ -14,7 +14,7 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(BreakRoleInheritanceDefinition))]
-
+    [ExpectWithExtensionMethod]
     public class SecurityGroupLinkDefinition : DefinitionBase
     {
         public SecurityGroupLinkDefinition()

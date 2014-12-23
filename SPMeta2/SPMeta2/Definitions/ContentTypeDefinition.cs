@@ -17,6 +17,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectAddHostExtensionMethod]
+    [ExpectWithExtensionMethod]
     public class ContentTypeDefinition : DefinitionBase
     {
         #region properties

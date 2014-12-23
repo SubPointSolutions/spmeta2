@@ -19,6 +19,8 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
+
+    [ExpectWithExtensionMethod]
     public class AppDefinition : DefinitionBase
     {
         #region properties

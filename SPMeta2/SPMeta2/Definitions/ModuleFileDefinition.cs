@@ -20,6 +20,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class ModuleFileDefinition : DefinitionBase
     {
         #region constructors

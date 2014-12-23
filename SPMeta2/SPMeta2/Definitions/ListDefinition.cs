@@ -18,6 +18,7 @@ namespace SPMeta2.Definitions
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class ListDefinition : DefinitionBase
     {
         public ListDefinition()

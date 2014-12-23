@@ -22,7 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(WebDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class TopNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
         #region methods

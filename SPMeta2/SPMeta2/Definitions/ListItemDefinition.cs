@@ -21,6 +21,7 @@ namespace SPMeta2.Definitions
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class ListItemDefinition : DefinitionBase
     {
         #region constructors

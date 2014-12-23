@@ -16,6 +16,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
         #region constructors

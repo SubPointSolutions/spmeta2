@@ -15,6 +15,7 @@ namespace SPMeta2.Definitions
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class WebPartPageDefinition : PageDefinitionBase
     {
         #region constructors

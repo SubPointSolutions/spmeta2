@@ -21,6 +21,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
 
     [Serializable]
+    [ExpectWithExtensionMethod]
     public class JobDefinition : DefinitionBase
     {
         #region constructors

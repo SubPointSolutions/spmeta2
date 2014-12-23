@@ -23,7 +23,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
-
+    [ExpectWithExtensionMethod]
     public class SandboxSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors
