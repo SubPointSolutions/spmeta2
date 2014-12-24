@@ -22,7 +22,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var termSetModelHost = modelHost.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
-            var spObject = FindTerm(termSetModelHost.HostTermSet, definition);
+            var spObject = FindTermInTermSet(termSetModelHost.HostTermSet, definition);
 
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)

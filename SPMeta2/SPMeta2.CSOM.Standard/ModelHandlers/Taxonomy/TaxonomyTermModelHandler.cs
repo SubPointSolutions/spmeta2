@@ -32,7 +32,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var termModel = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
             DeployTaxonomyTerm(modelHost, termSetMModelHost, termModel);
-
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
