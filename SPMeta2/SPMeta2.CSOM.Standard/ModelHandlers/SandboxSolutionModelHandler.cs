@@ -92,11 +92,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            // TODO
-            // Site Assets list has to be there are the whole DesignPackage thing requires Publishing infrastructure to be activated.
-            // list lookup should be changes later to URL based resolution
-            var solutionGallery = site.RootWeb.Lists.GetByTitle("Site Assets");
-            var folder = solutionGallery.RootFolder;
+            //var solutionGallery = site.RootWeb.Lists.GetByTitle("Site Assets");
+            //var folder = solutionGallery.RootFolder;
+            var folder = site.RootWeb.RootFolder;
 
             context.Load(folder);
             context.ExecuteQueryWithTrace();
@@ -122,7 +120,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.Load(newFile);
             context.Load(newFile, f => f.ServerRelativeUrl);
 
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Uploading new sandbox solution to Site Assets library");
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Uploading new sandbox solution to root site folder");
             context.ExecuteQueryWithTrace();
 
             if (sandboxSolutionDefinition.Activate)
@@ -141,7 +139,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 // clean up the file
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deleting sandbox file from  Site Assets library");
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deleting sandbox file from root site folder");
                 newFile.DeleteObject();
                 context.ExecuteQueryWithTrace();
             }
