@@ -105,6 +105,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ModelHost = modelHost
                 });
             }
+
+            groupModelHost.HostTermStore.CommitAll();
         }
 
         protected TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)

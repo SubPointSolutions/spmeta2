@@ -116,6 +116,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ModelHost = modelHost
                 });
             }
+
+            siteModelHost.HostTermStore.CommitAll();
         }
 
         #endregion

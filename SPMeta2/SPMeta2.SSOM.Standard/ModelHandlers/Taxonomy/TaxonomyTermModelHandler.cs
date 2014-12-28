@@ -51,6 +51,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             Term currentTerm = null;
             Group group = null;
             TermSet termSet = null;
+            TermStore termStore = null;
 
             if (modelHost is TermModelHost)
             {
@@ -58,6 +59,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
                 group = h.HostGroup;
                 termSet = h.HostTermSet;
+                termStore = h.HostTermStore;
 
                 currentTerm = FindTermInTerm(h.HostTerm, definition);
             }
@@ -65,6 +67,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             {
                 var h = (modelHost as TermSetModelHost);
 
+                termStore = h.HostTermStore;
                 group = h.HostGroup;
                 termSet = h.HostTermSet;
 
@@ -77,6 +80,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 HostTermSet = termSet,
                 HostTerm = currentTerm
             });
+
+            //termStore.CommitAll();
         }
 
         private void DeployTermUnderTerm(object modelHost, TermModelHost termModelHost, TaxonomyTermDefinition termModel)
@@ -183,6 +188,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ModelHost = modelHost
                 });
             }
+
+            groupModelHost.HostTermStore.CommitAll();
         }
 
         private Term FindTermInTerm(Term term, TaxonomyTermDefinition termModel)

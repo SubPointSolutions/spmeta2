@@ -58,7 +58,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                                      level1
                                                          .AddRandomTerm(level2 =>
                                                          {
-                                                             level2.AddRandomTerm();
+                                                             level2.AddRandomTerm(level3 =>
+                                                             {
+                                                                 level3.AddRandomTerm();
+                                                             });
                                                          });
                                                  });
                                          });
