@@ -103,6 +103,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ModelHost = modelHost
                 });
             }
+
+            termStore.CommitAll();
+            termStore.Context.ExecuteQuery();
         }
 
         protected TermSet FindTermSet(TermGroup termGroup, TaxonomyTermSetDefinition termSetModel)

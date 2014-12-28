@@ -48,6 +48,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             });
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling termStore.CommitAll()");
+            
             termStore.CommitAll();
             termStore.Context.ExecuteQueryWithTrace();
         }
