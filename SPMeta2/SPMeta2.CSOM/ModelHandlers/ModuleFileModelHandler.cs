@@ -118,16 +118,31 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
+            var shouldRefreshLoad = false;
+
             if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
+            {
                 file.UndoCheckOut();
+                file.RefreshLoad();
+                
+                context.ExecuteQueryWithTrace();
+            }
 
             if (list != null && file != null && (list.EnableMinorVersions) && (file.Exists && file.Level == FileLevel.Published))
+            {
                 file.UnPublish("Provision");
+                file.RefreshLoad();
+
+                context.ExecuteQueryWithTrace();
+            }
 
             if (list != null && file != null && (file.Exists && file.CheckOutType == CheckOutType.None))
+            {
                 file.CheckOut();
+                file.RefreshLoad();
 
-            context.ExecuteQueryWithTrace();
+                context.ExecuteQueryWithTrace();
+            }
 
             var spFile = action(file);
             context.ExecuteQueryWithTrace();

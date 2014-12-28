@@ -2,9 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Exceptions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
@@ -84,7 +86,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModels(new[] { siteModel, webModel });
-            TestModel(webModel);
         }
 
         [TestMethod]
@@ -125,6 +126,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 spContext.CallMethod("ExecuteQuery");
             }
+            else if (objType.ToString().Contains("Microsoft.SharePoint.SPFile"))
+            {
+                obj.CallMethod("CheckOut");
+            }
+            else
+            {
+                throw new SPMeta2NotImplementedException(string.Format("CheckoutFile() method is not implemented for type: [{0}]", objType));
+            }
         }
 
         private void UnpublishFile(OnCreatingContext<object, DefinitionBase> context)
@@ -138,6 +147,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 var spContext = obj.GetPropertyValue("Context");
 
                 spContext.CallMethod("ExecuteQuery");
+            }
+            else if (objType.ToString().Contains("Microsoft.SharePoint.SPFile"))
+            {
+                obj.CallMethod("UnPublish", new string[] { "unpublish" });
+            }
+            else
+            {
+                throw new SPMeta2NotImplementedException(string.Format("UnpublishFile() method is not implemented for type: [{0}]", objType));
             }
         }
 
