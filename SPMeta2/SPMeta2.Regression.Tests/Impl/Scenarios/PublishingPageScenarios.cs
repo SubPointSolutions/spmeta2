@@ -113,6 +113,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
         }
+       
+        #endregion
+
+        #region utils
 
         private void CheckoutFile(OnCreatingContext<object, DefinitionBase> context)
         {
@@ -128,7 +132,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             }
             else if (objType.ToString().Contains("Microsoft.SharePoint.SPFile"))
             {
-                obj.CallMethod("CheckOut");
+                obj.CallMethod(null, m => m.Name == "CheckOut" && m.GetParameters().Count() == 0);
             }
             else
             {
@@ -157,7 +161,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 throw new SPMeta2NotImplementedException(string.Format("UnpublishFile() method is not implemented for type: [{0}]", objType));
             }
         }
-
+        
         #endregion
     }
 
@@ -170,8 +174,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         internal static object CallMethod(this object obj, string methodName, object[] parameters)
         {
+            return CallMethod(obj, parameters, m => m.Name == methodName);
+        }
+
+        internal static object CallMethod(this object obj, object[] parameters,
+            Func<MethodInfo, bool> filter)
+        {
             var type = obj.GetType();
-            var method = type.GetMethod(methodName);
+            var method = type.GetMethods().FirstOrDefault(m => filter(m) == true);
 
             return method.Invoke(obj, parameters);
         }
