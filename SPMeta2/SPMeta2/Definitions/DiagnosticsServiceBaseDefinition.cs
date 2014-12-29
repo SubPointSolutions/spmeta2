@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,18 @@ namespace SPMeta2.Definitions
         #region properties
 
         public string AssemblyQualifiedName { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<DiagnosticsServiceBaseDefinition>(this)
+                          .AddPropertyValue(p => p.AssemblyQualifiedName)
+
+                          .ToString();
+        }
 
         #endregion
     }

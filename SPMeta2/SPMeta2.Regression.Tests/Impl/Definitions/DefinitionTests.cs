@@ -138,6 +138,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                     addDefinitionMethodName = string.Format("With{0}es", definitionName);
                 if (definitionType == typeof(PropertyDefinition))
                     addDefinitionMethodName = string.Format("WithProperties");
+                if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
+                    addDefinitionMethodName = string.Format("WithDiagnosticsServices");
                 
                 if (!shouldCheckWithMethod)
                 {

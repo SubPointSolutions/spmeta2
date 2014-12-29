@@ -51,8 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SecureStoreApplicationDefinitionSyntax.cs" />
+    <Compile Include="TargetApplicationDefinitionSyntax.cs" />
     <Compile Include="AlternateUrlDefinitionSyntax.cs" />
+    <Compile Include="SecureStoreApplicationDefinitionSyntax.cs" />
+    <Compile Include="DiagnosticsServiceBaseDefinitionSyntax.cs" />
     <Compile Include="InformationRightsManagementSettingsDefinitionSyntax.cs" />
     <Compile Include="URLFieldDefinitionSyntax.cs" />
     <Compile Include="RegionalSettingsDefinitionSyntax.cs" />
