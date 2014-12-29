@@ -10,6 +10,13 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
+    public class TargetApplicationFieldValue
+    {
+        public bool IsMasked { get; set; }
+        public string Name { get; set; }
+        public string CredentialType { get; set; }
+    }
+
     /// <summary>
     /// Allows to define and deploy secure store target applicationL.
     /// </summary>
@@ -26,6 +33,7 @@ namespace SPMeta2.Definitions
         public TargetApplicationDefinition()
         {
             TargetApplicationClams = new Collection<string>();
+            Fields = new Collection<TargetApplicationFieldValue>();
         }
 
         #endregion
@@ -42,6 +50,9 @@ namespace SPMeta2.Definitions
         public string Type { get; set; }
 
         public Collection<string> TargetApplicationClams { get; set; }
+        public Collection<TargetApplicationFieldValue> Fields { get; set; }
+
+        public string CredentialManagementUrl { get; set; }
 
         #endregion
 

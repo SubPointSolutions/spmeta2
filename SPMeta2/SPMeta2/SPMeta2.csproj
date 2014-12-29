@@ -97,6 +97,8 @@
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\BuiltInNumberFormatTypes.cs" />
+    <Compile Include="Enumerations\BuiltInSecureStoreCredentialType.cs" />
+    <Compile Include="Enumerations\BuiltInTargetApplicationType.cs" />
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInUrlZone.cs" />
     <Compile Include="Enumerations\BuiltInWebConfigModificationType.cs" />

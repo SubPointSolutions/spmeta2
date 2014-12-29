@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,26 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.ContactEmail = Rnd.UserEmail();
                 def.TicketTimeout = Rnd.Int(120);
                 def.TargetApplicationClams.Add(Rnd.UserLogin());
+
+                def.CredentialManagementUrl = Rnd.HttpUrl();
+
+                def.Type = BuiltInTargetApplicationType.Individual;
+
+                def.Fields = new Collection<TargetApplicationFieldValue>
+                {
+                    new TargetApplicationFieldValue
+                    {
+                        Name = Rnd.String(),
+                        IsMasked = false,
+                        CredentialType = BuiltInSecureStoreCredentialType.UserName
+                    },
+                    new TargetApplicationFieldValue
+                    {
+                        Name = Rnd.String(),
+                        IsMasked = true,
+                        CredentialType = BuiltInSecureStoreCredentialType.Password
+                    }
+                };
             });
         }
     }

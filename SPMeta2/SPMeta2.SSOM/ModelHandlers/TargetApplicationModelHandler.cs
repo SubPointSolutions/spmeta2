@@ -37,19 +37,19 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected TargetApplication GetCurrentObject(ISecureStore secureStore, TargetApplicationDefinition definition)
         {
+            var apps = secureStore.GetApplications();
+
             if (!string.IsNullOrEmpty(definition.ApplicationId))
             {
-                return secureStore.GetApplication(definition.ApplicationId);
+                return apps.FirstOrDefault(app => app.ApplicationId.ToUpper() == definition.ApplicationId.ToUpper());
             }
             else if (!string.IsNullOrEmpty(definition.Name))
             {
-                var apps = secureStore.GetApplications();
-                return apps.FirstOrDefault(app => app.Name.ToUpper() == definition.FriendlyName);
+                return apps.FirstOrDefault(app => app.Name.ToUpper() == definition.FriendlyName.ToUpper());
             }
             else if (!string.IsNullOrEmpty(definition.FriendlyName))
             {
-                var apps = secureStore.GetApplications();
-                return apps.FirstOrDefault(app => app.FriendlyName.ToUpper() == definition.FriendlyName);
+                return apps.FirstOrDefault(app => app.FriendlyName.ToUpper() == definition.FriendlyName.ToUpper());
             }
             else
             {
@@ -102,13 +102,34 @@ namespace SPMeta2.SSOM.ModelHandlers
             foreach (var claim in definition.TargetApplicationClams)
                 secureStoreClaimns.Add(GetSecureStoreClaim(claim));
 
-            var targetApplicationClaims = new TargetApplicationClaims(secureStoreClaimns, null, null);
+            var appClaims = new TargetApplicationClaims(secureStoreClaimns, null, null);
+            var appFields = GetFields(definition);
 
             hostSecureStore.CreateApplication(
-                new TargetApplication(definition.Name, definition.FriendlyName, definition.ContactEmail, definition.TicketTimeout, appType, null),
-                new TargetApplicationField[] { }, targetApplicationClaims);
+                new TargetApplication(definition.ApplicationId, definition.FriendlyName, definition.ContactEmail,
+                    definition.TicketTimeout,
+                    appType,
+                    new Uri(definition.CredentialManagementUrl)),
+                appFields, appClaims);
 
             return GetCurrentObject(hostSecureStore, definition);
+        }
+
+        private TargetApplicationField[] GetFields(TargetApplicationDefinition definition)
+        {
+            var result = new List<TargetApplicationField>();
+
+            foreach (var field in definition.Fields)
+            {
+                result.Add(new TargetApplicationField(
+
+                 field.Name,
+                 field.IsMasked,
+                 (SecureStoreCredentialType)Enum.Parse(typeof(SecureStoreCredentialType), field.CredentialType)
+                ));
+            }
+
+            return result.ToArray();
         }
 
         #endregion
