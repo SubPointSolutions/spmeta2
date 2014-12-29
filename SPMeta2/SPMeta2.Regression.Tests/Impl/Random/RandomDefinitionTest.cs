@@ -95,8 +95,24 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+
+
         [TestMethod]
         [TestCategory("Regression.Rnd.Farm")]
+        public void CanDeployRandom_ManagedAccountDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ManagedAccountDefinition>();
+            });
+        }
+
+        #endregion
+
+        #region secure store application
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.SecureStore")]
         public void CanDeployRandom_SecureStoreApplicationDefinition()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
@@ -106,12 +122,12 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.Farm")]
-        public void CanDeployRandom_ManagedAccountDefinition()
+        [TestCategory("Regression.Rnd.SecureStore")]
+        public void CanDeployRandom_TargetApplicationDefinition()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                TestRandomDefinition<ManagedAccountDefinition>();
+                TestRandomDefinition<TargetApplicationDefinition>();
             });
         }
 

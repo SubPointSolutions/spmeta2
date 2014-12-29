@@ -85,6 +85,7 @@
     <Compile Include="Definitions\MasterPageSettings.cs" />
     <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
+    <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
