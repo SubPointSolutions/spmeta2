@@ -7,6 +7,11 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        public static ModelNode WithAlternateUrls(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithSP2013Workflows(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);

@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="SSOMValidationService.cs" />
+    <Compile Include="Validation\AlternateUrlDefinitionValidator.cs" />
     <Compile Include="Validation\AppDefinitionValidator.cs" />
     <Compile Include="Validation\BreakRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\AppPrincipalDefinitionValidator.cs" />

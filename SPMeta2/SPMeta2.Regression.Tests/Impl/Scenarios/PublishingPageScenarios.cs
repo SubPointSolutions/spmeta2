@@ -96,7 +96,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 page.OnProvisioned<object>(context =>
                 {
-                    UnpublishFile(context);
+                    UnpublishFile(context); 
                 });
             });
         }

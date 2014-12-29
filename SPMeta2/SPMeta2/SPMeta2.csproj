@@ -63,6 +63,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
+    <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\EventReceiverDefinition.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\BuiltInNumberFormatTypes.cs" />
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
+    <Compile Include="Enumerations\BuiltInUrlZone.cs" />
     <Compile Include="Enumerations\BuiltInWebConfigModificationType.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />

@@ -35,11 +35,20 @@ namespace SPMeta2.Containers.Services
     {
         #region methods
 
+        public static string HttpUrl(this RandomService service)
+        {
+            return string.Format("http://url-{0}.com", service.String(8));
+        }
+
+        public static string HttpsUrl(this RandomService service)
+        {
+            return string.Format("https://url-{0}.com", service.String(8));
+        }
+
         public static string Email(this RandomService service)
         {
             return string.Format("{0}@{1}.com", service.String(8), service.String(3));
         }
-
 
         public static short Short(this RandomService service)
         {
