@@ -95,6 +95,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+        
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Farm")]
+        public void CanDeployRandom_DiagnosticsServiceBaseDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<DiagnosticsServiceBaseDefinition>();
+            });
+        }
+        
 
 
         [TestMethod]

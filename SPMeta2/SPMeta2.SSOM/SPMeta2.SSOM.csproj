@@ -92,6 +92,7 @@
     <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\HideContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeFieldsOrderModelHandler.cs" />
+    <Compile Include="ModelHandlers\DiagnosticsServiceBaseModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
