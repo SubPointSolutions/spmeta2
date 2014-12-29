@@ -192,6 +192,10 @@
       <Link>Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll">
+      <Link>Microsoft.Office.SecureStoreService.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll">
       <Link>Microsoft.Office.Server.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

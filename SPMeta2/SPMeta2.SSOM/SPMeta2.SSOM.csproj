@@ -44,6 +44,10 @@
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.SecureStoreService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.SharePoint.WorkflowServicesBase, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
@@ -117,6 +121,7 @@
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\SandboxSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\SecureStoreApplicationModelHandler.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" />
     <Compile Include="ModelHandlers\SSOMModelHandlerBase.cs" />
@@ -145,6 +150,7 @@
     <Compile Include="ModelHandlers\WelcomePageModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHosts\FarmModelHost.cs" />
+    <Compile Include="ModelHosts\SecureStoreApplicationModelHost.cs" />
     <Compile Include="ModelHosts\FolderModelHost.cs" />
     <Compile Include="ModelHosts\ListModelHost.cs" />
     <Compile Include="ModelHosts\PropertyModelHost.cs" />

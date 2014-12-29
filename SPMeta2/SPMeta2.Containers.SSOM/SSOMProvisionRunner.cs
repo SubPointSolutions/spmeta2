@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Office.SecureStoreService.Server;
 using Microsoft.Office.Server.Search.Portability;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
@@ -86,6 +87,8 @@ namespace SPMeta2.Containers.SSOM
 
             var tax = typeof(TaxonomyField);
             var wf = typeof(WorkflowDefinition);
+
+            var secureStore = typeof(ISecureStore);
 
             var search = typeof (SearchConfigurationPortability);
 

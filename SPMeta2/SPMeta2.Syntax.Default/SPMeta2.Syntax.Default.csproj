@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecureStoreApplicationDefinitionSyntax.cs" />
     <Compile Include="AlternateUrlDefinitionSyntax.cs" />
     <Compile Include="InformationRightsManagementSettingsDefinitionSyntax.cs" />
     <Compile Include="URLFieldDefinitionSyntax.cs" />

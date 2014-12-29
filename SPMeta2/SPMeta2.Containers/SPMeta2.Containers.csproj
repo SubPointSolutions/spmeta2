@@ -51,6 +51,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\SecureStoreApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AlternateUrlDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AppDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AppPrincipalDefinitionGenerator.cs" />
