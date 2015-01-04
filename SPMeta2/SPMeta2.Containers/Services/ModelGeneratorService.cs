@@ -107,6 +107,8 @@ namespace SPMeta2.Containers.Services
                     _m
                        .AddDefinitionNode(def.Definition, currentDef =>
                        {
+                           currentDef.Options.RequireSelfProcessing = def.Definition.RequireSelfProcessing;
+
                            _m = currentDef;
                        });
                 }

@@ -38,27 +38,30 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Job.Scopes")]
         public void CanDeploy_Job_UnderWebApplication()
         {
-            // OOTB job with 2 parameters for the constructor
-            var webAppJobDefinition = new JobDefinition
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                Name = Rnd.String(),
-                Title = Rnd.String(),
-                ScheduleString = "yearly at jan 1 09:00:00",
-                JobType = "Microsoft.SharePoint.Administration.SPDeadSiteDeleteJobDefinition, Microsoft.SharePoint",
-                ConstructorParams = new Collection<JobDefinitionCtorParams>()
+                // OOTB job with 2 parameters for the constructor
+                var webAppJobDefinition = new JobDefinition
                 {
-                    JobDefinitionCtorParams.JobName,
-                    JobDefinitionCtorParams.WebApplication
-                }
-            };
+                    Name = Rnd.String(),
+                    Title = Rnd.String(),
+                    ScheduleString = "yearly at jan 1 09:00:00",
+                    JobType = "Microsoft.SharePoint.Administration.SPDeadSiteDeleteJobDefinition, Microsoft.SharePoint",
+                    ConstructorParams = new Collection<JobDefinitionCtorParams>()
+                    {
+                        JobDefinitionCtorParams.JobName,
+                        JobDefinitionCtorParams.WebApplication
+                    }
+                };
 
-            var model = SPMeta2Model
-                .NewWebApplicationModel(webApp =>
-                {
-                    webApp.AddJob(webAppJobDefinition);
-                });
+                var model = SPMeta2Model
+                    .NewWebApplicationModel(webApp =>
+                    {
+                        webApp.AddJob(webAppJobDefinition);
+                    });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         #endregion

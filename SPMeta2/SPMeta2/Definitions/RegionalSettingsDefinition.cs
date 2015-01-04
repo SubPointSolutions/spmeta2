@@ -15,7 +15,7 @@ namespace SPMeta2.Definitions
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRegionalSettings", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RegionalSettings", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
     [Serializable]

@@ -235,6 +235,10 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithPublishingPageLayouts(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
 
         public static ModelNode WithWebParts(this ModelNode model, Action<ModelNode> action)
         {

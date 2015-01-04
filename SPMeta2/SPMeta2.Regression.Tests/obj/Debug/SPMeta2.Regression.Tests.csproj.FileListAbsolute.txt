@@ -58,6 +58,7 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.Taxonomy.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.Office.SecureStoreService.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.Office.Server.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.Office.Server.Search.Applications.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.Office.Server.Search.Connector.dll
@@ -101,4 +102,3 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\obj\Debug\SPMeta2.Regression.Tests.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.Tests\bin\Debug\Microsoft.Office.SecureStoreService.dll

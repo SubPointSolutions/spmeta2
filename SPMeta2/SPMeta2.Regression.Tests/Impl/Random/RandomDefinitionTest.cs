@@ -95,7 +95,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
-        
+
         [TestMethod]
         [TestCategory("Regression.Rnd.Farm")]
         public void CanDeployRandom_DiagnosticsServiceBaseDefinition()
@@ -105,7 +105,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
                 TestRandomDefinition<DiagnosticsServiceBaseDefinition>();
             });
         }
-        
+
 
 
         [TestMethod]
@@ -617,6 +617,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_PublishingPageDefinition()
         {
             TestRandomDefinition<PublishingPageDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Pages")]
+        public void CanDeployRandom_PublishingPageLayoutDefinition()
+        {
+            TestRandomDefinition<PublishingPageLayoutDefinition>();
         }
 
         [TestMethod]

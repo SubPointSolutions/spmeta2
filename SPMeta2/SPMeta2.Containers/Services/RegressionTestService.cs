@@ -239,6 +239,9 @@ namespace SPMeta2.Containers.Services
             {
                 var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
 
+                if (att == null)
+                    throw new SPMeta2UnsupportedCSOMRunnerException();
+
                 className = att.ClassName;
                 classAssembly = att.AssemblyName;
             }

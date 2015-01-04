@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArticleLeft" xml:space="preserve">
+    <value>&lt;%@ Page language="C#"   Inherits="Microsoft.SharePoint.Publishing.PublishingLayoutPage,Microsoft.SharePoint.Publishing,Version=15.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" meta:webpartpageexpansion="full" meta:progid="SharePoint.WebPartPage.Document" %&gt;
+&lt;%@ Register Tagprefix="SharePointWebControls" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="PublishingWebControls" Namespace="Microsoft.SharePoint.Publishing.WebControls" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="PublishingNavigation" Namespace="Microsoft.SharePoint.Publishing.Navigation" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;SharePointWebControls:CssRegistration name="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/pagelayouts15.css %&gt;" runat="server"/&gt;
+	&lt;PublishingWebControls:EditModePanel runat="server"&gt;
+		&lt;!-- Styles for edit mode only--&gt;
+		&lt;SharePointWebControls:CssRegistration name="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/editmode15.css %&gt;"
+			After="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/pagelayouts15.css %&gt;" runat="server"/&gt;
+	&lt;/PublishingWebControls:EditModePanel&gt;
+	&lt;SharePointWebControls:FieldValue id="PageStylesField" FieldName="HeaderStyleDefinitions" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePointWebControls:FieldValue id="PageTitle" FieldName="Title" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderPageTitleInTitleArea" runat="server"&gt;
+	&lt;SharePointWebControls:FieldValue FieldName="Title" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderTitleBreadcrumb" runat="server"&gt; 
+	&lt;SharePointWebControls:ListSiteMapPath runat="server" SiteMapProviders="CurrentNavigationSwitchableProvider" RenderCurrentNodeAsLink="false" PathSeparator="" CssClass="s4-breadcrumb" NodeStyle-CssClass="s4-breadcrumbNode" CurrentNodeStyle-CssClass="s4-breadcrumbCurrentNode" RootNodeStyle-CssClass="s4-breadcrumbRootNode" NodeImageOffsetX=0 NodeImageOffsetY=289 NodeImageWidth=16 NodeImageHeight=16 NodeImageUrl="/_layouts/15/images/fgimg.png?rev=23" HideInteriorRootNodes="true" SkipLinkText=""/&gt; &lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderMain" runat="server"&gt;
+	&lt;div class="article article-left"&gt;
+		&lt;PublishingWebControls:EditModePanel runat="server" CssClass="edit-mode-panel title-edit"&gt;
+			&lt;SharePointWebControls:TextField runat="server" FieldName="Title"/&gt;
+		&lt;/PublishingWebControls:EditModePanel&gt;
+		&lt;div class="captioned-image"&gt;
+			&lt;div class="image"&gt;
+				&lt;PublishingWebControls:RichImageField FieldName="PublishingPageImage" runat="server"/&gt;
+			&lt;/div&gt;
+			&lt;div class="caption"&gt;
+				&lt;PublishingWebControls:RichHtmlField FieldName="PublishingImageCaption"  AllowTextMarkup="false" AllowTables="false" AllowLists="false" AllowHeadings="false" AllowStyles="false" AllowFontColorsMenu="false" AllowParagraphFormatting="false" AllowFonts="false" PreviewValueSize="Small" AllowInsert="false" AllowEmbedding="false" AllowDragDrop="false" runat="server"/&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="article-header"&gt;
+			&lt;div class="date-line"&gt;
+				&lt;SharePointWebControls:DateTimeField FieldName="ArticleStartDate" runat="server"/&gt;
+			&lt;/div&gt;
+			&lt;div class="by-line"&gt;
+				&lt;SharePointWebControls:TextField FieldName="ArticleByLine" runat="server"/&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="article-content"&gt;
+			&lt;PublishingWebControls:RichHtmlField FieldName="PublishingPageContent" HasInitialFocus="True" MinimumEditHeight="400px" runat="server"/&gt;
+		&lt;/div&gt;
+		&lt;PublishingWebControls:EditModePanel runat="server" CssClass="edit-mode-panel roll-up"&gt;
+			&lt;PublishingWebControls:RichImageField FieldName="PublishingRollupImage" AllowHyperLinks="false" runat="server" /&gt;
+			&lt;asp:Label text="&lt;%$Resources:cms,Article_rollup_image_text15%&gt;" CssClass="ms-textSmall" runat="server" /&gt;
+		&lt;/PublishingWebControls:EditModePanel&gt;
+	&lt;/div&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="ArticleRight" xml:space="preserve">
+    <value>&lt;%@ Page language="C#"   Inherits="Microsoft.SharePoint.Publishing.PublishingLayoutPage,Microsoft.SharePoint.Publishing,Version=15.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" meta:webpartpageexpansion="full" meta:progid="SharePoint.WebPartPage.Document" %&gt;
+&lt;%@ Register Tagprefix="SharePointWebControls" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="PublishingWebControls" Namespace="Microsoft.SharePoint.Publishing.WebControls" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="PublishingNavigation" Namespace="Microsoft.SharePoint.Publishing.Navigation" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;SharePointWebControls:CssRegistration name="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/pagelayouts15.css %&gt;" runat="server"/&gt;
+	&lt;PublishingWebControls:EditModePanel runat="server"&gt;
+		&lt;!-- Styles for edit mode only--&gt;
+		&lt;SharePointWebControls:CssRegistration name="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/editmode15.css %&gt;"
+			After="&lt;% $SPUrl:~sitecollection/Style Library/~language/Themable/Core Styles/pagelayouts15.css %&gt;" runat="server"/&gt;
+	&lt;/PublishingWebControls:EditModePanel&gt;
+	&lt;SharePointWebControls:FieldValue id="PageStylesField" FieldName="HeaderStyleDefinitions" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePointWebControls:FieldValue id="PageTitle" FieldName="Title" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderPageTitleInTitleArea" runat="server"&gt;
+	&lt;SharePointWebControls:FieldValue FieldName="Title" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderTitleBreadcrumb" runat="server"&gt; 
+	&lt;SharePointWebControls:ListSiteMapPath runat="server" SiteMapProviders="CurrentNavigationSwitchableProvider" RenderCurrentNodeAsLink="false" PathSeparator="" CssClass="s4-breadcrumb" NodeStyle-CssClass="s4-breadcrumbNode" CurrentNodeStyle-CssClass="s4-breadcrumbCurrentNode" RootNodeStyle-CssClass="s4-breadcrumbRootNode" NodeImageOffsetX=0 NodeImageOffsetY=289 NodeImageWidth=16 NodeImageHeight=16 NodeImageUrl="/_layouts/15/images/fgimg.png?rev=23" HideInteriorRootNodes="true" SkipLinkText=""/&gt; &lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceholderID="PlaceHolderMain" runat="server"&gt;
+	&lt;div class="article article-right"&gt;
+		&lt;PublishingWebControls:EditModePanel runat="server" CssClass="edit-mode-panel title-edit"&gt;
+			&lt;SharePointWebControls:TextField runat="server" FieldName="Title"/&gt;
+		&lt;/PublishingWebControls:EditModePanel&gt;
+		&lt;div class="captioned-image"&gt;
+			&lt;div class="image"&gt;
+				&lt;PublishingWebControls:RichImageField FieldName="PublishingPageImage" runat="server"/&gt;
+			&lt;/div&gt;
+			&lt;div class="caption"&gt;
+				&lt;PublishingWebControls:RichHtmlField FieldName="PublishingImageCaption"  AllowTextMarkup="false" AllowTables="false" AllowLists="false" AllowHeadings="false" AllowStyles="false" AllowFontColorsMenu="false" AllowParagraphFormatting="false" AllowFonts="false" AllowInsert="false" AllowEmbedding="false" PreviewValueSize="Small" AllowDragDrop="false" runat="server"/&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="article-header"&gt;
+			&lt;div class="date-line"&gt;
+				&lt;SharePointWebControls:DateTimeField FieldName="ArticleStartDate" runat="server"/&gt;
+			&lt;/div&gt;
+			&lt;div class="by-line"&gt;
+				&lt;SharePointWebControls:TextField FieldName="ArticleByLine" runat="server"/&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="article-content"&gt;
+			&lt;PublishingWebControls:RichHtmlField FieldName="PublishingPageContent" HasInitialFocus="True" MinimumEditHeight="400px" runat="server"/&gt;
+		&lt;/div&gt;
+		&lt;PublishingWebControls:EditModePanel runat="server" CssClass="edit-mode-panel roll-up"&gt;
+			&lt;PublishingWebControls:RichImageField FieldName="PublishingRollupImage" AllowHyperLinks="false" runat="server" /&gt;
+			&lt;asp:Label text="&lt;%$Resources:cms,Article_rollup_image_text15%&gt;" CssClass="ms-textSmall" runat="server" /&gt;
+		&lt;/PublishingWebControls:EditModePanel&gt;
+	&lt;/div&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+</root>
