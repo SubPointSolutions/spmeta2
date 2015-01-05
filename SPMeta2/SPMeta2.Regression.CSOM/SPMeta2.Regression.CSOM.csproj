@@ -121,6 +121,7 @@
     <Compile Include="Validation\ClientRegionalSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientInformationRightsManagementSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientRootWebDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientTreeViewSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationModelHost.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
