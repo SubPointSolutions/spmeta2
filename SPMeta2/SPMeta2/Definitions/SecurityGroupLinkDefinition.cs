@@ -1,4 +1,5 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 
@@ -15,6 +16,9 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(BreakRoleInheritanceDefinition))]
     [ExpectWithExtensionMethod]
+
+    [Serializable]
+
     public class SecurityGroupLinkDefinition : DefinitionBase
     {
         public SecurityGroupLinkDefinition()

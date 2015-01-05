@@ -18,6 +18,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
+    [Serializable]
+
     [ExpectWithExtensionMethod]
     public class EventReceiverDefinition : DefinitionBase
     {

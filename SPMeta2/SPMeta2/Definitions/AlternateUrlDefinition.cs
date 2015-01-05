@@ -17,6 +17,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebApplicationDefinition))]
     [DefaultParentHost(typeof(WebApplicationDefinition))]
 
+    [Serializable]
+
     [ExpectWithExtensionMethod]
     public class AlternateUrlDefinition : DefinitionBase
     {

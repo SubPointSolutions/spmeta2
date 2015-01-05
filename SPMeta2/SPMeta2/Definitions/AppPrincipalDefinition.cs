@@ -15,6 +15,9 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
+
+    [Serializable]
+
     public class AppPrincipalDefinition : DefinitionBase
     {
         #region properties

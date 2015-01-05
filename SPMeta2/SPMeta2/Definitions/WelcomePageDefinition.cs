@@ -15,6 +15,9 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
+    
+    [Serializable]
+    
     public class WelcomePageDefinition : DefinitionBase
     {
         #region properties

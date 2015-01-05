@@ -75,6 +75,27 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             }
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void DefinitionsShouldBeMarkedAsSerializable()
+        {
+            var showOnlyFails = true;
+            var result = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var hasAttr = definitionType.GetCustomAttributes(typeof(SerializableAttribute)).Any();
+
+                Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has SerializableAttribute:[{1}]",
+                    definitionType, hasAttr, hasAttr.ToString().ToUpper()));
+
+                if (!hasAttr)
+                    result = false;
+            }
+
+            Assert.IsTrue(result);
+        }
+
         static IEnumerable<MethodInfo> GetExtensionMethods(Assembly assembly, Type extendedType)
         {
             var query = from type in assembly.GetTypes()
@@ -142,7 +163,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                     addDefinitionMethodName = string.Format("WithDiagnosticsServices");
                 if (definitionType == typeof(RootWebDefinition))
                     addDefinitionMethodName = string.Format("WithRootWeb");
-                
+
                 if (!shouldCheckWithMethod)
                 {
                     if (showSkipping)

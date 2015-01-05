@@ -20,6 +20,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
+    [Serializable]
+
     [ExpectWithExtensionMethod]
     public class AppDefinition : DefinitionBase
     {

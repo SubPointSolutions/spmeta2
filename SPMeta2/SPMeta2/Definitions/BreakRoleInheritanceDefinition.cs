@@ -19,6 +19,9 @@ namespace SPMeta2.Definitions
 
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
+
+    [Serializable]
+
     public class BreakRoleInheritanceDefinition : DefinitionBase
     {
         #region properties

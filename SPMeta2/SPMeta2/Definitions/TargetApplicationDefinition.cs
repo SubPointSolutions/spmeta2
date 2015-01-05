@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(FarmDefinition))]
     [DefaultParentHost(typeof(SecureStoreApplicationDefinition))]
 
+    [Serializable]
+
     [ExpectWithExtensionMethod]
     public class TargetApplicationDefinition : DefinitionBase
     {
