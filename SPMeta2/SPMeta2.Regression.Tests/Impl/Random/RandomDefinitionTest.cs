@@ -452,6 +452,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_TreeViewSettingsDefinition()
+        {
+            TestRandomDefinition<TreeViewSettingsDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_RegionalSettingsDefinition()
         {
             TestRandomDefinition<RegionalSettingsDefinition>();

@@ -111,6 +111,7 @@
     <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
     <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
