@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" />
+    <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />

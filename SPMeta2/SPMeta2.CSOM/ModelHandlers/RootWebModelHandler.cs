@@ -75,10 +75,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var currentObject = GetCurrentObject(siteModelHost, definition);
 
-            action(new WebModelHost
+            var rootModelHost = ModelHostBase.Inherit<WebModelHost>(siteModelHost, host =>
             {
-                HostWeb = currentObject
+                host.HostWeb = currentObject;
             });
+
+            action(rootModelHost);
 
             currentObject.Update();
             currentObject.Context.ExecuteQuery();
