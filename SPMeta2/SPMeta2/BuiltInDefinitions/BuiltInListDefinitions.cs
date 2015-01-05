@@ -38,9 +38,20 @@ namespace SPMeta2.BuiltInDefinitions
         };
 
         /// <summary>
-        /// 'Shared Documents' library shortcut.
+        /// 'Documents' library shortcut.
         /// </summary>
         public static ListDefinition Documents = new ListDefinition
+        {
+            Title = "Documents",
+            TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+            Url = "Documents",
+            ContentTypesEnabled = true
+        };
+
+        /// <summary>
+        /// 'Shared Documents' library shortcut.
+        /// </summary>
+        public static ListDefinition SharedDocuments = new ListDefinition
         {
             Title = "Documents",
             TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
@@ -137,8 +148,8 @@ namespace SPMeta2.BuiltInDefinitions
                 TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
                 Url = "_catalogs/wp"
             };
-        } 
-        
+        }
+
         #endregion
     }
 }
