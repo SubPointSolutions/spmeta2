@@ -47,7 +47,7 @@ namespace SPMeta2.Syntax.Default
                 // 0x010100339210063E00144CBB5EFF79F55FE57400D05BFCF30398485FBBD6D5BB034AFF74
                 // 0x010100339210063E00144CBB5EFF79F55FE57400D05BFCF30398485FBBD6D5BB034AFF74008FA22F0260524AF78AF78C349553F22E
 
-                return contentType.ParentContentTypeId + "00" + contentType.Id.ToString(ContentTypeGuidFormatString);
+                return contentType.ParentContentTypeId + "00" + contentType.Id.ToString(ContentTypeGuidFormatString).ToUpper();
             }
 
             if (!string.IsNullOrEmpty(contentType.IdNumberValue))

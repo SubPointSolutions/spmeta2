@@ -14,11 +14,22 @@ namespace SPMeta2.Attributes.Regression
     public class DefaultParentHostAttribute : Attribute
     {
         public DefaultParentHostAttribute(Type hostType)
+            : this(hostType, null)
+        {
+        }
+
+        public DefaultParentHostAttribute(Type hostType, params Type[] additionalHostTypes)
         {
             HostType = hostType;
+
+            AdditionalHostTypes = new List<Type>();
+
+            if (additionalHostTypes != null)
+                AdditionalHostTypes.AddRange(additionalHostTypes);
         }
 
         public Type HostType { get; set; }
+        public List<Type> AdditionalHostTypes { get; set; }
     }
 
     /// <summary>

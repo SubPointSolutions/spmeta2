@@ -66,6 +66,7 @@
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
+    <Compile Include="Definitions\RootWebDefinition.cs" />
     <Compile Include="Definitions\DiagnosticsServiceBaseDefinition.cs" />
     <Compile Include="Definitions\EventReceiverDefinition.cs" />
     <Compile Include="Definitions\Fields\CalculatedFieldDefinition.cs" />

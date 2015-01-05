@@ -140,6 +140,7 @@
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
     <Compile Include="ModelHandlers\WebApplicationModelHandler.cs" />
     <Compile Include="ModelHandlers\WebConfigModificationModelHandler.cs" />
+    <Compile Include="ModelHandlers\RootWebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />

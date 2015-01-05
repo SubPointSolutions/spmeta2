@@ -16,7 +16,7 @@ namespace SPMeta2.Standard.Definitions
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHost(typeof(SiteDefinition))]
-    [DefaultParentHost(typeof(ListDefinition))]
+    [DefaultParentHost(typeof(ListDefinition), typeof(RootWebDefinition))]
 
     [Serializable]
     [ExpectWithExtensionMethod]

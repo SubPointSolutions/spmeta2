@@ -34,5 +34,10 @@ namespace SPMeta2.Containers.Services.Base
         public abstract DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action);
 
         #endregion
+
+        public virtual IEnumerable<DefinitionBase> GetReplacementArtifacts()
+        {
+            return Enumerable.Empty<DefinitionBase>();
+        }
     }
 }

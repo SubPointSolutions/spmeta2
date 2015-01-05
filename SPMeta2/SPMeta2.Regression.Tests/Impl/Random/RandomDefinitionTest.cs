@@ -466,6 +466,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_RootWebDefinition()
+        {
+            TestRandomDefinition<RootWebDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_QuickLaunchNavigationNodeDefinition()
         {
             TestRandomDefinition<QuickLaunchNavigationNodeDefinition>();

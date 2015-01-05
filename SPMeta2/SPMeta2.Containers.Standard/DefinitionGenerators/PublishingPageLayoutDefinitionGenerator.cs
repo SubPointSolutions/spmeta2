@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using SPMeta2.BuiltInDefinitions;
+using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
@@ -13,6 +15,16 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
 {
     public class PublishingPageLayoutDefinitionGenerator : TypedDefinitionGeneratorServiceBase<PublishingPageLayoutDefinition>
     {
+        public PublishingPageLayoutDefinitionGenerator()
+        {
+            PublishingPageContentType = new ContentTypeDefinitionGenerator().GenerateRandomDefinition() as ContentTypeDefinition;
+
+            PublishingPageContentType.ParentContentTypeId = BuiltInPublishingContentTypeId.Page;
+            PublishingPageContentType.Group = "Page Layout Content Types";
+        }
+
+        protected ContentTypeDefinition PublishingPageContentType;
+
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {
             return WithEmptyDefinition(def =>
@@ -25,9 +37,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                         ? PublishingPageLayoutTemplates.ArticleLeft :
                         PublishingPageLayoutTemplates.ArticleRight;
 
-                def.AssociatedContentTypeId = Rnd.Bool()
-                        ? BuiltInPublishingContentTypeId.WelcomePage
-                        : BuiltInPublishingContentTypeId.ArticlePage;
+                def.AssociatedContentTypeId = PublishingPageContentType.GetContentTypeId();
 
                 def.NeedOverride = true;
             });
@@ -47,7 +57,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                                   f.Enable = true;
                               });
 
-            return new[] { sitePublishing, webPublishing };
+            return new DefinitionBase[] { sitePublishing, webPublishing, PublishingPageContentType };
         }
 
         public override DefinitionBase GetCustomParenHost()

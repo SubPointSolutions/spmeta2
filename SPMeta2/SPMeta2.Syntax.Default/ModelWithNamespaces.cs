@@ -7,6 +7,11 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        public static ModelNode WithRootWeb(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithTargetApplications(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);

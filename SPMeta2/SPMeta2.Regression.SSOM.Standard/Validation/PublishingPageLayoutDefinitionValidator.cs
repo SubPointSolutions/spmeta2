@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint;
+﻿using System;
+using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHosts;
@@ -42,8 +43,17 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
         public static string GetPublishingPageLayoutAssociatedContentTypeId(this SPListItem item)
         {
             var value = item[BuiltInPublishingFieldId.AssociatedContentType].ToString();
+            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
 
-            return value;
+            return values[2];
+        }
+
+        public static string GetPublishingPageLayoutAssociatedContentTypeName(this SPListItem item)
+        {
+            var value = item[BuiltInPublishingFieldId.AssociatedContentType].ToString();
+            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
+
+            return values[1];
         }
     }
 }

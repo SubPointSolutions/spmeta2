@@ -186,7 +186,7 @@ namespace SPMeta2.Containers.Services
                                             if (featureDefinition != null)
                                             {
                                                 if (featureDefinition.Scope == FeatureDefinitionScope.Web)
-                                                    return model.Value.GetType() == typeof(WebDefinition);
+                                                    return model.Value.GetType() == typeof(WebDefinition) || model.Value.GetType() == typeof(RootWebDefinition);
 
                                                 if (featureDefinition.Scope == FeatureDefinitionScope.Site)
                                                     return model.Value.GetType() == typeof(SiteDefinition);
@@ -196,7 +196,8 @@ namespace SPMeta2.Containers.Services
                                         })
                                         .FirstOrDefault();
 
-                // additonal definitions should be 'first' 
+                // additional definitions should be 'first' 
+                // no NULL ref check, as it means that the model was constructed in the wrong way
                 targetNode
                     .ChildModels.Insert(0, new ModelNode { Value = definition });
 
@@ -229,6 +230,24 @@ namespace SPMeta2.Containers.Services
                     Definition = definition
                 });
 
+                var additionalParentHostTypes = GetParentHostAdditionalTypes(type, objectModelType);
+
+                Type lastHostType = null;
+
+                foreach (var additionalParentHostType in additionalParentHostTypes)
+                {
+                    var def = GetRandomDefinition(additionalParentHostType);
+                    defs.Add(new GeneratedArtifact
+                    {
+                        Definition = def
+                    });
+
+                    lastHostType = additionalParentHostType;
+                }
+
+                if (lastHostType != null)
+                    upParentHostType = GetParentHostType(lastHostType, objectModelType);
+
                 LookupModelTree(rootHostType, upParentHostType, defs, objectModelType);
             }
             else
@@ -238,7 +257,25 @@ namespace SPMeta2.Containers.Services
                     Definition = customParentHost
                 });
 
-                LookupModelTree(rootHostType, customParentHost.GetType(), defs, objectModelType);
+                var additionalParentHostTypes = GetParentHostAdditionalTypes(type, objectModelType);
+
+                Type lastHostType = null;
+
+                foreach (var additionalParentHostType in additionalParentHostTypes)
+                {
+                    var def = GetRandomDefinition(additionalParentHostType);
+                    defs.Add(new GeneratedArtifact
+                    {
+                        Definition = def
+                    });
+
+                    lastHostType = additionalParentHostType;
+                }
+
+                if (lastHostType != null)
+                    LookupModelTree(rootHostType, lastHostType, defs, objectModelType);
+                else
+                    LookupModelTree(rootHostType, customParentHost.GetType(), defs, objectModelType);
             }
         }
 
@@ -378,7 +415,42 @@ namespace SPMeta2.Containers.Services
             }
 
 
-            throw new SPMeta2NotImplementedException(string.Format("Unsupporter SPObjectModelType:[{0}]", objectModelType));
+            throw new SPMeta2NotImplementedException(string.Format("Unsupported SPObjectModelType:[{0}]", objectModelType));
+
+        }
+
+        private IEnumerable<Type> GetParentHostAdditionalTypes(Type type, SPObjectModelType objectModelType)
+        {
+            var hostAtrrs = type
+                                      .GetCustomAttributes(false)
+                                      .OfType<DefaultParentHostAttribute>()
+                                      .ToList();
+
+            if (hostAtrrs.Count == 0)
+                return null;
+
+            if (hostAtrrs.Count == 1)
+                return hostAtrrs[0].AdditionalHostTypes;
+
+            switch (objectModelType)
+            {
+                case SPObjectModelType.CSOM:
+                    {
+                        var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMParentHostAttribute));
+                        return csomHost.AdditionalHostTypes;
+
+                    }; break;
+
+                case SPObjectModelType.SSOM:
+                    {
+                        var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultParentHostAttribute));
+                        return defaultHost.AdditionalHostTypes;
+
+                    }; break;
+            }
+
+
+            throw new SPMeta2NotImplementedException(string.Format("Unsupported SPObjectModelType:[{0}]", objectModelType));
 
         }
 
