@@ -53,6 +53,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
         {
             if (modelHost is WebModelHost)
                 return LookupNavigationNode(GetNavigationNodeCollection((modelHost as WebModelHost).HostWeb), definition);
+            else if (modelHost is NavigationNodeModelHost)
+                return LookupNavigationNode((modelHost as NavigationNodeModelHost).HostNavigationNode.Children, definition);
             else if (modelHost is NavigationNode)
                 return LookupNavigationNode((modelHost as NavigationNode).Children, definition);
 
@@ -157,7 +159,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var quickLaunchNode = model as QuickLaunchNavigationNodeDefinition;
+            var quickLaunchNode = model as NavigationNodeDefinitionBase;
 
             if (modelHost is WebModelHost)
             {

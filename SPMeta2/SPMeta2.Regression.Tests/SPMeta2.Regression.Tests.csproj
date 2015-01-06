@@ -70,6 +70,8 @@
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\TopNavigationNodeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\UserCustomActionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\FieldScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\FolderScenariousTest.cs" />

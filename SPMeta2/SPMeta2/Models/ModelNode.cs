@@ -131,7 +131,8 @@ namespace SPMeta2.Models
         public ModelNodeState State { get; set; }
 
         [XmlIgnore]
-        protected TraceServiceBase TraceService { get; set; }
+        [NonSerialized]
+        private readonly TraceServiceBase TraceService;
 
         #endregion
 
