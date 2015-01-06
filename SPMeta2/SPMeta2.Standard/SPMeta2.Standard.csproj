@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
+    <Compile Include="Definitions\PageLayoutAndSiteTemplateSettingsDefinition.cs" />
     <Compile Include="Definitions\AudienceDefinition.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
     <Compile Include="Definitions\ImageRenditionDefinition.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Syntax\TaxonomyTermGroupDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermSetDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermStoreDefinitionSyntax.cs" />
+    <Compile Include="Syntax\PageLayoutAndSiteTemplateSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\WebNavigationSettingsDefinitionSyntax.cs" />
   </ItemGroup>
   <ItemGroup>

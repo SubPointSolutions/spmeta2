@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\PageLayoutAndSiteTemplateSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AudienceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ImageRenditionDefinitionGenerator.cs" />

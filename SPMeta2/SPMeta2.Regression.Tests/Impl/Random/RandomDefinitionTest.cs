@@ -538,6 +538,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<AppDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_PageLayoutAndSiteTemplateSettingsDefinition()
+        {
+            TestRandomDefinition<PageLayoutAndSiteTemplateSettingsDefinition>();
+        }
+
         #endregion
 
         #region list scope
