@@ -36,7 +36,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #endregion
 
         #region top nav cases
-
+         
         protected TopNavigationNodeDefinition GenerateNode()
         {
             var node = ModelGeneratorService.GetRandomDefinition<TopNavigationNodeDefinition>();
