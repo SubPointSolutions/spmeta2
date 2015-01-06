@@ -55,7 +55,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ModelHost = modelHost
             });
 
-
             ProcessWebTemplateSettings(publishingWeb, definition);
             ProcessPageLayoutSettings(publishingWeb, definition);
             ProcessNewPageDefaultSettings(publishingWeb, definition);
@@ -71,6 +70,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+
+            publishingWeb.Update();
         }
 
         private void ProcessConverBlankSpacesIntoHyphenSetting(PublishingWeb publishingWeb, PageLayoutAndSiteTemplateSettingsDefinition definition)
@@ -131,7 +132,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                 var selectedPageLayouts = new List<PageLayout>();
 
-                foreach (var selectedLayoutName in definition.DefinedWebTemplates)
+                foreach (var selectedLayoutName in definition.DefinedPageLayouts)
                 {
                     var targetLayout = pageLayouts.FirstOrDefault(t => t.Name.ToUpper() == selectedLayoutName.ToUpper());
 

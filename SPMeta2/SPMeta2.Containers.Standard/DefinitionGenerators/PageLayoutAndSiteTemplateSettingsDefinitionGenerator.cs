@@ -18,14 +18,15 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 // webs
-                def.InheritWebTemplates = Rnd.Bool();
+                //def.InheritWebTemplates = Rnd.Bool();
+                def.InheritWebTemplates = false;
 
                 if (def.InheritWebTemplates.HasValue && !def.InheritWebTemplates.Value)
-                    def.UseAnyWebTemplate = Rnd.Bool();
+                    def.UseAnyWebTemplate = false; Rnd.Bool();
 
                 if (def.UseAnyWebTemplate.HasValue && !def.UseAnyWebTemplate.Value)
                 {
-                    def.UseDefinedWebTemplates = Rnd.Bool();
+                    def.UseDefinedWebTemplates = true;// Rnd.Bool();
 
                     def.DefinedWebTemplates.Add(BuiltInWebTemplates.Collaboration.TeamSite);
                     def.DefinedWebTemplates.Add(BuiltInWebTemplates.Collaboration.Blog);
@@ -35,31 +36,33 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                 def.ResetAllSubsitesToInheritWebTemplates = Rnd.Bool();
 
                 // page layouts
-                def.InheritPageLayouts = Rnd.Bool();
+                //def.InheritPageLayouts = Rnd.Bool();
+                def.InheritPageLayouts = false;
 
                 if (def.InheritPageLayouts.HasValue && !def.InheritPageLayouts.Value)
-                    def.UseAnyPageLayout = Rnd.Bool();
+                    def.UseAnyPageLayout = false; Rnd.Bool();
 
                 if (def.UseAnyPageLayout.HasValue && !def.UseAnyPageLayout.Value)
                 {
-                    def.UseDefinedPageLayouts = Rnd.Bool();
+                    def.UseDefinedPageLayouts = true; Rnd.Bool();
 
-                    def.DefinedWebTemplates.Add(BuiltInPublishingPageLayoutNames.ArticleLeft);
-                    def.DefinedWebTemplates.Add(BuiltInPublishingPageLayoutNames.ArticleRight);
-                    def.DefinedWebTemplates.Add(BuiltInPublishingPageLayoutNames.BlankWebPartPage);
+                    def.DefinedPageLayouts.Add(BuiltInPublishingPageLayoutNames.ArticleLeft);
+                    def.DefinedPageLayouts.Add(BuiltInPublishingPageLayoutNames.ArticleRight);
+                    def.DefinedPageLayouts.Add(BuiltInPublishingPageLayoutNames.BlankWebPartPage);
                 }
 
                 def.ResetAllSubsitesToInheritPageLayouts = Rnd.Bool();
 
                 // default page layout
-                def.InheritDefaultPageLayout = Rnd.Bool();
+                //def.InheritDefaultPageLayout = Rnd.Bool();
+                def.InheritDefaultPageLayout = null;
 
                 if (def.InheritDefaultPageLayout.HasValue && !def.InheritDefaultPageLayout.Value)
-                    def.UseDefinedDefaultPageLayout = Rnd.Bool();
+                    def.UseDefinedDefaultPageLayout = true; Rnd.Bool();
 
-                if (def.UseDefinedDefaultPageLayout.HasValue && !def.UseDefinedDefaultPageLayout.Value)
+                if (def.UseDefinedDefaultPageLayout.HasValue && def.UseDefinedDefaultPageLayout.Value)
                 {
-                    def.DefinedDefaultPageLayout = BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+                    def.DefinedDefaultPageLayout = BuiltInPublishingPageLayoutNames.ArticleRight;
                 }
 
                 def.ResetAllSubsitesToInheritPageLayouts = Rnd.Bool();
@@ -70,11 +73,28 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             });
         }
 
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            var sitePublishing = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure
+                               .Inherit(f =>
+                               {
+                                   f.Enable = true;
+                               });
+
+            var webPublishing = BuiltInWebFeatures.SharePointServerPublishing
+                              .Inherit(f =>
+                              {
+                                  f.Enable = true;
+                              });
+
+            return new[] { sitePublishing, webPublishing };
+        }
+
         public override DefinitionBase GetCustomParenHost()
         {
             var def = new WebDefinitionGenerator().GenerateRandomDefinition() as WebDefinition;
 
-            def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+            def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
 
             return def;
         }

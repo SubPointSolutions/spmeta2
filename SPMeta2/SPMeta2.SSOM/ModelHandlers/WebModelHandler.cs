@@ -123,7 +123,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 currentWeb = parentWeb.Webs.Add(webUrl,
                     webModel.Title,
-                    webDescription,
+                    webDescription, 
                     webModel.LCID,
                     webModel.WebTemplate,
                     webModel.UseUniquePermission,
