@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
+    <Compile Include="Definitions\AudienceDefinition.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />
     <Compile Include="Definitions\ImageRenditionDefinition.cs" />
     <Compile Include="Definitions\PublishingPageLayoutDefinition.cs" />
@@ -71,8 +72,9 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
-    <Compile Include="Syntax\AddSearchResultDefinitionSyntax.cs" />
-    <Compile Include="Syntax\AddSearchConfigurationDefinitionSyntax.cs" />
+    <Compile Include="Syntax\AudienceDefinitionSyntax.cs" />
+    <Compile Include="Syntax\SearchResultDefinitionSyntax.cs" />
+    <Compile Include="Syntax\SearchConfigurationDefinitionSyntax.cs" />
     <Compile Include="Syntax\PublishingPageLayoutDefinitionSyntax.cs" />
     <Compile Include="Syntax\SiteFeedWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\ContentByQueryWebPartDefinitionSyntax.cs" />

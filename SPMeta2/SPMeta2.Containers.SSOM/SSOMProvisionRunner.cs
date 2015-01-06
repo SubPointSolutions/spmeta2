@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Office.SecureStoreService.Server;
+using Microsoft.Office.Server.Audience;
 using Microsoft.Office.Server.Search.Portability;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
@@ -90,7 +91,9 @@ namespace SPMeta2.Containers.SSOM
 
             var secureStore = typeof(ISecureStore);
 
-            var search = typeof (SearchConfigurationPortability);
+            var search = typeof(SearchConfigurationPortability);
+
+            var up = typeof(Audience);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
         }

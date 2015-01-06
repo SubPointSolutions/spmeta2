@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\AudienceDefinitionValidator.cs" />
     <Compile Include="Validation\PublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\SearchResultDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />

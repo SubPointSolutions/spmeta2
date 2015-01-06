@@ -6,7 +6,7 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public static class AddSearchResultDefinitionSyntax
+    public static class SearchResultDefinitionSyntax
     {
         #region publishing page
 

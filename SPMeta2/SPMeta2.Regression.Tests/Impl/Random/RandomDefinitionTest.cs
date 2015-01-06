@@ -412,6 +412,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
+        public void CanDeployRandom_AudienceDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<AudienceDefinition>();
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_ContentTypeDefinition()
         {
             TestRandomDefinition<ContentTypeDefinition>();

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\AudienceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ImageRenditionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageLayoutDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PublishingPageDefinitionGenerator.cs" />
