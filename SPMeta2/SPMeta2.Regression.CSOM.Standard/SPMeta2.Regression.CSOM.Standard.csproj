@@ -60,6 +60,7 @@
     <Compile Include="Validation\ClientPublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
