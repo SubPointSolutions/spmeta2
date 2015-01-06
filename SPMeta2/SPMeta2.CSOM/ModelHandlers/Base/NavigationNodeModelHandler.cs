@@ -129,7 +129,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                 {
                     Title = quickLaunchNode.Title,
                     IsExternal = quickLaunchNode.IsExternal,
-                    Url = quickLaunchNode.Url
+                    Url = quickLaunchNode.Url,
+                    AsLastNode = true
                 });
 
                 context.ExecuteQueryWithTrace();

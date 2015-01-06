@@ -39,17 +39,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         protected QuickLaunchNavigationNodeDefinition GenerateNode()
         {
+            return GenerateNode(null);
+        }
+
+        protected QuickLaunchNavigationNodeDefinition GenerateNode(Action<QuickLaunchNavigationNodeDefinition> action)
+        {
             var node = ModelGeneratorService.GetRandomDefinition<QuickLaunchNavigationNodeDefinition>();
 
             node.IsVisible = true;
             node.IsExternal = true;
+
+            if (action != null) action(node);
 
             return node;
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode")]
-        public void CanDeploy_Simple_TopNavigationNode()
+        public void CanDeploy_Simple_QuickLaunchNavigationNode()
         {
             var nav1Node = GenerateNode();
 
@@ -68,7 +75,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode")]
-        public void CanDeploy_TwoLevel_TopNavigationNode()
+        public void CanDeploy_TwoLevel_QuickLaunchNavigationNode()
         {
             var nav1Node = GenerateNode();
             var nav2Node = GenerateNode();
@@ -90,7 +97,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode")]
-        public void CanDeploy_ThreeLevel_TopNavigationNode()
+        public void CanDeploy_ThreeLevel_QuickLaunchNavigationNode()
         {
             var nav1Node = GenerateNode();
             var nav2Node = GenerateNode();
@@ -108,6 +115,39 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 node2.AddQuickLaunchNavigationNode(nav3Node);
                             });
                         });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode")]
+        public void CanDeploy_Ordered_QuickLaunchNavigationNodes()
+        {
+            var wideIndex = 3;
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        for (int firstIndex = 0; firstIndex < wideIndex; firstIndex++)
+                        {
+                            rndWeb.AddQuickLaunchNavigationNode(GenerateNode(firstNode => firstNode.Title = string.Format("{0}_node", firstIndex)), node1 =>
+                            {
+                                for (int secondIndex = 0; secondIndex < wideIndex; secondIndex++)
+                                {
+                                    node1.AddQuickLaunchNavigationNode(GenerateNode(secondNode => secondNode.Title = string.Format("{0}_node", secondIndex)), node2 =>
+                                    {
+                                        for (int thirdIndex = 0; thirdIndex < wideIndex; thirdIndex++)
+                                        {
+                                            node2.AddQuickLaunchNavigationNode(GenerateNode(secondNode => secondNode.Title = string.Format("{0}_node", thirdIndex)));
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
                 });
 

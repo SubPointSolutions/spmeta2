@@ -36,13 +36,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #endregion
 
         #region top nav cases
-         
+
         protected TopNavigationNodeDefinition GenerateNode()
+        {
+            return GenerateNode(null);
+        }
+
+        protected TopNavigationNodeDefinition GenerateNode(Action<TopNavigationNodeDefinition> action)
         {
             var node = ModelGeneratorService.GetRandomDefinition<TopNavigationNodeDefinition>();
 
             node.IsVisible = true;
             node.IsExternal = true;
+
+            if (action != null) action(node);
 
             return node;
         }
@@ -108,6 +115,39 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 node2.AddTopNavigationNode(nav3Node);
                             });
                         });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode")]
+        public void CanDeploy_Ordered_TopNavigationNodes()
+        {
+            var wideIndex = 3;
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        for (int firstIndex = 0; firstIndex < wideIndex; firstIndex++)
+                        {
+                            rndWeb.AddTopNavigationNode(GenerateNode(firstNode => firstNode.Title = string.Format("{0}_node", firstIndex)), node1 =>
+                            {
+                                for (int secondIndex = 0; secondIndex < wideIndex; secondIndex++)
+                                {
+                                    node1.AddTopNavigationNode(GenerateNode(secondNode => secondNode.Title = string.Format("{0}_node", secondIndex)), node2 =>
+                                    {
+                                        for (int thirdIndex = 0; thirdIndex < wideIndex; thirdIndex++)
+                                        {
+                                            node2.AddTopNavigationNode(GenerateNode(secondNode => secondNode.Title = string.Format("{0}_node", thirdIndex)));
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
                 });
 
