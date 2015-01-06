@@ -94,7 +94,17 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                     pageItem[BuiltInPublishingFieldId.PublishingPageContent] = publishingPageModel.Content;
 
-                    pageItem[BuiltInFieldId.ContentTypeId] = currentPageLayoutItem[BuiltInPublishingFieldId.AssociatedContentType];
+                    var contentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInPublishingFieldId.AssociatedContentType]);
+
+                    if (!string.IsNullOrEmpty(contentTypeStringValue))
+                    {
+                        var contentTypeValues = contentTypeStringValue.Split(new string[] { ";#" }, StringSplitOptions.None);
+                        var contentTypeName = contentTypeValues[1];
+                        var contentTypeId = contentTypeValues[2];
+
+                        pageItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                    }
+
                     pageItem[BuiltInPublishingFieldId.PageLayout] = new SPFieldUrlValue()
                     {
                         Url = currentPageLayoutItem.File.ServerRelativeUrl,

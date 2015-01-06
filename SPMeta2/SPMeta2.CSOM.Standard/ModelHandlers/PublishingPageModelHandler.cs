@@ -190,7 +190,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
 
                 newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
-                newFileItem[BuiltInInternalFieldNames.ContentTypeId] = currentPageLayoutItem[BuiltInInternalFieldNames.PublishingAssociatedContentType];
+
+                var contentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInInternalFieldNames.PublishingAssociatedContentType]);
+
+                if (!string.IsNullOrEmpty(contentTypeStringValue))
+                {
+                    var contentTypeValues = contentTypeStringValue.Split(new string[] { ";#" }, StringSplitOptions.None);
+                    var contentTypeName = contentTypeValues[1];
+                    var contentTypeId = contentTypeValues[2];
+
+                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                }
 
                 newFileItem.Update();
 
