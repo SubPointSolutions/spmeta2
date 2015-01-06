@@ -277,6 +277,17 @@ namespace SPMeta2.Models
         }
 
         #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return Value != null
+                        ? string.Format("Node value: [{0}] - {1}", Value.GetType().Name, Value)
+                        : base.ToString();
+        }
+
+        #endregion
     }
 
     /// <summary>
