@@ -6,6 +6,15 @@ namespace SPMeta2.CSOM.Extensions
     {
         #region methods
 
+        public static CamlQuery ItemsByFieldValueBeginsWithQuery(string fieldName, string fieldValue)
+        {
+            return new CamlQuery
+            {
+                ViewXml = string.Format("<View><Query><Where><BeginsWith><FieldRef Name='{0}' /><Value Type='{1}'>{2}</Value></BeginsWith></Where></Query></View>",
+                        fieldName, "Text", fieldValue)
+            };
+        }
+
         public static CamlQuery ItemByFieldValueQuery(string fieldName, string fieldValue)
         {
             return GetItemByFieldQuery(fieldName, "Text", fieldValue);
