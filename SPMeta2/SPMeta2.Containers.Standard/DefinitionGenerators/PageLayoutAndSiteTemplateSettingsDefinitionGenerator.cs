@@ -19,10 +19,11 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             {
                 // webs
                 //def.InheritWebTemplates = Rnd.Bool();
-                def.InheritWebTemplates = false;
+                // TODO, not supported yet
+                def.InheritWebTemplates = null;
 
-                if (def.InheritWebTemplates.HasValue && !def.InheritWebTemplates.Value)
-                    def.UseAnyWebTemplate = false; Rnd.Bool();
+                // TODO, not supported yet
+                def.UseAnyWebTemplate = null; Rnd.Bool();
 
                 if (def.UseAnyWebTemplate.HasValue && !def.UseAnyWebTemplate.Value)
                 {
@@ -33,7 +34,8 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                     def.DefinedWebTemplates.Add(BuiltInWebTemplates.Collaboration.BlankSite);
                 }
 
-                def.ResetAllSubsitesToInheritWebTemplates = Rnd.Bool();
+                // TODO, not supported yet
+                def.ResetAllSubsitesToInheritWebTemplates = null; Rnd.Bool();
 
                 // page layouts
                 //def.InheritPageLayouts = Rnd.Bool();
