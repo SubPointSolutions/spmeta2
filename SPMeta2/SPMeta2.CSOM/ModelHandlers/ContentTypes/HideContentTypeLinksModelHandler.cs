@@ -79,7 +79,8 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                 }
             }
 
-            folder.UniqueContentTypeOrder = newContentTypeOrder;
+            if (newContentTypeOrder.Count() > 0)
+                folder.UniqueContentTypeOrder = newContentTypeOrder;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
