@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 
@@ -19,13 +25,24 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             var definition = model.WithAssertAndCast<PageLayoutAndSiteTemplateSettingsDefinition>("model", value => value.RequireNotNull());
 
             var context = webModelHost.HostWeb.Context;
-            var spObject = PublishingWeb.GetPublishingWeb(context, webModelHost.HostWeb);
+            var spObject = webModelHost.HostWeb;
 
             var assert = ServiceFactory.AssertService
                             .NewAssert(definition, spObject)
                             .ShouldNotBeNull(spObject);
 
-            //// web templates
+            var pageLayouts = this.LoadPageLayouts(webModelHost);
+
+            // web templates
+            assert.SkipProperty(m => m.InheritWebTemplates, "InheritWebTemplates is not supported yet. Skipping");
+            assert.SkipProperty(m => m.UseAnyWebTemplate, "UseAnyWebTemplate is not supported yet. Skipping");
+            assert.SkipProperty(m => m.UseDefinedWebTemplates, "UseDefinedWebTemplates is not supported yet. Skipping");
+            assert.SkipProperty(m => m.DefinedWebTemplates, "DefinedWebTemplates is not supported yet. Skipping");
+
+            assert.SkipProperty(m => m.ResetAllSubsitesToInheritWebTemplates, "ResetAllSubsitesToInheritWebTemplates is not supported yet. Skipping");
+
+            #region web settings
+
             //if (definition.InheritWebTemplates.HasValue)
             //    assert.ShouldBeEqual(m => m.InheritWebTemplates, o => o.IsInheritingAvailableWebTemplates);
             //else
@@ -73,122 +90,247 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             //assert.SkipProperty(m => m.ResetAllSubsitesToInheritWebTemplates, "ResetAllSubsitesToInheritWebTemplates can't be validates. Skipping.");
 
-            //// layouts
-            //if (definition.InheritPageLayouts.HasValue)
-            //    assert.ShouldBeEqual(m => m.InheritPageLayouts, o => o.IsInheritingAvailablePageLayouts);
-            //else
-            //    assert.SkipProperty(m => m.InheritPageLayouts, "InheritPageLayouts is NULL. Skipping");
+            #endregion
 
-            //if (definition.UseAnyPageLayout.HasValue)
-            //    assert.ShouldBeEqual(m => m.UseAnyPageLayout, o => o.IsAllowingAllPageLayouts);
-            //else
-            //    assert.SkipProperty(m => m.UseAnyPageLayout, "UseAnyPageLayout is NULL. Skipping");
+            #region page layouts
 
-            //assert.SkipProperty(m => m.ResetAllSubsitesToInheritPageLayouts, "ResetAllSubsitesToInheritPageLayouts can't be validates. Skipping.");
+            // layouts
+            if (definition.InheritPageLayouts.HasValue)
+                assert.ShouldBeEqual(m => m.InheritPageLayouts, o => o.GetInheritingAvailablePageLayouts());
+            else
+                assert.SkipProperty(m => m.InheritPageLayouts, "InheritPageLayouts is NULL. Skipping");
 
-            //if (definition.UseDefinedPageLayouts.HasValue)
-            //{
-            //    assert.SkipProperty(m => m.UseDefinedPageLayouts, "UseDefinedPageLayouts is not NULL. Validating DefinedPageLayouts.");
+            if (definition.UseAnyPageLayout.HasValue)
+                assert.ShouldBeEqual(m => m.UseAnyPageLayout, o => o.GetIsAllowingAllPageLayouts());
+            else
+                assert.SkipProperty(m => m.UseAnyPageLayout, "UseAnyPageLayout is NULL. Skipping");
 
-            //    assert.ShouldBeEqual((p, s, d) =>
-            //    {
-            //        var srcProp = s.GetExpressionValue(m => m.DefinedPageLayouts);
-            //        var isValid = true;
+            if (definition.UseDefinedPageLayouts.HasValue)
+            {
+                assert.SkipProperty(m => m.UseDefinedPageLayouts, "UseDefinedPageLayouts is not NULL. Validating DefinedPageLayouts.");
 
-            //        var currentTemplates = spObject.GetAvailablePageLayouts();
-            //        var definedTemplates = definition.DefinedPageLayouts;
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefinedPageLayouts);
+                    var isValid = true;
 
-            //        foreach (var defTemplate in definedTemplates)
-            //        {
-            //            if (!currentTemplates.OfType<PageLayout>().Any(t => t.Name.ToUpper() == defTemplate.ToUpper()))
-            //                isValid = false;
-            //        }
+                    var currentTemplates = spObject.GetAvailablePageLayoutNames(pageLayouts);
+                    var definedTemplates = definition.DefinedPageLayouts;
 
-            //        return new PropertyValidationResult
-            //        {
-            //            Tag = p.Tag,
-            //            Src = srcProp,
-            //            Dst = null,
-            //            IsValid = isValid
-            //        };
-            //    });
+                    foreach (var defTemplate in definedTemplates)
+                    {
+                        if (!currentTemplates.Any(t => t.ToUpper() == defTemplate.ToUpper()))
+                            isValid = false;
+                    }
 
-            //}
-            //else
-            //{
-            //    assert.SkipProperty(m => m.UseDefinedPageLayouts, "UseDefinedPageLayouts is NULL. Skipping");
-            //    assert.SkipProperty(m => m.DefinedPageLayouts, "DefinedPageLayouts as UseDefinedPageLayouts is NULL. Skipping");
-            //}
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
 
-            //// default page layout
-            //if (definition.InheritDefaultPageLayout.HasValue)
-            //    assert.ShouldBeEqual(m => m.InheritDefaultPageLayout, o => o.IsInheritingAvailablePageLayouts);
-            //else
-            //    assert.SkipProperty(m => m.InheritDefaultPageLayout, "InheritDefaultPageLayout is NULL. Skipping");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.UseDefinedPageLayouts, "UseDefinedPageLayouts is NULL. Skipping");
+                assert.SkipProperty(m => m.DefinedPageLayouts, "DefinedPageLayouts as UseDefinedPageLayouts is NULL. Skipping");
+            }
 
-            //if (definition.UseDefinedDefaultPageLayout.HasValue)
-            //{
-            //    assert.SkipProperty(m => m.UseDefinedDefaultPageLayout, "UseDefinedDefaultPageLayout is not NULL. Validating DefinedDefaultPageLayout.");
+            assert.SkipProperty(m => m.ResetAllSubsitesToInheritPageLayouts, "ResetAllSubsitesToInheritPageLayouts is not supported yet. Skipping");
 
-            //    assert.ShouldBeEqual((p, s, d) =>
-            //    {
-            //        var srcProp = s.GetExpressionValue(m => m.DefinedDefaultPageLayout);
-            //        var isValid = true;
 
-            //        var currentPageLayout = spObject.DefaultPageLayout;
+            #endregion
 
-            //        isValid = currentPageLayout.Name.ToUpper() == definition.DefinedDefaultPageLayout.ToUpper();
+            #region default page layout
 
-            //        return new PropertyValidationResult
-            //        {
-            //            Tag = p.Tag,
-            //            Src = srcProp,
-            //            Dst = null,
-            //            IsValid = isValid
-            //        };
-            //    });
+            // default page layout
+            if (definition.InheritDefaultPageLayout.HasValue)
+                assert.ShouldBeEqual(m => m.InheritDefaultPageLayout, o => o.GetIsInheritingAvailablePageLayouts());
+            else
+                assert.SkipProperty(m => m.InheritDefaultPageLayout, "InheritDefaultPageLayout is NULL. Skipping");
 
-            //}
-            //else
-            //{
-            //    assert.SkipProperty(m => m.UseDefinedDefaultPageLayout, "UseDefinedDefaultPageLayout is NULL. Skipping");
-            //    assert.SkipProperty(m => m.DefinedDefaultPageLayout, "DefinedDefaultPageLayout as UseDefinedDefaultPageLayout is NULL. Skipping");
-            //}
+            if (definition.UseDefinedDefaultPageLayout.HasValue)
+            {
+                assert.SkipProperty(m => m.UseDefinedDefaultPageLayout, "UseDefinedDefaultPageLayout is not NULL. Validating DefinedDefaultPageLayout.");
 
-            //assert.SkipProperty(m => m.ResetAllSubsitesToInheritDefaultPageLayout, "ResetAllSubsitesToInheritDefaultPageLayout can't be validates. Skipping.");
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefinedDefaultPageLayout);
+                    var isValid = true;
 
-            //// space settings
-            //if (definition.ConverBlankSpacesIntoHyphen.HasValue)
-            //    assert.ShouldBeEqual(m => m.ConverBlankSpacesIntoHyphen, o => o.GetConverBlankSpacesIntoHyphen());
-            //else
-            //    assert.SkipProperty(m => m.ConverBlankSpacesIntoHyphen, "ConverBlankSpacesIntoHyphen is NULL. Skipping");
+                    var currentPageLayout = spObject.GetDefaultPageLayoutName(pageLayouts);
+
+                    isValid = currentPageLayout.ToUpper() == definition.DefinedDefaultPageLayout.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.UseDefinedDefaultPageLayout, "UseDefinedDefaultPageLayout is NULL. Skipping");
+                assert.SkipProperty(m => m.DefinedDefaultPageLayout, "DefinedDefaultPageLayout as UseDefinedDefaultPageLayout is NULL. Skipping");
+            }
+
+            assert.SkipProperty(m => m.ResetAllSubsitesToInheritDefaultPageLayout, "ResetAllSubsitesToInheritDefaultPageLayout can't be validates. Skipping.");
+
+            #endregion
+
+            #region space settings
+
+            // space settings
+            if (definition.ConverBlankSpacesIntoHyphen.HasValue)
+                assert.ShouldBeEqual(m => m.ConverBlankSpacesIntoHyphen, o => o.GetConverBlankSpacesIntoHyphen());
+            else
+                assert.SkipProperty(m => m.ConverBlankSpacesIntoHyphen, "ConverBlankSpacesIntoHyphen is NULL. Skipping");
+
+            #endregion
         }
 
         #endregion
     }
 
-    public static class PublishingWebExtensions
+    internal static class PublishingWebExtensions
     {
-
-
-        public static bool GetInheritWebTemplates(this PublishingWeb publishingWeb)
+        public class PageLayoutXmlItem
         {
-            //return publishingWeb.IsInheritingAvailableWebTemplates;
+            public Guid UniqueId { get; set; }
+            public string Url { get; set; }
+        }
+
+        private static PageLayoutXmlItem GetPageLyoutNameFromXml(string pageLayoutXml)
+        {
+            var result = new List<PageLayoutXmlItem>();
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(pageLayoutXml);
+
+            if (xmlDocument.FirstChild != null)
+                return ConvertXmlNodeToItem(xmlDocument.FirstChild);
+
+            return null;
+        }
+
+        private static List<PageLayoutXmlItem> GetPageLyoutNamesFromXml(string pageLayoutXml)
+        {
+            var result = new List<PageLayoutXmlItem>();
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(pageLayoutXml);
+
+            var documentElement = xmlDocument.DocumentElement;
+
+            for (XmlNode xmlNode = documentElement.FirstChild; xmlNode != null; xmlNode = xmlNode.NextSibling)
+                result.Add(ConvertXmlNodeToItem(xmlNode));
+
+            return result;
+        }
+
+        private static PageLayoutXmlItem ConvertXmlNodeToItem(XmlNode xmlNode)
+        {
+            string guid = xmlNode.Attributes["guid"].Value;
+            string url = xmlNode.Attributes["url"].Value;
+
+            var item = new PageLayoutXmlItem
+            {
+                Url = url,
+                UniqueId = new Guid(guid)
+            };
+            return item;
+        }
+
+        public static string GetDefaultPageLayoutName(this Web web, IEnumerable<ListItem> pageLayouts)
+        {
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__DefaultPageLayout"));
+            var pageNameItem = GetPageLyoutNameFromXml(value);
+
+            if (pageNameItem != null)
+            {
+                var pageLayoutUniqueId = pageNameItem.UniqueId;
+                return GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId);
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetLayoutFileNameByUniqueId(IEnumerable<ListItem> pageLayouts, Guid uniqueId)
+        {
+            var pageLayoutItem = pageLayouts.FirstOrDefault(i => new Guid(i[BuiltInInternalFieldNames.UniqueId].ToString()) == uniqueId);
+
+            if (pageLayoutItem != null)
+                return ConvertUtils.ToString(pageLayoutItem[BuiltInInternalFieldNames.FileLeafRef]);
+
+            return string.Empty;
+        }
+
+        public static List<string> GetAvailablePageLayoutNames(this Web web, IEnumerable<ListItem> pageLayouts)
+        {
+            var result = new List<string>();
+
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__PageLayouts"));
+            var pageNameItems = GetPageLyoutNamesFromXml(value);
+
+            foreach (var pageItem in pageNameItems)
+            {
+                var pageLayoutUniqueId = pageItem.UniqueId;
+                result.Add(GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId));
+            }
+
+            return result;
+        }
+
+        public static bool GetIsInheritingAvailablePageLayouts(this Web web)
+        {
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__DefaultPageLayout"));
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            return value.ToUpper() == "__inherit".ToUpper();
+        }
+
+        public static bool GetIsAllowingAllPageLayouts(this Web web)
+        {
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__PageLayouts"));
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            return value.ToUpper() == string.Empty;
+        }
+
+        public static bool GetInheritingAvailablePageLayouts(this Web web)
+        {
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__PageLayouts"));
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            return value.ToUpper() == "__inherit".ToUpper();
+        }
+
+        public static bool GetInheritWebTemplates(this Web publishingWeb)
+        {
             throw new NotImplementedException();
         }
 
-        public static bool GetConverBlankSpacesIntoHyphen(this PublishingWeb publishingWeb)
+        public static bool GetConverBlankSpacesIntoHyphen(this Web publishingWeb)
         {
-            throw new NotImplementedException();
+            var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(publishingWeb, "__AllowSpacesInNewPageName"));
 
-            //var web = publishingWeb.Web;
+            if (string.IsNullOrEmpty(value))
+                return false;
 
-            //var key = "__AllowSpacesInNewPageName";
-
-            //if (!web.AllProperties.ContainsKey(key))
-            //    return false;
-
-            //return ConvertUtils.ToBool(web.AllProperties[key]).Value;
+            return ConvertUtils.ToBool(value).Value;
         }
     }
 }

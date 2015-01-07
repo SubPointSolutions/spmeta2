@@ -18,12 +18,10 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 // webs
-                //def.InheritWebTemplates = Rnd.Bool();
-                // TODO, not supported yet
-                def.InheritWebTemplates = null;
+                def.InheritWebTemplates = Rnd.Bool();
 
-                // TODO, not supported yet
-                def.UseAnyWebTemplate = null; Rnd.Bool();
+                if (!def.InheritWebTemplates.Value)
+                    def.UseAnyWebTemplate = Rnd.Bool();
 
                 if (def.UseAnyWebTemplate.HasValue && !def.UseAnyWebTemplate.Value)
                 {
@@ -34,15 +32,13 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                     def.DefinedWebTemplates.Add(BuiltInWebTemplates.Collaboration.BlankSite);
                 }
 
-                // TODO, not supported yet
-                def.ResetAllSubsitesToInheritWebTemplates = null; Rnd.Bool();
+                def.ResetAllSubsitesToInheritWebTemplates = Rnd.Bool();
 
                 // page layouts
-                //def.InheritPageLayouts = Rnd.Bool();
-                def.InheritPageLayouts = false;
+                def.InheritPageLayouts = Rnd.Bool();
 
-                if (def.InheritPageLayouts.HasValue && !def.InheritPageLayouts.Value)
-                    def.UseAnyPageLayout = false; Rnd.Bool();
+                if (!def.InheritPageLayouts.Value)
+                    def.UseAnyPageLayout = Rnd.Bool();
 
                 if (def.UseAnyPageLayout.HasValue && !def.UseAnyPageLayout.Value)
                 {
@@ -56,22 +52,18 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
                 def.ResetAllSubsitesToInheritPageLayouts = Rnd.Bool();
 
                 // default page layout
-                //def.InheritDefaultPageLayout = Rnd.Bool();
-                def.InheritDefaultPageLayout = null;
+                def.InheritDefaultPageLayout = Rnd.Bool();
 
-                if (def.InheritDefaultPageLayout.HasValue && !def.InheritDefaultPageLayout.Value)
+                if (!def.InheritDefaultPageLayout.Value)
                     def.UseDefinedDefaultPageLayout = true; Rnd.Bool();
 
                 if (def.UseDefinedDefaultPageLayout.HasValue && def.UseDefinedDefaultPageLayout.Value)
-                {
                     def.DefinedDefaultPageLayout = BuiltInPublishingPageLayoutNames.ArticleRight;
-                }
 
                 def.ResetAllSubsitesToInheritPageLayouts = Rnd.Bool();
 
                 // convert settings
                 def.ConverBlankSpacesIntoHyphen = Rnd.Bool();
-
             });
         }
 

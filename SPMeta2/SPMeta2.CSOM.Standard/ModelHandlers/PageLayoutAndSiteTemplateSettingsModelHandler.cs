@@ -8,6 +8,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
@@ -55,10 +56,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ModelHost = modelHost
             });
 
-            ProcessWebTemplateSettings(publishingWeb, definition);
-            ProcessPageLayoutSettings(webModelHost, publishingWeb, definition);
-            ProcessNewPageDefaultSettings(publishingWeb, definition);
-            ProcessConverBlankSpacesIntoHyphenSetting(publishingWeb, definition);
+            var pageLayouts = LoadPageLayouts(webModelHost);
+
+            ProcessWebTemplateSettings(webModelHost, publishingWeb, definition, pageLayouts);
+            ProcessPageLayoutSettings(webModelHost, publishingWeb, definition, pageLayouts);
+            ProcessNewPageDefaultSettings(webModelHost, publishingWeb, definition, pageLayouts);
+            ProcessConverBlankSpacesIntoHyphenSetting(webModelHost, publishingWeb, definition, pageLayouts);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -75,10 +78,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQuery();
         }
 
-        private void ProcessConverBlankSpacesIntoHyphenSetting(PublishingWeb publishingWeb, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        private void ProcessConverBlankSpacesIntoHyphenSetting(
+            WebModelHost webModelHost,
+            PublishingWeb publishingWeb,
+            PageLayoutAndSiteTemplateSettingsDefinition definition,
+            List<ListItem> pageLayouts)
         {
             var web = publishingWeb.Web;
-
 
             var key = "__AllowSpacesInNewPageName";
             var value = definition.ConverBlankSpacesIntoHyphen.HasValue
@@ -88,7 +94,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             SetPropertyBagValue(web, key, value);
         }
 
-        protected static void SetPropertyBagValue(Web web, string key, string value)
+        public static void SetPropertyBagValue(Web web, string key, string value)
         {
             var context = web.Context;
 
@@ -108,37 +114,69 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQuery();
         }
 
-        private static void ProcessNewPageDefaultSettings(PublishingWeb publishingWeb, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        public static object GetPropertyBagValue(Web web, string key)
+        {
+            var context = web.Context;
+
+            if (!web.IsPropertyAvailable("AllProperties"))
+            {
+                context.Load(web);
+                context.Load(web, w => w.AllProperties);
+                context.ExecuteQuery();
+            }
+
+            if (!web.AllProperties.FieldValues.ContainsKey(key))
+                return null;
+            else
+                return web.AllProperties[key];
+        }
+
+
+        private static void ProcessNewPageDefaultSettings(
+            WebModelHost webModelHost,
+            PublishingWeb publishingWeb,
+            PageLayoutAndSiteTemplateSettingsDefinition definition,
+            List<ListItem> pageLayouts)
         {
             var web = publishingWeb.Web;
             var context = web.Context;
 
             if (definition.InheritDefaultPageLayout.HasValue && definition.InheritDefaultPageLayout.Value)
             {
-                // publishingWeb.InheritDefaultPageLayout();
-                // -> CommonUtilities.SetStringProperty(web.AllProperties, "__DefaultPageLayout", "__inherit");
-
                 SetPropertyBagValue(web, "__DefaultPageLayout", "__inherit");
             }
             else if (definition.UseDefinedDefaultPageLayout.HasValue && definition.UseDefinedDefaultPageLayout.Value)
             {
-                //var publishingSite = new PublishingSite(web.Site);
-                //var pageLayouts = publishingSite.PageLayouts;
+                var selectedLayoutName = definition.DefinedDefaultPageLayout;
+                var targetLayout = pageLayouts.FirstOrDefault(t => t["FileLeafRef"].ToString().ToUpper() == selectedLayoutName.ToUpper());
 
-                //var selectedPageLayout = pageLayouts.FirstOrDefault(t => t.Name.ToUpper() == definition.DefinedDefaultPageLayout.ToUpper());
-
-                //if (selectedPageLayout != null)
-                //{
-                //    publishingWeb.SetDefaultPageLayout(
-                //        selectedPageLayout,
-                //        definition.ResetAllSubsitesToInheritDefaultPageLayout.HasValue
-                //            ? definition.ResetAllSubsitesToInheritDefaultPageLayout.Value
-                //            : false);
-                //}
+                if (targetLayout != null)
+                {
+                    var resultString = CreateLayoutXmlString(targetLayout);
+                    SetPropertyBagValue(web, "__DefaultPageLayout", resultString);
+                }
             }
         }
 
-        private static void ProcessPageLayoutSettings(WebModelHost webModelHost, PublishingWeb publishingWeb, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        protected List<ListItem> LoadPageLayouts(WebModelHost webModelHost)
+        {
+            var rootWeb = webModelHost.HostSite.RootWeb;
+            var context = rootWeb.Context;
+
+            var masterPageList = rootWeb.QueryAndGetListByUrl("/_catalogs/masterpage");
+
+            var pageLayouts = masterPageList.GetItems(CamlQueryTemplates.ItemsByFieldValueBeginsWithQuery("ContentTypeId", BuiltInPublishingContentTypeId.PageLayout));
+            context.Load(pageLayouts);
+            context.ExecuteQuery();
+
+            return pageLayouts.ToList();
+        }
+
+        private static void ProcessPageLayoutSettings(
+            WebModelHost webModelHost,
+            PublishingWeb publishingWeb,
+            PageLayoutAndSiteTemplateSettingsDefinition definition,
+            List<ListItem> pageLayouts)
         {
             var rootWeb = webModelHost.HostSite.RootWeb;
             var web = publishingWeb.Web;
@@ -146,35 +184,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             if (definition.InheritPageLayouts.HasValue && definition.InheritPageLayouts.Value)
             {
-                //publishingWeb.InheritAvailablePageLayouts();
-                // -> CommonUtilities.SetStringProperty(web.AllProperties, "__PageLayouts", "__inherit");
-
                 SetPropertyBagValue(web, "__PageLayouts", "__inherit");
             }
             else if (definition.UseAnyPageLayout.HasValue && definition.UseAnyPageLayout.Value)
             {
-                //  publishingWeb.AllowAllPageLayouts(definition.ResetAllSubsitesToInheritPageLayouts.HasValue
-                //    ? definition.ResetAllSubsitesToInheritPageLayouts.Value
-                //    : false);
-
-                // -> this.SetStringProperty("__PageLayouts", pageLayouts);
-
                 SetPropertyBagValue(web, "__PageLayouts", "");
-
             }
             else if (definition.UseDefinedPageLayouts.HasValue && definition.UseDefinedPageLayouts.Value)
             {
-                // TODO
-                // 1. load page layouts
-
-                // 2. create XML string
-                // -> public void SetAvailablePageLayouts(PageLayout[] pageLayouts, bool resetAllSubsitesToInherit)
-                var masterPageList = rootWeb.QueryAndGetListByUrl("/_catalogs/masterpage");
-
-                var pageLayouts = masterPageList.GetItems(CamlQueryTemplates.ItemsByFieldValueBeginsWithQuery("ContentTypeId", BuiltInPublishingContentTypeId.PageLayout));
-                context.Load(pageLayouts);
-                context.ExecuteQuery();
-
                 var selectedPageLayouts = new List<ListItem>();
 
                 foreach (var selectedLayoutName in definition.DefinedPageLayouts)
@@ -187,40 +204,62 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 if (selectedPageLayouts.Any())
                 {
-                    // craft XML doc for given layouts
-
-                    var xmlDocument = new XmlDocument();
-                    var rootXmlNode = xmlDocument.CreateElement("pagelayouts");
-                    xmlDocument.AppendChild(rootXmlNode);
-
-                    foreach (var pageLayout in selectedPageLayouts)
-                    {
-                        var xmlNode = xmlDocument.CreateElement("layout");
-
-                        var xmlAttribute = xmlDocument.CreateAttribute("guid");
-                        xmlAttribute.Value = pageLayout["UniqueId"].ToString();
-
-                        var xmlAttribute2 = xmlDocument.CreateAttribute("url");
-                        xmlAttribute2.Value = pageLayout["FileRef"].ToString();
-
-                        xmlNode.Attributes.SetNamedItem(xmlAttribute);
-                        xmlNode.Attributes.SetNamedItem(xmlAttribute2);
-
-                        rootXmlNode.AppendChild(xmlNode);
-                    }
-
-                    var resultString = rootXmlNode.OuterXml;
+                    var resultString = CreateLayoutsXmlString(selectedPageLayouts);
                     SetPropertyBagValue(web, "__PageLayouts", resultString);
-
-                    //publishingWeb.SetAvailablePageLayouts(selectedPageLayouts.ToArray(),
-                    //    definition.ResetAllSubsitesToInheritPageLayouts.HasValue
-                    //        ? definition.ResetAllSubsitesToInheritPageLayouts.Value
-                    //        : false);
                 }
             }
         }
 
-        private static void ProcessWebTemplateSettings(PublishingWeb publishingWeb, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        private static string CreateLayoutXmlString(ListItem pageLayout)
+        {
+            var xmlDocument = new XmlDocument();
+            var rootXmlNode = xmlDocument.CreateElement("pagelayouts");
+            xmlDocument.AppendChild(rootXmlNode);
+
+            var xmlNode = xmlDocument.CreateElement("layout");
+
+            var xmlAttribute = xmlDocument.CreateAttribute("guid");
+            xmlAttribute.Value = pageLayout[BuiltInInternalFieldNames.UniqueId].ToString();
+
+            var xmlAttribute2 = xmlDocument.CreateAttribute("url");
+            xmlAttribute2.Value = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+            xmlNode.Attributes.SetNamedItem(xmlAttribute);
+            xmlNode.Attributes.SetNamedItem(xmlAttribute2);
+
+            return xmlNode.OuterXml;
+        }
+
+        private static string CreateLayoutsXmlString(IEnumerable<ListItem> pageLayouts)
+        {
+            var xmlDocument = new XmlDocument();
+            var rootXmlNode = xmlDocument.CreateElement("pagelayouts");
+            xmlDocument.AppendChild(rootXmlNode);
+
+            foreach (var pageLayout in pageLayouts)
+            {
+                var xmlNode = xmlDocument.CreateElement("layout");
+
+                var xmlAttribute = xmlDocument.CreateAttribute("guid");
+                xmlAttribute.Value = pageLayout[BuiltInInternalFieldNames.UniqueId].ToString();
+
+                var xmlAttribute2 = xmlDocument.CreateAttribute("url");
+                xmlAttribute2.Value = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+                xmlNode.Attributes.SetNamedItem(xmlAttribute);
+                xmlNode.Attributes.SetNamedItem(xmlAttribute2);
+
+                rootXmlNode.AppendChild(xmlNode);
+            }
+
+            return rootXmlNode.OuterXml;
+        }
+
+        private static void ProcessWebTemplateSettings(
+            WebModelHost webModelHost,
+            PublishingWeb publishingWeb,
+            PageLayoutAndSiteTemplateSettingsDefinition definition,
+            List<ListItem> pageLayouts)
         {
             //var web = publishingWeb.Web;
 
