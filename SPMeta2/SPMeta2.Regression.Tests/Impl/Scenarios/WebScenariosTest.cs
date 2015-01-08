@@ -85,6 +85,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_PublishingSite_Intranet()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_PublishingSite_CMS()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webs")]

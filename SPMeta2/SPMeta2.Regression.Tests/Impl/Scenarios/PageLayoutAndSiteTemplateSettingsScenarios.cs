@@ -49,7 +49,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var def = ModelGeneratorService.GetRandomDefinition<WebDefinition>();
 
-            def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
+            def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+            //def.WebTemplate = BuiltInWebTemplates.Collaboration.TeamSite;
 
             return def;
         }
@@ -59,7 +60,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public void CanDeploy_PageLayoutAndSiteTemplates_InheritEverything()
         {
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
             var settings = new PageLayoutAndSiteTemplateSettingsDefinition
             {
@@ -75,7 +78,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWebFeature(webFeature);
                 web.AddWeb(GetPublishingWeb(), subWeb =>
                 {
-                    subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+                    subWeb.AddFeature(subWebFeature);
+                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
                 });
             });
 
@@ -87,7 +91,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public void CanDeploy_PageLayoutAndSiteTemplates_UseAny()
         {
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+         
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
             var settings = new PageLayoutAndSiteTemplateSettingsDefinition
             {
@@ -102,7 +108,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWebFeature(webFeature);
                 web.AddWeb(GetPublishingWeb(), subWeb =>
                 {
-                    subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+                    subWeb.AddFeature(subWebFeature);
+                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
                 });
             });
 
@@ -114,7 +121,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public void CanDeploy_PageLayoutAndSiteTemplates_UseDefined()
         {
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
             var settings = new PageLayoutAndSiteTemplateSettingsDefinition
             {
@@ -146,7 +155,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWebFeature(webFeature);
                 web.AddWeb(GetPublishingWeb(), subWeb =>
                 {
-                    subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+                    subWeb.AddFeature(subWebFeature);
+                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
                 });
             });
 

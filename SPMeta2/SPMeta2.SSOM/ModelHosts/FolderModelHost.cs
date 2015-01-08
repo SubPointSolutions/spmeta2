@@ -17,5 +17,8 @@ namespace SPMeta2.SSOM.ModelHosts
 
         public SPWeb CurrentWeb { get; set; }
         public SPFolder CurrentWebFolder { get; set; }
+
+        public SPContentType CurrentContentType { get; set; }
+        public SPFolder CurrentContentTypeFolder { get; set; }
     }
 }

@@ -30,8 +30,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected SPFile GetFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            var folder = folderHost.CurrentLibraryFolder;
-            return folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+            if (folderHost.CurrentWebFolder != null)
+                return folderHost.CurrentWebFolder.ParentWeb.GetFile(GetSafeFileUrl(folderHost.CurrentWebFolder, moduleFile));
+
+            if (folderHost.CurrentContentType != null)
+                return folderHost.CurrentContentTypeFolder.ParentWeb.GetFile(GetSafeFileUrl(folderHost.CurrentContentTypeFolder, moduleFile));
+
+            if (folderHost.CurrentLibraryFolder != null)
+                return folderHost.CurrentLibraryFolder.ParentWeb.GetFile(GetSafeFileUrl(folderHost.CurrentLibraryFolder, moduleFile));
+
+            throw new ArgumentException("CurrentWebFolder/CurrentContentType/CurrentLibraryFolder should not be null");
+
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
@@ -68,11 +77,71 @@ namespace SPMeta2.SSOM.ModelHandlers
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
             if (folderHost.CurrentWebFolder != null)
-                throw new SPMeta2NotImplementedException("Module provision under web folders is not implemented yet.");
+                ProcessWebModuleFile(folderHost, moduleFile);
+            else if (folderHost.CurrentContentType != null)
+                ProcessContentTypeModuleFile(folderHost, moduleFile);
+            else if (folderHost.CurrentLibraryFolder != null)
+            {
+                ProcessFile(modelHost, folderHost.CurrentLibraryFolder, moduleFile);
+            }
+            else
+            {
+                throw new ArgumentException("CurrentWebFolder/CurrentContentType/CurrentLibraryFolder should not be null");
+            }
+        }
 
-            var folder = folderHost.CurrentLibraryFolder;
+        private void ProcessContentTypeModuleFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            var folder = folderHost.CurrentContentTypeFolder;
 
-            ProcessFile(modelHost, folder, moduleFile);
+            var currentFile = folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFile.Exists ? currentFile : null,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
+
+            if (moduleFile.Overwrite)
+            {
+                var file = folder.Files.Add(moduleFile.FileName, moduleFile.Content, moduleFile.Overwrite);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = file,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFile.Exists ? currentFile : null,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+
+            folder.Update();
+        }
+
+        private void ProcessWebModuleFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            throw new SPMeta2NotImplementedException("Module provision under web folders is not implemented yet.");
         }
 
         private string GetSafeFileUrl(SPFolder folder, ModuleFileDefinition moduleFile)
@@ -135,7 +204,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             Action<SPFile> beforeProvision,
             Action<SPFile> afterProvision)
         {
-            var web = folder.ParentWeb;
             var list = folder.DocumentLibrary;
 
             WithSafeFileOperation(list, folder, fileUrl, fileName, fileContent,
@@ -149,7 +217,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     if (afterProvision != null)
                         afterProvision(onActionFile);
-
                 });
         }
 

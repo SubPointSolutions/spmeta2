@@ -131,6 +131,17 @@ namespace SPMeta2.Containers
 
         #endregion
 
+
+        public static ModelNode AddRandomModuleFile(this ModelNode model)
+        {
+            return AddRandomModuleFile(model, null);
+        }
+
+        public static ModelNode AddRandomModuleFile(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<ModuleFileDefinition>(action);
+        }
+
         #region fodlers
 
         public static ModelNode AddRandomFolder(this ModelNode model)

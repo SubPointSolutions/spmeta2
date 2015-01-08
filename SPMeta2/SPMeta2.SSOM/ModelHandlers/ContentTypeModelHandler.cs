@@ -40,7 +40,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     if (childModelType == typeof(ModuleFileDefinition))
                     {
-                        action(targetContentType.ResourceFolder);
+                        action(new FolderModelHost()
+                        {
+                            CurrentContentType = targetContentType,
+                            CurrentContentTypeFolder = targetContentType.ResourceFolder
+                        });
                     }
                     else
                     {
