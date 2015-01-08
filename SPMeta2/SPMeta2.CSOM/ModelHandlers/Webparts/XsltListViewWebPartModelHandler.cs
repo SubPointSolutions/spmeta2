@@ -45,6 +45,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                                          .SetListName(bindContext.ListId.ToString())
                                          .SetListId(bindContext.ListId.ToString())
                                          .SetTitleUrl(bindContext.TitleUrl)
+                                         .SetOrUpdateProperty("JSLink", wpModel.JSLink)
                                          .ToString();
 
             return wpXml;

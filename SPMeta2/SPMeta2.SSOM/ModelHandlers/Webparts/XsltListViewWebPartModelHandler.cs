@@ -56,6 +56,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                 list = web.Lists.TryGetList(typedModel.ListTitle);
 
 
+            typedWebpart.JSLink = typedModel.JSLink;
             typedWebpart.ListName = list.ID.ToString();
             typedWebpart.ListId = list.ID;
             typedWebpart.TitleUrl = list.DefaultViewUrl;

@@ -31,6 +31,8 @@ namespace SPMeta2.Definitions.Webparts
         public string ViewName { get; set; }
         public Guid? ViewId { get; set; }
 
+        public string JSLink { get; set; }
+
         #endregion
 
         #region methods
@@ -44,6 +46,8 @@ namespace SPMeta2.Definitions.Webparts
 
                           .AddPropertyValue(p => p.ViewName)
                           .AddPropertyValue(p => p.ViewId)
+
+                          .AddPropertyValue(p => p.JSLink)
                           .ToString();
         }
 

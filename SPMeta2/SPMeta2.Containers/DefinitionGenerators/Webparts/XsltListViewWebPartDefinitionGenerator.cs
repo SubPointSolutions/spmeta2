@@ -19,6 +19,8 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneIndex = Rnd.Int(100);
 
                 def.ListUrl = "SitePages";
+
+                def.JSLink = string.Format("~sitecollection/style library/{0}.js", Rnd.String());
             });
         }
     }
