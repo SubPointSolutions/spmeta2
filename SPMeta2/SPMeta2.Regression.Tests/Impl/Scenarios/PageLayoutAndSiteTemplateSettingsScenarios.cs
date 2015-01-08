@@ -55,113 +55,113 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             return def;
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
-        public void CanDeploy_PageLayoutAndSiteTemplates_InheritEverything()
-        {
-            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
+        //public void CanDeploy_PageLayoutAndSiteTemplates_InheritEverything()
+        //{
+        //    var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
             
-            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
-            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
-            var settings = new PageLayoutAndSiteTemplateSettingsDefinition
-            {
-                InheritWebTemplates = true,
-                InheritPageLayouts = true,
-                InheritDefaultPageLayout = true,
-                ConverBlankSpacesIntoHyphen = Rnd.Bool()
-            };
+        //    var settings = new PageLayoutAndSiteTemplateSettingsDefinition
+        //    {
+        //        InheritWebTemplates = true,
+        //        InheritPageLayouts = true,
+        //        InheritDefaultPageLayout = true,
+        //        ConverBlankSpacesIntoHyphen = Rnd.Bool()
+        //    };
 
-            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWebFeature(webFeature);
-                web.AddWeb(GetPublishingWeb(), subWeb =>
-                {
-                    subWeb.AddFeature(subWebFeature);
-                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
-                });
-            });
+        //    var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+        //    var webModel = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddWebFeature(webFeature);
+        //        web.AddWeb(GetPublishingWeb(), subWeb =>
+        //        {
+        //            subWeb.AddFeature(subWebFeature);
+        //            //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+        //        });
+        //    });
 
-            TestModels(new[] { siteModel, webModel });
-        }
+        //    TestModels(new[] { siteModel, webModel });
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
-        public void CanDeploy_PageLayoutAndSiteTemplates_UseAny()
-        {
-            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
+        //public void CanDeploy_PageLayoutAndSiteTemplates_UseAny()
+        //{
+        //    var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
          
-            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
-            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
-            var settings = new PageLayoutAndSiteTemplateSettingsDefinition
-            {
-                UseAnyWebTemplate = true,
-                UseAnyPageLayout = true,
-                ConverBlankSpacesIntoHyphen = Rnd.Bool()
-            };
+        //    var settings = new PageLayoutAndSiteTemplateSettingsDefinition
+        //    {
+        //        UseAnyWebTemplate = true,
+        //        UseAnyPageLayout = true,
+        //        ConverBlankSpacesIntoHyphen = Rnd.Bool()
+        //    };
 
-            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWebFeature(webFeature);
-                web.AddWeb(GetPublishingWeb(), subWeb =>
-                {
-                    subWeb.AddFeature(subWebFeature);
-                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
-                });
-            });
+        //    var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+        //    var webModel = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddWebFeature(webFeature);
+        //        web.AddWeb(GetPublishingWeb(), subWeb =>
+        //        {
+        //            subWeb.AddFeature(subWebFeature);
+        //            //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+        //        });
+        //    });
 
-            TestModels(new[] { siteModel, webModel });
-        }
+        //    TestModels(new[] { siteModel, webModel });
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
-        public void CanDeploy_PageLayoutAndSiteTemplates_UseDefined()
-        {
-            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.PageLayoutAndSiteTemplateSettings")]
+        //public void CanDeploy_PageLayoutAndSiteTemplates_UseDefined()
+        //{
+        //    var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
             
-            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
-            var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+        //    var subWebFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
-            var settings = new PageLayoutAndSiteTemplateSettingsDefinition
-            {
-                UseDefinedWebTemplates = true,
-                DefinedWebTemplates = new Collection<string>
-                {
-                    BuiltInWebTemplates.Collaboration.BlankSite,
-                    BuiltInWebTemplates.Collaboration.Blog,
-                    BuiltInWebTemplates.Collaboration.TeamSite
-                },
+        //    var settings = new PageLayoutAndSiteTemplateSettingsDefinition
+        //    {
+        //        UseDefinedWebTemplates = true,
+        //        DefinedWebTemplates = new Collection<string>
+        //        {
+        //            BuiltInWebTemplates.Collaboration.BlankSite,
+        //            BuiltInWebTemplates.Collaboration.Blog,
+        //            BuiltInWebTemplates.Collaboration.TeamSite
+        //        },
 
-                UseDefinedPageLayouts = true,
-                DefinedPageLayouts = new Collection<string>
-                {
-                    BuiltInPublishingPageLayoutNames.ArticleLeft,
-                    BuiltInPublishingPageLayoutNames.ArticleRight,
-                    BuiltInPublishingPageLayoutNames.ArticleLinks
-                },
+        //        UseDefinedPageLayouts = true,
+        //        DefinedPageLayouts = new Collection<string>
+        //        {
+        //            BuiltInPublishingPageLayoutNames.ArticleLeft,
+        //            BuiltInPublishingPageLayoutNames.ArticleRight,
+        //            BuiltInPublishingPageLayoutNames.ArticleLinks
+        //        },
 
-                UseDefinedDefaultPageLayout = true,
-                DefinedDefaultPageLayout = BuiltInPublishingPageLayoutNames.ArticleRight,
+        //        UseDefinedDefaultPageLayout = true,
+        //        DefinedDefaultPageLayout = BuiltInPublishingPageLayoutNames.ArticleRight,
 
-                ConverBlankSpacesIntoHyphen = Rnd.Bool()
-            };
+        //        ConverBlankSpacesIntoHyphen = Rnd.Bool()
+        //    };
 
-            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWebFeature(webFeature);
-                web.AddWeb(GetPublishingWeb(), subWeb =>
-                {
-                    subWeb.AddFeature(subWebFeature);
-                    //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
-                });
-            });
+        //    var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+        //    var webModel = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddWebFeature(webFeature);
+        //        web.AddWeb(GetPublishingWeb(), subWeb =>
+        //        {
+        //            subWeb.AddFeature(subWebFeature);
+        //            //subWeb.AddPageLayoutAndSiteTemplateSettings(settings);
+        //        });
+        //    });
 
-            TestModels(new[] { siteModel, webModel });
-        }
+        //    TestModels(new[] { siteModel, webModel });
+        //}
 
         #endregion
     }
