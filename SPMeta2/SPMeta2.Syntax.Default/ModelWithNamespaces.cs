@@ -155,6 +155,11 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithAudiences(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithImageRenditions(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);
