@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
@@ -31,12 +32,107 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
-            ProcessFile(folderHost, moduleFile);
+            if (folderHost.CurrentList != null)
+                ProcessFile(folderHost, moduleFile);
+            else if (folderHost.CurrentWeb != null)
+                ProcessWebFolder(folderHost, moduleFile);
+            else if (folderHost.CurrentContentType != null)
+                ProcessContentTypeFolder(folderHost, moduleFile);
+            else
+            {
+                throw new ArgumentException("CurrentContentType/CurrentWeb/CurrentLibrary");
+            }
+        }
+
+        private void ProcessWebFolder(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessContentTypeFolder(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        {
+            var web = folderHost.HostWeb;
+            var folder = folderHost.CurrentContentTypeFolder;
+
+            var context = web.Context;
+
+            if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                context.Load(folder, f => f.ServerRelativeUrl);
+                context.ExecuteQueryWithTrace();
+            }
+
+            var currentFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+
+            context.Load(currentFile, f => f.Exists);
+            context.ExecuteQuery();
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFile.Exists ? currentFile : null,
+                ObjectType = typeof(File),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
+
+            if (moduleFile.Overwrite)
+            {
+                var fileCreatingInfo = new FileCreationInformation
+                {
+                    Url = moduleFile.FileName,
+                    Overwrite = true
+                };
+
+                if (moduleFile.Content.Length < ContentStreamFileSize)
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.Content for small file less than: [{0}]", ContentStreamFileSize);
+                    fileCreatingInfo.Content = moduleFile.Content;
+                }
+                else
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
+                    fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+                }
+
+                var file = folder.Files.Add(fileCreatingInfo);
+
+                folder.Context.ExecuteQuery();
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = file,
+                    ObjectType = typeof(File),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFile.Exists ? currentFile : null,
+                    ObjectType = typeof(File),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+
+            folder.Update();
+            folder.Context.ExecuteQueryWithTrace();
         }
 
         private string GetSafeFileUrl(Folder folder, ModuleFileDefinition moduleFile)
         {
-            return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
+            return UrlUtility.CombineUrl(folder.ServerRelativeUrl, moduleFile.FileName);
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
@@ -124,7 +220,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 file.UndoCheckOut();
                 file.RefreshLoad();
-                
+
                 context.ExecuteQueryWithTrace();
             }
 
@@ -175,23 +271,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected File GetFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            var context = folderHost.CurrentLibraryFolder.Context;
+            Folder folder = null;
 
-            var web = folderHost.CurrentWeb;
-            var list = folderHost.CurrentList;
-            var folder = folderHost.CurrentLibraryFolder;
+            if(folderHost.CurrentList != null)
+                 folder = folderHost.CurrentLibraryFolder;
+            if (folderHost.CurrentContentType != null)
+                folder = folderHost.CurrentContentTypeFolder;
 
-            context.Load(folder, f => f.ServerRelativeUrl);
-            context.ExecuteQueryWithTrace();
-
-            if (list != null)
-            {
-                context.Load(list, l => l.EnableMinorVersions);
-                context.Load(list, l => l.EnableVersioning);
-                context.Load(list, l => l.EnableModeration);
-
-                context.ExecuteQueryWithTrace();
-            }
+            var web = folderHost.HostWeb;
+            var context = web.Context;
 
             var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
 

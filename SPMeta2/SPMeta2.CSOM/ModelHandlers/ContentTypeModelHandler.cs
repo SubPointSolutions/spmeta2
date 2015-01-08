@@ -5,6 +5,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
@@ -13,6 +14,7 @@ using SPMeta2.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using System.Xml.Linq;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -36,32 +38,39 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = rootWeb.Context;
 
                 var id = contentTypeModel.GetContentTypeId();
-
                 var currentContentType = rootWeb.ContentTypes.GetById(id);
+
                 context.ExecuteQueryWithTrace();
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Resolving content type resource folder for ModuleFileDefinition");
 
+                    if (!currentContentType.IsPropertyAvailable("SchemaXml"))
+                    {
+                        context.Load(rootWeb, w => w.ServerRelativeUrl);
+                        currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
+                        currentContentType.Context.ExecuteQuery();
+                    }
+
                     var ctDocument = XDocument.Parse(currentContentType.SchemaXml);
                     var folderUrlNode = ctDocument.Descendants().FirstOrDefault(d => d.Name == "Folder");
 
                     var webRelativeFolderUrl = folderUrlNode.Attribute("TargetName").Value;
-                    var serverRelativeFolderUrl = rootWeb.ServerRelativeUrl + "/" + webRelativeFolderUrl;
+                    var serverRelativeFolderUrl = UrlUtility.CombineUrl(rootWeb.ServerRelativeUrl, webRelativeFolderUrl);
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "webRelativeFolderUrl is: [{0}]", webRelativeFolderUrl);
 
                     var ctFolder = rootWeb.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
                     context.ExecuteQueryWithTrace();
 
-                    action(new FolderModelHost
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(siteModelHost, host =>
                     {
-
-                        CurrentWeb = rootWeb,
-                        CurrentList = null,
-                        CurrentLibraryFolder = ctFolder
+                        host.CurrentContentType = currentContentType;
+                        host.CurrentContentTypeFolder = ctFolder;
                     });
+
+                    action(folderModelHost);
                 }
                 else
                 {
