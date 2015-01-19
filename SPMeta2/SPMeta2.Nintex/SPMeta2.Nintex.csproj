@@ -49,7 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consts\NintexUrls.cs" />
+    <Compile Include="Definitions\NintexWorkflowConstantDefinition.cs" />
     <Compile Include="Definitions\NintexWorkflowDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowConstantScope.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowConstantType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\ModelWithNamespaces.cs" />
   </ItemGroup>
