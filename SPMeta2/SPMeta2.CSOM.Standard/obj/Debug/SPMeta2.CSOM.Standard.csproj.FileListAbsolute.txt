@@ -40,3 +40,15 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.CSOM.Standard.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.CSOM.Standard.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.CSOM.Standard.XML
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.CSOM.Standard.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.CSOM.Standard.pdb
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.CSOM.Standard.XML
+c:\_spmeta_builds\40\SPMeta2.CSOM.Standard.dll
+c:\_spmeta_builds\40\SPMeta2.CSOM.Standard.pdb
+c:\_spmeta_builds\40\SPMeta2.CSOM.Standard.XML
+c:\_spmeta_builds\45\SPMeta2.CSOM.Standard.dll
+c:\_spmeta_builds\45\SPMeta2.CSOM.Standard.pdb
+c:\_spmeta_builds\45\SPMeta2.CSOM.Standard.XML

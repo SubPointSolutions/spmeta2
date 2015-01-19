@@ -36,3 +36,15 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.Validation.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.Validation.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.Validation.XML
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.Validation.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.Validation.pdb
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.Validation.XML
+c:\_spmeta_builds\40\SPMeta2.Validation.dll
+c:\_spmeta_builds\40\SPMeta2.Validation.pdb
+c:\_spmeta_builds\40\SPMeta2.Validation.XML
+c:\_spmeta_builds\45\SPMeta2.Validation.dll
+c:\_spmeta_builds\45\SPMeta2.Validation.pdb
+c:\_spmeta_builds\45\SPMeta2.Validation.XML

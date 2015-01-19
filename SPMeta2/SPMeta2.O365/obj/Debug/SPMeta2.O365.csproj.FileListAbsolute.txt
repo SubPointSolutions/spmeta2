@@ -17,3 +17,15 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.O365.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.O365.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.O365.XML
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.O365.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.O365.pdb
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.O365.XML
+c:\_spmeta_builds\40\SPMeta2.O365.dll
+c:\_spmeta_builds\40\SPMeta2.O365.pdb
+c:\_spmeta_builds\40\SPMeta2.O365.XML
+c:\_spmeta_builds\45\SPMeta2.O365.dll
+c:\_spmeta_builds\45\SPMeta2.O365.pdb
+c:\_spmeta_builds\45\SPMeta2.O365.XML

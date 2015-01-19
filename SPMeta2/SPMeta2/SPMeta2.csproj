@@ -68,6 +68,7 @@
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
+    <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />
     <Compile Include="Definitions\RootWebDefinition.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />

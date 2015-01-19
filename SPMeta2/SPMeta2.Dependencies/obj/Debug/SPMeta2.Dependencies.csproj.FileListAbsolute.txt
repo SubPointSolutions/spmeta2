@@ -12,3 +12,11 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Dependencies\bin\Debug\SPMe
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Dependencies\obj\Debug\SPMeta2.Dependencies.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.Dependencies.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.Dependencies.pdb
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.Dependencies.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.Dependencies.pdb
+c:\_spmeta_builds\40\SPMeta2.Dependencies.dll
+c:\_spmeta_builds\40\SPMeta2.Dependencies.pdb
+c:\_spmeta_builds\45\SPMeta2.Dependencies.dll
+c:\_spmeta_builds\45\SPMeta2.Dependencies.pdb

@@ -71,3 +71,15 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.SSOM.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.SSOM.pdb
+c:\TESTMSBUILDOUTPUT\W.xml
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.SSOM.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.SSOM.pdb
+c:\TESTMSBUILDOUTPUT_40\W.xml
+c:\_spmeta_builds\40\SPMeta2.SSOM.dll
+c:\_spmeta_builds\40\SPMeta2.SSOM.pdb
+c:\_spmeta_builds\40\W.xml
+c:\_spmeta_builds\45\SPMeta2.SSOM.dll
+c:\_spmeta_builds\45\SPMeta2.SSOM.pdb
+c:\_spmeta_builds\45\W.xml

@@ -60,3 +60,11 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM.Behaviours\obj\Debug\SPMeta2.SSOM.Behaviours.pdb
+c:\TESTMSBUILDOUTPUT\SPMeta2.SSOM.Behaviours.dll
+c:\TESTMSBUILDOUTPUT\SPMeta2.SSOM.Behaviours.pdb
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.SSOM.Behaviours.dll
+c:\TESTMSBUILDOUTPUT_40\SPMeta2.SSOM.Behaviours.pdb
+c:\_spmeta_builds\40\SPMeta2.SSOM.Behaviours.dll
+c:\_spmeta_builds\40\SPMeta2.SSOM.Behaviours.pdb
+c:\_spmeta_builds\45\SPMeta2.SSOM.Behaviours.dll
+c:\_spmeta_builds\45\SPMeta2.SSOM.Behaviours.pdb
