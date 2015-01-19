@@ -59,6 +59,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webs")]
         public void CanDeploy_CommunityWeb()
         {
+            // SocialSite feature needs to be activated
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(new FeatureDefinition
+                {
+                    Enable = true,
+                    Scope = FeatureDefinitionScope.Site,
+                    Id = new Guid("4326e7fc-f35a-4b0f-927c-36264b0a4cf0")
+                });
+            });
+
+
+            TestModel(siteModel);
+
             TestRandomDefinition<WebDefinition>(def =>
             {
                 def.WebTemplate = BuiltInWebTemplates.Collaboration.CommunitySite;

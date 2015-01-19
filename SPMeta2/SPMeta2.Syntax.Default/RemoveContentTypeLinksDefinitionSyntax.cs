@@ -6,7 +6,7 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public static class RemoveContentTypeLinksDefinitionSynatax
+    public static class RemoveContentTypeLinksDefinitionSyntax
     {
         #region methods
 
