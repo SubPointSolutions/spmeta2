@@ -57,7 +57,22 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             TermGroup currentGroup = null;
 
             if (groupModel.Id.HasValue)
-                currentGroup = termStore.GetGroup(groupModel.Id.Value);
+            {
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        currentGroup = termStore.Groups.GetById(groupModel.Id.Value);
+                        context.Load(currentGroup);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+            }
             else if (!string.IsNullOrEmpty(groupModel.Name))
             {
                 var scope = new ExceptionHandlingScope(context);

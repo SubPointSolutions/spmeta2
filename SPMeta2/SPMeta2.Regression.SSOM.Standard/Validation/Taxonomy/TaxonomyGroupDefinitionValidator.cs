@@ -31,7 +31,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
 
             if (definition.Id.HasValue)
             {
-                assert.ShouldBeEqual(m => m.Id.Value, o => o.Id);
+                assert.ShouldBeEqual(m => m.Id, o => o.Id);
             }
             else
             {

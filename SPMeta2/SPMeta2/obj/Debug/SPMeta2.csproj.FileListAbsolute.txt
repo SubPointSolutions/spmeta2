@@ -15,12 +15,6 @@ C:\_git\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb
 C:\_git\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.dll
 C:\_git\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.XML
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.csprojResolveAssemblyReference.cache
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb
 c:\TESTMSBUILDOUTPUT\SPMeta2.dll
 c:\TESTMSBUILDOUTPUT\SPMeta2.pdb
 c:\TESTMSBUILDOUTPUT\SPMeta2.XML
@@ -33,3 +27,8 @@ c:\_spmeta_builds\40\SPMeta2.XML
 c:\_spmeta_builds\45\SPMeta2.dll
 c:\_spmeta_builds\45\SPMeta2.pdb
 c:\_spmeta_builds\45\SPMeta2.XML
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.XML
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb
