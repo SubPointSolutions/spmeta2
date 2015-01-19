@@ -120,14 +120,22 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             context.Load(termGroup.TermSets);
             context.ExecuteQueryWithTrace();
 
-            //if (termSetModel.Id.HasValue)
-            //    result = termGroup.TermSets.FirstOrDefault(t => t.Id == termSetModel.Id.Value);
-            //else if (!string.IsNullOrEmpty(termSetModel.Name))
-            //    result = termGroup.TermSets.FirstOrDefault(t => t.Name.ToUpper() == termSetModel.Name.ToUpper());
-
             if (termSetModel.Id.HasValue)
             {
-                result = termGroup.TermSets.GetById(termSetModel.Id.Value);
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        result = termGroup.TermSets.GetById(termSetModel.Id.Value);
+                        context.Load(result);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
             }
             else if (!string.IsNullOrEmpty(termSetModel.Name))
             {

@@ -76,6 +76,7 @@
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\TaxonomyTermSetScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyTermGroupScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TopNavigationNodeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\UserCustomActionScenariousTest.cs" />
