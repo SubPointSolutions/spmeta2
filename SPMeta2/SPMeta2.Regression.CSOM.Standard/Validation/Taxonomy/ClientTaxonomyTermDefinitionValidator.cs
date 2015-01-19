@@ -3,6 +3,7 @@ using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 
@@ -12,10 +13,19 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var termSetModelHost = modelHost.WithAssertAndCast<TermSetModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
-            var spObject = FindTermInTermSet(termSetModelHost.HostTermSet, definition);
+            Term spObject = null;
+
+            if (modelHost is TermModelHost)
+                spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
+            else if (modelHost is TermSetModelHost)
+                spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException(string.Format("Model host of type: [{0}] is not supported", modelHost.GetType()));
+     
+            }
 
             TermExtensions.CurrentLCID = definition.LCID;
 
@@ -30,7 +40,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             if (definition.Id.HasValue)
             {
-                assert.ShouldBeEqual(m => m.Id.Value, o => o.Id);
+                assert.ShouldBeEqual(m => m.Id, o => o.Id);
             }
             else
             {

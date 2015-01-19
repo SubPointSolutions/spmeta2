@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
@@ -209,7 +210,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
         }
 
 
-        private Term FindTermInTerm(Term term, TaxonomyTermDefinition termModel)
+        protected Term FindTermInTerm(Term term, TaxonomyTermDefinition termModel)
         {
             Term result = null;
 
@@ -217,7 +218,22 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             // TODO
 
             if (termModel.Id.HasValue)
-                result = term.Terms.GetById(termModel.Id.Value);
+            {
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        result = term.Terms.GetById(termModel.Id.Value);
+                        context.Load(result);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+            }
             else if (!string.IsNullOrEmpty(termModel.Name))
             {
                 var terms = term.Terms;
@@ -228,13 +244,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 result = term.Terms.FirstOrDefault(t => t.Name == termModel.Name);
             }
 
-            if (result != null)
+            if (result != null && result.ServerObjectIsNull == false)
             {
                 context.Load(result);
                 context.ExecuteQueryWithTrace();
+
+                return result;
             }
 
-            return result;
+            return null;
         }
 
         protected Term FindTermInTermSet(TermSet termSet, TaxonomyTermDefinition termModel)
@@ -244,7 +262,24 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var context = termSet.Context;
 
             if (termModel.Id.HasValue)
-                result = termSet.GetTerm(termModel.Id.Value);
+            {
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        result = termSet.Terms.GetById(termModel.Id.Value);
+                        context.Load(result);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+
+                context.ExecuteQueryWithTrace();
+            }
             else if (!string.IsNullOrEmpty(termModel.Name))
             {
                 var terms = termSet.GetTerms(new LabelMatchInformation(context)
@@ -260,13 +295,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 result = terms.FirstOrDefault();
             }
 
-            if (result != null)
+            if (result != null && result.ServerObjectIsNull == false)
             {
                 context.Load(result);
                 context.ExecuteQueryWithTrace();
+
+                return result;
             }
 
-            return result;
+            return null;
         }
 
         #endregion
