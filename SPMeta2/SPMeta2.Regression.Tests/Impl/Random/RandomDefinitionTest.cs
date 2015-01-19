@@ -87,6 +87,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Farm")]
+        public void CanDeployRandom_DocumentParserDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<DocumentParserDefinition>();
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Farm")]
         public void CanDeployRandom_FarmDefinition()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>

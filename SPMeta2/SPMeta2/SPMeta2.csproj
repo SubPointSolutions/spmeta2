@@ -70,6 +70,7 @@
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
+    <Compile Include="Definitions\DocumentParserDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />
     <Compile Include="Definitions\RootWebDefinition.cs" />
     <Compile Include="Definitions\DiagnosticsServiceBaseDefinition.cs" />
