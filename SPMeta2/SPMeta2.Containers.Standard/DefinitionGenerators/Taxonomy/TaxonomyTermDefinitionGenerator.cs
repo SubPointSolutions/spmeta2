@@ -13,6 +13,8 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.Taxonomy
             {
                 def.Name = Rnd.String();
                 def.Id = null;
+
+                def.Description = Rnd.String();
             });
         }
     }

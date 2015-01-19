@@ -109,6 +109,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ? term.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : term.CreateTerm(termModel.Name, termModel.LCID);
 
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -161,6 +163,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 currentTerm = termModel.Id.HasValue
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID);
+
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

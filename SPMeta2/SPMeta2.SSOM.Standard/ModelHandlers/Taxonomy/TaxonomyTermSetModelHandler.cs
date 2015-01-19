@@ -79,6 +79,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                     ? termGroup.CreateTermSet(termSetModel.Name, termSetModel.Id.Value, termSetModel.LCID)
                     : termGroup.CreateTermSet(termSetModel.Name, termSetModel.LCID);
 
+                currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
+                currentTermSet.Description = termSetModel.Description;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

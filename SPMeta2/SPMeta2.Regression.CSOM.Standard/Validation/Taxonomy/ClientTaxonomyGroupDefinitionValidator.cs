@@ -17,9 +17,9 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var spObject = FindGroup(termStoreModelHost.HostTermStore, definition);
 
             var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.Name, o => o.Name);
 
             if (definition.Id.HasValue)
             {

@@ -25,9 +25,13 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
 
             var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.IsAvailableForTagging, o => o.IsAvailableForTagging)
+                .ShouldBeEqual(m => m.Name, o => o.Name)
+                .ShouldBeEqual(m => m.Description, o => o.Description);
+
+            assert.SkipProperty(m => m.LCID, "Can't get LCID withon OM. Should be set while provision.");
 
             if (definition.Id.HasValue)
             {

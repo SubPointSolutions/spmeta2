@@ -112,6 +112,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
 
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -126,6 +128,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
+
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -169,6 +173,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
 
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -183,6 +189,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
+
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

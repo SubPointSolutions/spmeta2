@@ -27,7 +27,10 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name);
+                                 .ShouldBeEqual(m => m.Name, o => o.Name)
+                                 .ShouldBeEqual(m => m.Description, o => o.GetDescription());
+
+            assert.SkipProperty(m => m.LCID, "Can't get LCID withon OM. Should be set while provision.");
 
             if (definition.Id.HasValue)
             {
