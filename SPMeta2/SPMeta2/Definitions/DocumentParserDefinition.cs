@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -25,6 +26,18 @@ namespace SPMeta2.Definitions
 
         public string FileExtension { get; set; }
         public string ProgId { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<DocumentParserDefinition>(this)
+                          .AddPropertyValue(p => p.FileExtension)
+                          .AddPropertyValue(p => p.ProgId)
+                          .ToString();
+        }
 
         #endregion
     }

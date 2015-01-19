@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentParserSyntax.cs" />
+    <Compile Include="AuditSettingsSyntax.cs" />
     <Compile Include="TreeViewSettingsDefinitionSyntax.cs" />
     <Compile Include="TargetApplicationDefinitionSyntax.cs" />
     <Compile Include="AlternateUrlDefinitionSyntax.cs" />

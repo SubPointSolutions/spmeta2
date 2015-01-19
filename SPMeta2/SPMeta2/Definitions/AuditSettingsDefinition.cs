@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -25,7 +26,7 @@ namespace SPMeta2.Definitions
 
         public AuditSettingsDefinition()
         {
-
+            AuditFlags = new Collection<string>();
         }
 
         #endregion
@@ -33,6 +34,16 @@ namespace SPMeta2.Definitions
         #region properties
 
         public Collection<string> AuditFlags { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<AuditSettingsDefinition>(this)
+                          .ToString();
+        }
 
         #endregion
     }
