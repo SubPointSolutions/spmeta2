@@ -210,6 +210,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region site scope
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.CustomDocumentIdProvider")]
+        public void CanDeployRandom_CustomDocumentIdProviderDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<CustomDocumentIdProviderDefinition>();
+            });
+        }
+
         #region IRM
 
         [TestMethod]

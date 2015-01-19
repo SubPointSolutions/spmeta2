@@ -121,6 +121,7 @@
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.BusinessData.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.WindowsTokenService.dll" />
+    <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.DocumentManagement.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll" />
     <Content Include="SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Applications.dll" />
