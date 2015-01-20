@@ -91,7 +91,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
                 var termStore = TaxonomyFieldModelHandler.LookupTermStore(site, definition);
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(termStore, definition);
 
-                var isValid = termSet.Name == definition.TermName;
+                var isValid = termSet.Name == definition.TermSetName;
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {

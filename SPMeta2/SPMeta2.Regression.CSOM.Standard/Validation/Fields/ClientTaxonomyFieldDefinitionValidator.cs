@@ -110,22 +110,22 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             if (!string.IsNullOrEmpty(definition.TermSetName))
             {
                 var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
-                //var termSet = TaxonomyFieldModelHandler.LookupTermSet(termStore, definition);
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(typedModelHost, termStore, definition);
 
-                //var isValid = termSet.Name == definition.TermName;
+                var isValid = termSet.Name == definition.TermSetName;
 
-                //assert.ShouldBeEqual((p, s, d) =>
-                //{
-                //    var srcProp = s.GetExpressionValue(m => m.TermSetName);
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TermSetName);
 
-                //    return new PropertyValidationResult
-                //    {
-                //        Tag = p.Tag,
-                //        Src = srcProp,
-                //        Dst = null,
-                //        IsValid = isValid
-                //    };
-                //});
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
             }
             else
             {

@@ -44,18 +44,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
-            // TODO
-            TermSet termSet = null;
-
-            if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
-            {
-                var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
-
-                storeContext.Load(termSets);
-                storeContext.ExecuteQueryWithTrace();
-
-                termSet = termSets.FirstOrDefault();
-            }
+            TermSet termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel); ;
 
             if (termStore != null)
                 taxField.SspId = termStore.Id;
@@ -66,7 +55,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
         public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost, TaxonomyFieldDefinition taxFieldModel)
         {
-
             var termStore = TaxonomyTermStoreModelHandler.FindTermStore(currentSiteModelHost,
                                   taxFieldModel.SspName,
                                   taxFieldModel.SspId,
@@ -84,5 +72,52 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
         }
 
         #endregion
+
+        public static TermSet LookupTermSet(SiteModelHost currentSiteModelHost, TermStore termStore, TaxonomyFieldDefinition taxFieldModel)
+        {
+            var storeContext = currentSiteModelHost.HostClientContext;
+
+            if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
+            {
+                var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
+
+                storeContext.Load(termSets);
+                storeContext.ExecuteQueryWithTrace();
+
+                return termSets.FirstOrDefault();
+            }
+
+            if (taxFieldModel.TermSetId.HasValue)
+            {
+                TermSet termSet = null;
+
+                var scope = new ExceptionHandlingScope(storeContext);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        termSet = termStore.GetTermSet(taxFieldModel.TermSetId.Value);
+                        storeContext.Load(termSet);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+
+                storeContext.ExecuteQueryWithTrace();
+
+                if (termSet != null && termSet.ServerObjectIsNull == false)
+                {
+                    storeContext.Load(termSet, g => g.Id);
+                    storeContext.ExecuteQueryWithTrace();
+
+                    return termSet;
+                }
+            }
+
+            return null;
+        }
     }
 }
