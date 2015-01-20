@@ -34,18 +34,34 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         #region properties
 
+        [ExpectValidation]
         public bool IsMulti { get; set; }
 
+        [ExpectValidation]
         public string SspName { get; set; }
+
+        [ExpectValidation]
         public Guid? SspId { get; set; }
+
+        [ExpectValidation]
         public bool? UseDefaultSiteCollectionTermStore { get; set; }
 
+        [ExpectValidation]
         public string TermSetName { get; set; }
+
+        [ExpectValidation]
         public Guid? TermSetId { get; set; }
+
+        [ExpectValidation]
         public int TermSetLCID { get; set; }
 
+        [ExpectValidation]
         public string TermName { get; set; }
+
+        [ExpectValidation]
         public Guid? TermId { get; set; }
+
+        [ExpectValidation]
         public int TermLCID { get; set; }
 
         #endregion

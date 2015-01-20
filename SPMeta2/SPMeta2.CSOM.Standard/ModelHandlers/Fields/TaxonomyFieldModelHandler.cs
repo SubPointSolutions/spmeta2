@@ -5,6 +5,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
@@ -38,18 +39,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             base.ProcessFieldProperties(taxField, fieldModel);
             context.ExecuteQueryWithTrace();
 
-            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(CurrentSiteModelHost,
-                                  taxFieldModel.SspName,
-                                  taxFieldModel.SspId,
-                                  taxFieldModel.UseDefaultSiteCollectionTermStore);
-
-            if (termStore == null)
-                throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
-
+            var termStore = LookupTermStore(CurrentSiteModelHost, taxFieldModel);
             var storeContext = CurrentSiteModelHost.HostClientContext;
 
-            storeContext.Load(termStore, s => s.Id);
-            storeContext.ExecuteQueryWithTrace();
+            taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
             // TODO
             TermSet termSet = null;
@@ -69,6 +62,25 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             if (termSet != null)
                 taxField.TermSetId = termSet.Id;
+        }
+
+        public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost, TaxonomyFieldDefinition taxFieldModel)
+        {
+
+            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(currentSiteModelHost,
+                                  taxFieldModel.SspName,
+                                  taxFieldModel.SspId,
+                                  taxFieldModel.UseDefaultSiteCollectionTermStore);
+
+            if (termStore == null)
+                throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
+
+            var storeContext = currentSiteModelHost.HostClientContext;
+
+            storeContext.Load(termStore, s => s.Id);
+            storeContext.ExecuteQueryWithTrace();
+
+            return termStore;
         }
 
         #endregion

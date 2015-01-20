@@ -23,6 +23,12 @@ namespace SPMeta2.Regression.SSOM.Validation
             ValidateField(assert, spObject, definition);
         }
 
+        protected virtual void CustomFieldTypeValidation(AssertPair<FieldDefinition, SPField> assert, SPField spObject,
+            FieldDefinition definition)
+        {
+            assert.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString);
+        }
+
         protected void ValidateField(AssertPair<FieldDefinition, SPField> assert, SPField spObject, FieldDefinition definition)
         {
             assert
@@ -32,8 +38,10 @@ namespace SPMeta2.Regression.SSOM.Validation
                     .ShouldBeEqual(m => m.Id, o => o.Id)
                     .ShouldBeEqual(m => m.Required, o => o.Required)
                     .ShouldBeEqual(m => m.Description, o => o.Description)
-                    .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
+                //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                     .ShouldBeEqual(m => m.Group, o => o.Group);
+
+            CustomFieldTypeValidation(assert, spObject, definition);
 
             // TODO, R&D to check InternalName changes in list-scoped fields
             if (spObject.InternalName == definition.InternalName)

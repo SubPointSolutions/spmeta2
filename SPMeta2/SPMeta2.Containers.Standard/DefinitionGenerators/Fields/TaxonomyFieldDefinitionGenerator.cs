@@ -17,8 +17,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.Fields
         {
             return new TaxonomyFieldDefinition
             {
-                UseDefaultSiteCollectionTermStore = true,
-                TermSetName = "Maps"
+                UseDefaultSiteCollectionTermStore = true
             };
         }
     }

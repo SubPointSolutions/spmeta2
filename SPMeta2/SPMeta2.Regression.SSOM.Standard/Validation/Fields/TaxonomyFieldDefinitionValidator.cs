@@ -1,5 +1,7 @@
 ﻿using System;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Taxonomy;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Fields;
@@ -19,6 +21,28 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             get { return typeof(TaxonomyFieldDefinition); }
         }
 
+        protected override void CustomFieldTypeValidation(AssertPair<FieldDefinition, SPField> assert, SPField spObject, FieldDefinition definition)
+        {
+            var typedObject = spObject as TaxonomyField;
+            var typedDefinition = definition as TaxonomyFieldDefinition;
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.FieldType);
+                var isValid = typedDefinition.IsMulti
+                    ? typedObject.TypeAsString == "TaxonomyFieldTypeMulti"
+                    : typedObject.TypeAsString == "TaxonomyFieldType";
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = null,
+                    IsValid = isValid
+                };
+            });
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             base.DeployModel(modelHost, model);
@@ -30,7 +54,91 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             var spObject = GetField(modelHost, definition) as TaxonomyField;
 
 
-            // TODO
+            var assert = ServiceFactory.AssertService
+                            .NewAssert(definition, spObject)
+                                  .ShouldNotBeNull(spObject)
+                                  .ShouldBeEqual(m => m.IsMulti, o => o.AllowMultipleValues);
+
+            if (definition.SspId.HasValue)
+                assert.ShouldBeEqual(m => m.SspId, o => o.SspId);
+            else
+                assert.SkipProperty(m => m.SspId, "SspId is null. Skipping property.");
+
+            if (definition.TermSetId.HasValue)
+                assert.ShouldBeEqual(m => m.TermSetId, o => o.TermSetId);
+            else
+                assert.SkipProperty(m => m.TermSetId, "TermSetId is null. Skipping property.");
+
+            if (definition.TermId.HasValue)
+                assert.ShouldBeEqual(m => m.TermId, o => o.AnchorId);
+            else
+                assert.SkipProperty(m => m.TermId, "TermId is null. Skipping property.");
+
+            assert.SkipProperty(m => m.TermLCID, "TermLCID. Skipping property.");
+            assert.SkipProperty(m => m.TermSetLCID, "TermSetLCID. Skipping property.");
+
+            if (!string.IsNullOrEmpty(definition.SspName))
+            {
+                // TODO   
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SspName, "SspName is null. Skipping property.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.TermSetName))
+            {
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(site, definition);
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(termStore, definition);
+
+                var isValid = termSet.Name == definition.TermName;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TermSetName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TermSetName, "TermSetName is null. Skipping property.");
+            }
+
+            if (definition.UseDefaultSiteCollectionTermStore.HasValue)
+            {
+                var taxSession = new TaxonomySession(site);
+                var termStore = taxSession.DefaultSiteCollectionTermStore;
+
+                var isValid = termStore.Id == spObject.SspId;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.UseDefaultSiteCollectionTermStore);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TermSetName, "UseDefaultSiteCollectionTermStore is null. Skipping property.");
+            }
+
+            assert.SkipProperty(m => m.SspName, "TermSetLCID. Skipping property.");
+            assert.SkipProperty(m => m.TermName, "TermSetLCID. Skipping property.");
         }
     }
 }
