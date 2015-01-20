@@ -46,18 +46,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             Term term = LookupTerm(tesmStore, taxFieldModel);
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
-
-            //if (taxField.AllowMultipleValues)
-            //    taxField.TypeAsString = "TaxonomyFieldTypeMulti";
-            //else
-            //    taxField.TypeAsString = "TaxonomyFieldType";
-
             taxField.SspId = tesmStore.Id;
 
             if (termSet != null)
                 taxField.TermSetId = termSet.Id;
-            else if (term != null)
-                taxField.TermSetId = term.Id;
+
+            if (term != null)
+                taxField.AnchorId = term.Id;
         }
 
         public static Term LookupTerm(TermStore tesmStore, TaxonomyFieldDefinition taxFieldModel)

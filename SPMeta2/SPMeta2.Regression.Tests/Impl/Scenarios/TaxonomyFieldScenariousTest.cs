@@ -113,8 +113,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new[] { taxonomyModel, fieldModel });
         }
 
-
-
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
         [TestMethod]
         public void CanDeploy_TaxonomyFieldBindedToTermSetById()
@@ -138,6 +136,101 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     termStore.AddRandomTermGroup(group =>
                     {
                         group.AddTaxonomyTermSet(termSet);
+                    });
+                });
+            });
+
+            var fieldModel = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModels(new[] { taxonomyModel, fieldModel });
+        }
+
+        #endregion
+
+        #region test set and term binding
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermByName()
+        {
+            var termSet = new TaxonomyTermSetDefinition
+            {
+                Name = Rnd.String(),
+                Description = Rnd.String(),
+            };
+
+            var term = new TaxonomyTermDefinition
+            {
+                Name = Rnd.String(),
+                Description = Rnd.String(),
+            };
+
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.TermSetName = termSet.Name;
+                def.TermName = term.Name;
+            });
+
+            var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(termStore =>
+                {
+                    termStore.AddRandomTermGroup(group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet, t =>
+                        {
+                            t.AddTaxonomyTerm(term);
+                        });
+                    });
+                });
+            });
+
+            var fieldModel = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModels(new[] { taxonomyModel, fieldModel });
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermById()
+        {
+            var termSet = new TaxonomyTermSetDefinition
+            {
+                Name = Rnd.String(),
+                Description = Rnd.String(),
+            };
+
+            var term = new TaxonomyTermDefinition
+            {
+                Name = Rnd.String(),
+                Description = Rnd.String(),
+                Id = Guid.NewGuid()
+            };
+
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.TermSetName = termSet.Name;
+                def.TermId = term.Id.Value;
+            });
+
+            var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(termStore =>
+                {
+                    termStore.AddRandomTermGroup(group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet, t =>
+                        {
+                            t.AddTaxonomyTerm(term);
+                        });
                     });
                 });
             });

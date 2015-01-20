@@ -44,13 +44,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
-            TermSet termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel); ;
+            var termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel); ;
+            var term = LookupTerm(CurrentSiteModelHost, termStore, taxFieldModel); ;
 
             if (termStore != null)
                 taxField.SspId = termStore.Id;
 
             if (termSet != null)
                 taxField.TermSetId = termSet.Id;
+
+            if (term != null)
+                taxField.AnchorId = term.Id;
         }
 
         public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost, TaxonomyFieldDefinition taxFieldModel)
@@ -115,6 +119,56 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
                     return termSet;
                 }
+            }
+
+            return null;
+        }
+
+        public static Term LookupTerm(SiteModelHost currentSiteModelHost, TermStore termStore, TaxonomyFieldDefinition termModel)
+        {
+            var context = currentSiteModelHost.HostClientContext;
+            Term result = null;
+
+            if (termModel.TermId.HasValue)
+            {
+                var scope = new ExceptionHandlingScope(context);
+                using (scope.StartScope())
+                {
+                    using (scope.StartTry())
+                    {
+                        result = termStore.GetTerm(termModel.TermId.Value);
+                        context.Load(result);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
+                }
+
+                context.ExecuteQueryWithTrace();
+            }
+            else if (!string.IsNullOrEmpty(termModel.TermName))
+            {
+                var terms = termStore.GetTerms(new LabelMatchInformation(context)
+                {
+                    Lcid = termModel.TermLCID,
+                    TermLabel = termModel.TermName,
+                    TrimUnavailable = false
+                });
+
+                context.Load(terms);
+                context.ExecuteQueryWithTrace();
+
+                result = terms.FirstOrDefault();
+            }
+
+            if (result != null && result.ServerObjectIsNull == false)
+            {
+                context.Load(result);
+                context.ExecuteQueryWithTrace();
+
+                return result;
             }
 
             return null;
