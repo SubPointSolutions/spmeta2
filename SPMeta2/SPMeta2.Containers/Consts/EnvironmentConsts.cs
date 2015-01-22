@@ -20,6 +20,9 @@
 
         public const string RunnerLibraries = "SPMeta2_RunnerLibraries";
 
+        public const string DefaultTaxonomyStoreName = "SPMeta2_DefaultTaxonomyStoreName";
+        public const string DefaultTaxonomyStoreId = "SPMeta2_DefaultTaxonomyStoreId";
+
         #endregion
     }
 }
