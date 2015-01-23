@@ -21,8 +21,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
         public ClientTaxonomyFieldDefinitionValidator()
         {
-            SkipRequredPropValidation = true;
-            SkipDescriptionPropValidation = true;
+            //SkipRequredPropValidation = true;
+            //SkipDescriptionPropValidation = true;
         }
 
         #endregion

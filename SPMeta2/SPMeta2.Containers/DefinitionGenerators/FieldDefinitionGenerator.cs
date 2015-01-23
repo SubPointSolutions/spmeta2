@@ -41,8 +41,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
             def.Group = Rnd.String();
             def.Title = Rnd.String(32);
-
-
+            
             def.JSLink = Rnd.String(32);
             def.DefaultValue = Rnd.String(32);
             def.Hidden = Rnd.Bool();

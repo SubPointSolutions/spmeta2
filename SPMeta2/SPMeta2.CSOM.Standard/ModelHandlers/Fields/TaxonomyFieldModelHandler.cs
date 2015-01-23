@@ -24,6 +24,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             get { return typeof(TaxonomyFieldDefinition); }
         }
 
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(TaxonomyField);
+        }
+
         #endregion
 
         #region methods
@@ -33,19 +38,27 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             var context = CurrentSiteModelHost.HostClientContext;
 
             var taxFieldModel = fieldModel.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
-            var taxField = context.CastTo<TaxonomyField>(field);
 
-            // let base setting be setup
-            base.ProcessFieldProperties(taxField, fieldModel);
-            context.ExecuteQueryWithTrace();
 
             var termStore = LookupTermStore(CurrentSiteModelHost, taxFieldModel);
             var storeContext = CurrentSiteModelHost.HostClientContext;
 
-            taxField.AllowMultipleValues = taxFieldModel.IsMulti;
-
             var termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel); ;
             var term = LookupTerm(CurrentSiteModelHost, termStore, taxFieldModel); ;
+
+            var taxField = context.CastTo<TaxonomyField>(field);
+
+            // let base setting be setup
+            base.ProcessFieldProperties(taxField, fieldModel);
+            //context.ExecuteQueryWithTrace();
+
+            taxField.AllowMultipleValues = taxFieldModel.IsMulti;
+
+            taxField.Description = string.IsNullOrEmpty(taxFieldModel.Description)
+               ? string.Empty
+               : taxFieldModel.Description;
+
+            taxField.Required = taxFieldModel.Required;
 
             if (termStore != null)
                 taxField.SspId = termStore.Id;
@@ -55,6 +68,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             if (term != null)
                 taxField.AnchorId = term.Id;
+
+            //context.ExecuteQueryWithTrace();
         }
 
         public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost, TaxonomyFieldDefinition taxFieldModel)

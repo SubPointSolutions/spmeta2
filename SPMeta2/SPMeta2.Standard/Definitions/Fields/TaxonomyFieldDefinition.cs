@@ -12,7 +12,7 @@ namespace SPMeta2.Standard.Definitions.Fields
     /// </summary>
     /// 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Taxonomy")]
-    //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Taxonomy.TaxonomyField", "Microsoft.SharePoint.Client.Taxonomy")]
 
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
@@ -73,7 +73,7 @@ namespace SPMeta2.Standard.Definitions.Fields
             return new ToStringResult<TaxonomyFieldDefinition>(this, base.ToString())
 
                           .AddPropertyValue(p => p.IsMulti)
-                
+
                           .AddPropertyValue(p => p.SspName)
                           .AddPropertyValue(p => p.SspId)
                           .AddPropertyValue(p => p.UseDefaultSiteCollectionTermStore)
