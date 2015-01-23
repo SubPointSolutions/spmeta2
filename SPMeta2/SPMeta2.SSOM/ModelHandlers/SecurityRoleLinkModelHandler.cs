@@ -110,6 +110,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!roleAssignment.RoleDefinitionBindings.Contains(role))
             {
+                if (roleAssignment.RoleDefinitionBindings.Count == 1
+                         && roleAssignment.RoleDefinitionBindings[0].Type == SPRoleType.Reader)
+                {
+                    roleAssignment.RoleDefinitionBindings.RemoveAll();
+                }
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -167,6 +173,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!securityRoleAssignment.RoleDefinitionBindings.Contains(roleDefinition))
             {
+                if (securityRoleAssignment.RoleDefinitionBindings.Count == 1
+                         && securityRoleAssignment.RoleDefinitionBindings[0].Type == SPRoleType.Reader)
+                {
+                    securityRoleAssignment.RoleDefinitionBindings.RemoveAll();
+                }
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

@@ -99,6 +99,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group link");
 
+                // add default guest role as hidden one
+                // we need to at least one role in order to create assignment 
+                // further provision will chech of there is only one role - Reader, and will remove it
                 var bindings = new RoleDefinitionBindingCollection(context);
                 bindings.Add(web.RoleDefinitions.GetByType(RoleType.Reader));
 
@@ -115,8 +118,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                // GOTCHA!!! supposed to continue chain with adding role definitions via RoleDefinitionLinks
-                bindings.RemoveAll();
+                context.ExecuteQuery();
             }
             else
             {

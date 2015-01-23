@@ -29,44 +29,51 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            //var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<SearchSettingsDefinition>("model", value => value.RequireNotNull());
 
-            DeployDefinition(modelHost, siteModelHost, definition);
+            if (modelHost is SiteModelHost)
+            {
+                DeployDefinition(modelHost, (modelHost as SiteModelHost).HostSite.RootWeb, definition);
+            }
+            else if (modelHost is WebModelHost)
+            {
+                DeployDefinition(modelHost, (modelHost as WebModelHost).HostWeb, definition);
+            }
         }
 
-        private void DeployDefinition(object modelHost, SiteModelHost siteModelHost, SearchSettingsDefinition definition)
+        private void DeployDefinition(object modelHost, SPWeb web, SearchSettingsDefinition definition)
         {
-            var site = siteModelHost.HostSite;
-
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
-                Object = site,
-                ObjectType = typeof(Audience),
+                Object = web,
+                ObjectType = typeof(SPWeb),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
-            ProcessObject(site, definition);
+            ProcessObject(web, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
-                Object = site,
-                ObjectType = typeof(Audience),
+                Object = web,
+                ObjectType = typeof(SPWeb),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+
+            web.Update();
         }
 
-        private void ProcessObject(SPSite site, SearchSettingsDefinition definition)
+        private void ProcessObject(SPWeb web, SearchSettingsDefinition definition)
         {
-
+            // web.AllProperties["SRCH_ENH_FTR_URL_SITE"] = string.
         }
 
         #endregion

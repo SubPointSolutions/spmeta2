@@ -152,30 +152,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (isNewRoleAssignment)
             {
-                // default one, it will be removed later
-                // we need at least one role for a new role assignment created
-                // it will be deleted later
-
-                var dummyRole = web.RoleDefinitions.GetByType(SPRoleType.Reader);
-
-                if (!roleAssignment.RoleDefinitionBindings.Contains(dummyRole))
-                    roleAssignment.RoleDefinitionBindings.Add(dummyRole);
+                // add default guest role as hidden one
+                // we need to at least one role in order to create assignment 
+                // further provision will chech of there is only one role - Reader, and will remove it
+                roleAssignment.RoleDefinitionBindings.Add(web.RoleDefinitions.GetByType(SPRoleType.Reader));
             }
 
             securableObject.RoleAssignments.Add(roleAssignment);
-
-            if (isNewRoleAssignment)
-            {
-                // removing dummy role for a new assignment created
-                var tmpAssignment = securableObject.RoleAssignments
-                                                       .OfType<SPRoleAssignment>()
-                                                       .FirstOrDefault(a => a.Member.ID == securityGroup.ID);
-
-                while (tmpAssignment.RoleDefinitionBindings.Count > 0)
-                    tmpAssignment.RoleDefinitionBindings.Remove(0);
-
-                tmpAssignment.Update();
-            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
