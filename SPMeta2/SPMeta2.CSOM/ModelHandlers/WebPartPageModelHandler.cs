@@ -54,6 +54,20 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     //currentListItem.Update();
                 }
+                else if (typeof(BreakRoleInheritanceDefinition).IsAssignableFrom(childModelType)
+                        || typeof(SecurityGroupLinkDefinition).IsAssignableFrom(childModelType))
+                {
+                    var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
+                    {
+                        itemHost.HostListItem = currentListItem;
+                    });
+
+                    action(listItemHost);
+                }
+                else
+                {
+                    action(currentPage);
+                }
 
                 context.ExecuteQueryWithTrace();
             }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
@@ -356,6 +358,124 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new[] { siteModel, webModel });
         }
 
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_SecurityGroupLink_OnWikiPage()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddHostList(BuiltInListDefinitions.SitePages, sitePages =>
+                         {
+                             sitePages.AddRandomWikiPage(page =>
+                             {
+                                 page.OnProvisioning<object>(context =>
+                                 {
+                                     TurnOffValidation(page);
+                                 });
+
+                                 page.AddSecurityGroupLink(securityGroup);
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_SecurityGroupLink_OnWebPartPage()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddHostList(BuiltInListDefinitions.SitePages, sitePages =>
+                         {
+                             sitePages.AddRandomWebPartPage(page =>
+                             {
+                                 page.OnProvisioning<object>(context =>
+                                 {
+                                     TurnOffValidation(page);
+                                 });
+
+                                 page.AddSecurityGroupLink(securityGroup);
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_SecurityGroupLink_OnPublishingPage()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                    site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f =>
+                                    {
+                                        f.Enable = true;
+                                    }));
+                                });
+
+            var webModel = SPMeta2Model
+                 .NewWebModel(web =>
+                 {
+                     web.AddRandomWeb(rndWeb =>
+                     {
+                         rndWeb.AddSiteFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(f =>
+                         {
+                             f.Enable = true;
+                         }));
+
+                         rndWeb.AddHostList(BuiltInListDefinitions.Pages, sitePages =>
+                         {
+                             sitePages.AddRandomPublishingPage(page =>
+                             {
+                                 page.OnProvisioning<object>(context =>
+                                 {
+                                     TurnOffValidation(page);
+                                 });
+
+                                 page.AddSecurityGroupLink(securityGroup);
+                             });
+                         });
+                     });
+                 });
+
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
         #endregion
 
         #region role links options
@@ -382,8 +502,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      {
                          rndWeb.AddRandomList(rndList =>
                          {
-                            // rndList.AddRandomListItem(rndListItem =>
-                            // {
+                             // rndList.AddRandomListItem(rndListItem =>
+                             // {
                              rndList.AddBreakRoleInheritance(new BreakRoleInheritanceDefinition(),
                                  secureListItem =>
                                  {
