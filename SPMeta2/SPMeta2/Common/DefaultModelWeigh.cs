@@ -43,6 +43,8 @@ namespace SPMeta2.Common
                 typeof(FolderDefinition),
                 new[]
                 {
+                    typeof (BreakRoleInheritanceDefinition),
+                    typeof (SecurityRoleLinkDefinition),
                     typeof (PropertyDefinition)
                 }));
         }
@@ -53,6 +55,9 @@ namespace SPMeta2.Common
                 typeof(ListDefinition),
                 new[]
                 {
+                    typeof (BreakRoleInheritanceDefinition),
+                    typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition),
                     
                     // list scoped fields should be deployed first as well as content type links
@@ -79,6 +84,11 @@ namespace SPMeta2.Common
                 {
                     typeof (FeatureDefinition),
 
+                    typeof (SecurityGroupDefinition),
+
+                    typeof (BreakRoleInheritanceDefinition),
+                    typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition),
                     
                     typeof (FieldDefinition),
@@ -104,7 +114,7 @@ namespace SPMeta2.Common
                 {
                     typeof (SandboxSolutionDefinition),
                     typeof (FeatureDefinition),
-
+                    
                     typeof (PropertyDefinition),
 
                     typeof (SecurityGroupDefinition),
