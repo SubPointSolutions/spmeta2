@@ -95,6 +95,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Set");
 
+                currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
+                currentTermSet.Description = termSetModel.Description;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
