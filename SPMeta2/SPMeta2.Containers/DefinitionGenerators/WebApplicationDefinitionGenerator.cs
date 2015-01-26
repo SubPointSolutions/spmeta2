@@ -11,7 +11,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.Port = 1000 + Rnd.Int(20000);
+                def.HostHeader = string.Format("{0}.com", Rnd.String());
+                def.Port = 2013 + Rnd.Int(20000);
 
                 def.AllowAnonymousAccess = false;
                 def.ManagedAccount = Rnd.UserName();

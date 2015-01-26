@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using SPMeta2.Containers.Consts;
+using SPMeta2.Containers.Utils;
 
 namespace SPMeta2.Containers.Services.Rnd
 {
@@ -90,7 +92,8 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override string DbServerName()
         {
-            return string.Format("{0}", Environment.MachineName);
+            return string.Format("{0}",
+                RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
         }
     }
 }

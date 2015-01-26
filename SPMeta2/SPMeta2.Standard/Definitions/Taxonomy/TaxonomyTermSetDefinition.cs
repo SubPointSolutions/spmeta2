@@ -25,6 +25,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public TaxonomyTermSetDefinition()
         {
             LCID = 1033;
+            IsAvailableForTagging = true;
         }
 
         #endregion
