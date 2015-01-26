@@ -231,6 +231,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+         [TestMethod]
+        [TestCategory("Regression.Rnd.Site.Audit")]
+        public void CanDeployRandom_AuditSettingsDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<AuditSettingsDefinition>();
+            });
+        }
+      
         #region IRM
 
         [TestMethod]
@@ -480,6 +490,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region web scope
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_SearchSettingsDefinition()
+        {
+            TestRandomDefinition<SearchSettingsDefinition>();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]

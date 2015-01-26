@@ -23,6 +23,8 @@
         public const string DefaultTaxonomyStoreName = "SPMeta2_DefaultTaxonomyStoreName";
         public const string DefaultTaxonomyStoreId = "SPMeta2_DefaultTaxonomyStoreId";
 
+        public const string DefaultSqlServerName = "SPMeta2_DefaultSqlServerName";
+
         #endregion
     }
 }

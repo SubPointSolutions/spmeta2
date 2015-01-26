@@ -14,12 +14,11 @@ namespace SPMeta2.Standard.Definitions
     /// Allows to define and deploy SharePoint audience.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
-
-    [DefaultParentHost(typeof(SiteDefinition))]
+    
     [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(WebDefinition))]
 
     [Serializable]
-    [ExpectWithExtensionMethod]
     public class SearchSettingsDefinition : DefinitionBase
     {
         #region constructors
