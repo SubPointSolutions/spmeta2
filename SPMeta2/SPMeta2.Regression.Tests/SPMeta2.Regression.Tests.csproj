@@ -60,6 +60,7 @@
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
+    <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
