@@ -68,6 +68,53 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             CustomFieldTypeValidation(assert, spObject, definition);
 
+
+            if (definition.AdditionalAttributes.Count == 0)
+            {
+                assert.SkipProperty(m => m.AdditionalAttributes, "AdditionalAttributes count is 0. Skipping.");
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.AdditionalAttributes);
+                    var isValid = true;
+
+                    var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
+
+                    foreach (var attr in s.AdditionalAttributes)
+                    {
+                        var sourceAttrName = attr.Name;
+                        var sourceAttrValue = attr.Value;
+
+                        var destAttrValue = dstXmlNode.GetAttributeValue(sourceAttrName);
+
+                        isValid = sourceAttrValue == destAttrValue;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+
+            if (string.IsNullOrEmpty(definition.RawXml))
+            {
+                assert.SkipProperty(m => m.RawXml, "RawXml is NULL or empty. Skipping.");
+            }
+            else
+            {
+                // TODO
+
+            }
+
             // TODO, R&D to check InternalName changes in list-scoped fields
             if (spObject.InternalName == definition.InternalName)
             {

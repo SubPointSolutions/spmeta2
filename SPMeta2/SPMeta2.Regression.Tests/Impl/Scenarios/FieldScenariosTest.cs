@@ -41,6 +41,41 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region raw XML
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.RawXml")]
+        public void CanDeploy_Field_WithRawXml()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.RawXml")]
+        public void CanDeploy_Field_WithRawXmlAndAdditionalAttributes()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Attributes")]
+        public void CanDeploy_Field_WithAdditionalAttributes()
+        {
+            var def = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            def.AdditionalAttributes.Add(new FieldAttributeValue("Commas", Rnd.Bool().ToString().ToUpper()));
+            def.AdditionalAttributes.Add(new FieldAttributeValue("AllowDuplicateValues", Rnd.Bool().ToString().ToUpper()));
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(def);
+            });
+
+            TestModel(siteModel);
+        }
+
+        #endregion
+
         #region default
 
         [TestMethod]

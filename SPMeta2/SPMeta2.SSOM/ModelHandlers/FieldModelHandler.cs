@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Common;
@@ -205,11 +206,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed.ToString().ToUpper());
 
+            // add up additional attributes
+            if (fieldModel.AdditionalAttributes.Any())
+                foreach (var fieldAttr in fieldModel.AdditionalAttributes)
+                    fieldTemplate.SetAttribute(fieldAttr.Name, fieldAttr.Value);
         }
 
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
             var fieldTemplate = GetNewMinimalSPFieldTemplate();
+
+            if (!string.IsNullOrEmpty(fieldModel.RawXml))
+                fieldTemplate = XDocument.Parse(fieldModel.RawXml).Root;
 
             ProcessSPFieldXElement(fieldTemplate, fieldModel);
 

@@ -375,8 +375,16 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
             var fieldTemplate = GetNewMinimalSPFieldTemplate();
+            
+            if (!string.IsNullOrEmpty(fieldModel.RawXml))
+                fieldTemplate = XDocument.Parse(fieldModel.RawXml).Root;
 
             ProcessSPFieldXElement(fieldTemplate, fieldModel);
+
+            // add up additional attributes
+            if (fieldModel.AdditionalAttributes.Any())
+                foreach (var fieldAttr in fieldModel.AdditionalAttributes)
+                    fieldTemplate.SetAttribute(fieldAttr.Name, fieldAttr.Value);
 
             return fieldTemplate.ToString();
         }

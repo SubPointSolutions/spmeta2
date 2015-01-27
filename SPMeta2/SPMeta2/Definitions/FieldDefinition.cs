@@ -1,10 +1,30 @@
-﻿using SPMeta2.Attributes;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {
+    public class FieldAttributeValue
+    {
+        public FieldAttributeValue()
+        {
+            
+        }
+
+        public FieldAttributeValue(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
+
     /// <summary>
     /// Allows to define and deploy SharePoint field.
     /// </summary>
@@ -25,11 +45,27 @@ namespace SPMeta2.Definitions
             // it needs to be string.Empty to avoid challenges with null VS string.Empty test cases for strings
             Description = string.Empty;
             Group = string.Empty;
+
+            RawXml = string.Empty;
+
+            AdditionalAttributes = new List<FieldAttributeValue>();
         }
 
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Raw field XML to be used during the first provision
+        /// </summary>
+        [ExpectValidation]
+        public string RawXml { get; set; }
+
+        /// <summary>
+        /// Additional attributes to be written for Field XML during the first provision
+        /// </summary>
+        [ExpectValidation]
+        public List<FieldAttributeValue> AdditionalAttributes { get; set; }
 
         /// <summary>
         /// Internal name of the target field.
