@@ -86,7 +86,35 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
-                // TODO
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.RawXml);
+                    var isValid = true;
+
+                    var srcXmlNode = XDocument.Parse(s.RawXml).Root;
+                    var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
+
+                    foreach (var attr in srcXmlNode.Attributes())
+                    {
+                        var sourceAttrName = attr.Name.LocalName;
+                        var sourceAttrValue = attr.Value;
+
+                        var destAttrValue = dstXmlNode.GetAttributeValue(sourceAttrName);
+
+                        isValid = sourceAttrValue == destAttrValue;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
 
             }
 
