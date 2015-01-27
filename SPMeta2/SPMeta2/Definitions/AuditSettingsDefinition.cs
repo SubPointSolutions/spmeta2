@@ -15,8 +15,8 @@ namespace SPMeta2.Definitions
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPAudit", "Microsoft.SharePoint")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHost(typeof(ListDefinition))]
+    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
 
     [Serializable]
 
@@ -33,15 +33,16 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [ExpectValidation]
         public Collection<string> AuditFlags { get; set; }
 
         #endregion
 
         #region methods
-
         public override string ToString()
         {
             return new ToStringResult<AuditSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.AuditFlags)
                           .ToString();
         }
 

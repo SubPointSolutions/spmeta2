@@ -116,8 +116,23 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region audit settings
+
+        public static ModelNode AddRandomAuditSetting(this ModelNode model)
+        {
+            return AddRandomAuditSetting(model, null);
+        }
+
+        public static ModelNode AddRandomAuditSetting(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<AuditSettingsDefinition>(action);
+        }
+
+        #endregion
 
         #region list item
+
+
 
         public static ModelNode AddRandomListItem(this ModelNode model)
         {

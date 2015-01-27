@@ -54,6 +54,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentParserDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TreeViewSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DiagnosticsServiceBaseDefinitionGenerator.cs" />

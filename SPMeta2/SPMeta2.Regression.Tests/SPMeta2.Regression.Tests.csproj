@@ -73,6 +73,7 @@
     <Compile Include="Impl\Scenarios\ContentTypeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\EventReceiverScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\PageLayoutAndSiteTemplateSettingsScenarios.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />

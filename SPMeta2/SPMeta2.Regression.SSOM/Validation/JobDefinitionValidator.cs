@@ -64,6 +64,4 @@ namespace SPMeta2.Regression.SSOM.Validation
 
         #endregion
     }
-
-
 }

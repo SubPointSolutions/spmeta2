@@ -84,6 +84,7 @@
     <Compile Include="Extensions\SPContextExtensions.cs" />
     <Compile Include="Extensions\SPViewCollectionExtensions.cs" />
     <Compile Include="Extensions\WebPartExtensions.cs" />
+    <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
     <Compile Include="ModelHandlers\AlternateUrlModelHandler.cs" />
     <Compile Include="ModelHandlers\AppModelHandler.cs" />
