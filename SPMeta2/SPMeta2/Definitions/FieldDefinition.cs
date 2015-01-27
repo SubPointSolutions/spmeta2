@@ -4,14 +4,15 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Common;
 
 namespace SPMeta2.Definitions
 {
-    public class FieldAttributeValue
+    public class FieldAttributeValue : KeyNameValue
     {
         public FieldAttributeValue()
         {
-            
+
         }
 
         public FieldAttributeValue(string name, string value)
@@ -19,9 +20,6 @@ namespace SPMeta2.Definitions
             Name = name;
             Value = value;
         }
-
-        public string Name { get; set; }
-        public string Value { get; set; }
     }
 
 

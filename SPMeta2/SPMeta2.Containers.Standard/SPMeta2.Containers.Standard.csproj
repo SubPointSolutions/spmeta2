@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\SearchSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\CustomDocumentIdProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PageLayoutAndSiteTemplateSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\TaxonomyFieldDefinitionGenerator.cs" />

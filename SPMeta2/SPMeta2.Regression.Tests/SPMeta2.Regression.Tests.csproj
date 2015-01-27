@@ -150,6 +150,10 @@
       <Link>SPMeta2.Containers.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll">
+      <Link>SPMeta2.Containers.O365v16.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.O365.dll">
       <Link>SPMeta2.Containers.O365.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
