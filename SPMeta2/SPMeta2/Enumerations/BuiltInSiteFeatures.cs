@@ -11,6 +11,24 @@ namespace SPMeta2.Enumerations
     /// </summary>
     public static class BuiltInSiteFeatures
     {
+        #region custom added
+
+        /// <summary>
+        /// Makes the following Web Parts available in the site collection Web Part catalog: Page Viewer, Content Editor, Image, Form, XML and Site Users list.
+        /// </summary>
+        public static FeatureDefinition BasicWebParts = new FeatureDefinition
+        {
+            Title = "BasicWebParts",
+            Id = new Guid("{00bfea71-1c5e-4a24-b310-ba51c3eb7a57}"),
+            Scope = FeatureDefinitionScope.Site,
+            ForceActivate = false,
+            Enable = false
+        };
+
+        #endregion
+
+        #region auto generated
+
         /// <summary>
         /// Content Deployment Source feature enables content deployment specific checks on source site collection and enables setting up content deployment from the site collection to a target site collection.
         /// </summary>
@@ -323,7 +341,6 @@ namespace SPMeta2.Enumerations
             Enable = false
         };
 
-
-
+        #endregion
     }
 }
