@@ -40,75 +40,85 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.AuditSettings")]
         public void CanDeploy_AuditSettings_ToSite()
         {
-            var model = SPMeta2Model
-                .NewSiteModel(site =>
-                {
-                    site.AddRandomAuditSetting();
-                });
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var model = SPMeta2Model
+                    .NewSiteModel(site =>
+                    {
+                        site.AddRandomAuditSetting();
+                    });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.AuditSettings")]
         public void CanDeploy_AuditSettings_ToWeb()
         {
-            var siteModel = SPMeta2Model
-               .NewSiteModel(site =>
-               {
-                   site.AddRandomAuditSetting();
-               });
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var siteModel = SPMeta2Model
+                    .NewSiteModel(site =>
+                    {
+                        site.AddRandomAuditSetting();
+                    });
 
-            var webModel = SPMeta2Model
-                .NewWebModel(web =>
-                {
-                    web.AddRandomAuditSetting();
-                });
+                var webModel = SPMeta2Model
+                    .NewWebModel(web =>
+                    {
+                        web.AddRandomAuditSetting();
+                    });
 
-            TestModels(new[] { siteModel, webModel });
+                TestModels(new[] {siteModel, webModel});
+            });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.AuditSettings")]
         public void CanDeploy_AuditSettings_ToList()
         {
-            var siteModel = SPMeta2Model
-                .NewSiteModel(site =>
-                {
-                    site.AddRandomAuditSetting();
-                });
-
-            var listAuditSetting = new AuditSettingsDefinition();
-
-            if (Rnd.Bool())
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                listAuditSetting.AuditFlags = new Collection<string>
+                var siteModel = SPMeta2Model
+                    .NewSiteModel(site =>
+                    {
+                        site.AddRandomAuditSetting();
+                    });
+
+                var listAuditSetting = new AuditSettingsDefinition();
+
+                if (Rnd.Bool())
+                {
+                    listAuditSetting.AuditFlags = new Collection<string>
                 {
                     BuiltInAuditMaskType.CheckIn,
                     BuiltInAuditMaskType.CheckOut,
                     BuiltInAuditMaskType.Copy,
                     BuiltInAuditMaskType.Move
                 };
-            }
-            else
-            {
-                listAuditSetting.AuditFlags = new Collection<string>
+                }
+                else
+                {
+                    listAuditSetting.AuditFlags = new Collection<string>
                 {
                     BuiltInAuditMaskType.CheckIn,
                     BuiltInAuditMaskType.Copy,
                 };
-            }
+                }
 
-            var webModel = SPMeta2Model
-                .NewWebModel(web =>
-                {
-                    web.AddRandomList(list =>
+                var webModel = SPMeta2Model
+                    .NewWebModel(web =>
                     {
-                        list.AddAuditSettings(listAuditSetting);
+                        web.AddRandomList(list =>
+                        {
+                            list.AddAuditSettings(listAuditSetting);
+                        });
                     });
-                });
 
-            TestModels(new[] { siteModel, webModel });
+                TestModels(new[] { siteModel, webModel });
+
+            });
         }
 
         #endregion

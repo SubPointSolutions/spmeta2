@@ -100,7 +100,7 @@ namespace SPMeta2.Utils
                 var result = new PropResult();
 
                 result.Name = propInfo.Name;
-                result.Value = propInfo.GetValue(source);
+                result.Value = propInfo.GetValue(source, null);
                 result.ObjectType = source.GetType();
 
                 return result;
@@ -112,5 +112,5 @@ namespace SPMeta2.Utils
         #endregion
     }
 
-   
+
 }
