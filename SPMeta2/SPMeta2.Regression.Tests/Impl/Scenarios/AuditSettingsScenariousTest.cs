@@ -51,6 +51,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.AuditSettings")]
+        public void CanDeploy_AuditSettings_ToWeb()
+        {
+            var siteModel = SPMeta2Model
+               .NewSiteModel(site =>
+               {
+                   site.AddRandomAuditSetting();
+               });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomAuditSetting();
+                });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.AuditSettings")]
         public void CanDeploy_AuditSettings_ToList()
         {
             var siteModel = SPMeta2Model

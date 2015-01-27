@@ -79,6 +79,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite.Audit;
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.Audit;
             else if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList.Audit;
             else
