@@ -45,10 +45,10 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.Standard.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.Syntax.Default.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.Syntax.Default.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.PublishingPageTemplates.resources
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\obj\Debug\SPMeta2.CSOM.Standard.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.xml
