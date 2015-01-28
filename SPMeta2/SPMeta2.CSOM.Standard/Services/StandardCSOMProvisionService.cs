@@ -3,11 +3,11 @@ using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 
 namespace SPMeta2.CSOM.Standard.Services
 {
-    public class StandardSSOMProvisionService : CSOMProvisionService
+    public class StandardCSOMProvisionService : CSOMProvisionService
     {
         #region constructors
 
-        public StandardSSOMProvisionService()
+        public StandardCSOMProvisionService()
         {
             RegisterModelHandlers(typeof(TaxonomyFieldModelHandler).Assembly);
         }
