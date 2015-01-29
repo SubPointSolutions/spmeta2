@@ -1,4 +1,5 @@
-﻿using SPMeta2.CSOM.Services;
+﻿using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 
 namespace SPMeta2.CSOM.Standard.Services
@@ -9,6 +10,7 @@ namespace SPMeta2.CSOM.Standard.Services
 
         public StandardCSOMProvisionService()
         {
+            RegisterModelHandlers(typeof(FieldModelHandler).Assembly);
             RegisterModelHandlers(typeof(TaxonomyFieldModelHandler).Assembly);
         }
 

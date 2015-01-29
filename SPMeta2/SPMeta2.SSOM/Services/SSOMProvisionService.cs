@@ -44,20 +44,7 @@ namespace SPMeta2.SSOM.Services
 
         private void RegisterModelHandlers()
         {
-            ModelHandlers.Clear();
-
-            var handlerTypes = ReflectionUtils.GetTypesFromAssembly<SSOMModelHandlerBase>(Assembly.GetExecutingAssembly());
-
-            foreach (var handlerType in handlerTypes)
-            {
-                var handlerInstance = Activator.CreateInstance(handlerType) as SSOMModelHandlerBase;
-
-                if (handlerInstance != null)
-                {
-                    if (!ModelHandlers.ContainsKey(handlerInstance.TargetType))
-                        ModelHandlers.Add(handlerInstance.TargetType, handlerInstance);
-                }
-            }
+            RegisterModelHandlers(typeof(FieldModelHandler).Assembly);
         }
 
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)

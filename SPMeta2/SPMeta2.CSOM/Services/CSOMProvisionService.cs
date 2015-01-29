@@ -61,9 +61,7 @@ namespace SPMeta2.CSOM.Services
 
         private void RegisterModelHandlers()
         {
-            ModelHandlers.Clear();
-
-            RegisterModelHandlers<CSOMModelHandlerBase>(GetType().Assembly);
+            RegisterModelHandlers(typeof(FieldModelHandler).Assembly);
         }
 
         #endregion
