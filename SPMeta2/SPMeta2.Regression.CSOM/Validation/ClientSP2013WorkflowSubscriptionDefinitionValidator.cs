@@ -59,6 +59,15 @@ namespace SPMeta2.Regression.CSOM.Validation
             SP2013WorkflowSubscriptionDefinition definition)
         {
 
+            var spObjectContext = spObject.Context;
+
+            //spObjectContext.Load(spObject);
+            //spObjectContext.Load(spObject, o => o.PropertyDefinitions);
+            //spObjectContext.Load(spObject, o => o.EventSourceId);
+            //spObjectContext.Load(spObject, o => o.EventTypes);
+
+            //spObjectContext.ExecuteQuery();
+
             #region list accos
 
             var webContext = web.Context;
@@ -73,13 +82,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             //        [FALSE] - [TaskListUrl]
             //        [FALSE] - [EventSourceId]
             //        [FALSE] - [EventTypes]
-
-            var spObjectContext = spObject.Context;
-
-            spObjectContext.Load(spObject, o => o.PropertyDefinitions);
-            spObjectContext.Load(spObject, o => o.EventSourceId);
-
-            spObjectContext.ExecuteQuery();
 
             #region event types
 
