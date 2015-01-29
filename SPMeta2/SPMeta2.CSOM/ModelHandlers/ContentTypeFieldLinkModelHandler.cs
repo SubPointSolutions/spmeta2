@@ -111,6 +111,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing content type field link");
             }
 
+            if (contentTypeFieldLinkModel.Required.HasValue)
+                fieldLink.Required = contentTypeFieldLinkModel.Required.Value;
+
+            if (contentTypeFieldLinkModel.Hidden.HasValue)
+                fieldLink.Hidden = contentTypeFieldLinkModel.Hidden.Value;
+
+            if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.DisplayName))
+            {
+                // CSOM limitation - DisplayName is not available yet.
+                // https://officespdev.uservoice.com/forums/224641-general/suggestions/7024931-enhance-fieldlink-class-with-additional-properties
+
+                //   fieldLink.DisplayName = contentTypeFieldLinkModel.DisplayName;
+            }
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

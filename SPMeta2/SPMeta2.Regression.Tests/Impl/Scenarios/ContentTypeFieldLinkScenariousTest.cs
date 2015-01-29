@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Containers;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -31,15 +33,42 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypeFieldLink")]
+        public void CanDeploy_ContentTypeFieldLink_WithProperties()
+        {
+            var fieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var fieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
 
-        // add OOTB field, TODO
-        // add OOTB fields, TODO
+            var contentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
 
-        // add custom field, TODO
-        // add custom fields, TODO
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(fieldOne);
+                site.AddField(fieldTwo);
 
-        // add out of the box AND custom fields, TODO
+                site.AddContentType(contentType, c =>
+                {
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        FieldId = fieldOne.Id,
+                        DisplayName = Rnd.String(),
+                        Hidden = Rnd.Bool(),
+                        Required = Rnd.Bool()
+                    });
+
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        DisplayName = Rnd.String(),
+                        FieldId = fieldTwo.Id,
+                        Hidden = Rnd.Bool(),
+                        Required = Rnd.Bool()
+                    });
+                });
+            });
+
+            TestModels(new[] { siteModel });
+        }
 
         #endregion
     }

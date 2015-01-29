@@ -49,13 +49,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                 contentType.FieldLinks.Add(new SPFieldLink(rootWeb.AvailableFields[contentTypeFieldLinkModel.FieldId]));
 
                 currentFieldLink = contentType.FieldLinks
-                .OfType<SPFieldLink>()
-                .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
+                                            .OfType<SPFieldLink>()
+                                            .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId);
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing content type field link");
             }
+
+            if (contentTypeFieldLinkModel.Required.HasValue)
+                currentFieldLink.Required = contentTypeFieldLinkModel.Required.Value;
+
+            if (contentTypeFieldLinkModel.Hidden.HasValue)
+                currentFieldLink.Hidden = contentTypeFieldLinkModel.Hidden.Value;
+
+            if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.DisplayName))
+                currentFieldLink.DisplayName = contentTypeFieldLinkModel.DisplayName;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

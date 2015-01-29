@@ -33,7 +33,7 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId, Action<ModelNode> action)
         {
-            return AddContentTypeFieldLink(model, new ContentTypeFieldLinkDefinition
+            return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
             {
                 FieldId = fieldId
             }, action);
@@ -62,24 +62,24 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
         {
-            return AddContentTypeFieldLink(model, new ContentTypeFieldLinkDefinition
+            return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
             {
                 FieldId = definition.Id
             }, action);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition)
-        {
-            return model.AddDefinitionNode(definition, null);
-        }
+        //public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition)
+        //{
+        //    return model.AddDefinitionNode(definition, null);
+        //}
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNode(definition, action);
-        }
+        //public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition, Action<ModelNode> action)
+        //{
+        //    return model.AddDefinitionNode(definition, action);
+        //}
 
         #endregion
 
-      
+
     }
 }
