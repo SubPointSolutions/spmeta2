@@ -31,6 +31,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var typedField = field.Context.CastTo<FieldLookup>(field);
+            var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
+
+            if (typedFieldModel.AllowMultipleValues)
+                typedField.TypeAsString = "LookupMulti";
+            else
+                typedField.TypeAsString = "Lookup";
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

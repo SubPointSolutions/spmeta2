@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -14,6 +15,33 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             {
                 return typeof(LookupFieldDefinition);
             }
+        }
+
+        protected override void CustomFieldTypeValidation(AssertPair<FieldDefinition, Field> assert, Field spObject, FieldDefinition definition)
+        {
+            var typedObject = spObject.Context.CastTo<FieldLookup>(spObject);
+            var typedDefinition = definition.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
+
+            // https://github.com/SubPointSolutions/spmeta2/issues/310
+            // AllowMultipleValues - TRUE - LookupMulti
+            // AllowMultipleValues - FALSE - Lookup
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.FieldType);
+                var dstProp = d.GetExpressionValue(m => d.TypeAsString);
+
+                var isValid = typedDefinition.AllowMultipleValues
+                    ? typedObject.TypeAsString == "LookupMulti"
+                    : typedObject.TypeAsString == "Lookup";
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
