@@ -8,6 +8,7 @@ using Microsoft.SharePoint.Client.Search.Portability;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.WorkflowServices;
 using SPMeta2.Containers.Consts;
+using SPMeta2.Containers.Exceptions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Utils;
 using SPMeta2.CSOM.ModelHosts;
@@ -115,6 +116,17 @@ namespace SPMeta2.Containers.O365
             var search = typeof(SearchConfigurationPortability);
 
             return base.ResolveFullTypeName(typeName, assemblyName);
+        }
+
+
+        public override void DeployFarmModel(ModelNode model)
+        {
+            throw new SPMeta2UnsupportedCSOMRunnerException();
+        }
+
+        public override void DeployWebApplicationModel(ModelNode model)
+        {
+            throw new SPMeta2UnsupportedCSOMRunnerException();
         }
 
         /// <summary>

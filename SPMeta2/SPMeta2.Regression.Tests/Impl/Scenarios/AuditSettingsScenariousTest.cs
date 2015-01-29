@@ -70,7 +70,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         web.AddRandomAuditSetting();
                     });
 
-                TestModels(new[] {siteModel, webModel});
+                TestModels(new[] { siteModel, webModel });
             });
         }
 

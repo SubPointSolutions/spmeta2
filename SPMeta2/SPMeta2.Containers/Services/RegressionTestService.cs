@@ -72,7 +72,7 @@ namespace SPMeta2.Containers.Services
 
         #endregion
 
-       
+
 
         public void OnModelPropertyValidated(object sender, OnPropertyValidatedEventArgs e)
         {
@@ -235,6 +235,7 @@ namespace SPMeta2.Containers.Services
                 className = att.ClassName;
                 classAssembly = att.AssemblyName;
             }
+
             if (CurrentProvisionRunner.Name == "CSOM")
             {
                 var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
@@ -245,9 +246,13 @@ namespace SPMeta2.Containers.Services
                 className = att.ClassName;
                 classAssembly = att.AssemblyName;
             }
+
             if (CurrentProvisionRunner.Name == "O365")
             {
                 var att = attrs.FirstOrDefault(a => a.ObjectModelType == SPObjectModelType.CSOM);
+
+                if (att == null)
+                    throw new SPMeta2UnsupportedCSOMRunnerException();
 
                 className = att.ClassName;
                 classAssembly = att.AssemblyName;
@@ -391,15 +396,11 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
-               
-
                 var allHooks = new List<EventHooks>();
 
                 WithProvisionRunnerContext(runnerContext =>
                 {
                     var runner = runnerContext.Runner;
-
-                    //ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
                     var omModelType = GetRunnerType(runner);
                     var hooks = GetHooks(model);
@@ -678,7 +679,12 @@ namespace SPMeta2.Containers.Services
 
         private void ValidateDefinitionHostRunnerSupport<T1>(ProvisionRunnerBase runner)
         {
-            var attrs = typeof(T1).GetCustomAttributes()
+            ValidateDefinitionHostRunnerSupport(runner, typeof(T1));
+        }
+
+        private void ValidateDefinitionHostRunnerSupport(ProvisionRunnerBase runner, Type targetType)
+        {
+            var attrs = targetType.GetCustomAttributes()
                                              .OfType<SPObjectTypeAttribute>();
 
             if (CurrentProvisionRunner.Name == "SSOM")

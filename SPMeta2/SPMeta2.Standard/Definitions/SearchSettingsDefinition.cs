@@ -14,7 +14,9 @@ namespace SPMeta2.Standard.Definitions
     /// Allows to define and deploy SharePoint audience.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Clients.Web", "Microsoft.SharePoint.Client")]
     
+
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
