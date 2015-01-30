@@ -88,6 +88,7 @@
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\PageLayoutAndSiteTemplateSettingsScenarios.cs" />
+    <Compile Include="Impl\Scenarios\PublishingPageLayoutScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />

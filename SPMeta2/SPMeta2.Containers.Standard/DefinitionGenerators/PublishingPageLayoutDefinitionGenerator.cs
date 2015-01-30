@@ -23,7 +23,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             PublishingPageContentType.Group = "Page Layout Content Types";
         }
 
-        protected ContentTypeDefinition PublishingPageContentType;
+        public ContentTypeDefinition PublishingPageContentType;
 
         public override DefinitionBase GenerateRandomDefinition(Action<DefinitionBase> action)
         {
