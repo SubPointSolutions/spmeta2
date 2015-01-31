@@ -123,6 +123,11 @@ namespace SPMeta2.Regression.Tests.Base
             TestModels(new[] { model });
         }
 
+        protected void TestModel(ModelNode firstModel, ModelNode secondModel)
+        {
+            TestModels(new[] { firstModel, secondModel });
+        }
+
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);

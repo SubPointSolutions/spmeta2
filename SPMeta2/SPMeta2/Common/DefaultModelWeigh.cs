@@ -73,6 +73,8 @@ namespace SPMeta2.Common
                     
                     typeof (ListViewDefinition),
                     typeof (ModuleFileDefinition),
+
+                    typeof (ListItemFieldValueDefinition),
                 }));
         }
 

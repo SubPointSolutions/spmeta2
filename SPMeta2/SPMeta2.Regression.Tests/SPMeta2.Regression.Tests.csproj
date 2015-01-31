@@ -72,6 +72,7 @@
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
+    <Compile Include="Impl\Definitions\ChoiceFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Impl\Scenarios\Fields\LookupFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\ListItemValueScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\PageLayoutAndSiteTemplateSettingsScenarios.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageLayoutScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
