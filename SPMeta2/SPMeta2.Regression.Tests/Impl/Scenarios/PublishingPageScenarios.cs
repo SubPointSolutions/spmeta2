@@ -65,6 +65,31 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new[] { siteModel, webModel });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage")]
+        public void CanDeploy_Default_PublishingPageToFolder()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var page = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(webFeature);
+                web.AddHostList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddRandomFolder(folder =>
+                    {
+                        folder.AddPublishingPage(page);
+                    });
+                });
+            });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
         private void WithPublishingPageNode(Action<ModelNode> pageSetup)
         {
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
