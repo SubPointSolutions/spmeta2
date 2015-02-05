@@ -20,6 +20,16 @@ namespace SPMeta2.Regression.CSOM.Validation
                                         .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
+            if (string.IsNullOrEmpty(definition.Title))
+                assert.SkipProperty(m => m.Title, "Title is null or empty");
+            else
+                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+
+            if (string.IsNullOrEmpty(definition.Description))
+                assert.SkipProperty(m => m.Description, "Description is null or empty");
+            else
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var context = d.Context;

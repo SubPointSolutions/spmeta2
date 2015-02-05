@@ -20,6 +20,16 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     public class RootWebDefinition : DefinitionBase
     {
+        #region properties
+
+        [ExpectValidation]
+        public string Title { get; set; }
+
+        [ExpectValidation]
+        public string Description { get; set; }
+
+        #endregion
+
         #region methods
 
         public override string ToString()
