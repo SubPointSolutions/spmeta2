@@ -30,13 +30,27 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var sandboxSolutionDefinition = model.WithAssertAndCast<SandboxSolutionDefinition>("model", value => value.RequireNotNull());
 
-            if (!sandboxSolutionDefinition.Activate)
-                throw new SPMeta2NotSupportedException("Sandbox solution provision via CSOM requires to have SandboxSolutionDefinition.Activate = true.");
+            ValidateDefinition(sandboxSolutionDefinition);
+
+            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
             DeploySandboxSolution(modelHost, siteModelHost, sandboxSolutionDefinition);
+        }
+
+        private void ValidateDefinition(SandboxSolutionDefinition sandboxSolutionDefinition)
+        {
+            if (!sandboxSolutionDefinition.Activate)
+                throw new SPMeta2NotSupportedException("SandboxSolutionDefinition.Activate must be true. (DesignPackage API requires it).");
+
+            if (sandboxSolutionDefinition.SolutionId == default(Guid))
+                throw new SPMeta2NotSupportedException("SandboxSolutionDefinition.SolutionId must be defined for CSOM based provision (DesignPackage API requires it).");
+
+            var fileName = Path.GetFileNameWithoutExtension(sandboxSolutionDefinition.FileName);
+
+            if (fileName.Contains("."))
+                throw new SPMeta2NotSupportedException("SandboxSolutionDefinition.FileName must not contain dots. (DesignPackage API requires it).");
         }
 
         private void DeploySandboxSolution(object modelHost, SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)

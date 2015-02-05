@@ -54,13 +54,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
-                web.MasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+                web.CustomMasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
-                web.CustomMasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+                web.MasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||

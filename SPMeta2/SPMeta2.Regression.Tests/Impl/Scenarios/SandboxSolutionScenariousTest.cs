@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
 using SPMeta2.Containers.Services;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -37,6 +38,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
        
+
         #endregion
     }
 }

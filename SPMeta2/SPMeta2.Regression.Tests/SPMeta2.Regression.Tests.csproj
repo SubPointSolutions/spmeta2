@@ -89,6 +89,7 @@
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListItemValueScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\MasterPageSettingsDefinitionScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\PageLayoutAndSiteTemplateSettingsScenarios.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageLayoutScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />

@@ -50,10 +50,35 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers.CSOM\SPMeta2.Containers.CSOM.csproj">
+      <Project>{2a8f08ed-e837-4e91-8e49-b5f30cf9eef3}</Project>
+      <Name>SPMeta2.Containers.CSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Containers.O365v16\SPMeta2.Containers.O365v16.csproj">
+      <Project>{e9274d1f-bf08-44cb-9162-35110379d5c0}</Project>
+      <Name>SPMeta2.Containers.O365v16</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Containers.O365\SPMeta2.Containers.O365.csproj">
+      <Project>{8b199151-24bc-4c32-b69f-7371b37f33d4}</Project>
+      <Name>SPMeta2.Containers.O365</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Containers.SSOM\SPMeta2.Containers.SSOM.csproj">
+      <Project>{04ef5903-b379-4404-8dbc-b21abe0d1099}</Project>
+      <Name>SPMeta2.Containers.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">
+      <Project>{5793019F-7514-4B1F-B31D-A5E472FD034D}</Project>
+      <Name>SPMeta2.Containers.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
+      <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
       <Project>{5E592EAA-E21F-4BF4-8EDF-6F6452DC916A}</Project>
       <Name>SPMeta2.CSOM.Standard</Name>
