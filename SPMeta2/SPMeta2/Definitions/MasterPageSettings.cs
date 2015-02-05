@@ -26,11 +26,13 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [ExpectValidation]
         public string SiteMasterPageUrl { get; set; }
         public bool? SiteMasterPageInheritFromMaster { get; set; }
 
+        [ExpectValidation]
         public string SystemMasterPageUrl { get; set; }
-        public string SystemMasterPageInheritFromMaster { get; set; }
+        public bool? SystemMasterPageInheritFromMaster { get; set; }
 
         #endregion
 

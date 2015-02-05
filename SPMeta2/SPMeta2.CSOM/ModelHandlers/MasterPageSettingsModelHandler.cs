@@ -60,13 +60,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
-                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
-                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||

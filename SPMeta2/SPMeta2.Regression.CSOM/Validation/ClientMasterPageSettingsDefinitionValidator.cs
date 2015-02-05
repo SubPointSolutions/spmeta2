@@ -26,6 +26,24 @@ namespace SPMeta2.Regression.CSOM.Validation
                                             .ShouldNotBeNull(spObject);
 
 
+            if (!string.IsNullOrEmpty(definition.SiteMasterPageUrl))
+            {
+                assert.ShouldBeEndOf(m => m.SiteMasterPageUrl, o => o.CustomMasterUrl);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SiteMasterPageUrl, "SiteMasterPageUrl is NULL or empty");
+            }
+
+            if (!string.IsNullOrEmpty(definition.SystemMasterPageUrl))
+            {
+                assert.ShouldBeEndOf(m => m.SystemMasterPageUrl, o => o.MasterUrl);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.SystemMasterPageUrl, "SystemMasterPageUrl is NULL or empty");
+            }
+
         }
     }
 }
