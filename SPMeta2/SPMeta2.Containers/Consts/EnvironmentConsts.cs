@@ -25,6 +25,8 @@
 
         public const string DefaultSqlServerName = "SPMeta2_DefaultSqlServerName";
 
+        public const string DefaultTestUserLogins = "SPMeta2_DefaultTestUserLogins";
+
         #endregion
     }
 }

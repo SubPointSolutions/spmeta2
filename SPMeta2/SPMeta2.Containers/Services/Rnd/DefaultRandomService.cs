@@ -62,6 +62,14 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override string UserLogin()
         {
+            var userLogins = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultTestUserLogins);
+
+            if (!string.IsNullOrEmpty(userLogins))
+            {
+                var logins = userLogins.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                return logins[Int(logins.Length)];
+            }
+
             return string.Format("{0}/{1}", Environment.UserDomainName, Environment.UserName);
         }
 
@@ -92,8 +100,7 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override string DbServerName()
         {
-            return string.Format("{0}",
-                RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
+            return string.Format("{0}", RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
         }
     }
 }

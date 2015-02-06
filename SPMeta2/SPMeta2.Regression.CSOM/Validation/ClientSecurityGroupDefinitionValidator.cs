@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -34,30 +35,22 @@ namespace SPMeta2.Regression.CSOM.Validation
                              .ShouldBeEqual(m => m.Description, o => o.Description);
 
 
-            // TODO
-            // skip the owner as it is different from onprem to Office 365 instances
-            // later should be done depending on the current login credentials
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(def => def.Owner);
+                var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-            assert.SkipProperty(m => m.Owner, "Owner is skipped. Validation will be implemented in further versions of SPMeta2 library.");
+                var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
+                              srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
 
-            //assert.ShouldBeEqual((p, s, d) =>
-            //{
-            //    var srcProp = s.GetExpressionValue(def => def.Owner);
-            //    var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
-
-            //    // hope domain is the same, just check the username
-
-            //    var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
-            //                  srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
-
-            //    return new PropertyValidationResult
-            //    {
-            //        Tag = p.Tag,
-            //        Src = srcProp,
-            //        Dst = dstProp,
-            //        IsValid = isValid
-            //    };
-            //});
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
 
             assert.SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
 

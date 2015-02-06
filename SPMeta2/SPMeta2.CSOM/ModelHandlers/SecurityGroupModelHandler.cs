@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Utilities;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
@@ -16,6 +17,11 @@ namespace SPMeta2.CSOM.ModelHandlers
     public class SecurityGroupModelHandler : CSOMModelHandlerBase
     {
         #region properties
+
+        public override Type TargetType
+        {
+            get { return typeof(SecurityGroupDefinition); }
+        }
 
         #endregion
 
@@ -66,6 +72,48 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
             context.ExecuteQueryWithTrace();
 
+            // pre-load user
+            Principal principal = null;
+
+            if (!string.IsNullOrWhiteSpace(securityGroupModel.Owner))
+            {
+                // big TODO
+
+                //var targetSources = new Dictionary<PrincipalType, PrincipalInfo>();
+
+                //targetSources.Add(PrincipalType.User, null);
+                //targetSources.Add(PrincipalType.SharePointGroup, null);
+                //targetSources.Add(PrincipalType.SecurityGroup, null);
+
+                //foreach (var targetSource in targetSources.Keys)
+                //{
+                //    // var info = Utility.ResolvePrincipal(context, web, securityGroupModel.Owner, targetSource, PrincipalSource.All, null, false);
+                //    var infos = Utility.SearchPrincipals(context, web, securityGroupModel.Owner, targetSource, PrincipalSource.All, null, 10);
+
+                //    context.ExecuteQuery();
+
+                //    if (infos.Count > 0)
+                //    {
+                //        var info = infos[0];
+
+                //        targetSources[targetSource] = infos[0];
+
+                //        if (info.PrincipalType == PrincipalType.User)
+                //            principal = web.EnsureUser(info.LoginName);
+
+                //        if (info.PrincipalType == PrincipalType.SharePointGroup || info.PrincipalType == PrincipalType.SecurityGroup)
+                //            principal = web.SiteGroups.GetById(info.PrincipalId);
+
+                //        principal = web.EnsureUser(securityGroupModel.Owner);
+
+                //        context.Load(principal);
+                //        context.ExecuteQuery();
+
+                //        break;
+                //    }
+                //}
+            }
+
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -97,6 +145,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentGroup.Title = securityGroupModel.Name;
             currentGroup.Description = securityGroupModel.Description ?? string.Empty;
             currentGroup.OnlyAllowMembersViewMembership = securityGroupModel.OnlyAllowMembersViewMembership;
+
+            if (!string.IsNullOrEmpty(securityGroupModel.Owner))
+            {
+                currentGroup.Owner = principal;
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -130,9 +183,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #endregion
 
-        public override Type TargetType
-        {
-            get { return typeof(SecurityGroupDefinition); }
-        }
+
     }
 }
