@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
@@ -92,7 +94,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             catch (SPException)
             {
-                var ownerUser = EnsureOwnerUser(web, securityGroupModel);
+                var ownerUser = EnsureOwnerUser(web, securityGroupModel.Owner);
                 var defaultUser = EnsureDefaultUser(web, securityGroupModel);
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group");
@@ -129,7 +131,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             currentGroup.OnlyAllowMembersViewMembership = securityGroupModel.OnlyAllowMembersViewMembership;
-            currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel);
+
+            if (!string.IsNullOrEmpty(securityGroupModel.Owner))
+                currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel.Owner);
+
             currentGroup.Description = securityGroupModel.Description;
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -146,15 +151,31 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentGroup.Update();
         }
 
-        protected virtual SPUser EnsureOwnerUser(SPWeb web, SecurityGroupDefinition groupModel)
+        protected virtual SPPrincipal EnsureOwnerUser(SPWeb web, string owner)
         {
-            if (string.IsNullOrEmpty(groupModel.Owner))
+            if (string.IsNullOrEmpty(owner))
             {
                 return web.Site.Owner;
             }
             else
             {
-                return web.EnsureUser(groupModel.Owner);
+                bool max;
+
+                var principalInfos = SPUtility.SearchPrincipals(web, owner, SPPrincipalType.All, SPPrincipalSource.All, null, 2, out max);
+
+                if (principalInfos.Count > 0)
+                //if (principalInfos.Value != null)
+                {
+                    var info = principalInfos[0];
+
+                    if (info.PrincipalType == SPPrincipalType.User || info.PrincipalType == SPPrincipalType.SecurityGroup)
+                        return web.EnsureUser(info.LoginName);
+
+                    if (info.PrincipalType == SPPrincipalType.SharePointGroup)
+                        return web.SiteGroups.GetByID(info.PrincipalId);
+                }
+
+                throw new SPMeta2Exception(string.Format("Cannot resolve Principal by string value: [{0}]", owner));
             }
         }
 
