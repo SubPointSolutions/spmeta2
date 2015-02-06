@@ -55,6 +55,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.PropertyBags")]
+        public void CanDeploy_PropertyBag_OnWebApplication()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var model = SPMeta2Model
+                        .NewWebApplicationModel(webApp =>
+                        {
+                            webApp.AddRandomPropertyBag();
+                        });
+
+                TestModel(model);
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PropertyBags")]
         public void CanDeploy_PropertyBag_OnWeb()
         {
             var model = SPMeta2Model

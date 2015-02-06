@@ -36,6 +36,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is FarmModelHost)
                 return (modelHost as FarmModelHost).HostFarm.Properties;
 
+            if (modelHost is WebApplicationModelHost)
+                return (modelHost as WebApplicationModelHost).HostWebApplication.Properties;
+
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
 
