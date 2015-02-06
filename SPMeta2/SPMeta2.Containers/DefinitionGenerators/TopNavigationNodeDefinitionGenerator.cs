@@ -14,7 +14,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Title = Rnd.String();
                 def.Url = Rnd.String();
 
-                def.IsVisible = Rnd.Bool();
+                def.IsVisible = true;
                 def.IsExternal = true;
             });
         }

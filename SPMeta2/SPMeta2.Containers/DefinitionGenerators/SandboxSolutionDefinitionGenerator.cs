@@ -14,7 +14,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 def.FileName = string.Format("{0}.wsp", Rnd.String());
-                def.Activate = Rnd.Bool();
+                def.Activate = true;
 
                 def.SolutionId = new Guid("e34d1ce3-62da-4a73-a382-a49af8e5dde0");
                 def.Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSandboxApp.wsp");
