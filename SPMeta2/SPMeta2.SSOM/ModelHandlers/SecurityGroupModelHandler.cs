@@ -137,6 +137,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             currentGroup.Description = securityGroupModel.Description;
 
+            if (securityGroupModel.AllowMembersEditMembership.HasValue)
+                currentGroup.AllowMembersEditMembership = securityGroupModel.AllowMembersEditMembership.Value;
+
+            if (securityGroupModel.AllowRequestToJoinLeave.HasValue)
+                currentGroup.AllowRequestToJoinLeave = securityGroupModel.AllowRequestToJoinLeave.Value;
+
+            if (securityGroupModel.AutoAcceptRequestToJoinLeave.HasValue)
+                currentGroup.AutoAcceptRequestToJoinLeave = securityGroupModel.AutoAcceptRequestToJoinLeave.Value;
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

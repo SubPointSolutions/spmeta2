@@ -34,6 +34,21 @@ namespace SPMeta2.Regression.CSOM.Validation
                              .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership)
                              .ShouldBeEqual(m => m.Description, o => o.Description);
 
+            if (definition.AllowMembersEditMembership.HasValue)
+                assert.ShouldBeEqual(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership);
+            else
+                assert.SkipProperty(m => m.AllowMembersEditMembership, "AllowMembersEditMembership is NULL. Skipping.");
+
+            if (definition.AllowRequestToJoinLeave.HasValue)
+                assert.ShouldBeEqual(m => m.AllowRequestToJoinLeave, o => o.AllowRequestToJoinLeave);
+            else
+                assert.SkipProperty(m => m.AllowRequestToJoinLeave, "AllowRequestToJoinLeave is NULL. Skipping.");
+
+            if (definition.AutoAcceptRequestToJoinLeave.HasValue)
+                assert.ShouldBeEqual(m => m.AutoAcceptRequestToJoinLeave, o => o.AutoAcceptRequestToJoinLeave);
+            else
+                assert.SkipProperty(m => m.AutoAcceptRequestToJoinLeave, "AutoAcceptRequestToJoinLeave is NULL. Skipping.");
+
 
             assert.ShouldBeEqual((p, s, d) =>
             {

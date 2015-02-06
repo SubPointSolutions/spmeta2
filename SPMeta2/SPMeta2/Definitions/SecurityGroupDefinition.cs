@@ -80,6 +80,15 @@ namespace SPMeta2.Definitions
 
         public bool IsAssociatedOwnerGroup { get; set; }
 
+        [ExpectValidation]
+        public bool? AllowMembersEditMembership { get; set; }
+
+        [ExpectValidation]
+        public bool? AllowRequestToJoinLeave { get; set; }
+
+        [ExpectValidation]
+        public bool? AutoAcceptRequestToJoinLeave { get; set; }
+
         #endregion
 
         #region methods

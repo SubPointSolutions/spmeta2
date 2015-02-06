@@ -110,6 +110,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentGroup.Description = securityGroupModel.Description ?? string.Empty;
             currentGroup.OnlyAllowMembersViewMembership = securityGroupModel.OnlyAllowMembersViewMembership;
 
+            if (securityGroupModel.AllowMembersEditMembership.HasValue)
+                currentGroup.AllowMembersEditMembership = securityGroupModel.AllowMembersEditMembership.Value;
+
+            if (securityGroupModel.AllowRequestToJoinLeave.HasValue)
+                currentGroup.AllowRequestToJoinLeave = securityGroupModel.AllowRequestToJoinLeave.Value;
+
+            if (securityGroupModel.AutoAcceptRequestToJoinLeave.HasValue)
+                currentGroup.AutoAcceptRequestToJoinLeave = securityGroupModel.AutoAcceptRequestToJoinLeave.Value;
+
             if (!string.IsNullOrEmpty(securityGroupModel.Owner))
             {
                 if (principal != null)
