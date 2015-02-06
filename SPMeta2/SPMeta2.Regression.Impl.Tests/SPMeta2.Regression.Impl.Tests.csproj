@@ -50,6 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ModelHandlers\Base\ModelHandlerTestBase.cs" />
+    <Compile Include="ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
     <Compile Include="ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

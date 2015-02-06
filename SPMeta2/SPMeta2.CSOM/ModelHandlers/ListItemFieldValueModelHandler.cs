@@ -6,6 +6,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -24,9 +25,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listItemModelHost = modelHost.WithAssertAndCast<ListItemFieldValueModelHost>("modelHost", value => value.RequireNotNull());
             var fieldValue = model.WithAssertAndCast<ListItemFieldValueDefinition>("model", value => value.RequireNotNull());
 
+            if (fieldValue.FieldId.HasValue)
+                throw new SPMeta2NotSupportedException("ListItemFieldValueDefinition.FieldId. CSOM API does not support FieldId based values. Please use FieldName (IntrnalFieldName) instaed");
+
+            var listItemModelHost = modelHost.WithAssertAndCast<ListItemFieldValueModelHost>("modelHost", value => value.RequireNotNull());
             ProcessFieldValue(listItemModelHost, listItemModelHost.CurrentItem, fieldValue);
         }
 

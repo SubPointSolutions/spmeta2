@@ -42,6 +42,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            if (!string.IsNullOrEmpty(definition.Title))
+                currentObject.Title = definition.Title;
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                currentObject.Description = definition.Description;
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

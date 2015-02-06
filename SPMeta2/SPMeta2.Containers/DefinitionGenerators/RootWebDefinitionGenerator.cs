@@ -12,7 +12,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-              
+                def.Title = Rnd.String();
+                def.Description = Rnd.String();
             });
         }
     }

@@ -10,31 +10,13 @@ using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Impl.Tests.ModelHandlers.Base;
 
 namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 {
     [TestClass]
-    public class CSOMSandboxSolutionModelHandlerTests
+    public class CSOMSandboxSolutionModelHandlerTests : ModelHandlerTestBase
     {
-        #region constructors
-
-        public CSOMSandboxSolutionModelHandlerTests()
-        {
-            Rnd = new DefaultRandomService();
-        }
-
-        #endregion
-
-        #region static
-
-        static CSOMSandboxSolutionModelHandlerTests()
-        {
-            RegressionService = new RegressionTestService();
-            RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
-        }
-
-        #endregion
-
         #region init
 
         [ClassInitialize]
@@ -51,20 +33,7 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 
         #endregion
 
-        #region properties
-
-        public ModelGeneratorService ModelGeneratorService
-        {
-            get { return RegressionService.ModelGeneratorService; }
-        }
-
-        public static RegressionTestService RegressionService { get; set; }
-
-        public RandomService Rnd { get; set; }
-
-        #endregion
-
-        #region
+        #region tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOM.SandboxSolutionModelHandler")]
