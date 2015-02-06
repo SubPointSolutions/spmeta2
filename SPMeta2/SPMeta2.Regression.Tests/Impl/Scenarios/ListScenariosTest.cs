@@ -392,6 +392,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListDefinition>(def =>
             {
+                def.EnableAttachments = false;
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
         }
@@ -402,6 +403,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListDefinition>(def =>
             {
+                def.EnableFolderCreation = false;
                 def.TemplateType = BuiltInListTemplateTypeId.Events;
             });
         }
@@ -412,6 +414,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListDefinition>(def =>
             {
+                def.EnableMinorVersions = false;
+
                 def.TemplateType = BuiltInListTemplateTypeId.Links;
             });
         }
@@ -443,7 +447,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestRandomDefinition<ListDefinition>(def =>
             {
                 def.TemplateType = 0;
-                def.TemplateName = BuiltInListTemplates.Contacts.InternalName;
+                def.TemplateName = BuiltInListTemplates.AssetLibrary.InternalName;
             });
         }
 
@@ -454,7 +458,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestRandomDefinition<ListDefinition>(def =>
             {
                 def.TemplateType = 0;
-                def.TemplateName = BuiltInListTemplates.Contacts.InternalName;
+                def.TemplateName = BuiltInListTemplates.AssetLibrary.InternalName;
                 def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
             });
         }
@@ -481,6 +485,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestRandomDefinition<ListDefinition>(def =>
             {
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+
+                def.ForceCheckout = false;
+
                 def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
             });
         }

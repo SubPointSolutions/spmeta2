@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -30,7 +32,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        // can set default, TODO
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews")]
+        public void CanDeploy_ListView_AsDefaultForContentType()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.DefaultViewForContentType = true;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews")]
+        public void CanDeploy_ListView_AsDefaultForContentType_ById()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.DefaultViewForContentType = true;
+                def.ContentTypeId = BuiltInContentTypeId.Item;
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews")]
+        public void CanDeploy_ListView_AsDefaultForContentType_ByName()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.DefaultViewForContentType = true;
+                def.ContentTypeName = "Item";
+            });
+        }
 
         #endregion
     }

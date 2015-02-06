@@ -22,21 +22,26 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.ContentTypesEnabled = Rnd.Bool();
 
-                def.NoCrawl = Rnd.NullableBool();
-                def.OnQuickLaunch = Rnd.NullableBool();
-                def.Hidden = Rnd.NullableBool();
-                def.EnableAttachments = Rnd.NullableBool();
-                def.EnableFolderCreation = Rnd.NullableBool();
+                //def.NoCrawl = Rnd.NullableBool();
+                //def.OnQuickLaunch = Rnd.NullableBool();
+                //def.Hidden = Rnd.NullableBool();
+                //def.EnableAttachments = Rnd.NullableBool();
+                //def.EnableFolderCreation = Rnd.NullableBool();
 
-                def.EnableMinorVersions = Rnd.NullableBool();
-                def.EnableModeration = Rnd.NullableBool();
-                def.EnableVersioning = Rnd.NullableBool();
-                def.ForceCheckout = Rnd.NullableBool();
+                //def.EnableMinorVersions = Rnd.NullableBool();
+                //def.EnableModeration = Rnd.NullableBool();
+                //def.EnableVersioning = Rnd.NullableBool();
+                //def.ForceCheckout = Rnd.NullableBool();
 
-                if (def.ForceCheckout.HasValue && def.ForceCheckout.Value)
-                {
-                    def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
-                }
+                //if (def.ForceCheckout.HasValue && def.ForceCheckout.Value)
+                //{
+                //    def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                //}
+
+                //if (def.Hidden.HasValue && def.Hidden.Value)
+                //{
+                //    def.OnQuickLaunch = false;
+                //}
             });
         }
     }

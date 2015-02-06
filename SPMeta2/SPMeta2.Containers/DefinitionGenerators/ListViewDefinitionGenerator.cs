@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;

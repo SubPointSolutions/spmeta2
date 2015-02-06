@@ -7,6 +7,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -90,27 +91,30 @@ namespace SPMeta2.CSOM.ModelHandlers
                     newView.ViewFields = listViewModel.Fields.ToArray();
 
                 currentView = list.Views.Add(newView);
-                currentView.Title = listViewModel.Title;
+              
+               
+                if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
+                    currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
+
+                if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
+                    currentView.ContentTypeId = LookupListContentTypeById(list, listViewModel.ContentTypeId);
 
                 currentView.JSLink = listViewModel.JSLink;
 
                 if (listViewModel.DefaultViewForContentType.HasValue)
                     currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
 
-                // TODO, ContentTypeId/ContentTypeName
-                // ResolveByName/ID, from the list and then web
+                currentView.Title = listViewModel.Title;
+
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
 
-                currentView.Title = listViewModel.Title;
+              
                 currentView.RowLimit = (uint)listViewModel.RowLimit;
                 currentView.DefaultView = listViewModel.IsDefault;
                 currentView.Paged = listViewModel.IsPaged;
-
-                if (!string.IsNullOrEmpty(listViewModel.JSLink))
-                    currentView.JSLink = listViewModel.JSLink;
 
                 if (!string.IsNullOrEmpty(listViewModel.Query))
                     currentView.ViewQuery = listViewModel.Query;
@@ -123,11 +127,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                         currentView.ViewFields.Add(f);
                 }
 
+               
+                if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
+                    currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
+
+                if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
+                    currentView.ContentTypeId = LookupListContentTypeById(list, listViewModel.ContentTypeId);
+
+                if (!string.IsNullOrEmpty(listViewModel.JSLink))
+                    currentView.JSLink = listViewModel.JSLink;
+
                 if (listViewModel.DefaultViewForContentType.HasValue)
                     currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
 
-                // TODO, ContentTypeId/ContentTypeName
-                // ResolveByName/ID, from the list and then web
+                currentView.Title = listViewModel.Title;
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -145,6 +158,42 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentView.Update();
 
             list.Context.ExecuteQueryWithTrace();
+        }
+
+        protected ContentTypeId LookupListContentTypeByName(List targetList, string name)
+        {
+            if (!targetList.IsPropertyAvailable("ContentTypes"))
+            {
+                targetList.Context.Load(targetList, l => l.ContentTypes);
+                targetList.Context.ExecuteQuery();
+            }
+
+            var targetContentType = targetList.ContentTypes.FindByName(name);
+
+            if (targetContentType == null)
+                throw new SPMeta2Exception(string.Format("Cannot find content type by name ['{0}'] in list: [{1}]",
+                    name, targetList.Title));
+
+            return targetContentType.Id;
+        }
+
+        protected ContentTypeId LookupListContentTypeById(List targetList, string contentTypeId)
+        {
+            if (!targetList.IsPropertyAvailable("ContentTypes"))
+            {
+                targetList.Context.Load(targetList, l => l.ContentTypes);
+                targetList.Context.ExecuteQuery();
+            }
+
+            // TODO, correct best match impl
+            foreach (var contentType in targetList.ContentTypes)
+            {
+                if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeId.ToUpper()))
+                    return contentType.Id;
+            }
+
+            throw new SPMeta2Exception(string.Format("Cannot find content type by id ['{0}'] in list: [{1}]",
+                contentTypeId, targetList.Title));
         }
 
         protected View FindViewByTitle(IEnumerable<View> viewCollection, string listViewTitle)

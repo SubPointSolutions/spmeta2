@@ -104,6 +104,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
             {
+                def.EnableAttachments = false;
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 

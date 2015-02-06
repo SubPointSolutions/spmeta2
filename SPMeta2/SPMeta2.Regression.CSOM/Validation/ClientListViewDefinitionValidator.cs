@@ -29,12 +29,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.Paged,
                 o => o.JSLink,
                 o => o.ServerRelativeUrl,
+                o => o.DefaultViewForContentType,
+                o => o.ContentTypeId,
                 v => v.Title));
             context.ExecuteQuery();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
             var assert = ServiceFactory.AssertService
                                       .NewAssert(definition, spObject)
+                                          .ShouldNotBeNull(spObject)
                                           .ShouldBeEqual(m => m.Title, o => o.Title)
                                           .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
                                           .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
@@ -42,6 +45,57 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
             assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+
+            if (definition.DefaultViewForContentType.HasValue)
+                assert.ShouldBeEqual(m => m.DefaultViewForContentType, o => o.DefaultViewForContentType);
+            else
+                assert.SkipProperty(m => m.DefaultViewForContentType, "DefaultViewForContentType is null or empty. Skipping.");
+
+            if (string.IsNullOrEmpty(definition.ContentTypeName))
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            else
+            {
+                var contentTypeId = LookupListContentTypeByName(list, definition.ContentTypeName);
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var dstProp = d.GetExpressionValue(ct => ct.ContentTypeId);
+
+                    var isValis = contentTypeId.StringValue == d.ContentTypeId.StringValue;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValis
+                    };
+                });
+            }
+
+            if (string.IsNullOrEmpty(definition.ContentTypeId))
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            else
+            {
+                var contentTypeId = LookupListContentTypeById(list, definition.ContentTypeId);
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeId);
+                    var dstProp = d.GetExpressionValue(ct => ct.ContentTypeId);
+
+                    var isValis = contentTypeId.StringValue == d.ContentTypeId.StringValue;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValis
+                    };
+                });
+            }
 
             if (string.IsNullOrEmpty(definition.Url))
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
