@@ -33,6 +33,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected Hashtable ExtractProperties(object modelHost)
         {
+            if (modelHost is FarmModelHost)
+                return (modelHost as FarmModelHost).HostFarm.Properties;
+
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite.RootWeb.AllProperties;
 
