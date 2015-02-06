@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPMeta2.Exceptions;
 using SPMeta2.Models;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -39,17 +40,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.ListItemValue")]
         public void CanDeploy_ListItemValue_ById()
         {
-            WithListItemValue((listItem, fieldDefs) =>
+            try
             {
-                foreach (var fieldDef in fieldDefs)
+                WithListItemValue((listItem, fieldDefs) =>
                 {
-                    listItem.AddListItemFieldValue(new ListItemFieldValueDefinition
+                    foreach (var fieldDef in fieldDefs)
                     {
-                        FieldId = fieldDef.Id,
-                        Value = Rnd.String()
-                    });
-                }
-            });
+                        listItem.AddListItemFieldValue(new ListItemFieldValueDefinition
+                        {
+                            FieldId = fieldDef.Id,
+                            Value = Rnd.String()
+                        });
+                    }
+                });
+            }
+            catch (SPMeta2NotSupportedException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("ListItemFieldValueDefinition.FieldId"));
+            }
         }
 
         [TestMethod]
