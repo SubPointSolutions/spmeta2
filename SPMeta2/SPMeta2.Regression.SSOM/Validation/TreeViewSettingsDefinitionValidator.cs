@@ -32,9 +32,9 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.QuickLaunchEnabled, "QuickLaunchEnabled is NULL. Skipping.");
 
             if (definition.TreeViewEnabled.HasValue)
-                assert.ShouldBeEqual(m => m.TreeViewEnabled, o => o.QuickLaunchEnabled);
+                assert.ShouldBeEqual(m => m.TreeViewEnabled, o => o.TreeViewEnabled);
             else
-                assert.SkipProperty(m => m.TreeViewEnabled, "QuickLaunchEnabled is NULL. Skipping.");
+                assert.SkipProperty(m => m.TreeViewEnabled, "TreeViewEnabled is NULL. Skipping.");
         }
     }
 }
