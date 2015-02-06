@@ -8,6 +8,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -72,47 +73,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
             context.ExecuteQueryWithTrace();
 
-            // pre-load user
             Principal principal = null;
 
-            if (!string.IsNullOrWhiteSpace(securityGroupModel.Owner))
-            {
-                // big TODO
-
-                //var targetSources = new Dictionary<PrincipalType, PrincipalInfo>();
-
-                //targetSources.Add(PrincipalType.User, null);
-                //targetSources.Add(PrincipalType.SharePointGroup, null);
-                //targetSources.Add(PrincipalType.SecurityGroup, null);
-
-                //foreach (var targetSource in targetSources.Keys)
-                //{
-                //    // var info = Utility.ResolvePrincipal(context, web, securityGroupModel.Owner, targetSource, PrincipalSource.All, null, false);
-                //    var infos = Utility.SearchPrincipals(context, web, securityGroupModel.Owner, targetSource, PrincipalSource.All, null, 10);
-
-                //    context.ExecuteQuery();
-
-                //    if (infos.Count > 0)
-                //    {
-                //        var info = infos[0];
-
-                //        targetSources[targetSource] = infos[0];
-
-                //        if (info.PrincipalType == PrincipalType.User)
-                //            principal = web.EnsureUser(info.LoginName);
-
-                //        if (info.PrincipalType == PrincipalType.SharePointGroup || info.PrincipalType == PrincipalType.SecurityGroup)
-                //            principal = web.SiteGroups.GetById(info.PrincipalId);
-
-                //        principal = web.EnsureUser(securityGroupModel.Owner);
-
-                //        context.Load(principal);
-                //        context.ExecuteQuery();
-
-                //        break;
-                //    }
-                //}
-            }
+            if (!string.IsNullOrEmpty(securityGroupModel.Owner))
+                principal = ResolvePrincipal(context, web, securityGroupModel.Owner);
 
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
@@ -148,7 +112,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(securityGroupModel.Owner))
             {
-                currentGroup.Owner = principal;
+                if (principal != null)
+                    currentGroup.Owner = principal;
+                else
+                    throw new SPMeta2Exception(string.Format("Cannot resolve Principal by string value: [{0}]", securityGroupModel.Owner));
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -164,6 +131,50 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             currentGroup.Update();
             context.ExecuteQueryWithTrace();
+        }
+
+        private Principal ResolvePrincipal(ClientRuntimeContext context, Web web, string owner)
+        {
+            Principal result = null;
+
+            var targetSources = new Dictionary<PrincipalType, PrincipalInfo>();
+
+            // owner might be only a user or sharepoint group
+            // making a few attempts and checking NULL ref later in the code
+            targetSources.Add(PrincipalType.SharePointGroup, null);
+            targetSources.Add(PrincipalType.User, null);
+
+            foreach (var targetSource in targetSources.Keys)
+            {
+                // ResolvePrincipal != SearchPrincipals, at all!
+
+                //var principalInfos = Utility.ResolvePrincipal(context, web, owner, targetSource, PrincipalSource.All, null, false);
+                var principalInfos = Utility.SearchPrincipals(context, web, owner, targetSource, PrincipalSource.All, null, 2);
+                context.ExecuteQuery();
+
+                if (principalInfos.Count > 0)
+                //if (principalInfos.Value != null)
+                {
+                    var info = principalInfos[0];
+                    //var info = principalInfos.Value;
+
+                    targetSources[targetSource] = info;
+
+                    if (targetSource == PrincipalType.User || targetSource == PrincipalType.SecurityGroup)
+                        result = web.EnsureUser(info.LoginName);
+
+                    if (targetSource == PrincipalType.SharePointGroup)
+                        result = web.SiteGroups.GetById(info.PrincipalId);
+
+                    context.Load(result);
+                    context.ExecuteQuery();
+
+                    // nic, found, break, profit!
+                    break;
+                }
+            }
+
+            return result;
         }
 
         protected Group FindSecurityGroupByTitle(IEnumerable<Group> siteGroups, string securityGroupTitle)

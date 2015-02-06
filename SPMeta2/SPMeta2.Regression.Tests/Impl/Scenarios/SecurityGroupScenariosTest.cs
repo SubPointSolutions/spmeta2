@@ -60,12 +60,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public void CanDeploy_SecurityGroup_Owner_AsSharePointGroup()
         {
             var ownerSecurityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
-            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>(def =>
+            {
+                def.Owner = ownerSecurityGroup.Name;
+            });
 
             var siteModel = SPMeta2Model
                                 .NewSiteModel(site =>
                                 {
-                                    securityGroup.Owner = ownerSecurityGroup.Name;
+                                    site.AddSecurityGroup(ownerSecurityGroup);
                                     site.AddSecurityGroup(securityGroup);
                                 });
 

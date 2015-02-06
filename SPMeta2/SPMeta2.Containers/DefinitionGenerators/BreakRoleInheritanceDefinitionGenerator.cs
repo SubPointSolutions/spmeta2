@@ -12,7 +12,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 def.CopyRoleAssignments = Rnd.Bool();
-                def.ClearSubscopes = Rnd.Bool();
+                //def.ClearSubscopes = Rnd.Bool();
+                def.ClearSubscopes = false;
             });
         }
     }

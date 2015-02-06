@@ -70,7 +70,7 @@ namespace SPMeta2.Containers.Services.Rnd
                 return logins[Int(logins.Length)];
             }
 
-            return string.Format("{0}/{1}", Environment.UserDomainName, Environment.UserName);
+            throw new Exception(string.Format("Environment value [{0}] is NULL", EnvironmentConsts.DefaultTestUserLogins));
         }
 
         public override string UserEmail()
@@ -101,6 +101,19 @@ namespace SPMeta2.Containers.Services.Rnd
         public override string DbServerName()
         {
             return string.Format("{0}", RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
+        }
+
+        public override string ActiveDirectoryGroup()
+        {
+            var groups = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultTestADGroups);
+
+            if (!string.IsNullOrEmpty(groups))
+            {
+                var groupValues = groups.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                return groupValues[Int(groupValues.Length)];
+            }
+
+            throw new Exception(string.Format("Environment value [{0}] is NULL", EnvironmentConsts.DefaultTestADGroups));
         }
     }
 }

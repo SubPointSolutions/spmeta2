@@ -22,6 +22,7 @@ namespace SPMeta2.Containers.Services
         public abstract double Double(double maxValue);
 
         public abstract string UserLogin();
+        public abstract string ActiveDirectoryGroup();
         public abstract string UserName();
 
         public abstract string DbServerName();
