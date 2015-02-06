@@ -93,6 +93,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentView.Title = listViewModel.Title;
 
                 currentView.JSLink = listViewModel.JSLink;
+
+                if (listViewModel.DefaultViewForContentType.HasValue)
+                    currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
+
+                // TODO, ContentTypeId/ContentTypeName
+                // ResolveByName/ID, from the list and then web
             }
             else
             {
@@ -116,6 +122,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     foreach (var f in listViewModel.Fields)
                         currentView.ViewFields.Add(f);
                 }
+
+                if (listViewModel.DefaultViewForContentType.HasValue)
+                    currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
+
+                // TODO, ContentTypeId/ContentTypeName
+                // ResolveByName/ID, from the list and then web
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

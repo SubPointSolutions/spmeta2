@@ -7,6 +7,7 @@ namespace SPMeta2.Containers.Services.Rnd
 {
     public class DefaultRandomService : RandomService
     {
+        double _defaultTrueProbability = 0.49;
         private Random _rnd = new Random();
 
         public override Guid Guid()
@@ -55,9 +56,8 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override bool Bool()
         {
-            _boolFlag = !_boolFlag;
 
-            return _boolFlag;
+            return _rnd.NextDouble() < _defaultTrueProbability;
         }
 
         public override string UserLogin()

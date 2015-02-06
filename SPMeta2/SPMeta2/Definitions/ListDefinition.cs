@@ -98,6 +98,33 @@ namespace SPMeta2.Definitions
         /// </summary>
         public bool? NeedToCopyRoleAssignmets { get; set; }
 
+        [ExpectValidation]
+        public bool? EnableAttachments { get; set; }
+
+        [ExpectValidation]
+        public bool? EnableFolderCreation { get; set; }
+
+        [ExpectValidation]
+        public bool? EnableMinorVersions { get; set; }
+
+        [ExpectValidation]
+        public bool? EnableModeration { get; set; }
+
+        [ExpectValidation]
+        public bool? EnableVersioning { get; set; }
+
+        [ExpectValidation]
+        public bool? ForceCheckout { get; set; }
+
+        [ExpectValidation]
+        public bool? Hidden { get; set; }
+
+        [ExpectValidation]
+        public bool? NoCrawl { get; set; }
+
+        [ExpectValidation]
+        public bool? OnQuickLaunch { get; set; }
+
         #endregion
 
         #region methods

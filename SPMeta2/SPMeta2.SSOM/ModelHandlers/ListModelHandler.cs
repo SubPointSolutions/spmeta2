@@ -119,20 +119,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             // min provision
             var targetList = GetOrCreateList(modelHost, web, listModel);
 
-            targetList.Title = listModel.Title;
-
-            // SPBug, again & again, must not be null
-            targetList.Description = listModel.Description ?? string.Empty;
-            targetList.ContentTypesEnabled = listModel.ContentTypesEnabled;
-
-            if (listModel.IrmEnabled.HasValue)
-                targetList.IrmEnabled = listModel.IrmEnabled.Value;
-
-            if (listModel.IrmExpire.HasValue)
-                targetList.IrmExpire = listModel.IrmExpire.Value;
-
-            if (listModel.IrmReject.HasValue)
-                targetList.IrmReject = listModel.IrmReject.Value;
+            MapListProperties(targetList, listModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -146,6 +133,53 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             targetList.Update();
+        }
+
+        private static void MapListProperties(SPList list, ListDefinition definition)
+        {
+            list.Title = definition.Title;
+
+            // SPBug, again & again, must not be null
+            list.Description = definition.Description ?? string.Empty;
+            list.ContentTypesEnabled = definition.ContentTypesEnabled;
+
+            // IRM
+            if (definition.IrmEnabled.HasValue)
+                list.IrmEnabled = definition.IrmEnabled.Value;
+
+            if (definition.IrmExpire.HasValue)
+                list.IrmExpire = definition.IrmExpire.Value;
+
+            if (definition.IrmReject.HasValue)
+                list.IrmReject = definition.IrmReject.Value;
+
+            // the rest
+            if (definition.EnableAttachments.HasValue)
+                list.EnableAttachments = definition.EnableAttachments.Value;
+
+            if (definition.EnableFolderCreation.HasValue)
+                list.EnableFolderCreation = definition.EnableFolderCreation.Value;
+
+            if (definition.EnableMinorVersions.HasValue)
+                list.EnableMinorVersions = definition.EnableMinorVersions.Value;
+
+            if (definition.EnableModeration.HasValue)
+                list.EnableModeration = definition.EnableModeration.Value;
+
+            if (definition.EnableVersioning.HasValue)
+                list.EnableVersioning = definition.EnableVersioning.Value;
+
+            if (definition.ForceCheckout.HasValue)
+                list.ForceCheckout = definition.ForceCheckout.Value;
+
+            if (definition.Hidden.HasValue)
+                list.Hidden = definition.Hidden.Value;
+
+            if (definition.NoCrawl.HasValue)
+                list.NoCrawl = definition.NoCrawl.Value;
+
+            if (definition.OnQuickLaunch.HasValue)
+                list.OnQuickLaunch = definition.OnQuickLaunch.Value;
         }
 
         private SPList GetOrCreateList(

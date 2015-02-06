@@ -32,6 +32,17 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
+
+            context.Load(spObject, list => list.EnableAttachments);
+            context.Load(spObject, list => list.EnableFolderCreation);
+            context.Load(spObject, list => list.EnableMinorVersions);
+            context.Load(spObject, list => list.EnableModeration);
+            context.Load(spObject, list => list.EnableVersioning);
+            context.Load(spObject, list => list.ForceCheckout);
+            context.Load(spObject, list => list.Hidden);
+            context.Load(spObject, list => list.NoCrawl);
+            context.Load(spObject, list => list.OnQuickLaunch);
+
             context.ExecuteQuery();
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
@@ -45,6 +56,55 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 
+            // common
+            if (definition.EnableAttachments.HasValue)
+                assert.ShouldBeEqual(m => m.EnableAttachments, o => o.EnableAttachments);
+            else
+                assert.SkipProperty(m => m.EnableAttachments, "Skipping from validation. EnableAttachments IS NULL");
+
+            if (definition.EnableFolderCreation.HasValue)
+                assert.ShouldBeEqual(m => m.EnableFolderCreation, o => o.EnableFolderCreation);
+            else
+                assert.SkipProperty(m => m.EnableFolderCreation, "Skipping from validation. EnableFolderCreation IS NULL");
+
+            if (definition.EnableMinorVersions.HasValue)
+                assert.ShouldBeEqual(m => m.EnableMinorVersions, o => o.EnableMinorVersions);
+            else
+                assert.SkipProperty(m => m.EnableMinorVersions, "Skipping from validation. EnableMinorVersions IS NULL");
+
+            if (definition.EnableModeration.HasValue)
+                assert.ShouldBeEqual(m => m.EnableModeration, o => o.EnableModeration);
+            else
+                assert.SkipProperty(m => m.EnableModeration, "Skipping from validation. EnableModeration IS NULL");
+
+            if (definition.EnableVersioning.HasValue)
+                assert.ShouldBeEqual(m => m.EnableVersioning, o => o.EnableVersioning);
+            else
+                assert.SkipProperty(m => m.EnableVersioning, "Skipping from validation. EnableVersioning IS NULL");
+
+            if (definition.ForceCheckout.HasValue)
+                assert.ShouldBeEqual(m => m.ForceCheckout, o => o.ForceCheckout);
+            else
+                assert.SkipProperty(m => m.ForceCheckout, "Skipping from validation. ForceCheckout IS NULL");
+
+            if (definition.Hidden.HasValue)
+                assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+            else
+                assert.SkipProperty(m => m.Hidden, "Skipping from validation. Hidden IS NULL");
+
+            if (definition.NoCrawl.HasValue)
+                assert.ShouldBeEqual(m => m.NoCrawl, o => o.NoCrawl);
+            else
+                assert.SkipProperty(m => m.NoCrawl, "Skipping from validation. NoCrawl IS NULL");
+
+
+            if (definition.OnQuickLaunch.HasValue)
+                assert.ShouldBeEqual(m => m.OnQuickLaunch, o => o.OnQuickLaunch);
+            else
+                assert.SkipProperty(m => m.OnQuickLaunch, "Skipping from validation. OnQuickLaunch IS NULL");
+
+
+            // IRM
             if (definition.IrmEnabled.HasValue)
                 assert.ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled);
             else

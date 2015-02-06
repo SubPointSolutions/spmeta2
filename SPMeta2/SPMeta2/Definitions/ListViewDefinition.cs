@@ -92,6 +92,15 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string JSLink { get; set; }
 
+        [ExpectValidation]
+        public bool? DefaultViewForContentType { get; set; }
+
+        [ExpectValidation]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        public string ContentTypeId { get; set; }
+
         #endregion
 
         #region methods

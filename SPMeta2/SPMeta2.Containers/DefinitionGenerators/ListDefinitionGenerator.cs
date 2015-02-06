@@ -1,4 +1,5 @@
 ﻿using System;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -20,6 +21,22 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
 
                 def.ContentTypesEnabled = Rnd.Bool();
+
+                def.NoCrawl = Rnd.NullableBool();
+                def.OnQuickLaunch = Rnd.NullableBool();
+                def.Hidden = Rnd.NullableBool();
+                def.EnableAttachments = Rnd.NullableBool();
+                def.EnableFolderCreation = Rnd.NullableBool();
+
+                def.EnableMinorVersions = Rnd.NullableBool();
+                def.EnableModeration = Rnd.NullableBool();
+                def.EnableVersioning = Rnd.NullableBool();
+                def.ForceCheckout = Rnd.NullableBool();
+
+                if (def.ForceCheckout.HasValue && def.ForceCheckout.Value)
+                {
+                    def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                }
             });
         }
     }

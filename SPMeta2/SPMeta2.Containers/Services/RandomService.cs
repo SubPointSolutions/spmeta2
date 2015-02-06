@@ -35,6 +35,14 @@ namespace SPMeta2.Containers.Services
     {
         #region methods
 
+        public static bool? NullableBool(this RandomService service)
+        {
+            if (service.Bool())
+                return service.Bool();
+
+            return null;
+        }
+
         public static string HttpUrl(this RandomService service)
         {
             return string.Format("http://url-{0}.com", service.String(8));

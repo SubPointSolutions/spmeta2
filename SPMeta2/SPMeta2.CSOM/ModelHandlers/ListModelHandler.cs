@@ -304,18 +304,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list");
             }
 
-            if (listModel.IrmEnabled.HasValue)
-                currentList.IrmEnabled = listModel.IrmEnabled.Value;
-
-            if (listModel.IrmExpire.HasValue)
-                currentList.IrmExpire = listModel.IrmExpire.Value;
-
-            if (listModel.IrmReject.HasValue)
-                currentList.IrmReject = listModel.IrmReject.Value;
-
-            currentList.Title = listModel.Title;
-            currentList.Description = listModel.Description ?? string.Empty;
-            currentList.ContentTypesEnabled = listModel.ContentTypesEnabled;
+            MapListProperties(currentList, listModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -333,6 +322,51 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentList.Update()");
             currentList.Update();
             context.ExecuteQueryWithTrace();
+        }
+
+        private static void MapListProperties(List list, ListDefinition definition)
+        {
+            list.Title = definition.Title;
+            list.Description = definition.Description ?? string.Empty;
+            list.ContentTypesEnabled = definition.ContentTypesEnabled;
+
+            // IRM
+            if (definition.IrmEnabled.HasValue)
+                list.IrmEnabled = definition.IrmEnabled.Value;
+
+            if (definition.IrmExpire.HasValue)
+                list.IrmExpire = definition.IrmExpire.Value;
+
+            if (definition.IrmReject.HasValue)
+                list.IrmReject = definition.IrmReject.Value;
+
+            // the rest
+            if (definition.EnableAttachments.HasValue)
+                list.EnableAttachments = definition.EnableAttachments.Value;
+
+            if (definition.EnableFolderCreation.HasValue)
+                list.EnableFolderCreation = definition.EnableFolderCreation.Value;
+
+            if (definition.EnableMinorVersions.HasValue)
+                list.EnableMinorVersions = definition.EnableMinorVersions.Value;
+
+            if (definition.EnableModeration.HasValue)
+                list.EnableModeration = definition.EnableModeration.Value;
+
+            if (definition.EnableVersioning.HasValue)
+                list.EnableVersioning = definition.EnableVersioning.Value;
+
+            if (definition.ForceCheckout.HasValue)
+                list.ForceCheckout = definition.ForceCheckout.Value;
+
+            if (definition.Hidden.HasValue)
+                list.Hidden = definition.Hidden.Value;
+
+            if (definition.NoCrawl.HasValue)
+                list.NoCrawl = definition.NoCrawl.Value;
+
+            if (definition.OnQuickLaunch.HasValue)
+                list.OnQuickLaunch = definition.OnQuickLaunch.Value;
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
