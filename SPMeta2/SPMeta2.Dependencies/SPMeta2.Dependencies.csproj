@@ -64,7 +64,6 @@
     <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.xml" />
     <Content Include="Images\SubPointSolutions_2014_240.png" />
     <Content Include="Images\SubPointSolutions_2014_64.png" />
-    <Content Include="Nintex\2013 - 3.0.0\Nintex.Workflow.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.Portable.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.dll" />
