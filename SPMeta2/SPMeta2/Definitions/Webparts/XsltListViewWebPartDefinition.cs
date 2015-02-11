@@ -32,6 +32,7 @@ namespace SPMeta2.Definitions.Webparts
         public Guid? ViewId { get; set; }
 
         public string JSLink { get; set; }
+        public string TitleUrl { get; set; }
 
         #endregion
 

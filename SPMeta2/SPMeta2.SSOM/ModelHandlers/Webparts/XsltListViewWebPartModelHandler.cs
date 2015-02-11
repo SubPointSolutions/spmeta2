@@ -9,6 +9,7 @@ using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Exceptions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -46,6 +47,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var typedModel = webpartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
             var web = _host.SPLimitedWebPartManager.Web;
+
+            // bind list
             SPList list = null;
 
             if (typedModel.ListId.HasValue)
@@ -54,12 +57,41 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                 list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedModel.ListUrl));
             else if (!string.IsNullOrEmpty(typedModel.ListTitle))
                 list = web.Lists.TryGetList(typedModel.ListTitle);
+            else
+                throw new SPMeta2Exception();
 
+            if (list != null)
+            {
+                typedWebpart.ListName = list.ID.ToString("B").ToUpperInvariant();
+                typedWebpart.TitleUrl = list.DefaultViewUrl;
+            }
 
+            // view check
+            if (list != null)
+            {
+                SPView view = null;
+
+                if (typedModel.ViewId.HasValue)
+                    view = list.Views[typedModel.ViewId.Value];
+                else if (!string.IsNullOrEmpty(typedModel.ViewName))
+                    view = list.Views[typedModel.ViewName];
+
+                if (view != null)
+                {
+                    typedWebpart.ViewGuid = view.ID.ToString("B").ToUpperInvariant();
+                    typedWebpart.TitleUrl = view.ServerRelativeUrl;
+                }
+            }
+
+            // able to 'reset', if NULL or use list-view based URLs
+            if (typedModel.TitleUrl != null)
+                typedWebpart.TitleUrl = typedModel.TitleUrl;
+
+            // weird, but it must be set to avoid null-ref exceptions
+            typedWebpart.GhostedXslLink = "main.xsl";
+
+            // rest
             typedWebpart.JSLink = typedModel.JSLink;
-            typedWebpart.ListName = list.ID.ToString();
-            typedWebpart.ListId = list.ID;
-            typedWebpart.TitleUrl = list.DefaultViewUrl;
         }
 
         #endregion
