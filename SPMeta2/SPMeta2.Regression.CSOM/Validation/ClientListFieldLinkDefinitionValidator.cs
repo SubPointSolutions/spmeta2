@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
@@ -31,9 +32,63 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(m => m.AddFieldOptions, "BuiltInAddFieldOptions.DefaultValue. Skipping.");
             }
-            else
+
+            if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.AddToAllContentTypes))
             {
-                // TODO
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.AddFieldOptions);
+                    var isValid = true;
+
+                    var listContentTypes = list.ContentTypes;
+                    context.Load(listContentTypes);
+                    context.ExecuteQuery();
+
+                    foreach (ContentType ct in listContentTypes)
+                    {
+                        // TODO!
+                        if (ct.Name == "Folder")
+                        {
+                            // skip folder content type
+                            continue;
+                        }
+
+                        context.Load(ct);
+                        context.Load(ct, c => c.FieldLinks);
+                        context.ExecuteQuery();
+
+                        isValid = ct.FieldLinks.OfType<FieldLink>().Count(l => l.Id == s.FieldId) > 0;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+
+
+            if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.AddFieldToDefaultView))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.AddFieldOptions);
+                    var isValid = false;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
             }
 
             if (definition.AddToDefaultView)
@@ -49,7 +104,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     context.Load(defaultView, v => v.ViewFields);
 
                     context.Load(field);
-              
+
                     context.ExecuteQuery();
 
                     var isValid = list.DefaultView

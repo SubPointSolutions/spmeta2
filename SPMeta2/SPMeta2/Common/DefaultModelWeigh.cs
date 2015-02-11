@@ -60,12 +60,13 @@ namespace SPMeta2.Common
 
                     typeof (PropertyDefinition),
                     
-                    // list scoped fields should be deployed first as well as content type links
-                    typeof (FieldDefinition),
-                    typeof (ListFieldLinkDefinition),
-
                     typeof (ContentTypeDefinition),
                     typeof (ContentTypeLinkDefinition),
+                    
+                    // field and field links could be added with 'AddToAllContentTypes' options
+                    // we need content types deployed first
+                    typeof (FieldDefinition),
+                    typeof (ListFieldLinkDefinition),
 
                     typeof (SP2013WorkflowSubscriptionDefinition),
                     
