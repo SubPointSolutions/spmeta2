@@ -119,6 +119,7 @@
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />

@@ -264,7 +264,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionProcessingNewObject, "Current field is NULL. Creating new");
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
-                var resultField = fieldCollection.AddFieldAsXml(fieldDef, false, AddFieldOptions.DefaultValue);
+
+                var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
+                var resultField = fieldCollection.AddFieldAsXml(fieldDef, false, addFieldOptions);
 
                 ProcessFieldProperties(resultField, fieldModel);
 
@@ -375,7 +377,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
         {
             var fieldTemplate = GetNewMinimalSPFieldTemplate();
-            
+
             if (!string.IsNullOrEmpty(fieldModel.RawXml))
                 fieldTemplate = XDocument.Parse(fieldModel.RawXml).Root;
 

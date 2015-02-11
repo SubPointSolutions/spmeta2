@@ -5,6 +5,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Common;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Definitions
 {
@@ -47,11 +48,22 @@ namespace SPMeta2.Definitions
             RawXml = string.Empty;
 
             AdditionalAttributes = new List<FieldAttributeValue>();
+            AddFieldOptions = BuiltInAddFieldOptions.DefaultValue;
         }
 
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Reflects AddToDefaultView option while adding field to the list
+        /// </summary>
+        public bool AddToDefaultView { get; set; }
+
+        /// <summary>
+        /// Reflects SharePoint's AddFieldOptions while provisioning field for the first time
+        /// </summary>
+        public BuiltInAddFieldOptions AddFieldOptions { get; set; }
 
         /// <summary>
         /// Raw field XML to be used during the first provision

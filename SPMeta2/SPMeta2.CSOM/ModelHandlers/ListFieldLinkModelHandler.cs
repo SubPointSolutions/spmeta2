@@ -121,7 +121,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var siteField = FindExistingSiteField(web, listFieldLinkModel.FieldId);
 
-                fields.Add(siteField);
+                //fields.Add(siteField);
+
+                var addFieldOptions = (AddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
+                fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

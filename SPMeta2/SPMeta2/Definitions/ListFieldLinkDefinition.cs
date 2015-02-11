@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
@@ -37,6 +38,12 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         public Guid FieldId { get; set; }
+
+        [ExpectValidation]
+        public bool AddToDefaultView { get; set; }
+
+        [ExpectValidation]
+        public BuiltInAddFieldOptions AddFieldOptions { get; set; }
 
         #endregion
 

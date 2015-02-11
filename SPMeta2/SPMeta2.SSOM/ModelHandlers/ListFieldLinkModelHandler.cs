@@ -58,7 +58,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list field");
 
                 var siteField = list.ParentWeb.AvailableFields[listFieldLinkModel.FieldId];
-                list.Fields.Add(siteField);
+                //list.Fields.Add(siteField);
+
+                var addFieldOptions = (SPAddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
+                list.Fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

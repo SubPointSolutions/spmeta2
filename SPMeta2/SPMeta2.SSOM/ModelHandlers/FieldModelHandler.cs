@@ -251,7 +251,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
-                fields.AddFieldAsXml(fieldDef);
+
+                var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
+                fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 currentField = fields[fieldModel.Id];
             }
