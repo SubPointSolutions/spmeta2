@@ -62,7 +62,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!scope.HasException)
             {
                 field = rootWeb.AvailableFields.GetById(id);
+                
                 context.Load(field);
+                context.Load(field, f => f.SchemaXmlWithResourceTokens);
+                context.Load(field, f => f.SchemaXml);
+
                 context.ExecuteQueryWithTrace();
             }
 

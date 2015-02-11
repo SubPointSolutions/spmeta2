@@ -362,5 +362,29 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         #endregion
+
+        #region field options
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Options")]
+        public void CanDeploy_ListScopedField_AsAddToDefaultView()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            field.AddToDefaultView = true;
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomList(list =>
+                       {
+                           list.AddField(field);
+                       });
+                   });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

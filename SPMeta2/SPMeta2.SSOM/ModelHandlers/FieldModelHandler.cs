@@ -132,6 +132,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             return EnsureFieldInFieldsCollection(site, site.RootWeb.Fields, fieldModel);
         }
 
+        protected SPList ExtractListFromHost(object modelHost)
+        {
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList;
+
+            return null;
+        }
+
         protected SPField GetField(object modelHost, FieldDefinition definition)
         {
             if (modelHost is SiteModelHost)

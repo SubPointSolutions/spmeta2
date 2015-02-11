@@ -46,6 +46,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
+
+        protected List ExtractListFromHost(object modelHost)
+        {
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList;
+
+            return null;
+        }
         protected Field FindField(object modelHost, FieldDefinition definition)
         {
             if (modelHost is SiteModelHost)
@@ -266,7 +274,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
 
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
-                var resultField = fieldCollection.AddFieldAsXml(fieldDef, false, addFieldOptions);
+                var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 ProcessFieldProperties(resultField, fieldModel);
 

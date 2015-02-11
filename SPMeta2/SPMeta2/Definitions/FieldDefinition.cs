@@ -55,11 +55,13 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [ExpectValidation]
         /// <summary>
         /// Reflects AddToDefaultView option while adding field to the list
         /// </summary>
         public bool AddToDefaultView { get; set; }
 
+        [ExpectValidation]
         /// <summary>
         /// Reflects SharePoint's AddFieldOptions while provisioning field for the first time
         /// </summary>

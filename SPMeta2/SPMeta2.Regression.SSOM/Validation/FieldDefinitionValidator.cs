@@ -3,8 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
-
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -19,10 +19,18 @@ namespace SPMeta2.Regression.SSOM.Validation
             var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
             var spObject = GetField(modelHost, definition);
 
+            HostList = ExtractListFromHost(modelHost);
+
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
         }
+
+        protected bool IsListScopedField
+        {
+            get { return HostList != null; }
+        }
+        protected SPList HostList { get; set; }
 
         protected virtual void CustomFieldTypeValidation(AssertPair<FieldDefinition, SPField> assert, SPField spObject,
             FieldDefinition definition)
@@ -43,6 +51,48 @@ namespace SPMeta2.Regression.SSOM.Validation
                     .ShouldBeEqual(m => m.Group, o => o.Group);
 
             CustomFieldTypeValidation(assert, spObject, definition);
+
+            if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
+            {
+                assert.SkipProperty(m => m.AddFieldOptions, "BuiltInAddFieldOptions.DefaultValue. Skipping.");
+            }
+            else
+            {
+                // TODO
+            }
+
+            if (definition.AddToDefaultView)
+            {
+                if (IsListScopedField)
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.AddToDefaultView);
+                        var field = HostList.Fields[definition.Id];
+
+                        var isValid = HostList.DefaultView
+                            .ViewFields
+                            .ToStringCollection()
+                            .Contains(field.InternalName);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.AddToDefaultView, "IsListScopedField = true. AddToDefaultView is ignored. Skipping.");
+                }
+            }
+            else
+            {
+                assert.SkipProperty(m => m.AddToDefaultView, "AddToDefaultView is false. Skipping.");
+            }
 
             if (definition.AdditionalAttributes.Count == 0)
             {
