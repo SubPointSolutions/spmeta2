@@ -24,15 +24,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             action(farmModelHost);
 
-            try
-            {
+            if (farmModelHost.ShouldUpdateHost)
                 farmModelHost.HostFarm.Update();
-            }
-            catch (SPUpdatedConcurrencyException )
-            {
-                farmModelHost.HostFarm.Update();
-            }
-            
+
+            farmModelHost.HostFarm = SPFarm.Local;
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)

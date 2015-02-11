@@ -171,10 +171,22 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_WebConfigModificationDefinition()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                TestRandomDefinition<WebConfigModificationDefinition>();
-            });
+            //var _oldProvisionGenerationCount = 0;
+
+            //try
+            //{
+            //    _oldProvisionGenerationCount = RegressionService.ProvisionGenerationCount;
+            //    RegressionService.ProvisionGenerationCount = 1;
+
+                WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+                {
+                    TestRandomDefinition<WebConfigModificationDefinition>();
+                });
+            //}
+            //finally
+            //{
+            //    RegressionService.ProvisionGenerationCount = _oldProvisionGenerationCount;
+            //}
         }
 
         [TestMethod]
@@ -231,7 +243,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
-         [TestMethod]
+        [TestMethod]
         [TestCategory("Regression.Rnd.Site.Audit")]
         public void CanDeployRandom_AuditSettingsDefinition()
         {
@@ -240,7 +252,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
                 TestRandomDefinition<AuditSettingsDefinition>();
             });
         }
-      
+
         #region IRM
 
         [TestMethod]

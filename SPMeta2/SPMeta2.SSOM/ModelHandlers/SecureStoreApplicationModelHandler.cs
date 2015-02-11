@@ -33,6 +33,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var definition = model.WithAssertAndCast<SecureStoreApplicationDefinition>("model", value => value.RequireNotNull());
 
             DeployDefinition(modelHost, farmAppModelHost.HostFarm, definition);
+            farmAppModelHost.ShouldUpdateHost = false;
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext context)

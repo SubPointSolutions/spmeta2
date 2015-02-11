@@ -85,7 +85,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Upgrading existing farm solution");
-                existringSolution.Upgrade(tmpWspFilPath);
+
+                if (existringSolution.Deployed)
+                {
+                    existringSolution.Upgrade(tmpWspFilPath);
+                }
+                else
+                {
+                    // TODO
+                    // https://github.com/SubPointSolutions/spmeta2/issues/324
+                }
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
