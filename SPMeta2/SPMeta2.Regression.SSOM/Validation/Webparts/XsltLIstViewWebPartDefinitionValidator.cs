@@ -59,6 +59,19 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 // list
                 if (!string.IsNullOrEmpty(definition.ListTitle))
                 {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ListTitle);
+                        var dstProp = d.GetExpressionValue(o => o.ListId);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = targetList.ID == (Guid)dstProp.Value
+                        };
+                    });
                 }
                 else
                 {
@@ -86,8 +99,9 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                     assert.SkipProperty(m => m.ListUrl, "ListUrl is null or empty. Skipping.");
                 }
 
-                if (definition.ListId.HasValue)
+                if (definition.ListId.HasValue && definition.ListId != default(Guid))
                 {
+                    assert.ShouldBeEqual(m => m.ListId, o => o.ListId);
                 }
                 else
                 {

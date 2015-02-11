@@ -116,6 +116,7 @@
     <Compile Include="Impl\Scenarios\SP2013WorkflowScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\UniqueContentTypeFieldsScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\WebPartPageScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\Webparts\XsltListViewWebPartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WikiPageScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebpartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />

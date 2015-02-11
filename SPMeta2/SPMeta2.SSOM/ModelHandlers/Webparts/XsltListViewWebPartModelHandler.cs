@@ -51,7 +51,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             // bind list
             SPList list = null;
 
-            if (typedModel.ListId.HasValue)
+            if (typedModel.ListId.HasValue && typedModel.ListId != default(Guid))
                 list = web.Lists[typedModel.ListId.Value];
             else if (!string.IsNullOrEmpty(typedModel.ListUrl))
                 list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedModel.ListUrl));
@@ -71,7 +71,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             {
                 SPView view = null;
 
-                if (typedModel.ViewId.HasValue)
+                if (typedModel.ViewId.HasValue && typedModel.ViewId != default(Guid))
                     view = list.Views[typedModel.ViewId.Value];
                 else if (!string.IsNullOrEmpty(typedModel.ViewName))
                     view = list.Views[typedModel.ViewName];
