@@ -36,7 +36,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #endregion
 
-        #region default
+        #region list binding tests
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
@@ -146,6 +146,120 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 });
 
             TestModel(model);
+        }
+
+
+
+        #endregion
+
+        #region list view binding tests
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
+        public void CanDeploy_XsltListViewWebPart_ByViewId()
+        {
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
+            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>();
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = string.Empty;
+                def.ListUrl = sourceList.GetListUrl();
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddList(sourceList, list =>
+                        {
+                            list.AddListView(sourceView, view =>
+                            {
+                                view.OnProvisioned<object>(context =>
+                                {
+                                    xsltListViewWebpart.ViewId = ExtractViewId(context);
+                                });
+                            });
+                        })
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
+        public void CanDeploy_XsltListViewWebPart_ByViewName()
+        {
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
+            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>();
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = string.Empty;
+                def.ListUrl = sourceList.GetListUrl();
+
+                def.ViewName = sourceView.Title;
+                def.ViewId = null;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddList(sourceList, list =>
+                        {
+                            list.AddListView(sourceView);
+                        })
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+
+        #endregion
+
+        #region utils
+
+        private Guid ExtractViewId(Models.OnCreatingContext<object, DefinitionBase> context)
+        {
+            var obj = context.Object;
+            var objType = context.Object.GetType();
+
+            if (objType.ToString().Contains("Microsoft.SharePoint.Client.View"))
+            {
+                return (Guid)obj.GetPropertyValue("Id");
+            }
+            else if (objType.ToString().Contains("Microsoft.SharePoint.SPView"))
+            {
+                return (Guid)obj.GetPropertyValue("ID");
+            }
+            else
+            {
+                throw new SPMeta2NotImplementedException(string.Format("ID property extraction is not implemented for type: [{0}]", objType));
+            }
         }
 
         private Guid ExtractListId(Models.OnCreatingContext<object, DefinitionBase> context)

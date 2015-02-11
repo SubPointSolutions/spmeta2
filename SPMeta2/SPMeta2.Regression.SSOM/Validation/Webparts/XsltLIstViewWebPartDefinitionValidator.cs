@@ -111,7 +111,28 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 // view
                 if (definition.ViewId.HasValue)
                 {
+                    // web part gonna have hidden view
+                    // so validation is a bit tricky, done by other properties
 
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcView = targetList.Views[s.ViewId.Value];
+                        var dstView = typedObject.View;
+
+                        var srcProp = s.GetExpressionValue(m => m.ViewId);
+                        var dstProp = d.GetExpressionValue(o => o.View);
+
+                        var isValid = srcView.ViewFields.Count == dstView.ViewFields.Count
+                                      && srcView.Query == dstView.Query;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                 {
@@ -120,7 +141,28 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(definition.ViewName))
                 {
+                    // web part gonna have hidden view
+                    // so validation is a bit tricky, done by other properties
 
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcView = targetList.Views[s.ViewName];
+                        var dstView = typedObject.View;
+
+                        var srcProp = s.GetExpressionValue(m => m.ViewName);
+                        var dstProp = d.GetExpressionValue(o => o.View);
+
+                        var isValid = srcView.ViewFields.Count == dstView.ViewFields.Count
+                                      && srcView.Query == dstView.Query;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                 {
@@ -136,7 +178,21 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                     // list?
                     if (hasView)
                     {
+                        assert.ShouldBeEqual((p, s, d) =>
+                        {
+                            var srcProp = s.GetExpressionValue(m => m.TitleUrl);
+                            var srcView = string.IsNullOrEmpty(s.ViewName) ?
+                                targetList.Views[s.ViewId.Value] :
+                                targetList.Views[s.ViewName];
 
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = srcView.ServerRelativeUrl.StartsWith(typedObject.TitleUrl)
+                            };
+                        });
                     }
                     else if (hasList)
                     {
