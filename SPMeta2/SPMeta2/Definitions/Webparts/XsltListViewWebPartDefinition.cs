@@ -24,14 +24,25 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
+        [ExpectValidation]
         public string ListTitle { get; set; }
+
+        [ExpectValidation]
         public string ListUrl { get; set; }
+
+        [ExpectValidation]
         public Guid? ListId { get; set; }
 
+        [ExpectValidation]
         public string ViewName { get; set; }
+
+        [ExpectValidation]
         public Guid? ViewId { get; set; }
 
+        [ExpectValidation]
         public string JSLink { get; set; }
+
+        [ExpectValidation]
         public string TitleUrl { get; set; }
 
         #endregion
