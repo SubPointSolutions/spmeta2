@@ -91,8 +91,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     newView.ViewFields = listViewModel.Fields.ToArray();
 
                 currentView = list.Views.Add(newView);
-              
-               
+
+
                 if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
                     currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
 
@@ -105,13 +105,23 @@ namespace SPMeta2.CSOM.ModelHandlers
                     currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
 
                 currentView.Title = listViewModel.Title;
+                currentView.Update();
+
+                list.Context.ExecuteQueryWithTrace();
+                currentView = FindView(list, listViewModel);
+
+                list.Context.Load(currentView);
+                list.Context.ExecuteQueryWithTrace();
 
             }
             else
             {
+                list.Context.Load(currentView);
+                list.Context.ExecuteQueryWithTrace();
+
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
 
-              
+
                 currentView.RowLimit = (uint)listViewModel.RowLimit;
                 currentView.DefaultView = listViewModel.IsDefault;
                 currentView.Paged = listViewModel.IsPaged;
@@ -126,8 +136,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     foreach (var f in listViewModel.Fields)
                         currentView.ViewFields.Add(f);
                 }
-
-               
+                
                 if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
                     currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
 

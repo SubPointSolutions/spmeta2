@@ -298,6 +298,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var newList = web.Lists.Add(listInfo);
                 currentList = newList;
+
+                currentList.Update();
+                context.ExecuteQueryWithTrace();
+
+                currentList = LoadCurrentList(web, listModel);
             }
             else
             {
