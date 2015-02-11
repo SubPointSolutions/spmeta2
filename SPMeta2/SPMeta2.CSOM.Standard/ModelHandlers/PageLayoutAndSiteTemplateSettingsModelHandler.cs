@@ -105,10 +105,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.ExecuteQuery();
             }
 
-            if (!web.AllProperties.FieldValues.ContainsKey(key))
-                web.AllProperties.FieldValues.Add(key, value);
-            else
-                web.AllProperties[key] = value;
+            // weird, this is incorrect
+            // https://lixuan0125.wordpress.com/2013/10/18/add-and-retrieve-property-bag-by-csom/
+
+            // if (!web.AllProperties.FieldValues.ContainsKey(key))
+            //    web.AllProperties.FieldValues.Add(key, value);
+            //else
+
+            web.AllProperties[key] = value;
 
             web.Update();
             context.ExecuteQuery();
