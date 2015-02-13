@@ -67,7 +67,7 @@ namespace SPMeta2.Utils
             if (exp.Body is MethodCallExpression)
             {
                 var member = exp.Body as MethodCallExpression;
-                var methodResult = Expression.Lambda(member, exp.Parameters).Compile().DynamicInvoke(source);
+                var methodResult = Expression.Lambda(member, exp.Parameters.ToArray()).Compile().DynamicInvoke(source);
 
                 var result = new PropResult();
 
@@ -81,7 +81,7 @@ namespace SPMeta2.Utils
             if (exp.Body is UnaryExpression)
             {
                 var member = exp.Body as UnaryExpression;
-                var methodResult = Expression.Lambda(member, exp.Parameters).Compile().DynamicInvoke(source);
+                var methodResult = Expression.Lambda(member, exp.Parameters.ToArray()).Compile().DynamicInvoke(source);
 
                 var result = new PropResult();
 

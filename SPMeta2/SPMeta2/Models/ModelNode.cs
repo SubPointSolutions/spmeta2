@@ -345,9 +345,13 @@ namespace SPMeta2.Models
         /// </summary>
         public ContinuationOptions ContinuationOption { get; set; }
 
+#if !NET35
+
         /// <summary>
         /// Aggregated exception, if any.
         /// </summary>
         public AggregateException Error { get; set; }
+
+#endif
     }
 }

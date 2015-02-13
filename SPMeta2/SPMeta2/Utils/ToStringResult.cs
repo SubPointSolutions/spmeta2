@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SPMeta2.Utils
 {
@@ -37,9 +37,9 @@ namespace SPMeta2.Utils
                 result.Add(string.Format("{0}:[{1}]", key, Values[key]));
 
             if (!string.IsNullOrEmpty(InitialString))
-                return InitialString + " " + string.Join(" ", result);
+                return InitialString + " " + string.Join(" ", result.ToArray());
 
-            return string.Join(" ", result);
+            return string.Join(" ", result.ToArray());
         }
 
         public string InitialString { get; set; }
@@ -69,7 +69,7 @@ namespace SPMeta2.Utils
                         enumerableValues.Add(string.Empty);
                 }
 
-                valueString = string.Join("|", enumerableValues);
+                valueString = string.Join("|", enumerableValues.ToArray());
             }
             else
             {
