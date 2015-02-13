@@ -52,6 +52,12 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         public string LookupList { get; set; }
 
+        [ExpectValidation]
+        public string LookupListTitle { get; set; }
+
+        [ExpectValidation]
+        public string LookupListUrl { get; set; }
+
         /// <summary>
         /// References to 'ShowField' property.
         /// Should be an internal name of the target field.
