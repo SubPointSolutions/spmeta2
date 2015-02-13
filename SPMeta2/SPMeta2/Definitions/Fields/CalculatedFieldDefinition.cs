@@ -30,6 +30,9 @@ namespace SPMeta2.Definitions.Fields
         {
             FieldType = BuiltInFieldTypes.Calculated;
             FieldReferences = new Collection<string>();
+
+            DateFormat = BuiltInDateTimeFieldFormatType.DateOnly;
+            CurrencyLocaleId = 1033;
         }
 
         #endregion

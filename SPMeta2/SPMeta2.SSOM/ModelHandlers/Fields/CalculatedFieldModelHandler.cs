@@ -44,8 +44,12 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<CalculatedFieldDefinition>("model", value => value.RequireNotNull());
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.LCID, typedFieldModel.CurrencyLocaleId);
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
+            if (typedFieldModel.CurrencyLocaleId.HasValue)
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.LCID, typedFieldModel.CurrencyLocaleId);
+
+            // should be a new XML node
+            var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
+            fieldTemplate.Add(formulaNode);
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, (int)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat));
 
