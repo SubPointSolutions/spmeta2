@@ -110,8 +110,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentView.DefaultView = listViewModel.IsDefault;
             currentView.Paged = listViewModel.IsPaged;
 
+#if !NET35
             if (!string.IsNullOrEmpty(listViewModel.JSLink))
                 currentView.JSLink = listViewModel.JSLink;
+#endif
 
             if (!string.IsNullOrEmpty(listViewModel.Query))
                 currentView.Query = listViewModel.Query;

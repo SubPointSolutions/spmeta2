@@ -90,6 +90,12 @@
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.UserProfiles.Portable.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.WorkflowServices.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.WorkflowServices.Portable.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.BusinessData.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.IdentityModel.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.Office.SecureStoreService.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.SharePoint.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.SharePoint.Security.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.6009.1000\SSOM\microsoft.SharePoint.workflows.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\CSOM\Microsoft.SharePoint.Client.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\CSOM\Microsoft.SharePoint.Client.Runtime.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.dll" />

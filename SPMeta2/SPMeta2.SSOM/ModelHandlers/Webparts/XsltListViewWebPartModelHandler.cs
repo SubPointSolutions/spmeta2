@@ -90,8 +90,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             // weird, but it must be set to avoid null-ref exceptions
             typedWebpart.GhostedXslLink = "main.xsl";
 
+#if !NET35
             // rest
             typedWebpart.JSLink = typedModel.JSLink;
+#endif
         }
 
         #endregion

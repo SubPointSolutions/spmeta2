@@ -22,7 +22,7 @@ $solutionRootPath =  "$currentPath\..\"
 
 $msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
 
-$includeV14Build = $false
+$includeV14Build = $true
 $includeV15Build = $true
 $includeV16Build = $true
 
@@ -30,11 +30,13 @@ $includeV16Build = $true
 if($includeV14Build -eq $true) {
     
     & $msbuild_path """$solutionRootPath\SPMeta2\SPMeta2.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:Platform=AnyCPU /p:WarningLevel=0"
-    #& $msbuild_path """$solutionRootPath\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:Platform=AnyCPU /p:WarningLevel=0"
+    & $msbuild_path """$solutionRootPath\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:Platform=AnyCPU /p:WarningLevel=0"
     
-    #& $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0"
+    & $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0"
     #& $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0"
 }
+
+exit
 
 # 15, main solution, all, 45
 if($includeV15Build -eq $true) {

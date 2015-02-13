@@ -181,8 +181,10 @@ namespace SPMeta2.SSOM.ModelHandlers
               .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
 
             // additions
+#if !NET35
             if (!String.IsNullOrEmpty(fieldModel.JSLink))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
+#endif
 
             if (!string.IsNullOrEmpty(fieldModel.DefaultValue))
                 fieldTemplate.SetSubNode("Default", fieldModel.DefaultValue);
