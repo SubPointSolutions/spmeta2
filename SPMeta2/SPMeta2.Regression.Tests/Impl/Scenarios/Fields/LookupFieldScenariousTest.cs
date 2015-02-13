@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
@@ -35,16 +36,110 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         #region single select
 
+        protected LookupFieldDefinition GetSingleSelectLookupDefinition()
+        {
+            return GetSingleSelectLookupDefinition(null);
+        }
+
+        protected LookupFieldDefinition GetSingleSelectLookupDefinition(Action<LookupFieldDefinition> action)
+        {
+            var result = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.ShowInNewForm = true;
+                def.Hidden = false;
+                def.Required = false;
+                def.AllowMultipleValues = false;
+            });
+
+            if (action != null)
+                action(result);
+
+            return result;
+        }
+
+        protected class LookupFieldEnvironment
+        {
+            public ModelNode ChildListModel { get; set; }
+            public ModelNode MasterListModel { get; set; }
+
+            public ModelNode SiteModel { get; set; }
+
+            public LookupFieldDefinition LookupField { get; set; }
+
+            public ListDefinition ChildList { get; set; }
+
+            public ModelNode ChildListNode { get; set; }
+        }
+
+        protected LookupFieldEnvironment GetLookupFieldEnvironment(Action<LookupFieldEnvironment> action)
+        {
+            var result = new LookupFieldEnvironment();
+
+            var dataList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var lookupField = GetSingleSelectLookupDefinition(def =>
+            {
+                //def.LookupListTitle = dataList.Title;
+            });
+
+            ModelNode childListNode = null;
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(lookupField);
+            });
+
+            var childWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(dataList, list =>
+                {
+                    childListNode = list;
+
+                    list
+                        .AddRandomListItem()
+                        .AddRandomListItem()
+                        .AddRandomListItem();
+                });
+            });
+
+            var masterWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(masterList, list =>
+                    {
+                        list.AddListFieldLink(lookupField);
+                    });
+            });
+
+            result.LookupField = lookupField;
+
+            result.LookupField = lookupField;
+            result.ChildList = dataList;
+            result.ChildListNode = childListNode;
+
+            result.ChildListModel = childWebModel;
+            result.MasterListModel = masterWebModel;
+            result.SiteModel = siteModel;
+
+            if (action != null)
+                action(result);
+
+            return result;
+        }
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelect()
         {
-            var field = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
-            {
-                def.ShowInNewForm = true;
-                def.Hidden = false;
-                def.AllowMultipleValues = false;
-            });
+            var field = GetSingleSelectLookupDefinition();
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
@@ -58,208 +153,106 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelectAndBindToListByTitle()
         {
-            var dataList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                env.LookupField.LookupListTitle = env.ChildList.Title;
             });
 
-            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            TestModels(new[]
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
             });
 
-
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddList(dataList, list =>
-                {
-                    list
-                        .AddRandomListItem()
-                        .AddRandomListItem()
-                        .AddRandomListItem();
-                });
-            });
-
-            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
-            {
-                def.ShowInNewForm = true;
-                def.Hidden = false;
-                def.Required = false;
-                def.AllowMultipleValues = false;
-                def.LookupListTitle = dataList.Title;
-            });
-
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddField(lookupField);
-            });
-
-            var masterModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web
-                    .AddList(masterList, list =>
-                    {
-                        list.AddListFieldLink(lookupField);
-                    });
-            });
-
-            TestModels(new[] { webModel, siteModel, masterModel });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelectAndBindToListById()
         {
-            var dataList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                env.ChildListNode.OnProvisioned<object>(context =>
+                {
+                    env.LookupField.LookupList = ExtractListId(context).ToString();
+                });
             });
 
-            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            TestModels(new[]
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
             });
-
-            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
-            {
-                def.ShowInNewForm = true;
-                def.Hidden = false;
-                def.Required = false;
-                def.AllowMultipleValues = false;
-            });
-
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web
-                    .AddList(dataList, list =>
-                    {
-                        list.OnProvisioned<object>(context =>
-                        {
-                            lookupField.LookupList = ExtractListId(context).ToString();
-                        });
-
-                        list
-                            .AddRandomListItem()
-                            .AddRandomListItem()
-                            .AddRandomListItem();
-                    });
-            });
-
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddField(lookupField);
-            });
-
-            var masterModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web
-                    .AddList(masterList, list =>
-                    {
-                        list.AddListFieldLink(lookupField);
-                    });
-            });
-
-            TestModels(new[] { webModel, siteModel, masterModel });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelectAndBindToSelf()
         {
-            var dataList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                env.LookupField.LookupList = "Self";
             });
 
-            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            TestModels(new[]
             {
-                def.ShowInNewForm = true;
-                def.Hidden = false;
-                def.Required = false;
-                def.AllowMultipleValues = false;
-                def.LookupList = "Self";
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
+        }
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
+        //public void CanDeploy_LookupField_AsSingleSelectAndBindToDocs()
+        //{
+        //    var lookupEnvironment = GetLookupFieldEnvironment(env =>
+        //    {
+        //        env.LookupField.LookupList = "Docs";
+        //    });
+
+        //    TestModels(new[]
+        //    {
+        //        lookupEnvironment.ChildListModel, 
+        //        lookupEnvironment.SiteModel, 
+        //        lookupEnvironment.MasterListModel
+        //    });
+        //}
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
+        public void CanDeploy_LookupField_AsSingleSelectAndBindToUserInfo()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.LookupList = "UserInfo";
             });
 
-            var webModel = SPMeta2Model.NewWebModel(web =>
+            TestModels(new[]
             {
-                web
-
-                    .AddList(dataList, list =>
-                    {
-                        list
-                            .AddRandomListItem()
-                            .AddRandomListItem()
-                            .AddRandomListItem();
-                    });
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
             });
-
-            var masterModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web
-
-                    .AddHostList(dataList, list =>
-                    {
-                        list.AddListFieldLink(lookupField);
-                    });
-            });
-
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddField(lookupField);
-            });
-
-            TestModels(new[] { webModel, siteModel, masterModel });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelectAndBindToListUrl()
         {
-            var dataList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
             });
 
-            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            TestModels(new[]
             {
-                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
             });
-
-
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddList(dataList, list =>
-                {
-                    list
-                        .AddRandomListItem()
-                        .AddRandomListItem()
-                        .AddRandomListItem();
-                });
-            });
-
-            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
-            {
-                def.ShowInNewForm = true;
-                def.Hidden = false;
-                def.AllowMultipleValues = false;
-                def.LookupListUrl = dataList.GetListUrl();
-            });
-
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddField(lookupField);
-            });
-
-            var masterModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web
-                    .AddList(masterList, list =>
-                    {
-                        list.AddListFieldLink(lookupField);
-                    });
-            });
-
-            TestModels(new[] { webModel, siteModel, masterModel });
         }
 
         private Guid ExtractListId(Models.OnCreatingContext<object, DefinitionBase> context)
@@ -281,7 +274,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             }
         }
 
-
         #endregion
 
         #region multi seelct
@@ -301,6 +293,120 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             });
 
             TestModel(siteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsMultiSelectAndBindToListByTitle()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.AllowMultipleValues = true;
+                env.LookupField.LookupListTitle = env.ChildList.Title;
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
+
+        }
+
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsMultiSelectAndBindToListById()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.ChildListNode.OnProvisioned<object>(context =>
+                {
+                    env.LookupField.AllowMultipleValues = true;
+                    env.LookupField.LookupList = ExtractListId(context).ToString();
+                });
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsMultiSelectAndBindToSelf()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.AllowMultipleValues = true;
+                env.LookupField.LookupList = "Self";
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
+        }
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        //public void CanDeploy_LookupField_AsMultiSelectAndBindToDocs()
+        //{
+        //    var lookupEnvironment = GetLookupFieldEnvironment(env =>
+        //    {
+        //        env.LookupField.AllowMultipleValues = true;
+        //        env.LookupField.LookupList = "Docs";
+        //    });
+
+        //    TestModels(new[]
+        //    {
+        //        lookupEnvironment.ChildListModel, 
+        //        lookupEnvironment.SiteModel, 
+        //        lookupEnvironment.MasterListModel
+        //    });
+        //}
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsMultiSelectAndBindToUserInfo()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.AllowMultipleValues = true;
+                env.LookupField.LookupList = "UserInfo";
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsMultiSelectAndBindToListUrl()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.AllowMultipleValues = true;
+                env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel
+            });
         }
 
         #endregion

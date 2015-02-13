@@ -133,7 +133,27 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             if (!string.IsNullOrEmpty(typedDefinition.LookupList))
             {
-                typedFieldAssert.ShouldBeEqual(m => m.LookupList, o => o.LookupList);
+                if (typedDefinition.LookupList.ToUpper() == "USERINFO")
+                {
+                    typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.LookupList);
+
+                        var isValid = GetCurrentSite().RootWeb.SiteUserInfoList.ID == new Guid(typedField.LookupList);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    typedFieldAssert.ShouldBeEqual(m => m.LookupList, o => o.LookupList);
+                }
             }
             else
             {

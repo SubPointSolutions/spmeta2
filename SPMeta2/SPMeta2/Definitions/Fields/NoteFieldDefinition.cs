@@ -48,6 +48,27 @@ namespace SPMeta2.Definitions.Fields
 
         #endregion
 
+
+        #region overrides
+
+        /// <summary>
+        /// Always returns false.
+        /// http://docs.subpointsolutions.com/spcafcontrib/csc515112/
+        /// </summary>
+        public override bool Indexed
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                base.Indexed = value;
+            }
+        }
+
+        #endregion
+
         #region properties
 
         [ExpectValidation]

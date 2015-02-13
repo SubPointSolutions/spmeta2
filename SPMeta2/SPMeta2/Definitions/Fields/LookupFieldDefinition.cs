@@ -34,6 +34,29 @@ namespace SPMeta2.Definitions.Fields
 
         #endregion
 
+        #region overrides
+
+        /// <summary>
+        /// Returns false if AllowMultipleValues = true.
+        /// Multi lookup field does not support Indexed = trur flag and would give an exception.
+        /// </summary>
+        public override bool Indexed
+        {
+            get
+            {
+                if (AllowMultipleValues)
+                    return false;
+
+                return base.Indexed;
+            }
+            set
+            {
+                base.Indexed = value;
+            }
+        }
+
+        #endregion
+
         #region properties
 
         [ExpectValidation]

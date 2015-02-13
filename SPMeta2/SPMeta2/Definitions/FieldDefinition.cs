@@ -175,7 +175,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
-        public bool Indexed { get; set; }
+        public virtual bool Indexed { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
