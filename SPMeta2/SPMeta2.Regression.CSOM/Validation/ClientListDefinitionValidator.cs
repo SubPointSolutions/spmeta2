@@ -53,8 +53,18 @@ namespace SPMeta2.Regression.CSOM.Validation
                 //.ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled)
                 //.ShouldBeEqual(m => m.IrmExpire, o => o.IrmExpire)
                 //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
-                .ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
+                //.ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
+
+            if (!string.IsNullOrEmpty(definition.Url))
+                assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
+            else
+                assert.SkipProperty(m => m.Url, "Skipping from validation. Url IS NULL");
+
+            if (!string.IsNullOrEmpty(definition.CustomUrl))
+                assert.ShouldBeEndOf(m => m.CustomUrl, o => o.GetServerRelativeUrl());
+            else
+                assert.SkipProperty(m => m.CustomUrl, "Skipping from validation. CustomUrl IS NULL");
 
             // common
             if (definition.EnableAttachments.HasValue)

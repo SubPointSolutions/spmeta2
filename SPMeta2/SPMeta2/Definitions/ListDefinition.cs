@@ -64,6 +64,13 @@ namespace SPMeta2.Definitions
         public string Url { get; set; }
 
         /// <summary>
+        /// Provided fll conteolober the URL.
+        /// If provided, this value will be used withouy any changes or calculations.
+        /// </summary>
+        [ExpectValidation]
+        public string CustomUrl { get; set; }
+
+        /// <summary>
         /// Template type of the target list.
         /// BuiltInListTemplateTypeId class can be used to utilize out of the box SharePoint list types.
         /// 

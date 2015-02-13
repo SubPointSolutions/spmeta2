@@ -64,6 +64,9 @@ namespace SPMeta2.CSOM.DefaultSyntax
 
         public static string GetListUrl(this ListDefinition listDefinition)
         {
+            if (!string.IsNullOrEmpty(listDefinition.CustomUrl))
+                return listDefinition.CustomUrl;
+
             if (listDefinition.Url.ToUpper().Contains("_CATALOGS"))
                 return listDefinition.Url;
 

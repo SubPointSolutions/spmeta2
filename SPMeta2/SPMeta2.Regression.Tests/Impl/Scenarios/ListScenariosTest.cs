@@ -451,6 +451,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+       
+
+        #endregion
+
+        #region list URLs
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.Lists.Urls")]
         public void CanDeploy_ListWithDotURLsByTemplateName()
@@ -463,9 +469,42 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
-        #endregion
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_ListWithLibraryPath()
+        {
+            var testList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.CustomUrl = Rnd.String();
+            });
 
-        #region list URLs
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(testList);
+            });
+
+            TestModel(model);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_LibraryWithListPath()
+        {
+            var testList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.CustomUrl = string.Format("Lists/{0}", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(testList);
+            });
+
+            TestModel(model);
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Lists.Urls")]
