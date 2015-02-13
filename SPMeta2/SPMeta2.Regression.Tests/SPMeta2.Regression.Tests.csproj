@@ -85,6 +85,7 @@
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\EventReceiverScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\Fields\ChoiceFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\LookupFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
