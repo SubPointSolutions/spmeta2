@@ -41,6 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         {
             var field = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.Hidden = false;
                 def.AllowMultipleValues = false;
             });
 
@@ -80,6 +81,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.Hidden = false;
+                def.Required = false;
                 def.AllowMultipleValues = false;
                 def.LookupListTitle = dataList.Title;
             });
@@ -117,6 +120,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.Hidden = false;
+                def.Required = false;
                 def.AllowMultipleValues = false;
             });
 
@@ -163,21 +168,35 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
             });
 
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddList(dataList, list =>
-                {
-                    list
-                        .AddRandomListItem()
-                        .AddRandomListItem()
-                        .AddRandomListItem();
-                });
-            });
-
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.Hidden = false;
+                def.Required = false;
                 def.AllowMultipleValues = false;
                 def.LookupList = "Self";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+
+                    .AddList(dataList, list =>
+                    {
+                        list
+                            .AddRandomListItem()
+                            .AddRandomListItem()
+                            .AddRandomListItem();
+                    });
+            });
+
+            var masterModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+
+                    .AddHostList(dataList, list =>
+                    {
+                        list.AddListFieldLink(lookupField);
+                    });
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -185,7 +204,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 site.AddField(lookupField);
             });
 
-            TestModels(new[] { webModel, siteModel });
+            TestModels(new[] { webModel, siteModel, masterModel });
         }
 
         [TestMethod]
@@ -216,6 +235,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.Hidden = false;
                 def.AllowMultipleValues = false;
                 def.LookupListUrl = dataList.GetListUrl();
             });
