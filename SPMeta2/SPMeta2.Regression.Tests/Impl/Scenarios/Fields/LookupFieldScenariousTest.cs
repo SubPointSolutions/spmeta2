@@ -41,6 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         {
             var field = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.ShowInNewForm = true;
                 def.Hidden = false;
                 def.AllowMultipleValues = false;
             });
@@ -81,6 +82,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.ShowInNewForm = true;
                 def.Hidden = false;
                 def.Required = false;
                 def.AllowMultipleValues = false;
@@ -120,6 +122,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.ShowInNewForm = true;
                 def.Hidden = false;
                 def.Required = false;
                 def.AllowMultipleValues = false;
@@ -170,6 +173,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.ShowInNewForm = true;
                 def.Hidden = false;
                 def.Required = false;
                 def.AllowMultipleValues = false;
@@ -235,6 +239,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
             {
+                def.ShowInNewForm = true;
                 def.Hidden = false;
                 def.AllowMultipleValues = false;
                 def.LookupListUrl = dataList.GetListUrl();

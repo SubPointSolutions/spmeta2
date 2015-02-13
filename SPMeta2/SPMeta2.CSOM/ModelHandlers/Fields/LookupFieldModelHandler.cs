@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
@@ -53,6 +55,41 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(typedFieldModel.LookupList))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, typedFieldModel.LookupList);
+            else if (!string.IsNullOrEmpty(typedFieldModel.LookupListUrl))
+            {
+                var site = HostSite;
+                var context = site.Context;
+
+                var web = typedFieldModel.LookupWebId.HasValue
+                    ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
+                    : site.RootWeb;
+
+                if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    context.Load(web, w => w.ServerRelativeUrl);
+                    context.ExecuteQuery();
+                }
+
+                var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
+
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, list.Id.ToString());
+            }
+            else if (!string.IsNullOrEmpty(typedFieldModel.LookupListTitle))
+            {
+                var site = HostSite;
+                var context = site.Context;
+
+                var web = typedFieldModel.LookupWebId.HasValue
+                    ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
+                    : site.RootWeb;
+
+                var list = web.Lists.GetByTitle(typedFieldModel.LookupListTitle);
+
+                context.Load(list);
+                context.ExecuteQuery();
+
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, list.Id.ToString());
+            }
 
             if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);

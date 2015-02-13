@@ -31,10 +31,22 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = GetField(modelHost, definition);
 
             HostList = ExtractListFromHost(modelHost);
+            HostSite = ExtractSiteFromHost(modelHost);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
+        }
+
+        protected Site ExtractSiteFromHost(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostSite;
+
+            return null;
         }
 
 
@@ -43,6 +55,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             get { return HostList != null; }
         }
         protected List HostList { get; set; }
+        protected Site HostSite { get; set; }
 
         protected Field GetField(object modelHost, FieldDefinition definition)
         {
@@ -70,9 +83,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert
                 .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.Title, o => o.Title)
-                    //.ShouldBeEqual(m => m.InternalName, o => o.InternalName)
+                //.ShouldBeEqual(m => m.InternalName, o => o.InternalName)
                     .ShouldBeEqual(m => m.Id, o => o.Id)
-                    //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
+                //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                     .ShouldBeEqual(m => m.Group, o => o.Group);
 
             CustomFieldTypeValidation(assert, spObject, definition);

@@ -75,12 +75,28 @@ namespace SPMeta2.CSOM.ModelHandlers
             return typeof(Field);
         }
 
+
+        protected Site ExtractSiteFromHost(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostSite;
+
+            return null;
+        }
+
+        protected Site HostSite { get; set; }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             if (!(modelHost is SiteModelHost || modelHost is ListModelHost))
                 throw new ArgumentException("modelHost needs to be SiteModelHost/ListModelHost instance.");
 
             CurrentSiteModelHost = modelHost as SiteModelHost;
+
+            HostSite = ExtractSiteFromHost(modelHost);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Casting field model definition");
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());

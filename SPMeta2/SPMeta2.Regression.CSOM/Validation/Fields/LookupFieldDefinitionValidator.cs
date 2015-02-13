@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -49,18 +51,21 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             var definition = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
             var spObject = GetField(modelHost, definition);
 
+            HostList = ExtractListFromHost(modelHost);
+            HostSite = ExtractSiteFromHost(modelHost);
+
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
 
-            var textField = spObject.Context.CastTo<FieldLookup>(spObject);
-            var textDefinition = model.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = spObject.Context.CastTo<FieldLookup>(spObject);
+            var typedDefinition = model.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
-            var typedFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
+            var typedFieldAssert = ServiceFactory.AssertService.NewAssert(model, typedDefinition, typedField);
 
             typedFieldAssert.ShouldBeEqual(m => m.AllowMultipleValues, o => o.AllowMultipleValues);
 
-            if (textDefinition.LookupWebId.HasValue)
+            if (typedDefinition.LookupWebId.HasValue)
             {
                 typedFieldAssert.ShouldBeEqual(m => m.LookupWebId, o => o.LookupWebId);
             }
@@ -69,7 +74,82 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 typedFieldAssert.SkipProperty(m => m.LookupWebId, "LookupWebId is NULL. Skipping.");
             }
 
-            if (!string.IsNullOrEmpty(textDefinition.LookupList))
+
+            if (!string.IsNullOrEmpty(typedDefinition.LookupListTitle))
+            {
+                var site = HostSite;
+                var context = site.Context;
+
+                var web = typedDefinition.LookupWebId.HasValue
+                    ? site.OpenWebById(typedDefinition.LookupWebId.Value)
+                    : site.RootWeb;
+
+                context.Load(web);
+                context.ExecuteQuery();
+
+                var list = web.Lists.GetByTitle(typedDefinition.LookupListTitle);
+
+                context.Load(list);
+                context.ExecuteQuery();
+
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.LookupListTitle);
+
+                    var isValid = list.Id == new Guid(typedField.LookupList);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupListTitle, "LookupListTitle is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.LookupListUrl))
+            {
+                var site = HostSite;
+                var context = site.Context;
+
+                var web = typedDefinition.LookupWebId.HasValue
+                    ? site.OpenWebById(typedDefinition.LookupWebId.Value)
+                    : site.RootWeb;
+
+                context.Load(web);
+                context.ExecuteQuery();
+
+                var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedDefinition.LookupListUrl));
+
+                context.Load(list);
+                context.ExecuteQuery();
+
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.LookupListUrl);
+
+                    var isValid = list.Id == new Guid(typedField.LookupList);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupListUrl, "LookupListUrl is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.LookupList))
             {
                 typedFieldAssert.ShouldBeEqual(m => m.LookupList, o => o.LookupList);
             }
@@ -78,7 +158,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 typedFieldAssert.SkipProperty(m => m.LookupList, "LookupList is NULL. Skipping.");
             }
 
-            if (!string.IsNullOrEmpty(textDefinition.LookupField))
+            if (!string.IsNullOrEmpty(typedDefinition.LookupField))
             {
                 typedFieldAssert.ShouldBeEqual(m => m.LookupField, o => o.LookupField);
             }
