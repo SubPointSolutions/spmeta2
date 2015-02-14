@@ -62,6 +62,7 @@
     <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.dll" />
     <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.pdb" />
     <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.xml" />
+    <Content Include="Images\SPMeta2_64_64.png" />
     <Content Include="Images\SubPointSolutions_2014_240.png" />
     <Content Include="Images\SubPointSolutions_2014_64.png" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
