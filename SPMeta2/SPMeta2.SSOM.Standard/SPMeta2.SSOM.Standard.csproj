@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
-    <OutputPath>bin\Debug35\</OutputPath>
+    <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -40,7 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug35\SPMeta2.SSOM.Standard.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.Standard.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
     <OutputPath>bin\Debug40\</OutputPath>
