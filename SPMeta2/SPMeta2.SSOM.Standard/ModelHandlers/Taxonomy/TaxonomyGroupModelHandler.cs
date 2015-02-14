@@ -71,6 +71,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             var termStore = siteModelHost.HostTermStore;
             var currentGroup = FindGroup(termStore, groupModel);
 
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
