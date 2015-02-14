@@ -121,28 +121,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4420.1017\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll</HintPath>
     </Reference>
-	
-	
-	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.BusinessData, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.BusinessData.dll</HintPath>
-    </Reference>
-    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
-    </Reference>
-    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.SecureStoreService, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
-    </Reference>
-    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+		
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 		<SpecificVersion>False</SpecificVersion>
-		<HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+		<HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
 	</Reference>	
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" >
 		<SpecificVersion>False</SpecificVersion>
-		<HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6009.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+		<HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
 	</Reference>	
+	
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.BusinessData, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.BusinessData.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
+    </Reference>
+    
+	<Reference Condition="'$(spRuntime)'=='14'" Include="System.Web.DataVisualization, System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+	<SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\System.Web.DataVisualization.dll</HintPath>
+	</Reference>
+	
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.Server, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.dll</HintPath>
+    </Reference>
+	
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.SecureStoreService, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+    </Reference>
+	
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.SecureStoreService.Server.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.SecureStoreService.Server.Security.dll</HintPath>
+    </Reference>
 	
     <Reference Include="System" />
     <Reference Include="System.Web" />
@@ -150,6 +166,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+	
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultSyntax\ContentTypeDefinitionSyntax.cs" />

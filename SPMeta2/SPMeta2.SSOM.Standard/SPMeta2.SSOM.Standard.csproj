@@ -129,39 +129,39 @@
 	
 	 <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.DocumentManagement, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.Office.Server, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.Office.Server.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.Office.Server.Search, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
     </Reference>
     <Reference  Condition="'$(spRuntime)'=='14' " Include="Microsoft.Office.Server.UserProfiles, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.SharePoint.Portal, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.Portal.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Portal.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.SharePoint.Publishing, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.Publishing.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Publishing.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.SharePoint.Taxonomy, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6113.5000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
     </Reference>
 	
     <Reference Include="System" />
@@ -179,19 +179,19 @@
     <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\AudienceModelHandler.cs" />
-    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" />
+    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
-    <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />
-    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
+    <Compile Include="ModelHandlers\SearchResultModelHandler.cs"  Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentByQueryWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHosts\TermModelHost.cs" />
     <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />

@@ -8,6 +8,7 @@ using Microsoft.SharePoint.Taxonomy;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -85,9 +86,19 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term Group");
 
+#if !NET35
+
                 currentGroup = groupModel.Id.HasValue
                                         ? termStore.CreateGroup(groupModel.Name, groupModel.Id.Value)
                                         : termStore.CreateGroup(groupModel.Name);
+
+#endif
+
+#if NET35
+                // SP2010 API does not support creating groups with particular ID
+                currentGroup = termStore.CreateGroup(groupModel.Name);
+
+#endif
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

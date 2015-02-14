@@ -110,7 +110,7 @@ namespace SPMeta2.Standard.Services.Webparts
                     value.FieldType ?? string.Empty));
             }
 
-            return string.Join(";", resultValues);
+            return string.Join(";", resultValues.ToArray());
         }
 
         private string ComposeDataMapping()
@@ -148,10 +148,10 @@ namespace SPMeta2.Standard.Services.Webparts
 
                 }
 
-                resultValues.Add(string.Join(";", currentValues));
+                resultValues.Add(string.Join(";", currentValues.ToArray()));
             }
 
-            return string.Join(";|", resultValues) + ";|";
+            return string.Join(";|", resultValues.ToArray()) + ";|";
         }
 
         public List<FilterPair> Pairs { get; set; }

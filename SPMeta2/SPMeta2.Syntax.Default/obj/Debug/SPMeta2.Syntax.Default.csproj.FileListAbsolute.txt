@@ -39,3 +39,11 @@ c:\_spmeta_builds\40\SPMeta2.Syntax.Default.XML
 c:\_spmeta_builds\45\SPMeta2.Syntax.Default.dll
 c:\_spmeta_builds\45\SPMeta2.Syntax.Default.pdb
 c:\_spmeta_builds\45\SPMeta2.Syntax.Default.XML
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.XML
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Syntax.Default\obj\Debug\SPMeta2.Syntax.Default.pdb
