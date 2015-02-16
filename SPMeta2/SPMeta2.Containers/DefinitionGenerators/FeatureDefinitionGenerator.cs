@@ -13,6 +13,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
             return WithEmptyDefinition(def =>
             {
                 def.Enable = Rnd.Bool();
+
                 def.ForceActivate = Rnd.Bool();
 
                 def.Scope = FeatureDefinitionScope.Web; 
