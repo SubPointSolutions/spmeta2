@@ -33,7 +33,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                                             .ShouldBeEqual(m => m.ScriptBlock, o => o.ScriptBlock)
                                             .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
                                             .ShouldBeEqual(m => m.Url, o => o.Url)
-                                            //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
+                //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
                                             .ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
 
             var registrationIdIsGuid = ConvertUtils.ToGuid(spObject.RegistrationId);
@@ -47,6 +47,37 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
             {
                 assert.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId);
+            }
+
+            if (!string.IsNullOrEmpty(definition.CommandUIExtension))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.CommandUIExtension);
+                    var dstProp = d.GetExpressionValue(ct => ct.CommandUIExtension);
+
+                    var isValid =
+                        srcProp.Value.ToString()
+                            .Replace(" ", "")
+                            .Replace(Environment.NewLine, "")
+                            .Replace("\n", "") ==
+                        dstProp.Value.ToString()
+                            .Replace(" ", "")
+                            .Replace(Environment.NewLine, "")
+                            .Replace("\n", "");
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CommandUIExtension, "CommandUIExtension is null or empty. Skipping.");
             }
 
             assert

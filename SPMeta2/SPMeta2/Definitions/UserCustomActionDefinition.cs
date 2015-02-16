@@ -123,6 +123,12 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string RegistrationType { get; set; }
 
+        /// <summary>
+        /// Gets and sets XML that defines an extension to the ribbon.
+        /// </summary>
+        [ExpectValidation]
+        public string CommandUIExtension { get; set; }
+
         #endregion
 
         #region methods

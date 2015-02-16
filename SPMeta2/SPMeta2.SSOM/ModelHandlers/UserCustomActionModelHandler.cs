@@ -123,6 +123,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             existringAction.Sequence = customAction.Sequence;
 
+            if (!string.IsNullOrEmpty(customAction.CommandUIExtension))
+                existringAction.CommandUIExtension = customAction.CommandUIExtension;
+
             if (!string.IsNullOrEmpty(customAction.RegistrationId))
                 existringAction.RegistrationId = customAction.RegistrationId;
 

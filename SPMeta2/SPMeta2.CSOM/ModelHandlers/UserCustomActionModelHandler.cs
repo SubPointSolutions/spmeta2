@@ -129,6 +129,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             existringAction.Title = customAction.Title;
             existringAction.Url = customAction.Url;
 
+            if (!string.IsNullOrEmpty(customAction.CommandUIExtension))
+                existringAction.CommandUIExtension = customAction.CommandUIExtension;
+
             if (!string.IsNullOrEmpty(customAction.RegistrationId))
                 existringAction.RegistrationId = customAction.RegistrationId;
 
