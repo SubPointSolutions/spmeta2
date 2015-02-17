@@ -62,7 +62,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!scope.HasException)
             {
                 field = rootWeb.AvailableFields.GetById(id);
-                
+
                 context.Load(field);
                 context.Load(field, f => f.SchemaXmlWithResourceTokens);
                 context.Load(field, f => f.SchemaXml);
@@ -125,17 +125,27 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var siteField = FindExistingSiteField(web, listFieldLinkModel.FieldId);
 
-                //fields.Add(siteField);
+                //
 
                 var addFieldOptions = (AddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
-                fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
+
+                Field listField = null;
+
+                // AddToDefaultView || !DefaultValue would use AddFieldAsXml
+                // this would change InternalName of the field inside the list
+
+                // The second case, fields.Add(siteField), does not change internal name of the field inside list
+                if (addFieldOptions != AddFieldOptions.DefaultValue || listFieldLinkModel.AddToDefaultView)
+                    listField = fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
+                else
+                    listField = fields.Add(siteField);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
                     EventType = ModelEventType.OnProvisioned,
-                    Object = siteField,
+                    Object = listField,
                     ObjectType = typeof(Field),
                     ObjectDefinition = listFieldLinkModel,
                     ModelHost = modelHost
