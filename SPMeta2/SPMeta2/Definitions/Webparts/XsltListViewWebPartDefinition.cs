@@ -22,6 +22,15 @@ namespace SPMeta2.Definitions.Webparts
     [Serializable]
     public class XsltListViewWebPartDefinition : WebPartDefinition
     {
+        #region constructors
+
+        public XsltListViewWebPartDefinition()
+        {
+            TitleUrl = string.Empty;
+        }
+
+        #endregion
+
         #region properties
 
         [ExpectValidation]

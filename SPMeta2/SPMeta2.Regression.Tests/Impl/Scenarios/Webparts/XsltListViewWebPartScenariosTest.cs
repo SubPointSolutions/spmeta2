@@ -14,6 +14,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Exceptions;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 {
@@ -159,7 +160,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         public void CanDeploy_XsltListViewWebPart_ByViewId()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>();
+            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Fields = new System.Collections.ObjectModel.Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Edit,
+                    BuiltInInternalFieldNames.Title                    
+                };
+
+                def.IsDefault = false;
+            });
 
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
@@ -204,7 +215,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         public void CanDeploy_XsltListViewWebPart_ByViewName()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>();
+            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Fields = new System.Collections.ObjectModel.Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Edit,
+                    BuiltInInternalFieldNames.Title                    
+                };
+
+                def.IsDefault = false;
+            });
 
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {

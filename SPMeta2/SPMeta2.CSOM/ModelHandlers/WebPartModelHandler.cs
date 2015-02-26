@@ -207,105 +207,125 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
             {
-                //var fileContext = pageFile.Context;
-                var fileListItem = pageFile.ListItemAllFields;
-                var fileContext = pageFile.Context;
-
-                fileContext.Load(fileListItem);
-
-                fileContext.ExecuteQueryWithTrace();
-
-                var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
-
-                // web part on the page
-                var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
-                var webPartDefenitions = context.LoadQuery(webpartOnPage);
-
-                context.ExecuteQueryWithTrace();
-
-                Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition;
-
-                WebPart existingWebPart = null;
-
-                // TODO
-                var tmpWp = FindExistingWebPart(webPartDefenitions, webPartModel, out wpDefinition);
-
-                InvokeOnModelEvent(this, new ModelEventArgs
+                try
                 {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioning,
-                    Object = existingWebPart,
-                    ObjectType = typeof(WebPart),
-                    ObjectDefinition = webPartModel,
-                    ModelHost = modelHost
-                });
+                    InternalOnBeforeWebPartProvision(listItemModelHost, webPartModel);
 
-                if (wpDefinition != null)
-                {
-                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Deleting current web part.");
+                    //var fileContext = pageFile.Context;
+                    var fileListItem = pageFile.ListItemAllFields;
+                    var fileContext = pageFile.Context;
 
-                    wpDefinition.DeleteWebPart();
-                    wpDefinition.Context.ExecuteQueryWithTrace();
-                }
-                else
-                {
-                    existingWebPart = tmpWp;
-                }
+                    fileContext.Load(fileListItem);
 
-                if (existingWebPart == null)
-                {
-                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part");
+                    fileContext.ExecuteQueryWithTrace();
 
-                    var webPartXML = GetWebpartXmlDefinition(listItemModelHost, webPartModel);
-                    webPartXML = ProcessCommonWebpartProperties(webPartXML, webPartModel);
+                    var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
-                    // handle wiki page
+                    // web part on the page
+                    var webpartOnPage = webPartManager.WebParts.Include(wp => wp.Id, wp => wp.WebPart);
+                    var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
-                    HandleWikiPageProvision(fileListItem, webPartModel);
+                    context.ExecuteQueryWithTrace();
 
-                    var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
-                    var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
+                    Microsoft.SharePoint.Client.WebParts.WebPartDefinition wpDefinition;
 
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
+                    WebPart existingWebPart = null;
 
-                    existingWebPart = webPartDefinition.WebPart;
+                    // TODO
+                    var tmpWp = FindExistingWebPart(webPartDefenitions, webPartModel, out wpDefinition);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
                         Model = null,
-                        EventType = ModelEventType.OnProvisioned,
+                        EventType = ModelEventType.OnProvisioning,
                         Object = existingWebPart,
                         ObjectType = typeof(WebPart),
                         ObjectDefinition = webPartModel,
                         ModelHost = modelHost
                     });
 
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
-                }
-                else
-                {
-                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part");
-
-                    HandleWikiPageProvision(fileListItem, webPartModel);
-
-                    InvokeOnModelEvent(this, new ModelEventArgs
+                    if (wpDefinition != null)
                     {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = existingWebPart,
-                        ObjectType = typeof(WebPart),
-                        ObjectDefinition = webPartModel,
-                        ModelHost = modelHost
-                    });
-                }
+                        TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Deleting current web part.");
 
-                context.ExecuteQueryWithTrace();
+                        wpDefinition.DeleteWebPart();
+                        wpDefinition.Context.ExecuteQueryWithTrace();
+                    }
+                    else
+                    {
+                        existingWebPart = tmpWp;
+                    }
+
+                    if (existingWebPart == null)
+                    {
+                        TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part");
+
+                        var webPartXML = GetWebpartXmlDefinition(listItemModelHost, webPartModel);
+                        webPartXML = ProcessCommonWebpartProperties(webPartXML, webPartModel);
+
+                        // handle wiki page
+
+                        HandleWikiPageProvision(fileListItem, webPartModel);
+
+                        var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
+                        var webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart, webPartModel.ZoneId, webPartModel.ZoneIndex);
+
+                        InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
+
+                        existingWebPart = webPartDefinition.WebPart;
+
+                        InvokeOnModelEvent(this, new ModelEventArgs
+                        {
+                            CurrentModelNode = null,
+                            Model = null,
+                            EventType = ModelEventType.OnProvisioned,
+                            Object = existingWebPart,
+                            ObjectType = typeof(WebPart),
+                            ObjectDefinition = webPartModel,
+                            ModelHost = modelHost
+                        });
+
+                        InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
+                    }
+                    else
+                    {
+                        TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part");
+
+                        HandleWikiPageProvision(fileListItem, webPartModel);
+
+                        InvokeOnModelEvent(this, new ModelEventArgs
+                        {
+                            CurrentModelNode = null,
+                            Model = null,
+                            EventType = ModelEventType.OnProvisioned,
+                            Object = existingWebPart,
+                            ObjectType = typeof(WebPart),
+                            ObjectDefinition = webPartModel,
+                            ModelHost = modelHost
+                        });
+                    }
+
+                    context.ExecuteQueryWithTrace();
+                }
+                finally
+                {
+                    // a change to restore the view for XsltListViewWebPart
+                    InternalOnAfterWebPartProvision(listItemModelHost, webPartModel);
+                }
 
                 return pageFile;
             });
+        }
+
+        protected virtual void InternalOnBeforeWebPartProvision(ListItemModelHost listItemModelHost, WebPartDefinitionBase wpModel)
+        {
+
+        }
+
+        protected virtual void InternalOnAfterWebPartProvision(ListItemModelHost listItemModelHost, WebPartDefinitionBase wpModel)
+        {
+
         }
 
         private void HandleWikiPageProvision(ListItem listItem, WebPartDefinitionBase webpartModel)

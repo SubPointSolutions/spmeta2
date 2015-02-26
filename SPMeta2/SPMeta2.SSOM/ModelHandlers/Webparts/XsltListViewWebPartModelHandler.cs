@@ -58,7 +58,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             else if (!string.IsNullOrEmpty(typedModel.ListTitle))
                 list = web.Lists.TryGetList(typedModel.ListTitle);
             else
-                throw new SPMeta2Exception();
+            {
+                throw new SPMeta2Exception("ListUrl, ListTitle or ListId should be defined.");
+            }
 
             if (list != null)
             {
