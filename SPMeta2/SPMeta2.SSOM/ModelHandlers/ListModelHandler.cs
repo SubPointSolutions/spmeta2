@@ -143,6 +143,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             list.Description = definition.Description ?? string.Empty;
             list.ContentTypesEnabled = definition.ContentTypesEnabled;
 
+            if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
+            {
+                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+                list.DraftVersionVisibility = draftOption;
+            }
+
             // IRM
             if (definition.IrmEnabled.HasValue)
                 list.IrmEnabled = definition.IrmEnabled.Value;

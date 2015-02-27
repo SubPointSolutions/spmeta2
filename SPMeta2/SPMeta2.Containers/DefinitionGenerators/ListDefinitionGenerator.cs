@@ -22,6 +22,36 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.ContentTypesEnabled = Rnd.Bool();
 
+                var draftOpt = Rnd.Int(10);
+
+                if (draftOpt > 1)
+                {
+                    if (draftOpt <= 3)
+                    {
+                        def.DraftVersionVisibility = BuiltInDraftVisibilityTypes.Approver;
+
+                        def.EnableVersioning = true;
+                        //def.EnableMinorVersions = true;
+                        def.EnableModeration = true;
+                    }
+
+                    if (draftOpt >= 3 && draftOpt <= 6)
+                    {
+                        def.DraftVersionVisibility = BuiltInDraftVisibilityTypes.Author;
+
+                        def.EnableVersioning = true;
+                        //def.EnableMinorVersions = true;
+                        def.EnableModeration = true;
+                    }
+
+                    if (draftOpt > 6)
+                        def.DraftVersionVisibility = BuiltInDraftVisibilityTypes.Reader;
+                }
+                else
+                {
+                    def.DraftVersionVisibility = string.Empty;
+                }
+
                 //def.NoCrawl = Rnd.NullableBool();
                 //def.OnQuickLaunch = Rnd.NullableBool();
                 //def.Hidden = Rnd.NullableBool();

@@ -43,8 +43,7 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
     <OutputPath>bin\Debug35\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -56,7 +55,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
     <OutputPath>bin\Debug40\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -139,6 +137,7 @@
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInCalendarType.cs" />
+    <Compile Include="Enumerations\BuiltInDraftVisibilityType.cs" />
     <Compile Include="Enumerations\BuiltInEventReceiverSynchronization.cs" />
     <Compile Include="Enumerations\BuiltInEventReceiverType.cs" />
     <Compile Include="Enumerations\BuiltInFieldUserSelectionMode.cs" />

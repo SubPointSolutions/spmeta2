@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
@@ -42,6 +43,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spObject, list => list.Hidden);
             context.Load(spObject, list => list.NoCrawl);
             context.Load(spObject, list => list.OnQuickLaunch);
+            context.Load(spObject, list => list.DraftVersionVisibility);
 
             context.ExecuteQuery();
 
@@ -55,6 +57,29 @@ namespace SPMeta2.Regression.CSOM.Validation
                 //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
                 //.ShouldBeEndOf(m => m.GetServerRelativeUrl(web), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
+
+            if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
+            {
+                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DraftVersionVisibility);
+                    var dstProp = d.GetExpressionValue(m => m.DraftVersionVisibility);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = draftOption == (DraftVisibilityType)dstProp.Value
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
+            }
 
             if (!string.IsNullOrEmpty(definition.Url))
                 assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());

@@ -45,6 +45,9 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public bool? IrmReject { get; set; }
 
+        [ExpectValidation]
+        public string DraftVersionVisibility { get; set; }
+
         /// <summary>
         /// Description of the target list.
         /// </summary>

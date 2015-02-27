@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,6 +35,29 @@ namespace SPMeta2.Regression.SSOM.Validation
                 //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
                 //.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
+
+            if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
+            {
+                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DraftVersionVisibility);
+                    var dstProp = d.GetExpressionValue(m => m.DraftVersionVisibility);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = draftOption == (DraftVisibilityType)dstProp.Value
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
+            }
 
             if (!string.IsNullOrEmpty(definition.Url))
                 assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
