@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
@@ -79,7 +80,7 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
         private static void CanValidatePropertiesOnSiteModel<TModel>(TModel def, Action<List<ValidationResult>> action)
             where TModel : DefinitionBase
         {
-            var validationService = new ModelValidationService();
+            var validationService = new ValidationPreDeploymentService();
 
             var model = SPMeta2Model.NewSiteModel();
             model.ChildModels.Add(new ModelNode { Value = def });
@@ -94,7 +95,7 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
         private static void CanValidateRequiredPropertiesOnSiteModel<TModel>(Action<ValidationPair<TModel>> action)
            where TModel : DefinitionBase, new()
         {
-            var validationService = new ModelValidationService();
+            var validationService = new ValidationPreDeploymentService();
             var def = new TModel();
 
             var model = SPMeta2Model.NewSiteModel();
@@ -130,10 +131,14 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
             var result = source.ValidationResult;
             var prop = ReflectionUtils.GetExpressionValue(source.Model, exp);
 
-            Assert.IsTrue(
-              result.Count(r => r.PropertyName == prop.Name &&
-              !r.IsValid &&
-              r.ResultType == resultType) > 0);
+            TraceUtils.WithScope(s =>
+            {
+                s.WriteLine(string.Format("Validating property: [{0}]", prop.Name));
+
+                Assert.IsTrue(result.Count(r => r.PropertyName == prop.Name
+                                            && !r.IsValid
+                                            && r.ResultType == resultType) > 0);
+            });
 
             return source;
         }

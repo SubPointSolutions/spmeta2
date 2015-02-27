@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-
+using System.Threading.Tasks;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
 using SPMeta2.Services;
+using SPMeta2.Utils;
 using SPMeta2.Validation.Common;
 using SPMeta2.Validation.Validators.Collections;
 using SPMeta2.Validation.Validators.Definitions;
 using SPMeta2.Validation.Validators.Relationships;
-using SPMeta2.Utils;
-using System.Reflection;
 
 namespace SPMeta2.Validation.Services
 {
-    [Obsolete("Please use ValidationPreDeploymentService")]
-    public class ModelValidationService : ModelServiceBase
+    public class ValidationPreDeploymentService : PreDeploymentServiceBase
     {
-        #region constructors
+          #region constructors
 
-        public ModelValidationService()
+        public ValidationPreDeploymentService()
         {
             InitValidators();
             Result = new List<ValidationResult>();
