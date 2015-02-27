@@ -47,10 +47,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         }
 
+        public WebpartPageModelHost CurrentHost { get; set; }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
             var webpartModel = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
+
+            CurrentHost = host;
 
             OnBeforeDeployModel(host, webpartModel);
 

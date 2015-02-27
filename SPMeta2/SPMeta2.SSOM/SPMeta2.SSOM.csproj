@@ -273,7 +273,7 @@
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\SSOMProvisionService.cs" />
-    <Compile Include="Services\SSOMWebModelProvisionService.cs" />
+    <Compile Include="Services\SSOMTokenReplacementService.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

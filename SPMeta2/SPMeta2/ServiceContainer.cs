@@ -20,37 +20,74 @@ namespace SPMeta2
 
         private ServiceContainer()
         {
-            Services = new Dictionary<Type, object>();
+            Services = new Dictionary<Type, List<object>>();
 
             InitServices();
         }
 
         private void InitServices()
         {
-            Services.Add(typeof(TraceServiceBase), new TraceSourceService());
+            RegisterService(typeof(TraceServiceBase), new TraceSourceService());
 
-            Services.Add(typeof(ModelTreeTraverseServiceBase), new DefaultModelTreeTraverseService());
-            Services.Add(typeof(ModelWeighServiceBase), new DefaultModelWeighService());
+            RegisterService(typeof(ModelTreeTraverseServiceBase), new DefaultModelTreeTraverseService());
+            RegisterService(typeof(ModelWeighServiceBase), new DefaultModelWeighService());
         }
 
         #endregion
 
         #region properties
 
-        public Dictionary<Type, object> Services { get; set; }
+        public Dictionary<Type, List<object>> Services { get; set; }
 
         #endregion
 
         #region methods
 
+        public void RegisterService(Type type, object service)
+        {
+            if (!Services.ContainsKey(type))
+                Services.Add(type, new List<object>());
+
+            var list = Services[type];
+
+            if (!list.Contains(service))
+                list.Add(service);
+        }
+
+        public void RegisterServices(Type type, List<object> services)
+        {
+            foreach (var s in services)
+                RegisterService(type, s);
+        }
+
         public TService GetService<TService>()
+            where TService : class
+        {
+            List<object> services;
+
+            Services.TryGetValue(typeof(TService), out services);
+
+            if (services != null)
+                return services.FirstOrDefault() as TService;
+
+            return null;
+        }
+
+        public IEnumerable<TService> GetServices<TService>()
            where TService : class
         {
-            object service;
+            List<object> services;
 
-            Services.TryGetValue(typeof(TService), out service);
+            Services.TryGetValue(typeof(TService), out services);
 
-            return service as TService;
+            if (services != null)
+            {
+                return services
+                    .Where(s => s as TService != null)
+                    .Select(s => s as TService);
+            }
+
+            return Enumerable.Empty<TService>();
         }
 
         #endregion

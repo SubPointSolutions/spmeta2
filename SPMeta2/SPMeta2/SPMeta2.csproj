@@ -247,6 +247,7 @@
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
     <Compile Include="Services\LogEventId.cs" />
@@ -254,7 +255,10 @@
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />
     <Compile Include="Services\Impl\TraceSourceService.cs" />
+    <Compile Include="Services\PostDeploymentServiceBase.cs" />
+    <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />
+    <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />

@@ -8,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Webparts
@@ -27,11 +28,24 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
-            var wpModel = webPartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("model", value => value.RequireNotNull());
+            var typedModel = webPartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("model", value => value.RequireNotNull());
+
+            var contentLinkValue = typedModel.ContentLink ?? string.Empty;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
+
+            contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = contentLinkValue,
+                Context = listItemModelHost.HostClientContext
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+
             var wpXml = WebpartXmlExtensions
                 .LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentEditorWebPart)
-                .SetOrUpdateContentEditorWebPartProperty("Content", wpModel.Content, true)
-                .SetOrUpdateContentEditorWebPartProperty("ContentLink", wpModel.ContentLink)
+                .SetOrUpdateContentEditorWebPartProperty("Content", typedModel.Content, true)
+                .SetOrUpdateContentEditorWebPartProperty("ContentLink", contentLinkValue)
                 .ToString();
 
             return wpXml;

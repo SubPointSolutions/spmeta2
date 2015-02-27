@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -39,17 +40,29 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var typedWebpart = webpartInstance.WithAssertAndCast<ContentEditorWebPart>("webpartInstance", value => value.RequireNotNull());
             var typedModel = webpartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
-            typedWebpart.ContentLink = typedModel.ContentLink ?? string.Empty;
+            var contentLinkValue = typedModel.ContentLink ?? string.Empty;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
+
+            contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = contentLinkValue,
+                Context = CurrentHost.PageListItem.Web
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+
+            typedWebpart.ContentLink = contentLinkValue;
 
             var xmlDoc = new XmlDocument();
             var xmlElement = xmlDoc.CreateElement("ContentElement");
-            xmlElement.InnerText = typedModel.Content ?? string.Empty;
 
+            var content = typedModel.Content ?? string.Empty;
+
+            xmlElement.InnerText = content;
             typedWebpart.Content = xmlElement;
         }
 
         #endregion
-
-       
     }
 }

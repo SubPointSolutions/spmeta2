@@ -39,6 +39,9 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     .SkipProperty(m => m.Id, "Property is not available in CSOM. Skipping.")
                     .SkipProperty(m => m.ZoneId, "Property is not available in CSOM. Skipping.")
 
+                    .SkipProperty(m => m.ContentLink, "Property is not available in CSOM. Skipping.")
+                    .SkipProperty(m => m.Content, "Property is not available in CSOM. Skipping.")
+
                     .SkipProperty(m => m.WebpartFileName, "Property is not available in CSOM. Skipping.")
                     .SkipProperty(m => m.WebpartType, "Property is not available in CSOM. Skipping.")
                     .SkipProperty(m => m.WebpartXmlTemplate, "Property is not available in CSOM. Skipping.")

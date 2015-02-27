@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         public string Content { get; set; }
+
+        [ExpectValidation]
         public string ContentLink { get; set; }
 
         #endregion

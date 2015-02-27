@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -19,6 +20,8 @@ namespace SPMeta2.CSOM.Services
 
         public CSOMProvisionService()
         {
+            ServiceContainer.Instance.RegisterService(typeof(CSOMTokenReplacementService), new CSOMTokenReplacementService());
+
             RegisterModelHandlers();
             CheckSharePointRuntimeVersion();
         }
@@ -75,9 +78,31 @@ namespace SPMeta2.CSOM.Services
 
             var clientContext = (modelHost as CSOMModelHostBase).HostClientContext;
 
+            PreloadProperties(clientContext);
+
             // TODO, check clientContext.ServerLibraryVersion to make sure it's >= SP2013 SP
 
             base.DeployModel(modelHost, model);
+        }
+
+        private static void PreloadProperties(ClientContext clientContext)
+        {
+            var needQuery = false;
+
+            if (!clientContext.Site.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                clientContext.Load(clientContext.Site, s => s.ServerRelativeUrl);
+                needQuery = true;
+            }
+
+            if (!clientContext.Web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                clientContext.Load(clientContext.Web, w => w.ServerRelativeUrl);
+                needQuery = true;
+            }
+
+            if (needQuery)
+                clientContext.ExecuteQueryWithTrace();
         }
 
         public override void RetractModel(ModelHostBase modelHost, ModelNode model)
