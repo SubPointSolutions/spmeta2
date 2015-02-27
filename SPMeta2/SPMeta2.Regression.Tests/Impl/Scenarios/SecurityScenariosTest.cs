@@ -62,6 +62,35 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_ResetRoleInheritance_OnWeb()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(rndWeb);
+                        });
+
+                        rndWeb
+                            .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                            {
+                                breakInheritance.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(breakInheritance);
+                                });
+                            })
+                            .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_BreakRoleInheritance_OnList()
         {
             var model = SPMeta2Model
@@ -77,6 +106,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             });
 
                             rndList.AddBreakRoleInheritance(GetCleanInheritance());
+                        });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_ResetRoleInheritance_OnList()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddRandomList(rndList =>
+                        {
+                            rndList.OnProvisioning<object>(context =>
+                            {
+                                TurnOffValidation(rndList);
+                            });
+
+                            rndList
+                                .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                                {
+                                    breakInheritance.OnProvisioning<object>(context =>
+                                    {
+                                        TurnOffValidation(breakInheritance);
+                                    });
+                                })
+                                .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
                         });
                     });
                 });
@@ -108,6 +169,46 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 });
 
                                 rndFolder.AddBreakRoleInheritance(GetCleanInheritance());
+                            });
+                        });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_ResetRoleInheritance_OnListFolder()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, rndList =>
+                        {
+                            rndList.AddRandomFolder(rndFolder =>
+                            {
+                                rndFolder.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndFolder);
+                                });
+
+                                rndFolder
+                                    .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                                    {
+                                        breakInheritance.OnProvisioning<object>(context =>
+                                        {
+                                            TurnOffValidation(breakInheritance);
+                                        });
+                                    })
+                                    .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
                             });
                         });
                     });
@@ -150,6 +251,46 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_ResetRoleInheritance_OnLibraryFolder()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, rndList =>
+                        {
+                            rndList.AddRandomFolder(rndFolder =>
+                            {
+                                rndFolder.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndFolder);
+                                });
+
+                                rndFolder
+                                    .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                                    {
+                                        breakInheritance.OnProvisioning<object>(context =>
+                                        {
+                                            TurnOffValidation(breakInheritance);
+                                        });
+                                    })
+                                    .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
+                            });
+                        });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_BreakRoleInheritance_OnListItem()
         {
             var model = SPMeta2Model
@@ -167,6 +308,41 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 });
 
                                 rndListItem.AddBreakRoleInheritance(GetCleanInheritance());
+                            });
+                        });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_ResetRoleInheritance_OnListItem()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddRandomList(rndList =>
+                        {
+                            rndList.AddRandomListItem(rndListItem =>
+                            {
+                                rndListItem.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndListItem);
+                                });
+
+                                rndListItem
+                                    .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                                    {
+                                        breakInheritance.OnProvisioning<object>(context =>
+                                        {
+                                            TurnOffValidation(breakInheritance);
+                                        });
+                                    })
+                                    .AddResetRoleInheritance(new ResetRoleInheritanceDefinition()); ;
                             });
                         });
                     });

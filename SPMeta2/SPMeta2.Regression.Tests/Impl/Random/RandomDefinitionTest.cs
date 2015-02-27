@@ -178,10 +178,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             //    _oldProvisionGenerationCount = RegressionService.ProvisionGenerationCount;
             //    RegressionService.ProvisionGenerationCount = 1;
 
-                WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-                {
-                    TestRandomDefinition<WebConfigModificationDefinition>();
-                });
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<WebConfigModificationDefinition>();
+            });
             //}
             //finally
             //{
@@ -611,6 +611,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_BreakRoleInheritanceDefinition()
         {
             TestRandomDefinition<BreakRoleInheritanceDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_ResetRoleInheritanceDefinition()
+        {
+            TestRandomDefinition<ResetRoleInheritanceDefinition>();
         }
 
         [TestMethod]

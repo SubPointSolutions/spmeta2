@@ -109,6 +109,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
 
                 securableObject.BreakRoleInheritance(breakRoleInheritanceModel.CopyRoleAssignments, breakRoleInheritanceModel.ClearSubscopes);
+                context.ExecuteQueryWithTrace();
             }
 
             if (breakRoleInheritanceModel.ForceClearSubscopes)

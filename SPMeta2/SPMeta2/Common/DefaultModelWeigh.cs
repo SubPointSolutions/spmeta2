@@ -21,7 +21,22 @@ namespace SPMeta2.Common
             InitSiteScope();
             InitWebScope();
             InitListScope();
+
+            InitListItemScope();
+            InitModuleFileScope();
+
             InitFolderScope();
+        }
+
+        private static void InitModuleFileScope()
+        {
+            Weighs.Add(new ModelWeigh(
+                 typeof(ModuleFileDefinition),
+                 new[]
+                {
+                    typeof (BreakRoleInheritanceDefinition),
+                    typeof (ResetRoleInheritanceDefinition),
+                }));
         }
 
         #endregion
@@ -37,6 +52,19 @@ namespace SPMeta2.Common
 
         #region methods
 
+        private static void InitListItemScope()
+        {
+            Weighs.Add(new ModelWeigh(
+                typeof(ListItemDefinition),
+                new[]
+                {
+                    typeof (BreakRoleInheritanceDefinition),
+                    typeof (ResetRoleInheritanceDefinition),
+               
+                    typeof (PropertyDefinition)
+                }));
+        }
+
         private static void InitFolderScope()
         {
             Weighs.Add(new ModelWeigh(
@@ -44,6 +72,7 @@ namespace SPMeta2.Common
                 new[]
                 {
                     typeof (BreakRoleInheritanceDefinition),
+                    typeof (ResetRoleInheritanceDefinition),
                     typeof (SecurityRoleLinkDefinition),
                     typeof (PropertyDefinition)
                 }));
@@ -56,6 +85,7 @@ namespace SPMeta2.Common
                 new[]
                 {
                     typeof (BreakRoleInheritanceDefinition),
+                    typeof (ResetRoleInheritanceDefinition),
                     typeof (SecurityRoleLinkDefinition),
 
                     typeof (PropertyDefinition),
@@ -91,6 +121,8 @@ namespace SPMeta2.Common
                     typeof (SecurityGroupDefinition),
 
                     typeof (BreakRoleInheritanceDefinition),
+                    typeof (ResetRoleInheritanceDefinition),
+
                     typeof (SecurityRoleLinkDefinition),
 
                     typeof (PropertyDefinition),

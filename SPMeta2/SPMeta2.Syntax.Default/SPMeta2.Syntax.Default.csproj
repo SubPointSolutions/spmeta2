@@ -37,11 +37,10 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
     <OutputPath>bin\Debug35\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -50,11 +49,10 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35\SPMeta2.Syntax.Default.XML</DocumentationFile>
   </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
     <OutputPath>bin\Debug40\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-	<DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -66,7 +64,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
     <OutputPath>bin\Debug45\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-	<DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -105,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResetRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="DocumentParserSyntax.cs" />
     <Compile Include="AuditSettingsSyntax.cs" />
     <Compile Include="TreeViewSettingsDefinitionSyntax.cs" />

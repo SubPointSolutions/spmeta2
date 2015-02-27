@@ -90,7 +90,6 @@ c:\_spmeta_builds\40\SPMeta2.Regression.SSOM.XML
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.dll
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.pdb
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.XML
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.XML
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.pdb
@@ -108,5 +107,6 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Standard.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.csprojResolveAssemblyReference.cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb

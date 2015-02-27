@@ -10,7 +10,7 @@ using System.Text;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class BreakRoleInheritanceScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class ResetRoleInheritanceScenariousTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

@@ -119,17 +119,23 @@ namespace SPMeta2.Services
 
         public static void VerboseFormat(this TraceServiceBase traceService, int id, object message, object parameter)
         {
-            VerboseFormat(traceService, id, message, new object[] { parameter });
+            if (parameter == null)
+                VerboseFormat(traceService, id, message, new object[] { });
+            else
+                VerboseFormat(traceService, id, message, new object[] { parameter });
         }
 
         public static void VerboseFormat(this TraceServiceBase traceService, int id, object message, object[] parameters)
         {
-            VerboseFormat(traceService, id, message, parameters, null);
+            if (parameters == null)
+                VerboseFormat(traceService, id, message, new object[] { }, null);
+            else
+                VerboseFormat(traceService, id, message, parameters, null);
         }
 
         public static void VerboseFormat(this TraceServiceBase traceService, int id, object message, object[] parameters, Exception exception)
         {
-            if (message is string)
+            if (message is string && parameters != null && parameters.Length > 0)
             {
                 traceService.Verbose(id, string.Format(message as string, parameters), exception);
             }
@@ -145,17 +151,23 @@ namespace SPMeta2.Services
 
         public static void ErrorFormat(this TraceServiceBase traceService, int id, object message, object parameter)
         {
-            ErrorFormat(traceService, id, message, new object[] { parameter });
+            if (parameter == null)
+                ErrorFormat(traceService, id, message, new object[] { });
+            else
+                ErrorFormat(traceService, id, message, new object[] { parameter });
         }
 
         public static void ErrorFormat(this TraceServiceBase traceService, int id, object message, object[] parameters)
         {
-            ErrorFormat(traceService, id, message, parameters, null);
+            if (parameters == null)
+                ErrorFormat(traceService, id, message, new object[] { }, null);
+            else
+                ErrorFormat(traceService, id, message, parameters, null);
         }
 
         public static void ErrorFormat(this TraceServiceBase traceService, int id, object message, object[] parameters, Exception exception)
         {
-            if (message is string)
+            if (message is string && parameters != null && parameters.Length > 0)
             {
                 traceService.Error(id, string.Format(message as string, parameters), exception);
             }

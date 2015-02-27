@@ -98,6 +98,7 @@
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="SSOMValidationService.cs" />
     <Compile Include="Validation\AuditSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\ResetRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\DocumentParserDefinitionValidator.cs" />
     <Compile Include="Validation\TreeViewSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\TargetApplicationDefinitionValidator.cs" />
