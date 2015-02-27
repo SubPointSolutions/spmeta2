@@ -45,23 +45,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
-
-            var context = listItemModelHost.HostWeb.Context;
             var bindContext = LookupBindContext(listItemModelHost, wpModel);
-
-            // replace defualt list view
-            // it will be reverted within InternalOnAfterWebPartProvision()
-            if (bindContext.OriginalViewId.HasValue
-                && bindContext.TargetViewId.HasValue
-                && bindContext.OriginalViewId.Value != bindContext.TargetViewId.Value)
-            {
-                bindContext.TargetView.DefaultView = true;
-                bindContext.TargetView.Update();
-
-                context.ExecuteQuery();
-
-                _originalViewId = bindContext.OriginalViewId.Value;
-            }
 
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
                                          .SetListName(bindContext.ListId.ToString())
@@ -73,28 +57,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             return wpXml;
         }
 
-        protected override void InternalOnAfterWebPartProvision(ListItemModelHost listItemModelHost, WebPartDefinitionBase wpModel)
-        {
-            base.InternalOnAfterWebPartProvision(listItemModelHost, wpModel);
 
-            if (_originalViewId.HasValue)
-            {
-                XsltListViewWebPartDefinition model = wpModel as XsltListViewWebPartDefinition;
-
-                var context = listItemModelHost.HostWeb.Context;
-
-                var list = LookupList(listItemModelHost, model);
-                var view = list.GetView(_originalViewId.Value);
-
-                view.DefaultView = true;
-                view.Update();
-
-                context.Load(view);
-                context.ExecuteQuery();
-
-                _originalViewId = null;
-            }
-        }
 
         private List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
@@ -122,6 +85,61 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             }
 
             return list;
+        }
+
+        protected override void InternalOnAfterWebPartProvision(WebPartProcessingContext provisionContext)
+        {
+            base.InternalOnAfterWebPartProvision(provisionContext);
+
+            var webPartModel = provisionContext.WebPartDefinition;
+
+            var listItemModelHost = provisionContext.ListItemModelHost;
+            var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
+
+            var webPartStoreKey = provisionContext.WebPartStoreKey;
+            var context = provisionContext.ListItemModelHost.HostWeb.Context;
+
+            var bindContext = LookupBindContext(listItemModelHost, wpModel);
+
+            if (bindContext.TargetViewId.HasValue
+                && bindContext.TargetViewId != default(Guid)
+                && provisionContext.WebPartStoreKey.HasValue
+                && provisionContext.WebPartStoreKey.Value != default(Guid))
+            {
+                var list = LookupList(listItemModelHost, wpModel);
+
+                var srcView = list.Views.GetById(bindContext.TargetViewId.Value);
+                var hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
+
+                context.Load(srcView, s => s.ViewFields);
+
+                context.Load(srcView, s => s.RowLimit);
+                context.Load(srcView, s => s.ViewQuery);
+                context.Load(srcView, s => s.JSLink);
+
+                context.Load(srcView, s => s.IncludeRootFolder);
+                context.Load(srcView, s => s.Scope);
+
+                context.Load(hiddenView);
+
+                context.ExecuteQuery();
+
+                hiddenView.ViewFields.RemoveAll();
+
+                foreach (var f in srcView.ViewFields)
+                    hiddenView.ViewFields.Add(f);
+
+
+                hiddenView.RowLimit = srcView.RowLimit;
+                hiddenView.ViewQuery = srcView.ViewQuery;
+                hiddenView.JSLink = srcView.JSLink;
+
+                hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
+                hiddenView.Scope = srcView.Scope;
+
+                hiddenView.Update();
+                context.ExecuteQuery();
+            }
         }
 
         private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
