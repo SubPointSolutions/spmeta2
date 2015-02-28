@@ -107,6 +107,7 @@
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
+    <Compile Include="Definitions\MasterPageDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />
     <Compile Include="Definitions\RootWebDefinition.cs" />

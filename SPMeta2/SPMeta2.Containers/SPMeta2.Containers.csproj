@@ -62,12 +62,18 @@
     <Compile Include="Assertion\PropertyValidationResult.cs" />
     <Compile Include="Common\EventHits.cs" />
     <Compile Include="Consts\EnvironmentConsts.cs" />
+    <Compile Include="DefaultMasterPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultMasterPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="DefaultWebpartTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\MasterPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ResetRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentParserDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TreeViewSettingsDefinitionGenerator.cs" />
@@ -184,6 +190,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DefaultMasterPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultMasterPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DefaultWebpartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultWebpartTemplates.Designer.cs</LastGenOutput>

@@ -698,7 +698,28 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region master page gallery
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
+        public void CanDeployRandom_MasterPageDefinition()
+        {
+            TestRandomDefinition<MasterPageDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
+        public void CanDeployRandom_PublishingPageLayoutDefinition()
+        {
+            TestRandomDefinition<PublishingPageLayoutDefinition>();
+        }
+
+        #endregion
+
         #region pages scope
+
+       
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Pages")]
@@ -707,12 +728,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<PublishingPageDefinition>();
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd.Pages")]
-        public void CanDeployRandom_PublishingPageLayoutDefinition()
-        {
-            TestRandomDefinition<PublishingPageLayoutDefinition>();
-        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Pages")]

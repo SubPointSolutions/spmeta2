@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MasterPageDefinitionSyntax.cs" />
     <Compile Include="ResetRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="DocumentParserSyntax.cs" />
     <Compile Include="AuditSettingsSyntax.cs" />
