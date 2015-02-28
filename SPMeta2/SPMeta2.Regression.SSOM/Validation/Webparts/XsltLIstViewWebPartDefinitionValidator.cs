@@ -173,7 +173,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
 
                 // title link
-                if (definition.TitleUrl == null)
+                if (string.IsNullOrEmpty(definition.TitleUrl))
                 {
                     // list?
                     if (hasView)

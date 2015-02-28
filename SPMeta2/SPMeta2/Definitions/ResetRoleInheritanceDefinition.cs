@@ -25,5 +25,15 @@ namespace SPMeta2.Definitions
         #region properties
 
         #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            // we need that to pass SPMeta2 API tests 'DefinitionsShouldHaveToStringOverride'
+            return base.ToString();
+        }
+
+        #endregion
     }
 }

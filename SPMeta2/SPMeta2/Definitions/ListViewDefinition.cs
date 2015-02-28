@@ -43,6 +43,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Title { get; set; }
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace SPMeta2.Definitions
         /// </summary>
 
         [ExpectValidation]
+        [ExpectUpdate]
         public int RowLimit { get; set; }
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdateAsCamlQuery]
         public string Query { get; set; }
 
         /// <summary>
@@ -73,6 +76,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool IsPaged { get; set; }
 
         /// <summary>
@@ -80,19 +84,27 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool IsDefault { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdateAsInternalFieldName]
         public Collection<string> Fields { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string JSLink { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? DefaultViewForContentType { get; set; }
 
         [ExpectValidation]

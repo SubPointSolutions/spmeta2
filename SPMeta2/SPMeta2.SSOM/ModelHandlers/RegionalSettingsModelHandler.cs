@@ -50,6 +50,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             MapRegionalSettings(settings, definition);
 
             web.RegionalSettings = settings;
+            web.Update();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

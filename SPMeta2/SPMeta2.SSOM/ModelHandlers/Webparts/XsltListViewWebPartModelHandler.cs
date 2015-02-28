@@ -86,7 +86,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             }
 
             // able to 'reset', if NULL or use list-view based URLs
-            if (typedModel.TitleUrl != null)
+            if (!string.IsNullOrEmpty(typedModel.TitleUrl))
                 typedWebpart.TitleUrl = typedModel.TitleUrl;
 
             // weird, but it must be set to avoid null-ref exceptions

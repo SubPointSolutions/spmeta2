@@ -36,7 +36,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-
+        [ExpectUpdate]
         public int PageLayoutTemplate { get; set; }
 
         /// <summary>

@@ -40,14 +40,17 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         public byte[] Content { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string DefaultCSSFile { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsUIVersion]
         public List<string> UIVersion { get; set; }
 
         #endregion

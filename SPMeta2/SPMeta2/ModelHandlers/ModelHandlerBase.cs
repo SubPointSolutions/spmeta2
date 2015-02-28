@@ -95,7 +95,7 @@ namespace SPMeta2.ModelHandlers
         /// <param name="args"></param>
         protected void InvokeOnModelEvent(object sender, ModelEventArgs args)
         {
-            TraceService.InformationFormat((int)LogEventId.CoreCalls, "Entering InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
+            TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Entering InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
                 new object[] { sender, args });
 
             if (OnModelEvent != null)
@@ -111,7 +111,7 @@ namespace SPMeta2.ModelHandlers
                 TraceService.Verbose((int)LogEventId.CoreCalls, "OnModelEvent is NULL. Skipping.");
             }
 
-            TraceService.InformationFormat((int)LogEventId.CoreCalls, "Leaving InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
+            TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Leaving InvokeOnModelEvent with sender: [{0}] and args: [{1}]",
                  new object[] { sender, args });
         }
 

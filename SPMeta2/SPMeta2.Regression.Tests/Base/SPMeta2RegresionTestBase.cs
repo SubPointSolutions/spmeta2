@@ -184,23 +184,41 @@ namespace SPMeta2.Regression.Tests.Base
                     {
                         object newValue = null;
 
-                        if (prop.PropertyType == typeof(string))
-                            newValue = RegressionService.RndService.String();
-                        else if (prop.PropertyType == typeof(bool))
-                            newValue = RegressionService.RndService.Bool();
-                        else if (prop.PropertyType == typeof(bool?))
-                            newValue = RegressionService.RndService.Bool() ? (bool?)null : RegressionService.RndService.Bool();
-                        else if (prop.PropertyType == typeof(int))
-                            newValue = RegressionService.RndService.Int();
-                        else if (prop.PropertyType == typeof(int?))
-                            newValue = RegressionService.RndService.Bool() ? (int?)null : RegressionService.RndService.Int();
-                        else if (prop.PropertyType == typeof(uint))
-                            newValue = (uint)RegressionService.RndService.Int();
-                        else if (prop.PropertyType == typeof(uint?))
-                            newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
+                        var attrs = prop.GetCustomAttributes(typeof(ExpectUpdate), true);
+
+                        if (attrs.Count(a => a is ExpectUpdateAsLCID) > 0)
+                        {
+                            var newLocaleIdValue = 1033 + RegressionService.RndService.Int(5);
+
+                            if (prop.PropertyType == typeof(int))
+                                newValue = newLocaleIdValue;
+                            else if (prop.PropertyType == typeof(int?))
+                                newValue = RegressionService.RndService.Bool() ? (int?)null : newLocaleIdValue;
+                            else if (prop.PropertyType == typeof(uint))
+                                newValue = (uint)newLocaleIdValue;
+                            else if (prop.PropertyType == typeof(uint?))
+                                newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)newLocaleIdValue);
+                        }
                         else
                         {
-                            throw new NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
+                            if (prop.PropertyType == typeof(string))
+                                newValue = RegressionService.RndService.String();
+                            else if (prop.PropertyType == typeof(bool))
+                                newValue = RegressionService.RndService.Bool();
+                            else if (prop.PropertyType == typeof(bool?))
+                                newValue = RegressionService.RndService.Bool() ? (bool?)null : RegressionService.RndService.Bool();
+                            else if (prop.PropertyType == typeof(int))
+                                newValue = RegressionService.RndService.Int();
+                            else if (prop.PropertyType == typeof(int?))
+                                newValue = RegressionService.RndService.Bool() ? (int?)null : RegressionService.RndService.Int();
+                            else if (prop.PropertyType == typeof(uint))
+                                newValue = (uint)RegressionService.RndService.Int();
+                            else if (prop.PropertyType == typeof(uint?))
+                                newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
+                            else
+                            {
+                                throw new NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
+                            }
                         }
 
                         trace.WriteLine(string.Format("[INF]\t\tChanging property [{0}] from [{1}] to [{2}]", prop.Name, prop.GetValue(def), newValue));

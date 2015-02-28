@@ -24,9 +24,11 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? QuickLaunchEnabled { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? TreeViewEnabled { get; set; }
 
         #endregion

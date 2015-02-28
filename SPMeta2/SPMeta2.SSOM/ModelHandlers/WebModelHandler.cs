@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
@@ -49,6 +50,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     web.Title = webModel.Title;
                     web.Description = webModel.Description;
+
+                    web.Locale = new CultureInfo((int)webModel.LCID);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {

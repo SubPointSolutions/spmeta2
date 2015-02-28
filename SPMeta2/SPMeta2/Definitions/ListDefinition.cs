@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Title { get; set; }
 
         [ExpectValidation]
@@ -53,6 +54,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         /// <summary>
@@ -96,6 +98,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool ContentTypesEnabled { get; set; }
 
         /// <summary>
@@ -127,12 +130,14 @@ namespace SPMeta2.Definitions
         public bool? ForceCheckout { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? Hidden { get; set; }
 
         [ExpectValidation]
         public bool? NoCrawl { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? OnQuickLaunch { get; set; }
 
         #endregion

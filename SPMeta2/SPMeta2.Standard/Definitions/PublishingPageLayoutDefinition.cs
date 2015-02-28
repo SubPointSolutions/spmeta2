@@ -29,6 +29,7 @@ namespace SPMeta2.Standard.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         /// <summary>
@@ -39,6 +40,8 @@ namespace SPMeta2.Standard.Definitions
         /// <summary>
         /// Associated content type of the target publishing page layout.
         /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
         public string AssociatedContentTypeId { get; set; }
 
         #endregion

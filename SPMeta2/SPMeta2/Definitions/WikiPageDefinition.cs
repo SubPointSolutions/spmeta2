@@ -23,6 +23,8 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [ExpectValidation]
+         [ExpectUpdate]
         public string Content { get; set; }
 
         #endregion

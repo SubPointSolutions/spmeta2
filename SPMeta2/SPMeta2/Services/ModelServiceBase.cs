@@ -56,7 +56,7 @@ namespace SPMeta2.Services
             var traceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
             var handlerTypes = ReflectionUtils.GetTypesFromAssembly<T>(asm);
 
-            traceService.InformationFormat((int)LogEventId.CoreCalls,
+            traceService.VerboseFormat((int)LogEventId.CoreCalls,
                   "RegisterModelHandlers for service:[{0}] and assembly: [{1}]",
                   new object[]
                     {
@@ -131,7 +131,7 @@ namespace SPMeta2.Services
 
         public void RegisterModelHandler(ModelHandlerBase modelHandlerType)
         {
-            TraceService.InformationFormat((int)LogEventId.CoreCalls,
+            TraceService.VerboseFormat((int)LogEventId.CoreCalls,
                   "RegisterModelHandler of type:[{0}] for target type:[{1}]",
                   new object[]
                     {

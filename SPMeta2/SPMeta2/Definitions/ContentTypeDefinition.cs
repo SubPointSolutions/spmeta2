@@ -66,6 +66,10 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         public string Group { get; set; }
 
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool Hidden { get; set; }
+
         /// <summary>
         /// Parent content type id. BuiltInContentTypeId class could be used to utilize out of the box content type ids.
         /// </summary>
