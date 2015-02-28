@@ -88,7 +88,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is FolderModelHost)
             {
-                return (modelHost as FolderModelHost).CurrentLibraryFolder;
+                var folderModelHost = (modelHost as FolderModelHost);
+
+                if (folderModelHost.CurrentLibraryFolder != null)
+                    return folderModelHost.CurrentLibraryFolder;
+
+                return folderModelHost.CurrentListItem.Folder;
             }
 
             TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall, "Unsupported model host of type: [{0}]. Throwing SPMeta2UnsupportedModelHostException",

@@ -19,7 +19,8 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)
-                                           .ShouldNotBeNull(spObject);
+                                           .ShouldNotBeNull(spObject)
+                                           .ShouldBeEndOf(m => m.Url, o => o.WelcomePage);
 
         }
 

@@ -17,7 +17,8 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)
-                                           .ShouldNotBeNull(spObject);
+                                           .ShouldNotBeNull(spObject)
+                                           .ShouldBeEndOf(m => m.Url, o => o.WelcomePage);
         }
 
         #endregion

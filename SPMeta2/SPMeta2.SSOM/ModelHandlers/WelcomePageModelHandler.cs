@@ -72,7 +72,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else if (modelHost is FolderModelHost)
             {
-                return (modelHost as FolderModelHost).CurrentLibraryFolder;
+                var folderModelHost = (modelHost as FolderModelHost);
+
+                if (folderModelHost.CurrentLibraryFolder != null)
+                    return folderModelHost.CurrentLibraryFolder;
+
+                return folderModelHost.CurrentListItem.Folder;
             }
 
             throw new ArgumentException("modelHost shoue be web/list/folder model host");

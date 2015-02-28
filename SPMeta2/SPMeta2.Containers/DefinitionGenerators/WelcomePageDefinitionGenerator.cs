@@ -20,7 +20,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 // TODO
                 // generate list with the random page and  setup and welcome page
 
-                def.Url = "Shared%20Documents";
+                def.Url = "Shared Documents";
             });
         }
     }

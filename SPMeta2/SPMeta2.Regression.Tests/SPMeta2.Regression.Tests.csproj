@@ -119,6 +119,7 @@
     <Compile Include="Impl\Scenarios\WebPartPageScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Webparts\ContentEditorWebPartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Webparts\XsltListViewWebPartScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\WelcomePageScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WikiPageScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebpartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />

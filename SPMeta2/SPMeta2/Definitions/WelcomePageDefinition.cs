@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// A web relative URL to the target page.
         /// </summary>
+        
+        [ExpectValidation]
         public string Url { get; set; }
 
         #endregion
