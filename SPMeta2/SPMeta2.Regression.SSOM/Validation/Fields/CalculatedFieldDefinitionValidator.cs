@@ -49,12 +49,23 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             {
                 var hasFieldRefs = true;
 
-                foreach (var dstFieldRef in typedField.FieldReferences)
+                if (typedField.FieldReferences != null)
                 {
-                    if (typedDefinition.FieldReferences.FirstOrDefault(c => c.ToUpper() == dstFieldRef.ToUpper()) == null)
+                    foreach (var dstFieldRef in typedField.FieldReferences)
                     {
-                        hasFieldRefs = false;
+                        if (typedDefinition.FieldReferences.FirstOrDefault(c => c.ToUpper() == dstFieldRef.ToUpper()) ==
+                            null)
+                        {
+                            hasFieldRefs = false;
+                        }
                     }
+
+                    if (typedField.FieldReferences.Length == 0)
+                        hasFieldRefs = false;
+                }
+                else
+                {
+                    hasFieldRefs = false;
                 }
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>

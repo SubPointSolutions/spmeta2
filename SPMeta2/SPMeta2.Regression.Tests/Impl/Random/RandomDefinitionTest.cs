@@ -719,7 +719,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region pages scope
 
-       
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Pages")]

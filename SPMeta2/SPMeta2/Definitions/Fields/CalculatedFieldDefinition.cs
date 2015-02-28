@@ -60,6 +60,19 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         public Collection<string> FieldReferences { get; set; }
 
+        [ExpectValidation]
+        public override string DefaultValue
+        {
+            get
+            {
+                // #SPBUG
+                // Calculated field MUST return string.Empty to avoid setting DefaultValue for field.
+                // SharePoint drive crazy if calculated field has default value. FieldRefs would be NULL, tons of failures would be there.
+                return string.Empty;
+            }
+            set { }
+        }
+
         #endregion
 
         #region methods

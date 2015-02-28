@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Exceptions;
@@ -30,12 +31,17 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.EnableDefinitionValidation = true;
 
-            //EnablePropertyUpdateValidation = false;
+            RegressionService.ShowOnlyFalseResults = true;
+
+            EnablePropertyUpdateValidation = true;
+            PropertyUpdateGenerationCount = 2;
         }
 
         #endregion
 
         #region static
+
+        public int PropertyUpdateGenerationCount { get; set; }
 
         protected static void InternalCleanup()
         {
@@ -90,11 +96,7 @@ namespace SPMeta2.Regression.Tests.Base
         {
             var model = RegressionService.TestRandomDefinition(definitionSetup);
 
-            if (EnablePropertyUpdateValidation)
-            {
-                ProcessPropertyUpdateValidation(new[] { model });
-                RegressionService.TestModels(new[] { model });
-            }
+            PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(new[] { model });
         }
 
         protected void WithSPMeta2NotSupportedExceptions(Action action)
@@ -128,15 +130,22 @@ namespace SPMeta2.Regression.Tests.Base
             TestModels(new[] { firstModel, secondModel });
         }
 
+        protected void PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(IEnumerable<ModelNode> models)
+        {
+            if (EnablePropertyUpdateValidation)
+            {
+                for (int index = 0; index < PropertyUpdateGenerationCount; index++)
+                {
+                    ProcessPropertyUpdateValidation(models);
+                    RegressionService.TestModels(models);
+                }
+            }
+        }
+
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
-
-            if (EnablePropertyUpdateValidation)
-            {
-                ProcessPropertyUpdateValidation(models);
-                RegressionService.TestModels(models);
-            }
+            PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
         }
 
         private void ProcessPropertyUpdateValidation(IEnumerable<ModelNode> models)

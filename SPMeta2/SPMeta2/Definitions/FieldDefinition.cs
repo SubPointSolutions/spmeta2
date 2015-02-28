@@ -139,38 +139,38 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
-        public string DefaultValue { get; set; }
+        public virtual string DefaultValue { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool Hidden { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInDisplayForm { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInEditForm { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInListSettings { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInNewForm { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInVersionHistory { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? ShowInViewForms { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? AllowDeletion { get; set; }
 
         [ExpectValidation]
@@ -178,11 +178,11 @@ namespace SPMeta2.Definitions
         public virtual bool Indexed { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public string ValidationFormula { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public string ValidationMessage { get; set; }
 
         #endregion

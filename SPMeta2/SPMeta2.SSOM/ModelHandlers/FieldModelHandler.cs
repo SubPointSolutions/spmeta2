@@ -288,14 +288,44 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentField;
         }
 
-        protected virtual void ProcessFieldProperties(SPField field, FieldDefinition fieldModel)
+        protected virtual void ProcessFieldProperties(SPField field, FieldDefinition definition)
         {
-            field.Title = fieldModel.Title;
+            field.Title = definition.Title;
 
-            field.Description = fieldModel.Description ?? string.Empty;
-            field.Group = fieldModel.Group ?? string.Empty;
+            field.Description = definition.Description ?? string.Empty;
+            field.Group = definition.Group ?? string.Empty;
 
-            field.Required = fieldModel.Required;
+            field.Required = definition.Required;
+
+            if (definition.AllowDeletion.HasValue)
+                field.AllowDeletion = definition.AllowDeletion.Value;
+
+            if (!string.IsNullOrEmpty(definition.DefaultValue))
+                field.DefaultValue = definition.DefaultValue;
+
+            field.Indexed = definition.Indexed;
+
+#if !NET35
+            field.JSLink = definition.JSLink;
+#endif
+
+            if (definition.ShowInEditForm.HasValue)
+                field.ShowInEditForm = definition.ShowInEditForm.Value;
+
+            if (definition.ShowInDisplayForm.HasValue)
+                field.ShowInDisplayForm = definition.ShowInDisplayForm.Value;
+
+            if (definition.ShowInListSettings.HasValue)
+                field.ShowInListSettings = definition.ShowInListSettings.Value;
+
+            if (definition.ShowInViewForms.HasValue)
+                field.ShowInViewForms = definition.ShowInViewForms.Value;
+
+            if (definition.ShowInNewForm.HasValue)
+                field.ShowInNewForm = definition.ShowInNewForm.Value;
+
+            if (definition.ShowInVersionHistory.HasValue)
+                field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
         }
 
         #endregion
