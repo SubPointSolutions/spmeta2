@@ -41,4 +41,9 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
+
+    public class ExpectUpdateAsWebPartPageLayoutTemplate : ExpectUpdate
+    {
+        
+    }
 }

@@ -104,6 +104,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (listViewModel.DefaultViewForContentType.HasValue)
                     currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
 
+                currentView.Hidden = listViewModel.Hidden;
+
                 currentView.Title = listViewModel.Title;
                 currentView.Update();
 
@@ -121,6 +123,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
 
+                currentView.Hidden = listViewModel.Hidden;
 
                 currentView.RowLimit = (uint)listViewModel.RowLimit;
                 currentView.DefaultView = listViewModel.IsDefault;

@@ -280,6 +280,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentWeb.Title = webModel.Title;
                 currentWeb.Description = webModel.Description ?? string.Empty;
 
+                //  locale is not available with CSOM yet
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,

@@ -108,6 +108,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing content type");
                 }
 
+                targetContentType.Hidden = contentTypeModel.Hidden;
+
                 targetContentType.Name = contentTypeModel.Name;
                 targetContentType.Group = contentTypeModel.Group;
 

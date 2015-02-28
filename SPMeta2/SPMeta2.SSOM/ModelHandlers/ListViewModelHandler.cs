@@ -105,6 +105,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     currentView.ViewFields.Add(viewField);
             }
 
+            currentView.Hidden = listViewModel.Hidden;
             currentView.Title = listViewModel.Title;
             currentView.RowLimit = (uint)listViewModel.RowLimit;
             currentView.DefaultView = listViewModel.IsDefault;

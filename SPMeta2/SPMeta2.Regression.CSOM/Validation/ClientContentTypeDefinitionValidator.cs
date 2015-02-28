@@ -46,6 +46,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                   .ShouldNotBeNull(spObject)
                   .ShouldBeEqual(m => m.Name, o => o.Name)
                   .ShouldBeEqual(m => m.Group, o => o.Group)
+                  .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                   .ShouldBeEqual(m => m.Description, o => o.Description);
 
             if (definition.Id == default(Guid))

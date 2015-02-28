@@ -15,6 +15,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Title = Rnd.String();
                 def.FileName = Rnd.String() + ".aspx";
                 def.NeedOverride = true;
+
+                def.Content = Rnd.String();
             });
         }
 

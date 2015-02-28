@@ -146,6 +146,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType = tmp;
             }
 
+            currentContentType.Hidden = contentTypeModel.Hidden;
+
             currentContentType.Name = contentTypeModel.Name;
             currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
             currentContentType.Group = contentTypeModel.Group;

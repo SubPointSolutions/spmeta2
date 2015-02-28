@@ -23,7 +23,16 @@ namespace SPMeta2.Regression.SSOM.Validation
                                       .NewAssert(definition, spObject)
                                             .ShouldNotBeNull(spObject)
                                             .ShouldBeEqual(m => m.FileName, o => o.Name)
+                                            .ShouldBePartOf(m => m.Content, o => o.GetWikiPageContent())
                                             .SkipProperty(m => m.Title, "Title field is not available for wiki pages.");
+        }
+    }
+
+    internal static class WikiPgeHalper
+    {
+        public static string GetWikiPageContent(this SPListItem pageItem)
+        {
+            return pageItem[SPBuiltInFieldId.WikiField] as string;
         }
     }
 }

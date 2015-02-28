@@ -27,6 +27,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.ViewQuery,
                 o => o.RowLimit,
                 o => o.Paged,
+                o => o.Hidden,
                 o => o.JSLink,
                 o => o.ServerRelativeUrl,
                 o => o.DefaultViewForContentType,
@@ -40,6 +41,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           .ShouldNotBeNull(spObject)
                                           .ShouldBeEqual(m => m.Title, o => o.Title)
                                           .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
+                                          .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                                           .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
                                           .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);

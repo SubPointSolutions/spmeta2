@@ -29,6 +29,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                                .ShouldBeEqual(m => m.Title, o => o.Title)
                                .ShouldBeEqual(m => m.IsDefault, o => o.IsDefaul())
                                .ShouldBeEqual(m => m.Query, o => o.Query)
+                               .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 

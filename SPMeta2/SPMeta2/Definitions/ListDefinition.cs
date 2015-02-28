@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions
         public ListDefinition()
         {
             Description = string.Empty;
+            Hidden = false;
         }
 
         #region properties
@@ -112,21 +113,27 @@ namespace SPMeta2.Definitions
         public bool? NeedToCopyRoleAssignmets { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? EnableAttachments { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? EnableFolderCreation { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate]
         public bool? EnableMinorVersions { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate]
         public bool? EnableModeration { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate]
         public bool? EnableVersioning { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate]
         public bool? ForceCheckout { get; set; }
 
         [ExpectValidation]
@@ -134,6 +141,7 @@ namespace SPMeta2.Definitions
         public bool? Hidden { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? NoCrawl { get; set; }
 
         [ExpectValidation]

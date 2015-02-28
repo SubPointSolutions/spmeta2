@@ -18,7 +18,9 @@ using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Enumerations;
 using SPMeta2.Validation.Services;
+using System.Collections.ObjectModel;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -199,6 +201,115 @@ namespace SPMeta2.Regression.Tests.Base
                             else if (prop.PropertyType == typeof(uint?))
                                 newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)newLocaleIdValue);
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsUser) > 0)
+                        {
+                            var newUserValue = RegressionService.RndService.UserLogin();
+                            newValue = newUserValue;
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsWebPartPageLayoutTemplate) > 0)
+                        {
+                            var values = new List<int>();
+
+                            values.Add(BuiltInWebpartPageTemplateId.spstd1);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd2);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd3);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd4);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd5);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd6);
+                            values.Add(BuiltInWebpartPageTemplateId.spstd7);
+
+                            if (prop.PropertyType == typeof(int))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsBasePermission) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInBasePermissions.AddListItems);
+                            values.Add(BuiltInBasePermissions.ApproveItems);
+                            values.Add(BuiltInBasePermissions.CancelCheckout);
+                            values.Add(BuiltInBasePermissions.CreateGroups);
+                            values.Add(BuiltInBasePermissions.DeleteListItems);
+                            values.Add(BuiltInBasePermissions.EditListItems);
+                            values.Add(BuiltInBasePermissions.EditMyUserInfo);
+                            values.Add(BuiltInBasePermissions.EnumeratePermissions);
+                            values.Add(BuiltInBasePermissions.ManagePersonalViews);
+                            values.Add(BuiltInBasePermissions.ManageLists);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsCamlQuery) > 0)
+                        {
+                            newValue = string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
+                                    RegressionService.RndService.String());
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsInternalFieldName) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInInternalFieldNames.ID);
+                            values.Add(BuiltInInternalFieldNames.Edit);
+                            values.Add(BuiltInInternalFieldNames.Created);
+                            values.Add(BuiltInInternalFieldNames._Author);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsUIVersion) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add("4");
+                            values.Add("15");
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+
+                            if (prop.PropertyType == typeof(List<string>))
+                            {
+                                var result = new List<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
                         else
                         {
                             if (prop.PropertyType == typeof(string))
@@ -206,18 +317,28 @@ namespace SPMeta2.Regression.Tests.Base
                             else if (prop.PropertyType == typeof(bool))
                                 newValue = RegressionService.RndService.Bool();
                             else if (prop.PropertyType == typeof(bool?))
-                                newValue = RegressionService.RndService.Bool() ? (bool?)null : RegressionService.RndService.Bool();
+                                newValue = RegressionService.RndService.Bool()
+                                    ? (bool?)null
+                                    : RegressionService.RndService.Bool();
                             else if (prop.PropertyType == typeof(int))
                                 newValue = RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(int?))
-                                newValue = RegressionService.RndService.Bool() ? (int?)null : RegressionService.RndService.Int();
+                                newValue = RegressionService.RndService.Bool()
+                                    ? (int?)null
+                                    : RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(uint))
                                 newValue = (uint)RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(uint?))
-                                newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
+                                newValue =
+                                    (uint?)
+                                        (RegressionService.RndService.Bool()
+                                            ? (uint?)null
+                                            : (uint?)RegressionService.RndService.Int());
                             else
                             {
-                                throw new NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
+                                throw new NotImplementedException(
+                                    string.Format("Update validation for type: [{0}] is not supported yet",
+                                        prop.PropertyType));
                             }
                         }
 

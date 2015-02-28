@@ -29,6 +29,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                                      .NewAssert(definition, spObject)
                                            .ShouldNotBeNull(spObject)
                                            .ShouldBeEqual(m => m.FileName, o => o.GetName())
+                                           .ShouldBePartOf(m => m.Content, o => o.GetWikiPageContent())
                                            .SkipProperty(m => m.Title, "Title field is not available for wiki pages.");
 
         }
@@ -41,6 +42,11 @@ namespace SPMeta2.Regression.CSOM.Validation
         public static string GetName(this ListItem item)
         {
             return item.FieldValues["FileLeafRef"] as string;
+        }
+
+        public static string GetWikiPageContent(this ListItem pageItem)
+        {
+            return pageItem["WikiField"] as string;
         }
     }
 }
