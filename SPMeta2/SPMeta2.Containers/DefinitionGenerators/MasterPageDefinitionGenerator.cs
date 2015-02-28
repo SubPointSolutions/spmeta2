@@ -21,13 +21,11 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.Description = Rnd.String();
 
-                var pageIndex = Rnd.Int(3);
+                var pageIndex = Rnd.Int(2);
                 var pages = new[]
                 {
-                    Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.Minimal),
                     Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.Oslo),
-                    Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.Seattle),
-                    Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.V4)
+                    Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.Seattle)
                 };
 
                 def.Content = pages[pageIndex];

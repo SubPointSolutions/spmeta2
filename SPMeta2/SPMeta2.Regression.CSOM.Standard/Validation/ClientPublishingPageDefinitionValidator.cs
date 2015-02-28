@@ -3,6 +3,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.CSOM.Validation;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 
@@ -41,31 +42,5 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         #endregion
     }
 
-    internal static class SPListItemHelper
-    {
-        public static string GetTitle(this ListItem item)
-        {
-            return item["Title"] as string;
-        }
-
-        public static string GetFileName(this ListItem item)
-        {
-            return item["FileLeafRef"] as string;
-        }
-
-        public static string GetPublishingPageDescription(this ListItem item)
-        {
-            return item["Comments"] as string;
-        }
-
-        public static string GetPublishingPagePageLayoutFileName(this ListItem item)
-        {
-            var result = item["PublishingPageLayout"] as FieldUrlValue;
-
-            if (result != null)
-                return result.Url;
-
-            return string.Empty;
-        }
-    }
+   
 }
