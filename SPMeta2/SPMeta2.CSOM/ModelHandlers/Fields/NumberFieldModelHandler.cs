@@ -36,6 +36,16 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(fieldModel.ValidationFormula))
                 field.ValidationFormula = fieldModel.ValidationFormula;
+
+
+            var typedFieldModel = fieldModel.WithAssertAndCast<NumberFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field.Context.CastTo<FieldNumber>(field);
+
+            if (typedFieldModel.MinimumValue.HasValue)
+                typedField.MinimumValue = typedFieldModel.MinimumValue.Value;
+
+            if (typedFieldModel.MaximumValue.HasValue)
+                typedField.MaximumValue = typedFieldModel.MaximumValue.Value;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

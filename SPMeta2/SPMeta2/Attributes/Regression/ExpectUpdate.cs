@@ -69,4 +69,10 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
+
+    public class ExpectUpdateAsIntRange : ExpectUpdate
+    {
+        public int MinValue { get; set; }
+        public int MaxValue { get; set; }
+    }
 }

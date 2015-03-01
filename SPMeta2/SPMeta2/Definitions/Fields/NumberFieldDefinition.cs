@@ -40,12 +40,15 @@ namespace SPMeta2.Definitions.Fields
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 1000, MaxValue = 5000)]
         public double? MaximumValue { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 100, MaxValue = 500)]
         public double? MinimumValue { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate], only SSOM
         public bool ShowAsPercentage { get; set; }
 
         #endregion

@@ -253,8 +253,8 @@ namespace SPMeta2.Regression.Tests.Base
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsByte) > 0)
                         {
-                            if (prop.PropertyType == typeof (int?) ||
-                                prop.PropertyType == typeof (int?))
+                            if (prop.PropertyType == typeof(int?) ||
+                                prop.PropertyType == typeof(int?))
                                 newValue = Convert.ToInt32(RegressionService.RndService.Byte().ToString());
                             else
                             {
@@ -266,6 +266,25 @@ namespace SPMeta2.Regression.Tests.Base
                         {
                             newValue = string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
                                     RegressionService.RndService.String());
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsIntRange) > 0)
+                        {
+                            var attr = attrs.FirstOrDefault(a => a is ExpectUpdateAsIntRange) as ExpectUpdateAsIntRange;
+
+                            var minValue = attr.MinValue;
+                            var maxValue = attr.MaxValue;
+
+                            var tmpValue = minValue + RegressionService.RndService.Int(maxValue - minValue);
+
+                            if (prop.PropertyType == typeof(double?) ||
+                              prop.PropertyType == typeof(double))
+                                newValue = Convert.ToDouble(tmpValue);
+                            else
+                            {
+                                // TODO, as per case
+                                newValue = tmpValue;
+                            }
+
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsFileName) > 0)
                         {
@@ -388,9 +407,18 @@ namespace SPMeta2.Regression.Tests.Base
                             else if (prop.PropertyType == typeof(bool))
                                 newValue = RegressionService.RndService.Bool();
                             else if (prop.PropertyType == typeof(bool?))
-                                newValue = RegressionService.RndService.Bool()
-                                    ? (bool?)null
-                                    : RegressionService.RndService.Bool();
+                            {
+                                var oldValue = prop.GetValue(def) as bool?;
+
+                                if (oldValue == null || !oldValue.HasValue)
+                                {
+                                    newValue = RegressionService.RndService.Bool();
+                                }
+                                else
+                                {
+                                    newValue = !oldValue.Value;
+                                }
+                            }
                             else if (prop.PropertyType == typeof(int))
                                 newValue = RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(int?))
@@ -400,7 +428,11 @@ namespace SPMeta2.Regression.Tests.Base
                             else if (prop.PropertyType == typeof(uint))
                                 newValue = (uint)RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(uint?))
-                                newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
+                                newValue =
+                                    (uint?)
+                                        (RegressionService.RndService.Bool()
+                                            ? (uint?)null
+                                            : (uint?)RegressionService.RndService.Int());
                             else if (prop.PropertyType == typeof(Collection<string>))
                             {
                                 var resultLength = RegressionService.RndService.Int(10);
@@ -412,6 +444,13 @@ namespace SPMeta2.Regression.Tests.Base
                                     result.Add(RegressionService.RndService.String());
 
                                 newValue = result;
+                            }
+
+
+                            else if (prop.PropertyType == typeof(double?)
+                                || prop.PropertyType == typeof(double))
+                            {
+                                newValue = (double)RegressionService.RndService.Int();
                             }
                             else
                             {

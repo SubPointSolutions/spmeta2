@@ -36,6 +36,8 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        //[ExpectUpdate], SSOM ONLY
+
         public bool? EnableLookup { get; set; }
 
         #endregion
