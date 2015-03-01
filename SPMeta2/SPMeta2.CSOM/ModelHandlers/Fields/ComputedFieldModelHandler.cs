@@ -31,6 +31,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<ComputedFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field.Context.CastTo<FieldComputed>(field);
+
+            if (typedFieldModel.EnableLookup.HasValue)
+                typedField.EnableLookup = typedFieldModel.EnableLookup.Value;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
