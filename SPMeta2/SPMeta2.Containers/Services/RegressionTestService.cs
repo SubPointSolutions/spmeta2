@@ -412,15 +412,20 @@ namespace SPMeta2.Containers.Services
 
                     if (model.Value.GetType() == typeof(FarmDefinition))
                         runner.DeployFarmModel(model);
-
-                    if (model.Value.GetType() == typeof(WebApplicationDefinition))
+                    else if (model.Value.GetType() == typeof(WebApplicationDefinition))
                         runner.DeployWebApplicationModel(model);
-
-                    if (model.Value.GetType() == typeof(SiteDefinition))
+                    else if (model.Value.GetType() == typeof(SiteDefinition))
                         runner.DeploySiteModel(model);
-
-                    if (model.Value.GetType() == typeof(WebDefinition))
+                    else if (model.Value.GetType() == typeof(WebDefinition))
                         runner.DeployWebModel(model);
+                    else if (model.Value.GetType() == typeof(ListDefinition))
+                        runner.DeployListModel(model);
+                    else
+                    {
+                        throw new SPMeta2NotImplementedException(
+                            string.Format("Runner does not support model of type: [{0}]", model.Value.GetType()));
+
+                    }
 
                     var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
                     AssertService.IsFalse(hasMissedOrInvalidProps);

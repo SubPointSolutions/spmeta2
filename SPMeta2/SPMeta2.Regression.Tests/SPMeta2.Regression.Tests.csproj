@@ -78,6 +78,7 @@
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
     <Compile Include="Impl\Misc\ProvisionServiceTest.cs" />
+    <Compile Include="Impl\ModelAPI\SPMeta2ModelTests.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\ResetRoleInheritanceScenariousTest.cs" />
@@ -125,9 +126,6 @@
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebConfigModificationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
-    <Compile Include="Impl\Upgrade\ListViewUpgradeTest.cs" />
-    <Compile Include="Impl\Upgrade\ContentTypeUpgradeTest.cs" />
-    <Compile Include="Impl\Upgrade\FieldUpgradeTest.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -217,6 +217,56 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
+        #region webs
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty list model".
+        /// List model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// </summary>
+        /// <returns></returns>
+        public static ModelNode NewListModel()
+        {
+            return NewListModel((ListDefinition)null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding web model provided.
+        /// If RequireSelfProcessing set as 'true', then web model is going to be processed and pushed by SPMeta2 API.
+        /// </summary>
+        /// <param name="listDefinition"></param>
+        /// <returns></returns>
+        public static ModelNode NewListModel(ListDefinition listDefinition)
+        {
+            return NewListModel(listDefinition, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding "empty list model".
+        /// Web model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
+        /// Use action to get access to the "list model node" and construct model tree.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewListModel(Action<ModelNode> action)
+        {
+            return NewListModel(new ListDefinition { RequireSelfProcessing = false }, action);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the ModelNode adding list model provided.
+        /// If RequireSelfProcessing set as 'true', then list model is going to be processed and pushed by SPMeta2 API.
+        /// Use action to get access to the "list model node" and construct model tree.
+        /// </summary>
+        /// <param name="listDefinition"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ModelNode> action)
+        {
+            return NewModelNode<ListDefinition>(listDefinition, action);
+        }
+
+        #endregion
+
         #region utils
 
         private static ModelNode NewModelNode<TModelDefinition>(TModelDefinition model, Action<ModelNode> action)

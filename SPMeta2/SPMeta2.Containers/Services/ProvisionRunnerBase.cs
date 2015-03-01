@@ -40,22 +40,27 @@ namespace SPMeta2.Containers.Services
 
         public virtual void DeployFarmModel(ModelNode model)
         {
-
+            throw new NotImplementedException();
         }
 
         public virtual void DeployWebApplicationModel(ModelNode model)
         {
-
+            throw new NotImplementedException();
         }
 
         public virtual void DeploySiteModel(ModelNode model)
         {
-
+            throw new NotImplementedException();
         }
 
         public virtual void DeployWebModel(ModelNode model)
         {
+            throw new NotImplementedException();
+        }
 
+        public virtual void DeployListModel(ModelNode model)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -70,6 +75,6 @@ namespace SPMeta2.Containers.Services
 
         }
 
-
+        
     }
 }

@@ -148,6 +148,28 @@ namespace SPMeta2.Containers.CSOM
             throw new SPMeta2UnsupportedCSOMRunnerException();
         }
 
+        public override void DeployListModel(ModelNode model)
+        {
+            foreach (var webUrl in WebUrls)
+            {
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+                WithCSOMContext(webUrl, context =>
+                {
+                    for (var provisionGeneration = 0;
+                        provisionGeneration < ProvisionGenerationCount;
+                        provisionGeneration++)
+                    {
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                    }
+                });
+            }
+        }
+
         /// <summary>
         /// Deploys and validates target web model.
         /// </summary>

@@ -178,6 +178,26 @@ namespace SPMeta2.Containers.SSOM
             }
         }
 
+        public override void DeployListModel(ModelNode model)
+        {
+            foreach (var webUrl in WebUrls)
+            {
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithSSOMSiteAndWebContext(webUrl, (site, web) =>
+                    {
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                    });
+                }
+            }
+        }
+
         #endregion
 
         #region utils
