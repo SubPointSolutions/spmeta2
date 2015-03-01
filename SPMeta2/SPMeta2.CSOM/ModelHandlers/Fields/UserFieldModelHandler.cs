@@ -35,6 +35,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
 
             typedField.AllowDisplay = typedFieldModel.AllowDisplay;
+            typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
+            typedField.Presence = typedFieldModel.Presence;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

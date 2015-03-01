@@ -38,12 +38,15 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool AllowMultipleValues { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool AllowDisplay { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool Presence { get; set; }
 
         /// <summary>

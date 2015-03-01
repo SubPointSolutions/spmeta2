@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.BusinessData.MetadataModel;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -14,6 +16,30 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             {
                 return typeof(UserFieldDefinition);
             }
+        }
+
+        protected override void CustomFieldTypeValidation(AssertPair<FieldDefinition, SPField> assert, SPField spObject, FieldDefinition definition)
+        {
+            var typedObject = spObject as SPFieldUser;
+            var typedDefinition = definition.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.FieldType);
+                var dstProp = d.GetExpressionValue(m => d.TypeAsString);
+
+                var isValid = typedDefinition.AllowMultipleValues
+                    ? typedObject.TypeAsString == "UserMulti"
+                    : typedObject.TypeAsString == "User";
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)

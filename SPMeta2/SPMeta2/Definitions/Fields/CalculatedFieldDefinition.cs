@@ -49,15 +49,19 @@ namespace SPMeta2.Definitions.Fields
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsCalculatedFieldFormula]
         public string Formula { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAssCalculatedFieldOutputType]
         public string OutputType { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdate]
         public bool? ShowAsPercentage { get; set; }
 
         [ExpectValidation]
+        //[ExpectUpdateAssCalculatedFieldReferences]
         public Collection<string> FieldReferences { get; set; }
 
         [ExpectValidation]

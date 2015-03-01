@@ -27,8 +27,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
                    BuiltInInternalFieldNames.FileType
                 },
                 Formula = string.Format("=ID*{0}", Rnd.Int(100)),
-                OutputType = BuiltInFieldTypes.Number,
-                ShowAsPercentage = Rnd.Bool()
+                OutputType = BuiltInFieldTypes.Number
             };
         }
     }

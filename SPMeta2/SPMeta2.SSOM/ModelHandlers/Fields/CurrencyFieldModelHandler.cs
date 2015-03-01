@@ -36,6 +36,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(fieldModel.ValidationFormula))
                 field.ValidationFormula = fieldModel.ValidationFormula;
+
+            var typedFieldModel = fieldModel.WithAssertAndCast<CurrencyFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field as SPFieldCurrency;
+
+            typedField.CurrencyLocaleId = typedFieldModel.CurrencyLocaleId;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

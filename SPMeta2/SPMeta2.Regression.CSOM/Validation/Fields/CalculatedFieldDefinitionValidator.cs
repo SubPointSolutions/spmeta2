@@ -37,8 +37,14 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             typedFieldAssert.ShouldBeEqual(m => m.DateFormat, o => o.GetDateFormatString());
 
             typedFieldAssert.ShouldBeEqual(m => m.OutputType, o => o.GetOutputType());
-            typedFieldAssert.ShouldBeEqual(m => m.ShowAsPercentage, o => o.GetShowAsPercentage());
+            //typedFieldAssert.ShouldBeEqual(m => m.ShowAsPercentage, o => o.GetShowAsPercentage());
             typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormatString());
+
+            if (typedDefinition.ShowAsPercentage.HasValue)
+                typedFieldAssert.ShouldBeEqual(m => m.ShowAsPercentage, o => o.GetShowAsPercentage());
+            else
+                typedFieldAssert.SkipProperty(m => m.ShowAsPercentage, "ShowAsPercentage is NULL. Skipping.");
+
 
             // formula
             typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);

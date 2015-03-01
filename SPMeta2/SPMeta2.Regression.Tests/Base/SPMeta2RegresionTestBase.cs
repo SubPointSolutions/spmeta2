@@ -354,6 +354,43 @@ namespace SPMeta2.Regression.Tests.Base
                             else
                                 newValue = BuiltInUrlFieldFormatType.Hyperlink;
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsCalculatedFieldFormula) > 0)
+                        {
+                            newValue = string.Format("=ID*{0}", RegressionService.RndService.Int(100));
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAssCalculatedFieldOutputType) > 0)
+                        {
+                            var curentValue = prop.GetValue(def) as string;
+
+                            if (curentValue == BuiltInFieldTypes.Number)
+                                newValue = BuiltInFieldTypes.Text;
+                            else
+                                newValue = BuiltInFieldTypes.Number;
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAssCalculatedFieldReferences) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInInternalFieldNames.ID);
+                            values.Add(BuiltInInternalFieldNames.FileRef);
+                            values.Add(BuiltInInternalFieldNames.FileType);
+                            values.Add(BuiltInInternalFieldNames.File_x0020_Size);
+                            values.Add(BuiltInInternalFieldNames.FirstName);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsPublishingPageContentType) > 0)
                         {
                             var values = new List<string>();

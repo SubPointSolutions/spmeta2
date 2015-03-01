@@ -36,6 +36,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             var typedField = field as SPFieldCalculated;
 
             typedField.Formula = typedFieldModel.Formula ?? string.Empty;
+
+            if (typedFieldModel.ShowAsPercentage.HasValue)
+                typedField.ShowAsPercentage = typedFieldModel.ShowAsPercentage.Value;
+
+            typedField.OutputType = (SPFieldType)Enum.Parse(typeof(SPFieldType), typedFieldModel.OutputType);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

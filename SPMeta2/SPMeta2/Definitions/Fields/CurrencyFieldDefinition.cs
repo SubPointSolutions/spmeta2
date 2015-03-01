@@ -35,6 +35,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdateAsLCID]
         public int CurrencyLocaleId { get; set; }
 
         #endregion

@@ -79,4 +79,19 @@ namespace SPMeta2.Attributes.Regression
     public class ExpectUpdateAsUrlFieldFormat : ExpectUpdate
     {
     }
+
+    public class ExpectUpdateAsCalculatedFieldFormula : ExpectUpdate
+    {
+        
+    }
+
+    public class ExpectUpdateAssCalculatedFieldOutputType : ExpectUpdate
+    {
+
+    }
+
+    public class ExpectUpdateAssCalculatedFieldReferences : ExpectUpdate
+    {
+
+    }
 }

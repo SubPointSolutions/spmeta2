@@ -35,6 +35,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedField = field.Context.CastTo<FieldCalculated>(field);
 
             typedField.Formula = typedFieldModel.Formula ?? string.Empty;
+            typedField.OutputType = typedField.OutputType = (FieldType)Enum.Parse(typeof(FieldType), typedFieldModel.OutputType);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
