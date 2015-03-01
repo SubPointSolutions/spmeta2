@@ -38,6 +38,15 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<MultiChoiceFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field.Context.CastTo<FieldMultiChoice>(field);
+
+            typedField.FillInChoice = typedFieldModel.FillInChoice;
+
+            if (typedFieldModel.Choices.Count > 0)
+            {
+                typedField.Choices = typedFieldModel.Choices.ToArray();
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

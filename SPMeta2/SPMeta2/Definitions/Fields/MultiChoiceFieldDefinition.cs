@@ -43,9 +43,11 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdate]
         public Collection<string> Choices { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool FillInChoice { get; set; }
 
         #endregion

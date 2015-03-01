@@ -31,6 +31,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field as SPFieldChoice;
+
+           
             if (!string.IsNullOrEmpty(fieldModel.ValidationMessage))
                 field.ValidationMessage = fieldModel.ValidationMessage;
 

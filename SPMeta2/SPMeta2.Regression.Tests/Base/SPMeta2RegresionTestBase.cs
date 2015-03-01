@@ -323,7 +323,6 @@ namespace SPMeta2.Regression.Tests.Base
                             values.Add(BuiltInPublishingContentTypeId.EnterpriseWikiPage);
                             values.Add(BuiltInPublishingContentTypeId.ErrorPage);
                             values.Add(BuiltInPublishingContentTypeId.RedirectPage);
-                            
 
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
@@ -390,11 +389,19 @@ namespace SPMeta2.Regression.Tests.Base
                             else if (prop.PropertyType == typeof(uint))
                                 newValue = (uint)RegressionService.RndService.Int();
                             else if (prop.PropertyType == typeof(uint?))
-                                newValue =
-                                    (uint?)
-                                        (RegressionService.RndService.Bool()
-                                            ? (uint?)null
-                                            : (uint?)RegressionService.RndService.Int());
+                                newValue = (uint?)(RegressionService.RndService.Bool() ? (uint?)null : (uint?)RegressionService.RndService.Int());
+                            else if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var resultLength = RegressionService.RndService.Int(10);
+                                var values = new List<string>();
+
+                                var result = new Collection<string>();
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(RegressionService.RndService.String());
+
+                                newValue = result;
+                            }
                             else
                             {
                                 throw new NotImplementedException(

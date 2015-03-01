@@ -32,6 +32,19 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
         {
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
+
+            var typedFieldModel = fieldModel.WithAssertAndCast<MultiChoiceFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field as SPFieldMultiChoice;
+
+            typedField.FillInChoice = typedFieldModel.FillInChoice;
+
+            if (typedFieldModel.Choices.Count > 0)
+            {
+                typedField.Choices.Clear();
+
+                foreach (var choice in typedFieldModel.Choices)
+                    typedField.Choices.Add(choice);
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -47,9 +60,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 var choicesNode = new XElement("CHOICES");
 
                 foreach (var choice in typedFieldModel.Choices)
-                {
                     choicesNode.Add(new XElement("CHOICE", choice));
-                }
 
                 fieldTemplate.Add(choicesNode);
             }
