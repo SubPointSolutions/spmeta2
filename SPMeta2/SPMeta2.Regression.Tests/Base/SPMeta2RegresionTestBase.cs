@@ -21,6 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Enumerations;
 using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -255,6 +256,16 @@ namespace SPMeta2.Regression.Tests.Base
                             newValue = string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
                                     RegressionService.RndService.String());
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsFileName) > 0)
+                        {
+                            var attr = attrs.FirstOrDefault(a => a is ExpectUpdateAsFileName) as ExpectUpdateAsFileName;
+                            var fileExtension = attr.Extension;
+
+                            if (!fileExtension.StartsWith("."))
+                                fileExtension = "." + fileExtension;
+
+                            newValue = string.Format("{0}{1}", RegressionService.RndService.String(), fileExtension);
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsInternalFieldName) > 0)
                         {
                             var values = new List<string>();
@@ -263,6 +274,32 @@ namespace SPMeta2.Regression.Tests.Base
                             values.Add(BuiltInInternalFieldNames.Edit);
                             values.Add(BuiltInInternalFieldNames.Created);
                             values.Add(BuiltInInternalFieldNames._Author);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsPageLayoutFileName) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInPublishingPageLayoutNames.ArticleLeft);
+                            values.Add(BuiltInPublishingPageLayoutNames.ArticleLinks);
+                            values.Add(BuiltInPublishingPageLayoutNames.ArticleRight);
+                            values.Add(BuiltInPublishingPageLayoutNames.BlankWebPartPage);
+                            values.Add(BuiltInPublishingPageLayoutNames.CatalogArticle);
+                            values.Add(BuiltInPublishingPageLayoutNames.CatalogWelcome);
+                            values.Add(BuiltInPublishingPageLayoutNames.EnterpriseWiki);
 
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];

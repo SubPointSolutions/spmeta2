@@ -30,7 +30,7 @@ namespace SPMeta2.Standard.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-        [ExpectUpdate]
+        [ExpectUpdateAsPageLayoutFileName]
         public string PageLayoutFileName { get; set; }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace SPMeta2.Standard.Definitions
         /// <summary>
         /// Content of the target publishing page.
         /// </summary>
-        [ExpectUpdate]
-        [ExpectValidation]
+        //[ExpectUpdate]
+        //[ExpectValidation]
         public string Content { get; set; }
 
         #endregion
