@@ -51,7 +51,8 @@ namespace SPMeta2.Definitions.Fields
             }
             set
             {
-                base.Indexed = value;
+                if (!AllowMultipleValues)
+                    base.Indexed = value;
             }
         }
 
@@ -60,6 +61,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool AllowMultipleValues { get; set; }
 
         /// <summary>

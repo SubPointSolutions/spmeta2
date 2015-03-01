@@ -222,34 +222,51 @@ namespace SPMeta2.Regression.Tests.Base
                             if (prop.PropertyType == typeof(int))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
                         }
-                        else if (attrs.Count(a => a is ExpectUpdateAsBasePermission) > 0)
+                        else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldCalendarType) > 0)
                         {
                             var values = new List<string>();
 
-                            values.Add(BuiltInBasePermissions.AddListItems);
-                            values.Add(BuiltInBasePermissions.ApproveItems);
-                            values.Add(BuiltInBasePermissions.CancelCheckout);
-                            values.Add(BuiltInBasePermissions.CreateGroups);
-                            values.Add(BuiltInBasePermissions.DeleteListItems);
-                            values.Add(BuiltInBasePermissions.EditListItems);
-                            values.Add(BuiltInBasePermissions.EditMyUserInfo);
-                            values.Add(BuiltInBasePermissions.EnumeratePermissions);
-                            values.Add(BuiltInBasePermissions.ManagePersonalViews);
-                            values.Add(BuiltInBasePermissions.ManageLists);
+                            values.Add(BuiltInCalendarType.Gregorian);
+                            values.Add(BuiltInCalendarType.Korea);
+                            values.Add(BuiltInCalendarType.Hebrew);
+                            values.Add(BuiltInCalendarType.GregorianArabic);
+                            values.Add(BuiltInCalendarType.SakaEra);
 
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldCalendarType) > 0)
+                        {
+                            var values = new List<string>();
 
-                            if (prop.PropertyType == typeof(Collection<string>))
-                            {
-                                var result = new Collection<string>();
-                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+                            values.Add(BuiltInCalendarType.Gregorian);
+                            values.Add(BuiltInCalendarType.Korea);
+                            values.Add(BuiltInCalendarType.Hebrew);
+                            values.Add(BuiltInCalendarType.GregorianArabic);
+                            values.Add(BuiltInCalendarType.SakaEra);
 
-                                for (var index = 0; index < resultLength; index++)
-                                    result.Add(values[index]);
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldDisplayFormat) > 0)
+                        {
+                            var curentValue = prop.GetValue(def) as string;
 
-                                newValue = result;
-                            }
+                            if (curentValue == BuiltInDateTimeFieldFormatType.DateOnly)
+                                newValue = BuiltInDateTimeFieldFormatType.DateTime;
+                            else
+                                newValue = BuiltInDateTimeFieldFormatType.DateOnly;
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldFriendlyDisplayFormat) > 0)
+                        {
+                            var curentValue = prop.GetValue(def) as string;
+
+                            if (curentValue == BuiltInDateTimeFieldFriendlyFormatType.Disabled)
+                                newValue = BuiltInDateTimeFieldFriendlyFormatType.Relative;
+                            else if (curentValue == BuiltInDateTimeFieldFriendlyFormatType.Relative)
+                                newValue = BuiltInDateTimeFieldFriendlyFormatType.Unspecified;
+                            else if (curentValue == BuiltInDateTimeFieldFriendlyFormatType.Unspecified)
+                                newValue = BuiltInDateTimeFieldFriendlyFormatType.Disabled;
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsByte) > 0)
                         {

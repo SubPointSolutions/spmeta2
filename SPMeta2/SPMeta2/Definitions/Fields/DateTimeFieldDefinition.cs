@@ -36,12 +36,15 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdateAsDateTimeFieldCalendarType]
         public string CalendarType { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsDateTimeFieldDisplayFormat]
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdateAsDateTimeFieldFriendlyDisplayFormat]
         public string FriendlyDisplayFormat { get; set; }
 
         #endregion

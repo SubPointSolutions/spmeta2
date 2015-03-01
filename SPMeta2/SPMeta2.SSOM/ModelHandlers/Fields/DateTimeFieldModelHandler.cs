@@ -36,6 +36,14 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(fieldModel.ValidationFormula))
                 field.ValidationFormula = fieldModel.ValidationFormula;
+
+
+            var typedFieldModel = fieldModel.WithAssertAndCast<DateTimeFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field as SPFieldDateTime;
+
+            typedField.CalendarType = (SPCalendarType)Enum.Parse(typeof(SPCalendarType), typedFieldModel.CalendarType);
+            typedField.DisplayFormat = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DisplayFormat);
+            typedField.FriendlyDisplayFormat = (SPDateTimeFieldFriendlyFormatType)Enum.Parse(typeof(SPDateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

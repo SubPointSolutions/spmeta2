@@ -94,4 +94,20 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
+
+
+    public class ExpectUpdateAsDateTimeFieldCalendarType : ExpectUpdate
+    {
+
+    }
+
+    public class ExpectUpdateAsDateTimeFieldDisplayFormat : ExpectUpdate
+    {
+
+    }
+
+    public class ExpectUpdateAsDateTimeFieldFriendlyDisplayFormat : ExpectUpdate
+    {
+
+    }
 }
