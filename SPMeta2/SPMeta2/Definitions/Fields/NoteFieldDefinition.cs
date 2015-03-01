@@ -63,7 +63,7 @@ namespace SPMeta2.Definitions.Fields
             }
             set
             {
-                base.Indexed = value;
+                
             }
         }
 
@@ -72,15 +72,18 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 10, MaxValue = 100)]
         public int NumberOfLines { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool RichText { get; set; }
 
         [ExpectValidation]
         public string RichTextMode { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool AppendOnly { get; set; }
 
         [ExpectValidation]

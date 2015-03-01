@@ -36,7 +36,12 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var typedFieldModel = fieldModel.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = field.Context.CastTo<FieldMultiLineText>(field);
 
+            typedField.NumberOfLines = typedFieldModel.NumberOfLines;
+            typedField.AppendOnly = typedFieldModel.AppendOnly;
+            typedField.RichText = typedFieldModel.RichText;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
