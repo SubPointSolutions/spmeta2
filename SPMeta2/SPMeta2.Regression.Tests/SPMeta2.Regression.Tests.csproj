@@ -72,6 +72,7 @@
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
+    <Compile Include="Impl\Definitions\FieldDefinitionPropertyTests.cs" />
     <Compile Include="Impl\Definitions\ChoiceFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
