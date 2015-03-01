@@ -112,6 +112,7 @@
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
+    <Compile Include="Enumerations\BuiltInPublishingContentTypeNames.cs" />
     <Compile Include="Enumerations\BuiltInPublishingFieldTypes.cs" />
     <Compile Include="Enumerations\BuiltInInternalPublishingFieldNames.cs" />
     <Compile Include="Enumerations\BuiltInPublishingContentTypeId.cs" />

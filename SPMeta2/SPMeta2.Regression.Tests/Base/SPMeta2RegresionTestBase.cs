@@ -315,6 +315,30 @@ namespace SPMeta2.Regression.Tests.Base
                                 newValue = result;
                             }
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsPublishingPageContentType) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInPublishingContentTypeId.ArticlePage);
+                            values.Add(BuiltInPublishingContentTypeId.EnterpriseWikiPage);
+                            values.Add(BuiltInPublishingContentTypeId.ErrorPage);
+                            values.Add(BuiltInPublishingContentTypeId.RedirectPage);
+                            
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsUIVersion) > 0)
                         {
                             var values = new List<string>();

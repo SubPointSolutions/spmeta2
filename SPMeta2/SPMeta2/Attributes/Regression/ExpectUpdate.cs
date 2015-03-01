@@ -56,6 +56,10 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsPublishingPageContentType : ExpectUpdate
+    {
 
+    }
+    
 
 }

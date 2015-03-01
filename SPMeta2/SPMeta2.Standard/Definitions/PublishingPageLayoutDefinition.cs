@@ -41,7 +41,7 @@ namespace SPMeta2.Standard.Definitions
         /// Associated content type of the target publishing page layout.
         /// </summary>
         [ExpectValidation]
-        [ExpectUpdate]
+        [ExpectUpdateAsPublishingPageContentType]
         public string AssociatedContentTypeId { get; set; }
 
         #endregion
