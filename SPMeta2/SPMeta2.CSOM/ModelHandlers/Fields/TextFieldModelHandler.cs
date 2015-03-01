@@ -47,6 +47,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var spField = tmpField.WithAssertAndCast<FieldText>("field", value => value.RequireNotNull());
             var typedFieldModel = fieldModel.WithAssertAndCast<TextFieldDefinition>("model", value => value.RequireNotNull());
 
+            if (typedFieldModel.MaxLength.HasValue)
+                spField.MaxLength = typedFieldModel.MaxLength.Value;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

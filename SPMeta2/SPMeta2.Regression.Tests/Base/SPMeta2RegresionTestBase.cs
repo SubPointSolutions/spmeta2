@@ -251,6 +251,17 @@ namespace SPMeta2.Regression.Tests.Base
                                 newValue = result;
                             }
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsByte) > 0)
+                        {
+                            if (prop.PropertyType == typeof (int?) ||
+                                prop.PropertyType == typeof (int?))
+                                newValue = Convert.ToInt32(RegressionService.RndService.Byte().ToString());
+                            else
+                            {
+                                // TODO, as per case
+                                newValue = RegressionService.RndService.Byte();
+                            }
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsCamlQuery) > 0)
                         {
                             newValue = string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",

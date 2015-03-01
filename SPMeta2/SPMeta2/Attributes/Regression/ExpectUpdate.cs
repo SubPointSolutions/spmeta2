@@ -60,6 +60,13 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
-    
+    public class ExpectUpdateAsUInt : ExpectUpdate
+    {
 
+    }
+
+    public class ExpectUpdateAsByte : ExpectUpdate
+    {
+
+    }
 }

@@ -69,6 +69,15 @@ namespace SPMeta2.Containers.Services
             return (short)service.Int(maxValue);
         }
 
+        public static byte Byte(this RandomService service)
+        {
+            return service.Byte(byte.MaxValue);
+        }
+
+        public static byte Byte(this RandomService service, byte maxValue)
+        {
+            return (byte)service.Int(maxValue);
+        }
 
         public static uint UInt(this RandomService service)
         {
