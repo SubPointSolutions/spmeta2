@@ -37,6 +37,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectUpdateAsUrlFieldFormat]
         public string DisplayFormat { get; set; }
 
         #endregion

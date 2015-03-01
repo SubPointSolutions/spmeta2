@@ -345,6 +345,15 @@ namespace SPMeta2.Regression.Tests.Base
                                 newValue = result;
                             }
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsUrlFieldFormat) > 0)
+                        {
+                            var curentValue = prop.GetValue(def) as string;
+
+                            if (curentValue == BuiltInUrlFieldFormatType.Hyperlink)
+                                newValue = BuiltInUrlFieldFormatType.Image;
+                            else
+                                newValue = BuiltInUrlFieldFormatType.Hyperlink;
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsPublishingPageContentType) > 0)
                         {
                             var values = new List<string>();

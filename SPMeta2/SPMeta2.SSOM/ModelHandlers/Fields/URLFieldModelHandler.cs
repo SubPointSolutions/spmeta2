@@ -31,6 +31,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
+            var spField = field.WithAssertAndCast<SPFieldUrl>("field", value => value.RequireNotNull());
+            var typedFieldModel = fieldModel.WithAssertAndCast<URLFieldDefinition>("model", value => value.RequireNotNull());
+
+            spField.DisplayFormat = (SPUrlFieldFormatType)Enum.Parse(typeof(SPUrlFieldFormatType), typedFieldModel.DisplayFormat);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

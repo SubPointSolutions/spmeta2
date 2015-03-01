@@ -75,4 +75,8 @@ namespace SPMeta2.Attributes.Regression
         public int MinValue { get; set; }
         public int MaxValue { get; set; }
     }
+
+    public class ExpectUpdateAsUrlFieldFormat : ExpectUpdate
+    {
+    }
 }
