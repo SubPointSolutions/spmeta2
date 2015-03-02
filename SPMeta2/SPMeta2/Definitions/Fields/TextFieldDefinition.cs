@@ -35,7 +35,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
-        [ExpectUpdateAsByte]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 100)]
         public int? MaxLength { get; set; }
 
         #endregion

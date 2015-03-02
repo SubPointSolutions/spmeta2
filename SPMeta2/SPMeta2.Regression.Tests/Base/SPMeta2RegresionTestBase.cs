@@ -32,6 +32,7 @@ namespace SPMeta2.Regression.Tests.Base
         public SPMeta2RegresionTestBase()
         {
             RegressionService.EnableDefinitionProvision = true;
+            RegressionService.ProvisionGenerationCount = 2;
             RegressionService.EnableDefinitionValidation = true;
 
             RegressionService.ShowOnlyFalseResults = true;
@@ -87,6 +88,22 @@ namespace SPMeta2.Regression.Tests.Base
         #endregion
 
         #region testing API
+
+        protected void WithDisabledPropertyUpdateValidation(Action action)
+        {
+            var _oldEnablePropertyUpdateValidation = EnablePropertyUpdateValidation;
+
+
+            try
+            {
+                EnablePropertyUpdateValidation = false;
+                action();
+            }
+            finally
+            {
+                EnablePropertyUpdateValidation = _oldEnablePropertyUpdateValidation;
+            }
+        }
 
         protected void TestRandomDefinition<TDefinition>()
            where TDefinition : DefinitionBase, new()

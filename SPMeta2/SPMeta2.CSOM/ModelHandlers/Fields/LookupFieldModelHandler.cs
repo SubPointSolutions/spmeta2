@@ -36,6 +36,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedField = field.Context.CastTo<FieldLookup>(field);
             var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
+            typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
+
             if (typedFieldModel.AllowMultipleValues)
                 typedField.TypeAsString = "LookupMulti";
             else

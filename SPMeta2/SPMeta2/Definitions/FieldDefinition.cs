@@ -6,6 +6,7 @@ using System;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Common;
 using SPMeta2.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -179,11 +180,11 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         //[ExpectUpdate]
-        public string ValidationFormula { get; set; }
+        public virtual string ValidationFormula { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
-        public string ValidationMessage { get; set; }
+        public virtual string ValidationMessage { get; set; }
 
         #endregion
 
@@ -191,7 +192,12 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("InternalName:[{0}] Id:[{1}] Title:[{2}]", InternalName, Id, Title);
+            return new ToStringResult<FieldDefinition>(this, base.ToString())
+                         .AddPropertyValue(p => p.InternalName)
+                         .AddPropertyValue(p => p.Id)
+                         .AddPropertyValue(p => p.Title)
+                         .AddPropertyValue(p => p.FieldType)
+                         .ToString();
         }
 
         #endregion

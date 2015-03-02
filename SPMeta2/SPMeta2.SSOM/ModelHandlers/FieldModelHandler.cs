@@ -297,6 +297,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             field.Required = definition.Required;
 
+            if (!string.IsNullOrEmpty(definition.ValidationMessage))
+                field.ValidationMessage = definition.ValidationMessage;
+
+            if (!string.IsNullOrEmpty(definition.ValidationFormula))
+                field.ValidationFormula = definition.ValidationFormula;
+
             if (definition.AllowDeletion.HasValue)
                 field.AllowDeletion = definition.AllowDeletion.Value;
 

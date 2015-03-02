@@ -113,7 +113,7 @@ namespace SPMeta2.Definitions
         public bool? NeedToCopyRoleAssignmets { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? EnableAttachments { get; set; }
 
         [ExpectValidation]
@@ -137,7 +137,7 @@ namespace SPMeta2.Definitions
         public bool? ForceCheckout { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? Hidden { get; set; }
 
         [ExpectValidation]
@@ -145,7 +145,7 @@ namespace SPMeta2.Definitions
         public bool? NoCrawl { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? OnQuickLaunch { get; set; }
 
         #endregion

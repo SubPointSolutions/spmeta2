@@ -33,7 +33,6 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
-
             context.Load(spObject, list => list.EnableAttachments);
             context.Load(spObject, list => list.EnableFolderCreation);
             context.Load(spObject, list => list.EnableMinorVersions);
@@ -81,6 +80,11 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
             }
 
+            if (definition.Hidden.HasValue)
+                assert.ShouldBeEqual(m => m.Hidden, m => m.Hidden);
+            else
+                assert.SkipProperty(m => m.Hidden, "Skipping from validation. Url IS NULL");
+
             if (!string.IsNullOrEmpty(definition.Url))
                 assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
             else
@@ -121,11 +125,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual(m => m.ForceCheckout, o => o.ForceCheckout);
             else
                 assert.SkipProperty(m => m.ForceCheckout, "Skipping from validation. ForceCheckout IS NULL");
-
-            if (definition.Hidden.HasValue)
-                assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
-            else
-                assert.SkipProperty(m => m.Hidden, "Skipping from validation. Hidden IS NULL");
 
             if (definition.NoCrawl.HasValue)
                 assert.ShouldBeEqual(m => m.NoCrawl, o => o.NoCrawl);

@@ -181,8 +181,15 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
 
-            assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
-            assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
+            if (!string.IsNullOrEmpty(definition.ValidationFormula))
+                assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
+            else
+                assert.SkipProperty(m => m.ValidationFormula, string.Format("ValidationFormula value is not set. Skippping."));
+
+            if (!string.IsNullOrEmpty(definition.ValidationMessage))
+                assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
+            else
+                assert.SkipProperty(m => m.ValidationMessage, string.Format("ValidationFormula value is not set. Skippping."));
 
             if (!string.IsNullOrEmpty(definition.DefaultValue))
                 assert.ShouldBePartOf(m => m.DefaultValue, o => o.DefaultValue);

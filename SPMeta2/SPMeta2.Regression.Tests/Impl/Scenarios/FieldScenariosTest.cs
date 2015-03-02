@@ -44,21 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region raw XML
 
-        protected void WithDisabledPropertyUpdateValidation(Action action)
-        {
-            var _oldEnablePropertyUpdateValidation = EnablePropertyUpdateValidation;
-
-
-            try
-            {
-                EnablePropertyUpdateValidation = false;
-                action();
-            }
-            finally
-            {
-                EnablePropertyUpdateValidation = _oldEnablePropertyUpdateValidation;
-            }
-        }
+       
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.RawXml")]

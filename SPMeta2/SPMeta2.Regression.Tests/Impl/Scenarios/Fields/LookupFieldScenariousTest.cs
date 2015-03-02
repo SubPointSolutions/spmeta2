@@ -153,16 +153,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelectAndBindToListByTitle()
         {
-            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            WithDisabledPropertyUpdateValidation(() =>
             {
-                env.LookupField.LookupListTitle = env.ChildList.Title;
-            });
+                var lookupEnvironment = GetLookupFieldEnvironment(env =>
+                {
+                    env.LookupField.LookupListTitle = env.ChildList.Title;
+                });
 
-            TestModels(new[]
-            {
+                TestModels(new[]{
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.MasterListModel
+                });
             });
 
         }
@@ -299,19 +301,22 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
         public void CanDeploy_LookupField_AsMultiSelectAndBindToListByTitle()
         {
-            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            WithDisabledPropertyUpdateValidation(() =>
             {
-                env.LookupField.AllowMultipleValues = true;
-                env.LookupField.LookupListTitle = env.ChildList.Title;
-            });
 
-            TestModels(new[]
-            {
-                lookupEnvironment.ChildListModel, 
-                lookupEnvironment.SiteModel, 
-                lookupEnvironment.MasterListModel
-            });
+                var lookupEnvironment = GetLookupFieldEnvironment(env =>
+                {
+                    env.LookupField.AllowMultipleValues = true;
+                    env.LookupField.LookupListTitle = env.ChildList.Title;
+                });
 
+                TestModels(new[]
+                {
+                    lookupEnvironment.ChildListModel,
+                    lookupEnvironment.SiteModel,
+                    lookupEnvironment.MasterListModel
+                });
+            });
         }
 
 

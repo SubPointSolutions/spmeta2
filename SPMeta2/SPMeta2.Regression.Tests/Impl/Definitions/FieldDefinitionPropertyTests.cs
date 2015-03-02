@@ -52,7 +52,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             foreach (var fieldDefintion in fieldDefinitionTypes)
             {
-                Trace.WriteLine(string.Format("Checking Indexed propr for Indexed def:[{0}]", fieldDefintion.GetType().Name));
+                Trace.WriteLine(string.Format("Checking Indexed prop for Indexed def:[{0}]", fieldDefintion.GetType().Name));
 
                 var indexedSiteModel = SPMeta2Model.NewSiteModel(m => { });
                 var indexedSiteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
@@ -61,7 +61,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 indexedSiteField.Indexed = true;
                 TestModel(indexedSiteModel);
 
-                Trace.WriteLine(string.Format("Checking Indexed propr for non-Indexed def:[{0}]", fieldDefintion.GetType().Name));
+                Trace.WriteLine(string.Format("Checking Indexed prop for non-Indexed def:[{0}]", fieldDefintion.GetType().Name));
 
                 var nonIdexedSiteModel = SPMeta2Model.NewSiteModel(m => { });
                 var nonIndexedSiteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
@@ -69,6 +69,31 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 nonIdexedSiteModel.AddField(nonIndexedSiteField);
                 nonIndexedSiteField.Indexed = false;
                 TestModel(nonIdexedSiteModel);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.FieldDefinitions.Properties")]
+        public void FieldDefinitions_ShouldHave_Correct_ValidationMessageAndFormula_Property()
+        {
+            var fieldDefinitionTypes = new List<Type>();
+
+            fieldDefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssembly<FieldDefinition>(typeof(FieldDefinition).Assembly));
+            fieldDefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssembly<FieldDefinition>(typeof(TaxonomyFieldDefinition).Assembly));
+
+            foreach (var fieldDefintion in fieldDefinitionTypes)
+            {
+                Trace.WriteLine(string.Format("Checking Indexed propr for Indexed def:[{0}]", fieldDefintion.GetType().Name));
+
+                var siteModel = SPMeta2Model.NewSiteModel(m => { });
+                var siteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
+
+                siteModel.AddField(siteField);
+
+                siteField.ValidationMessage = string.Format("validatin_msg_{0}", RegressionService.RndService.String());
+                siteField.ValidationFormula = string.Format("=[ID] * {0}", RegressionService.RndService.Int(100));
+
+                TestModel(siteModel);
             }
         }
 

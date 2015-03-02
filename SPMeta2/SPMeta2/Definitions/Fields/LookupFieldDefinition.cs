@@ -36,6 +36,20 @@ namespace SPMeta2.Definitions.Fields
 
         #region overrides
 
+        [ExpectValidation]
+        public override string ValidationMessage
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
+        [ExpectValidation]
+        public override string ValidationFormula
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
         /// <summary>
         /// Returns false if AllowMultipleValues = true.
         /// Multi lookup field does not support Indexed = trur flag and would give an exception.

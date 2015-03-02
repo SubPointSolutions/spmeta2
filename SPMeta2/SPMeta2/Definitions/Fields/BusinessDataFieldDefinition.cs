@@ -34,6 +34,20 @@ namespace SPMeta2.Definitions.Fields
 
         #region properties
 
+        [ExpectValidation]
+        public override string ValidationMessage
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
+        [ExpectValidation]
+        public override string ValidationFormula
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
         /// <summary>
         /// System instance of the target business data field.
         /// </summary>

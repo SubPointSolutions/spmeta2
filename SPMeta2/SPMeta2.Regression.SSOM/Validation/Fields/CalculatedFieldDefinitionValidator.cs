@@ -46,8 +46,6 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             // formula
             typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);
-            typedFieldAssert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
-            typedFieldAssert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
 
             // field refs
             if (typedDefinition.FieldReferences.Count > 0)

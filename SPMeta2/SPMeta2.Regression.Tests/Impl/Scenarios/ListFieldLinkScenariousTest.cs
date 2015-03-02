@@ -4,6 +4,7 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using SPMeta2.Containers;
@@ -16,6 +17,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
     [TestClass]
     public class ListFieldLinkScenariousTest : SPMeta2RegresionScenarioTestBase
     {
+        public ListFieldLinkScenariousTest()
+        {
+            this.EnablePropertyUpdateValidation = false;
+        }
+
         #region internal
 
         [ClassInitializeAttribute]

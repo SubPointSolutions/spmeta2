@@ -55,7 +55,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-        [ExpectUpdateAsLCID]
+        //[ExpectUpdateAsLCID]
         public uint LCID { get; set; }
 
         /// <summary>

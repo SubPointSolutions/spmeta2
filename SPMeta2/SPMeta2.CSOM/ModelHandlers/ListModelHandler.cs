@@ -335,6 +335,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             list.Description = definition.Description ?? string.Empty;
             list.ContentTypesEnabled = definition.ContentTypesEnabled;
 
+            if (definition.Hidden.HasValue)
+                list.Hidden = definition.Hidden.Value;
+
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
                 var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
