@@ -99,7 +99,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool ContentTypesEnabled { get; set; }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SPMeta2.Definitions
         public bool? EnableAttachments { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         public bool? EnableFolderCreation { get; set; }
 
         [ExpectValidation]

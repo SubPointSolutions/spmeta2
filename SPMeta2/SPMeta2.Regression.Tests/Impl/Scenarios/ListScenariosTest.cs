@@ -401,10 +401,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Lists")]
         public void CanDeploy_CalendarList()
         {
-            TestRandomDefinition<ListDefinition>(def =>
+            WithDisabledPropertyUpdateValidation(() =>
             {
-                def.EnableFolderCreation = false;
-                def.TemplateType = BuiltInListTemplateTypeId.Events;
+                TestRandomDefinition<ListDefinition>(def =>
+                {
+                    def.EnableFolderCreation = false;
+                    def.TemplateType = BuiltInListTemplateTypeId.Events;
+                });
             });
         }
 
@@ -451,7 +454,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
-       
+
 
         #endregion
 

@@ -425,6 +425,31 @@ namespace SPMeta2.Regression.Tests.Base
                                 newValue = result;
                             }
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsBasePermission) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInBasePermissions.AddAndCustomizePages);
+                            values.Add(BuiltInBasePermissions.AnonymousSearchAccessWebLists);
+                            values.Add(BuiltInBasePermissions.ApproveItems);
+                            values.Add(BuiltInBasePermissions.CancelCheckout);
+                            values.Add(BuiltInBasePermissions.CreateSSCSite);
+                            values.Add(BuiltInBasePermissions.EditMyUserInfo);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(Collection<string>))
+                            {
+                                var result = new Collection<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsPublishingPageContentType) > 0)
                         {
                             var values = new List<string>();
