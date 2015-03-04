@@ -41,7 +41,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
             var termStore = storeModelHost.HostTermStore;
-            var currentGroup = FindGroup(termStore, groupModel);
+            var currentGroup = FindGroup(storeModelHost, groupModel);
 
             action(new TermGroupModelHost
             {
@@ -50,11 +50,32 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             });
         }
 
-        protected TermGroup FindGroup(TermStore termStore, TaxonomyTermGroupDefinition groupModel)
+        protected TermGroup FindSiteCollectionGroup(TermStoreModelHost storeModelHost, TaxonomyTermGroupDefinition groupModel)
         {
+            var termStore = storeModelHost.HostTermStore;
+            var site = storeModelHost.HostSite;
+
+            var context = termStore.Context;
+
+            TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, false);
+
+            context.Load(currentGroup);
+            context.ExecuteQuery();
+            return currentGroup;
+        }
+
+        protected TermGroup FindGroup(TermStoreModelHost storeModelHost, TaxonomyTermGroupDefinition groupModel)
+        {
+            var termStore = storeModelHost.HostTermStore;
             var context = termStore.Context;
 
             TermGroup currentGroup = null;
+
+            if (groupModel.IsSiteCollectionGroup)
+            {
+                currentGroup = FindSiteCollectionGroup(storeModelHost, groupModel);
+                return currentGroup;
+            }
 
             if (groupModel.Id.HasValue)
             {
@@ -109,7 +130,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
         private void DeployTaxonomyGroup(object modelHost, TermStoreModelHost siteModelHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = siteModelHost.HostTermStore;
-            var currentGroup = FindGroup(termStore, groupModel);
+            var currentGroup = FindGroup(siteModelHost, groupModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

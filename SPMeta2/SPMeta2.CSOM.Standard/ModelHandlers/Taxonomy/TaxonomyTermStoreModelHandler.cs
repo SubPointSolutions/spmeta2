@@ -8,6 +8,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
@@ -42,10 +43,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var termStore = FindTermStore(siteModelHost, termStoreModel);
 
-            action(new TermStoreModelHost
+            var termStoreModelHost = ModelHostBase.Inherit<TermStoreModelHost>(siteModelHost, context =>
             {
-                HostTermStore = termStore
+                context.HostTermStore = termStore;
             });
+
+            action(termStoreModelHost);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling termStore.CommitAll()");
             
