@@ -33,11 +33,12 @@ namespace SPMeta2.Regression.Tests.Base
         {
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.ProvisionGenerationCount = 2;
+            
             RegressionService.EnableDefinitionValidation = true;
 
             RegressionService.ShowOnlyFalseResults = true;
 
-            EnablePropertyUpdateValidation = true;
+            EnablePropertyUpdateValidation = false;
             PropertyUpdateGenerationCount = 2;
         }
 

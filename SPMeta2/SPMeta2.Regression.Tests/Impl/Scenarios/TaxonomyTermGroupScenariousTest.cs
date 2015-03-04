@@ -81,5 +81,74 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region system & default site group
+
+        //[TestCategory("Regression.Scenarios.Taxonomy.TermGroup")]
+        //[TestMethod]
+        //public void CanDeploy_TaxonomyTermGroupAsSystem()
+        //{
+        //    Exception expectedException = null;
+
+        //    try
+        //    {
+        //        var termGroup = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+        //        {
+        //            def.IsSystemGroup = true;
+        //        });
+
+        //        var model = SPMeta2Model
+        //              .NewSiteModel(site =>
+        //              {
+        //                  site
+        //                      .AddRandomTermStore(store =>
+        //                      {
+        //                          store.AddTaxonomyTermGroup(termGroup, group =>
+        //                          {
+        //                              group.AddRandomTermSet();
+        //                          });
+        //                      });
+        //              });
+
+        //        TestModel(model);
+        //    }
+        //    catch (Exception ee)
+        //    {
+        //        expectedException = ee;
+        //    }
+
+        //    // TODO
+
+        //    Assert.IsNotNull(expectedException);
+        //    Assert.IsTrue(expectedException.GetType().Name == "TermStoreOperationException");
+        //    Assert.IsTrue(expectedException.Message.Contains("Creating a term set in system Group is disallowed"));
+        //}
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TermGroup")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyTermGroupAsSiteCollectionGroup()
+        {
+            var termGroup = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+                def.IsSiteCollectionGroup = true;
+            });
+
+            var model = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site
+                          .AddRandomTermStore(store =>
+                          {
+                              store.AddTaxonomyTermGroup(termGroup, group =>
+                              {
+                                  group.AddRandomTermSet();
+                              });
+                          });
+                  });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

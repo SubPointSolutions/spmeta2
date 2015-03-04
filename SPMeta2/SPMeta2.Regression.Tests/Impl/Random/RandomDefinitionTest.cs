@@ -36,7 +36,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
     {
         public RandomDefinitionTest()
         {
-            RegressionService.ProvisionGenerationCount = 2;
+            EnablePropertyUpdateValidation = true;
+            PropertyUpdateGenerationCount = 2;
         }
 
         #region common

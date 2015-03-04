@@ -12,6 +12,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.SSOM.Standard.ModelHosts;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
 {
@@ -22,12 +23,52 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var termStoreModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
-            var spObject = FindGroup(termStoreModelHost.HostTermStore, definition);
+            var spObject = FindGroup(termStoreModelHost, definition);
 
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name);
+                                 .ShouldNotBeNull(spObject);
+
+            if (definition.IsSiteCollectionGroup)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Name);
+                    var group = FindSiteCollectionGroup(termStoreModelHost, definition);
+
+                    var isValid = group.IsSiteCollectionGroup;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            //else if (definition.IsSystemGroup)
+            //{
+            //    assert.ShouldBeEqual((p, s, d) =>
+            //    {
+            //        var srcProp = s.GetExpressionValue(m => m.Name);
+            //        var group = FindSystemGroup(termStoreModelHost, definition);
+
+            //        var isValid = group.IsSystemGroup;
+
+            //        return new PropertyValidationResult
+            //        {
+            //            Tag = p.Tag,
+            //            Src = srcProp,
+            //            Dst = null,
+            //            IsValid = isValid
+            //        };
+            //    });
+            //}
+            else
+            {
+                assert.ShouldBeEqual(m => m.Name, o => o.Name);
+            }
 
             if (definition.Id.HasValue)
             {

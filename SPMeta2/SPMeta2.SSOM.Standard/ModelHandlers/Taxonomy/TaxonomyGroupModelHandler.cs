@@ -45,7 +45,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
             var termStore = storeModelHost.HostTermStore;
-            var currentGroup = FindGroup(termStore, groupModel);
+            var currentGroup = FindGroup(storeModelHost, groupModel);
 
             action(new TermGroupModelHost
             {
@@ -54,9 +54,34 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             });
         }
 
-        protected Group FindGroup(TermStore termStore, TaxonomyTermGroupDefinition groupModel)
+        protected Group FindSiteCollectionGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
+        {
+            var termStore = termStoreHost.HostTermStore;
+            return termStore.GetSiteCollectionGroup(termStoreHost.HostSite);
+        }
+
+        protected Group FindSystemGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
+        {
+            return termStoreHost.HostTermStore.SystemGroup;
+        }
+
+        protected Group FindGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
         {
             Group currentGroup = null;
+
+            var termStore = termStoreHost.HostTermStore;
+
+            if (groupModel.IsSiteCollectionGroup)
+            {
+                currentGroup = FindSiteCollectionGroup(termStoreHost, groupModel);
+                return currentGroup;
+            }
+
+            //if (groupModel.IsSystemGroup)
+            //{
+            //    currentGroup = FindSystemGroup(termStoreHost, groupModel);
+            //    return currentGroup;
+            //}
 
             if (groupModel.Id.HasValue)
                 currentGroup = termStore.GetGroup(groupModel.Id.Value);
@@ -69,9 +94,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         private void DeployTaxonomyGroup(object modelHost, TermStoreModelHost siteModelHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = siteModelHost.HostTermStore;
-            var currentGroup = FindGroup(termStore, groupModel);
-
-
+            var currentGroup = FindGroup(siteModelHost, groupModel);
+            
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,

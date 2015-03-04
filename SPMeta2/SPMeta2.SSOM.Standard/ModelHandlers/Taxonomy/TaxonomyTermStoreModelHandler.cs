@@ -38,6 +38,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
             action(new TermStoreModelHost
             {
+                HostSite = siteModelHost.HostSite,
                 HostTermStore = termStore
             });
 

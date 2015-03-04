@@ -4,15 +4,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.SharePoint;
+using Microsoft.SharePoint.Taxonomy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 using SPMeta2.CSOM.Standard.Services;
 using SPMeta2.ModelHandlers;
+using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Services;
 using SPMeta2.SSOM.Standard.Services;
+using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Standard.Syntax;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Impl.Tests
@@ -36,7 +42,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         #endregion
 
-        #region
+        #region ProvisionServices
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices")]
@@ -128,7 +134,6 @@ namespace SPMeta2.Regression.Impl.Tests
                 Assert.IsNotNull(dstHandlerImpl);
             }
         }
-
 
         #endregion
     }

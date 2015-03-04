@@ -23,7 +23,12 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         #region properties
 
         public string Name { get; set; }
+
         public Guid? Id { get; set; }
+
+        public bool IsSiteCollectionGroup { get; set; }
+
+        //public bool IsSystemGroup { get; set; }
 
         #endregion
 
