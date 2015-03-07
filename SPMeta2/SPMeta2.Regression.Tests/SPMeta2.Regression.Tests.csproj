@@ -82,6 +82,7 @@
     <Compile Include="Impl\ModelAPI\SPMeta2ModelTests.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
+    <Compile Include="Impl\Scenarios\Fields\CalculatedFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ResetRoleInheritanceScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeFieldLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
+    <Compile Include="Services\FakeInMemoryTraceService.cs" />
     <Compile Include="Services\VSAssertService.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
   </ItemGroup>

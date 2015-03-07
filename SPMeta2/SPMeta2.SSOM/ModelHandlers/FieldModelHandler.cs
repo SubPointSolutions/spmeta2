@@ -121,7 +121,6 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying list field");
 
-
             return EnsureFieldInFieldsCollection(list, list.Fields, fieldModel);
         }
 

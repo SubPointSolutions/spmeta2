@@ -22,10 +22,13 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     {
         #region properties
 
+        [ExpectValidation]
         public string Name { get; set; }
 
+        [ExpectValidation]
         public Guid? Id { get; set; }
 
+        [ExpectValidation]
         public bool IsSiteCollectionGroup { get; set; }
 
         //public bool IsSystemGroup { get; set; }

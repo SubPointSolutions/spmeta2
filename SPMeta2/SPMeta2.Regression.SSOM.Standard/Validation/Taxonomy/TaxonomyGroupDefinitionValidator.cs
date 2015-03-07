@@ -26,14 +26,16 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var spObject = FindGroup(termStoreModelHost, definition);
 
             var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject);
+                                .NewAssert(definition, spObject)
+                                .ShouldNotBeNull(spObject);
 
             if (definition.IsSiteCollectionGroup)
             {
+                assert.SkipProperty(m => m.Name, "IsSiteCollectionGroup is TRUE. Skipping Name property validation.");
+
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var srcProp = s.GetExpressionValue(m => m.Name);
+                    var srcProp = s.GetExpressionValue(m => m.IsSiteCollectionGroup);
                     var group = FindSiteCollectionGroup(termStoreModelHost, definition);
 
                     var isValid = group.IsSiteCollectionGroup;
@@ -47,26 +49,9 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
                     };
                 });
             }
-            //else if (definition.IsSystemGroup)
-            //{
-            //    assert.ShouldBeEqual((p, s, d) =>
-            //    {
-            //        var srcProp = s.GetExpressionValue(m => m.Name);
-            //        var group = FindSystemGroup(termStoreModelHost, definition);
-
-            //        var isValid = group.IsSystemGroup;
-
-            //        return new PropertyValidationResult
-            //        {
-            //            Tag = p.Tag,
-            //            Src = srcProp,
-            //            Dst = null,
-            //            IsValid = isValid
-            //        };
-            //    });
-            //}
             else
             {
+                assert.SkipProperty(m => m.IsSiteCollectionGroup, "IsSiteCollectionGroup is false. Skipping property.");
                 assert.ShouldBeEqual(m => m.Name, o => o.Name);
             }
 

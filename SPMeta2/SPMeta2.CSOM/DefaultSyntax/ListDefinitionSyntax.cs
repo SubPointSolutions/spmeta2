@@ -31,13 +31,13 @@ namespace SPMeta2.CSOM.DefaultSyntax
 
         #region add content type
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeId contentTypeId)
-        {
-            return ContentTypeLinkDefinitionSyntax.AddContentTypeLink(model, new ContentTypeLinkDefinition
-            {
-                ContentTypeId = contentTypeId.ToString()
-            });
-        }
+        //public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeId contentTypeId)
+        //{
+        //    return ContentTypeLinkDefinitionSyntax.AddContentTypeLink(model, new ContentTypeLinkDefinition
+        //    {
+        //        ContentTypeId = contentTypeId.ToString()
+        //    });
+        //}
 
         #endregion
 

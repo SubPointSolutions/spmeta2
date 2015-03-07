@@ -20,13 +20,14 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject);
-            //.ShouldBeEqual(m => m.Name, o => o.Name);
 
             if (definition.IsSiteCollectionGroup)
             {
+                assert.SkipProperty(m => m.Name, "IsSiteCollectionGroup is TRUE. Skipping Name property validation.");
+
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var srcProp = s.GetExpressionValue(m => m.Name);
+                    var srcProp = s.GetExpressionValue(m => m.IsSiteCollectionGroup);
                     var group = FindSiteCollectionGroup(termStoreModelHost, definition);
 
                     var isValid = group.IsSiteCollectionGroup;
@@ -39,9 +40,12 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                         IsValid = isValid
                     };
                 });
+
+                
             }
             else
             {
+                assert.SkipProperty(m => m.IsSiteCollectionGroup, "IsSiteCollectionGroup is false. Skipping property.");
                 assert.ShouldBeEqual(m => m.Name, o => o.Name);
             }
 

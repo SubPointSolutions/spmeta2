@@ -427,8 +427,11 @@ namespace SPMeta2.Containers.Services
 
                     }
 
-                    var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
-                    AssertService.IsFalse(hasMissedOrInvalidProps);
+                    if (this.EnableDefinitionValidation)
+                    {
+                        var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                        AssertService.IsFalse(hasMissedOrInvalidProps);
+                    }
                 });
             }
         }
@@ -477,9 +480,11 @@ namespace SPMeta2.Containers.Services
                 if (definitionSandbox.Value.GetType() == typeof(WebDefinition))
                     runner.DeployWebModel(definitionSandbox);
 
-                var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
-
-                AssertService.IsFalse(hasMissedOrInvalidProps);
+                if (this.EnableDefinitionValidation)
+                {
+                    var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
+                    AssertService.IsFalse(hasMissedOrInvalidProps);
+                }
 
                 result = definitionSandbox;
             });

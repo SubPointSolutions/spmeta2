@@ -28,7 +28,6 @@ namespace SPMeta2.Services.Impl
 
         #region methods
 
-
         public override void Critical(int id, object message, Exception exception)
         {
             TraceEvent(id, TraceEventType.Critical, message, exception);
