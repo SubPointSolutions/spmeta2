@@ -43,7 +43,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             typedField.CalendarType = (SPCalendarType)Enum.Parse(typeof(SPCalendarType), typedFieldModel.CalendarType);
             typedField.DisplayFormat = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DisplayFormat);
+
+#if !NET35
             typedField.FriendlyDisplayFormat = (SPDateTimeFieldFriendlyFormatType)Enum.Parse(typeof(SPDateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
+#endif
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -64,8 +67,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, value);
             }
 
+#if !NET35
             if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.FriendlyDisplayFormat, typedFieldModel.FriendlyDisplayFormat);
+#endif
         }
 
         #endregion
