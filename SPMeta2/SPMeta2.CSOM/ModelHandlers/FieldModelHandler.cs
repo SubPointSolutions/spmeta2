@@ -138,7 +138,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var targetFieldType = GetTargetFieldType(fieldModel);
 
-                TraceService.InformationFormat((int)LogEventId.ModelProvisionCoreCall, "Calling context.CastTo() to field type: [{0}]", targetFieldType);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Calling context.CastTo() to field type: [{0}]", targetFieldType);
 
                 var method = context.GetType().GetMethod("CastTo");
                 var generic = method.MakeGenericMethod(targetFieldType);

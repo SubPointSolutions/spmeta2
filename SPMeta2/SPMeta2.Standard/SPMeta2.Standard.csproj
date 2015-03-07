@@ -141,6 +141,7 @@
     <Compile Include="Syntax\ImageRenditionDefinitionSyntax.cs" />
     <Compile Include="Syntax\PublishingPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\TaxonomyTermLabelDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermGroupDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermSetDefinitionSyntax.cs" />
