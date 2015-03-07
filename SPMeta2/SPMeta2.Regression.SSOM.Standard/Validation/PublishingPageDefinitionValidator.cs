@@ -29,7 +29,14 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                                              .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
                                              .ShouldBeEqual(m => m.Title, o => o.Title);
 
-
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual(m => m.ContentTypeName, o => o.GetPublishingPageContentType());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is NULL. Skipping.");
+            }
         }
     }
 
@@ -43,6 +50,11 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
         public static string GetPublishingPagePageLayoutFileName(this SPListItem item)
         {
             return (new SPFieldUrlValue(item[BuiltInPublishingFieldId.PageLayout].ToString())).Url;
+        }
+
+        public static string GetPublishingPageContentType(this SPListItem item)
+        {
+            return item["ContentType"].ToString();
         }
     }
 }

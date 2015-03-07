@@ -26,6 +26,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             context.Load(spObject);
             context.Load(spObject, o => o.DisplayName);
+            context.Load(spObject, o => o.ContentType);
 
             context.ExecuteQuery();
 
@@ -37,10 +38,18 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                                            .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
                                            .ShouldBeEqual(m => m.Title, o => o.GetTitle());
 
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual(m => m.ContentTypeName, o => o.GetContentTypeName());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is NULL. Skipping.");
+            }
         }
 
         #endregion
     }
 
-   
+
 }

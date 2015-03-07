@@ -90,8 +90,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     pageItem[BuiltInPublishingFieldId.ExpiryDate] = NeverEndDate;
                     pageItem[BuiltInPublishingFieldId.StartDate] = ImmediateDate;
 
-                    pageItem[BuiltInPublishingFieldId.Contact] = list.ParentWeb.CurrentUser;
+                    pageItem[BuiltInFieldId.ContentTypeId] = BuiltInPublishingContentTypeId.Page;
 
+                    pageItem[BuiltInPublishingFieldId.Contact] = list.ParentWeb.CurrentUser;
                     pageItem[BuiltInPublishingFieldId.PublishingPageContent] = publishingPageModel.Content;
 
                     var contentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInPublishingFieldId.AssociatedContentType]);
@@ -103,6 +104,25 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                         var contentTypeId = contentTypeValues[2];
 
                         pageItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                    }
+
+                    // overrideing with custom one
+                    if (!string.IsNullOrEmpty(publishingPageModel.ContentTypeName))
+                    {
+                        var listContentType = FindListContentType(list, publishingPageModel.ContentTypeName);
+
+                        if (listContentType == null)
+                        {
+                            throw new ArgumentNullException(
+                                string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
+                                    new string[]
+                                    {
+                                        publishingPageModel.ContentTypeName,
+                                        list.Title
+                                    }));
+                        }
+
+                        pageItem[BuiltInFieldId.ContentTypeId] = listContentType.Id.ToString();
                     }
 
                     pageItem[BuiltInPublishingFieldId.PageLayout] = new SPFieldUrlValue()
@@ -117,7 +137,18 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 });
         }
 
-        private SPListItem FindPageLayoutItem(SPWeb web, string pageLayoutFileName)
+        private SPContentType FindContentTypeByName(SPContentTypeCollection contentTypes, string contentTypeName)
+        {
+            return contentTypes.OfType<SPContentType>()
+                               .FirstOrDefault(ct => ct.Name.ToUpper() == contentTypeName.ToUpper());
+        }
+
+        protected SPContentType FindListContentType(SPList list, string contentTypeName)
+        {
+            return FindContentTypeByName(list.ContentTypes, contentTypeName);
+        }
+
+        protected SPListItem FindPageLayoutItem(SPWeb web, string pageLayoutFileName)
         {
             SPListItem currentPageLayoutItem = null;
 

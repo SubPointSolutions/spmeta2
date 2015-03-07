@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Standard.Enumerations;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
@@ -37,6 +38,64 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public static void Cleanup()
         {
             InternalCleanup();
+        }
+
+        #endregion
+
+        #region specific content type name
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage")]
+        public void CanDeploy_Default_PublishingPage_WithSpecificContentType()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var pageContentType1 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.Name = string.Format("Publishing Page 1 - {0}", Rnd.String(8));
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.ArticlePage;
+            });
+
+            var pageContentType2 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.Name = string.Format("Publishing Page 2 - {0}", Rnd.String(8));
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.ArticlePage;
+            });
+
+            var page1 = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.ContentTypeName = pageContentType1.Name;
+            });
+
+            var page2 = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.ContentTypeName = pageContentType2.Name;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(siteFeature);
+
+                site.AddContentType(pageContentType1);
+                site.AddContentType(pageContentType2);
+
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(webFeature);
+                web.AddList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddContentTypeLink(pageContentType1);
+                    list.AddContentTypeLink(pageContentType2);
+
+                    list.AddPublishingPage(page1);
+                    list.AddPublishingPage(page2);
+                });
+            });
+
+            TestModels(new[] { siteModel, webModel });
         }
 
         #endregion
@@ -121,7 +180,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 page.OnProvisioned<object>(context =>
                 {
-                    UnpublishFile(context); 
+                    UnpublishFile(context);
                 });
             });
         }
@@ -138,7 +197,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
         }
-       
+
         #endregion
 
         #region utils
@@ -186,7 +245,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 throw new SPMeta2NotImplementedException(string.Format("UnpublishFile() method is not implemented for type: [{0}]", objType));
             }
         }
-        
+
         #endregion
     }
 }

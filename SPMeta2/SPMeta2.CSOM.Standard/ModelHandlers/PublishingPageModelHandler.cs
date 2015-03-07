@@ -156,6 +156,31 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             var context = folder.Context;
 
+            var stringCustomContentType = string.Empty;
+            // preload custm content type
+            if (!string.IsNullOrEmpty(publishingPageModel.ContentTypeName))
+            {
+                var listContentTypes = list.ContentTypes;
+                context.Load(listContentTypes);
+                context.ExecuteQueryWithTrace();
+
+                var listContentType = listContentTypes.ToList()
+                                                      .FirstOrDefault(c => c.Name.ToUpper() == publishingPageModel.ContentTypeName.ToUpper());
+
+                if (listContentType == null)
+                {
+                    throw new ArgumentNullException(
+                        string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
+                            new string[]
+                                    {
+                                        publishingPageModel.ContentTypeName,
+                                        list.Title
+                                    }));
+                }
+
+                stringCustomContentType = listContentType.Id.ToString();
+            }
+
             var pageName = GetSafePageFileName(publishingPageModel);
             var currentPageFile = GetCurrentPage(list, folder, pageName);
 
@@ -215,6 +240,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                     newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
                 }
+
+                if (!string.IsNullOrEmpty(stringCustomContentType))
+                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
                 newFileItem.Update();
 

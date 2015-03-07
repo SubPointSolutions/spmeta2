@@ -41,6 +41,9 @@ namespace SPMeta2.Standard.Definitions
         [ExpectUpdate]
         public string Description { get; set; }
 
+        [ExpectValidation]
+        public string ContentTypeName { get; set; }
+
         /// <summary>
         /// Content of the target publishing page.
         /// </summary>

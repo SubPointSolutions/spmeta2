@@ -88,13 +88,16 @@ namespace SPMeta2.Regression.CSOM.Validation
                 result.AddRange(values);
 
             return result;
-
-            
         }
 
         public static string GetTitle(this ListItem item)
         {
             return item["Title"] as string;
+        }
+
+        public static string GetContentTypeName(this ListItem item)
+        {
+            return item.ContentType.Name;
         }
 
         public static string GetDefaultCSSFile(this ListItem item)
