@@ -204,10 +204,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_WebApplicationDefinition()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            if (TestOptions.EnableWebApplicationDefinitionTest)
             {
-                TestRandomDefinition<WebApplicationDefinition>();
-            });
+                WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+                {
+                    TestRandomDefinition<WebApplicationDefinition>();
+                });
+            }
         }
 
         [TestMethod]

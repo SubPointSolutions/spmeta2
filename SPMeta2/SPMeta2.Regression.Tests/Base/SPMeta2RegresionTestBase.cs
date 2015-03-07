@@ -33,13 +33,15 @@ namespace SPMeta2.Regression.Tests.Base
         {
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.ProvisionGenerationCount = 2;
-            
+
             RegressionService.EnableDefinitionValidation = true;
 
             RegressionService.ShowOnlyFalseResults = true;
 
             EnablePropertyUpdateValidation = false;
             PropertyUpdateGenerationCount = 2;
+
+            TestOptions = new RunOptions();
         }
 
         #endregion
@@ -75,8 +77,18 @@ namespace SPMeta2.Regression.Tests.Base
 
         #endregion
 
+        #region classes
+
+        protected class RunOptions
+        {
+            public bool EnableWebApplicationDefinitionTest { get; set; }
+        }
+
+        #endregion
+
         #region properties
 
+        protected RunOptions TestOptions { get; set; }
         public bool EnablePropertyUpdateValidation { get; set; }
 
         public static RegressionTestService RegressionService { get; set; }
