@@ -102,8 +102,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-	
-	<Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.dll</HintPath>
     </Reference>
@@ -127,9 +126,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.0.2617.1200\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-	
-	
-	
     <Reference Include="System" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -146,6 +142,7 @@
     <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermLabelModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />

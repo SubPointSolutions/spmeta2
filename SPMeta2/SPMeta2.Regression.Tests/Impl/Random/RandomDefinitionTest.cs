@@ -880,6 +880,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Taxonomy")]
+        public void CanDeployRandom_TaxonomyTermLabelDefinition()
+        {
+            TestRandomDefinition<TaxonomyTermLabelDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Taxonomy")]
         public void CanDeployRandom_TaxonomyTermGroupDefinition()
         {
             TestRandomDefinition<TaxonomyTermGroupDefinition>();

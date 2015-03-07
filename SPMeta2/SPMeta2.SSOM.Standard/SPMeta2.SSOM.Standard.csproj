@@ -89,7 +89,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-  
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
@@ -102,7 +101,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
     </Reference>
-    <Reference  Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
     </Reference>
@@ -126,8 +125,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
     </Reference>
-	
-	 <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.DocumentManagement, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.DocumentManagement, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
     </Reference>
@@ -139,7 +137,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
     </Reference>
-    <Reference  Condition="'$(spRuntime)'=='14' " Include="Microsoft.Office.Server.UserProfiles, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='14' " Include="Microsoft.Office.Server.UserProfiles, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
     </Reference>
@@ -163,7 +161,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
     </Reference>
-	
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -182,8 +179,9 @@
     <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
-    <Compile Include="ModelHandlers\SearchResultModelHandler.cs"  Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SearchResultModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermLabelModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />

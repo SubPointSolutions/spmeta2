@@ -108,6 +108,7 @@
     <Compile Include="Definitions\SearchConfigurationDefinition.cs" />
     <Compile Include="Definitions\SearchResultDefinition.cs" />
     <Compile Include="Definitions\SearchSettingsDefinition.cs" />
+    <Compile Include="Definitions\Taxonomy\TaxonomyTermLabelDefinition.cs" />
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />

@@ -79,6 +79,7 @@
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />
+    <Compile Include="Validation\Taxonomy\ClientTaxonomyTermLabelDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ClientTaxonomyFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyGroupDefinitionValidator.cs" />

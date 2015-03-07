@@ -109,6 +109,7 @@
       </SubType>
     </Compile>
     <Compile Include="Validation\Fields\TaxonomyFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Taxonomy\TaxonomyTermLabelDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyTermSetDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
