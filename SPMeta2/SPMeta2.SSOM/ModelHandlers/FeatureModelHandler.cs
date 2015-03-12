@@ -146,7 +146,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (featureModel.Enable)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Enabling feature");
-                    var f = SafelyActivateWebFeature(features, featureModel);
+                    var f = SafelyActivateFeature(features, featureModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -179,7 +179,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Feature enabled, but ForceActivate = true. Force activating.");
 
-                    var f = SafelyActivateWebFeature(features, featureModel);
+                    var f = SafelyActivateFeature(features, featureModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -225,7 +225,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private static SPFeature SafelyActivateWebFeature(SPFeatureCollection features, FeatureDefinition featureModel)
+        private static SPFeature SafelyActivateFeature(SPFeatureCollection features, FeatureDefinition featureModel)
         {
             SPFeature result = null;
 

@@ -92,17 +92,14 @@ namespace SPMeta2.CSOM.Services
             if (!clientContext.Site.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 clientContext.Load(clientContext.Site, s => s.ServerRelativeUrl);
-                needQuery = true;
+                clientContext.ExecuteQueryWithTrace();
             }
 
             if (!clientContext.Web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 clientContext.Load(clientContext.Web, w => w.ServerRelativeUrl);
-                needQuery = true;
-            }
-
-            if (needQuery)
                 clientContext.ExecuteQueryWithTrace();
+            }
         }
 
         public override void RetractModel(ModelHostBase modelHost, ModelNode model)

@@ -133,9 +133,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (featureModel.Enable)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Enabling feature");
-                    tmpFeature = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
-
-                    context.ExecuteQueryWithTrace();
+                    tmpFeature = SafelyActivateWebFeature(context, features, featureModel, scope);
                 }
                 else
                 {
@@ -162,7 +160,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Feature enabled, but ForceActivate = true. Force activating.");
 
-                    var f = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+                    var f = SafelyActivateWebFeature(context, features, featureModel, scope);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -174,9 +172,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ObjectDefinition = featureModel,
                         ModelHost = modelHost
                     });
-
-                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-                    context.ExecuteQueryWithTrace();
                 }
                 else if (!featureModel.Enable)
                 {
@@ -217,6 +212,34 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
 
+        }
+
+        private static Feature SafelyActivateWebFeature(ClientRuntimeContext context, FeatureCollection features,
+            FeatureDefinition featureModel, Microsoft.SharePoint.Client.FeatureDefinitionScope scope)
+        {
+            var result = features.Add(featureModel.Id, featureModel.ForceActivate, scope);
+
+            try
+            {
+                context.ExecuteQueryWithTrace();
+            }
+            catch (Exception e)
+            {
+                // sandbox site/web features?
+                // they need to ne activated with SPFeatureDefinitionScope.Site scope
+                if ((featureModel.Scope == FeatureDefinitionScope.Site || featureModel.Scope == FeatureDefinitionScope.Web)
+                    && e.Message.ToUpper().Contains(featureModel.Id.ToString("D").ToUpper()))
+                {
+                    result = features.Add(featureModel.Id, featureModel.ForceActivate, Microsoft.SharePoint.Client.FeatureDefinitionScope.Site);
+                    context.ExecuteQueryWithTrace();
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+
+            return result;
         }
 
         #endregion
