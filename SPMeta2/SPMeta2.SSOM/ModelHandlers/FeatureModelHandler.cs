@@ -146,7 +146,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (featureModel.Enable)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Enabling feature");
-                    var f = features.Add(featureModel.Id, featureModel.ForceActivate);
+                    var f = SafelyActivateWebFeature(features, featureModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -179,7 +179,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Feature enabled, but ForceActivate = true. Force activating.");
 
-                    var f = features.Add(featureModel.Id, featureModel.ForceActivate);
+                    var f = SafelyActivateWebFeature(features, featureModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -223,6 +223,32 @@ namespace SPMeta2.SSOM.ModelHandlers
                     });
                 }
             }
+        }
+
+        private static SPFeature SafelyActivateWebFeature(SPFeatureCollection features, FeatureDefinition featureModel)
+        {
+            SPFeature result = null;
+
+            try
+            {
+                result = features.Add(featureModel.Id, featureModel.ForceActivate);
+            }
+            catch (Exception e)
+            {
+                // sandbox site/web features?
+                // they need to ne activated with SPFeatureDefinitionScope.Site scope
+                if ((featureModel.Scope == FeatureDefinitionScope.Site || featureModel.Scope == FeatureDefinitionScope.Web)
+                    && e.Message.ToUpper().Contains(featureModel.Id.ToString("D").ToUpper()))
+                {
+                    result = features.Add(featureModel.Id, featureModel.ForceActivate, SPFeatureDefinitionScope.Site);
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+
+            return result;
         }
 
         #endregion
