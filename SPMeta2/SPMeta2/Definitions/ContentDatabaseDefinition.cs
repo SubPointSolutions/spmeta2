@@ -21,6 +21,8 @@ namespace SPMeta2.Definitions
     [Serializable]
 
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class ContentDatabaseDefinition : DefinitionBase
     {
         #region constructors

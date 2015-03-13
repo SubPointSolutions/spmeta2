@@ -41,6 +41,18 @@ namespace SPMeta2.Syntax.Default
             return model.AddDefinitionNode(definition, action);
         }
 
+        #region array overload
+
+        public static ModelNode AddFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         public static ModelNode AddSiteFeature(this ModelNode model, FeatureDefinition definition)
         {
             return AddSiteFeature(model, definition, null);
@@ -50,6 +62,19 @@ namespace SPMeta2.Syntax.Default
         {
             return AddFeature(model, definition, action);
         }
+
+
+        #region array overload
+
+        public static ModelNode AddSiteFeature(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
 
         public static ModelNode AddWebFeature(this ModelNode model, FeatureDefinition definition)
         {
@@ -61,6 +86,18 @@ namespace SPMeta2.Syntax.Default
             return AddFeature(model, definition, action);
         }
 
+        #region array overload
+
+        public static ModelNode AddWebFeature(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         public static ModelNode AddWebApplicationFeature(this ModelNode model, FeatureDefinition definition)
         {
             return AddWebApplicationFeature(model, definition, null);
@@ -71,6 +108,18 @@ namespace SPMeta2.Syntax.Default
             return AddFeature(model, definition, action);
         }
 
+        #region array overload
+
+        public static ModelNode AddWebApplicationFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         public static ModelNode AddFarmFeature(this ModelNode model, FeatureDefinition definition)
         {
             return AddFarmFeature(model, definition, null);
@@ -79,6 +128,18 @@ namespace SPMeta2.Syntax.Default
         public static ModelNode AddFarmFeature(this ModelNode model, FeatureDefinition definition, Action<ModelNode> action)
         {
             return AddFeature(model, definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static ModelNode AddFarmFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

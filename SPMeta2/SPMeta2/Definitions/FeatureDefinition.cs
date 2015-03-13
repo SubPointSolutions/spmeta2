@@ -30,6 +30,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class FeatureDefinition : DefinitionBase
     {
         #region properties

@@ -27,5 +27,17 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region array overload
+
+        public static ModelNode AddScriptEditorWebParts(this ModelNode model, IEnumerable<ScriptEditorWebPartDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

@@ -26,5 +26,17 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region array overload
+
+        public static ModelNode AddNoteFields(this ModelNode model, IEnumerable<NoteFieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

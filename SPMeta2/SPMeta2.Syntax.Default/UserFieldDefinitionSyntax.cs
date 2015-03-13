@@ -26,5 +26,17 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region array overload
+
+        public static ModelNode AddUserFields(this ModelNode model, IEnumerable<UserFieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

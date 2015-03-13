@@ -21,6 +21,8 @@ namespace SPMeta2.Standard.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class ImageRenditionDefinition : DefinitionBase
     {
         #region properties

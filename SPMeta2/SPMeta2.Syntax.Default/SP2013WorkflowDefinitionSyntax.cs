@@ -23,5 +23,17 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region array overload
+
+        public static ModelNode AddSP2013Workflows(this ModelNode model, IEnumerable<SP2013WorkflowDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

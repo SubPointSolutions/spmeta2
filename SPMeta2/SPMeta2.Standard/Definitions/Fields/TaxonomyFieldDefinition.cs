@@ -18,6 +18,8 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class TaxonomyFieldDefinition : FieldDefinition
     {
         #region constructors

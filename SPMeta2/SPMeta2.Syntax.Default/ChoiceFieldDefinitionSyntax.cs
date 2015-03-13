@@ -27,6 +27,16 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-       
+        #region array overload
+
+        public static ModelNode AddChoiceFields(this ModelNode model, IEnumerable<ChoiceFieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

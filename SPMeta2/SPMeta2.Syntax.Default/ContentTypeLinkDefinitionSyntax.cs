@@ -2,6 +2,7 @@
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
+using System.Collections.Generic;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -18,6 +19,18 @@ namespace SPMeta2.Syntax.Default
         {
             return model.AddDefinitionNode(definition, action);
         }
+
+        #region array overload
+
+        public static ModelNode AddContentTypeLinks(this ModelNode model, IEnumerable<ContentTypeLinkDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
 
         public static ModelNode AddContentTypeLink(this ModelNode model, string contentTypdId)
         {

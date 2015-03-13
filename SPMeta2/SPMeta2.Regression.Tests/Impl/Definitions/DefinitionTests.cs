@@ -168,9 +168,49 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
                 Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
 
-
                 #endregion
 
+                #region AddXXXs array overload
+
+                var hasAddArrayDefinitionMethod = true;
+                var shouldCheckArrayOverload = definitionType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
+
+                if (shouldCheckArrayOverload)
+                {
+                    // validate (this ModelNode model, XXXDefinition definition)
+                    Trace.WriteLine(
+                        string.Format(
+                            "     Add{0}s(this ModelNode model, IEnumerable<{0}Definition> definitions, Action<ModelNode> action))",
+                            definitionName));
+                    var addArrayDefinitionMethodName = string.Format("Add{0}s", definitionName);
+
+                    if (definitionType == typeof(PrefixDefinition))
+                        addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
+                    if (definitionType == typeof(PropertyDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddProperties");
+                    if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddDiagnosticsServices");
+
+                    var arrayTypoe = typeof(IEnumerable<>);
+                    var arrayDefinitionType = arrayTypoe.MakeGenericType(definitionType);
+
+                    hasAddArrayDefinitionMethod = methods.FirstOrDefault(m =>
+                        m.Name == addArrayDefinitionMethodName &&
+                        m.GetParameters().Count() == 2 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == arrayDefinitionType) != null;
+
+                    Trace.WriteLine(
+                      string.Format("    [{0}] - {1}(this ModelNode model, IEnumerable<{2}Definition> definitions))",
+                          hasAddArrayDefinitionMethod.ToString().ToUpper(), addArrayDefinitionMethodName, definitionName));
+
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddXXXs() arrary overload as there is no ExpectArrayExtensionMethod attr"));
+                }
+
+                #endregion
 
                 #region AddHostXXX()
 
@@ -222,7 +262,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 // push back
                 if (hasAddDefinitionMethod != true || hasAddDefinitionWithCallbackMethod != true ||
-                    hasAddHostDefinitionMethod != true || hasAddHostDefinitionWithCallbackMethod != true)
+                    hasAddHostDefinitionMethod != true || hasAddHostDefinitionWithCallbackMethod != true ||
+                    hasAddArrayDefinitionMethod != true)
                     hasAllAddMethods = false;
             }
 

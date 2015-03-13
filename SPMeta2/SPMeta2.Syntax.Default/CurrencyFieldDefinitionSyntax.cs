@@ -27,6 +27,16 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-       
+        #region array overload
+
+        public static ModelNode AddCurrencyFields(this ModelNode model, IEnumerable<CurrencyFieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

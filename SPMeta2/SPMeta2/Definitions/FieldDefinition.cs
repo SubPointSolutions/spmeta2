@@ -36,6 +36,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class FieldDefinition : DefinitionBase
     {
         #region constructors

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default.Extensions;
@@ -28,6 +29,18 @@ namespace SPMeta2.Standard.Syntax
         {
             return model.AddDefinitionNode(definition, action);
         }
+
+        #region array overload
+
+        public static ModelNode AddTaxonomyTerms(this ModelNode model, IEnumerable<TaxonomyTermDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
 
         public static ModelNode AddHostTaxonomyTerm(this ModelNode model, TaxonomyTermDefinition definition)
         {

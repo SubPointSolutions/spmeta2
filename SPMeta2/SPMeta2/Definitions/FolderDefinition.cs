@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions
     [ExpectAddHostExtensionMethod]
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class FolderDefinition : DefinitionBase
     {
         #region properties

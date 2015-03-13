@@ -20,6 +20,8 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class ListViewWebPartDefinition : WebPartDefinition
     {
         #region properties

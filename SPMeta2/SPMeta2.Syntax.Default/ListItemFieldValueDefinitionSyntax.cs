@@ -51,8 +51,20 @@ namespace SPMeta2.Syntax.Default
         }
 
 
+
         #endregion
 
+        #region array overload
+
+        public static ModelNode AddListItemFieldValues(this ModelNode model, IEnumerable<ListItemFieldValueDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
       
     }
 }

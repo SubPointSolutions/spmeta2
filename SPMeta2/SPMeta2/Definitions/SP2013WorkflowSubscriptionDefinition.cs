@@ -24,6 +24,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
         #region constructors

@@ -24,6 +24,17 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
+        #region array overload
+        public static ModelNode AddFolders(this ModelNode model, IEnumerable<FolderDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         #region add host
 
         public static ModelNode AddHostFolder(this ModelNode model, FolderDefinition definition)

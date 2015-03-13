@@ -28,6 +28,8 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class MultiChoiceFieldDefinition : FieldDefinition
     {
         #region constructors

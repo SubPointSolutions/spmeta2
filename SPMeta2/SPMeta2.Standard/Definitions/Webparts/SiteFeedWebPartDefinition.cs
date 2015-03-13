@@ -16,6 +16,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class SiteFeedWebPartDefinition : WebPartDefinition
     {
         #region properties

@@ -24,6 +24,18 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
+        #region array overload
+
+        public static ModelNode AddWebs(this ModelNode model, IEnumerable<WebDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+        
         #region host override
 
         public static ModelNode AddHostWeb(this ModelNode model, WebDefinition definition)

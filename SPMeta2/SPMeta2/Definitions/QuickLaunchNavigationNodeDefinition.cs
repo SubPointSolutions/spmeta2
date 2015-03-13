@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class QuickLaunchNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
         #region methods

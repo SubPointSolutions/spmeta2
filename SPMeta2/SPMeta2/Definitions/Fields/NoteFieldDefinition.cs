@@ -34,6 +34,8 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class NoteFieldDefinition : FieldDefinition
     {
         #region constructors

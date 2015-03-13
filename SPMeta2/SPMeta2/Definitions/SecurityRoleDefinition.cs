@@ -18,6 +18,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region constructors

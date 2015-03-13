@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class UserFieldDefinition : FieldDefinition
     {
         #region constructors

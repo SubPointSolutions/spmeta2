@@ -22,6 +22,19 @@ namespace SPMeta2.Syntax.Default
             return model.AddDefinitionNode(definition, action);
         }
 
+
+        #region array overload
+
+        public static ModelNode AddModuleFiles(this ModelNode model, IEnumerable<ModuleFileDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition)
         {
             return AddHostModuleFile(model, definition, null);
@@ -30,6 +43,7 @@ namespace SPMeta2.Syntax.Default
         public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        }    
+        }
+
     }
 }

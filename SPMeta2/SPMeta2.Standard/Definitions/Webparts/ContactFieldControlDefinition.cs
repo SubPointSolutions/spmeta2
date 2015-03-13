@@ -17,6 +17,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class ContactFieldControlDefinition : WebPartDefinition
     {
         #region properties

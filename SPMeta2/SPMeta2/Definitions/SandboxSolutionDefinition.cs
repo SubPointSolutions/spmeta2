@@ -24,6 +24,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class SandboxSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors

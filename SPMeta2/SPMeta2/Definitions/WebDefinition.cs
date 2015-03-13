@@ -20,6 +20,8 @@ namespace SPMeta2.Definitions
     [ExpectAddHostExtensionMethod]
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class WebDefinition : DefinitionBase
     {
         #region constructors

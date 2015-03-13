@@ -27,6 +27,16 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-       
+        #region array overload
+
+        public static ModelNode AddDateTimeFields(this ModelNode model, IEnumerable<DateTimeFieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion       
     }
 }

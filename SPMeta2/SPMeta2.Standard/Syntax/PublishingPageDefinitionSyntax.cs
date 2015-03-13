@@ -2,6 +2,7 @@
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default.Extensions;
+using System.Collections.Generic;
 
 namespace SPMeta2.Standard.Syntax
 {
@@ -17,6 +18,18 @@ namespace SPMeta2.Standard.Syntax
         public static ModelNode AddPublishingPage(this ModelNode model, PublishingPageDefinition definition, Action<ModelNode> action)
         {
             return model.AddDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static ModelNode AddPublishingPages(this ModelNode model, IEnumerable<PublishingPageDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

@@ -21,6 +21,8 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class BusinessDataFieldDefinition : FieldDefinition
     {
         #region constructors

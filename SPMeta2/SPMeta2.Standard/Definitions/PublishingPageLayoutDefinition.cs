@@ -20,6 +20,8 @@ namespace SPMeta2.Standard.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class PublishingPageLayoutDefinition : PageDefinitionBase
     {
         #region properties

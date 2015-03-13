@@ -21,6 +21,8 @@ namespace SPMeta2.Definitions
     [Serializable]
 
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class EventReceiverDefinition : DefinitionBase
     {
         #region constructors

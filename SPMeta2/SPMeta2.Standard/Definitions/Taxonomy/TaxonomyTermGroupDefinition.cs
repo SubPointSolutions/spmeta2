@@ -18,6 +18,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class TaxonomyTermGroupDefinition : DefinitionBase
     {
         #region properties

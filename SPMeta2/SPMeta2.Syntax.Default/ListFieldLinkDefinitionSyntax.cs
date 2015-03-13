@@ -26,6 +26,8 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
+
+
         public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition)
         {
             return AddListFieldLink(model, definition, null);
@@ -38,6 +40,24 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-      
+        #region array overload
+
+        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<ListFieldLinkDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddListFieldLink(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

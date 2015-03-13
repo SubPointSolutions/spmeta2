@@ -20,6 +20,7 @@ namespace SPMeta2.Definitions
     [Serializable]
 
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
     public class AlternateUrlDefinition : DefinitionBase
     {
         #region properties

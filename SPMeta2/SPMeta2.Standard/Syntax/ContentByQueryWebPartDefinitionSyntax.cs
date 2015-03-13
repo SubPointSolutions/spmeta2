@@ -24,5 +24,17 @@ namespace SPMeta2.Standard.Syntax
         }
 
         #endregion
+
+        #region array overload
+
+        public static ModelNode AddContentByQueryWebParts(this ModelNode model, IEnumerable<ContentByQueryWebPartDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

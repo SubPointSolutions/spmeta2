@@ -24,6 +24,18 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
+        #region array overload
+
+        public static ModelNode AddListItems(this ModelNode model, IEnumerable<ListItemDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
         #region add host
 
         public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition)

@@ -19,6 +19,8 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
     public class ContentTypeLinkDefinition : DefinitionBase
     {
         #region properties

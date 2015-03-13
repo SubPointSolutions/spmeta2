@@ -21,6 +21,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
     //[ExpectAddHostExtensionMethod]
     [Serializable]
+    [ExpectArrayExtensionMethod]
+
     public class TaxonomyTermLabelDefinition : DefinitionBase
     {
         #region constructors

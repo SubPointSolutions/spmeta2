@@ -18,13 +18,7 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, params Guid[] fieldIds)
-        {
-            foreach (var fieldId in fieldIds)
-                AddContentTypeFieldLink(model, fieldId);
 
-            return model;
-        }
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId)
         {
@@ -40,14 +34,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                AddContentTypeFieldLink(model, definition);
-
-            return model;
-        }
-
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, params FieldDefinition[] definitions)
         {
             foreach (var definition in definitions)
                 AddContentTypeFieldLink(model, definition);
@@ -80,6 +66,17 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
+        #region array overload
+
+        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<ContentTypeFieldLinkDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
 
     }
 }
