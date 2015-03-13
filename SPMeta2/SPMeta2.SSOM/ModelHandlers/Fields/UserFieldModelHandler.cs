@@ -37,6 +37,17 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             typedField.AllowDisplay = typedFieldModel.AllowDisplay;
             typedField.Presence = typedFieldModel.Presence;
             typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
+
+
+            if (typedFieldModel.SelectionGroup.HasValue)
+            {
+                typedField.SelectionGroup = typedFieldModel.SelectionGroup.Value;
+            }
+            else if (!string.IsNullOrEmpty(typedFieldModel.SelectionGroupName))
+            {
+                var group = GetCurrentWeb().SiteGroups.GetByName(typedFieldModel.SelectionGroupName);
+                typedField.SelectionGroup = group.ID;
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

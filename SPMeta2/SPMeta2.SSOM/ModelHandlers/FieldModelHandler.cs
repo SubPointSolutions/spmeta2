@@ -53,6 +53,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             return null;
         }
 
+        protected SPWeb GetCurrentWeb()
+        {
+            if (ModelHost is SiteModelHost)
+                return (ModelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (ModelHost is ListModelHost)
+                return (ModelHost as ListModelHost).HostList.ParentWeb;
+
+            return null;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             ModelHost = modelHost;
@@ -135,6 +146,17 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
+
+            return null;
+        }
+
+        protected SPWeb ExtractWebFromHost(object modelHost)
+        {
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.ParentWeb;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
 
             return null;
         }

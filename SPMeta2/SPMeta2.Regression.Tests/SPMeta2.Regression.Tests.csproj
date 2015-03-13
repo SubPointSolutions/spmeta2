@@ -83,6 +83,7 @@
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\Fields\CalculatedFieldScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\Fields\UserFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ResetRoleInheritanceScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeFieldLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />

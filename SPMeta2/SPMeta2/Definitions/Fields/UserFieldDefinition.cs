@@ -65,16 +65,22 @@ namespace SPMeta2.Definitions.Fields
 
         /// <summary>
         /// ID of the target security group.
-        /// Is not used during the provision, must be used maually after the provision to hook up the field with the particular group.
         ///  </summary>
         [ExpectValidation]
         public int? SelectionGroup { get; set; }
+
+        /// <summary>
+        /// Name of the target security group.
+        [ExpectValidation]
+        public string SelectionGroupName { get; set; }
 
         /// <summary>
         /// Refers to SPFieldUserSelectionMode property.
         /// </summary>
         [ExpectValidation]
         public string SelectionMode { get; set; }
+
+
 
         #endregion
 
