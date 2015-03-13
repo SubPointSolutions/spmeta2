@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -28,15 +29,40 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
-            // let base setting be setup
+            var typedFieldModel = fieldModel.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
+            int? groupId = null;
+
+            var web = HostWeb;
+            var context = web.Context;
+
+            if (!string.IsNullOrEmpty(typedFieldModel.SelectionGroupName))
+            {
+                var group = web.SiteGroups.GetByName(typedFieldModel.SelectionGroupName);
+                context.Load(group);
+                context.Load(group, g => g.Id);
+                context.ExecuteQueryWithTrace();
+
+                groupId = group.Id;
+            }
+
+            // lokup the group
             base.ProcessFieldProperties(field, fieldModel);
 
             var typedField = field.Context.CastTo<FieldUser>(field);
-            var typedFieldModel = fieldModel.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
 
+            // let base setting be setup
             typedField.AllowDisplay = typedFieldModel.AllowDisplay;
             typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
             typedField.Presence = typedFieldModel.Presence;
+
+            if (typedFieldModel.SelectionGroup.HasValue)
+            {
+                typedField.SelectionGroup = typedFieldModel.SelectionGroup.Value;
+            }
+            else if (!string.IsNullOrEmpty(typedFieldModel.SelectionGroupName))
+            {
+                typedField.SelectionGroup = groupId.Value;
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

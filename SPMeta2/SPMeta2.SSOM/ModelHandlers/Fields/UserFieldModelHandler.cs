@@ -38,7 +38,6 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             typedField.Presence = typedFieldModel.Presence;
             typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
 
-
             if (typedFieldModel.SelectionGroup.HasValue)
             {
                 typedField.SelectionGroup = typedFieldModel.SelectionGroup.Value;

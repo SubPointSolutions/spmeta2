@@ -54,6 +54,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             return null;
         }
+
         protected Field FindField(object modelHost, FieldDefinition definition)
         {
             if (modelHost is SiteModelHost)
@@ -87,7 +88,19 @@ namespace SPMeta2.CSOM.ModelHandlers
             return null;
         }
 
+        private Web ExtractWebFromHost(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostWeb;
+
+            return null;
+        }
+
         protected Site HostSite { get; set; }
+        protected Web HostWeb { get; set; }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
@@ -97,6 +110,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             CurrentSiteModelHost = modelHost as SiteModelHost;
 
             HostSite = ExtractSiteFromHost(modelHost);
+            HostWeb = ExtractWebFromHost(modelHost);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Casting field model definition");
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
@@ -164,6 +178,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
             context.ExecuteQueryWithTrace();
         }
+
+
 
         private Field DeployListField(ListModelHost modelHost, FieldDefinition fieldModel)
         {
@@ -454,5 +470,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
+        
     }
 }

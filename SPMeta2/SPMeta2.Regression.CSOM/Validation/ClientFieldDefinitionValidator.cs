@@ -49,6 +49,16 @@ namespace SPMeta2.Regression.CSOM.Validation
             return null;
         }
 
+        protected Web ExtractWebFromHost(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostWeb;
+
+            return null;
+        }
 
         protected bool IsListScopedField
         {

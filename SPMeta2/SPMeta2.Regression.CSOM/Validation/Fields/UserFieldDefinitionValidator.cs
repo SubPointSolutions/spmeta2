@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -51,23 +52,52 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             ValidateField(assert, spObject, definition);
 
-            var textField = spObject.Context.CastTo<FieldUser>(spObject);
-            var textDefinition = model.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
+            var typedField = spObject.Context.CastTo<FieldUser>(spObject);
+            var typedDefinition = model.WithAssertAndCast<UserFieldDefinition>("model", value => value.RequireNotNull());
 
-            var typedFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
+            var typedFieldAssert = ServiceFactory.AssertService.NewAssert(model, typedDefinition, typedField);
 
             typedFieldAssert.ShouldBeEqual(m => m.AllowMultipleValues, o => o.AllowMultipleValues);
             typedFieldAssert.ShouldBeEqual(m => m.AllowDisplay, o => o.AllowDisplay);
             typedFieldAssert.ShouldBeEqual(m => m.Presence, o => o.Presence);
             typedFieldAssert.ShouldBeEqual(m => m.SelectionMode, o => o.GetSelectionMode());
 
-            if (textDefinition.SelectionGroup.HasValue)
+            if (typedDefinition.SelectionGroup.HasValue)
             {
                 typedFieldAssert.ShouldBeEqual(m => m.SelectionGroup, o => o.SelectionGroup);
             }
             else
             {
                 typedFieldAssert.SkipProperty(m => m.SelectionGroup, "SelectionGroup is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.SelectionGroupName))
+            {
+                var web = ExtractWebFromHost(modelHost);
+                var context = web.Context;
+
+                var group = web.SiteGroups.GetByName(typedDefinition.SelectionGroupName);
+
+                context.Load(group);
+                context.ExecuteQueryWithTrace();
+
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.SelectionGroupName);
+                    var isValid = typedField.SelectionGroup == group.Id;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.SelectionGroupName, "SelectionGroupName is NULL. Skipping.");
             }
         }
     }

@@ -70,7 +70,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = web.Context;
 
             // well, this should be pulled up to the site handler and init Load/Exec query
-            context.Load(web, tmpWeb => tmpWeb.SiteGroups);
+            context.Load(web, tmpWeb => tmpWeb.SiteGroups, g => g.Id, g => g.Title);
             context.ExecuteQueryWithTrace();
 
             Principal principal = null;
@@ -100,6 +100,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Title = securityGroupModel.Name,
                     Description = securityGroupModel.Description ?? string.Empty,
                 });
+
+                currentGroup.Update();
+                context.ExecuteQueryWithTrace();
+
+                context.Load(currentGroup);
+                context.ExecuteQueryWithTrace();
             }
             else
             {
@@ -126,7 +132,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else
                     throw new SPMeta2Exception(string.Format("Cannot resolve Principal by string value: [{0}]", securityGroupModel.Owner));
             }
-
+           
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
