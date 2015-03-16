@@ -265,6 +265,15 @@ namespace SPMeta2.Regression.Tests.Base
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsFieldUserSelectionMode) > 0)
+                        {
+                            var curentValue = prop.GetValue(def) as string;
+
+                            if (curentValue == BuiltInFieldUserSelectionMode.PeopleAndGroups)
+                                newValue = BuiltInFieldUserSelectionMode.PeopleOnly;
+                            else
+                                newValue = BuiltInFieldUserSelectionMode.PeopleAndGroups;
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldCalendarType) > 0)
                         {
                             var values = new List<string>();

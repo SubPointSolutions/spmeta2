@@ -110,4 +110,9 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
+
+    public class ExpectUpdateAsFieldUserSelectionMode : ExpectUpdate
+    {
+        
+    }
 }

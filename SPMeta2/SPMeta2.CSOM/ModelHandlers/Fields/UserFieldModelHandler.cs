@@ -55,6 +55,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
             typedField.Presence = typedFieldModel.Presence;
 
+            if (!string.IsNullOrEmpty(typedFieldModel.SelectionMode))
+                typedField.SelectionMode = (FieldUserSelectionMode)Enum.Parse(typeof(FieldUserSelectionMode), typedFieldModel.SelectionMode);
+
             if (typedFieldModel.SelectionGroup.HasValue)
             {
                 typedField.SelectionGroup = typedFieldModel.SelectionGroup.Value;

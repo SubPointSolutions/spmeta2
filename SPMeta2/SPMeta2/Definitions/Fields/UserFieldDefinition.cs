@@ -80,9 +80,8 @@ namespace SPMeta2.Definitions.Fields
         /// Refers to SPFieldUserSelectionMode property.
         /// </summary>
         [ExpectValidation]
+        [ExpectUpdateAsFieldUserSelectionMode]
         public string SelectionMode { get; set; }
-
-
 
         #endregion
 
