@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
@@ -47,7 +48,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(typedFieldModel.SelectionGroupName))
             {
-                var group = GetCurrentWeb().SiteGroups.GetByName(typedFieldModel.SelectionGroupName);
+                var group = GetCurrentWeb().SiteGroups.OfType<SPGroup>().FirstOrDefault(g => g.Name.ToUpper() == typedFieldModel.SelectionGroupName.ToUpper());
                 typedField.SelectionGroup = group.ID;
             }
         }
