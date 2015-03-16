@@ -2,11 +2,14 @@
 
 <a href="http://subpointsolutions.com">SubPoint Solutions</a> is an inovative company that helps SharePoint professionals and consultancy companies be efficient. 
 
-We look after <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, <a href="http://subpointsolutions.com/spcafcontrib/about">SPCAFContrib</a> and a few more projects aim to provide a powerful foundation and experience for SharePoint professionals. 
+We look after <a href="http://subpointsolutions.com/spmeta2">SPMeta2 library</a>, <a href="http://subpointsolutions.com/reSP">reSP</a> and a few more projects aim to provide a powerful foundation and experience for SharePoint professionals. 
 
 With growing demaind of effective SharePoint artifact provision for SP2013 and O365, we are taking <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a> to the next level, offering <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a hre='http://subpointsolutions.com/services/support'>additional support</a> for our clients.
 
 Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a> and <a href='https://subpointsolutions.uservoice.com/'>let us know how it works for you</a>.
+
+## Build status
+[![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2)
 
 ## What is SPMeta2?
 SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
