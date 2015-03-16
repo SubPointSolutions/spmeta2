@@ -21,6 +21,7 @@ namespace SPMeta2.SSOM.Services
             ServiceContainer.Instance.RegisterService(typeof(SSOMTokenReplacementService), new SSOMTokenReplacementService());
 
             RegisterModelHandlers();
+
             //CheckSharePointRuntimeVersion();
         }
 
