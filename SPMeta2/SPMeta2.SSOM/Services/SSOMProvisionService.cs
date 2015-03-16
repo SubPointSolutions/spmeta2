@@ -67,4 +67,17 @@ namespace SPMeta2.SSOM.Services
 
         #endregion
     }
+
+    public static class SSOMProvisionServiceExtensions
+    {
+        public static void DeploySiteModel(this SSOMProvisionService modelHost, SPSite site, ModelNode model)
+        {
+            modelHost.DeployModel(SiteModelHost.FromSite(site), model);
+        }
+
+        public static void DeployWebModel(this SSOMProvisionService modelHost, SPWeb web, ModelNode model)
+        {
+            modelHost.DeployModel(WebModelHost.FromWeb(web), model);
+        }
+    }
 }

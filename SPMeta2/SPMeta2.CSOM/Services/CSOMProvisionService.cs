@@ -112,4 +112,17 @@ namespace SPMeta2.CSOM.Services
 
         #endregion
     }
+
+    public static class CSOMProvisionServiceExtensions
+    {
+        public static void DeploySiteModel(this CSOMProvisionService modelHost, ClientContext context, ModelNode model)
+        {
+            modelHost.DeployModel(new SiteModelHost(context), model);
+        }
+
+        public static void DeployWebModel(this CSOMProvisionService modelHost, ClientContext context, ModelNode model)
+        {
+            modelHost.DeployModel(new WebModelHost(context), model);
+        }
+    }
 }
