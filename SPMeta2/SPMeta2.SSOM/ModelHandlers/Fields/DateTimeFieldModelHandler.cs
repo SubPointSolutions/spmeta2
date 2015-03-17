@@ -41,11 +41,15 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<DateTimeFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field as SPFieldDateTime;
 
-            typedField.CalendarType = (SPCalendarType)Enum.Parse(typeof(SPCalendarType), typedFieldModel.CalendarType);
-            typedField.DisplayFormat = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DisplayFormat);
+            if (!string.IsNullOrEmpty(typedFieldModel.CalendarType))
+                typedField.CalendarType = (SPCalendarType)Enum.Parse(typeof(SPCalendarType), typedFieldModel.CalendarType);
+
+            if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
+                typedField.DisplayFormat = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DisplayFormat);
 
 #if !NET35
-            typedField.FriendlyDisplayFormat = (SPDateTimeFieldFriendlyFormatType)Enum.Parse(typeof(SPDateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
+            if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
+                typedField.FriendlyDisplayFormat = (SPDateTimeFieldFriendlyFormatType)Enum.Parse(typeof(SPDateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
 #endif
         }
 

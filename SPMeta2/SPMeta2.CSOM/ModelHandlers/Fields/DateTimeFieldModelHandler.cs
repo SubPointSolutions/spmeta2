@@ -40,10 +40,14 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<DateTimeFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field.Context.CastTo<FieldDateTime>(field);
 
-            typedField.DateTimeCalendarType = (CalendarType)Enum.Parse(typeof(CalendarType), typedFieldModel.CalendarType);
-            typedField.DisplayFormat = (DateTimeFieldFormatType)Enum.Parse(typeof(DateTimeFieldFormatType), typedFieldModel.DisplayFormat);
-            typedField.FriendlyDisplayFormat = (DateTimeFieldFriendlyFormatType)Enum.Parse(typeof(DateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
+            if (!string.IsNullOrEmpty(typedFieldModel.CalendarType))
+                typedField.DateTimeCalendarType = (CalendarType)Enum.Parse(typeof(CalendarType), typedFieldModel.CalendarType);
 
+            if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
+                typedField.DisplayFormat = (DateTimeFieldFormatType)Enum.Parse(typeof(DateTimeFieldFormatType), typedFieldModel.DisplayFormat);
+
+            if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
+                typedField.FriendlyDisplayFormat = (DateTimeFieldFriendlyFormatType)Enum.Parse(typeof(DateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
