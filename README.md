@@ -8,6 +8,9 @@ With growing demaind of effective SharePoint artifact provision for SP2013 and O
 
 Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a> and <a href='https://subpointsolutions.uservoice.com/'>let us know how it works for you</a>.
 
+## Build status with appveyor
+[![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2)
+
 ## What is SPMeta2?
 SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
 

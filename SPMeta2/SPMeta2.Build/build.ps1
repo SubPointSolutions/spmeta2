@@ -26,7 +26,7 @@ $includeV14Build = $true
 $includeV15Build = $true
 $includeV16Build = $true
 
-# 14, 3.5
+# 14, 3.5 
 if($includeV14Build -eq $true) {
     
     & $msbuild_path """$solutionRootPath\SPMeta2\SPMeta2.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:Platform=AnyCPU /p:WarningLevel=0"
