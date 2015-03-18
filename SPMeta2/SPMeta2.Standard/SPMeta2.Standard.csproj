@@ -132,6 +132,8 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
+    <Compile Include="Syntax\ItemDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\ControlDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\SearchSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\CustomDocumentIdProviderDefinitionSyntax.cs" />
     <Compile Include="Syntax\AudienceDefinitionSyntax.cs" />

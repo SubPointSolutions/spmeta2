@@ -165,10 +165,24 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithControlDisplayTemplates(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
+
+        public static ModelNode WithItemDisplayTemplates(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
+
+
         public static ModelNode WithImageRenditions(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);
         }
+
 
         public static ModelNode WithSearchResults(this ModelNode model, Action<ModelNode> action)
         {
