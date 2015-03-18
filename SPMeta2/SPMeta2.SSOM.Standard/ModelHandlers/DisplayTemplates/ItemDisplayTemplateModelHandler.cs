@@ -1,12 +1,13 @@
 ﻿using System;
-using Microsoft.SharePoint.Client;
-using SPMeta2.CSOM.ModelHandlers.Base;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Definitions.DisplayTemplates;
+using System.Web.UI.WebControls;
+using Microsoft.SharePoint;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.Standard.ModelHandlers.Base;
+using SPMeta2.Standard.Definitions.Base;
+using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 
-namespace SPMeta2.CSOM.ModelHandlers.DisplayTemplates
+namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
 {
     public class ItemDisplayTemplateModelHandler : TemplateModelHandlerBase
     {
@@ -19,7 +20,7 @@ namespace SPMeta2.CSOM.ModelHandlers.DisplayTemplates
             }
         }
 
-        protected override void MapProperties(object modelHost, ListItem item, TemplateDefinitionBase definition)
+        protected override void MapProperties(object modelHost, SPListItem item, TemplateDefinitionBase definition)
         {
             var typedDefinition = definition.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 

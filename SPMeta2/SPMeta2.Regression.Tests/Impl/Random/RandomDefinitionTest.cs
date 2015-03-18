@@ -27,6 +27,7 @@ using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Enumerations;
 using SPMeta2.Definitions.Fields;
 using System.IO;
+using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Validation.Services;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
@@ -702,7 +703,25 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+
+
         #region master page gallery
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery.DisplayTemplates")]
+        public void CanDeployRandom_ItemDisplayTemplateDefinition()
+        {
+            TestRandomDefinition<ItemDisplayTemplateDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery.DisplayTemplates")]
+        public void CanDeployRandom_ControlDisplayTemplateDefinition()
+        {
+            TestRandomDefinition<ControlDisplayTemplateDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.MasterPageGallery")]

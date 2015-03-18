@@ -7,6 +7,7 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.Utils;
+using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {

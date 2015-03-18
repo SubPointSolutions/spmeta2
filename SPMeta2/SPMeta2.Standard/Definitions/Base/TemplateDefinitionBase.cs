@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using SPMeta2.Definitions;
 
-namespace SPMeta2.Definitions.Base
+namespace SPMeta2.Standard.Definitions.Base
 {
     public abstract class TemplateDefinitionBase : PageDefinitionBase
     {

@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHandlers.Base;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Definitions.DisplayTemplates;
+using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Enumerations;
+using SPMeta2.Standard.Definitions.Base;
+using SPMeta2.Standard.Definitions.DisplayTemplates;
 
-namespace SPMeta2.CSOM.ModelHandlers.DisplayTemplates
+namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
 {
     public class ControlDisplayTemplateModelHandler : TemplateModelHandlerBase
     {

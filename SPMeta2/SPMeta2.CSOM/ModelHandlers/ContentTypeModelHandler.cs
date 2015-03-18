@@ -15,6 +15,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using System.Xml.Linq;
 using SPMeta2.ModelHosts;
+using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {

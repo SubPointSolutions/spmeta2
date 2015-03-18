@@ -106,10 +106,7 @@
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
-    <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
-    <Compile Include="Definitions\DisplayTemplates\ControlDisplayTemplateDefinition.cs" />
-    <Compile Include="Definitions\DisplayTemplates\ItemDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
     <Compile Include="Definitions\MasterPageDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
@@ -274,6 +271,7 @@
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceUtils.cs" />
     <Compile Include="Utils\ToStringResult.cs" />
+    <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
     <Compile Include="Utils\WebpartXmlExtensions.cs" />

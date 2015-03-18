@@ -10,6 +10,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 
 namespace SPMeta2.Regression.CSOM.Validation

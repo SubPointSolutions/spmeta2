@@ -12,6 +12,7 @@ using SPMeta2.Utils;
 using SPMeta2.Exceptions;
 using SPMeta2.CSOM.Utils;
 using SPMeta2.Services;
+using UrlUtility = SPMeta2.CSOM.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {

@@ -75,6 +75,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\ClientPublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
+    <Compile Include="Validation\DisplayTemplates\ClientItemDisplayTemplateDefinitionValidator.cs" />
+    <Compile Include="Validation\DisplayTemplates\ClientControlDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />

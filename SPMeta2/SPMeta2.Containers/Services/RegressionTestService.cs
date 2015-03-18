@@ -322,6 +322,8 @@ namespace SPMeta2.Containers.Services
 
                 hook.OnProvisioning = true;
 
+                AssertService.IsNotNull(context.ModelHost);
+
                 AssertService.IsNotNull(context.ObjectDefinition);
             });
         }
@@ -338,6 +340,8 @@ namespace SPMeta2.Containers.Services
 
                 AssertService.IsNotNull(context.Object);
                 AssertService.IsNotNull(context.ObjectDefinition);
+
+                AssertService.IsNotNull(context.ModelHost);
 
                 AssertService.IsInstanceOfType(context.Object, typeof(TObjectType));
             });

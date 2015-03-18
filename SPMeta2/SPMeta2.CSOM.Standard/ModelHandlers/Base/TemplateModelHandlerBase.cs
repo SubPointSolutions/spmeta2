@@ -2,12 +2,13 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
+using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Utils;
 
-namespace SPMeta2.CSOM.ModelHandlers.Base
+namespace SPMeta2.CSOM.Standard.ModelHandlers.Base
 {
     public abstract class TemplateModelHandlerBase : CSOMModelHandlerBase
     {
@@ -71,17 +72,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             return collListItems.FirstOrDefault();
 
-        }
-
-        protected ListItem FindPage(List list, Folder folder, MasterPageDefinition definition)
-        {
-            var pageName = GetSafePageFileName(definition);
-            var file = GetItemFile(list, folder, pageName);
-
-            if (file != null)
-                return file.ListItemAllFields;
-
-            return null;
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)

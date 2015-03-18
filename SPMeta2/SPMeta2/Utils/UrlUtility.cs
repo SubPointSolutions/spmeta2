@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-
-namespace SPMeta2.CSOM.Utils
+namespace SPMeta2.Utils
 {
-    [Obsolete("Moved to new namespace - SPMeta2.Utils.UrlUtility.")]
     public static class UrlUtility
     {
         #region methods

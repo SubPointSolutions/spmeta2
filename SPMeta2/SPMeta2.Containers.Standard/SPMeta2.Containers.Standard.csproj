@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\DisplayTemplates\ItemDisplayTemplateDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DisplayTemplates\ControlDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SearchSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\CustomDocumentIdProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PageLayoutAndSiteTemplateSettingsDefinitionGenerator.cs" />

@@ -132,7 +132,6 @@
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
-    <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
@@ -146,8 +145,6 @@
     <Compile Include="ModelHandlers\ContentTypes\RemoveContentTypeLinksModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\CSOMModelHandlerBase.cs" />
-    <Compile Include="ModelHandlers\DisplayTemplates\ControlDisplayTemplateModelHandler.cs" />
-    <Compile Include="ModelHandlers\DisplayTemplates\ItemDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />

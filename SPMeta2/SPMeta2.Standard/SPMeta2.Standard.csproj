@@ -98,7 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
+    <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
     <Compile Include="Definitions\CustomDocumentIdProviderDefinition.cs" />
+    <Compile Include="Definitions\DisplayTemplates\ControlDisplayTemplateDefinition.cs" />
+    <Compile Include="Definitions\DisplayTemplates\ItemDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\PageLayoutAndSiteTemplateSettingsDefinition.cs" />
     <Compile Include="Definitions\AudienceDefinition.cs" />
     <Compile Include="Definitions\Fields\TaxonomyFieldDefinition.cs" />

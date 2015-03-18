@@ -214,6 +214,9 @@ namespace SPMeta2.Models
                 TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [ObjectDefinition]: [{0}]", eventArgs.ObjectDefinition);
                 SetProperty(modelContextInstance, "ObjectDefinition", eventArgs.ObjectDefinition);
 
+                TraceService.VerboseFormat((int)LogEventId.CoreCalls, "Setting property: [ModelHost]: [{0}]", eventArgs.ModelHost);
+                SetProperty(modelContextInstance, "ModelHost", eventArgs.ModelHost);
+
                 TraceService.Verbose((int)LogEventId.CoreCalls, "Invoking event.");
                 action.DynamicInvoke(modelContextInstance);
             }
@@ -334,6 +337,12 @@ namespace SPMeta2.Models
         /// Current model, the root node.
         /// </summary>
         public ModelNode Model { get; set; }
+
+
+        /// <summary>
+        /// Current model host.
+        /// </summary>
+        public object ModelHost { get; set; }
 
         /// <summary>
         /// Current model node.
