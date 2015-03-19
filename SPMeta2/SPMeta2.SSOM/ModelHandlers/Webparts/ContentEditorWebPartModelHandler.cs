@@ -40,27 +40,35 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var typedWebpart = webpartInstance.WithAssertAndCast<ContentEditorWebPart>("webpartInstance", value => value.RequireNotNull());
             var typedModel = webpartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
-            var contentLinkValue = typedModel.ContentLink ?? string.Empty;
-
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
-
-            contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            if (!string.IsNullOrEmpty(typedModel.ContentLink))
             {
-                Value = contentLinkValue,
-                Context = CurrentHost.PageListItem.Web
-            }).Value;
+                var contentLinkValue = typedModel.ContentLink ?? string.Empty;
 
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]",
+                    contentLinkValue);
 
-            typedWebpart.ContentLink = contentLinkValue;
+                contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = contentLinkValue,
+                    Context = CurrentHost.PageListItem.Web
+                }).Value;
 
-            var xmlDoc = new XmlDocument();
-            var xmlElement = xmlDoc.CreateElement("ContentElement");
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
 
-            var content = typedModel.Content ?? string.Empty;
+                typedWebpart.ContentLink = contentLinkValue;
+            }
 
-            xmlElement.InnerText = content;
-            typedWebpart.Content = xmlElement;
+            if (!string.IsNullOrEmpty(typedModel.Content))
+            {
+
+                var xmlDoc = new XmlDocument();
+                var xmlElement = xmlDoc.CreateElement("ContentElement");
+
+                var content = typedModel.Content ?? string.Empty;
+
+                xmlElement.InnerText = content;
+                typedWebpart.Content = xmlElement;
+            }
         }
 
         #endregion

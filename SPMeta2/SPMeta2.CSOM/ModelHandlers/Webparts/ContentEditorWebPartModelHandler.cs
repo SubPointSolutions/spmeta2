@@ -30,25 +30,29 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
         {
             var typedModel = webPartModel.WithAssertAndCast<ContentEditorWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var contentLinkValue = typedModel.ContentLink ?? string.Empty;
+            var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentEditorWebPart);
 
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
+            if (!string.IsNullOrEmpty(typedModel.Content))
+                wpXml.SetOrUpdateContentEditorWebPartProperty("Content", typedModel.Content, true);
 
-            contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            if (!string.IsNullOrEmpty(typedModel.ContentLink))
             {
-                Value = contentLinkValue,
-                Context = listItemModelHost.HostClientContext
-            }).Value;
+                var contentLinkValue = typedModel.ContentLink ?? string.Empty;
 
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
 
-            var wpXml = WebpartXmlExtensions
-                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentEditorWebPart)
-                .SetOrUpdateContentEditorWebPartProperty("Content", typedModel.Content, true)
-                .SetOrUpdateContentEditorWebPartProperty("ContentLink", contentLinkValue)
-                .ToString();
+                contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = contentLinkValue,
+                    Context = listItemModelHost.HostClientContext
+                }).Value;
 
-            return wpXml;
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+
+                wpXml.SetOrUpdateContentEditorWebPartProperty("ContentLink", contentLinkValue);
+            }
+
+            return wpXml.ToString();
         }
 
         #endregion
