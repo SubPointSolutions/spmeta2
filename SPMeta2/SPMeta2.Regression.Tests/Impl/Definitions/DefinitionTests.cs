@@ -34,7 +34,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             LoadDefinitions();
         }
 
-        private static void LoadDefinitions()
+        protected static void LoadDefinitions()
         {
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
