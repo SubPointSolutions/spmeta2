@@ -57,6 +57,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+        protected List<ContentTypeDefinition> GetHierarchicalContentTypes()
+        {
+            var root = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var levelOne = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = root.GetContentTypeId();
+            });
+
+            var levelTwo = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = levelOne.GetContentTypeId();
+            });
+
+            return new List<ContentTypeDefinition>(new ContentTypeDefinition[]
+            {
+                root,   
+                levelOne,
+                levelTwo
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.ParentChild")]
+        public void CanDeploy_HierarchicalContentTypesOrderByIdAcs()
+        {
+            var contentTypes = GetHierarchicalContentTypes();
+
+            contentTypes.Sort(delegate(ContentTypeDefinition c1, ContentTypeDefinition c2)
+            {
+                return c1.IsChildOf(c2) ? -1 : 1;
+            });
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    site.AddContentTypes(contentTypes);
+                });
+
+            TestModel(siteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.ParentChild")]
+        public void CanDeploy_HierarchicalContentTypesOrderByIdDesc()
+        {
+            var contentTypes = GetHierarchicalContentTypes();
+            contentTypes = contentTypes.OrderByDescending(c => c.Id).ToList();
+
+            contentTypes.Sort(delegate(ContentTypeDefinition c1, ContentTypeDefinition c2)
+            {
+                return c1.IsChildOf(c2) ? 1 : -1;
+            });
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    site.AddContentTypes(contentTypes);
+                });
+
+            TestModel(siteModel);
+        }
+
         protected class ContentTypeEnvironment
         {
             public FieldDefinition First { get; set; }

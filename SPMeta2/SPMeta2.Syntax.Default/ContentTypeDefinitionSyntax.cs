@@ -39,6 +39,30 @@ namespace SPMeta2.Syntax.Default
             return siteModel;
         }
 
+        public static bool IsChildOf(this ContentTypeDefinition childContentTypeDefinition,
+            ContentTypeDefinition parentContentTypeDefinition)
+        {
+            return IsChildOf(childContentTypeDefinition.GetContentTypeId(), parentContentTypeDefinition.GetContentTypeId());
+        }
+
+        public static bool IsChildOf(this ContentTypeDefinition childContentTypeDefinition,
+            string parentContentTypId)
+        {
+            return IsChildOf(childContentTypeDefinition.GetContentTypeId(), parentContentTypId);
+        }
+
+        public static bool IsChildOf(string childId, string parentId)
+        {
+            if (parentId.Length < childId.Length)
+                return false;
+
+            for (int i = 0; i < childId.Length; i++)
+                if (childId[i] != parentId[i])
+                    return false;
+
+            return true;
+        }
+
         public static string GetContentTypeId(this ContentTypeDefinition contentType)
         {
             if (contentType.Id != default(Guid))

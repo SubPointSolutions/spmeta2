@@ -72,7 +72,9 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Starting processing child models of type: [{0}].", new object[] { childModelType.Key });
 
-                var childModels = modelNode.GetChildModels(childModelType.Key);
+                var childModels = modelNode.GetChildModels(childModelType.Key).ToList();
+                ModelWeighService.SortChildModelNodes(modelNode, childModels);
+
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Found [{0}] models of type: [{1}].", new object[] { childModels.Count(), childModelType.Key });
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessing of type: [{0}].", new object[] { childModelType.Key });
@@ -153,6 +155,11 @@ namespace SPMeta2.Services.Impl
 
                     return srcW.CompareTo(dstW);
                 });
+            }
+
+            foreach (var g in childModelTypes)
+            {
+
             }
 
             return childModelTypes;
