@@ -93,7 +93,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
                     pageItem["Title"] = definition.Title;
                     pageItem["TemplateHidden"] = definition.HiddenTemplate;
 
-                    MapProperties(modelHost, pageItem, definition);
+                    if (!string.IsNullOrEmpty(definition.Description))
+                        pageItem["MasterPageDescription"] = definition.Description;
 
                     MapProperties(modelHost, pageItem, definition);
 

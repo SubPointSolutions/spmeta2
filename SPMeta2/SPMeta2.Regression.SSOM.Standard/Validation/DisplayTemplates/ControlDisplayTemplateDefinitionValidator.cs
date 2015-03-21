@@ -23,8 +23,51 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
                                              .ShouldNotBeNull(spObject)
+                                             .ShouldBeEqual(m => m.Title, o => o.Title)
                                              .ShouldBeEqual(m => m.FileName, o => o.Name)
-                                             .ShouldBeEqual(m => m.Title, o => o.Title);
+
+                                             .ShouldBeEqual(m => m.PreviewURL, o => o.GetPreviewURL())
+                                             .ShouldBeEqual(m => m.PreviewDescription, o => o.GetPreviewDescription())
+
+                                             .ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
+                                             .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
+                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
+                                             ;
+
+
+
+
+        }
+    }
+
+    public static class SPListItemHelper
+    {
+        public static string GetPreviewURL(this SPListItem item)
+        {
+            return item["MasterPageDescription"] as string;
+        }
+
+        public static string GetPreviewDescription(this SPListItem item)
+        {
+            return item["MasterPageDescription"] as string;
+        }
+
+
+        public static bool GetHiddenTemplate(this SPListItem item)
+        {
+            var res = ConvertUtils.ToBool(item["TemplateHidden"]);
+
+            return res.HasValue ? res.Value : false;
+        }
+
+        public static string GetMasterPageDescription(this SPListItem item)
+        {
+            return item["MasterPageDescription"] as string;
+        }
+
+        public static string GetCrawlerXSLFile(this SPListItem item)
+        {
+            return item["CrawlerXSLFile"] as string;
         }
     }
 }

@@ -22,6 +22,46 @@ namespace SPMeta2.BuiltInDefinitions
             Name = "Forms"
         };
 
+        public static FolderDefinition DisplayTemplates = new FolderDefinition
+        {
+            Name = "Display Templates"
+        };
+
+        public static FolderDefinition PreviewImages = new FolderDefinition
+        {
+            Name = "Preview Images"
+        };
+
+        public static FolderDefinition ContentWebParts = new FolderDefinition
+        {
+            Name = "Content Web Parts"
+        };
+
+        public static FolderDefinition Filters = new FolderDefinition
+        {
+            Name = "Filters"
+        };
+
+        public static FolderDefinition LanguageFiles = new FolderDefinition
+        {
+            Name = "Language Files"
+        };
+
+        public static FolderDefinition Search = new FolderDefinition
+        {
+            Name = "Search"
+        };
+
+        public static FolderDefinition ServerStyleSheets = new FolderDefinition
+        {
+            Name = "Server Style Sheets"
+        };
+
+        public static FolderDefinition System = new FolderDefinition
+        {
+            Name = "System"
+        };
+
         #endregion
     }
 }

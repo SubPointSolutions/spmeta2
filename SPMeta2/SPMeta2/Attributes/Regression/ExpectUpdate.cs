@@ -115,4 +115,9 @@ namespace SPMeta2.Attributes.Regression
     {
         
     }
+
+    public class ExpectUpdateAsTargetControlType : ExpectUpdate
+    {
+        
+    }
 }
