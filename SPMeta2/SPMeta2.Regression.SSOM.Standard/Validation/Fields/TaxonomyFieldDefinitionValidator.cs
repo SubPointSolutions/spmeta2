@@ -74,7 +74,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
                 assert.SkipProperty(m => m.SspName, "SspName is null. Skipping property.");
             }
 
-            if (definition.UseDefaultSiteCollectionTermStore.HasValue)
+            if (definition.UseDefaultSiteCollectionTermStore == true)
             {
                 var taxSession = new TaxonomySession(site);
                 var termStore = taxSession.DefaultSiteCollectionTermStore;
@@ -96,7 +96,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             }
             else
             {
-                assert.SkipProperty(m => m.TermSetName, "UseDefaultSiteCollectionTermStore is null. Skipping property.");
+                assert.SkipProperty(m => m.UseDefaultSiteCollectionTermStore, "UseDefaultSiteCollectionTermStore is null. Skipping property.");
             }
 
             // term set

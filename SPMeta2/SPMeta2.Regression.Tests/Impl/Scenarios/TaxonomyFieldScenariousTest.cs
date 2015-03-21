@@ -39,6 +39,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
         [TestMethod]
+        public void CanDeploy_TaxonomyFieldAsEmptySingleSelect()
+        {
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.IsMulti = false;
+
+                def.UseDefaultSiteCollectionTermStore = false;
+                def.SspId = null;
+                def.SspName = string.Empty;
+            });
+
+            var model = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModel(model);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
+        [TestMethod]
         public void CanDeploy_TaxonomyFieldAsSingleSelect()
         {
             var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
@@ -55,6 +77,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldAsEmptyMiltiSelect()
+        {
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.IsMulti = true;
+
+                def.UseDefaultSiteCollectionTermStore = false;
+                def.SspId = null;
+                def.SspName = string.Empty;
+            });
+
+            var model = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModel(model);
+        }
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
         [TestMethod]

@@ -137,6 +137,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
+        public void CanDeploy_LookupField_AsEmptySingleSelect()
+        {
+            var field = GetSingleSelectLookupDefinition(def =>
+            {
+                def.LookupListTitle = string.Empty;
+                def.LookupListUrl = string.Empty;
+                def.LookupList = string.Empty;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field);
+            });
+
+            TestModel(siteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect")]
         public void CanDeploy_LookupField_AsSingleSelect()
         {
             var field = GetSingleSelectLookupDefinition();
@@ -279,6 +298,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         #endregion
 
         #region multi seelct
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]
+        public void CanDeploy_LookupField_AsEmptyMultiSelectSelect()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.AllowMultipleValues = true;
+
+                def.LookupListTitle = string.Empty;
+                def.LookupListUrl = string.Empty;
+                def.LookupList = string.Empty;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field);
+            });
+
+            TestModel(siteModel);
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]

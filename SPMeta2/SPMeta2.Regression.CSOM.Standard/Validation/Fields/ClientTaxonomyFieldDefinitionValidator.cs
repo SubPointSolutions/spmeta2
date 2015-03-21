@@ -86,7 +86,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             else
                 assert.SkipProperty(m => m.SspId, "SspId is null. Skipping property.");
 
-            if (definition.UseDefaultSiteCollectionTermStore.HasValue)
+            if (definition.UseDefaultSiteCollectionTermStore.HasValue &&
+                definition.UseDefaultSiteCollectionTermStore.Value)
             {
                 var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
 
@@ -107,7 +108,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             }
             else
             {
-                assert.SkipProperty(m => m.TermSetName, "UseDefaultSiteCollectionTermStore is null. Skipping property.");
+                assert.SkipProperty(m => m.UseDefaultSiteCollectionTermStore, "UseDefaultSiteCollectionTermStore is null. Skipping property.");
             }
 
             if (!string.IsNullOrEmpty(definition.SspName))

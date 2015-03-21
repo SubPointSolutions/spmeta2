@@ -41,18 +41,23 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
 
             var site = GetCurrentSite();
 
-            TermStore tesmStore = LookupTermStore(site, taxFieldModel);
-            TermSet termSet = LookupTermSet(tesmStore, taxFieldModel);
-            Term term = LookupTerm(tesmStore, taxFieldModel);
-
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
-            taxField.SspId = tesmStore.Id;
 
-            if (termSet != null)
-                taxField.TermSetId = termSet.Id;
+            TermStore tesmStore = LookupTermStore(site, taxFieldModel);
 
-            if (term != null)
-                taxField.AnchorId = term.Id;
+            if (tesmStore != null)
+            {
+                taxField.SspId = tesmStore.Id;
+
+                TermSet termSet = LookupTermSet(tesmStore, taxFieldModel);
+                Term term = LookupTerm(tesmStore, taxFieldModel);
+
+                if (termSet != null)
+                    taxField.TermSetId = termSet.Id;
+
+                if (term != null)
+                    taxField.AnchorId = term.Id;
+            }
         }
 
         public static Term LookupTerm(TermStore tesmStore, TaxonomyFieldDefinition taxFieldModel)

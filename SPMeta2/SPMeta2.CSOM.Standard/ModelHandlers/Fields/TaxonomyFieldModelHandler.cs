@@ -39,18 +39,21 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             var taxFieldModel = fieldModel.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
 
+            var termStore = LookupTermStore(CurrentSiteModelHost, taxFieldModel, false);
 
-            var termStore = LookupTermStore(CurrentSiteModelHost, taxFieldModel);
-            var storeContext = CurrentSiteModelHost.HostClientContext;
+            TermSet termSet = null;
+            Term term = null;
 
-            var termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel); ;
-            var term = LookupTerm(CurrentSiteModelHost, termStore, taxFieldModel); ;
+            if (termStore != null)
+            {
+                termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel);
+                term = LookupTerm(CurrentSiteModelHost, termStore, taxFieldModel);
+            }
 
             var taxField = context.CastTo<TaxonomyField>(field);
 
             // let base setting be setup
             base.ProcessFieldProperties(taxField, fieldModel);
-            //context.ExecuteQueryWithTrace();
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
@@ -68,24 +71,32 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             if (term != null)
                 taxField.AnchorId = term.Id;
-
-            //context.ExecuteQueryWithTrace();
         }
 
-        public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost, TaxonomyFieldDefinition taxFieldModel)
+        public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost,
+            TaxonomyFieldDefinition taxFieldModel)
+        {
+            return LookupTermStore(currentSiteModelHost, taxFieldModel, false);
+        }
+
+        public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost,
+            TaxonomyFieldDefinition taxFieldModel, bool raiseNullRefException)
         {
             var termStore = TaxonomyTermStoreModelHandler.FindTermStore(currentSiteModelHost,
                                   taxFieldModel.SspName,
                                   taxFieldModel.SspId,
                                   taxFieldModel.UseDefaultSiteCollectionTermStore);
 
-            if (termStore == null)
+            if (termStore == null && raiseNullRefException)
                 throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
 
-            var storeContext = currentSiteModelHost.HostClientContext;
+            if (termStore != null)
+            {
+                var storeContext = currentSiteModelHost.HostClientContext;
 
-            storeContext.Load(termStore, s => s.Id);
-            storeContext.ExecuteQueryWithTrace();
+                storeContext.Load(termStore, s => s.Id);
+                storeContext.ExecuteQueryWithTrace();
+            }
 
             return termStore;
         }
