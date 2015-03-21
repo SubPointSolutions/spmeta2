@@ -391,6 +391,33 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region publishing fields
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.PublishingFields.TypedFields")]
+        public void CanDeployRandom_HTMLFieldDefinition()
+        {
+            TestRandomDefinition<HTMLFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.PublishingFields.TypedFields")]
+        public void CanDeployRandom_ImageFieldDefinition()
+        {
+            TestRandomDefinition<ImageFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.PublishingFields.TypedFields")]
+        public void CanDeployRandom_LinkFieldDefinition()
+        {
+            TestRandomDefinition<LinkFieldDefinition>();
+        }
+
+        #endregion
+
+
+
         [TestMethod]
         [TestCategory("Regression.Rnd.EventReceivers")]
         public void CanDeployRandom_EventReceiverDefinition()

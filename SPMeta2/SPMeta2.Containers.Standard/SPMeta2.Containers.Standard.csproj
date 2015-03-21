@@ -59,6 +59,9 @@
   <ItemGroup>
     <Compile Include="DefinitionGenerators\DisplayTemplates\ItemDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\ControlDisplayTemplateDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\ImageFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\LinkFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\HTMLFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SearchSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\CustomDocumentIdProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PageLayoutAndSiteTemplateSettingsDefinitionGenerator.cs" />

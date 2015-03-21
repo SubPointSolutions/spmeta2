@@ -100,6 +100,9 @@
     <Compile Include="Validation\CustomDocumentIdProviderDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ItemDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ControlDisplayTemplateDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ImageFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\LinkFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\HTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\PageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\AudienceDefinitionValidator.cs" />
     <Compile Include="Validation\PublishingPageLayoutDefinitionValidator.cs" />
