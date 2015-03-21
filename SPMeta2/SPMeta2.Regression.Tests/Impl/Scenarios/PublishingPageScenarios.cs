@@ -20,6 +20,7 @@ using SPMeta2.Standard.Enumerations;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -117,6 +118,56 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWebFeature(webFeature);
                 web.AddHostList(BuiltInListDefinitions.Pages, list =>
                 {
+                    list.AddPublishingPage(page);
+                });
+            });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage")]
+        public void CanDeploy_Default_PublishingPage_WithRequiredFields()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var pageContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.ArticlePage;
+            });
+
+            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
+            {
+                def.ValidationFormula = null;
+                def.ValidationMessage = null;
+
+                def.Required = true;
+            });
+
+            var page = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.ContentTypeName = pageContentType.Name;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(siteFeature);
+
+                site.AddField(requiredText);
+
+                site.AddContentType(pageContentType, contentType =>
+                {
+                    contentType.AddContentTypeFieldLink(requiredText);
+                });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(webFeature);
+                web.AddHostList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddContentTypeLink(pageContentType);
                     list.AddPublishingPage(page);
                 });
             });
