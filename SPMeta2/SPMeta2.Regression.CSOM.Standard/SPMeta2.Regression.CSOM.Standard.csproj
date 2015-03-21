@@ -77,6 +77,9 @@
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ClientItemDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ClientControlDisplayTemplateDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ClientLinkFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ClientImageHTMLFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\ClientHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
