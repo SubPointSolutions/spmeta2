@@ -83,3 +83,13 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csproj.GenerateResource.Cache
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.Standard.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.Standard.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.Standard.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.pdb
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.xml

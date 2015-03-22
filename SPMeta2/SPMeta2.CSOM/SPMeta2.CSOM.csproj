@@ -130,8 +130,11 @@
     <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ModelHandlers\AppModelHandler.cs" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" />
+    <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
+    <Compile Include="ModelHandlers\Base\PageItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
+    <Compile Include="ModelHandlers\Base\WebPartGalleryFileModelHandler.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />

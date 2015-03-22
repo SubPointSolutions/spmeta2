@@ -140,7 +140,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
             }
         }
 
-        protected override void MapProperties(object modelHost, SPListItem item, TemplateDefinitionBase definition)
+        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
         {
 
         }

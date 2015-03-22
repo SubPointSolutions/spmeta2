@@ -106,7 +106,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             get { return typeof(ControlDisplayTemplateDefinition); }
         }
 
-        protected override void MapProperties(object modelHost, ListItem item, SPMeta2.Standard.Definitions.Base.TemplateDefinitionBase definition)
+        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
 
         }

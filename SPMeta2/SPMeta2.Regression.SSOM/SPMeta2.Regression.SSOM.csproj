@@ -132,6 +132,7 @@
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\WebConfigModificationDefinitionValidator.cs" />
     <Compile Include="Validation\RootWebDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\WebPartGalleryFileDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />

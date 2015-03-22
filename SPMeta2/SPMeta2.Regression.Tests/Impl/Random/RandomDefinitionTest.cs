@@ -733,6 +733,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
 
+        #region wb part gallery
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery.WebPartGallery")]
+        public void CanDeployRandom_WebPartGalleryFileDefinition()
+        {
+            TestRandomDefinition<WebPartGalleryFileDefinition>();
+        }
+
+        #endregion
 
         #region master page gallery
 

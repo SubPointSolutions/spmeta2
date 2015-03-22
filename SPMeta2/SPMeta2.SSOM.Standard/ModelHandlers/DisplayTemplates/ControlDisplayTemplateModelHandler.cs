@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint;
+using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.SSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Standard.Definitions.Base;
@@ -21,7 +22,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
             }
         }
 
-        protected override void MapProperties(object modelHost, SPListItem item, TemplateDefinitionBase definition)
+        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
         {
             var typedTemplateModel = definition.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Standard.ModelHandlers.Base;
+using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
@@ -19,7 +20,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
             }
         }
 
-        protected override void MapProperties(object modelHost, ListItem item, TemplateDefinitionBase definition)
+        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
             var typedDefinition = definition.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
@@ -35,5 +36,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
         {
             get { return typeof(ItemDisplayTemplateDefinition); }
         }
+
+        //public override string FileExtension
+        //{
+        //    get { throw new NotImplementedException(); }
+        //    set { throw new NotImplementedException(); }
+        //}
     }
 }

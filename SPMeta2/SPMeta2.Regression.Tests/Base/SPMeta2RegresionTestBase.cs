@@ -613,6 +613,18 @@ namespace SPMeta2.Regression.Tests.Base
 
                                 newValue = result;
                             }
+                            else if (prop.PropertyType == typeof(List<string>))
+                            {
+                                var resultLength = RegressionService.RndService.Int(10);
+                                var values = new List<string>();
+
+                                var result = new List<string>();
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(RegressionService.RndService.String());
+
+                                newValue = result;
+                            }
 
 
                             else if (prop.PropertyType == typeof(double?)
