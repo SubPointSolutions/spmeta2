@@ -30,6 +30,8 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 
             var assert = ServiceFactory.AssertService
                                   .NewAssert(definition, spObject);
+
+            assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
         }
 
         public override System.Type TargetType

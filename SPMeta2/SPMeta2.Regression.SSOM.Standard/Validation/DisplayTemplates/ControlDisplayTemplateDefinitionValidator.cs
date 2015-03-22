@@ -117,5 +117,10 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
         {
             return item["MasterPageDescription"] as string;
         }
+
+        public static string GetManagedPropertyMapping(this SPListItem item)
+        {
+            return item["ManagedPropertyMapping"] as string;
+        }
     }
 }

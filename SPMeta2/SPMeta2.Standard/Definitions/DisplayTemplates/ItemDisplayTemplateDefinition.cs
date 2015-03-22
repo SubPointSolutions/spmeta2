@@ -27,13 +27,15 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         public ItemDisplayTemplateDefinition()
         {
-        } 
+        }
 
         #endregion
 
         #region properties
 
-        public string ManagedPropertyMappings { get; set; } 
+        [ExpectUpdate]
+        [ExpectValidation]
+        public string ManagedPropertyMappings { get; set; }
 
         #endregion
 

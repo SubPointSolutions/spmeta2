@@ -125,6 +125,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Base
                 newFileItem["Title"] = definition.Title;
                 newFileItem["TemplateHidden"] = definition.HiddenTemplate;
 
+                if (!string.IsNullOrEmpty(definition.Description))
+                    newFileItem["MasterPageDescription"] = definition.Description;
+
+                if (!string.IsNullOrEmpty(definition.PreviewURL))
+                {
+                    var htmlPreviewValue = new FieldUrlValue { Url = definition.PreviewURL };
+
+                    if (!string.IsNullOrEmpty(definition.PreviewDescription))
+                        htmlPreviewValue.Description = definition.PreviewDescription;
+
+                    newFileItem["HtmlDesignPreviewUrl"] = htmlPreviewValue;
+                }
+
                 MapProperties(modelHost, newFileItem, definition);
 
                 newFileItem.Update();
