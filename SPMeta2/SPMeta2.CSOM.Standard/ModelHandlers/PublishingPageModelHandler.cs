@@ -225,6 +225,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
+                // settig up dfault values if there is PublishingPageLayout setup
+                EnsureDefaultValues(newFileItem, publishingPageModel);
+
                 newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
                 newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
 
@@ -265,6 +268,24 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
+        private static void EnsureDefaultValues(ListItem newFileItem, PublishingPageDefinition publishingPageModel)
+        {
+            foreach (var defaultValue in publishingPageModel.DefaultValues)
+            {
+                if (!string.IsNullOrEmpty(defaultValue.FieldName))
+                {
+                    if (newFileItem.FieldValues.ContainsKey(defaultValue.FieldName))
+                    {
+                        if (newFileItem[defaultValue.FieldName] == null)
+                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
+                    }
+                }
+                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
+                {
+                    // unsupported by CSOM API yet
+                }
+            }
+        }
 
 
         //if (item != null)

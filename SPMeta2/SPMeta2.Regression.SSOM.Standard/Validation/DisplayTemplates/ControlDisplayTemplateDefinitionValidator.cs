@@ -2,54 +2,107 @@
 using Microsoft.SharePoint;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.SSOM.Standard.Validation.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates;
+using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 {
-    public class ControlDisplayTemplateDefinitionValidator : ControlDisplayTemplateModelHandler
+    public class ControlDisplayTemplateDefinitionValidator : TemplateDefinitionBaseValidator
     {
+        public override string FileExtension
+        {
+            get { return "html"; }
+            set { }
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            base.DeployModel(modelHost, model);
+
             var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
-
             var folder = listModelHost.CurrentLibraryFolder;
 
             var spObject = GetCurrentObject(folder, definition);
 
             var assert = ServiceFactory.AssertService
-                                       .NewAssert(definition, spObject)
-                                             .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.Title, o => o.Title)
-                                             .ShouldBeEqual(m => m.FileName, o => o.Name)
+                .NewAssert(definition, spObject);
 
-                                             .ShouldBeEqual(m => m.PreviewURL, o => o.GetPreviewURL())
-                                             .ShouldBeEqual(m => m.PreviewDescription, o => o.GetPreviewDescription())
+            #region crawler xslt file
 
-                                             .ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
-                                             .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
-                                             ;
+            if (!string.IsNullOrEmpty(definition.CrawlerXSLFileURL))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.CrawlerXSLFileURL);
+                    var isValid = d.GetCrawlerXSLFile().Url == s.CrawlerXSLFileURL;
 
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CrawlerXSLFileURL, "PreviewURL is NULL. Skipping");
+            }
 
+            if (!string.IsNullOrEmpty(definition.CrawlerXSLFileDescription))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.CrawlerXSLFileDescription);
+                    var isValid = d.GetCrawlerXSLFile().Description == s.CrawlerXSLFileDescription;
 
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CrawlerXSLFileDescription, "PreviewDescription is NULL. Skipping");
+            }
 
+            #endregion
+        }
+
+        public override System.Type TargetType
+        {
+            get { return typeof(ControlDisplayTemplateDefinition); }
         }
     }
 
     public static class SPListItemHelper
     {
-        public static string GetPreviewURL(this SPListItem item)
+
+
+        public static SPFieldUrlValue GetPreviewURL(this SPListItem item)
         {
-            return item["MasterPageDescription"] as string;
+            if (item["HtmlDesignPreviewUrl"] != null)
+                return new SPFieldUrlValue(item["HtmlDesignPreviewUrl"].ToString());
+
+            return null;
         }
 
-        public static string GetPreviewDescription(this SPListItem item)
+        public static SPFieldUrlValue GetCrawlerXSLFile(this SPListItem item)
         {
-            return item["MasterPageDescription"] as string;
+            if (item["CrawlerXSLFile"] != null)
+                return new SPFieldUrlValue(item["CrawlerXSLFile"].ToString());
+
+            return null;
         }
 
 
@@ -63,11 +116,6 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
         public static string GetMasterPageDescription(this SPListItem item)
         {
             return item["MasterPageDescription"] as string;
-        }
-
-        public static string GetCrawlerXSLFile(this SPListItem item)
-        {
-            return item["CrawlerXSLFile"] as string;
         }
     }
 }

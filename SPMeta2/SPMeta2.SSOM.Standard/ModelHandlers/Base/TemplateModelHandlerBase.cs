@@ -96,6 +96,16 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
                     if (!string.IsNullOrEmpty(definition.Description))
                         pageItem["MasterPageDescription"] = definition.Description;
 
+                    if (!string.IsNullOrEmpty(definition.PreviewURL))
+                    {
+                        var htmlPreviewValue = new SPFieldUrlValue { Url = definition.PreviewURL };
+
+                        if (!string.IsNullOrEmpty(definition.PreviewDescription))
+                            htmlPreviewValue.Description = definition.PreviewDescription;
+
+                        pageItem["HtmlDesignPreviewUrl"] = htmlPreviewValue;
+                    }
+
                     MapProperties(modelHost, pageItem, definition);
 
                     pageItem.SystemUpdate();

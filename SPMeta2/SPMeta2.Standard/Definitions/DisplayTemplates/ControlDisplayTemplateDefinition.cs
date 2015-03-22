@@ -35,9 +35,13 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         #region properties
 
-        [ExpectUpdateAsFileName(Extension = "xslt")]
+        [ExpectUpdateAsUrl(Extension = "xslt")]
         [ExpectValidation]
-        public string CrawlerXSLFile { get; set; }
+        public string CrawlerXSLFileURL { get; set; }
+
+        [ExpectUpdate]
+        [ExpectValidation]
+        public string CrawlerXSLFileDescription { get; set; }
 
         #endregion
 

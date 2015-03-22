@@ -1,9 +1,19 @@
 ﻿using SPMeta2.Attributes.Regression;
 using System;
+using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Definitions
 {
+
+    public class PageItemDefaultValue
+    {
+        public string FieldName { get; set; }
+        public Guid? FieldId { get; set; }
+
+        public object Value { get; set; }
+    }
+
     /// <summary>
     /// Base definition for pages.
     /// </summary>
@@ -16,11 +26,14 @@ namespace SPMeta2.Definitions
         public PageDefinitionBase()
         {
             NeedOverride = true;
+            DefaultValues = new List<PageItemDefaultValue>();
         }
 
         #endregion
 
         #region properties
+
+        public List<PageItemDefaultValue> DefaultValues { get; set; }
 
         /// <summary>
         /// Title of the target page.

@@ -237,6 +237,31 @@ namespace SPMeta2.Regression.Tests.Base
                             var newUserValue = RegressionService.RndService.UserLogin();
                             newValue = newUserValue;
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsTargetControlType) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInTargetControlType.ContentWebParts);
+                            values.Add(BuiltInTargetControlType.Custom);
+                            values.Add(BuiltInTargetControlType.Refinement);
+                            values.Add(BuiltInTargetControlType.SearchBox);
+                            values.Add(BuiltInTargetControlType.SearchHoverPanel);
+                            values.Add(BuiltInTargetControlType.SearchResults);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(List<string>))
+                            {
+                                var result = new List<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsWebPartPageLayoutTemplate) > 0)
                         {
                             var values = new List<int>();
@@ -320,12 +345,15 @@ namespace SPMeta2.Regression.Tests.Base
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsCamlQuery) > 0)
                         {
-                            newValue = string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
+                            newValue =
+                                string.Format(
+                                    "<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
                                     RegressionService.RndService.String());
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsIntRange) > 0)
                         {
-                            var attr = attrs.FirstOrDefault(a => a is ExpectUpdateAsIntRange) as ExpectUpdateAsIntRange;
+                            var attr =
+                                attrs.FirstOrDefault(a => a is ExpectUpdateAsIntRange) as ExpectUpdateAsIntRange;
 
                             var minValue = attr.MinValue;
                             var maxValue = attr.MaxValue;
@@ -333,7 +361,7 @@ namespace SPMeta2.Regression.Tests.Base
                             var tmpValue = minValue + RegressionService.RndService.Int(maxValue - minValue);
 
                             if (prop.PropertyType == typeof(double?) ||
-                              prop.PropertyType == typeof(double))
+                                prop.PropertyType == typeof(double))
                                 newValue = Convert.ToDouble(tmpValue);
                             else
                             {
@@ -342,9 +370,22 @@ namespace SPMeta2.Regression.Tests.Base
                             }
 
                         }
+
+                        else if (attrs.Count(a => a is ExpectUpdateAsUrl) > 0)
+                        {
+                            var attr =
+                                attrs.FirstOrDefault(a => a is ExpectUpdateAsUrl) as ExpectUpdateAsUrl;
+                            var fileExtension = attr.Extension;
+
+                            if (!fileExtension.StartsWith("."))
+                                fileExtension = "." + fileExtension;
+
+                            newValue = string.Format("http://regression-ci.com/{0}{1}", RegressionService.RndService.String(), fileExtension);
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsFileName) > 0)
                         {
-                            var attr = attrs.FirstOrDefault(a => a is ExpectUpdateAsFileName) as ExpectUpdateAsFileName;
+                            var attr =
+                                attrs.FirstOrDefault(a => a is ExpectUpdateAsFileName) as ExpectUpdateAsFileName;
                             var fileExtension = attr.Extension;
 
                             if (!fileExtension.StartsWith("."))
@@ -575,7 +616,7 @@ namespace SPMeta2.Regression.Tests.Base
 
 
                             else if (prop.PropertyType == typeof(double?)
-                                || prop.PropertyType == typeof(double))
+                                     || prop.PropertyType == typeof(double))
                             {
                                 newValue = (double)RegressionService.RndService.Int();
                             }

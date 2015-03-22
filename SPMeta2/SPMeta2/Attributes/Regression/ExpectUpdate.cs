@@ -80,9 +80,14 @@ namespace SPMeta2.Attributes.Regression
     {
     }
 
+    public class ExpectUpdateAsUrl : ExpectUpdate
+    {
+        public string Extension { get; set; }
+    }
+
     public class ExpectUpdateAsCalculatedFieldFormula : ExpectUpdate
     {
-        
+
     }
 
     public class ExpectUpdateAssCalculatedFieldOutputType : ExpectUpdate
@@ -113,11 +118,11 @@ namespace SPMeta2.Attributes.Regression
 
     public class ExpectUpdateAsFieldUserSelectionMode : ExpectUpdate
     {
-        
+
     }
 
     public class ExpectUpdateAsTargetControlType : ExpectUpdate
     {
-        
+
     }
 }

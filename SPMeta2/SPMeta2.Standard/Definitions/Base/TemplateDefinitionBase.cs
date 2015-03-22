@@ -17,18 +17,18 @@ namespace SPMeta2.Standard.Definitions.Base
         [ExpectValidation]
         public string Description { get; set; }
 
-        [ExpectUpdateAsTargetControlType]
+        [ExpectUpdate]
         [ExpectValidation]
         public bool HiddenTemplate { get; set; }
 
-        [ExpectUpdate]
+        [ExpectUpdateAsTargetControlType]
         [ExpectValidation]
         public List<string> TargetControlTypes { get; set; }
 
         public byte[] Content { get; set; }
 
 
-        [ExpectUpdateAsFileName(Extension = "png")]
+        [ExpectUpdateAsUrl(Extension = "xslt")]
         [ExpectValidation]
         public string PreviewURL { get; set; }
         
