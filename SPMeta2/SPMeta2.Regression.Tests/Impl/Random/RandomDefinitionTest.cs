@@ -389,6 +389,34 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<URLFieldDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields.Last")]
+        public void CanDeployRandom_GeolocationFieldDefinition()
+        {
+            TestRandomDefinition<GeolocationFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields.Last")]
+        public void CanDeployRandom_MediaFieldDefinition()
+        {
+            TestRandomDefinition<MediaFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields.Last")]
+        public void CanDeployRandom_SummaryLinkFieldDefinition()
+        {
+            TestRandomDefinition<SummaryLinkFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields.Last")]
+        public void CanDeployRandom_OutcomeChoiceFieldDefinition()
+        {
+            TestRandomDefinition<OutcomeChoiceFieldDefinition>();
+        }
+
         #endregion
 
         #region publishing fields

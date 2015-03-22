@@ -151,6 +151,8 @@
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\NumberFieldModelHandler.cs" />

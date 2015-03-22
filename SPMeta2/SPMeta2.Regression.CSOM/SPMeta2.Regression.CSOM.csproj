@@ -121,6 +121,8 @@
     <Compile Include="Validation\ContentTypes\UniqueContentTypeFieldsOrderDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypes\UniqueContentTypeOrderDefinitionValidator.cs" />
     <Compile Include="Validation\ClientEventReceiverDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\OutcomeChoiceFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\GeolocationFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ComputedFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\CalculatedFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\GuidFieldDefinitionValidator.cs" />

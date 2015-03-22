@@ -102,6 +102,8 @@
     <Compile Include="Definitions\CustomDocumentIdProviderDefinition.cs" />
     <Compile Include="Definitions\DisplayTemplates\ControlDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\DisplayTemplates\ItemDisplayTemplateDefinition.cs" />
+    <Compile Include="Definitions\Fields\MediaFieldDefinition.cs" />
+    <Compile Include="Definitions\Fields\SummaryLinkFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\LinkFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\ImageFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\HTMLFieldDefinition.cs" />

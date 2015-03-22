@@ -137,6 +137,8 @@
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ControlDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ItemDisplayTemplateModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\SummaryLinkFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\MediaFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LinkFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\HTMLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />

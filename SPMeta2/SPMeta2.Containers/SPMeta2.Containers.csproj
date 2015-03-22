@@ -78,6 +78,8 @@
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\GeolocationFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Fields\OutcomeChoiceFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\MasterPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ResetRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentParserDefinitionGenerator.cs" />
