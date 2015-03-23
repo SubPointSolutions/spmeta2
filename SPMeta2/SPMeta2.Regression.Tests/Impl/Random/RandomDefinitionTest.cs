@@ -938,7 +938,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Webparts")]
         public void CanDeployRandom_UserCodeWebPartDefinition()
         {
-            TestRandomDefinition<UserCodeWebPartDefinition>();
+            WithDisabledPropertyUpdateValidation(() =>
+            {
+                TestRandomDefinition<UserCodeWebPartDefinition>();
+            });
         }
 
         [TestMethod]

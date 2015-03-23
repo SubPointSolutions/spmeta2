@@ -20,8 +20,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 
 
                 // TODO
-                def.AssemblyFullName = "";
-                def.SolutionId = new Guid("");
+              
             });
         }
     }
