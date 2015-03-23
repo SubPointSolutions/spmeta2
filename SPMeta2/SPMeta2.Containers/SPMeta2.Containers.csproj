@@ -148,6 +148,7 @@
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\UserCodeWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentByQueryWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\WebPartGalleryFileDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WelcomePageDefinitionGenerator.cs" />

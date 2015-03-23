@@ -167,6 +167,15 @@ namespace SPMeta2.Utils
             return GetV3Node(webpartXmlDocument, propName, WebPartNamespaceV3);
         }
 
+        internal static XElement GetV3MetadataNode(this XDocument webpartXmlDocument, string propName, string propXlmns)
+        {
+            var mNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}metaData").FirstOrDefault();
+            var namespacedPropName = "{" + WebPartNamespaceV3 + "}" + propName;
+
+            return mNode.Descendants()
+                                            .FirstOrDefault(e => e.Name.ToString().ToUpper() == namespacedPropName.ToUpper());
+        }
+
         internal static XElement GetV3Node(this XDocument webpartXmlDocument, string propName, string propXlmns)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
@@ -174,6 +183,76 @@ namespace SPMeta2.Utils
             var propNodePath = "{" + propXlmns + "}property";
             return propsNode.Descendants(propNodePath)
                                             .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == propName);
+        }
+
+        internal static XDocument SetOrUpdateV3MetadataProperty(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData)
+        {
+            var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}metaData").FirstOrDefault();
+            var propNode = GetV3MetadataNode(webpartXmlDocument, propName, propXlmns);
+
+            if (propNode == null)
+            {
+                var newNode = (new XElement("{" + WebPartNamespaceV3 + "}" + propName));
+
+                newNode.SetAttributeValue("name", propName);
+
+                if (isCData)
+                {
+                    newNode.Add(new XCData(propValue));
+                }
+                else
+                {
+                    newNode.Value = propValue ?? string.Empty;
+                }
+
+                propsNode.Add(newNode);
+            }
+            else
+            {
+                if (isCData)
+                {
+                    propNode.ReplaceNodes(new XCData(propValue));
+                }
+                else
+                {
+                    propNode.Value = propValue ?? string.Empty;
+                }
+            }
+
+            return webpartXmlDocument;
+        }
+
+        internal static XDocument SetOrUpdateV3MetadataPropertyAttribute(this XDocument webpartXmlDocument,
+            string propName,
+            string attrName,
+            string attrValue,
+            string propXlmns, bool isCData)
+        {
+            var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}metaData").FirstOrDefault();
+            var propNode = GetV3MetadataNode(webpartXmlDocument, propName, propXlmns);
+
+            if (propNode == null)
+            {
+                var newNode = (new XElement("{" + WebPartNamespaceV3 + "}" + propName));
+
+                if (propName.ToUpper() == "SOLUTION")
+                {
+                    newNode = (new XElement("{http://schemas.microsoft.com/sharepoint/}" + propName));
+                    newNode.SetAttributeValue("xmlns", "http://schemas.microsoft.com/sharepoint/");
+                }
+
+                //newNode.SetAttributeValue("name", propName);
+                newNode.SetAttributeValue(attrName, attrValue);
+
+                propsNode.Add(newNode);
+            }
+            else
+            {
+                propNode.SetAttributeValue(attrName, attrValue);
+            }
+
+            return webpartXmlDocument;
         }
 
         internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
@@ -262,6 +341,38 @@ namespace SPMeta2.Utils
                     propNode.Value = propValue ?? string.Empty;
                 }
             }
+
+            return webpartXmlDocument;
+        }
+
+        public static XDocument SetOrUpdateMetadataPropertyAttribute(this XDocument webpartXmlDocument,
+            string propName,
+            string attrName, string attrValue)
+        {
+            return SetOrUpdateMetadataPropertyAttribute(webpartXmlDocument, propName, attrName, attrValue, false);
+        }
+
+        public static XDocument SetOrUpdateMetadataPropertyAttribute(this XDocument webpartXmlDocument,
+            string propName,
+            string attrName, string attrValue,
+            bool isCData)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3MetadataPropertyAttribute(webpartXmlDocument, propName, attrName, attrValue, WebPartNamespaceV3, isCData);
+
+            return webpartXmlDocument;
+        }
+
+        public static XDocument SetOrUpdateMetadataProperty(this XDocument webpartXmlDocument, string propName,
+            string propValue)
+        {
+            return SetOrUpdateMetadataProperty(webpartXmlDocument, propName, propValue, false);
+        }
+
+        public static XDocument SetOrUpdateMetadataProperty(this XDocument webpartXmlDocument, string propName, string propValue, bool isCData)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3MetadataProperty(webpartXmlDocument, propName, propValue, WebPartNamespaceV3, isCData);
 
             return webpartXmlDocument;
         }

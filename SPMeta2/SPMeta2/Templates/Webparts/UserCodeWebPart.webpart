@@ -1,0 +1,15 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">Sandbox web part</property>
+        <property name="Description" type="string"></property>
+        <property name="ExportMode" type="exportmode">All</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

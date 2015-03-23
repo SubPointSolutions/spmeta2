@@ -137,6 +137,7 @@
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
+    <Compile Include="Definitions\Webparts\UserCodeWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
@@ -295,6 +296,7 @@
     <EmbeddedResource Include="Templates\Webparts\ClientWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ContentByQueryWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\SummaryLinkWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\UserCodeWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
