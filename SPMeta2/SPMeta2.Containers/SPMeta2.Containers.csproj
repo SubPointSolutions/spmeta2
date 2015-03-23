@@ -216,14 +216,9 @@
       <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Templates\Apps\SPMeta2.Sandbox.TestSPHostedApp.app" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\Apps\SPMeta2.Sandbox.TestSandboxApp.wsp" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\Apps\SPMeta2.Sandbox.TestFarmApp.wsp" />
+    <EmbeddedResource Include="Templates\Apps\SPMeta2.Containers.SandboxSolutionContainer.wsp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -29,6 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
         {
             var typedModel = webpartModel.WithAssertAndCast<UserCodeWebPartDefinition>("webpartModel", value => value.RequireNotNull());
             typedModel.WebpartType = typeof(SPUserCodeWebPart).AssemblyQualifiedName;
+
         }
 
         protected override void ProcessWebpartProperties(WebPart webpartInstance, WebPartDefinition webpartModel)
@@ -43,6 +44,23 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             typedWebpart.SolutionId = typedModel.SolutionId;
             typedWebpart.AssemblyFullName = typedModel.AssemblyFullName;
             typedWebpart.TypeFullName = typedModel.TypeFullName;
+
+            foreach (var prop in typedModel.UserCodeProperties)
+            {
+                var currentProperty = typedWebpart.Properties
+                    .OfType<SPUserCodeProperty>()
+                    .FirstOrDefault(p => p.Name.ToUpper() == prop.Name.ToUpper());
+
+                if (currentProperty == null)
+                {
+                    currentProperty = new SPUserCodeProperty();
+                    currentProperty.Name = prop.Name;
+
+                    typedWebpart.Properties.Add(currentProperty);
+                }
+
+                currentProperty.Value = prop.Value;
+            }
         }
 
         #endregion

@@ -14,7 +14,7 @@ namespace SPMeta2.Definitions.Webparts
     [SPObjectType(SPObjectModelType.SSOM, "System.Web.UI.WebControls.WebParts.WebPart", "System.Web")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WebParts.WebPart", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
     [Serializable]
