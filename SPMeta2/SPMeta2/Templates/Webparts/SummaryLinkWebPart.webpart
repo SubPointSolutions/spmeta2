@@ -1,0 +1,69 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.Publishing.WebControls.SummaryLinkWebPart, Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="InitialAsyncDataFetch" type="bool">False</property>
+        <property name="ChromeType" type="chrometype">TitleOnly</property>
+        <property name="HeaderXslLink" type="string" />
+        <property name="Height" type="string" />
+        <property name="CacheXslStorage" type="bool">True</property>
+        <property name="SummaryLinkStore" type="string" />
+        <property name="ListName" type="string" null="true" />
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="AutoRefresh" type="bool">False</property>
+        <property name="XmlDefinitionLink" type="string" />
+        <property name="DataFields" type="string" />
+        <property name="NoDefaultStyle" type="string" />
+        <property name="XslLink" type="string" null="true" />
+        <property name="ViewFlag" type="string">0</property>
+        <property name="MainXslLink" type="string" />
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="AutoRefreshInterval" type="int">60</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="DataSourcesString" type="string" />
+        <property name="AllowClose" type="bool">True</property>
+        <property name="ShowWithSampleData" type="bool">False</property>
+        <property name="Xsl" type="string" null="true" />
+        <property name="EnableOriginalValue" type="bool">False</property>
+        <property name="Default" type="string" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="ListUrl" type="string" null="true" />
+        <property name="DataSourceID" type="string" />
+        <property name="ParameterBindings" type="string" />
+        <property name="FireInitialRow" type="bool">True</property>
+        <property name="ManualRefresh" type="bool">False</property>
+        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">None</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="ListDisplayName" type="string" null="true" />
+        <property name="SampleData" type="string" null="true" />
+        <property name="AsyncRefresh" type="bool">False</property>
+        <property name="Title" type="string">Summary Links</property>
+        <property name="ListId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">00000000-0000-0000-0000-000000000000</property>
+        <property name="Description" type="string">Allows authors to create links that can be grouped and styled.</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="TitleUrl" type="string" />
+        <property name="ItemXslLink" type="string" />
+        <property name="CacheXslTimeOut" type="int">86400</property>
+        <property name="DisplayName" type="string" />
+        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
+        <property name="Width" type="string" />
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="PageSize" type="int">-1</property>
+        <property name="ViewContentTypeId" type="string" />
+        <property name="HelpUrl" type="string" />
+        <property name="XmlDefinition" type="string" />
+        <property name="UseSQLDataSourcePaging" type="bool">True</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="MissingAssembly" type="string">Cannot import this Web Part.</property>
+        <property name="HelpMode" type="helpmode">Modeless</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

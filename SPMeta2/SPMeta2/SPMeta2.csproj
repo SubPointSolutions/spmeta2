@@ -294,6 +294,7 @@
     <EmbeddedResource Include="Templates\Webparts\ContactFieldControl.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ClientWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ContentByQueryWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SummaryLinkWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

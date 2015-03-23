@@ -94,6 +94,7 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>

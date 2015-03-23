@@ -27,6 +27,8 @@ namespace SPMeta2.Enumerations
 
             ContentByQueryWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ContentByQueryWebPart.webpart");
 
+            SummaryLinkWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SummaryLinkWebPart.webpart");
+
         }
 
         #endregion
@@ -41,6 +43,7 @@ namespace SPMeta2.Enumerations
         public static string ContactFieldControl { get; set; }
         public static string ClientWebPart { get; set; }
         public static string ContentByQueryWebPart { get; set; }
+        public static string SummaryLinkWebPart { get; set; }
 
         #endregion
     }

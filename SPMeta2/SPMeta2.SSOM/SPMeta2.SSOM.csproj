@@ -188,6 +188,8 @@
     <Compile Include="ModelHandlers\DiagnosticsServiceBaseModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />

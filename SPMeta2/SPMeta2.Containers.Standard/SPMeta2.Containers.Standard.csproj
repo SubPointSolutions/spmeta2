@@ -76,6 +76,7 @@
     <Compile Include="DefinitionGenerators\SearchConfigurationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermLabelDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SummaryLinkWebPartDefinitionGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageLayoutTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
