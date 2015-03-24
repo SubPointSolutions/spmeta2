@@ -76,13 +76,6 @@ c:\_spmeta_builds\45\W.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\W.xml
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csprojResolveAssemblyReference.cache
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.PublishingPageTemplates.resources
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.WebPartPageTemplates.resources
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.WebPartTemplates.resources
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csproj.GenerateResource.Cache
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.Standard.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.dll
@@ -93,3 +86,10 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.CSOM.xml
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\bin\Debug\SPMeta2.Standard.xml
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csprojResolveAssemblyReference.cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.PublishingPageTemplates.resources
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.WebPartPageTemplates.resources
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.WebPartTemplates.resources
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.csproj.GenerateResource.Cache
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.dll
+C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.SSOM\obj\Debug\SPMeta2.SSOM.pdb

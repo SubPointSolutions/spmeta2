@@ -139,7 +139,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     foreach (var f in listViewModel.Fields)
                         currentView.ViewFields.Add(f);
                 }
-                
+
                 if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
                     currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
 
@@ -191,21 +191,28 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected ContentTypeId LookupListContentTypeById(List targetList, string contentTypeId)
         {
-            if (!targetList.IsPropertyAvailable("ContentTypes"))
+            var context = targetList.Context;
+
+            // lookup list content type?
+            var result = targetList.ContentTypes.GetById(contentTypeId);
+            context.ExecuteQueryWithTrace();
+
+            if (result.ServerObjectIsNull == true)
             {
-                targetList.Context.Load(targetList, l => l.ContentTypes);
-                targetList.Context.ExecuteQuery();
+                result = targetList.ParentWeb.ContentTypes.GetById(contentTypeId);
+                context.ExecuteQueryWithTrace();
             }
 
-            // TODO, correct best match impl
-            foreach (var contentType in targetList.ContentTypes)
-            {
-                if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeId.ToUpper()))
-                    return contentType.Id;
-            }
+            // lookup site content type (BuiltInContentTypeId.RootOfList)
 
-            throw new SPMeta2Exception(string.Format("Cannot find content type by id ['{0}'] in list: [{1}]",
-                contentTypeId, targetList.Title));
+            if (result.ServerObjectIsNull == true)
+                throw new SPMeta2Exception(string.Format("Cannot find content type by id ['{0}'] in list: [{1}]",
+                    contentTypeId, targetList.Title));
+
+            context.Load(result);
+            context.ExecuteQueryWithTrace();
+
+            return result.Id;
         }
 
         protected View FindViewByTitle(IEnumerable<View> viewCollection, string listViewTitle)

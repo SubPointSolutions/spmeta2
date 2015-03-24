@@ -28,13 +28,13 @@ namespace SPMeta2.Syntax.Default
         public static ModelNode AddFields(this ModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
         {
             foreach (var fieldDefinition in fieldDefinitions)
-                return model.AddDefinitionNode(fieldDefinition);
+                model.AddDefinitionNode(fieldDefinition);
 
             return model;
         }
 
         #endregion
 
-      
+
     }
 }
