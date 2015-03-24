@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
@@ -36,6 +37,44 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public static void Cleanup()
         {
             InternalCleanup();
+        }
+
+        #endregion
+
+        #region content types and values
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Typed")]
+        public void CanDeploy_ModuleFile_AsJavaScriptDisplayTemplate()
+        {
+            var moduleFile = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.ContentTypeName = "JavaScript Display Template";
+                def.DefaultValues = new List<PageItemDefaultValue>
+                {
+                    new PageItemDefaultValue
+                    {
+                        FieldName = "DisplayTemplateJSTargetControlType",
+                        Value = "Form"
+                    },
+                     new PageItemDefaultValue
+                    {
+                        FieldName = "DisplayTemplateJSTargetScope",
+                        Value = Rnd.String()
+                    }
+                };
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.Calalogs.MasterPage, list =>
+                {
+                    list.AddModuleFile(moduleFile);
+                });
+            });
+
+            TestModel(webModel);
         }
 
         #endregion

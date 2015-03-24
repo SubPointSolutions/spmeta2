@@ -31,11 +31,22 @@ namespace SPMeta2.Definitions
         {
             Content = new byte[0];
             Overwrite = true;
+
+            DefaultValues = new List<PageItemDefaultValue>();
         }
 
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        public List<PageItemDefaultValue> DefaultValues { get; set; }
 
         /// <summary>
         /// Target file name,
