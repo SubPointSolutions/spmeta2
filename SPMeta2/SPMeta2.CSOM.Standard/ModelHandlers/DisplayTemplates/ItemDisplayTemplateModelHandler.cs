@@ -22,6 +22,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
 
         protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
+            base.MapProperties(modelHost, item, definition);
+
             var typedDefinition = definition.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
             item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F38510660300500DA5E";

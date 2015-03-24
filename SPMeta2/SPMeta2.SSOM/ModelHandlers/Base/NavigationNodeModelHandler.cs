@@ -143,7 +143,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
                 Object = existingNode,
                 ObjectType = typeof(SPNavigationNode),
                 ObjectDefinition = rootNode,
-                ModelHost = existingNode
+                ModelHost = webModelHost
             });
 
             if (existingNode == null)
@@ -170,7 +170,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
                 Object = existingNode,
                 ObjectType = typeof(SPNavigationNode),
                 ObjectDefinition = rootNode,
-                ModelHost = existingNode
+                ModelHost = webModelHost
             });
 
             existingNode.Update();

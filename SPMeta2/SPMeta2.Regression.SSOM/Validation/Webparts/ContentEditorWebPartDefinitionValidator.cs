@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
@@ -70,6 +71,10 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
 
                             isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
                         }
+                        else
+                        {
+                            isValid = srcUrl == dstUrl;
+                        }
 
                         return new PropertyValidationResult
                         {
@@ -83,6 +88,32 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 else
                 {
                     assert.SkipProperty(m => m.ContentLink, "ContentLink is null or empty. Skipping.");
+                }
+
+                if (!string.IsNullOrEmpty(definition.Content))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.Content);
+                        var dstProp = d.GetExpressionValue(o => o.Content);
+
+                        var srcUrl = srcProp.Value as string;
+                        var dstUrl = dstProp.Value as XmlElement;
+
+                        var isValid = dstUrl.InnerText == srcUrl;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Content, "Content is null or empty. Skipping.");
                 }
 
             });

@@ -42,6 +42,9 @@ namespace SPMeta2.Regression.Tests.Base
             PropertyUpdateGenerationCount = 2;
 
             TestOptions = new RunOptions();
+
+            TestOptions.EnableWebApplicationDefinitionTest = false;
+
         }
 
         #endregion
