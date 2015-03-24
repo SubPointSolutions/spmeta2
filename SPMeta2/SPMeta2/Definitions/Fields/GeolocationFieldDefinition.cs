@@ -34,5 +34,16 @@ namespace SPMeta2.Definitions.Fields
         }
 
         #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<GeolocationFieldDefinition>(this, base.ToString())
+                          
+                          .ToString();
+        }
+
+        #endregion
     }
 }

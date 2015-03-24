@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -20,7 +21,7 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
-    [ExpectAddHostExtensionMethod]
+    //[ExpectAddHostExtensionMethod]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
     public class WebPartGalleryFileDefinition : ContentPageDefinitionBase
@@ -51,6 +52,17 @@ namespace SPMeta2.Definitions.Webparts
         #endregion
 
         #region methods
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WebPartGalleryFileDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.Group)
+                          .ToString();
+        }
 
         #endregion
     }

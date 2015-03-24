@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions.Webparts
 {
@@ -23,6 +24,11 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     public class SummaryLinkWebPartDefinition : WebPartDefinition
     {
-
+        public override string ToString()
+        {
+            return new ToStringResult<SummaryLinkWebPartDefinition>(this, base.ToString())
+                          //.AddPropertyValue(p => p.Group)
+                          .ToString();
+        }
     }
 }
