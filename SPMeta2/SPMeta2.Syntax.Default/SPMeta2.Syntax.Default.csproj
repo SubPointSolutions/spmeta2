@@ -103,7 +103,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="WebPartGalleryFileDefinitionSyntax.cs" />
+    <Compile Include="UserCodeWebPartDefinitionSyntax.cs" />
     <Compile Include="MasterPageDefinitionSyntax.cs" />
+    <Compile Include="GeolocationFieldDefinitionSyntax.cs" />
     <Compile Include="ResetRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="DocumentParserSyntax.cs" />
     <Compile Include="AuditSettingsSyntax.cs" />
@@ -131,7 +135,7 @@
     <Compile Include="ManagedAccountDefinitionSyntax.cs" />
     <Compile Include="JobDefinitionSyntax.cs" />
     <Compile Include="MultiChoiceFieldDefinitionSyntax.cs" />
-    <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="OutcomeChoiceFieldDefinitionSyntax.cs" />
     <Compile Include="CurrencyFieldDefinitionSyntax.cs" />
     <Compile Include="AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="ClientWebPartDefinitionSyntax.cs" />

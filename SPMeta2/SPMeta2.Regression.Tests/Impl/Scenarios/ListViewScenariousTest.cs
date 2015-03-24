@@ -33,6 +33,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Folders")]
+        public void CanDeploy_ListView_InFolderOfContentType()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.ContentTypeId = BuiltInContentTypeId.Folder;
+                def.DefaultViewForContentType = false;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Folders")]
+        public void CanDeploy_ListView_InTopLevelFolder()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.ContentTypeId = BuiltInContentTypeId.RootOfList;
+                def.DefaultViewForContentType = true;
+            });
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.ListsViews")]
         public void CanDeploy_ListView_AsDefaultForContentType()
         {

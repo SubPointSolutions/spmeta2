@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -36,6 +38,19 @@ namespace SPMeta2.Definitions.Webparts
         public string TypeFullName { get; set; }
 
         public List<UserCodeProperty> UserCodeProperties { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<UserCodeWebPartDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.SolutionId)
+                          .AddPropertyValue(p => p.AssemblyFullName)
+                          .AddPropertyValue(p => p.TypeFullName)
+                          .ToString();
+        }
 
         #endregion
     }

@@ -222,7 +222,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void ProcessFile(
             object modelHost,
-            SPFolder folder, ModuleFileDefinition moduleFile)
+            SPFolder folder,
+            ModuleFileDefinition moduleFile)
         {
             DeployModuleFile(
                 folder,
@@ -246,6 +247,26 @@ namespace SPMeta2.SSOM.ModelHandlers
                 },
                 after =>
                 {
+                    if (!string.IsNullOrEmpty(moduleFile.ContentTypeId) ||
+                        !string.IsNullOrEmpty(moduleFile.ContentTypeName))
+                    {
+                        var list = folder.ParentWeb.Lists[folder.ParentListId];
+
+                        if (!string.IsNullOrEmpty(moduleFile.ContentTypeId))
+                            after.ListItemAllFields["ContentTypeId"] = LookupListContentTypeById(list, moduleFile.ContentTypeId);
+
+                        if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
+                            after.ListItemAllFields["ContentTypeId"] = LookupListContentTypeByName(list, moduleFile.ContentTypeName);
+
+                        after.ListItemAllFields.Update();
+                    }
+
+                    if (moduleFile.DefaultValues.Count > 0)
+                    {
+                        EnsureDefaultValues(after.ListItemAllFields, moduleFile);
+                        after.ListItemAllFields.Update();
+                    }
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
@@ -257,6 +278,47 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
                 });
+        }
+
+        private void EnsureDefaultValues(SPListItem newFileItem, ModuleFileDefinition definition)
+        {
+            foreach (var defaultValue in definition.DefaultValues)
+            {
+                if (!string.IsNullOrEmpty(defaultValue.FieldName))
+                {
+                    if (newFileItem.Fields.ContainsFieldWithStaticName(defaultValue.FieldName))
+                    {
+                        if (newFileItem[defaultValue.FieldName] == null)
+                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
+                    }
+                }
+                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
+                {
+                    if (newFileItem.Fields.OfType<SPField>().Any(f => f.Id == defaultValue.FieldId.Value))
+                    {
+                        if (newFileItem[defaultValue.FieldId.Value] == null)
+                            newFileItem[defaultValue.FieldId.Value] = defaultValue.Value;
+                    }
+                }
+            }
+        }
+
+        protected SPContentTypeId LookupListContentTypeByName(SPList targetList, string name)
+        {
+            var targetContentType = targetList.ContentTypes
+                   .OfType<SPContentType>()
+                   .FirstOrDefault(ct => ct.Name.ToUpper() == name.ToUpper());
+
+            if (targetContentType == null)
+                throw new SPMeta2Exception(string.Format("Cannot find content type by name ['{0}'] in list: [{1}]",
+                    name, targetList.Title));
+
+            return targetContentType.Id;
+        }
+
+        protected SPContentTypeId LookupListContentTypeById(SPList targetList, string contentTypeId)
+        {
+            return targetList.ContentTypes.BestMatch(new SPContentTypeId(contentTypeId));
         }
 
         #endregion

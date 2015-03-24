@@ -160,7 +160,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected SPContentTypeId LookupListContentTypeById(SPList targetList, string contentTypeId)
         {
-            return targetList.ContentTypes.BestMatch(new SPContentTypeId(contentTypeId));
+            return new SPContentTypeId(contentTypeId);
         }
 
         #endregion

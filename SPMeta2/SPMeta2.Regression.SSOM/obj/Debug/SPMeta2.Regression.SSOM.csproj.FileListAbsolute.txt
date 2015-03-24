@@ -90,6 +90,7 @@ c:\_spmeta_builds\40\SPMeta2.Regression.SSOM.XML
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.dll
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.pdb
 c:\_spmeta_builds\45\SPMeta2.Regression.SSOM.XML
+<<<<<<< HEAD
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.XML
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.pdb
@@ -112,3 +113,5 @@ C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\S
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\obj\Debug\SPMeta2.Regression.SSOM.pdb
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\System.Net.Http.Formatting.dll
 C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Regression.SSOM\bin\Debug\System.Net.Http.Formatting.xml
+=======
+>>>>>>> a1c900c1ca67dd300fc502b6ad1e3ec816199971

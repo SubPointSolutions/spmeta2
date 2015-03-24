@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Enumerations;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions.Fields
 {
@@ -21,7 +22,7 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
-    [ExpectWithExtensionMethod]
+    //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
     public class SummaryLinkFieldDefinition : FieldDefinition
@@ -36,6 +37,17 @@ namespace SPMeta2.Standard.Definitions.Fields
         #endregion
 
         #region properties
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<SummaryLinkFieldDefinition>(this, base.ToString())
+
+                          .ToString();
+        }
 
         #endregion
     }
