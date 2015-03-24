@@ -37,6 +37,20 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         #region properties
 
+        [ExpectValidation]
+        public override string ValidationMessage
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
+        [ExpectValidation]
+        public override string ValidationFormula
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
         #endregion
 
         #region methods

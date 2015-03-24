@@ -16,19 +16,27 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
-            var stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+            var stringCustomContentType = string.Empty;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName)
+                || !string.IsNullOrEmpty(definition.ContentTypeId))
+                stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
             var folder = folderHost.CurrentLibraryFolder;
             var spObject = GetFile(folderHost, definition);
 
-            if (!spObject.IsObjectPropertyInstantiated("ListItemAllFields"))
-                spObject.Context.Load(spObject, o => o.ListItemAllFields);
+            if (folderHost.CurrentList != null)
+            {
+                if (!spObject.IsObjectPropertyInstantiated("ListItemAllFields"))
+                    spObject.Context.Load(spObject, o => o.ListItemAllFields);
+            }
 
             if (!spObject.IsObjectPropertyInstantiated("Name"))
                 spObject.Context.Load(spObject, o => o.Name);
 
             if (!spObject.IsObjectPropertyInstantiated("ServerRelativeUrl"))
                 spObject.Context.Load(spObject, o => o.ServerRelativeUrl);
+
 
             spObject.Context.ExecuteQuery();
 
@@ -84,7 +92,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                             if (d.ListItemAllFields[srcValue.FieldName].ToString() != srcValue.Value.ToString())
                                 isValid = false;
                         }
-                       
+
                         if (!isValid)
                             break;
                     }
