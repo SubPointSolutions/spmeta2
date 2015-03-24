@@ -16,8 +16,13 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
+            var stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+
             var folder = folderHost.CurrentLibraryFolder;
             var spObject = GetFile(folderHost, definition);
+
+            if (!spObject.IsObjectPropertyInstantiated("ListItemAllFields"))
+                spObject.Context.Load(spObject, o => o.ListItemAllFields);
 
             if (!spObject.IsObjectPropertyInstantiated("Name"))
                 spObject.Context.Load(spObject, o => o.Name);
@@ -31,6 +36,74 @@ namespace SPMeta2.Regression.CSOM.Validation
                                .NewAssert(definition, spObject)
                                      .ShouldNotBeNull(spObject)
                                      .ShouldBeEqual(m => m.FileName, o => o.Name);
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d.ListItemAllFields["ContentTypeId"].ToString();
+
+                    var isValis = stringCustomContentType == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+            if (definition.DefaultValues.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.DefaultValues)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+                       
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.DefaultValues);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
+            }
 
             assert.ShouldBeEqual((p, s, d) =>
             {

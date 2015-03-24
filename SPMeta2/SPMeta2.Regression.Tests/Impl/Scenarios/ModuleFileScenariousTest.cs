@@ -62,7 +62,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         FieldName = "DisplayTemplateJSTargetScope",
                         Value = Rnd.String()
-                    }
+                    },
+                     new PageItemDefaultValue
+                    {
+                        FieldName = "DisplayTemplateJSTemplateType",
+                        Value ="Override"
+                    },
+                    
                 };
             });
 
