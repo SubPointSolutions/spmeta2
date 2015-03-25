@@ -188,8 +188,8 @@
     <Compile Include="ModelHandlers\DiagnosticsServiceBaseModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
@@ -292,10 +292,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
-      <Project>{5E592EAA-E21F-4BF4-8EDF-6F6452DC916A}</Project>
-      <Name>SPMeta2.CSOM.Standard</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
       <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
       <Name>SPMeta2.Syntax.Default</Name>
