@@ -38,7 +38,7 @@ namespace SPMeta2.Regression.Tests.Base
 
             RegressionService.ShowOnlyFalseResults = true;
 
-            EnablePropertyUpdateValidation = false;
+            EnablePropertyUpdateValidation = true;
             PropertyUpdateGenerationCount = 2;
 
             TestOptions = new RunOptions();

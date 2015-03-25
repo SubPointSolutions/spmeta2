@@ -21,6 +21,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                                  .ShouldNotBeNull(spObject)
                                  .ShouldBeEqual(m => m.Name, o => o.Name)
                                  .ShouldBeEqual(m => m.IsAvailableForTagging, o => o.IsAvailableForTagging)
+                                 .ShouldBeEqual(m => m.IsOpenForTermCreation, o => o.IsOpenForTermCreation)
                                  .ShouldBeEqual(m => m.Description, o => o.Description);
 
             assert.SkipProperty(m => m.LCID, "LCID is not accessible from OM. Should be alright while provision.");

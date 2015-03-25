@@ -38,6 +38,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public string Name { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         [ExpectValidation]
@@ -47,7 +48,12 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public int LCID { get; set; }
 
         [ExpectValidation]
+        [ExpectUpdate]
         public bool IsAvailableForTagging { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool IsOpenForTermCreation { get; set; }
 
         #endregion
 

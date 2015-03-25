@@ -28,6 +28,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.IsAvailableForTagging, o => o.IsAvailableForTagging)
+                .ShouldBeEqual(m => m.IsOpenForTermCreation, o => o.IsOpenForTermCreation)
                 .ShouldBeEqual(m => m.Name, o => o.Name)
                 .ShouldBeEqual(m => m.Description, o => o.Description);
 

@@ -77,8 +77,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termGroup.CreateTermSet(termSetModel.Name, termSetModel.Id.Value, termSetModel.LCID)
                     : termGroup.CreateTermSet(termSetModel.Name, Guid.NewGuid(), termSetModel.LCID);
 
-                currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
-                currentTermSet.Description = termSetModel.Description;
+                MapTermSet(currentTermSet, termSetModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -95,8 +94,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Set");
 
-                currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
-                currentTermSet.Description = termSetModel.Description;
+                MapTermSet(currentTermSet, termSetModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -112,6 +110,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             termStore.CommitAll();
             termStore.Context.ExecuteQuery();
+        }
+
+        private static void MapTermSet(TermSet currentTermSet, TaxonomyTermSetDefinition termSetModel)
+        {
+            currentTermSet.Description = termSetModel.Description;
+
+            currentTermSet.IsOpenForTermCreation = termSetModel.IsOpenForTermCreation;
+            currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
         }
 
         protected TermSet FindTermSet(TermGroup termGroup, TaxonomyTermSetDefinition termSetModel)
