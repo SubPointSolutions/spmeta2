@@ -6,7 +6,7 @@ using SPMeta2.Definitions.Base;
 namespace SPMeta2.Definitions
 {
 
-    public class PageItemDefaultValue
+    public class FieldValue
     {
         public string FieldName { get; set; }
         public Guid? FieldId { get; set; }
@@ -26,14 +26,14 @@ namespace SPMeta2.Definitions
         public PageDefinitionBase()
         {
             NeedOverride = true;
-            DefaultValues = new List<PageItemDefaultValue>();
+            DefaultValues = new List<FieldValue>();
         }
 
         #endregion
 
         #region properties
 
-        public List<PageItemDefaultValue> DefaultValues { get; set; }
+        public List<FieldValue> DefaultValues { get; set; }
 
         /// <summary>
         /// Title of the target page.

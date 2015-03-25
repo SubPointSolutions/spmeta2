@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +9,15 @@ namespace SPMeta2.Utils
 {
     public static class ConvertUtils
     {
+        #region nullable extensions
+
+        public static bool HasGuidValue(this Guid? value)
+        {
+            return value.HasValue && (value.Value != default(Guid));
+        }
+
+        #endregion
+
         #region methods
 
         public static int? ToInt(object value)

@@ -101,6 +101,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInMasterPageDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
+    <Compile Include="Common\FieldValue.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
     <Compile Include="Definitions\Fields\OutcomeChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\GeolocationFieldDefinition.cs" />
+    <Compile Include="Definitions\ListItemFieldValuesDefinition.cs" />
     <Compile Include="Definitions\MasterPageDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />

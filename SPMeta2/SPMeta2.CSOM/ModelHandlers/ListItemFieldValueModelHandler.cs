@@ -30,11 +30,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (fieldValue.FieldId.HasValue)
                 throw new SPMeta2NotSupportedException("ListItemFieldValueDefinition.FieldId. CSOM API does not support FieldId based values. Please use FieldName (IntrnalFieldName) instaed");
 
-            var listItemModelHost = modelHost.WithAssertAndCast<ListItemFieldValueModelHost>("modelHost", value => value.RequireNotNull());
-            ProcessFieldValue(listItemModelHost, listItemModelHost.CurrentItem, fieldValue);
+            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
+            ProcessFieldValue(listItemModelHost, listItemModelHost.HostListItem, fieldValue);
         }
 
-        private void ProcessFieldValue(ListItemFieldValueModelHost modelHost, ListItem listItem, ListItemFieldValueDefinition fieldValue)
+        private void ProcessFieldValue(ListItemModelHost modelHost, ListItem listItem, ListItemFieldValueDefinition fieldValue)
         {
             InvokeOnModelEvent(this, new ModelEventArgs
             {

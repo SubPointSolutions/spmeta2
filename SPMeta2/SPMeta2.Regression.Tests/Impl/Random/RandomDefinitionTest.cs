@@ -669,6 +669,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_ListItemFieldValuesDefinition()
+        {
+            TestRandomDefinition<ListItemFieldValuesDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_BreakRoleInheritanceDefinition()
         {
             TestRandomDefinition<BreakRoleInheritanceDefinition>();

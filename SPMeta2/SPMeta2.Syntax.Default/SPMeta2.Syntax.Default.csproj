@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="ListItemFieldValuesDefinitionSyntax.cs" />
     <Compile Include="WebPartGalleryFileDefinitionSyntax.cs" />
     <Compile Include="UserCodeWebPartDefinitionSyntax.cs" />
     <Compile Include="MasterPageDefinitionSyntax.cs" />

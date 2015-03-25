@@ -7,12 +7,12 @@ using System.Text;
 
 namespace SPMeta2.CSOM.ModelHosts
 {
-    public class ListItemFieldValueModelHost : CSOMModelHostBase
-    {
-        #region properties
+    //public class ListItemFieldValueModelHost : CSOMModelHostBase
+    //{
+    //    #region properties
 
-        public ListItem CurrentItem { get; set; }
+    //    public ListItem CurrentItem { get; set; }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

@@ -32,7 +32,7 @@ namespace SPMeta2.Definitions
             Content = new byte[0];
             Overwrite = true;
 
-            DefaultValues = new List<PageItemDefaultValue>();
+            DefaultValues = new List<FieldValue>();
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace SPMeta2.Definitions
         public string ContentTypeName { get; set; }
 
         [ExpectValidation]
-        public List<PageItemDefaultValue> DefaultValues { get; set; }
+        public List<FieldValue> DefaultValues { get; set; }
 
         /// <summary>
         /// Target file name,

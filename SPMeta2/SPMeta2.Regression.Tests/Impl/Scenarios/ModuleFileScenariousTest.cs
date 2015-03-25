@@ -51,19 +51,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var moduleFile = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
             {
                 def.ContentTypeName = "JavaScript Display Template";
-                def.DefaultValues = new List<PageItemDefaultValue>
+                def.DefaultValues = new List<FieldValue>
                 {
-                    new PageItemDefaultValue
+                    new FieldValue
                     {
                         FieldName = "DisplayTemplateJSTargetControlType",
                         Value = "Form"
                     },
-                     new PageItemDefaultValue
+                     new FieldValue
                     {
                         FieldName = "DisplayTemplateJSTargetScope",
                         Value = Rnd.String()
                     },
-                     new PageItemDefaultValue
+                     new FieldValue
                     {
                         FieldName = "DisplayTemplateJSTemplateType",
                         Value ="Override"

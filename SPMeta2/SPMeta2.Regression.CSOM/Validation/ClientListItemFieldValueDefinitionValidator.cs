@@ -10,10 +10,10 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
         {
-            var listItemModelHost = modelHost.WithAssertAndCast<ListItemFieldValueModelHost>("modelHost", value => value.RequireNotNull());
+            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListItemFieldValueDefinition>("model", value => value.RequireNotNull());
 
-            var spObject = listItemModelHost.CurrentItem;
+            var spObject = listItemModelHost.HostListItem;
 
             var assert = ServiceFactory.AssertService
                             .NewAssert(definition, spObject)

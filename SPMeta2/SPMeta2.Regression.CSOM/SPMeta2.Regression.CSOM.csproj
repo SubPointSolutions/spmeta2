@@ -81,6 +81,7 @@
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Utils\FieldSchemaXmlUtils.cs" />
     <Compile Include="Validation\ClientAppDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientListItemFieldValuesDefinitionValidator.cs" />
     <Compile Include="Validation\ClientMasterPageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientResetRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\ClientBreakRoleInheritanceDefinitionValidator.cs" />

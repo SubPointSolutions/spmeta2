@@ -39,11 +39,3 @@ c:\_spmeta_builds\40\SPMeta2.Validation.XML
 c:\_spmeta_builds\45\SPMeta2.Validation.dll
 c:\_spmeta_builds\45\SPMeta2.Validation.pdb
 c:\_spmeta_builds\45\SPMeta2.Validation.XML
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.XML
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.Validation.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.pdb
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\bin\Debug\SPMeta2.xml
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.dll
-C:\Users\sp-dev\Source\Repos\spmeta2\SPMeta2\SPMeta2.Validation\obj\Debug\SPMeta2.Validation.pdb

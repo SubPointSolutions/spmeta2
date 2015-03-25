@@ -190,6 +190,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         addArrayDefinitionMethodName = string.Format("AddProperties");
                     if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
                         addArrayDefinitionMethodName = string.Format("AddDiagnosticsServices");
+                    if (definitionType == typeof(ListItemFieldValuesDefinition))
+                        addArrayDefinitionMethodName = string.Format("ListItemFieldValues");
 
                     var arrayTypoe = typeof(IEnumerable<>);
                     var arrayDefinitionType = arrayTypoe.MakeGenericType(definitionType);

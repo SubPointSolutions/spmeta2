@@ -166,7 +166,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.PageLayoutFileName = publishingPageLayout.FileName;
 
-                def.DefaultValues.Add(new PageItemDefaultValue()
+                def.DefaultValues.Add(new FieldValue()
                 {
                     FieldName = requiredText.InternalName,
                     Value = Rnd.String()
