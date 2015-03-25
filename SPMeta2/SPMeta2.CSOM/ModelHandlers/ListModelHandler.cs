@@ -5,7 +5,6 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
-using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;

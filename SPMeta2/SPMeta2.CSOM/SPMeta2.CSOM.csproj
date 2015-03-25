@@ -225,7 +225,6 @@
     <Compile Include="Services\CSOMProvisionService.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="Services\CSOMTokenReplacementService.cs" />
-    <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -266,6 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SPMeta2.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

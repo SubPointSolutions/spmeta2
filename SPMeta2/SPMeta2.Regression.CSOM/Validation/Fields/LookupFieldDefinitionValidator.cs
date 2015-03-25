@@ -2,11 +2,9 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
-using SPMeta2.CSOM.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
-using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
