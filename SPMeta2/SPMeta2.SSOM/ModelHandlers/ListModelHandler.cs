@@ -208,7 +208,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
                     listId = web.Lists.Add(
-                                    listModel.Url,
+                                    listModel.Title,
                                     listModel.Description ?? string.Empty,
                                     listModel.GetListUrl(),
                                     string.Empty,
@@ -225,7 +225,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, listTemplate);
                     listId = web.Lists.Add(
-                                   listModel.Url,
+                                   listModel.Title,
                                    listModel.Description ?? string.Empty,
                                    listModel.GetListUrl(),
                                    listTemplate.FeatureId.ToString(),

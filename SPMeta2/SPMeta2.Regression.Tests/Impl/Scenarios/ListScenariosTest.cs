@@ -534,6 +534,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_ListWithCustomUrl()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+                def.Url = string.Empty;
+                def.CustomUrl = string.Format("Lists/{0}", Rnd.String());
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Urls")]
+        public void CanDeploy_LibraryWithCustomUrl()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+                def.Url = string.Empty;
+                def.CustomUrl = string.Format("{0}", Rnd.String());
+            });
+        }
 
         #endregion
     }
