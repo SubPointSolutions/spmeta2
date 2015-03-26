@@ -45,6 +45,8 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         public string Description { get; set; }
 
+        [ExpectValidation]
+        [ExpectUpdate]
         public byte[] Content { get; set; }
 
         [ExpectValidation]

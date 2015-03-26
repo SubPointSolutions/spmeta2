@@ -250,6 +250,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (spFile.Exists)
             {
+                spFile.ListItemAllFields.Update();
+                context.ExecuteQueryWithTrace();
+
                 if (onCreated != null)
                     onCreated(spFile);
 

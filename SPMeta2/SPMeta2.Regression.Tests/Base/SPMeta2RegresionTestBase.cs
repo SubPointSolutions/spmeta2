@@ -573,7 +573,13 @@ namespace SPMeta2.Regression.Tests.Base
                         }
                         else
                         {
-                            if (prop.PropertyType == typeof(string))
+                            // all this needs to be refactored, we know
+
+                            if (prop.PropertyType == typeof(byte[]))
+                            {
+                                newValue = RegressionService.RndService.Content();
+                            }
+                            else if (prop.PropertyType == typeof(string))
                                 newValue = RegressionService.RndService.String();
                             else if (prop.PropertyType == typeof(bool))
                                 newValue = RegressionService.RndService.Bool();

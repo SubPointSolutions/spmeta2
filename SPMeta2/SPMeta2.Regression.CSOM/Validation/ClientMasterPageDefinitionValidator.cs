@@ -7,6 +7,9 @@ using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 using System.Collections.Generic;
+using System.Linq;
+using SPMeta2.Syntax.Default.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -22,11 +25,15 @@ namespace SPMeta2.Regression.CSOM.Validation
             var definition = model.WithAssertAndCast<MasterPageDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindPage(folderModelHost.CurrentList, folder, definition);
+            var spFile = FindPageFile(folderModelHost.CurrentList, folder, definition);
 
             var context = spObject.Context;
 
             context.Load(spObject);
             context.Load(spObject, o => o.DisplayName);
+
+            context.Load(spFile);
+            context.Load(spFile, o => o.ServerRelativeUrl);
 
             context.ExecuteQuery();
 
@@ -69,6 +76,33 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(d => d.UIVersion, "UIVersion.Count is 0. Skipping");
             }
+
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = false;
+
+                byte[] dstContent = null;
+
+                using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, spFile.ServerRelativeUrl).Stream)
+                    dstContent = ModuleFileUtils.ReadFully(stream);
+
+                var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                var dstStringContent = Encoding.UTF8.GetString(dstContent);
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
         }
 
         #endregion

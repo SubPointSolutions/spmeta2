@@ -78,6 +78,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         }
 
+        protected File FindPageFile(List list, Folder folder, MasterPageDefinition definition)
+        {
+            var pageName = GetSafePageFileName(definition);
+            return GetCurrentPage(list, folder, pageName);
+        }
+
         protected ListItem FindPage(List list, Folder folder, MasterPageDefinition definition)
         {
             var pageName = GetSafePageFileName(definition);

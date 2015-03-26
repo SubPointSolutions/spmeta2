@@ -5,6 +5,8 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System.Collections.Generic;
+using System.Text;
+using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -58,6 +60,27 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(d => d.UIVersion, "UIVersion.Count is 0. Skipping");
             }
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = false;
+
+                var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                var dstStringContent = Encoding.UTF8.GetString(d.GetContent());
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
         }
     }
 

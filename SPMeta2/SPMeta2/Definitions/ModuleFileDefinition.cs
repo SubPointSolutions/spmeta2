@@ -60,6 +60,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectUpdate]
         public byte[] Content { get; set; }
 
         /// <summary>

@@ -69,16 +69,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             ModuleFileModelHandler.WithSafeFileOperation(list, folder,
                 targetPage.Url,
                 GetSafePageFileName(definition),
-                Encoding.UTF8.GetBytes(PublishingPageTemplates.RedirectionPageMarkup),
-                false,
+                definition.Content,
+                definition.NeedOverride,
                 null,
                 afterFile =>
                 {
-                    var pageItem = afterFile.Item;
+                    var pageItem = afterFile.Properties;
 
-                    pageItem[BuiltInFieldId.Title] = definition.Title;
+                    //pageItem[BuiltInInternalFieldNames.Title] = definition.Title;
+                    pageItem["vti_title"] = definition.Title;
                     pageItem["MasterPageDescription"] = definition.Description;
-                    pageItem[BuiltInFieldId.ContentTypeId] = BuiltInContentTypeId.MasterPage;
+                    pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInContentTypeId.MasterPage;
 
                     if (definition.UIVersion.Count > 0)
                     {
@@ -87,12 +88,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                         foreach (var v in definition.UIVersion)
                             value.Add(v);
 
-                        pageItem["UIVersion"] = value;
+                        pageItem["UIVersion"] = value.ToString();
                     }
 
                     pageItem["DefaultCssFile"] = definition.DefaultCSSFile;
 
-                    pageItem.SystemUpdate();
+                    //pageItem.Update();
+
+                    //pageItem.SystemUpdate();
                 });
         }
 

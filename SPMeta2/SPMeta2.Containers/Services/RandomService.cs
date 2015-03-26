@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SPMeta2.Containers.Services
 {
@@ -72,6 +73,22 @@ namespace SPMeta2.Containers.Services
         public static byte Byte(this RandomService service)
         {
             return service.Byte(byte.MaxValue);
+        }
+
+        public static byte[] ByteArray(this RandomService service)
+        {
+            return ByteArray(service, 64);
+            return ByteArray(service, 64);
+        }
+
+        public static byte[] ByteArray(this RandomService service, int length)
+        {
+            var result = new List<byte>();
+
+            for (var i = 0; i < length; i++)
+                result.Add(service.Byte());
+
+            return result.ToArray();
         }
 
         public static byte Byte(this RandomService service, byte maxValue)
