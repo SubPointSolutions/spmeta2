@@ -72,24 +72,24 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             ModuleFileModelHandler.WithSafeFileOperation(list, folder,
                 targetPage.Url,
                 GetSafePageFileName(definition),
-                Encoding.UTF8.GetBytes(PublishingPageTemplates.RedirectionPageMarkup),
-                false,
+                Encoding.UTF8.GetBytes(definition.Content),
+                definition.NeedOverride,
                 null,
                 afterFile =>
                 {
                     var siteContentType = web.AvailableContentTypes[new SPContentTypeId(definition.AssociatedContentTypeId)];
 
-                    var pageItem = afterFile.Item;
+                    var pageItem = afterFile.Properties;
 
-                    pageItem[BuiltInFieldId.Title] = definition.Title;
-                    pageItem[BuiltInPublishingFieldId.Description] = definition.Description;
-                    pageItem[BuiltInFieldId.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+                    pageItem["vti_title"] = definition.Title;
+                    pageItem["MasterPageDescription"] = definition.Description;
+                    pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
 
                     //pageItem.SystemUpdate();
 
-                    pageItem[BuiltInPublishingFieldId.AssociatedContentType] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
+                    pageItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
 
-                    pageItem.SystemUpdate();
+                    //pageItem.SystemUpdate();
                 });
         }
 

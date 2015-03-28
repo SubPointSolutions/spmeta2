@@ -16,6 +16,8 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.DisplayTemplates
             {
                 def.FileName = string.Format("{0}.html", Rnd.String());
                 def.Title = Rnd.String();
+
+                def.Content = Rnd.Content();
             });
         }
 

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text;
 using Microsoft.SharePoint;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.SSOM.Validation;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
@@ -21,6 +24,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             var folder = listModelHost.CurrentLibraryFolder;
 
             var spObject = GetCurrentObject(folder, definition);
+            var file = spObject.File;
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
@@ -30,6 +34,29 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                                              .ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
                                              .ShouldBeEqual(m => m.Title, o => o.Title);
 
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = false;
+
+                var srcStringContent = s.Content;
+                var dstStringContent = Encoding.UTF8.GetString(file.GetContent());
+
+                srcStringContent = srcStringContent
+                    .Replace("meta:webpartpageexpansion=\"full\" ", string.Empty);
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
@@ -15,7 +16,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
 {
     public abstract class TemplateModelHandlerBase : ContentFileModelHandlerBase
     {
-        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
+        protected override void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition)
         {
             var typedTemplateModel = definition.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
@@ -26,13 +27,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
                 foreach (var value in typedTemplateModel.TargetControlTypes)
                     multiChoiceValue.Add(value);
 
-                item["TargetControlType"] = multiChoiceValue;
+                fileProperties["TargetControlType"] = multiChoiceValue.ToString();
             }
 
-            item["TemplateHidden"] = typedTemplateModel.HiddenTemplate;
+            //fileProperties["TemplateHidden"] = typedTemplateModel.HiddenTemplate.ToString();
+            fileProperties["TemplateHidden"] = typedTemplateModel.HiddenTemplate.ToString();
 
             if (!string.IsNullOrEmpty(typedTemplateModel.Description))
-                item["MasterPageDescription"] = typedTemplateModel.Description;
+                fileProperties["MasterPageDescription"] = typedTemplateModel.Description;
 
             if (!string.IsNullOrEmpty(typedTemplateModel.PreviewURL))
             {
@@ -41,7 +43,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
                 if (!string.IsNullOrEmpty(typedTemplateModel.PreviewDescription))
                     htmlPreviewValue.Description = typedTemplateModel.PreviewDescription;
 
-                item["HtmlDesignPreviewUrl"] = htmlPreviewValue;
+                fileProperties["HtmlDesignPreviewUrl"] = htmlPreviewValue.ToString();
             }
         }
 

@@ -770,7 +770,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #region wb part gallery
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.MasterPageGallery.WebPartGallery")]
+        [TestCategory("Regression.Rnd.WebPartGallery")]
         public void CanDeployRandom_WebPartGalleryFileDefinition()
         {
             TestRandomDefinition<WebPartGalleryFileDefinition>();
@@ -781,7 +781,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #region master page gallery
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.MasterPageGallery.DisplayTemplates")]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
         public void CanDeployRandom_ItemDisplayTemplateDefinition()
         {
             TestRandomDefinition<ItemDisplayTemplateDefinition>();
@@ -789,7 +789,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
 
         [TestMethod]
-        [TestCategory("Regression.Rnd.MasterPageGallery.DisplayTemplates")]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
         public void CanDeployRandom_ControlDisplayTemplateDefinition()
         {
             TestRandomDefinition<ControlDisplayTemplateDefinition>();

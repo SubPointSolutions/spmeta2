@@ -105,7 +105,7 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    internal static class SPFIleExtensions
+    public static class SPFileExtensions
     {
         public static byte[] GetContent(this SPFile file)
         {

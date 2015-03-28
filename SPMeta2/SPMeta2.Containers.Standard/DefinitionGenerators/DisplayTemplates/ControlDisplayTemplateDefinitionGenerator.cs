@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
@@ -16,6 +17,8 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.DisplayTemplates
             {
                 def.FileName = string.Format("{0}.html", Rnd.String());
                 def.Title = Rnd.String();
+
+                def.Content = Rnd.Content();
             });
         }
 

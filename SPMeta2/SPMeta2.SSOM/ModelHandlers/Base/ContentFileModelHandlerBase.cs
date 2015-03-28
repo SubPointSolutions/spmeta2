@@ -9,6 +9,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using System.Collections;
 
 namespace SPMeta2.SSOM.ModelHandlers.Base
 {
@@ -76,18 +77,18 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             ModuleFileModelHandler.WithSafeFileOperation(list, folder,
                 targetPage.Url,
                 GetSafePageFileName(definition),
-                Encoding.UTF8.GetBytes(PublishingPageTemplates.RedirectionPageMarkup),
-                false,
+                definition.Content,
+                definition.NeedOverride,
                 null,
                 afterFile =>
                 {
-                    var pageItem = afterFile.Item;
+                    var pageItem = afterFile.Properties;
 
-                    pageItem["Title"] = definition.Title;
+                    pageItem["vti_title"] = definition.Title;
 
                     MapProperties(modelHost, pageItem, definition);
 
-                    pageItem.SystemUpdate();
+                    //pageItem.SystemUpdate();
                 });
         }
 
@@ -120,7 +121,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             return null;
         }
 
-        protected abstract void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition);
+        protected abstract void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition);
 
         #endregion
     }

@@ -12,6 +12,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Base;
 using SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Utils;
+using System.Collections;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
 {
@@ -140,7 +141,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
             }
         }
 
-        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
+        protected override void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition)
         {
 
         }

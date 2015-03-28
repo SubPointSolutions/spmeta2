@@ -7,6 +7,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
+using System.Collections;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
 {
@@ -22,13 +23,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
             }
         }
 
-        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
+        protected override void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition)
         {
-            base.MapProperties(modelHost, item, definition);
+            base.MapProperties(modelHost, fileProperties, definition);
 
             var typedTemplateModel = definition.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
-            item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F385106601";
+            fileProperties[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F385106601";
 
             if (!string.IsNullOrEmpty(typedTemplateModel.CrawlerXSLFileURL))
             {
@@ -37,7 +38,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
                 if (!string.IsNullOrEmpty(typedTemplateModel.CrawlerXSLFileDescription))
                     crawlerXSLFileValue.Description = typedTemplateModel.CrawlerXSLFileDescription;
 
-                item["CrawlerXSLFile"] = crawlerXSLFileValue;
+                fileProperties["CrawlerXSLFile"] = crawlerXSLFileValue.ToString();
             }
         }
 

@@ -9,6 +9,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.SSOM.ModelHandlers.Base;
 using SPMeta2.Utils;
+using System.Collections;
 
 
 namespace SPMeta2.SSOM.ModelHandlers.Webparts
@@ -28,15 +29,15 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             }
         }
 
-        protected override void MapProperties(object modelHost, SPListItem item, ContentPageDefinitionBase definition)
+        protected override void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition)
         {
             var typedDefinition = definition.WithAssertAndCast<WebPartGalleryFileDefinition>("model", value => value.RequireNotNull());
 
             if (!string.IsNullOrEmpty(typedDefinition.Group))
-                item["Group"] = typedDefinition.Group;
+                fileProperties["Group"] = typedDefinition.Group;
 
             if (!string.IsNullOrEmpty(typedDefinition.Description))
-                item["WebPartDescription"] = typedDefinition.Description;
+                fileProperties["WebPartDescription"] = typedDefinition.Description;
 
 
             var recSettingsValue = new SPFieldMultiChoiceValue();
@@ -44,7 +45,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             foreach (var value in typedDefinition.RecommendationSettings)
                 recSettingsValue.Add(value);
 
-            item["QuickAddGroups"] = recSettingsValue;
+            fileProperties["QuickAddGroups"] = recSettingsValue;
         }
 
         public override Type TargetType
