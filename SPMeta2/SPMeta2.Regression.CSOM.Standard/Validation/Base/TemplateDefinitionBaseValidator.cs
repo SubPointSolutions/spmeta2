@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHosts;
@@ -7,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM.Validation;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
+using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
@@ -20,12 +22,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
             var folder = folderModelHost.CurrentLibraryFolder;
             var definition = model.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
-            var file = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
-            var spObject = file.ListItemAllFields;
+            var spFile = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
+            var spObject = spFile.ListItemAllFields;
 
             var context = spObject.Context;
 
             context.Load(spObject);
+            context.Load(spFile, f => f.ServerRelativeUrl);
             context.ExecuteQuery();
 
             var assert = ServiceFactory.AssertService
@@ -39,7 +42,31 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
                                              .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
                                              ;
 
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
 
+                var isContentValid = false;
+
+                byte[] dstContent = null;
+
+                using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, spFile.ServerRelativeUrl).Stream)
+                    dstContent = ModuleFileUtils.ReadFully(stream);
+
+                var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                var dstStringContent = Encoding.UTF8.GetString(dstContent);
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
 
             #region preview field
 

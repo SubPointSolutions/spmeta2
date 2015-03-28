@@ -36,6 +36,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
                                         .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
+
+
             #region crawler xslt file
 
             if (!string.IsNullOrEmpty(definition.CrawlerXSLFileURL))
