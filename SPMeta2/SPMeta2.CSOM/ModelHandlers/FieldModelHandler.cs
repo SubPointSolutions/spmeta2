@@ -60,6 +60,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is SiteModelHost)
                 return FindExistingSiteField(modelHost as SiteModelHost, definition);
 
+            if (modelHost is WebModelHost)
+                return FindExistingWebField(modelHost as WebModelHost, definition);
+
             if (modelHost is ListModelHost)
                 return FindExistingListField((modelHost as ListModelHost).HostList, definition);
 
@@ -69,6 +72,52 @@ namespace SPMeta2.CSOM.ModelHandlers
                 string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
                     definition.GetType(),
                     modelHost.GetType()));
+        }
+
+        protected Field FindExistingWebField(WebModelHost siteModelHost, FieldDefinition fieldDefinition)
+        {
+            var id = fieldDefinition.Id;
+            var rootWeb = siteModelHost.HostWeb;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "FindExistingSiteField with Id: [{0}]", id);
+
+            var context = rootWeb.Context;
+            var scope = new ExceptionHandlingScope(context);
+
+            Field field = null;
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    rootWeb.Fields.GetById(id);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+            context.ExecuteQueryWithTrace();
+
+            if (!scope.HasException)
+            {
+                field = rootWeb.Fields.GetById(id);
+                context.Load(field);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field with Id: [{0}]", id);
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+
+                context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find site field with Id: [{0}]", id);
+            }
+
+            return field;
         }
 
         protected virtual Type GetTargetFieldType(FieldDefinition model)
@@ -82,16 +131,22 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite;
 
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostSite;
+
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostSite;
 
             return null;
         }
 
-        private Web ExtractWebFromHost(object modelHost)
+        protected Web ExtractWebFromHost(object modelHost)
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
 
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostWeb;
@@ -104,8 +159,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            if (!(modelHost is SiteModelHost || modelHost is ListModelHost))
-                throw new ArgumentException("modelHost needs to be SiteModelHost/ListModelHost instance.");
+            if (!(modelHost is SiteModelHost
+                || modelHost is WebModelHost
+                || modelHost is ListModelHost))
+                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost instance.");
 
             CurrentSiteModelHost = modelHost as SiteModelHost;
 
@@ -136,6 +193,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context = siteHost.HostSite.Context;
 
                 currentField = DeploySiteField(siteHost as SiteModelHost, fieldModel);
+            }
+            if (modelHost is WebModelHost)
+            {
+                var webHost = modelHost as WebModelHost;
+                context = webHost.HostWeb.Context;
+
+                currentField = DeployWebField(webHost as WebModelHost, fieldModel);
             }
             else if (modelHost is ListModelHost)
             {
@@ -179,7 +243,51 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
+        private Field DeployWebField(WebModelHost webModelHost, FieldDefinition fieldDefinition)
+        {
+            var id = fieldDefinition.Id;
+            var web = webModelHost.HostWeb;
 
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "FindExistingWebField with Id: [{0}]", id);
+
+            var context = web.Context;
+            var scope = new ExceptionHandlingScope(context);
+
+            Field field = null;
+
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    web.Fields.GetById(id);
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+            context.ExecuteQueryWithTrace();
+
+            if (!scope.HasException)
+            {
+                field = web.Fields.GetById(id);
+                context.Load(field);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field with Id: [{0}]", id);
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+
+                context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find site field with Id: [{0}]", id);
+            }
+
+            return EnsureField(context, field, web.Fields, fieldDefinition);
+        }
 
         private Field DeployListField(ListModelHost modelHost, FieldDefinition fieldModel)
         {
@@ -470,6 +578,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
-        
+
     }
 }

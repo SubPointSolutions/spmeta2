@@ -47,6 +47,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (ModelHost is SiteModelHost)
                 return (ModelHost as SiteModelHost).HostSite;
 
+            if (ModelHost is WebModelHost)
+                return (ModelHost as WebModelHost).HostWeb.Site;
+
             if (ModelHost is ListModelHost)
                 return (ModelHost as ListModelHost).HostList.ParentWeb.Site;
 
@@ -60,6 +63,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (ModelHost is ListModelHost)
                 return (ModelHost as ListModelHost).HostList.ParentWeb;
+
+            if (ModelHost is WebModelHost)
+                return (ModelHost as WebModelHost).HostWeb;
 
             return null;
         }
@@ -80,7 +86,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             var isListField = false;
 
             if (modelHost is SiteModelHost)
+            {
                 field = DeploySiteField((modelHost as SiteModelHost).HostSite, fieldModel);
+            }
+            else if (modelHost is WebModelHost)
+            {
+                field = DeployWebField((modelHost as WebModelHost).HostWeb, fieldModel);
+                isListField = true;
+            }
             else if (modelHost is ListModelHost)
             {
                 field = DeployListField((modelHost as ListModelHost).HostList, fieldModel);
@@ -88,7 +101,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                throw new ArgumentException("modelHost needs to be SPSite/SPList");
+                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost");
             }
 
             ProcessFieldProperties(field, fieldModel);
@@ -117,14 +130,22 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
+        private SPField DeployWebField(SPWeb web, FieldDefinition fieldModel)
+        {
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying list field");
+
+            return EnsureFieldInFieldsCollection(web, web.Fields, fieldModel);
+        }
+
         private void CheckValidModelHost(object modelHost)
         {
             if (!(modelHost is SiteModelHost ||
                   modelHost is ListModelHost ||
+                  modelHost is WebModelHost ||
                   modelHost is SPSite ||
                   modelHost is SPList))
             {
-                throw new ArgumentException("modelHost needs to be SPSite/SPList");
+                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost");
             }
         }
 
@@ -165,12 +186,21 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (modelHost is SiteModelHost)
                 return GetSiteField((modelHost as SiteModelHost).HostSite, definition);
+            else if (modelHost is WebModelHost)
+                return GetWebField((modelHost as WebModelHost).HostWeb, definition);
             else if (modelHost is ListModelHost)
                 return GetListField((modelHost as ListModelHost).HostList, definition);
             else
             {
-                throw new ArgumentException("modelHost needs to be SPSite/SPList");
+                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost");
             }
+        }
+
+        private SPField GetWebField(SPWeb web, FieldDefinition definition)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving web field by ID: [{0}]", definition.Id);
+
+            return web.Fields[definition.Id];
         }
 
         private SPField GetSiteField(SPSite site, FieldDefinition definition)

@@ -44,8 +44,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region raw XML
 
-       
-
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.RawXml")]
         public void CanDeploy_Field_WithRawXml()
@@ -345,6 +343,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    .NewSiteModel(site =>
                    {
                        site.AddField(field);
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_WebScoped_Field()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomWeb(subWeb =>
+                       {
+                           subWeb.AddField(field);
+                       });
                    });
 
             TestModel(model);

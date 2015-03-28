@@ -38,27 +38,27 @@ namespace SPMeta2.Regression.CSOM.Validation
             ValidateField(assert, spObject, definition);
         }
 
-        protected Site ExtractSiteFromHost(object modelHost)
-        {
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite;
+        //protected Site ExtractSiteFromHost(object modelHost)
+        //{
+        //    if (modelHost is SiteModelHost)
+        //        return (modelHost as SiteModelHost).HostSite;
 
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostSite;
+        //    if (modelHost is ListModelHost)
+        //        return (modelHost as ListModelHost).HostSite;
 
-            return null;
-        }
+        //    return null;
+        //}
 
-        protected Web ExtractWebFromHost(object modelHost)
-        {
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostWeb;
+        //protected Web ExtractWebFromHost(object modelHost)
+        //{
+        //    if (modelHost is SiteModelHost)
+        //        return (modelHost as SiteModelHost).HostWeb;
 
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostWeb;
+        //    if (modelHost is ListModelHost)
+        //        return (modelHost as ListModelHost).HostWeb;
 
-            return null;
-        }
+        //    return null;
+        //}
 
         protected bool IsListScopedField
         {
@@ -71,6 +71,8 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             if (modelHost is SiteModelHost)
                 return FindExistingSiteField(modelHost as SiteModelHost, definition);
+            if (modelHost is WebModelHost)
+                return FindExistingWebField(modelHost as WebModelHost, definition);
             else if (modelHost is ListModelHost)
                 return FindExistingListField((modelHost as ListModelHost).HostList, definition);
             else
