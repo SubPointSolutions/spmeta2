@@ -43,6 +43,12 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
+            if (taxFieldModel.Open.HasValue)
+                taxField.Open = taxFieldModel.Open.Value;
+
+            if (taxFieldModel.CreateValuesInEditForm.HasValue)
+                taxField.CreateValuesInEditForm = taxFieldModel.CreateValuesInEditForm.Value;
+
             TermStore tesmStore = LookupTermStore(site, taxFieldModel);
 
             if (tesmStore != null)

@@ -51,6 +51,14 @@ namespace SPMeta2.Standard.Definitions.Fields
         }
 
         [ExpectValidation]
+        [ExpectUpdate]
+        public bool? CreateValuesInEditForm { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool? Open { get; set; }
+
+        [ExpectValidation]
         public bool IsMulti { get; set; }
 
         [ExpectValidation]

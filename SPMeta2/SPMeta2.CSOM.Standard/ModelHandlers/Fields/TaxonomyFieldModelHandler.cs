@@ -57,6 +57,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
+            if (taxFieldModel.Open.HasValue)
+                taxField.Open = taxFieldModel.Open.Value;
+
+            if (taxFieldModel.CreateValuesInEditForm.HasValue)
+                taxField.CreateValuesInEditForm = taxFieldModel.CreateValuesInEditForm.Value;
+
             taxField.Description = string.IsNullOrEmpty(taxFieldModel.Description)
                ? string.Empty
                : taxFieldModel.Description;

@@ -80,6 +80,16 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
                                   .ShouldNotBeNull(spObject)
                                   .ShouldBeEqual(m => m.IsMulti, o => o.AllowMultipleValues);
 
+            if (definition.CreateValuesInEditForm.HasValue)
+                assert.ShouldBeEqual(m => m.CreateValuesInEditForm, o => o.CreateValuesInEditForm);
+            else
+                assert.SkipProperty(m => m.CreateValuesInEditForm, "CreateValuesInEditForm is null. Skipping property.");
+
+            if (definition.Open.HasValue)
+                assert.ShouldBeEqual(m => m.Open, o => o.Open);
+            else
+                assert.SkipProperty(m => m.Open, "Open is null. Skipping property.");
+
             // SSP
             if (definition.SspId.HasValue)
                 assert.ShouldBeEqual(m => m.SspId, o => o.SspId);
