@@ -75,6 +75,12 @@
       <FeatureId>{93eaa573-0f37-4985-a830-19ac49befaf0}</FeatureId>
     </None>
     <None Include="key.snk" />
+    <None Include="ListTemplates\CustomerList\CustomerListInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{1054bd9b-71bd-4a43-bcb0-8058127738fb}</SharePointProjectItemId>
+    </None>
+    <None Include="ListTemplates\CustomerList\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{22d1848d-a96c-4bb6-9002-fc2990b729fc}</SharePointProjectItemId>
+    </None>
     <None Include="Package\Package.package">
       <PackageId>{e9a61998-07f2-45e9-ae43-9e93fa6b11bb}</PackageId>
     </None>
@@ -97,6 +103,9 @@
     <Content Include="Features\SiteFeature\SiteFeature.Template.xml">
       <DependentUpon>SiteFeature.feature</DependentUpon>
     </Content>
+    <Content Include="ListTemplates\CustomerList\CustomerListInstance\Elements.xml" />
+    <Content Include="ListTemplates\CustomerList\Elements.xml" />
+    <Content Include="ListTemplates\CustomerList\Schema.xml" />
     <Content Include="WebParts\ContainerWebPart\ContainerWebPart.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ContainerWebPart.ascx.g.cs</LastGenOutput>

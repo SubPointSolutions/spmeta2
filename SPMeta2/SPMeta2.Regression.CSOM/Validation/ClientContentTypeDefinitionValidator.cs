@@ -22,13 +22,13 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            //var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
-            var site = siteModelHost.HostSite;
+            var web = ExtractWeb(modelHost);
 
-            var context = site.Context;
-            var rootWeb = site.RootWeb;
+            var context = web.Context;
+            var rootWeb = web;
 
             var contentTypes = rootWeb.ContentTypes;
 

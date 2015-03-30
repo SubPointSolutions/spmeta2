@@ -13,6 +13,7 @@ using System.Text;
 
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -560,6 +561,62 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.Url = string.Empty;
                 def.CustomUrl = string.Format("{0}", Rnd.String());
             });
+        }
+
+        #endregion
+
+        #region custom templates
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.CustomTemplates")]
+        public void CanDeploy_List_From_CustomTemplate()
+        {
+            var sandboxSolution = new SandboxSolutionDefinition()
+            {
+                FileName = string.Format("{0}.wsp", Rnd.String()),
+                Activate = true,
+
+                SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
+                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.ScenarioTest.SandboxApp.wsp")
+            };
+
+            var customListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+                def.Url = Rnd.String();
+                def.CustomUrl = string.Empty;
+
+                // would give invalid list template exception
+                //def.TemplateType = 10500;
+
+                // works well, just reset TemplateType as GetRandomDefinition<> generated random TemplateType
+                def.TemplateType = 0;
+                def.TemplateName = "CustomerList";
+            });
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    //site.AddSandboxSolution(sandboxSolution);
+                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddWebFeature(new FeatureDefinition
+                    {
+                        Id = new Guid("b997a462-8efb-44cf-92c0-457e75c81798"),
+                        Scope = FeatureDefinitionScope.Web,
+                        Enable = true,
+                        ForceActivate = true
+                    });
+
+                    web.AddList(customListDef);
+                });
+
+            TestModel(siteModel, webModel);
         }
 
         #endregion

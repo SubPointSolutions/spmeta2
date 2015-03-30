@@ -35,6 +35,44 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region scopes
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Scopes")]
+        public void CanDeploy_SiteScoped_ContentType()
+        {
+            var contentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var model = SPMeta2Model
+                   .NewSiteModel(site =>
+                   {
+                       site.AddContentType(contentType);
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Scopes")]
+        public void CanDeploy_WebScoped_ContentType()
+        {
+            var contentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomWeb(subWeb =>
+                       {
+                           subWeb.AddContentType(contentType);
+                       });
+                   });
+
+            TestModel(model);
+        }
+
+
+        #endregion
+
         #region default
 
         [TestMethod]

@@ -13,6 +13,7 @@ using SPMeta2.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using System.Xml.Linq;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHosts;
 using UrlUtility = SPMeta2.Utils.UrlUtility;
 
@@ -25,20 +26,41 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeDefinition); }
         }
 
+        private Site ExtractSite(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite;
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostSite;
+
+            throw new SPMeta2Exception("modelHost should be SiteModelHost/WebModelHost");
+        }
+
+        protected Web ExtractWeb(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            throw new SPMeta2Exception("modelHost should be SiteModelHost/WebModelHost");
+        }
+
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var site = ExtractSite(modelHost);
+            var web = ExtractWeb(modelHost);
 
-            var site = siteModelHost.HostSite;
+            var mdHHost = modelHost as CSOMModelHostBase;
+
             var contentTypeModel = model as ContentTypeDefinition;
 
-            if (site != null && contentTypeModel != null)
+            if (web != null && contentTypeModel != null)
             {
-                var rootWeb = site.RootWeb;
-                var context = rootWeb.Context;
+                var context = web.Context;
 
                 var id = contentTypeModel.GetContentTypeId();
-                var currentContentType = rootWeb.ContentTypes.GetById(id);
+                var currentContentType = web.ContentTypes.GetById(id);
 
                 context.ExecuteQueryWithTrace();
 
@@ -48,7 +70,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (!currentContentType.IsPropertyAvailable("SchemaXml"))
                     {
-                        context.Load(rootWeb, w => w.ServerRelativeUrl);
+                        context.Load(web, w => w.ServerRelativeUrl);
                         currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
                         currentContentType.Context.ExecuteQuery();
                     }
@@ -57,14 +79,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var folderUrlNode = ctDocument.Descendants().FirstOrDefault(d => d.Name == "Folder");
 
                     var webRelativeFolderUrl = folderUrlNode.Attribute("TargetName").Value;
-                    var serverRelativeFolderUrl = UrlUtility.CombineUrl(rootWeb.ServerRelativeUrl, webRelativeFolderUrl);
+                    var serverRelativeFolderUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, webRelativeFolderUrl);
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "webRelativeFolderUrl is: [{0}]", webRelativeFolderUrl);
 
-                    var ctFolder = rootWeb.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
+                    var ctFolder = web.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
                     context.ExecuteQueryWithTrace();
 
-                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(siteModelHost, host =>
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(mdHHost, host =>
                     {
                         host.CurrentContentType = currentContentType;
                         host.CurrentContentTypeFolder = ctFolder;
@@ -74,11 +96,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    // ModelHostContext is a cheat for client OM
-                    // the issue is that having ContenType instance to work with FieldLinks is not enought - you need RootWeb
-                    // and RootWeb could be accessed only via Site
-                    // so, somehow we need to pass this info to the model handler
-
                     action(new ModelHostContext
                     {
                         Site = site,
@@ -97,19 +114,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
+
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var site = ExtractSite(modelHost);
+            var web = ExtractWeb(modelHost);
 
-            var site = siteModelHost.HostSite;
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
-
-            var rootWeb = site.RootWeb;
-            var context = rootWeb.Context;
+            var context = site.Context;
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
-            var tmp = rootWeb.ContentTypes.GetById(contentTypeId);
+            web.AvailableContentTypes.RefreshLoad();
+            context.ExecuteQueryWithTrace();
+
+            var tmp = web.AvailableContentTypes.GetById(contentTypeId);
+            
+            context.Load(tmp);
             context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -131,7 +153,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type");
 
-                currentContentType = rootWeb.ContentTypes.Add(new ContentTypeCreationInformation
+                currentContentType = web.ContentTypes.Add(new ContentTypeCreationInformation
                 {
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,

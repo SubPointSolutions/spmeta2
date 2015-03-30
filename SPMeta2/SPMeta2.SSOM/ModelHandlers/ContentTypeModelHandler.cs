@@ -4,6 +4,7 @@ using Microsoft.SharePoint;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
@@ -23,18 +24,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var web = ExtractWeb(modelHost);
 
-            var site = siteModelHost.HostSite;
+            var site = web.Site;
             var contentTypeDefinition = model as ContentTypeDefinition;
 
             if (site != null && contentTypeDefinition != null)
             {
-                var rootWeb = site.RootWeb;
                 var contentTypeId = new SPContentTypeId(contentTypeDefinition.GetContentTypeId());
 
                 // SPBug, it has to be new SPWen for every content type operation inside feature event handler
-                using (var tmpRootWeb = site.OpenWeb(rootWeb.ID))
+                using (var tmpRootWeb = site.OpenWeb(web.ID))
                 {
                     var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
 
@@ -61,16 +61,27 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
+
+        protected SPWeb ExtractWeb(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            throw new SPMeta2Exception("modelHost should be SiteModelHost/WebModelHost");
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var web = ExtractWeb(modelHost);
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
-            var site = siteModelHost.HostSite;
-            var rootWeb = site.RootWeb;
+            var site = web.Site;
+            var targetWeb = web;
 
             // SPBug, it has to be new SPWen for every content type operation inside feature event handler
-            using (var tmpRootWeb = site.OpenWeb(rootWeb.ID))
+            using (var tmpRootWeb = site.OpenWeb(targetWeb.ID))
             {
                 var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
 

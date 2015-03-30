@@ -18,13 +18,12 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var web = ExtractWeb(modelHost);
             var definition = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
-            var site = siteModelHost.HostSite;
-            var rootWeb = site.RootWeb;
+            var site = web.Site;
 
-            var contentTypes = rootWeb.AvailableContentTypes;
+            var contentTypes = web.AvailableContentTypes;
             var spObject = contentTypes[definition.Name];
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
