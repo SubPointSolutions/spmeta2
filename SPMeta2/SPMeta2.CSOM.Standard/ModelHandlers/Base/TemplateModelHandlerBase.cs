@@ -17,27 +17,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Base
 
         protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
-            var typedDefinition = definition.WithAssertAndCast<ItemControlTemplateDefinitionBase>("model", value => value.RequireNotNull());
-
-            if (typedDefinition.TargetControlTypes.Count > 0)
-            {
-                item["TargetControlType"] = typedDefinition.TargetControlTypes.ToArray();
-            }
+            var typedDefinition = definition.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
             item["TemplateHidden"] = typedDefinition.HiddenTemplate;
 
             if (!string.IsNullOrEmpty(typedDefinition.Description))
                 item["MasterPageDescription"] = typedDefinition.Description;
-
-            if (!string.IsNullOrEmpty(typedDefinition.PreviewURL))
-            {
-                var htmlPreviewValue = new FieldUrlValue { Url = typedDefinition.PreviewURL };
-
-                if (!string.IsNullOrEmpty(typedDefinition.PreviewDescription))
-                    htmlPreviewValue.Description = typedDefinition.PreviewDescription;
-
-                item["HtmlDesignPreviewUrl"] = htmlPreviewValue;
-            }
         }
 
         #endregion

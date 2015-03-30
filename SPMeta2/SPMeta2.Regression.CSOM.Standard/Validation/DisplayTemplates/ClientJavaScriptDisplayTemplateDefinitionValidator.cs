@@ -2,7 +2,6 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHosts;
-using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM.Standard.Validation.Base;
@@ -11,7 +10,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
 {
-    public class ClientControlDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
+    public class ClientJavaScriptDisplayTemplateDefinitionValidator : TemplateDefinitionBaseValidator
     {
         #region methods
 
@@ -22,7 +21,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
-            var definition = model.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<JavaScriptDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
             var file = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
             var spObject = file.ListItemAllFields;
@@ -36,21 +35,19 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
                                         .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
+            assert.ShouldBeEqual(m => m.Standalone, o => o.GetStandalone());
+            assert.ShouldBeEqual(m => m.TargetControlType, o => o.GetTargetControlType());
+            assert.ShouldBeEqual(m => m.TargetListTemplateId, o => o.GetTargetListTemplateId());
+            assert.ShouldBeEqual(m => m.TargetScope, o => o.GetTargetScope());
 
+            #region icon url
 
-            #region crawler xslt file
-
-            if (!string.IsNullOrEmpty(definition.CrawlerXSLFileURL))
+            if (!string.IsNullOrEmpty(definition.IconUrl))
             {
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var isValid = false;
-
-                    var srcProp = s.GetExpressionValue(m => m.CrawlerXSLFileURL);
-                    var crawlerXSLFile = d.GetCrawlerXSLFile();
-
-                    if (crawlerXSLFile != null)
-                        isValid = d.GetCrawlerXSLFile().Url == s.CrawlerXSLFileURL;
+                    var srcProp = s.GetExpressionValue(m => m.IconUrl);
+                    var isValid = d.GetDisplayTemplateJSIconUrl().Url == s.IconUrl;
 
                     return new PropertyValidationResult
                     {
@@ -63,20 +60,15 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             }
             else
             {
-                assert.SkipProperty(m => m.CrawlerXSLFileURL, "PreviewURL is NULL. Skipping");
+                assert.SkipProperty(m => m.IconUrl, "IconUrl is NULL. Skipping");
             }
 
-            if (!string.IsNullOrEmpty(definition.CrawlerXSLFileDescription))
+            if (!string.IsNullOrEmpty(definition.IconDescription))
             {
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var isValid = false;
-                    var srcProp = s.GetExpressionValue(m => m.CrawlerXSLFileDescription);
-
-                    var crawlerXSLFile = d.GetCrawlerXSLFile();
-
-                    if (crawlerXSLFile != null)
-                        isValid = d.GetCrawlerXSLFile().Description == s.CrawlerXSLFileDescription;
+                    var srcProp = s.GetExpressionValue(m => m.IconDescription);
+                    var isValid = d.GetDisplayTemplateJSIconUrl().Description == s.IconDescription;
 
                     return new PropertyValidationResult
                     {
@@ -89,7 +81,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             }
             else
             {
-                assert.SkipProperty(m => m.CrawlerXSLFileDescription, "PreviewDescription is NULL. Skipping");
+                assert.SkipProperty(m => m.IconDescription, "IconDescription is NULL. Skipping");
             }
 
             #endregion
@@ -97,20 +89,14 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
 
         #endregion
 
-        public override string FileExtension
+        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
-            get { return "html"; }
-            set { }
+
         }
 
         public override System.Type TargetType
         {
-            get { return typeof(ControlDisplayTemplateDefinition); }
-        }
-
-        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
-        {
-
+            get { return typeof(JavaScriptDisplayTemplateDefinition); }
         }
     }
 }

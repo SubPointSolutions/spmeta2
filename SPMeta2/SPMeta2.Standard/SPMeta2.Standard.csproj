@@ -130,6 +130,9 @@
     <Compile Include="Enumerations\BuiltInPublishingContentTypeId.cs" />
     <Compile Include="Enumerations\BuiltInPublishingFieldId.cs" />
     <Compile Include="Enumerations\BuiltInPublishingPageLayoutNames.cs" />
+    <Compile Include="Enumerations\BuiltInJSTargetControlType.cs" />
+    <Compile Include="Enumerations\BuiltInJSTemplateType.cs" />
+    <Compile Include="Enumerations\BuiltInTargetControlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermDefinition.cs" />
     <Compile Include="Definitions\Taxonomy\TaxonomyTermGroupDefinition.cs" />

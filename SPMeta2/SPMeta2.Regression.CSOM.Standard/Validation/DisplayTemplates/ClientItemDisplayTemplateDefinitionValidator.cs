@@ -10,7 +10,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
 {
-    public class ClientItemDisplayTemplateDefinitionValidator : TemplateDefinitionBaseValidator
+    public class ClientItemDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
     {
         #region methods
 

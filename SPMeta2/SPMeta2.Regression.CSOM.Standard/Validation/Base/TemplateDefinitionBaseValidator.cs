@@ -20,7 +20,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
-            var definition = model.WithAssertAndCast<ItemControlTemplateDefinitionBase>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
             var spFile = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
             var spObject = spFile.ListItemAllFields;
@@ -67,97 +67,6 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
                     IsValid = isContentValid
                 };
             });
-
-            #region preview field
-
-            if (!string.IsNullOrEmpty(definition.PreviewURL))
-            {
-                assert.ShouldBeEqual((p, s, d) =>
-                {
-                    var isValid = false;
-                    var srcProp = s.GetExpressionValue(m => m.PreviewURL);
-
-                    var previewValue = d.GetPreviewURL();
-                    isValid = (previewValue != null) &&
-                              (d.GetPreviewURL().Url == s.PreviewURL);
-
-                    return new PropertyValidationResult
-                    {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
-            }
-            else
-            {
-                assert.SkipProperty(m => m.PreviewURL, "PreviewURL is NULL. Skipping");
-            }
-
-            if (!string.IsNullOrEmpty(definition.PreviewDescription))
-            {
-                assert.ShouldBeEqual((p, s, d) =>
-                {
-                    var isValid = false;
-                    var srcProp = s.GetExpressionValue(m => m.PreviewDescription);
-
-                    var previewValue = d.GetPreviewURL();
-                    isValid = (previewValue != null) &&
-                              (d.GetPreviewURL().Description == s.PreviewDescription);
-
-                    return new PropertyValidationResult
-                    {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
-            }
-            else
-            {
-                assert.SkipProperty(m => m.PreviewDescription, "PreviewDescription is NULL. Skipping");
-            }
-
-            #endregion
-
-            #region TargetControlTypes
-
-            if (definition.TargetControlTypes.Count > 0)
-            {
-                assert.ShouldBeEqual((p, s, d) =>
-                {
-                    var srcProp = s.GetExpressionValue(m => m.TargetControlTypes);
-                    var isValid = true;
-
-                    //var targetControlTypeValue = new FieldMultiChoiceValue(d["TargetControlType"].ToString());
-                    //var targetControlTypeValues = new List<string>();
-
-                    //for (var i = 0; i < targetControlTypeValue.Count; i++)
-                    //    targetControlTypeValues.Add(targetControlTypeValue[i].ToUpper());
-
-                    //foreach (var v in s.TargetControlTypes)
-                    //{
-                    //    if (!targetControlTypeValues.Contains(v.ToUpper()))
-                    //        isValid = false;
-                    //}
-
-                    return new PropertyValidationResult
-                    {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
-            }
-            else
-            {
-                assert.SkipProperty(m => m.TargetControlTypes, "TargetControlTypes count is 0. Skipping");
-            }
-
-            #endregion
         }
 
         public override string FileExtension
@@ -170,43 +79,5 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
         }
 
 
-    }
-
-    public static class ListItemHelper
-    {
-        public static FieldUrlValue GetPreviewURL(this ListItem item)
-        {
-            if (item["HtmlDesignPreviewUrl"] != null)
-                return item["HtmlDesignPreviewUrl"] as FieldUrlValue;
-
-            return null;
-        }
-
-
-
-        public static string GetManagedPropertyMapping(this ListItem item)
-        {
-            return item["ManagedPropertyMapping"] as string;
-        }
-
-        public static FieldUrlValue GetCrawlerXSLFile(this ListItem item)
-        {
-            if (item["CrawlerXSLFile"] != null)
-                return item["CrawlerXSLFile"] as FieldUrlValue;
-
-            return null;
-        }
-
-        public static bool GetHiddenTemplate(this ListItem item)
-        {
-            var res = ConvertUtils.ToBool(item["TemplateHidden"]);
-
-            return res.HasValue ? res.Value : false;
-        }
-
-        public static string GetMasterPageDescription(this ListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
     }
 }

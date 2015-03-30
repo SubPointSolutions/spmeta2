@@ -4,6 +4,7 @@ using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
+using SPMeta2.Standard.Enumerations;
 using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers.Standard.DefinitionGenerators.DisplayTemplates
@@ -18,6 +19,12 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.DisplayTemplates
                 def.Title = Rnd.String();
 
                 def.Content = Rnd.Content();
+
+                
+                def.TargetScope = Rnd.String();
+
+                def.TargetControlType = BuiltInJSTargetControlType.View;
+                def.Standalone = BuiltInJSTemplateType.Override;
             });
         }
 

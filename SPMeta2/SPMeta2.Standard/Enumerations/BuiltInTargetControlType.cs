@@ -1,4 +1,4 @@
-﻿namespace SPMeta2.Enumerations
+﻿namespace SPMeta2.Standard.Enumerations
 {
 
     public static class BuiltInTargetControlType

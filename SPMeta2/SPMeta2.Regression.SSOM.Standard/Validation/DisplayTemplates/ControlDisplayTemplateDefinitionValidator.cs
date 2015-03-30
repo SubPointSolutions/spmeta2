@@ -13,7 +13,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 {
-    public class ControlDisplayTemplateDefinitionValidator : TemplateDefinitionBaseValidator
+    public class ControlDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
     {
         public override string FileExtension
         {

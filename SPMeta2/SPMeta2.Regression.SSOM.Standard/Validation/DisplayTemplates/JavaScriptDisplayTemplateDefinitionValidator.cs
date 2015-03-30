@@ -63,8 +63,6 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 
             #region icon url
 
-            #region crawler xslt file
-
             if (!string.IsNullOrEmpty(definition.IconUrl))
             {
                 assert.ShouldBeEqual((p, s, d) =>
@@ -106,8 +104,6 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
             {
                 assert.SkipProperty(m => m.IconDescription, "IconDescription is NULL. Skipping");
             }
-
-            #endregion
 
             #endregion
         }

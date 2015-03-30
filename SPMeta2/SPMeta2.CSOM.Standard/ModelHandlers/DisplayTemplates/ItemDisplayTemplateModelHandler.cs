@@ -9,7 +9,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
 {
-    public class ItemDisplayTemplateModelHandler : TemplateModelHandlerBase
+    public class ItemDisplayTemplateModelHandler : ItemControlTemplateModelHandlerBase
     {
         public override string FileExtension
         {
