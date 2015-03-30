@@ -16,28 +16,24 @@ using System.Collections;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
 {
-    public abstract class TemplateDefinitionBaseValidator : TemplateModelHandlerBase
+    public abstract class ItemControlTemplateDefinitionBaseValidator : TemplateDefinitionBaseValidator
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
+            base.DeployModel(modelHost, model);
+
+            var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost",
+                value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<ItemControlTemplateDefinitionBase>("model",
+                value => value.RequireNotNull());
 
             var folder = listModelHost.CurrentLibraryFolder;
 
             var spObject = GetCurrentObject(folder, definition);
 
             var assert = ServiceFactory.AssertService
-                                       .NewAssert(definition, spObject)
-                                             .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.Title, o => o.Title)
-                                             .ShouldBeEqual(m => m.FileName, o => o.Name)
-
-                                             //.ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
-                                             .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
-                                             ;
-
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject);
 
 
             #region preview field
@@ -73,7 +69,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
                 {
                     var isValid = false;
                     var srcProp = s.GetExpressionValue(m => m.PreviewDescription);
-                    
+
                     var previewValue = d.GetPreviewURL();
                     isValid = (previewValue != null) &&
                               (d.GetPreviewURL().Description == s.PreviewDescription);
@@ -135,16 +131,65 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Base
         public override string FileExtension
         {
             get { return string.Empty; }
-            set
-            {
-
-            }
+            set { }
         }
 
-        protected override void MapProperties(object modelHost, Hashtable fileProperties, ContentPageDefinitionBase definition)
+        protected override void MapProperties(object modelHost, Hashtable fileProperties,
+            ContentPageDefinitionBase definition)
         {
 
         }
 
     }
+
+    public abstract class TemplateDefinitionBaseValidator : TemplateModelHandlerBase
+    {
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost",
+                value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<TemplateDefinitionBase>("model",
+                value => value.RequireNotNull());
+
+            var folder = listModelHost.CurrentLibraryFolder;
+
+            var spObject = GetCurrentObject(folder, definition);
+
+            var assert = ServiceFactory.AssertService
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.Title, o => o.Title)
+                .ShouldBeEqual(m => m.FileName, o => o.Name)
+
+                //.ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
+                .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
+                .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
+                ;
+
+
+
+            #region preview field
+
+            #endregion
+
+            #region TargetControlTypes
+
+
+
+            #endregion
+        }
+
+        public override string FileExtension
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
+        protected override void MapProperties(object modelHost, Hashtable fileProperties,
+            ContentPageDefinitionBase definition)
+        {
+
+        }
+    }
+
 }

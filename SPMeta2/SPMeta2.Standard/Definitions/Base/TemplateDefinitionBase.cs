@@ -8,7 +8,7 @@ namespace SPMeta2.Standard.Definitions.Base
     {
         public TemplateDefinitionBase()
         {
-            TargetControlTypes = new List<string>();
+
         }
 
         [ExpectUpdate]
@@ -18,6 +18,16 @@ namespace SPMeta2.Standard.Definitions.Base
         [ExpectUpdate]
         [ExpectValidation]
         public bool HiddenTemplate { get; set; }
+
+
+    }
+
+    public abstract class ItemAndControlTemplateDefinitionBase : TemplateDefinitionBase
+    {
+        public ItemAndControlTemplateDefinitionBase()
+        {
+            TargetControlTypes = new List<string>();
+        }
 
         [ExpectUpdateAsTargetControlType]
         [ExpectValidation]

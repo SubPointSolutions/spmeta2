@@ -22,7 +22,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [Serializable]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
-    public class ControlDisplayTemplateDefinition : TemplateDefinitionBase
+    public class ControlDisplayTemplateDefinition : ItemAndControlTemplateDefinitionBase
     {
         #region constructors
 

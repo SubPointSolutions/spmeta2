@@ -82,6 +82,11 @@ namespace SPMeta2.Attributes.Regression
 
     public class ExpectUpdateAsUrl : ExpectUpdate
     {
+        public ExpectUpdateAsUrl()
+        {
+            Extension = "txt";
+        }
+
         public string Extension { get; set; }
     }
 

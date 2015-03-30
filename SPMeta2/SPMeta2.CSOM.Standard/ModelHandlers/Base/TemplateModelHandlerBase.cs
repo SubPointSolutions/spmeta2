@@ -17,7 +17,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Base
 
         protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
-            var typedDefinition = definition.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
+            var typedDefinition = definition.WithAssertAndCast<ItemControlTemplateDefinitionBase>("model", value => value.RequireNotNull());
 
             if (typedDefinition.TargetControlTypes.Count > 0)
             {

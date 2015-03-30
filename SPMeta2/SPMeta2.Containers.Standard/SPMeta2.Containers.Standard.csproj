@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\DisplayTemplates\JavaScriptDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\ItemDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\ControlDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\MediaFieldDefinitionGenerator.cs" />

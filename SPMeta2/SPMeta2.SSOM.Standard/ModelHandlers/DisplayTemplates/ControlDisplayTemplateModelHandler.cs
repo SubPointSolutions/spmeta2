@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates
 {
-    public class ControlDisplayTemplateModelHandler : TemplateModelHandlerBase
+    public class ControlDisplayTemplateModelHandler : ItemControlTemplateModelHandlerBase
     {
 
         public override string FileExtension

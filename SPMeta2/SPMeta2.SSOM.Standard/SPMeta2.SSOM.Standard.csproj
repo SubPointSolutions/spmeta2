@@ -171,8 +171,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ControlDisplayTemplateModelHandler.cs" />
+    <Compile Include="ModelHandlers\DisplayTemplates\JavaScriptDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ItemDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\SummaryLinkFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\MediaFieldDefinitionModelHandler.cs" />

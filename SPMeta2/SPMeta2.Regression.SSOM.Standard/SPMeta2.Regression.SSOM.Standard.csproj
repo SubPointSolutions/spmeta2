@@ -99,6 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\Base\TemplateDefinitionBaseValidator.cs" />
     <Compile Include="Validation\CustomDocumentIdProviderDefinitionValidator.cs" />
+    <Compile Include="Validation\DisplayTemplates\JavaScriptDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ItemDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ControlDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\MediaFieldDefinitionValidator.cs" />
