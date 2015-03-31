@@ -122,17 +122,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = ExtractWeb(modelHost);
 
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
-            var context = site.Context;
+            var context = web.Context;
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
-            web.AvailableContentTypes.RefreshLoad();
-            context.ExecuteQueryWithTrace();
+            var tmpContentType = context.LoadQuery(web.ContentTypes.Where(ct => ct.StringId == contentTypeId));
+            context.ExecuteQuery();
 
-            var tmp = web.AvailableContentTypes.GetById(contentTypeId);
-            
-            context.Load(tmp);
-            context.ExecuteQueryWithTrace();
+            var tmp = tmpContentType.FirstOrDefault();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -158,7 +155,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
                     Group = contentTypeModel.Group,
-                    Id = contentTypeId
+                    Id = contentTypeId,
+                    ParentContentType = null
                 });
             }
             else

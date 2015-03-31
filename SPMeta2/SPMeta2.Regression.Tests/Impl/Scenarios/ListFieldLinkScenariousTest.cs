@@ -41,6 +41,36 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_ListFieldLink_WithSiteAndWebFields()
+        {
+            var siteField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var webField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(siteField);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddField(webField);
+                    subWeb.AddRandomList(list =>
+                    {
+                        list.AddListFieldLink(siteField);
+                        list.AddListFieldLink(webField);
+                    });
+                });
+
+              
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.Options")]
         public void CanDeploy_ListFieldLink_AsAddToDefaultView()
         {
@@ -142,14 +172,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModels(new[] { siteModel, webModel });
         }
-
-        // add ootb list field link, TODO
-        // add ootb list field links, TODO
-
-        // add custom list field link, TODO
-        // add custom list field links, TODO
-
-        // add ootb AND custom list field links, TODO
 
         #endregion
     }

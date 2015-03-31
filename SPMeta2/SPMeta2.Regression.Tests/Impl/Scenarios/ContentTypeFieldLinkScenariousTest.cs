@@ -34,6 +34,69 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypeFieldLink.Scopes")]
+        public void CanDeploy_ContentTypeFieldLink_OnWebContentType()
+        {
+            var siteFieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var siteFieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var webFieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var webFieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var webContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(siteFieldOne);
+                site.AddField(siteFieldTwo);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddField(webFieldOne);
+                    subWeb.AddField(webFieldTwo);
+
+                    subWeb.AddContentType(webContentType, contentType =>
+                    {
+                        contentType
+                            .AddContentTypeFieldLink(siteFieldOne)
+                            .AddContentTypeFieldLink(siteFieldTwo)
+                            .AddContentTypeFieldLink(webFieldOne)
+                            .AddContentTypeFieldLink(webFieldTwo);
+                    });
+                });
+            });
+
+            TestModels(new[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypeFieldLink.Scopes")]
+        public void CanDeploy_ContentTypeFieldLink_OnSiteContentType()
+        {
+            var siteFieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var siteFieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(siteFieldOne);
+                site.AddField(siteFieldTwo);
+
+                site.AddContentType(siteContentType, c =>
+                {
+                    c.AddContentTypeFieldLink(siteFieldOne);
+                    c.AddContentTypeFieldLink(siteFieldTwo);
+                });
+            });
+
+            TestModels(new[] { siteModel });
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.ContentTypeFieldLink")]
         public void CanDeploy_ContentTypeFieldLink_WithProperties()
         {
