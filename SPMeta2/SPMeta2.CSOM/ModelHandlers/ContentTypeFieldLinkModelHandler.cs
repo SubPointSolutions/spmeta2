@@ -18,11 +18,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeFieldLinkDefinition); }
         }
 
-        private Field FindExistingSiteField(Web rootWeb, Guid id)
+        private Field FindExistingField(Web web, Guid id)
         {
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Finding site field by ID: [{0}]", id);
 
-            var context = rootWeb.Context;
+            var context = web.Context;
             var scope = new ExceptionHandlingScope(context);
 
             Field field = null;
@@ -31,7 +31,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 using (scope.StartTry())
                 {
-                    rootWeb.AvailableFields.GetById(id);
+                    web.AvailableFields.GetById(id);
                 }
 
                 using (scope.StartCatch())
@@ -46,7 +46,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field by ID: [{0}]", id);
 
-                field = rootWeb.AvailableFields.GetById(id);
+                field = web.AvailableFields.GetById(id);
                 context.Load(field);
 
                 context.ExecuteQueryWithTrace();
@@ -64,8 +64,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
             var contentTypeFieldLinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
 
-            var site = modelHostWrapper.Site;
-            var rootWeb = site.RootWeb;
+            //var site = modelHostWrapper.Site;
+            var web = modelHostWrapper.Web;
             var contentType = modelHostWrapper.ContentType;
 
             var context = contentType.Context;
@@ -99,7 +99,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type field link");
 
-                var targetField = FindExistingSiteField(rootWeb, contentTypeFieldLinkModel.FieldId);
+                var targetField = FindExistingField(web, contentTypeFieldLinkModel.FieldId);
 
                 fieldLink = contentType.FieldLinks.Add(new FieldLinkCreationInformation
                 {

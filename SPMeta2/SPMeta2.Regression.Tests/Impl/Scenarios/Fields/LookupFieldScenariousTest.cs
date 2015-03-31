@@ -87,6 +87,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupField = GetSingleSelectLookupDefinition(def =>
             {
+                def.Indexed = false;
                 //def.LookupListTitle = dataList.Title;
             });
 

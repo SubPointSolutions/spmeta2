@@ -29,6 +29,7 @@ using SPMeta2.Definitions.Fields;
 using System.IO;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Validation.Services;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
@@ -953,7 +954,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             WithDisabledPropertyUpdateValidation(() =>
             {
-                TestRandomDefinition<UserCodeWebPartDefinition>();
+                WithExcpectedExceptions(new[]{
+                    typeof(SPMeta2NotSupportedException)
+                }, () =>
+                {
+                    TestRandomDefinition<UserCodeWebPartDefinition>();
+                });
+
+
             });
         }
 

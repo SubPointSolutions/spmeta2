@@ -10,6 +10,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers.Webparts
 {
@@ -28,6 +29,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
+            throw new SPMeta2NotSupportedException("UserCode web part provision is not supported by CSOM (SP API limitations) - https://officespdev.uservoice.com/forums/224641-general/suggestions/7300326-add-support-for-spusercodewebpart-import-via-limit");
+
             var wpModel = webPartModel.WithAssertAndCast<UserCodeWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions
                 .LoadWebpartXmlDocument(BuiltInWebPartTemplates.UserCodeWebPart)

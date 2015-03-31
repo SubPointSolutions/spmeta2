@@ -99,6 +99,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     action(new ModelHostContext
                     {
                         Site = site,
+                        Web = web,
                         ContentType = currentContentType
                     });
                 }

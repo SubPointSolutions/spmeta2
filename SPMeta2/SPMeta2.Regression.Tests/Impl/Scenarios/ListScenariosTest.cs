@@ -628,21 +628,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model
                 .NewSiteModel(site =>
                 {
-                    //site.AddSandboxSolution(sandboxSolution);
+                    site.AddSandboxSolution(sandboxSolution);
                 });
 
             var webModel = SPMeta2Model
                 .NewWebModel(web =>
                 {
-                    web.AddWebFeature(new FeatureDefinition
+                    web.AddRandomWeb(subWeb =>
                     {
-                        Id = new Guid("b997a462-8efb-44cf-92c0-457e75c81798"),
-                        Scope = FeatureDefinitionScope.Web,
-                        Enable = true,
-                        ForceActivate = true
+                        subWeb.AddWebFeature(new FeatureDefinition
+                        {
+                            Id = new Guid("b997a462-8efb-44cf-92c0-457e75c81798"),
+                            Scope = FeatureDefinitionScope.Web,
+                            Enable = true,
+                            ForceActivate = true
+                        });
+
+                        subWeb.AddList(customListDef);
                     });
 
-                    web.AddList(customListDef);
+
                 });
 
             TestModel(siteModel, webModel);

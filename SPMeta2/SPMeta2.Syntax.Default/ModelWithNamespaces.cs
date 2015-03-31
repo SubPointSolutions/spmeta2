@@ -7,6 +7,11 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        public static ModelNode WithJavaScriptDisplayTemplates(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithMasterPages(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);

@@ -11,6 +11,7 @@ using SPMeta2.Definitions.Webparts;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
 {
@@ -28,6 +29,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
             var context = spObject.Context;
 
+            context.Load(file, f => f.ServerRelativeUrl);
             context.Load(spObject);
             context.ExecuteQuery();
 
@@ -41,6 +43,35 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                                          .ShouldBeEqual(m => m.Group, o => o.GetWebPartGalleryFileGroup())
                                          ;
 
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = true;
+
+                // skip this
+                // XML is always different as it gets changed by proviison flow
+                // if content is not the same, then othe tests would show that as then use common ContentFileModelHandlerBase class
+
+                //byte[] dstContent = null;
+
+                //using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, file.ServerRelativeUrl).Stream)
+                //    dstContent = ModuleFileUtils.ReadFully(stream);
+
+                //var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                //var dstStringContent = Encoding.UTF8.GetString(dstContent);
+
+                //isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
 
             if (definition.RecommendationSettings.Count > 0)
             {

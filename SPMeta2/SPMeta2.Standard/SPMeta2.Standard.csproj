@@ -143,6 +143,7 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
+    <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\SummaryLinkWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\HTMLFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\ImageFieldDefinitionSyntax.cs" />
