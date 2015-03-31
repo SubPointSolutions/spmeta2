@@ -6,6 +6,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System.Collections.Generic;
 using SPMeta2.Containers.Assertion;
+using System.Text;
 
 namespace SPMeta2.Regression.SSOM.Validation.Webparts
 {
@@ -21,6 +22,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
             CurrentModel = definition;
 
             var spObject = GetCurrentObject(folder, definition);
+            var file = spObject.File;
 
             var assert = ServiceFactory.AssertService
                                         .NewAssert(definition, spObject)
@@ -32,6 +34,27 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                                         .ShouldBeEqual(m => m.Group, o => o.GetWebPartGalleryFileGroup())
                                         ;
 
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = false;
+
+                var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                var dstStringContent = Encoding.UTF8.GetString(file.GetContent());
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
 
             if (definition.RecommendationSettings.Count > 0)
             {

@@ -266,6 +266,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
             var webContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
 
+            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+            });
+
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
                 site.AddContentType(siteContentType);
@@ -277,7 +282,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     subWeb.AddContentType(webContentType);
 
-                    subWeb.AddRandomList(list =>
+                    subWeb.AddList(webList, list =>
                     {
                         list.AddContentTypeLink(siteContentType);
                         list.AddContentTypeLink(webContentType);

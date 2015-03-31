@@ -45,7 +45,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             foreach (var value in typedDefinition.RecommendationSettings)
                 recSettingsValue.Add(value);
 
-            fileProperties["QuickAddGroups"] = recSettingsValue;
+            fileProperties["QuickAddGroups"] = recSettingsValue.ToString();
         }
 
         public override Type TargetType

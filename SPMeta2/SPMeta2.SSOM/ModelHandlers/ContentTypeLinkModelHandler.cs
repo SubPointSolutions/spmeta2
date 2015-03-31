@@ -57,10 +57,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                     list.RootFolder.ServerRelativeUrl));
             }
 
-            var rootWeb = list.ParentWeb.Site.RootWeb;
+            var web = list.ParentWeb;
 
             var contentTypeId = new SPContentTypeId(contentTypeLinkModel.ContentTypeId);
-            var targetContentType = rootWeb.ContentTypes[contentTypeId];
+            var targetContentType = web.AvailableContentTypes[contentTypeId];
 
             if (targetContentType == null)
             {
