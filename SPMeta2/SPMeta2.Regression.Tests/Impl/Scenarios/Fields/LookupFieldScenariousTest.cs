@@ -67,6 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             public LookupFieldDefinition LookupField { get; set; }
 
             public ListDefinition ChildList { get; set; }
+            public ListDefinition MasterList { get; set; }
 
             public ModelNode ChildListNode { get; set; }
         }
@@ -122,12 +123,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             result.LookupField = lookupField;
 
-            result.LookupField = lookupField;
             result.ChildList = dataList;
             result.ChildListNode = childListNode;
-
             result.ChildListModel = childWebModel;
+
+
+            result.MasterList = masterList;
             result.MasterListModel = masterWebModel;
+
             result.SiteModel = siteModel;
 
             if (action != null)
@@ -276,6 +279,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 lookupEnvironment.MasterListModel
             });
         }
+
+
 
         private Guid ExtractListId(Models.OnCreatingContext<object, DefinitionBase> context)
         {
@@ -452,6 +457,123 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.MasterListModel
+            });
+        }
+
+        #endregion
+
+        #region post bindings
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.PostBinding")]
+        public void CanDeploy_LookupField_WithPostBinding_AsListTitle()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.LookupList = string.Empty;
+                env.LookupField.LookupListTitle = string.Empty;
+                env.LookupField.LookupListUrl = string.Empty;
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.MasterListModel,
+            });
+
+            // binding
+            lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.ChildList.Title;
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+            });
+
+            // this would not pass validation as lookup should be already bound 
+            WithExcpectedException(typeof(AssertFailedException), () =>
+            {
+                lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
+
+                TestModels(new[]            {
+                    lookupEnvironment.SiteModel, 
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.PostBinding")]
+        public void CanDeploy_LookupField_WithPostBinding_AsListUrl()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.LookupList = string.Empty;
+                env.LookupField.LookupListTitle = string.Empty;
+                env.LookupField.LookupListUrl = string.Empty;
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.ChildListModel, 
+                lookupEnvironment.MasterListModel,
+            });
+
+            // binding
+            lookupEnvironment.LookupField.LookupListUrl = lookupEnvironment.ChildList.GetListUrl();
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+            });
+
+            // this would not pass validation as lookup should be already bound 
+            WithExcpectedException(typeof(AssertFailedException), () =>
+            {
+                lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
+
+                TestModels(new[]            {
+                    lookupEnvironment.SiteModel, 
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.PostBinding")]
+        public void CanDeploy_LookupField_WithPostBinding_AsListId()
+        {
+            var lookupEnvironment = GetLookupFieldEnvironment(env =>
+            {
+                env.LookupField.LookupList = string.Empty;
+                env.LookupField.LookupListTitle = string.Empty;
+                env.LookupField.LookupListUrl = string.Empty;
+            });
+
+            lookupEnvironment.ChildListNode.OnProvisioned<object>(context =>
+            {
+                lookupEnvironment.LookupField.LookupList = ExtractListId(context).ToString();
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+                lookupEnvironment.MasterListModel,
+                lookupEnvironment.ChildListModel, 
+            });
+
+            TestModels(new[]
+            {
+                lookupEnvironment.SiteModel, 
+            });
+
+            // this would not pass validation as lookup should be already bound 
+            WithExcpectedException(typeof(AssertFailedException), () =>
+            {
+                lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
+
+                TestModels(new[]            {
+                    lookupEnvironment.SiteModel, 
+                });
             });
         }
 

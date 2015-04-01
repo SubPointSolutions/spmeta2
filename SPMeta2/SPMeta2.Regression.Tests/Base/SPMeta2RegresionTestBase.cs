@@ -151,6 +151,11 @@ namespace SPMeta2.Regression.Tests.Base
             }, action);
         }
 
+        protected void WithExcpectedException(Type exceptionType, Action action)
+        {
+            WithExcpectedExceptions(new[] { exceptionType }, action);
+        }
+
         protected void WithExcpectedExceptions(IEnumerable<Type> exceptionTypes, Action action)
         {
             RegressionService.WithExcpectedExceptions(exceptionTypes, action);

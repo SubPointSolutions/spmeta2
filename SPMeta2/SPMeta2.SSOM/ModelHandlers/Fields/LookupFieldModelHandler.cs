@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Xml.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
@@ -42,6 +42,52 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             else
                 typedField.TypeAsString = "Lookup";
 
+            if (typedFieldModel.LookupWebId.HasValue)
+            {
+                typedField.LookupWebId = typedFieldModel.LookupWebId.Value;
+            }
+
+
+            if (string.IsNullOrEmpty(typedField.LookupList))
+            {
+                if (!string.IsNullOrEmpty(typedFieldModel.LookupList))
+                {
+                    typedField.LookupList = typedFieldModel.LookupList;
+                }
+                else if (!string.IsNullOrEmpty(typedFieldModel.LookupListUrl))
+                {
+                    var site = this.GetCurrentSite();
+                    var web = typedFieldModel.LookupWebId.HasValue
+                        ? site.OpenWeb(typedFieldModel.LookupWebId.Value)
+                        : site.RootWeb;
+
+                    var list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
+
+                    typedField.LookupList = list.ID.ToString();
+
+                    if (!web.IsRootWeb)
+                        web.Dispose();
+                }
+                else if (!string.IsNullOrEmpty(typedFieldModel.LookupListTitle))
+                {
+                    var site = this.GetCurrentSite();
+                    var web = typedFieldModel.LookupWebId.HasValue
+                        ? site.OpenWeb(typedFieldModel.LookupWebId.Value)
+                        : site.RootWeb;
+
+                    var list = web.Lists[typedFieldModel.LookupListTitle];
+
+                    typedField.LookupList = list.ID.ToString();
+
+                    if (!web.IsRootWeb)
+                        web.Dispose();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+            {
+                typedField.LookupField = typedFieldModel.LookupField;
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
