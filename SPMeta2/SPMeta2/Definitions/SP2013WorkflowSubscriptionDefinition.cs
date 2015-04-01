@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string WorkflowDisplayName { get; set; }
 
         /// <summary>

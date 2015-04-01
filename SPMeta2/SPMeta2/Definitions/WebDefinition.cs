@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectRequired]
         public string Title { get; set; }
 
         /// <summary>
@@ -79,6 +80,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string Url { get; set; }
 
         /// <summary>
@@ -88,11 +90,13 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Web Template")]
         public string WebTemplate { get; set; }
 
         /// <summary>
         /// Custom web template name of the target web.
         /// </summary>
+        [ExpectRequired(GroupName = "Web Template")]
         public string CustomWebTemplate { get; set; }
 
         #endregion

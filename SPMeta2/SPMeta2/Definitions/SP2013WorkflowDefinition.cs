@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string Xaml { get; set; }
 
         /// <summary>

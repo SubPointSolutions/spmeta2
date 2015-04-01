@@ -87,6 +87,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string InternalName { get; set; }
 
         /// <summary>
@@ -95,6 +96,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectRequired]
         public string Title { get; set; }
 
         /// <summary>
@@ -118,6 +120,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -126,6 +129,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string FieldType { get; set; }
 
         /// <summary>

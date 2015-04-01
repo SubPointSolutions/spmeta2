@@ -37,6 +37,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         #region properties
 
         [ExpectValidation]
+        [ExpectRequired]
         public string Name { get; set; }
 
         [ExpectValidation]

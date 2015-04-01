@@ -38,6 +38,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectRequired]
         public string Title { get; set; }
 
         [ExpectValidation]
@@ -69,6 +70,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "List Url")]
         public string Url { get; set; }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace SPMeta2.Definitions
         /// If provided, this value will be used withouy any changes or calculations.
         /// </summary>
         [ExpectValidation]
+        [ExpectRequired(GroupName = "List Url")]
         public string CustomUrl { get; set; }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "List Template")]
         public int TemplateType { get; set; }
 
         /// <summary>
@@ -94,6 +98,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "List Template")]
         public string TemplateName { get; set; }
 
         /// <summary>

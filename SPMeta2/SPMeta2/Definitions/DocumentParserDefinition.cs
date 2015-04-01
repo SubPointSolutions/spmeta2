@@ -24,7 +24,10 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [ExpectRequired]
         public string FileExtension { get; set; }
+
+        [ExpectRequired]
         public string ProgId { get; set; }
 
         #endregion

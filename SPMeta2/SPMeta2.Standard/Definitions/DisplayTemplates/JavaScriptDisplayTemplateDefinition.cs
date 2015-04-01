@@ -35,6 +35,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         [ExpectUpdate]
         [ExpectValidation]
+        [ExpectRequired]
         public string TargetControlType { get; set; }
 
         [ExpectUpdateAsUrl(Extension = "png")]
@@ -47,15 +48,19 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         [ExpectUpdate]
         [ExpectValidation]
+        [ExpectRequired]
         public string Standalone { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [ExpectRequired]
         public string TargetScope { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [ExpectRequired]
         public string TargetListTemplateId { get; set; }
+        
 
         #endregion
 

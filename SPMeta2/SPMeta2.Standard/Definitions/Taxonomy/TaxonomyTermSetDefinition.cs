@@ -35,6 +35,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         #region properties
 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Term Identity")]
         public string Name { get; set; }
 
         [ExpectValidation]
@@ -42,6 +43,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public string Description { get; set; }
 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Term Identity")]
         public Guid? Id { get; set; }
 
         [ExpectValidation]

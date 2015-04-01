@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired]
         public string Title { get; set; }
 
         /// <summary>

@@ -31,14 +31,16 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// ProductId of the target application.
         /// </summary>
+        [ExpectRequired]
         public Guid ProductId { get; set; }
 
+        [ExpectRequired]
         /// <summary>
         /// Target application content.
         /// </summary>
         public byte[] Content { get; set; }
 
-
+        [ExpectRequired]
         /// <summary>
         /// A valid Version string of the target application.
         /// </summary>

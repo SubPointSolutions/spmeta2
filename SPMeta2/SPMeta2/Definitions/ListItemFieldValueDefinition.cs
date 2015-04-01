@@ -35,7 +35,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-
+        [ExpectRequired(GroupName = "Field")]
         public string FieldName { get; set; }
 
         /// <summary>
@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Field")]
 
         public Guid? FieldId { get; set; }
 
@@ -52,6 +53,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public object Value { get; set; }
 
         #endregion

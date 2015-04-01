@@ -33,8 +33,13 @@ namespace SPMeta2.Definitions.Webparts
 
         #region properties
 
+        [ExpectRequired]
         public Guid SolutionId { get; set; }
+
+        [ExpectRequired]
         public string AssemblyFullName { get; set; }
+
+        [ExpectRequired]
         public string TypeFullName { get; set; }
 
         public List<UserCodeProperty> UserCodeProperties { get; set; }

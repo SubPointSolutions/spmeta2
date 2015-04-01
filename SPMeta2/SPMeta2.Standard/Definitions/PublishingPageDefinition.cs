@@ -33,6 +33,7 @@ namespace SPMeta2.Standard.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdateAsPageLayoutFileName]
+        [ExpectRequired]
         public string PageLayoutFileName { get; set; }
 
         /// <summary>

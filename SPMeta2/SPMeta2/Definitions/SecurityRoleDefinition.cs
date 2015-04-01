@@ -39,6 +39,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>

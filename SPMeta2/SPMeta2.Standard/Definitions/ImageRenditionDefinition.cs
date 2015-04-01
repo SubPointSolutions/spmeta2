@@ -27,8 +27,13 @@ namespace SPMeta2.Standard.Definitions
     {
         #region properties
 
+        [ExpectRequired]
         public string Name { get; set; }
+
+        [ExpectRequired]
         public int Height { get; set; }
+
+        [ExpectRequired]
         public int Width { get; set; }
 
         #endregion

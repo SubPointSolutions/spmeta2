@@ -31,12 +31,14 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string Title { get; set; }
 
         /// <summary>
         /// URL of the target navigation node.
         /// </summary>
         [ExpectValidation]
+        [ExpectRequired]
         public string Url { get; set; }
 
         /// <summary>

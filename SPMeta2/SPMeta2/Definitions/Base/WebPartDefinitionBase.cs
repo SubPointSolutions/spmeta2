@@ -57,6 +57,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Web part content")]
         public string WebpartFileName { get; set; }
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Web part content")]
         public string WebpartType { get; set; }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>        
         /// 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "Web part content")]
         public string WebpartXmlTemplate { get; set; }
 
         /// <summary>

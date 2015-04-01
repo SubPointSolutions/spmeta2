@@ -27,6 +27,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         
         [ExpectValidation]
+        [ExpectRequired]
         public string Url { get; set; }
 
         #endregion

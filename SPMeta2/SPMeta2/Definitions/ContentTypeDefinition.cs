@@ -31,6 +31,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired(GroupName = "ContentType Id")]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
 
+        [ExpectRequired(GroupName = "ContentType Id")]
         [ExpectValidation]
         public string IdNumberValue { get; set; }
 
@@ -48,6 +50,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace SPMeta2.Definitions
         /// Parent content type id. BuiltInContentTypeId class could be used to utilize out of the box content type ids.
         /// </summary>
         /// 
+        [ExpectRequired]
         public string ParentContentTypeId { get; set; }
 
         [ExpectValidation]

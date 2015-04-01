@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired]
         public string Name { get; set; }
 
         #endregion

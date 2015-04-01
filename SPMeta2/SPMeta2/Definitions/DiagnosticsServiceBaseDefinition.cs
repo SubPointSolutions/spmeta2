@@ -23,6 +23,7 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [ExpectRequired]
         public string AssemblyQualifiedName { get; set; }
 
         #endregion

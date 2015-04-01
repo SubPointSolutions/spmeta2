@@ -41,6 +41,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectRequired]
         public string Title { get; set; }
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string FileName { get; set; }
 
         /// <summary>

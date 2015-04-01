@@ -19,12 +19,14 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string FileName { get; set; }
 
         /// <summary>
         /// Target sandbox solution content.
         /// </summary>
         [ExpectValidation]
+        [ExpectRequired]
         public byte[] Content { get; set; }
 
         /// <summary>

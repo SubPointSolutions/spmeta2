@@ -30,6 +30,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public string Key { get; set; }
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [ExpectRequired]
         public object Value { get; set; }
 
         /// <summary>

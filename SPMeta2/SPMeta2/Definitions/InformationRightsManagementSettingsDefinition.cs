@@ -57,6 +57,7 @@ namespace SPMeta2.Definitions
         public string PolicyDescription { get; set; }
 
         [ExpectValidation]
+        [ExpectRequired]
         public string PolicyTitle { get; set; }
 
         #endregion

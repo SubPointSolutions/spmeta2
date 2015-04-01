@@ -24,10 +24,16 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
+        [ExpectRequired]
         public Guid FeatureId { get; set; }
+
+        [ExpectRequired]
         public Guid ProductId { get; set; }
+
+        [ExpectRequired]
         public Guid ProductWebId { get; set; }
 
+        [ExpectRequired]
         public string WebPartName { get; set; }
 
         #endregion

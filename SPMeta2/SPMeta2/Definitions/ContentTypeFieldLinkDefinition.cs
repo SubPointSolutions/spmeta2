@@ -29,6 +29,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
 
+        [ExpectRequired]
         [ExpectValidation]
         public Guid FieldId { get; set; }
 

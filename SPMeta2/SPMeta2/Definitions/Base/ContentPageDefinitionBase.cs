@@ -21,6 +21,7 @@ namespace SPMeta2.Definitions
 
         [ExpectUpdate]
         [ExpectValidation]
+        [ExpectRequired]
         public byte[] Content { get; set; }
 
         #endregion

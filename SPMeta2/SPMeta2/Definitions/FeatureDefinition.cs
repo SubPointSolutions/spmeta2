@@ -48,6 +48,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [ExpectRequired]
         public Guid Id { get; set; }
 
         /// <summary>

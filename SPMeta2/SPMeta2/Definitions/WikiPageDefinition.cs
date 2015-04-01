@@ -26,7 +26,7 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
-         [ExpectUpdate]
+        [ExpectUpdate]
         public string Content { get; set; }
 
         #endregion
@@ -36,7 +36,7 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return new ToStringResult<WikiPageDefinition>(this, base.ToString())
-                         
+
                           .ToString();
         }
 

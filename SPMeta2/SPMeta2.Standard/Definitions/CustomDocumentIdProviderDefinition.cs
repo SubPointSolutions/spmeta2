@@ -23,6 +23,7 @@ namespace SPMeta2.Standard.Definitions
     {
         #region properties
 
+        [ExpectRequired]
         public string DocumentProviderType { get; set; }
 
         #endregion

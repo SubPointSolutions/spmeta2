@@ -30,7 +30,7 @@ namespace SPMeta2.Definitions
         /// ContentTypeId is used for the first place, then ContentTypeName is used as a second attempt to lookup the content type.
         /// </summary>
         /// 
-
+        [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
         public string ContentTypeId { get; set; }
 
@@ -40,6 +40,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
 
+        [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
         public string ContentTypeName { get; set; }
 

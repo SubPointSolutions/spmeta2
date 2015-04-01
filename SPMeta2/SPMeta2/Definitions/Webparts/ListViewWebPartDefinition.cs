@@ -27,7 +27,9 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         public string ListTitle { get; set; }
+
         public string ListUrl { get; set; }
+
         public Guid? ListId { get; set; }
 
         public string ViewName { get; set; }
