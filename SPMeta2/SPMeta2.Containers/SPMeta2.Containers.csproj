@@ -177,6 +177,11 @@
     <Compile Include="Services\RegressionAssertService.cs" />
     <Compile Include="Services\RegressionTestService.cs" />
     <Compile Include="Services\Rnd\DefaultRandomService.cs" />
+    <Compile Include="Templates\Documents\DocumentTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DocumentTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\RunnerEnvironment.cs" />
     <Compile Include="Utils\TraceUtils.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
@@ -212,12 +217,18 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultWebpartTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Documents\DocumentTemplates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DocumentTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="WorkflowXAMLDefinitions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>WorkflowXAMLDefinitions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\SPMeta2-MSWord-Template.dotx" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Apps\SPMeta2.Containers.SandboxSolutionContainer.wsp" />
   </ItemGroup>

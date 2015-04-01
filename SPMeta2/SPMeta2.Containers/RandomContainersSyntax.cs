@@ -6,6 +6,7 @@ using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default.Extensions;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Containers
 {
@@ -130,6 +131,19 @@ namespace SPMeta2.Containers
         public static ModelNode AddRandomList(this ModelNode model, Action<ModelNode> action)
         {
             return model.AddRandomDefinition<ListDefinition>(action);
+        }
+
+        public static ModelNode AddRandomDocumentLibrary(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<ListDefinition>(node =>
+            {
+                var def = node.Value as ListDefinition;
+
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+
+                action(node);
+            });
         }
 
         #endregion

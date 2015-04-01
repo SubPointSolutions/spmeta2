@@ -13,6 +13,8 @@ using System.Text;
 
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Utils;
+using SPMeta2.Containers.Templates.Documents;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -333,9 +335,145 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
-        #region hierarchical content types
+        #region doc templates
 
-        // TODO
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.DocumentTemplate")]
+        public void CanDeploy_ContentType_WithDocTemplate_In_ResourceFolder()
+        {
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+            var documentTemplate = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.Content = DocumentTemplates.SPMeta2_MSWord_Template;
+                def.FileName = Rnd.String() + ".dotx";
+            });
+
+
+            siteContentType.DocumentTemplate = documentTemplate.FileName;
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(siteContentType, contentType =>
+                {
+                    contentType.AddModuleFile(documentTemplate);
+                });
+            });
+
+            var contentModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomDocumentLibrary(list =>
+                {
+                    list.AddContentTypeLink(siteContentType);
+                });
+            });
+
+            TestModels(new[] { siteModel, contentModel });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.DocumentTemplate")]
+        public void CanDeploy_ContentType_WithDocTemplate_In_RootWeb_DocumentLibrary()
+        {
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var documentTemplate = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.Content = DocumentTemplates.SPMeta2_MSWord_Template;
+                def.FileName = Rnd.String() + ".dotx";
+            });
+
+            var documentTemplateLibrary = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            siteContentType.DocumentTemplate = UrlUtility.CombineUrl(new[]{
+               "~sitecollection", 
+               documentTemplateLibrary.Url,
+               documentTemplate.FileName 
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(siteContentType);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(documentTemplateLibrary, list =>
+                {
+                    list.AddModuleFile(documentTemplate);
+                });
+            });
+
+            var contentModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomDocumentLibrary(list =>
+                {
+                    list.AddContentTypeLink(siteContentType);
+                });
+            });
+
+            TestModels(new[] { webModel, siteModel, contentModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.DocumentTemplate")]
+        public void CanDeploy_ContentType_WithDocTemplate_In_SubWeb_DocumentLibrary()
+        {
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var documentTemplate = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.Content = DocumentTemplates.SPMeta2_MSWord_Template;
+                def.FileName = Rnd.String() + ".dotx";
+            });
+
+            var documentTemplateLibrary = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var subWebDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>();
+
+            siteContentType.DocumentTemplate = UrlUtility.CombineUrl(new[]{
+               "~sitecollection", 
+               subWebDef.Url,
+               documentTemplateLibrary.Url,
+               documentTemplate.FileName 
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(siteContentType);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWeb(subWebDef, subWeb =>
+                {
+                    subWeb.AddList(documentTemplateLibrary, list =>
+                    {
+                        list.AddModuleFile(documentTemplate);
+                    });
+                });
+
+
+            });
+
+            var contentModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomDocumentLibrary(list =>
+                {
+                    list.AddContentTypeLink(siteContentType);
+                });
+            });
+
+            TestModels(new[] { webModel, siteModel, contentModel });
+        }
 
         #endregion
     }

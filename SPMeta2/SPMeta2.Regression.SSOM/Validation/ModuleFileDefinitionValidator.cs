@@ -27,8 +27,18 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                                .NewAssert(definition, spObject)
                                      .ShouldNotBeNull(spObject)
-                                     .ShouldBeEqual(m => m.FileName, o => o.Name)
-                                     .ShouldBeEqual(m => m.Content, o => o.GetContent());
+                                     .ShouldBeEqual(m => m.FileName, o => o.Name);
+            //.ShouldBeEqual(m => m.Content, o => o.GetContent());
+
+            // skip all templates
+            if (definition.FileName.ToUpper().EndsWith("DOTX"))
+            {
+                assert.SkipProperty(m => m.Content, "DOTX file is detected. Skipping.");
+            }
+            else
+            {
+                assert.ShouldBeEqual(m => m.Content, o => o.GetContent());
+            }
 
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {

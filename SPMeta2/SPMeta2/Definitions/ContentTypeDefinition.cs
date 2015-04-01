@@ -78,6 +78,9 @@ namespace SPMeta2.Definitions
         /// 
         public string ParentContentTypeId { get; set; }
 
+        [ExpectValidation]
+        public string DocumentTemplate { get; set; }
+
         #endregion
 
         #region methods

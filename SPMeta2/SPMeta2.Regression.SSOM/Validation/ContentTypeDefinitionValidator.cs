@@ -78,6 +78,27 @@ namespace SPMeta2.Regression.SSOM.Validation
                     };
                 });
             }
+
+            if (string.IsNullOrEmpty(definition.DocumentTemplate))
+            {
+                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping DocumentTemplate as it is Empty"));
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DocumentTemplate);
+                    var dstProp = d.GetExpressionValue(ct => ct.DocumentTemplateUrl);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = srcProp.ToString().ToUpper() == dstProp.ToString().ToUpper()
+                    };
+                });
+            }
         }
     }
 

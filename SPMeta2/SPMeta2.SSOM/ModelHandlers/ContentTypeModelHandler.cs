@@ -10,6 +10,7 @@ using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
+using System.IO;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -81,16 +82,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             var targetWeb = web;
 
             // SPBug, it has to be new SPWen for every content type operation inside feature event handler
-            using (var tmpRootWeb = site.OpenWeb(targetWeb.ID))
+            using (var tmpWeb = site.OpenWeb(targetWeb.ID))
             {
                 var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
 
                 // by ID, by Name
-                var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
+                var targetContentType = tmpWeb.ContentTypes[contentTypeId];
 
                 if (targetContentType == null)
                 {
-                    targetContentType = tmpRootWeb.ContentTypes
+                    targetContentType = tmpWeb.ContentTypes
                                                   .OfType<SPContentType>()
                                                   .FirstOrDefault(f => f.Name.ToUpper() == contentTypeModel.Name.ToUpper());
                 }
@@ -110,9 +111,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type");
 
-                    targetContentType = tmpRootWeb
+                    targetContentType = tmpWeb
                         .ContentTypes
-                        .Add(new SPContentType(contentTypeId, tmpRootWeb.ContentTypes, contentTypeModel.Name));
+                        .Add(new SPContentType(contentTypeId, tmpWeb.ContentTypes, contentTypeModel.Name));
                 }
                 else
                 {
@@ -126,6 +127,27 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
+                {
+                    var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = contentTypeModel.DocumentTemplate,
+                        Context = tmpWeb
+                    }).Value;
+
+                    // resource related path
+                    if (!processedDocumentTemplateUrl.Contains('/')
+                        && !processedDocumentTemplateUrl.Contains('\\'))
+                    {
+                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new string[] { 
+                            targetContentType.ResourceFolder.ServerRelativeUrl,
+                            processedDocumentTemplateUrl
+                        });
+                    }
+
+                    targetContentType.DocumentTemplate = processedDocumentTemplateUrl;
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -141,7 +163,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
                 targetContentType.UpdateIncludingSealedAndReadOnly(true);
 
-                tmpRootWeb.Update();
+                tmpWeb.Update();
             }
         }
 
