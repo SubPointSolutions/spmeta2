@@ -40,10 +40,19 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 var srcProp = s.GetExpressionValue(m => m.Content);
                 //var dstProp = d.GetExpressionValue(ct => ct.GetId());
 
-                var isContentValid = false;
+                var isContentValid = true;
 
                 var srcStringContent = Encoding.UTF8.GetString(s.Content);
                 var dstStringContent = Encoding.UTF8.GetString(file.GetContent());
+
+                srcStringContent = WebpartXmlExtensions
+                                    .LoadWebpartXmlDocument(srcStringContent)
+                                    .SetTitle(s.Title)
+                                    .SetOrUpdateProperty("Description", s.Description)
+                                    .ToString();
+
+
+                dstStringContent = WebpartXmlExtensions.LoadWebpartXmlDocument(dstStringContent).ToString();
 
                 isContentValid = dstStringContent.Contains(srcStringContent);
 

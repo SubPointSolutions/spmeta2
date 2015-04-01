@@ -50,19 +50,25 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                 var isContentValid = true;
 
-                // skip this
-                // XML is always different as it gets changed by proviison flow
-                // if content is not the same, then othe tests would show that as then use common ContentFileModelHandlerBase class
+                byte[] dstContent = null;
 
-                //byte[] dstContent = null;
+                using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, file.ServerRelativeUrl).Stream)
+                    dstContent = ModuleFileUtils.ReadFully(stream);
 
-                //using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, file.ServerRelativeUrl).Stream)
-                //    dstContent = ModuleFileUtils.ReadFully(stream);
+                var srcStringContent = Encoding.UTF8.GetString(s.Content);
+                var dstStringContent = Encoding.UTF8.GetString(dstContent);
 
-                //var srcStringContent = Encoding.UTF8.GetString(s.Content);
-                //var dstStringContent = Encoding.UTF8.GetString(dstContent);
+                srcStringContent = WebpartXmlExtensions
+                                    .LoadWebpartXmlDocument(srcStringContent)
+                                    .SetTitle(s.Title)
+                                    .SetOrUpdateProperty("Description", s.Description)
+                                    .ToString();
 
-                //isContentValid = dstStringContent.Contains(srcStringContent);
+
+                dstStringContent = WebpartXmlExtensions.LoadWebpartXmlDocument(dstStringContent).ToString();
+
+
+                isContentValid = dstStringContent.Contains(srcStringContent);
 
                 return new PropertyValidationResult
                 {

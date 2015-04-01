@@ -11,6 +11,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Webparts;
 using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
@@ -22,6 +23,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
+using System.Text;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -582,7 +584,21 @@ namespace SPMeta2.Regression.Tests.Base
 
                             if (prop.PropertyType == typeof(byte[]))
                             {
-                                newValue = RegressionService.RndService.Content();
+                                if (def is WebPartGalleryFileDefinition
+                                    && prop.Name == "Content")
+                                {
+                                    // change web part
+                                    var webPartXmlString = Encoding.UTF8.GetString(prop.GetValue(def) as byte[]);
+                                    var webPartXml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXmlString);
+
+                                    webPartXml.SetTitleUrl(RegressionService.RndService.HttpUrl());
+
+                                    newValue = Encoding.UTF8.GetBytes(webPartXml.ToString());
+                                }
+                                else
+                                {
+                                    newValue = RegressionService.RndService.Content();
+                                }
                             }
                             else if (prop.PropertyType == typeof(string))
                                 newValue = RegressionService.RndService.String();
