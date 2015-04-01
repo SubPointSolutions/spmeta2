@@ -69,6 +69,11 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             else
                 assert.SkipProperty(m => m.Open, "Open is null. Skipping property.");
 
+            if (definition.IsPathRendered.HasValue)
+                assert.ShouldBeEqual(m => m.IsPathRendered, o => o.IsPathRendered);
+            else
+                assert.SkipProperty(m => m.IsPathRendered, "IsPathRendered is null. Skipping property.");
+
             // SSP
             if (definition.SspId.HasValue)
                 assert.ShouldBeEqual(m => m.SspId, o => o.SspId);

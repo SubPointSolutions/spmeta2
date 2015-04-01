@@ -60,6 +60,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             if (taxFieldModel.Open.HasValue)
                 taxField.Open = taxFieldModel.Open.Value;
 
+            if (taxFieldModel.IsPathRendered.HasValue)
+                taxField.IsPathRendered = taxFieldModel.IsPathRendered.Value;
+
             if (taxFieldModel.CreateValuesInEditForm.HasValue)
                 taxField.CreateValuesInEditForm = taxFieldModel.CreateValuesInEditForm.Value;
 

@@ -49,6 +49,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             if (taxFieldModel.CreateValuesInEditForm.HasValue)
                 taxField.CreateValuesInEditForm = taxFieldModel.CreateValuesInEditForm.Value;
 
+            if (taxFieldModel.IsPathRendered.HasValue)
+                taxField.IsPathRendered = taxFieldModel.IsPathRendered.Value;
+
             TermStore tesmStore = LookupTermStore(site, taxFieldModel);
 
             if (tesmStore != null)

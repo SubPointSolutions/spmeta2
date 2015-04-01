@@ -52,6 +52,10 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         [ExpectValidation]
         [ExpectUpdate]
+        public bool? IsPathRendered { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
         public bool? CreateValuesInEditForm { get; set; }
 
         [ExpectValidation]
