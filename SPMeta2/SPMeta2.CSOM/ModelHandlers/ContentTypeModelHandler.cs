@@ -26,7 +26,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeDefinition); }
         }
 
-        private Site ExtractSite(object modelHost)
+        protected Site ExtractSite(object modelHost)
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite;
@@ -68,20 +68,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Resolving content type resource folder for ModuleFileDefinition");
 
-                    if (!currentContentType.IsPropertyAvailable("SchemaXml"))
-                    {
-                        context.Load(web, w => w.ServerRelativeUrl);
-                        currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
-                        currentContentType.Context.ExecuteQuery();
-                    }
-
-                    var ctDocument = XDocument.Parse(currentContentType.SchemaXml);
-                    var folderUrlNode = ctDocument.Descendants().FirstOrDefault(d => d.Name == "Folder");
-
-                    var webRelativeFolderUrl = folderUrlNode.Attribute("TargetName").Value;
-                    var serverRelativeFolderUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, webRelativeFolderUrl);
-
-                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "webRelativeFolderUrl is: [{0}]", webRelativeFolderUrl);
+                    var serverRelativeFolderUrl = ExtractResourceFolderServerRelativeUrl(web, context, currentContentType);
 
                     var ctFolder = web.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
                     context.ExecuteQueryWithTrace();
@@ -113,6 +100,26 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 action(modelHost);
             }
+        }
+
+        private static string ExtractResourceFolderServerRelativeUrl(Web web, ClientRuntimeContext context, ContentType currentContentType)
+        {
+            if (!currentContentType.IsPropertyAvailable("SchemaXml")
+                || !web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                context.Load(web, w => w.ServerRelativeUrl);
+                currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
+                currentContentType.Context.ExecuteQuery();
+            }
+
+            var ctDocument = XDocument.Parse(currentContentType.SchemaXml);
+            var folderUrlNode = ctDocument.Descendants().FirstOrDefault(d => d.Name == "Folder");
+
+            var webRelativeFolderUrl = folderUrlNode.Attribute("TargetName").Value;
+            var serverRelativeFolderUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, webRelativeFolderUrl);
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "webRelativeFolderUrl is: [{0}]", webRelativeFolderUrl);
+            return serverRelativeFolderUrl;
         }
 
 
@@ -172,6 +179,29 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentContentType.Name = contentTypeModel.Name;
             currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
             currentContentType.Group = contentTypeModel.Group;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
+            {
+                var serverRelativeFolderUrl = ExtractResourceFolderServerRelativeUrl(web, context, currentContentType);
+
+                var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = contentTypeModel.DocumentTemplate,
+                    Context = context
+                }).Value;
+
+                // resource related path
+                if (!processedDocumentTemplateUrl.Contains('/')
+                    && !processedDocumentTemplateUrl.Contains('\\'))
+                {
+                    processedDocumentTemplateUrl = UrlUtility.CombineUrl(new string[] { 
+                            serverRelativeFolderUrl,
+                            processedDocumentTemplateUrl
+                        });
+                }
+
+                currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
+            }
 
             InvokeOnModelEvent<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
 

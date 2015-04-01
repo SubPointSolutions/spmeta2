@@ -113,28 +113,38 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
             }
 
-            assert.ShouldBeEqual((p, s, d) =>
+            // skip all templates
+            if (definition.FileName.ToUpper().EndsWith("DOTX"))
             {
-                var srcProp = s.GetExpressionValue(m => m.Content);
-                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
-
-                var isContentValid = false;
-
-                byte[] dstContent = null;
-
-                using (var stream = File.OpenBinaryDirect(folderHost.HostClientContext, spObject.ServerRelativeUrl).Stream)
-                    dstContent = ModuleFileUtils.ReadFully(stream);
-
-                isContentValid = dstContent.SequenceEqual(definition.Content);
-
-                return new PropertyValidationResult
+                assert.SkipProperty(m => m.Content, "DOTX file is detected. Skipping.");
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
                 {
-                    Tag = p.Tag,
-                    Src = srcProp,
-                    // Dst = dstProp,
-                    IsValid = isContentValid
-                };
-            });
+                    var srcProp = s.GetExpressionValue(m => m.Content);
+                    //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                    var isContentValid = false;
+
+                    byte[] dstContent = null;
+
+                    using (var stream = File.OpenBinaryDirect(folderHost.HostClientContext, spObject.ServerRelativeUrl).Stream)
+                        dstContent = ModuleFileUtils.ReadFully(stream);
+
+                    isContentValid = dstContent.SequenceEqual(definition.Content);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        // Dst = dstProp,
+                        IsValid = isContentValid
+                    };
+                });
+            }
+
+            
         }
     }
 }

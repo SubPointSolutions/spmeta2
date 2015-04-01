@@ -81,7 +81,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (string.IsNullOrEmpty(definition.DocumentTemplate))
             {
-                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping DocumentTemplate as it is Empty"));
+                assert.SkipProperty(m => m.DocumentTemplate, string.Format("Skipping DocumentTemplate as it is Empty"));
             }
             else
             {
@@ -90,12 +90,34 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var srcProp = s.GetExpressionValue(def => def.DocumentTemplate);
                     var dstProp = d.GetExpressionValue(ct => ct.DocumentTemplateUrl);
 
+                    var srcUrl = srcProp.Value as string;
+                    var dstUrl = dstProp.Value as string;
+
+                    var isValid = false;
+
+                    if (s.DocumentTemplate.Contains("~sitecollection"))
+                    {
+                        var siteCollectionUrl = web.Site.ServerRelativeUrl == "/" ? string.Empty : web.Site.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~sitecollection", siteCollectionUrl) == dstUrl;
+                    }
+                    else if (s.DocumentTemplate.Contains("~site"))
+                    {
+                        var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
+                    }
+                    else
+                    {
+                        isValid = dstUrl.EndsWith(srcUrl);
+                    }
+
                     return new PropertyValidationResult
                     {
                         Tag = p.Tag,
                         Src = srcProp,
                         Dst = dstProp,
-                        IsValid = srcProp.ToString().ToUpper() == dstProp.ToString().ToUpper()
+                        IsValid = isValid
                     };
                 });
             }

@@ -25,6 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             //var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
 
+            var site = ExtractSite(modelHost);
             var web = ExtractWeb(modelHost);
 
             var context = web.Context;
@@ -90,6 +91,49 @@ namespace SPMeta2.Regression.CSOM.Validation
                         Src = srcProp,
                         Dst = dstProp,
                         IsValid = srcProp.ToString().ToUpper() == dstProp.ToString().ToUpper()
+                    };
+                });
+            }
+
+            if (string.IsNullOrEmpty(definition.DocumentTemplate))
+            {
+                assert.SkipProperty(m => m.DocumentTemplate, string.Format("Skipping DocumentTemplate as it is Empty"));
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DocumentTemplate);
+                    var dstProp = d.GetExpressionValue(ct => ct.DocumentTemplateUrl);
+
+                    var srcUrl = srcProp.Value as string;
+                    var dstUrl = dstProp.Value as string;
+
+                    var isValid = false;
+
+                    if (s.DocumentTemplate.Contains("~sitecollection"))
+                    {
+                        var siteCollectionUrl = site.ServerRelativeUrl == "/" ? string.Empty : site.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~sitecollection", siteCollectionUrl) == dstUrl;
+                    }
+                    else if (s.DocumentTemplate.Contains("~site"))
+                    {
+                        var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
+                    }
+                    else
+                    {
+                        isValid = dstUrl.EndsWith(srcUrl);
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
                     };
                 });
             }
