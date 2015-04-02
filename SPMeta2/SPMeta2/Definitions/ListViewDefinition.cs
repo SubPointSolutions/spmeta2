@@ -3,6 +3,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.ObjectModel;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -122,7 +123,13 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("Title:[{0}] IsDefault:[{1}] Query:[{2}]", Title, IsDefault, Query);
+            return new ToStringResult<ListViewDefinition>(this)
+                         .AddPropertyValue(p => p.Title)
+                         .AddPropertyValue(p => p.Url)
+                         .AddPropertyValue(p => p.IsDefault)
+                         .AddPropertyValue(p => p.Query)
+
+                         .ToString();
         }
 
         #endregion

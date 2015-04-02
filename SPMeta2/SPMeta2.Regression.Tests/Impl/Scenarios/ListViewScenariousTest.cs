@@ -87,6 +87,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews")]
+        public void CanDeploy_ListView_WithCustomUrl()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Title = Rnd.String();
+                def.Url = string.Format("{0}.aspx", Rnd.String());
+            });
+        }
+
         #endregion
     }
 }
