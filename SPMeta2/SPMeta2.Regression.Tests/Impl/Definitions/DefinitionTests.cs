@@ -121,6 +121,31 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void DefinitionsShouldBeMarkedAsDataContract()
+        {
+            var showOnlyFails = true;
+            var result = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var hasAttr = definitionType.GetCustomAttributes(typeof(DataContractAttribute)).Any();
+
+                if (!hasAttr)
+                {
+                    Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has DataContractAttribute:[{1}]",
+                        definitionType, hasAttr, hasAttr.ToString().ToUpper()));
+
+                }
+
+                if (!hasAttr)
+                    result = false;
+            }
+
+            Assert.IsTrue(result);
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]

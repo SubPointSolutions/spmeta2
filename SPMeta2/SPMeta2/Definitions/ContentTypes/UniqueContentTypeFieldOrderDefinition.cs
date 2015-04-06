@@ -4,6 +4,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
@@ -28,7 +29,8 @@ namespace SPMeta2.Definitions.ContentTypes
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(ContentTypeDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     public class UniqueContentTypeFieldsOrderDefinition : DefinitionBase
     {
         #region constructors

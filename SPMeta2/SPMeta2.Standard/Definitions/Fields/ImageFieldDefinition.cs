@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions.Fields
 {
@@ -20,7 +21,8 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 

@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -21,7 +22,8 @@ namespace SPMeta2.Definitions
     [DefaultParentHost(typeof(FarmDefinition))]
     [DefaultRootHost(typeof(FarmDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     [ExpectWithExtensionMethod]
     public class FarmSolutionDefinition : SolutionDefinitionBase
     {

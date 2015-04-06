@@ -2,6 +2,7 @@
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -11,7 +12,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable]
+    [Serializable] [DataContract]
 
     public class InformationRightsManagementSettingsDefinition : DefinitionBase
     {

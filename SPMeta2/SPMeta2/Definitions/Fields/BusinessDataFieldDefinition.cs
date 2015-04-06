@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -21,6 +22,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
+    [DataContract]
     [ExpectArrayExtensionMethod]
 
     public class BusinessDataFieldDefinition : FieldDefinition

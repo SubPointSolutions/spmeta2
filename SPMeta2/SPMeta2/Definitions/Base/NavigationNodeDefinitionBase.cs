@@ -13,7 +13,7 @@ namespace SPMeta2.Definitions.Base
     /// Base definition for SharePoint navigation nodes.
     /// </summary>
     /// 
-    [Serializable]
+    [Serializable] 
     [DataContract]
     public abstract class NavigationNodeDefinitionBase : DefinitionBase
     {

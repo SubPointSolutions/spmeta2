@@ -4,6 +4,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
@@ -16,7 +17,8 @@ namespace SPMeta2.Definitions.ContentTypes
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     public class RemoveContentTypeLinksDefinition : DefinitionBase
     {
         #region constructors

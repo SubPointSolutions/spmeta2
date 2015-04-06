@@ -8,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Models
 {
@@ -35,7 +36,8 @@ namespace SPMeta2.Models
     /// <summary>
     /// Allows to adjust particular mode node processing behaviour.
     /// </summary>
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     public class ModelNodeOptions
     {
         #region constructors
@@ -81,6 +83,7 @@ namespace SPMeta2.Models
     /// Base tree model node implementation. 
     /// </summary>
     [Serializable]
+    [DataContract]
     public class ModelNode
     {
         #region constructors

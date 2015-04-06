@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -19,7 +20,8 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     [ExpectArrayExtensionMethod]
 
     public class ScriptEditorWebPartDefinition : WebPartDefinition

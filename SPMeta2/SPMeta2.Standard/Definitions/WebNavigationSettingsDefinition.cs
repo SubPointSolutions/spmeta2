@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -15,6 +16,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [DataContract]
     public class WebNavigationSettingsDefinition : DefinitionBase
     {
         #region constructors

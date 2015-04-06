@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -19,6 +20,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
+    [DataContract]
     public class CustomDocumentIdProviderDefinition : DefinitionBase
     {
         #region properties

@@ -6,6 +6,7 @@ using System.Text;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -17,8 +18,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebApplicationDefinition))]
     [DefaultParentHost(typeof(WebApplicationDefinition))]
 
-    [Serializable]
-
+    [Serializable] 
+    [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
     public class AlternateUrlDefinition : DefinitionBase

@@ -9,6 +9,7 @@ using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions.Fields
 {
@@ -22,6 +23,7 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
     [Serializable]
+    [DataContract]
    // [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 

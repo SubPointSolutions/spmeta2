@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -20,7 +21,8 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
 
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]

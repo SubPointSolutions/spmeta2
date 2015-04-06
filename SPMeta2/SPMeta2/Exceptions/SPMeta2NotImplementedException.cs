@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SPMeta2.Exceptions
 {
-    [Serializable]
+    [Serializable] 
     public class SPMeta2NotImplementedException : SPMeta2Exception
     {
         public SPMeta2NotImplementedException() { }

@@ -3,6 +3,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -18,6 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
+    [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 

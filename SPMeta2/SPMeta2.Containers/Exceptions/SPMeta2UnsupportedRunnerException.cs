@@ -14,7 +14,7 @@ namespace SPMeta2.Containers.Exceptions
             : base(info, context) { }
     }
 
-    [Serializable]
+    [Serializable] 
     public class SPMeta2UnsupportedSSOMRunnerException : SPMeta2UnsupportedRunnerException
     {
         public SPMeta2UnsupportedSSOMRunnerException() { }
@@ -38,7 +38,7 @@ namespace SPMeta2.Containers.Exceptions
             : base(info, context) { }
     }
 
-    [Serializable]
+    [Serializable] 
     public class SPMeta2UnsupportedO365RunnerException : Exception
     {
         public SPMeta2UnsupportedO365RunnerException() { }

@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -16,6 +17,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(SecurityGroupLinkDefinition))]
 
     [Serializable]
+    [DataContract]
     [ExpectWithExtensionMethod]
     public class SecurityRoleLinkDefinition : DefinitionBase
     {

@@ -7,7 +7,7 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Exceptions
 {
-    [Serializable]
+    [Serializable] 
     public class SPMeta2ModelDeploymentException : SPMeta2Exception
     {
         public SPMeta2ModelDeploymentException() { }

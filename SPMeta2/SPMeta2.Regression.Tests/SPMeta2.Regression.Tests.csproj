@@ -52,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -157,7 +158,7 @@
       <Name>SPMeta2.CSOM</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Standard\SPMeta2.Standard.csproj">
-      <Project>{F310878E-9B72-4C3C-AE5D-C60B3515E2FC}</Project>
+      <Project>{f310878e-9b72-4c3c-ae5d-c60b3515e2fc}</Project>
       <Name>SPMeta2.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">

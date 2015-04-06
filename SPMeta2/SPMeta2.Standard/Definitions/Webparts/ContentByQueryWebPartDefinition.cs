@@ -3,6 +3,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions.Webparts
 {
@@ -15,7 +16,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     [ExpectArrayExtensionMethod]
 
     public class ContentByQueryWebPartDefinition : WebPartDefinition

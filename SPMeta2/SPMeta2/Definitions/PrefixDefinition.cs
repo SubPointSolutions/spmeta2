@@ -7,6 +7,7 @@ using System.Text;
 
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -21,6 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
 
     [Serializable]
+    [DataContract]
     [ExpectWithExtensionMethod]
     public class PrefixDefinition : DefinitionBase
     {

@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
@@ -20,7 +21,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DefaultRootHost(typeof(SiteDefinition))]
 
     //[ExpectAddHostExtensionMethod]
-    [Serializable]
+    [Serializable] 
+    [DataContract]
     [ExpectArrayExtensionMethod]
 
     public class TaxonomyTermLabelDefinition : DefinitionBase
