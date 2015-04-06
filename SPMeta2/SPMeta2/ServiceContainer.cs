@@ -31,6 +31,9 @@ namespace SPMeta2
 
             RegisterService(typeof(ModelTreeTraverseServiceBase), new DefaultModelTreeTraverseService());
             RegisterService(typeof(ModelWeighServiceBase), new DefaultModelWeighService());
+
+            RegisterService(typeof(DefaultJSONSerializationService), new DefaultJSONSerializationService());
+            RegisterService(typeof(DefaultXMLSerializationService), new DefaultXMLSerializationService());
         }
 
         #endregion

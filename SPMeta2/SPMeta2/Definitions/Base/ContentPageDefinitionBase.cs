@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
     [Serializable]
+    [DataContract]
     public abstract class ContentPageDefinitionBase : PageDefinitionBase
     {
         #region constructors

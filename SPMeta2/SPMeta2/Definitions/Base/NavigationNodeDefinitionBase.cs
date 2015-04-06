@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Utils;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -13,6 +14,7 @@ namespace SPMeta2.Definitions.Base
     /// </summary>
     /// 
     [Serializable]
+    [DataContract]
     public abstract class NavigationNodeDefinitionBase : DefinitionBase
     {
         #region constructors

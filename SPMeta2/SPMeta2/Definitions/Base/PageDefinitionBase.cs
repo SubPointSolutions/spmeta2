@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
 
+    [DataContract]
     public class FieldValue
     {
         public string FieldName { get; set; }
@@ -19,6 +21,7 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
     [Serializable]
+    [DataContract]
     public abstract class PageDefinitionBase : DefinitionBase
     {
         #region constructors

@@ -82,6 +82,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -258,6 +259,8 @@
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultXMLSerializationService.cs" />
+    <Compile Include="Services\Impl\DefaultJSONSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
     <Compile Include="Services\LogEventId.cs" />
@@ -267,6 +270,7 @@
     <Compile Include="Services\Impl\TraceSourceService.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
+    <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
@@ -285,7 +289,9 @@
     <Compile Include="Utils\XElementHelper.cs" />
     <Compile Include="Utils\XmlSerializerUtils.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Properties\SPMeta2.pfx" />
     <None Include="SPMeta2.snk" />

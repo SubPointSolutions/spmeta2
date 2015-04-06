@@ -10,6 +10,7 @@ using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Containers.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 {
@@ -88,5 +89,54 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
         #endregion
 
+        #region serialization
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.Serialization")]
+        public void CanSerialize_SiteModelToXMLAndBack()
+        {
+            var orginalModel = SPMeta2Model.NewSiteModel(site =>
+            {
+
+            });
+
+            TraceUtils.WithScope(trace =>
+            {
+                var modelString = SPMeta2Model.ToXML(orginalModel);
+                Assert.IsFalse(string.IsNullOrEmpty(modelString));
+
+                trace.WriteLine("XML");
+                trace.WriteLine(modelString);
+
+                var deserializedModel = SPMeta2Model.FromXML(modelString);
+                Assert.IsNotNull(deserializedModel);
+
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.Serialization")]
+        public void CanSerialize_SiteModelToJSONAndBack()
+        {
+            var orginalModel = SPMeta2Model.NewSiteModel(site =>
+            {
+
+            });
+
+            TraceUtils.WithScope(trace =>
+            {
+                var modelString = SPMeta2Model.ToJSON(orginalModel);
+                Assert.IsFalse(string.IsNullOrEmpty(modelString));
+
+                trace.WriteLine("JSON");
+                trace.WriteLine(modelString);
+
+                var deserializedModel = SPMeta2Model.FromJSON(modelString);
+                Assert.IsNotNull(deserializedModel);
+            });
+        }
+
+        #endregion
     }
 }

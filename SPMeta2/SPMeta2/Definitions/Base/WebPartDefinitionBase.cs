@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes.Regression;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Base
 {
+    [DataContract]
     /// <summary>
     /// Base definitino for web part definitions - generic web part and all other 'typed' web parts.
     /// </summary>

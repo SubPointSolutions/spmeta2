@@ -1,6 +1,7 @@
 ﻿using SPMeta2.Common;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,7 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
     [Serializable]
+    [DataContract]
     public abstract class DefinitionBase : ICloneable
     {
         #region constructors
