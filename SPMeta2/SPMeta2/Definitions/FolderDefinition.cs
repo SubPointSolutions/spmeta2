@@ -37,6 +37,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         #endregion

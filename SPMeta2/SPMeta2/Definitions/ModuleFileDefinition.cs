@@ -42,12 +42,15 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string FileName { get; set; }
 
         /// <summary>
@@ -65,11 +69,14 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public byte[] Content { get; set; }
 
         /// <summary>
         /// Overwrite flag
         /// </summary>
+        /// 
+        [DataMember]
         public bool Overwrite { get; set; }
 
         #endregion

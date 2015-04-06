@@ -36,6 +36,7 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -53,12 +55,14 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string FileName { get; set; }
 
         /// <summary>
         /// Should page be overwritten during provision.
         /// </summary>
         /// 
+        [DataMember]
 
         public bool NeedOverride { get; set; }
 

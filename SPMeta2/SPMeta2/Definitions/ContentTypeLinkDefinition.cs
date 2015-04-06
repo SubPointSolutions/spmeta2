@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeId { get; set; }
 
         /// <summary>
@@ -44,6 +45,7 @@ namespace SPMeta2.Definitions
 
         [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeName { get; set; }
 
         #endregion

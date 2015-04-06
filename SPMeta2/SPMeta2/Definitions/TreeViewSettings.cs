@@ -27,10 +27,12 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? QuickLaunchEnabled { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? TreeViewEnabled { get; set; }
 
         #endregion

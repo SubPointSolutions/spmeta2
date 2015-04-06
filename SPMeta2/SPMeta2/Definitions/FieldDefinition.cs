@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
+    [DataContract]
     public class FieldAttributeValue : KeyNameValue
     {
         public FieldAttributeValue()
@@ -64,24 +65,30 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Reflects AddToDefaultView option while adding field to the list
         /// </summary>
+        /// 
+        [DataMember]
         public bool AddToDefaultView { get; set; }
 
         [ExpectValidation]
         /// <summary>
         /// Reflects SharePoint's AddFieldOptions while provisioning field for the first time
         /// </summary>
+        /// 
+        [DataMember]
         public BuiltInAddFieldOptions AddFieldOptions { get; set; }
 
         /// <summary>
         /// Raw field XML to be used during the first provision
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string RawXml { get; set; }
 
         /// <summary>
         /// Additional attributes to be written for Field XML during the first provision
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public List<FieldAttributeValue> AdditionalAttributes { get; set; }
 
         /// <summary>
@@ -90,6 +97,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string InternalName { get; set; }
 
         /// <summary>
@@ -99,6 +107,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -107,6 +116,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -115,6 +125,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Group { get; set; }
 
         /// <summary>
@@ -123,6 +134,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -132,6 +144,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string FieldType { get; set; }
 
         /// <summary>
@@ -140,58 +153,72 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool Required { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string JSLink { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public virtual string DefaultValue { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool Hidden { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInDisplayForm { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInEditForm { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInListSettings { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInNewForm { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInVersionHistory { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowInViewForms { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? AllowDeletion { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public virtual bool Indexed { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public virtual string ValidationFormula { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public virtual string ValidationMessage { get; set; }
 
         #endregion

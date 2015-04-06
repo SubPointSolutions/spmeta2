@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes.Regression;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Definitions.Base
 {
+    [DataContract]
     public abstract class ItemControlTemplateDefinitionBase : TemplateDefinitionBase
     {
         public ItemControlTemplateDefinitionBase()
@@ -16,14 +18,17 @@ namespace SPMeta2.Standard.Definitions.Base
 
         [ExpectUpdateAsTargetControlType]
         [ExpectValidation]
+        [DataMember]
         public List<string> TargetControlTypes { get; set; }
 
         [ExpectUpdateAsUrl(Extension = "xslt")]
         [ExpectValidation]
+        [DataMember]
         public string PreviewURL { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public string PreviewDescription { get; set; }
     }
 }

@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -49,6 +50,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -57,25 +59,30 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool AllowMultipleValues { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool AllowDisplay { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool Presence { get; set; }
 
         /// <summary>
         /// ID of the target security group.
         ///  </summary>
         [ExpectValidation]
+        [DataMember]
         public int? SelectionGroup { get; set; }
 
         /// <summary>
         /// Name of the target security group.
         [ExpectValidation]
+        [DataMember]
         public string SelectionGroupName { get; set; }
 
         /// <summary>
@@ -83,6 +90,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         [ExpectValidation]
         [ExpectUpdateAsFieldUserSelectionMode]
+        [DataMember]
         public string SelectionMode { get; set; }
 
         #endregion

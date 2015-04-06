@@ -27,12 +27,15 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? Id { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool IsSiteCollectionGroup { get; set; }
 
         //public bool IsSystemGroup { get; set; }

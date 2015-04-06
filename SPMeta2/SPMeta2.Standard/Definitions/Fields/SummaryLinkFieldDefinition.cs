@@ -41,6 +41,7 @@ namespace SPMeta2.Standard.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -48,6 +49,7 @@ namespace SPMeta2.Standard.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }

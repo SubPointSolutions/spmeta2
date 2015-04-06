@@ -41,6 +41,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -58,6 +60,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -65,6 +68,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string PrefixName { get; set; }
 
         /// <summary>
@@ -74,6 +78,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string SiteTemplate { get; set; }
 
         /// <summary>
@@ -81,6 +86,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public uint LCID { get; set; }
 
         /// <summary>
@@ -88,6 +94,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string OwnerLogin { get; set; }
 
         /// <summary>
@@ -95,6 +102,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string OwnerName { get; set; }
 
         /// <summary>
@@ -102,11 +110,14 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string OwnerEmail { get; set; }
 
         /// <summary>
         /// Secondary contact login.
         /// </summary>
+        /// 
+        [DataMember]
         public string SecondaryContactLogin { get; set; }
 
         /// <summary>
@@ -114,6 +125,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string SecondaryContactName { get; set; }
 
         /// <summary>
@@ -121,6 +133,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string SecondaryContactEmail { get; set; }
 
         /// <summary>
@@ -131,6 +144,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string DatabaseName { get; set; }
 
         #endregion

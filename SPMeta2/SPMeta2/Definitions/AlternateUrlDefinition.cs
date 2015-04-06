@@ -27,9 +27,11 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectRequired]
+        [DataMember]
         public string Url { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public string UrlZone { get; set; }
 
         #endregion

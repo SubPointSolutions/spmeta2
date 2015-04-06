@@ -26,6 +26,7 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectRequired]
+        [DataMember]
         public string AssemblyQualifiedName { get; set; }
 
         #endregion

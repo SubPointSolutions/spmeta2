@@ -36,6 +36,7 @@ namespace SPMeta2.Standard.Definitions
         [ExpectValidation]
         [ExpectUpdateAsPageLayoutFileName]
         [ExpectRequired]
+        [DataMember]
         public string PageLayoutFileName { get; set; }
 
         /// <summary>
@@ -44,9 +45,11 @@ namespace SPMeta2.Standard.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeName { get; set; }
 
         /// <summary>
@@ -54,6 +57,8 @@ namespace SPMeta2.Standard.Definitions
         /// </summary>
         //[ExpectUpdate]
         //[ExpectValidation]
+
+        [DataMember]
         public string Content { get; set; }
 
         #endregion

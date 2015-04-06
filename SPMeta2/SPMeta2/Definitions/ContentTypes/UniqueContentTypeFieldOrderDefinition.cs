@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         #region properties
 
+        [DataMember]
         [ExpectValidation]
         public List<FieldLinkValue> Fields { get; set; }
 

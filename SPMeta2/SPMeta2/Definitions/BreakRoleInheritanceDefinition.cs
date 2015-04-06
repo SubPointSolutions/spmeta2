@@ -29,12 +29,15 @@ namespace SPMeta2.Definitions
         #region properties
 
         //[ExpectValidation]
+        [DataMember]
         public bool CopyRoleAssignments { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool ClearSubscopes { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool ForceClearSubscopes { get; set; }
 
         #endregion

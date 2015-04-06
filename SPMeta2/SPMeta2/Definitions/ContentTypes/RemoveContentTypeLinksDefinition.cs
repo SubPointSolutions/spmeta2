@@ -32,6 +32,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         #region properties
 
+        [DataMember]
         public List<ContentTypeLinkValue> ContentTypes { get; set; }
 
         #endregion

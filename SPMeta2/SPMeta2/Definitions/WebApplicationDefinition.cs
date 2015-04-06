@@ -33,6 +33,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ApplicationPoolId { get; set; }
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ApplicationPoolUsername { get; set; }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ApplicationPoolPassword { get; set; }
 
         /// <summary>
@@ -54,6 +57,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public int Port { get; set; }
 
         /// <summary>
@@ -61,6 +65,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string HostHeader { get; set; }
 
         /// <summary>
@@ -68,6 +73,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool CreateNewDatabase { get; set; }
 
         /// <summary>
@@ -75,6 +81,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool AllowAnonymousAccess { get; set; }
 
         /// <summary>
@@ -82,11 +89,14 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ManagedAccount { get; set; }
 
         /// <summary>
         /// UseSecureSocketsLayer flag.
         /// </summary>
+        /// 
+        [DataMember]
         public bool UseSecureSocketsLayer { get; set; }
 
         /// <summary>
@@ -94,6 +104,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string DatabaseName { get; set; }
 
         /// <summary>
@@ -101,6 +112,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string DatabaseServer { get; set; }
 
         /// <summary>
@@ -108,6 +120,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool UseNTLMExclusively { get; set; }
 
         #endregion

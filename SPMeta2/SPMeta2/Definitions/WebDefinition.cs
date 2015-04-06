@@ -45,6 +45,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         //[ExpectUpdateAsLCID]
         public uint LCID { get; set; }
 
@@ -68,12 +71,15 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool UseUniquePermission { get; set; }
 
         /// <summary>
         /// Convert to the new web template if web if there.
         /// </summary>
         /// 
+
+        [DataMember]
         public bool ConvertIfThere { get; set; }
 
         /// <summary>
@@ -83,6 +89,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -93,12 +100,14 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web Template")]
+        [DataMember]
         public string WebTemplate { get; set; }
 
         /// <summary>
         /// Custom web template name of the target web.
         /// </summary>
         [ExpectRequired(GroupName = "Web Template")]
+        [DataMember]
         public string CustomWebTemplate { get; set; }
 
         #endregion

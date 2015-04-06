@@ -39,6 +39,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -46,6 +47,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -57,6 +59,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public string SystemInstanceName { get; set; }
 
@@ -65,6 +68,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public string EntityNamespace { get; set; }
 
@@ -73,6 +77,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public string EntityName { get; set; }
 
@@ -81,6 +86,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public string BdcFieldName { get; set; }
 

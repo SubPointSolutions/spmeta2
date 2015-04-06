@@ -32,6 +32,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         #region properties
 
+        [DataMember]
         public List<FieldLinkValue> Fields { get; set; }
 
         #endregion

@@ -27,39 +27,51 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public short AdjustHijriDays { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short AlternateCalendarType { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short CalendarType { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short Collation { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public uint FirstDayOfWeek { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short FirstWeekOfYear { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public uint LocaleId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool ShowWeeks { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool Time24 { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short WorkDayEndHour { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short WorkDays { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public short WorkDayStartHour { get; set; }
 
         #endregion

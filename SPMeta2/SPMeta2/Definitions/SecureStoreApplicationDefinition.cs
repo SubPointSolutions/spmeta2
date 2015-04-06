@@ -28,8 +28,13 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public Guid? Id { get; set; }
+
+        [DataMember]
         public bool UseDefault { get; set; }
 
         #endregion

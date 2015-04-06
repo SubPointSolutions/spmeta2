@@ -27,15 +27,19 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         [ExpectRequired]
+        [DataMember]
         public Guid FeatureId { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public Guid ProductId { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public Guid ProductWebId { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public string WebPartName { get; set; }
 
         #endregion

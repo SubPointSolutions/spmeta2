@@ -41,6 +41,8 @@ namespace SPMeta2.Definitions.Fields
         #region overrides
 
         [ExpectValidation]
+        [DataMember]
+
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -48,6 +50,8 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
+
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -58,6 +62,9 @@ namespace SPMeta2.Definitions.Fields
         /// Returns false if AllowMultipleValues = true.
         /// Multi lookup field does not support Indexed = trur flag and would give an exception.
         /// </summary>
+        /// 
+        [DataMember]
+
         public override bool Indexed
         {
             get
@@ -80,12 +87,14 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool AllowMultipleValues { get; set; }
 
         /// <summary>
         /// ID of the target web.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public Guid? LookupWebId { get; set; }
 
         /// <summary>
@@ -93,12 +102,15 @@ namespace SPMeta2.Definitions.Fields
         /// Could be "Self", "UserInfo" or ID of the target list.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string LookupList { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string LookupListTitle { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string LookupListUrl { get; set; }
 
         /// <summary>
@@ -106,6 +118,7 @@ namespace SPMeta2.Definitions.Fields
         /// Should be an internal name of the target field.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string LookupField { get; set; }
 
         #endregion

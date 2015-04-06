@@ -36,14 +36,18 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         [ExpectRequired]
+        [DataMember]
         public Guid SolutionId { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public string AssemblyFullName { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public string TypeFullName { get; set; }
 
+        [DataMember]
         public List<UserCodeProperty> UserCodeProperties { get; set; }
 
         #endregion
@@ -62,11 +66,15 @@ namespace SPMeta2.Definitions.Webparts
         #endregion
     }
 
+    [DataContract]
     public class UserCodeProperty
     {
         #region properties
 
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public string Value { get; set; }
 
         #endregion

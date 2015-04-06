@@ -38,25 +38,31 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Term Identity")]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Term Identity")]
+        [DataMember]
         public Guid? Id { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int LCID { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool IsAvailableForTagging { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool IsOpenForTermCreation { get; set; }
 
         #endregion

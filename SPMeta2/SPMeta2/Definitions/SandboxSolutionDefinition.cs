@@ -45,6 +45,7 @@ namespace SPMeta2.Definitions
         /// Should the solution be activated.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public bool Activate { get; set; }
 
         #endregion

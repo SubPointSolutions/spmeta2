@@ -30,10 +30,12 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Content { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string ContentLink { get; set; }
 
         #endregion

@@ -43,9 +43,11 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public string JobType { get; set; }
 
         /// <summary>
@@ -64,7 +67,10 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public string ScheduleString { get; set; }
+
+        [DataMember]
 
         public Collection<JobDefinitionCtorParams> ConstructorParams { get; set; }
 
@@ -83,6 +89,8 @@ namespace SPMeta2.Definitions
 
         #endregion
     }
+
+    [DataContract]
 
     public enum JobDefinitionCtorParams
     {

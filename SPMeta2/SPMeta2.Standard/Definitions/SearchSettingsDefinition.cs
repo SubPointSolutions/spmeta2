@@ -37,15 +37,19 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string SearchCenterUrl { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? UseParentResultsPageUrl { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string UseCustomResultsPageUrl { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? UseFirstSearchNavigationNode { get; set; }
 
 

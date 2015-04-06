@@ -47,6 +47,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -54,6 +55,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -61,6 +63,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -68,6 +71,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Group { get; set; }
 
         /// <summary>
@@ -75,6 +79,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Location { get; set; }
 
         /// <summary>
@@ -82,6 +87,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ScriptSrc { get; set; }
 
         /// <summary>
@@ -89,6 +95,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string ScriptBlock { get; set; }
 
         /// <summary>
@@ -96,6 +103,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public int Sequence { get; set; }
 
         /// <summary>
@@ -103,6 +111,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -110,6 +119,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public Collection<string> Rights { get; set; }
 
         /// <summary>
@@ -117,6 +127,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string RegistrationId { get; set; }
 
         /// <summary>
@@ -126,12 +137,14 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string RegistrationType { get; set; }
 
         /// <summary>
         /// Gets and sets XML that defines an extension to the ribbon.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string CommandUIExtension { get; set; }
 
         #endregion

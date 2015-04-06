@@ -26,21 +26,28 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string Path { get; set; }
 
         [ExpectValidation]
+        [DataMember]
+
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public uint Sequence { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Owner { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Type { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Value { get; set; }
 
         #endregion

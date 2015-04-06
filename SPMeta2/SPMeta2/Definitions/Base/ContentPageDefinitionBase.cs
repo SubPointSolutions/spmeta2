@@ -21,6 +21,7 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [DataMember]
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]

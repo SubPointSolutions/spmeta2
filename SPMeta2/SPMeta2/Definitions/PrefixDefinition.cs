@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Path { get; set; }
 
         /// <summary>
@@ -44,6 +45,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string PrefixType { get; set; }
 
         #endregion

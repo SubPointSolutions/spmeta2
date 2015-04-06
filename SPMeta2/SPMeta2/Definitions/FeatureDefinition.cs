@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
+    [DataContract]
     public enum FeatureDefinitionScope
     {
         Farm,
@@ -29,7 +30,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -42,6 +43,8 @@ namespace SPMeta2.Definitions
         /// Title of the target feature.
         /// Is not used for any provision routines, can be omitted.
         /// </summary>
+        /// 
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -51,6 +54,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public bool ForceActivate { get; set; }
 
         /// <summary>
@@ -68,6 +73,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public bool Enable { get; set; }
 
         /// <summary>
@@ -76,6 +82,7 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
+        [DataMember]
         public FeatureDefinitionScope Scope { get; set; }
 
         #endregion

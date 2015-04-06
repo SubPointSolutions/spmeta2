@@ -42,6 +42,8 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -50,6 +52,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -58,6 +61,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdateAsBasePermission]
+        [DataMember]
         public Collection<string> BasePermissions { get; set; }
 
         #endregion

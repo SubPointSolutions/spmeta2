@@ -41,18 +41,23 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? IrmEnabled { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? IrmExpire { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? IrmReject { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string DraftVersionVisibility { get; set; }
 
         /// <summary>
@@ -61,6 +66,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -73,6 +79,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Url")]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -81,6 +88,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Url")]
+        [DataMember]
         public string CustomUrl { get; set; }
 
         /// <summary>
@@ -92,6 +100,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Template")]
+        [DataMember]
         public int TemplateType { get; set; }
 
         /// <summary>
@@ -101,6 +110,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Template")]
+        [DataMember]
         public string TemplateName { get; set; }
 
         /// <summary>
@@ -109,52 +119,73 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool ContentTypesEnabled { get; set; }
 
         /// <summary>
         /// Reserved for the future. Is not used.
         /// </summary>
+        /// 
+        [DataMember]
         public bool NeedBreakRoleInheritance { get; set; }
 
         /// <summary>
         /// Reserved for the future. Is not used.
         /// </summary>
+        /// 
+        [DataMember]
         public bool? NeedToCopyRoleAssignmets { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? EnableAttachments { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? EnableFolderCreation { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? EnableMinorVersions { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? EnableModeration { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? EnableVersioning { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? ForceCheckout { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+
+        [DataMember]
         public bool? Hidden { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? NoCrawl { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? OnQuickLaunch { get; set; }
 
         #endregion

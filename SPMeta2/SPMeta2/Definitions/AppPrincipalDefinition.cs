@@ -24,12 +24,19 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        [DataMember]
         public string Title { get; set; }
 
+        [DataMember]
         public string AppId { get; set; }
+
+        [DataMember]
         public string AppSecret { get; set; }
 
+        [DataMember]
         public string AppDomain { get; set; }
+
+        [DataMember]
         public string RedirectURI { get; set; }
 
         #endregion

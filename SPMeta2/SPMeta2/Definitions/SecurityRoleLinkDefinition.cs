@@ -38,6 +38,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Role")]
+        [DataMember]
         public string SecurityRoleName { get; set; }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Role")]
+        [DataMember]
         public string SecurityRoleType { get; set; }
 
         /// <summary>
@@ -55,6 +57,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Role")]
+        [DataMember]
         public int SecurityRoleId { get; set; }
 
         #endregion

@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Type { get; set; }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Assembly { get; set; }
 
         /// <summary>
@@ -68,6 +71,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Class { get; set; }
 
         /// <summary>
@@ -76,6 +80,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public int SequenceNumber { get; set; }
 
         /// <summary>
@@ -84,6 +89,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Synchronization { get; set; }
 
         /// <summary>
@@ -91,6 +97,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string Data { get; set; }
 
         #endregion

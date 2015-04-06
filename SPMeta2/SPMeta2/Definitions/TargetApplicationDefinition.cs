@@ -11,10 +11,17 @@ using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
+    [DataContract]
     public class TargetApplicationFieldValue
     {
+        [DataMember]
         public bool IsMasked { get; set; }
+
+
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public string CredentialType { get; set; }
     }
 
@@ -44,18 +51,33 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [DataMember]
         public string ApplicationId { get; set; }
+        [DataMember]
         public string Name { get; set; }
 
+
+        [DataMember]
         public string FriendlyName { get; set; }
 
+
+        [DataMember]
         public string ContactEmail { get; set; }
+
+        [DataMember]
         public int TicketTimeout { get; set; }
+
+
+        [DataMember]
         public string Type { get; set; }
 
+        [DataMember]
         public Collection<string> TargetApplicationClams { get; set; }
+
+        [DataMember]
         public Collection<TargetApplicationFieldValue> Fields { get; set; }
 
+        [DataMember]
         public string CredentialManagementUrl { get; set; }
 
         #endregion

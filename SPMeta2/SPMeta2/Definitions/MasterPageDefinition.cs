@@ -45,18 +45,22 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public byte[] Content { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string DefaultCSSFile { get; set; }
 
         [ExpectValidation]
         [ExpectUpdateAsUIVersion]
+        [DataMember]
         public List<string> UIVersion { get; set; }
 
         #endregion

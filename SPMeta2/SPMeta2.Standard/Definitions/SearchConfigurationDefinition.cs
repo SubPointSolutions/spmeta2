@@ -26,6 +26,7 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string SearchConfiguration { get; set; }
 
         #endregion

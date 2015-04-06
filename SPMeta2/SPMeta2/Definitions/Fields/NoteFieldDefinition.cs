@@ -59,6 +59,7 @@ namespace SPMeta2.Definitions.Fields
         /// Always returns false.
         /// http://docs.subpointsolutions.com/spcafcontrib/csc515112/
         /// </summary>
+         [DataMember]
         public override bool Indexed
         {
             get
@@ -72,6 +73,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -79,6 +81,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -91,20 +94,25 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         [ExpectUpdateAsIntRange(MinValue = 10, MaxValue = 100)]
+        [DataMember]
         public int NumberOfLines { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool RichText { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string RichTextMode { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool AppendOnly { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool UnlimitedLengthInDocumentLibrary { get; set; }
 
         #endregion

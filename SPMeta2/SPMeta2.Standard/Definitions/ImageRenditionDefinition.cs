@@ -30,12 +30,15 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public int Height { get; set; }
 
         [ExpectRequired]
+        [DataMember]
         public int Width { get; set; }
 
         #endregion

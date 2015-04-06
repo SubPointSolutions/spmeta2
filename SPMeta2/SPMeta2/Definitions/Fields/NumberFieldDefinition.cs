@@ -41,18 +41,22 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
         [ExpectUpdateAsIntRange(MinValue = 1000, MaxValue = 5000)]
+        [DataMember]
         public double? MaximumValue { get; set; }
 
         [ExpectValidation]
         [ExpectUpdateAsIntRange(MinValue = 100, MaxValue = 500)]
+        [DataMember]
         public double? MinimumValue { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate], only SSOM
+        [DataMember]
         public bool ShowAsPercentage { get; set; }
 
         #endregion

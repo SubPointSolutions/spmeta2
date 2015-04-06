@@ -36,6 +36,7 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public Collection<string> AuditFlags { get; set; }
 
         #endregion

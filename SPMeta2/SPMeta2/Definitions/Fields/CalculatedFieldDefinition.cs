@@ -44,6 +44,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -51,6 +52,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -58,31 +60,39 @@ namespace SPMeta2.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public int? CurrencyLocaleId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string DateFormat { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
         [ExpectUpdateAsCalculatedFieldFormula]
+        [DataMember]
         public string Formula { get; set; }
 
         [ExpectValidation]
         [ExpectUpdateAssCalculatedFieldOutputType]
+        [DataMember]
         public string OutputType { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdate]
+        [DataMember]
         public bool? ShowAsPercentage { get; set; }
 
         [ExpectValidation]
         //[ExpectUpdateAssCalculatedFieldReferences]
+        [DataMember]
         public Collection<string> FieldReferences { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public override string DefaultValue
         {
             get

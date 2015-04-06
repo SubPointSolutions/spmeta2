@@ -27,9 +27,11 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string AudienceName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string AudienceDescription { get; set; }
 
         #endregion

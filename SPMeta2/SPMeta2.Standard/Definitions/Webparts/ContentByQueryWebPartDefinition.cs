@@ -24,25 +24,43 @@ namespace SPMeta2.Standard.Definitions.Webparts
     {
         #region properties
 
+        [DataMember]
         public string DataMappings { get; set; }
+
+        [DataMember]
         public string DataMappingViewFields { get; set; }
 
+        [DataMember]
         public bool? PlayMediaInBrowser { get; set; }
+
+        [DataMember]
         public bool? UseCopyUtil { get; set; }
 
+        [DataMember]
         public int? ItemLimit { get; set; }
 
+        [DataMember]
         public int? ServerTemplate { get; set; }
 
+        [DataMember]
         public string WebUrl { get; set; }
+
+        [DataMember]
         public Guid? ListGuid { get; set; }
 
+        [DataMember]
         public string ItemStyle { get; set; }
+
+        [DataMember]
         public string GroupStyle { get; set; }
 
+        [DataMember]
         public bool? ShowUntargetedItems { get; set; }
 
+        [DataMember]
         public string MainXslLink { get; set; }
+
+        [DataMember]
         public string ItemXslLink { get; set; }
 
         #endregion

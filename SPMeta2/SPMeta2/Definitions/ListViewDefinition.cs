@@ -50,6 +50,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace SPMeta2.Definitions
         /// It helps to create "english" urls in non-english locales.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -67,6 +69,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public int RowLimit { get; set; }
 
         /// <summary>
@@ -75,6 +78,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdateAsCamlQuery]
+        [DataMember]
         public string Query { get; set; }
 
         /// <summary>
@@ -83,6 +87,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool IsPaged { get; set; }
 
         /// <summary>
@@ -91,10 +96,12 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool IsDefault { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool Hidden { get; set; }
 
         /// <summary>
@@ -103,20 +110,25 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectUpdateAsInternalFieldName]
+        [DataMember]
         public Collection<string> Fields { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string JSLink { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? DefaultViewForContentType { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ContentTypeId { get; set; }
 
         #endregion

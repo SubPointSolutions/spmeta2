@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions
 {
+    [DataContract]
     public class PropertyBagValue : KeyNameValue
     {
         public PropertyBagValue()
@@ -39,12 +40,14 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [IgnoreDataMember]
         /// <summary>
         /// Internal usage only. Will be removed in future versions of SPMeta2 library.
         /// </summary>
         [Obsolete("Please use AddHostXXX syntax to setup RequireSelfProcessing on the particular model node. RequireSelfProcessing property will be removed from the future releases of SPMeta2 library.")]
         public virtual bool RequireSelfProcessing { get; set; }
 
+        [DataMember]
         /// <summary>
         /// A property bag to be used for any 'custom' properties attached to definition.
         /// </summary>

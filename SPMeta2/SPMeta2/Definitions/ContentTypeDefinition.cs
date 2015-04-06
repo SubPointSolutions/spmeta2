@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired(GroupName = "ContentType Id")]
+        [DataMember]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -44,6 +45,7 @@ namespace SPMeta2.Definitions
 
         [ExpectRequired(GroupName = "ContentType Id")]
         [ExpectValidation]
+        [DataMember]
         public string IdNumberValue { get; set; }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
@@ -71,10 +75,12 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public string Group { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool Hidden { get; set; }
 
         /// <summary>
@@ -82,9 +88,11 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectRequired]
+        [DataMember]
         public string ParentContentTypeId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string DocumentTemplate { get; set; }
 
         #endregion

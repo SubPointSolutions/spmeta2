@@ -37,6 +37,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public string ManagedPropertyMappings { get; set; }
 
         #endregion

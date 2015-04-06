@@ -47,6 +47,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -54,21 +55,28 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
 
+        [DataMember]
         public bool Overwrite { get; set; }
 
         /// <summary>
         /// Should SystemUpdate() be used.
         /// </summary>
+        /// 
+        [DataMember]
         public bool SystemUpdate { get; set; }
 
         /// <summary>
         /// Should SystemUpdateIncrementVersionNumber be used.
         /// </summary>
+        /// 
+        [DataMember]
         public bool SystemUpdateIncrementVersionNumber { get; set; }
 
         /// <summary>
         /// Should UpdateOverwriteVersion be used.
         /// </summary>
+        /// 
+        [DataMember]
         public bool UpdateOverwriteVersion { get; set; }
 
         // should be collection of attachments later

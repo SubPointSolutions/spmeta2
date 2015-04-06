@@ -39,20 +39,28 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string ServerName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string DbName { get; set; }
 
+        [DataMember]
         public string UserName { get; set; }
+
+        [DataMember]
         public string UserPassword { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int WarningSiteCollectionNumber { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int MaximumSiteCollectionNumber { get; set; }
 
+        [DataMember]
         public int Status { get; set; }
 
         #endregion

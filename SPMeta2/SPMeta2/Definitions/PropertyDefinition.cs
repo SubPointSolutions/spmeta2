@@ -33,6 +33,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Key { get; set; }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public object Value { get; set; }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool Overwrite { get; set; }
 
         #endregion

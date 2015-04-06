@@ -42,6 +42,8 @@ namespace SPMeta2.Definitions
         /// <summary>
         /// Locale for the current solution.
         /// </summary>
+        /// 
+        [DataMember]
         public int LCID { get; set; }
 
         #endregion

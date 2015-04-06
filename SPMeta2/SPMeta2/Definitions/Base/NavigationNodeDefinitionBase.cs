@@ -34,6 +34,7 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Title { get; set; }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Url { get; set; }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool IsExternal { get; set; }
 
         /// <summary>
@@ -55,6 +58,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool IsVisible { get; set; }
 
         #endregion

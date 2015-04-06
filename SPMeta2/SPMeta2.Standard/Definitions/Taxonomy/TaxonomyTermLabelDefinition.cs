@@ -40,12 +40,15 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int LCID { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool IsDefault { get; set; }
 
         #endregion

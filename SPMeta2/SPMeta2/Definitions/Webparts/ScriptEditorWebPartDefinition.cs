@@ -28,6 +28,7 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
+        [DataMember]
         public string Content { get; set; }
 
         #endregion

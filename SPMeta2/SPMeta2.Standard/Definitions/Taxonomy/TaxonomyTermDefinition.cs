@@ -37,15 +37,19 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? Id { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int LCID { get; set; }
 
         #endregion

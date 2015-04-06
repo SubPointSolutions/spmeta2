@@ -29,11 +29,17 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string SiteMasterPageUrl { get; set; }
+
+        [DataMember]
         public bool? SiteMasterPageInheritFromMaster { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string SystemMasterPageUrl { get; set; }
+
+        [DataMember]
         public bool? SystemMasterPageInheritFromMaster { get; set; }
 
         #endregion

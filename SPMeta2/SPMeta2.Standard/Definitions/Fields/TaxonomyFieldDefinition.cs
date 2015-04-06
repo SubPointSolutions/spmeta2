@@ -38,6 +38,7 @@ namespace SPMeta2.Standard.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationMessage
         {
             get { return string.Empty; }
@@ -45,6 +46,7 @@ namespace SPMeta2.Standard.Definitions.Fields
         }
 
         [ExpectValidation]
+        [DataMember]
         public override string ValidationFormula
         {
             get { return string.Empty; }
@@ -53,44 +55,57 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? IsPathRendered { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? CreateValuesInEditForm { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
+        [DataMember]
         public bool? Open { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool IsMulti { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string SspName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? SspId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? UseDefaultSiteCollectionTermStore { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string TermSetName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? TermSetId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int TermSetLCID { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string TermName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? TermId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int TermLCID { get; set; }
 
         #endregion

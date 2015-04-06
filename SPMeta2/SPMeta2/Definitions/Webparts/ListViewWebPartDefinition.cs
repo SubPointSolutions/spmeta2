@@ -28,13 +28,19 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
+        [DataMember]
         public string ListTitle { get; set; }
 
+        [DataMember]
         public string ListUrl { get; set; }
 
+        [DataMember]
         public Guid? ListId { get; set; }
 
+        [DataMember]
         public string ViewName { get; set; }
+
+        [DataMember]
         public Guid? ViewId { get; set; }
 
         #endregion

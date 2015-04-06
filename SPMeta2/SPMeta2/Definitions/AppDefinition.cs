@@ -21,7 +21,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     [ExpectWithExtensionMethod]
@@ -34,18 +34,21 @@ namespace SPMeta2.Definitions
         /// ProductId of the target application.
         /// </summary>
         [ExpectRequired]
+        [DataMember]
         public Guid ProductId { get; set; }
 
         [ExpectRequired]
         /// <summary>
         /// Target application content.
         /// </summary>
+        [DataMember]
         public byte[] Content { get; set; }
 
         [ExpectRequired]
         /// <summary>
         /// A valid Version string of the target application.
         /// </summary>
+        [DataMember]
         public string Version { get; set; }
 
         #endregion

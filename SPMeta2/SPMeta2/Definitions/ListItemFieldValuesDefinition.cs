@@ -40,6 +40,7 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [DataMember]
         public List<FieldValue> Values { set; get; }
 
         #endregion

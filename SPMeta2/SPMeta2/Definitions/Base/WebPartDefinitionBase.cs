@@ -21,6 +21,8 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
+
 
         public string Title { get; set; }
 
@@ -29,7 +31,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
-
+        [DataMember]
         public string Id { get; set; }
 
         /// <summary>
@@ -37,6 +39,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public string ZoneId { get; set; }
 
@@ -45,6 +48,7 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
 
         public int ZoneIndex { get; set; }
 
@@ -60,6 +64,7 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
+        [DataMember]
         public string WebpartFileName { get; set; }
 
         /// <summary>
@@ -70,6 +75,7 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
+        [DataMember]
         public string WebpartType { get; set; }
 
         /// <summary>
@@ -81,11 +87,13 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
+        [DataMember]
         public string WebpartXmlTemplate { get; set; }
 
         /// <summary>
         /// Indicated if the web part should be added to the publishing or wiki page content area.
         /// </summary>
+        [DataMember]
         public bool AddToPageContent { get; set; }
 
         #endregion

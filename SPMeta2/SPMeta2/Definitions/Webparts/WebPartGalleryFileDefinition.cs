@@ -41,14 +41,17 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public string Group { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public List<string> RecommendationSettings { get; set; }
 
         #endregion

@@ -45,6 +45,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Xaml { get; set; }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool Override { get; set; }
 
         #endregion

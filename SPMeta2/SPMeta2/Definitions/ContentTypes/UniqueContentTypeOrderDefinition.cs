@@ -8,15 +8,24 @@ using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.ContentTypes
 {
+    [DataContract]
     public class ContentTypeLinkValue
     {
+        [DataMember]
         public string ContentTypeName { get; set; }
+
+        [DataMember]
         public string ContentTypeId { get; set; }
     }
 
+    [DataContract]
+
     public class FieldLinkValue
     {
+        [DataMember]
         public string InternalName { get; set; }
+
+        [DataMember]
         public Guid? Id { get; set; }
 
         public override string ToString()
@@ -52,6 +61,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         #region properties
 
+        [DataMember]
         public List<ContentTypeLinkValue> ContentTypes { get; set; }
 
         #endregion

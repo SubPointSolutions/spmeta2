@@ -22,6 +22,7 @@ namespace SPMeta2.Definitions.Base
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string FileName { get; set; }
 
         /// <summary>
@@ -29,12 +30,14 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public byte[] Content { get; set; }
 
         /// <summary>
         /// Target ID of the solution.
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public Guid SolutionId { get; set; }
 
         #endregion

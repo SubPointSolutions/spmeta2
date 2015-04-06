@@ -47,6 +47,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string WorkflowDisplayName { get; set; }
 
         /// <summary>
@@ -63,6 +65,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string HistoryListUrl { get; set; }
 
         /// <summary>
@@ -70,6 +73,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string TaskListUrl { get; set; }
 
         ///// <summary>
@@ -85,6 +89,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public Collection<string> EventTypes { get; set; }
 
         #endregion

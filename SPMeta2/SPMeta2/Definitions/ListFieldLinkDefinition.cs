@@ -42,12 +42,15 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public Guid FieldId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool AddToDefaultView { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public BuiltInAddFieldOptions AddFieldOptions { get; set; }
 
         #endregion

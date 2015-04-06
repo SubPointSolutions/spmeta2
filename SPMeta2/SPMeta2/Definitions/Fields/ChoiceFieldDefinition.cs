@@ -41,6 +41,7 @@ namespace SPMeta2.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string EditFormat { get; set; }
 
         #endregion

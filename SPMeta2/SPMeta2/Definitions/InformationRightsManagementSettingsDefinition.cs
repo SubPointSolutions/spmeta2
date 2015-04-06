@@ -19,46 +19,60 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public bool AllowPrint { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool AllowScript { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool AllowWriteCopy { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool DisableDocumentBrowserView { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int DocumentAccessExpireDays { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public DateTime DocumentLibraryProtectionExpireDate { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool EnableDocumentAccessExpire { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool EnableDocumentBrowserPublishingView { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool EnableGroupProtection { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool EnableLicenseCacheExpire { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string GroupName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public int LicenseCacheExpireDays { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string PolicyDescription { get; set; }
 
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string PolicyTitle { get; set; }
 
         #endregion

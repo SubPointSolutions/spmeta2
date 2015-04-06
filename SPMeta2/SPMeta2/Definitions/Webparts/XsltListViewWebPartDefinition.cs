@@ -38,24 +38,31 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public string ListTitle { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ListUrl { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? ListId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ViewName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? ViewId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string JSLink { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string TitleUrl { get; set; }
 
         #endregion

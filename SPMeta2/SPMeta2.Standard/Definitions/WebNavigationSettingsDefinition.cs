@@ -26,24 +26,39 @@ namespace SPMeta2.Standard.Definitions
 
         #region properties
 
+        [DataMember]
         public string GlobalNavigationSource { get; set; }
+
+        [DataMember]
         public Guid? GlobalNavigationTermStoreId { get; set; }
+
+        [DataMember]
         public Guid? GlobalNavigationTermSetId { get; set; }
 
+        [DataMember]
         public string CurrentNavigationSource { get; set; }
+        [DataMember]
         public Guid? CurrentNavigationTermStoreId { get; set; }
+        [DataMember]
         public Guid? CurrentNavigationTermSetId { get; set; }
 
+        [DataMember]
         public bool? ResetToDefaults { get; set; }
 
+        [DataMember]
         public bool? GlobalNavigationShowPages { get; set; }
+        [DataMember]
         public bool? GlobalNavigationShowSubsites { get; set; }
 
+        [DataMember]
         public int? GlobalNavigationMaximumNumberOfDynamicItems { get; set; }
 
+        [DataMember]
         public bool? CurrentNavigationShowPages { get; set; }
+        [DataMember]
         public bool? CurrentNavigationShowSubsites { get; set; }
 
+        [DataMember]
         public int? CurrentNavigationMaximumNumberOfDynamicItems { get; set; }
 
 

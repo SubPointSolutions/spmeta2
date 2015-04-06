@@ -33,12 +33,15 @@ namespace SPMeta2.Definitions
 
         [ExpectRequired]
         [ExpectValidation]
+        [DataMember]
         public Guid FieldId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? Required { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public bool? Hidden { get; set; }
 
         /// <summary>
@@ -46,6 +49,7 @@ namespace SPMeta2.Definitions
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/7024931-enhance-fieldlink-class-with-additional-properties
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public string DisplayName { get; set; }
 
         #endregion

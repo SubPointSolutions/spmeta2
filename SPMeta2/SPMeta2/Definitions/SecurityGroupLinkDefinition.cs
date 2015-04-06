@@ -35,6 +35,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public string SecurityGroupName { get; set; }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool IsAssociatedVisitorGroup { get; set; }
 
         /// <summary>
@@ -49,12 +51,14 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
         public bool IsAssociatedMemberGroup { get; set; }
 
         /// <summary>
         /// Flag to mimic AssociatedOwnerGroup
         /// </summary>
         [ExpectValidation]
+        [DataMember]
         public bool IsAssociatedOwnerGroup { get; set; }
 
         #endregion

@@ -146,6 +146,43 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
+        {
+            var showOnlyFails = true;
+            var result = true;
+            var errors = 0;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+
+                var props = definitionType.GetProperties();
+
+                foreach (var prop in props)
+                {
+                    var hasAttr = prop.GetCustomAttributes(typeof(DataMemberAttribute)).Any()
+                        || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
+
+                    if (!hasAttr)
+                    {
+                        Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
+                            definitionType.Name, prop.Name, hasAttr));
+                    }
+
+                    if (!hasAttr)
+                    {
+                        errors++;
+                        result = false;
+                    }
+                }
+            }
+
+             Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(result);
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]

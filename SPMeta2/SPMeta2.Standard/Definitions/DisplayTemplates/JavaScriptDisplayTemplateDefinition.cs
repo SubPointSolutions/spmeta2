@@ -38,29 +38,35 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string TargetControlType { get; set; }
 
         [ExpectUpdateAsUrl(Extension = "png")]
         [ExpectValidation]
+        [DataMember]
         public string IconUrl { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
+        [DataMember]
         public string IconDescription { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string Standalone { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string TargetScope { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]
+        [DataMember]
         public string TargetListTemplateId { get; set; }
         
 

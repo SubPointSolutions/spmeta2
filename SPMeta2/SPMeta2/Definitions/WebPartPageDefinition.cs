@@ -41,6 +41,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdateAsWebPartPageLayoutTemplate]
         [ExpectRequired(GroupName = "Layout Template")]
+        [DataMember]
         public int PageLayoutTemplate { get; set; }
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "Layout Template")]
+        [DataMember]
 
         public string CustomPageLayout { get; set; }
 

@@ -38,21 +38,27 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         [ExpectValidation]
+        [DataMember]
         public bool IsDefault { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Name { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Description { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string Query { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public string ProviderName { get; set; }
 
         [ExpectValidation]
+        [DataMember]
         public Guid? ProviderId { get; set; }
 
         #endregion
