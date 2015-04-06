@@ -259,6 +259,7 @@
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultRequredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultXMLSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultJSONSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />

@@ -36,7 +36,7 @@ namespace SPMeta2.Models
     /// <summary>
     /// Allows to adjust particular mode node processing behaviour.
     /// </summary>
-    [Serializable] 
+    [Serializable]
     [DataContract]
     public class ModelNodeOptions
     {
@@ -105,6 +105,8 @@ namespace SPMeta2.Models
 
         #region properties
 
+        [XmlIgnore]
+        [IgnoreDataMember]
         public string ObjectType
         {
             get { return GetType().Name; }
@@ -119,22 +121,30 @@ namespace SPMeta2.Models
         /// <summary>
         /// Allows to adjust particular mode node processing behaviour.
         /// </summary>
+        [DataMember]
         public ModelNodeOptions Options { get; set; }
 
+        [DataMember]
         public DefinitionBase Value { get; set; }
+
+        [DataMember]
         public Collection<ModelNode> ChildModels { get; set; }
 
         [XmlIgnore]
+        [IgnoreDataMember]
         public Dictionary<ModelEventType, List<object>> ModelEvents { get; set; }
 
         [XmlIgnore]
+        [IgnoreDataMember]
         public Dictionary<ModelEventType, List<object>> ModelContextEvents { get; set; }
 
         [XmlIgnore]
+        [IgnoreDataMember]
         public ModelNodeState State { get; set; }
 
         [XmlIgnore]
         [NonSerialized]
+        [IgnoreDataMember]
         private readonly TraceServiceBase TraceService;
 
         #endregion

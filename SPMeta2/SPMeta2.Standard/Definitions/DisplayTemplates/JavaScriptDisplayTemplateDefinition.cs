@@ -65,7 +65,6 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         [ExpectUpdate]
         [ExpectValidation]
-        [ExpectRequired]
         [DataMember]
         public string TargetListTemplateId { get; set; }
         

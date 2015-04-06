@@ -148,6 +148,45 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        public void ModelNodeTypesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
+        {
+            var showOnlyFails = true;
+            var result = true;
+            var errors = 0;
+
+            var types = new List<Type>();
+            types.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelNode>(typeof(ModelNode).Assembly));
+
+            foreach (var definitionType in types)
+            {
+                var props = definitionType.GetProperties();
+
+                foreach (var prop in props)
+                {
+                    var hasAttr = prop.GetCustomAttributes(typeof(DataMemberAttribute)).Any()
+                        || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
+
+                    if (!hasAttr)
+                    {
+                        Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
+                            definitionType.Name, prop.Name, hasAttr));
+                    }
+
+                    if (!hasAttr)
+                    {
+                        errors++;
+                        result = false;
+                    }
+                }
+            }
+
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
         public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
             var showOnlyFails = true;
@@ -178,7 +217,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 }
             }
 
-             Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
 
             Assert.IsTrue(result);
         }
