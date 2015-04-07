@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SPMeta2.Services.Impl
 {
@@ -115,7 +115,7 @@ namespace SPMeta2.Services.Impl
 
                 if (prop.PropertyType == typeof(string))
                 {
-                    var value = prop.GetValue(obj) as string;
+                    var value = prop.GetValue(obj, null) as string;
 
                     if (!string.IsNullOrEmpty(value))
                     { }
@@ -127,7 +127,7 @@ namespace SPMeta2.Services.Impl
                 else if (prop.PropertyType == typeof(Guid) ||
                    prop.PropertyType == typeof(Guid?))
                 {
-                    var value = prop.GetValue(obj) as Guid?;
+                    var value = prop.GetValue(obj, null) as Guid?;
 
                     if (value.HasValue && value.Value != default(Guid))
                     { }
@@ -139,7 +139,7 @@ namespace SPMeta2.Services.Impl
                 else if (prop.PropertyType == typeof(int) ||
                    prop.PropertyType == typeof(int?))
                 {
-                    var value = prop.GetValue(obj) as int?;
+                    var value = prop.GetValue(obj, null) as int?;
 
                     if (value.HasValue && value.Value > 0)
                     { }
@@ -150,7 +150,7 @@ namespace SPMeta2.Services.Impl
                 }
                 else if (prop.PropertyType == typeof(byte[]))
                 {
-                    var value = prop.GetValue(obj) as byte[];
+                    var value = prop.GetValue(obj, null) as byte[];
 
                     if (value != null && value.Count() > 0)
                     { }
@@ -161,7 +161,7 @@ namespace SPMeta2.Services.Impl
                 }
                 else if (prop.PropertyType == typeof(object))
                 {
-                    var value = prop.GetValue(obj) as object;
+                    var value = prop.GetValue(obj, null) as object;
 
                     if (value != null)
                     { }
