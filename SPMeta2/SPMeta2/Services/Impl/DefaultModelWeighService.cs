@@ -28,19 +28,28 @@ namespace SPMeta2.Services.Impl
         {
             base.SortChildModelNodes(modelNode, childNodes);
 
-            if (modelNode.Value is SiteDefinition)
-            {
-                var isSiteContentTypes = childNodes.All(n => n.Value is ContentTypeDefinition);
+            HandleContentTypes(modelNode, childNodes);
 
-                if (isSiteContentTypes)
+
+        }
+
+        private void HandleContentTypes(ModelNode modelNode, List<ModelNode> childNodes)
+        {
+            // https://github.com/SubPointSolutions/spmeta2/issues/385
+
+            if (modelNode.Value is SiteDefinition
+                || modelNode.Value is WebDefinition)
+            {
+                var isContentTypeNodes = childNodes.All(n => n.Value is ContentTypeDefinition);
+
+                if (isContentTypeNodes)
                 {
                     childNodes.Sort(delegate(ModelNode n1, ModelNode n2)
                     {
-                        return IsChildOf(
-                            GetContentTypeId(n1.Value as ContentTypeDefinition),
-                            GetContentTypeId(n2.Value as ContentTypeDefinition))
-                            ? -1
-                            : 1;
+                        var firstCtId = GetContentTypeId(n1.Value as ContentTypeDefinition);
+                        var secondCtId = GetContentTypeId(n2.Value as ContentTypeDefinition);
+
+                        return firstCtId.CompareTo(secondCtId);
                     });
                 }
             }

@@ -15,6 +15,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Containers.Templates.Documents;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -163,6 +164,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(siteModel);
         }
 
+        #endregion
+
+        #region utils
+
         protected class ContentTypeEnvironment
         {
             public FieldDefinition First { get; set; }
@@ -238,8 +243,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             return result;
         }
-
-
 
         #endregion
 
