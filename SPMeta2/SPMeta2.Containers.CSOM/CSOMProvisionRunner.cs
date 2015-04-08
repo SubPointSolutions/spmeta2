@@ -47,6 +47,7 @@ namespace SPMeta2.Containers.CSOM
             _provisionService = new CSOMProvisionService();
             _validationService = new CSOMValidationService();
 
+            // TODO, setup a high level validation registration
             _provisionService.PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
 
             var csomStandartAsm = typeof(TaxonomyFieldModelHandler).Assembly;
