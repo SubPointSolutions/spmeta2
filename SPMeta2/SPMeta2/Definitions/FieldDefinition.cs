@@ -36,7 +36,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(SiteDefinition))]
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -172,12 +172,12 @@ namespace SPMeta2.Definitions
         public bool Hidden { get; set; }
 
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         [DataMember]
         public bool? ShowInDisplayForm { get; set; }
 
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         [DataMember]
         public bool? ShowInEditForm { get; set; }
 
@@ -187,7 +187,7 @@ namespace SPMeta2.Definitions
         public bool? ShowInListSettings { get; set; }
 
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         [DataMember]
         public bool? ShowInNewForm { get; set; }
 

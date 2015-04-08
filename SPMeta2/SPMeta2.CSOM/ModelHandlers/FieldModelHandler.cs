@@ -421,11 +421,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             //if (definition.AllowDeletion.HasValue)
             //    field.AllowDeletion = definition.AllowDeletion.Value;
 
-            //if (definition.ShowInEditForm.HasValue)
-            //    field.ShowInEditForm = definition.ShowInEditForm.Value;
+            if (definition.ShowInEditForm.HasValue)
+                field.SetShowInEditForm(definition.ShowInEditForm.Value);
 
-            //if (definition.ShowInDisplayForm.HasValue)
-            //    field.ShowInDisplayForm = definition.ShowInDisplayForm.Value;
+            if (definition.ShowInDisplayForm.HasValue)
+                field.SetShowInDisplayForm(definition.ShowInDisplayForm.Value);
 
             //if (definition.ShowInListSettings.HasValue)
             //    field.ShowInListSettings = definition.ShowInListSettings.Value;
@@ -433,8 +433,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             //if (definition.ShowInViewForms.HasValue)
             //    field.ShowInViewForms = definition.ShowInViewForms.Value;
 
-            //if (definition.ShowInNewForm.HasValue)
-            //    field.ShowInNewForm = definition.ShowInNewForm.Value;
+            if (definition.ShowInNewForm.HasValue)
+                field.SetShowInNewForm(definition.ShowInNewForm.Value);
 
             //if (definition.ShowInVersionHistory.HasValue)
             //    field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;

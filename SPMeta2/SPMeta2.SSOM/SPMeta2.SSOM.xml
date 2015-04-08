@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SPMeta2.SSOM</name>
+    </assembly>
+    <members>
+        <member name="M:SPMeta2.SSOM.Extensions.SPContextExtensions.WithFakeSPContextScope(Microsoft.SharePoint.SPWeb,System.Action)">
+            <summary>
+            Util method to be able to deplot CQWP from c#/ps code outside of SPContext.Curent == null context
+            More details here:
+            http://solutionizing.net/2009/02/16/faking-spcontext/
+            http://blog.mastykarz.nl/structured-and-repeatable-deployment-of-content-query-web-part-instances/
+            </summary>
+            <param name="contextWeb"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SPMeta2.SSOM.Extensions.SPViewCollectionExtensions.FindByName(Microsoft.SharePoint.SPViewCollection,System.String)">
+            <summary>
+            SPBug, "name" and "Name" are different (sic!)
+            </summary>
+            <param name="views"></param>
+            <param name="viewName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SPMeta2.SSOM.PublishingPageTemplates">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.PublishingPageTemplates.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.PublishingPageTemplates.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.PublishingPageTemplates.RedirectionPageMarkup">
+            <summary>
+              Looks up a localized string similar to &lt;%@ Page Inherits=&quot;Microsoft.SharePoint.Publishing.TemplateRedirectionPage,Microsoft.SharePoint.Publishing,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Reference VirtualPath=&quot;~TemplatePageUrl&quot; %&gt; &lt;%@ Reference VirtualPath=&quot;~masterurl/custom.master&quot; %&gt;.
+            </summary>
+        </member>
+        <member name="T:SPMeta2.SSOM.WebPartPageTemplates">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd1">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd2">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd3">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd4">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd5">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd6">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd7">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartPageTemplates.spstd8">
+             <summary>
+               Looks up a localized string similar to &lt;%-- _lcid=&quot;1033&quot; _version=&quot;14.0.4762&quot; _dal=&quot;1&quot; --%&gt;
+            &lt;%-- _LocalBinding --%&gt;
+            &lt;%@ Page language=&quot;C#&quot; MasterPageFile=&quot;~masterurl/default.master&quot;    Inherits=&quot;Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=14.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c&quot;  %&gt; &lt;%@ Register Tagprefix=&quot;SharePoint&quot; Namespace=&quot;Microsoft.SharePoint.WebControls&quot; Assembly=&quot;Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot; %&gt; &lt;%@ Register Tagprefix=&quot;Utilities&quot;  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="T:SPMeta2.SSOM.WebPartTemplates">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartTemplates.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SPMeta2.SSOM.WebPartTemplates.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
