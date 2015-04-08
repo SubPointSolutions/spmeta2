@@ -12,6 +12,7 @@ namespace SPMeta2.Attributes.Regression
     public class ExpectRequired : Attribute
     {
         public string GroupName { get; set; }
+        public Type GroupType { get; set; }
     }
 
 

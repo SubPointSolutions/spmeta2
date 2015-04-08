@@ -69,6 +69,12 @@ namespace SPMeta2.Services.Impl
                 }
                 else
                 {
+                    // skip 'Web part content' for typed web part definitions
+                    //  a big todo
+
+                    if (group.Key == "Web part content" && (model.GetType() != typeof(WebPartDefinition)))
+                        continue;
+
                     var oneOfThem = OneOfThem(model, group.ToList());
 
                     if (!oneOfThem)

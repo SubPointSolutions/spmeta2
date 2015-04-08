@@ -20,7 +20,7 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     public class ClientWebPartDefinition : WebPartDefinition
     {
@@ -34,7 +34,7 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public Guid ProductId { get; set; }
 
-        [ExpectRequired]
+        //[ExpectRequired]
         [DataMember]
         public Guid ProductWebId { get; set; }
 
@@ -43,7 +43,6 @@ namespace SPMeta2.Definitions.Webparts
         public string WebPartName { get; set; }
 
         #endregion
-
 
         #region methods
 
