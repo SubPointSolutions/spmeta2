@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -35,6 +36,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public Guid ProductId { get; set; }
 
         [ExpectRequired]
@@ -42,6 +44,7 @@ namespace SPMeta2.Definitions
         /// Target application content.
         /// </summary>
         [DataMember]
+        [IdentityKey]
         public byte[] Content { get; set; }
 
         [ExpectRequired]
@@ -49,6 +52,7 @@ namespace SPMeta2.Definitions
         /// A valid Version string of the target application.
         /// </summary>
         [DataMember]
+        [IdentityKey]
         public string Version { get; set; }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using SPMeta2.Attributes.Regression;
+﻿using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace SPMeta2.Definitions.Base
     /// Base definition for SharePoint navigation nodes.
     /// </summary>
     /// 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     public abstract class NavigationNodeDefinitionBase : DefinitionBase
     {
@@ -35,6 +36,7 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string Title { get; set; }
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string Url { get; set; }
 
         /// <summary>

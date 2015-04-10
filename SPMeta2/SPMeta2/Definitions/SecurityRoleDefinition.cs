@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.ObjectModel;
@@ -44,6 +45,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
 
         [DataMember]
+        [IdentityKey]
         public string Name { get; set; }
 
         /// <summary>

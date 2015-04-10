@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
@@ -141,6 +142,46 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 if (!hasAttr)
                     result = false;
+            }
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.Identity")]
+        public void DefinitionsShouldHasIdentityOrIdentityKey()
+        {
+            var showOnlyFails = true;
+            var result = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var isSingleIdenity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+                var isInstanceIdentity = !definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+
+                if (isSingleIdenity)
+                {
+                    //Trace.WriteLine(string.Format("[{1}] - Checking SINGLE type:[{0}].", definitionType, bool.TrueString.ToUpper()));
+
+                    continue;
+                }
+
+                if (isInstanceIdentity)
+                {
+                    var hasKeys = definitionType
+                                        .GetProperties()
+                                        .SelectMany(p => p.GetCustomAttributes(typeof(IdentityKeyAttribute)))
+                                        .Any();
+                    if (!hasKeys)
+                    {
+                        Trace.WriteLine(string.Format("[{2}] - Checking INSTANCE type:[{0}]. Has keys:[{1}]",
+                            definitionType, hasKeys, hasKeys.ToString().ToUpper()));
+
+                    }
+
+                    if (!hasKeys)
+                        result = false;
+                }
             }
 
             Assert.IsTrue(result);

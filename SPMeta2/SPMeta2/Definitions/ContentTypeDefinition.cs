@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
@@ -35,6 +36,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired(GroupName = "ContentType Id")]
         [DataMember]
+        [IdentityKey]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired(GroupName = "ContentType Id")]
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string IdNumberValue { get; set; }
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string Name { get; set; }
 
         /// <summary>

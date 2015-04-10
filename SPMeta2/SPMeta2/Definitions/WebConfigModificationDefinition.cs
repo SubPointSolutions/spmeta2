@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Identity;
 
 namespace SPMeta2.Definitions
 {
@@ -31,7 +32,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
-
+        [IdentityKey]
         public string Name { get; set; }
 
         [ExpectValidation]

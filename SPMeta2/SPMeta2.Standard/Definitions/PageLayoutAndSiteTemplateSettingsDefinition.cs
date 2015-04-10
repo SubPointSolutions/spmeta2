@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -20,9 +21,11 @@ namespace SPMeta2.Standard.Definitions
 
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
-   
 
-    [Serializable] [DataContract]
+
+    [Serializable]
+    [DataContract]
+    [SingletonIdentity]
     public class PageLayoutAndSiteTemplateSettingsDefinition : DefinitionBase
     {
         #region constructors

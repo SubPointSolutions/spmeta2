@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -12,9 +13,11 @@ namespace SPMeta2.Definitions.ContentTypes
     public class ContentTypeLinkValue
     {
         [DataMember]
+        [IdentityKey]
         public string ContentTypeName { get; set; }
 
         [DataMember]
+        [IdentityKey]
         public string ContentTypeId { get; set; }
     }
 
@@ -46,7 +49,7 @@ namespace SPMeta2.Definitions.ContentTypes
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     public class UniqueContentTypeOrderDefinition : DefinitionBase
     {
@@ -62,6 +65,7 @@ namespace SPMeta2.Definitions.ContentTypes
         #region properties
 
         [DataMember]
+        [IdentityKey]
         public List<ContentTypeLinkValue> ContentTypes { get; set; }
 
         #endregion

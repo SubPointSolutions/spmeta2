@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -28,6 +29,7 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string AudienceName { get; set; }
 
         [ExpectValidation]

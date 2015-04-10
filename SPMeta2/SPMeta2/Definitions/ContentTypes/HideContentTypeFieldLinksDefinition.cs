@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -33,6 +34,7 @@ namespace SPMeta2.Definitions.ContentTypes
         #region properties
 
         [DataMember]
+        [IdentityKey]
         public List<FieldLinkValue> Fields { get; set; }
 
         #endregion

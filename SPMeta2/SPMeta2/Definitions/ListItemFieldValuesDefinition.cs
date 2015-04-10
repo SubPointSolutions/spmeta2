@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using System;
@@ -41,6 +42,7 @@ namespace SPMeta2.Definitions
         #region properties
 
         [DataMember]
+        [IdentityKey]
         public List<FieldValue> Values { set; get; }
 
         #endregion

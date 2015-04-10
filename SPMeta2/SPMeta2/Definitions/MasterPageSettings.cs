@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using System.Linq.Expressions;
@@ -30,6 +31,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string SiteMasterPageUrl { get; set; }
 
         [DataMember]
@@ -37,6 +39,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string SystemMasterPageUrl { get; set; }
 
         [DataMember]

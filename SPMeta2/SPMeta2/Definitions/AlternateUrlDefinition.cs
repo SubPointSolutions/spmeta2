@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
@@ -18,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebApplicationDefinition))]
     [DefaultParentHost(typeof(WebApplicationDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -28,10 +29,12 @@ namespace SPMeta2.Definitions
 
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string Url { get; set; }
 
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string UrlZone { get; set; }
 
         #endregion

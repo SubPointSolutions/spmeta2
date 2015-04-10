@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
@@ -40,10 +41,12 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string ServerName { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string DbName { get; set; }
 
         [DataMember]

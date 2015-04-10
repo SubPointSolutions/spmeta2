@@ -1,5 +1,6 @@
 ﻿
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
@@ -35,6 +36,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string ContentTypeId { get; set; }
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired(GroupName = "ContentType Link")]
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string ContentTypeName { get; set; }
 
         #endregion

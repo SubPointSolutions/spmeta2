@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -17,6 +19,7 @@ namespace SPMeta2.Standard.Definitions
 
     [Serializable]
     [DataContract]
+    [SingletonIdentity]
     public class WebNavigationSettingsDefinition : DefinitionBase
     {
         #region constructors
