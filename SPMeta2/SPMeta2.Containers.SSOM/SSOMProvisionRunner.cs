@@ -22,6 +22,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Services;
 using SPMeta2.SSOM.Standard.ModelHandlers.Webparts;
 using SPMeta2.Utils;
+using SPMeta2.Services.Impl;
 
 namespace SPMeta2.Containers.SSOM
 {
@@ -45,6 +46,9 @@ namespace SPMeta2.Containers.SSOM
         {
             _provisionService = new SSOMProvisionService();
             _validationService = new SSOMValidationService();
+
+            // TODO, setup a high level validation registration
+            _provisionService.PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
 
             var ssomStandartAsm = typeof(ContactFieldControlModelHandler).Assembly;
 

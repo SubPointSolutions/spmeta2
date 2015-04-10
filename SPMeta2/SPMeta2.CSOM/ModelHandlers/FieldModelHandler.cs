@@ -418,23 +418,35 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // missed in CSOM
 
-            //if (definition.AllowDeletion.HasValue)
-            //    field.AllowDeletion = definition.AllowDeletion.Value;
+            // NASTY CALLS
+            // http://sharepoint.stackexchange.com/questions/94911/hide-a-field-in-list-when-new-item-created-but-show-it-when-edit
 
             if (definition.ShowInEditForm.HasValue)
+            {
                 field.SetShowInEditForm(definition.ShowInEditForm.Value);
+                field.Context.ExecuteQueryWithTrace();
+            }
 
             if (definition.ShowInDisplayForm.HasValue)
+            {
                 field.SetShowInDisplayForm(definition.ShowInDisplayForm.Value);
+                field.Context.ExecuteQueryWithTrace();
+            }
+
+            if (definition.ShowInNewForm.HasValue)
+            {
+                field.SetShowInNewForm(definition.ShowInNewForm.Value);
+                field.Context.ExecuteQueryWithTrace();
+            }
+
+            //if (definition.AllowDeletion.HasValue)
+            //    field.AllowDeletion = definition.AllowDeletion.Value;
 
             //if (definition.ShowInListSettings.HasValue)
             //    field.ShowInListSettings = definition.ShowInListSettings.Value;
 
             //if (definition.ShowInViewForms.HasValue)
             //    field.ShowInViewForms = definition.ShowInViewForms.Value;
-
-            if (definition.ShowInNewForm.HasValue)
-                field.SetShowInNewForm(definition.ShowInNewForm.Value);
 
             //if (definition.ShowInVersionHistory.HasValue)
             //    field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
