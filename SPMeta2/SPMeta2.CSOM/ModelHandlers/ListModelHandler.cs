@@ -381,6 +381,23 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (definition.OnQuickLaunch.HasValue)
                 list.OnQuickLaunch = definition.OnQuickLaunch.Value;
+
+            if (definition.MajorVersionLimit.HasValue)
+            {
+                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+
+                //list.MajorVersionLimit = definition.MajorVersionLimit.Value;
+            }
+
+            if (definition.MajorWithMinorVersionsLimit.HasValue)
+            {
+                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+
+
+                //list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
+            }
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)

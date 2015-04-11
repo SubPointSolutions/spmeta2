@@ -188,6 +188,31 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(m => m.TemplateName, "TemplateName is null or empty. Skipping.");
             }
+
+
+
+            if (definition.MajorVersionLimit.HasValue)
+            {
+                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+
+                //assert.ShouldBeEqual(m => m.MajorVersionLimit, o => o.MajorVersionLimit);
+            }
+            else
+                assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
+
+
+            if (definition.MajorWithMinorVersionsLimit.HasValue)
+            {
+                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+
+                // assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
+            }
+            else
+                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
+                    "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
+
         }
     }
 

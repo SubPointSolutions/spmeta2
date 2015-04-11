@@ -162,6 +162,18 @@ namespace SPMeta2.Regression.SSOM.Validation
                     };
                 });
             }
+
+
+            if (definition.MajorVersionLimit.HasValue)
+                assert.ShouldBeEqual(m => m.MajorVersionLimit, o => o.MajorVersionLimit);
+            else
+                assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
+
+
+            if (definition.MajorWithMinorVersionsLimit.HasValue)
+                assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
+            else
+                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit, "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
         }
     }
 

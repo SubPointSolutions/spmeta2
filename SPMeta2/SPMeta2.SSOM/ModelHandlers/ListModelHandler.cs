@@ -186,6 +186,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.OnQuickLaunch.HasValue)
                 list.OnQuickLaunch = definition.OnQuickLaunch.Value;
+
+            if (definition.MajorVersionLimit.HasValue)
+                list.MajorVersionLimit = definition.MajorVersionLimit.Value;
+
+            if (definition.MajorWithMinorVersionsLimit.HasValue)
+                list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
         }
 
         private SPList GetOrCreateList(

@@ -19,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHostAttribute(typeof(WebDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -190,6 +190,23 @@ namespace SPMeta2.Definitions
         //[ExpectUpdate]
         [DataMember]
         public bool? OnQuickLaunch { get; set; }
+
+        /// <summary>
+        /// The maximum number of major versions allowed for an item in a document library that uses version control with major versions only.
+        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+        /// </summary>
+        [ExpectValidation]
+        public int? MajorVersionLimit { get; set; }
+
+        /// <summary>
+        /// The maximum number of major versions that are allowed for an item in a document library that uses version control with both major and minor versions.
+        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+        /// </summary>
+        [ExpectValidation]
+
+        public int? MajorWithMinorVersionsLimit { get; set; }
 
         #endregion
 
