@@ -45,7 +45,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
-                if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
+                if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
+                    || childModelType == typeof(DeleteWebPartsDefinition))
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {

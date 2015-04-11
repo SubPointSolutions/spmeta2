@@ -89,7 +89,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug45\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-     <DocumentationFile>bin\Debug45\SPMeta2.SSOM.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug45\SPMeta2.SSOM.XML</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -173,6 +173,7 @@
     <Compile Include="Extensions\WebPartExtensions.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
     <Compile Include="ModelHandlers\AlternateUrlModelHandler.cs" />
     <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />

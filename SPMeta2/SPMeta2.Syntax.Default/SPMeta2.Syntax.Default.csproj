@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteWebPartsDefinitionSyntax.cs" />
     <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
     <Compile Include="ListItemFieldValuesDefinitionSyntax.cs" />
     <Compile Include="WebPartGalleryFileDefinitionSyntax.cs" />

@@ -147,7 +147,7 @@
       <Name>SPMeta2.Containers.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
-      <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
+      <Project>{091c48fb-27e3-4f84-897c-5de7bb55a2d3}</Project>
       <Name>SPMeta2.Containers</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Behaviours\SPMeta2.CSOM.Behaviours.csproj">

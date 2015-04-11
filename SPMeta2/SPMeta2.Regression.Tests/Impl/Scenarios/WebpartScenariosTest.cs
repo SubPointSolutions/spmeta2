@@ -12,6 +12,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Definitions;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
 
@@ -263,6 +264,136 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(webModel);
         }
 
+        #endregion
+
+        #region deleting
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Deletion")]
+        public void CanDeploy_DeleteWebpartFromWebpartPage()
+        {
+            var wpPage = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>();
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddWebPartPage(wpPage, page =>
+                                {
+                                    page
+                                        .AddRandomWebpart()
+                                        .AddRandomWebpart();
+                                });
+                        });
+
+                });
+
+            var deleteModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                               .AddHostWebPartPage(wpPage, page =>
+                               {
+                                   page
+                                       .AddDeleteWebParts(new DeleteWebPartsDefinition());
+                               });
+                        });
+
+                });
+
+            TestModel(model, deleteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Deletion")]
+        public void CanDeploy_DeleteWebpartFromPublishingPage()
+        {
+            var wpPage = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>();
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.Pages, list =>
+                        {
+                            list
+                                .AddPublishingPage(wpPage, page =>
+                                {
+                                    page
+                                        .AddRandomWebpart()
+                                        .AddRandomWebpart();
+                                });
+                        });
+
+                });
+
+            var deleteModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.Pages, list =>
+                        {
+                            list
+                               .AddHostPublishingPage(wpPage, page =>
+                               {
+                                   page
+                                       .AddDeleteWebParts(new DeleteWebPartsDefinition());
+                               });
+                        });
+
+                });
+
+            TestModel(model, deleteModel);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Deletion")]
+        public void CanDeploy_DeleteWebpartFromWikiPage()
+        {
+            var wpPage = ModelGeneratorService.GetRandomDefinition<WikiPageDefinition>();
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddWikiPage(wpPage, page =>
+                                {
+                                    page
+                                        .AddRandomWebpart()
+                                        .AddRandomWebpart();
+                                });
+                        });
+
+                });
+
+            var deleteModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                               .AddHostWikiPage(wpPage, page =>
+                               {
+                                   page
+                                       .AddDeleteWebParts(new DeleteWebPartsDefinition());
+                               });
+                        });
+
+                });
+
+            TestModel(model, deleteModel);
+        }
         #endregion
     }
 

@@ -832,6 +832,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<PublishingPageDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Pages")]
+        public void CanDeployRandom_DeleteWebPartsDefinition()
+        {
+            TestRandomDefinition<DeleteWebPartsDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Pages")]
