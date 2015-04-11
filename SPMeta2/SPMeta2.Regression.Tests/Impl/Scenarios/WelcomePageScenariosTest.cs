@@ -113,6 +113,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WelcomePage.Fixes")]
+        public void CanDeploy_WelcomePage_WithStartingSlash()
+        {
+            var listDefinition = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var welcomePage = ModelGeneratorService.GetRandomDefinition<WelcomePageDefinition>(def =>
+            {
+                def.Url = string.Format("/{0}.aspx", RegressionService.RndService.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDefinition, list =>
+                {
+                    list.AddRandomFolder(folder =>
+                    {
+                        folder.AddWelcomePage(welcomePage);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
         #endregion
     }
 }

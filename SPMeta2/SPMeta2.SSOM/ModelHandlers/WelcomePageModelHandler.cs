@@ -44,7 +44,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Changing welcome page to: [{0}]", welcomePgaeModel.Url);
-            folder.WelcomePage = welcomePgaeModel.Url;
+            
+            // https://github.com/SubPointSolutions/spmeta2/issues/431
+            folder.WelcomePage = UrlUtility.RemoveStartingSlash(welcomePgaeModel.Url);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

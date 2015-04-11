@@ -56,7 +56,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Changing welcome page to: [{0}]", welcomePgaeModel.Url);
 
-            folder.WelcomePage = welcomePgaeModel.Url;
+            // https://github.com/SubPointSolutions/spmeta2/issues/431
+            folder.WelcomePage = UrlUtility.RemoveStartingSlash(welcomePgaeModel.Url);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -74,6 +75,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             folder.Update();
 
             context.ExecuteQueryWithTrace();
+        }
+
+        private static string ProcessWelcomeUrl(string welcomeUrl)
+        {
+            return UrlUtility.RemoveStartingSlash(welcomeUrl);
         }
 
         protected Folder ExtractFolderFromModelHost(object modelHost)

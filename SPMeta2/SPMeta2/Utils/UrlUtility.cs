@@ -8,6 +8,19 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        public static string RemoveStartingSlash(string url)
+        {
+            var result = url;
+
+            while (result.StartsWith("/"))
+                result = result.Remove(0);
+
+            if (result.StartsWith(@"\"))
+                result = result.Remove(0);
+
+            return result;
+        }
+
         public static string CombineUrl(IEnumerable<string> urls)
         {
             var items = urls.ToList();
