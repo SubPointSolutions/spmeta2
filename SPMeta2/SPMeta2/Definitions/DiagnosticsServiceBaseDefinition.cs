@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
@@ -27,6 +28,7 @@ namespace SPMeta2.Definitions
 
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string AssemblyQualifiedName { get; set; }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
@@ -73,6 +74,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKeyAttribute]
         public string PolicyTitle { get; set; }
 
         #endregion

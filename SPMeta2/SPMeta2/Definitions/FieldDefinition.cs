@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
@@ -98,6 +99,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string InternalName { get; set; }
 
         /// <summary>
@@ -135,6 +137,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public Guid Id { get; set; }
 
         /// <summary>

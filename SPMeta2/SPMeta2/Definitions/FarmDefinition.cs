@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Attributes;
@@ -20,6 +21,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectAddHostExtensionMethod]
+    [SingletonIdentity]
     public class FarmDefinition : DefinitionBase
     {
         #region properties

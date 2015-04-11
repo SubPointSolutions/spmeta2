@@ -1,5 +1,6 @@
 ﻿using System;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -28,14 +29,17 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string Name { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public Guid? Id { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public bool IsSiteCollectionGroup { get; set; }
 
         //public bool IsSystemGroup { get; set; }

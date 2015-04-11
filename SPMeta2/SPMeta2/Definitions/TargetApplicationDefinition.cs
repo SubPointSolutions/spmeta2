@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
@@ -52,7 +53,9 @@ namespace SPMeta2.Definitions
         #region properties
 
         [DataMember]
+        [IdentityKey]
         public string ApplicationId { get; set; }
+      
         [DataMember]
         public string Name { get; set; }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Attributes;
@@ -48,6 +49,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public string Name { get; set; }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -17,7 +18,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     public class AppPrincipalDefinition : DefinitionBase
@@ -28,6 +29,7 @@ namespace SPMeta2.Definitions
         public string Title { get; set; }
 
         [DataMember]
+        [IdentityKey]
         public string AppId { get; set; }
 
         [DataMember]

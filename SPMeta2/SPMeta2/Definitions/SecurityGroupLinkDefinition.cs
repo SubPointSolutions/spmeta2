@@ -1,5 +1,6 @@
 ﻿using System;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
@@ -36,6 +37,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string SecurityGroupName { get; set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public bool IsAssociatedVisitorGroup { get; set; }
 
         /// <summary>
@@ -52,6 +55,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public bool IsAssociatedMemberGroup { get; set; }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public bool IsAssociatedOwnerGroup { get; set; }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using System;
@@ -39,6 +40,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired(GroupName = "Field")]
         [DataMember]
+        [IdentityKey]
         public string FieldName { get; set; }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired(GroupName = "Field")]
         [DataMember]
-
+        [IdentityKey]
         public Guid? FieldId { get; set; }
 
         /// <summary>

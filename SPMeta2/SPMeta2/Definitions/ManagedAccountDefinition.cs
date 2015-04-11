@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string LoginName { get; set; }
 
         #endregion

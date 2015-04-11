@@ -9,6 +9,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Identity;
 
 namespace SPMeta2.Definitions
 {
@@ -43,6 +44,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public Guid FieldId { get; set; }
 
         [ExpectValidation]

@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
@@ -61,6 +62,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string Url { get; set; }
 
         /// <summary>
@@ -69,6 +71,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string PrefixName { get; set; }
 
         /// <summary>

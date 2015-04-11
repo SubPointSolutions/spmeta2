@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System.Runtime.Serialization;
 
@@ -21,7 +22,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [DataContract]
-
+    [SingletonIdentity]
     public class ResetRoleInheritanceDefinition : DefinitionBase
     {
         #region properties
