@@ -278,6 +278,11 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
             }
 
+            if (definition.EnforceUniqueValues.HasValue)
+                assert.ShouldBeEqual(m => m.EnforceUniqueValues, o => o.EnforceUniqueValues);
+            else
+                assert.SkipProperty(m => m.EnforceUniqueValues, "EnforceUniqueValues is NULL");
+
             if (definition.ShowInDisplayForm.HasValue)
                 assert.ShouldBeEqual(m => m.ShowInDisplayForm, o => o.GetShowInDisplayForm());
             else

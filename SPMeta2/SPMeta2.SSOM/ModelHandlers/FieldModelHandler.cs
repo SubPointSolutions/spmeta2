@@ -360,6 +360,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.DefaultValue))
                 field.DefaultValue = definition.DefaultValue;
 
+            if (definition.EnforceUniqueValues.HasValue)
+                field.EnforceUniqueValues = definition.EnforceUniqueValues.Value;
+
             field.Indexed = definition.Indexed;
 
 #if !NET35

@@ -209,6 +209,12 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool? AllowDeletion { get; set; }
 
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? EnforceUniqueValues { get; set; }
+
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]

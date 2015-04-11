@@ -181,6 +181,12 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
 
+            if (definition.EnforceUniqueValues.HasValue)
+                assert.ShouldBeEqual(m => m.EnforceUniqueValues, o => o.EnforceUniqueValues);
+            else
+                assert.SkipProperty(m => m.EnforceUniqueValues, "EnforceUniqueValues is NULL");
+
+
             if (!string.IsNullOrEmpty(definition.ValidationFormula))
                 assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
             else
