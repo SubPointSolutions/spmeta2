@@ -21,14 +21,17 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = GetExistingWeb(hostClientContext.Site, parentWeb, currentWebUrl);
             var context = spObject.Context;
 
-            if (!spObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))
-                context.Load(spObject, o => o.HasUniqueRoleAssignments);
-
-            if (!spObject.IsObjectPropertyInstantiated("Description"))
-                context.Load(spObject, o => o.Description);
-
-            if (!spObject.IsObjectPropertyInstantiated("Url"))
-                context.Load(spObject, o => o.Url);
+            context.Load(spObject,
+                            w => w.HasUniqueRoleAssignments,
+                            w => w.Description,
+                            w => w.Url,
+                            w => w.Language,
+                            w => w.WebTemplate,
+                            w => w.Configuration,
+                            w => w.Title,
+                            w => w.Id,
+                            w => w.Url
+                        );
 
             context.ExecuteQuery();
 

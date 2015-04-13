@@ -112,13 +112,30 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
         #endregion
 
-        public static TermSet LookupTermSet(SiteModelHost currentSiteModelHost, TermStore termStore, TaxonomyFieldDefinition taxFieldModel)
+        public static TermSet LookupTermSet(
+            SiteModelHost currentSiteModelHost,
+            TermStore termStore,
+            TaxonomyFieldDefinition taxFieldModel)
         {
             var storeContext = currentSiteModelHost.HostClientContext;
 
-            if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
+            return LookupTermSet(storeContext, termStore, taxFieldModel);
+        }
+
+        public static TermSet LookupTermSet(ClientRuntimeContext context, TermStore termStore, TaxonomyFieldDefinition taxFieldModel)
+        {
+            return LookupTermSet(context, termStore,
+                taxFieldModel.TermSetName, taxFieldModel.TermSetId, taxFieldModel.TermSetLCID);
+        }
+
+        public static TermSet LookupTermSet(ClientRuntimeContext context, TermStore termStore,
+            string termSetName, Guid? termSetId, int termSetLCID)
+        {
+            var storeContext = context;
+
+            if (!string.IsNullOrEmpty(termSetName))
             {
-                var termSets = termStore.GetTermSetsByName(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID);
+                var termSets = termStore.GetTermSetsByName(termSetName, termSetLCID);
 
                 storeContext.Load(termSets);
                 storeContext.ExecuteQueryWithTrace();
@@ -126,7 +143,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 return termSets.FirstOrDefault();
             }
 
-            if (taxFieldModel.TermSetId.HasValue)
+            if (termSetId.HasGuidValue())
             {
                 TermSet termSet = null;
 
@@ -135,7 +152,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 {
                     using (scope.StartTry())
                     {
-                        termSet = termStore.GetTermSet(taxFieldModel.TermSetId.Value);
+                        termSet = termStore.GetTermSet(termSetId.Value);
                         storeContext.Load(termSet);
                     }
 

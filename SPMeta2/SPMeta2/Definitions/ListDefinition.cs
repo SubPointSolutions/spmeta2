@@ -196,6 +196,7 @@ namespace SPMeta2.Definitions
         /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
+        [DataMember]
         [ExpectValidation]
         public int? MajorVersionLimit { get; set; }
 
@@ -204,6 +205,7 @@ namespace SPMeta2.Definitions
         /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
+        [DataMember]
         [ExpectValidation]
 
         public int? MajorWithMinorVersionsLimit { get; set; }

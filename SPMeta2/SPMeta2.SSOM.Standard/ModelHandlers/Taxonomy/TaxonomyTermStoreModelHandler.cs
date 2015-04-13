@@ -13,6 +13,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHosts;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using Microsoft.SharePoint;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 {
@@ -47,25 +48,30 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         protected TermStore FindTermStore(SiteModelHost siteModelHost, TaxonomyTermStoreDefinition termStoreModel)
         {
-            var site = siteModelHost.HostSite;
+            return FindTermStore(siteModelHost.HostSite,
+                termStoreModel.Name, termStoreModel.Id, termStoreModel.UseDefaultSiteCollectionTermStore);
+        }
 
+        internal static TermStore FindTermStore(SPSite site,
+            string termStorename, Guid? termStoreId, bool? useDefaultSiteCollectionTermStore)
+        {
             var session = new TaxonomySession(site);
             TermStore termStore = null;
 
-            if (termStoreModel.UseDefaultSiteCollectionTermStore == true)
+            if (useDefaultSiteCollectionTermStore.HasValue && useDefaultSiteCollectionTermStore.Value == true)
             {
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store as useDefaultSiteCollectionTermStore");
                 termStore = session.DefaultSiteCollectionTermStore;
             }
-            else if (termStoreModel.Id.HasValue && termStoreModel.Id != default(Guid))
+            else if (termStoreId.HasGuidValue())
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by ID: [{0}]", termStoreModel.Id);
-                termStore = session.TermStores[termStoreModel.Id.Value];
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by ID: [{0}]", termStoreId.Value);
+                termStore = session.TermStores[termStoreId.Value];
             }
-            else if (!string.IsNullOrEmpty(termStoreModel.Name))
+            else if (!string.IsNullOrEmpty(termStorename))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by Name: [{0}]", termStoreModel.Name);
-                termStore = session.TermStores[termStoreModel.Name];
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving Term Store by Name: [{0}]", termStorename);
+                termStore = session.TermStores[termStorename];
             }
 
 

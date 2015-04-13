@@ -30,7 +30,6 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public TaxonomyTermSetDefinition()
         {
             LCID = 1033;
-            IsAvailableForTagging = true;
         }
 
         #endregion
@@ -61,12 +60,12 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
-        public bool IsAvailableForTagging { get; set; }
+        public bool? IsAvailableForTagging { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
-        public bool IsOpenForTermCreation { get; set; }
+        public bool? IsOpenForTermCreation { get; set; }
 
         #endregion
 

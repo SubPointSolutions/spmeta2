@@ -82,11 +82,20 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
 
         public static TermSet LookupTermSet(TermStore tesmStore, TaxonomyFieldDefinition taxFieldModel)
         {
-            if (taxFieldModel.TermSetId.HasValue)
-                return tesmStore.GetTermSet(taxFieldModel.TermSetId.Value);
+            return LookupTermSet(tesmStore,
+                taxFieldModel.TermSetName,
+                taxFieldModel.TermSetId,
+                taxFieldModel.TermSetLCID
+                );
+        }
 
-            if (!string.IsNullOrEmpty(taxFieldModel.TermSetName))
-                return tesmStore.GetTermSets(taxFieldModel.TermSetName, taxFieldModel.TermSetLCID).FirstOrDefault();
+        public static TermSet LookupTermSet(TermStore tesmStore, string termSetName, Guid? termSetId, int termSetLCID)
+        {
+            if (termSetId.HasGuidValue())
+                return tesmStore.GetTermSet(termSetId.Value);
+
+            if (!string.IsNullOrEmpty(termSetName))
+                return tesmStore.GetTermSets(termSetName, termSetLCID).FirstOrDefault();
 
             return null;
         }
@@ -108,5 +117,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
         }
 
         #endregion
+
+
     }
 }

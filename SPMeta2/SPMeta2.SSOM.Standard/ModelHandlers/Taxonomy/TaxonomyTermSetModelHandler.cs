@@ -117,8 +117,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         {
             currentTermSet.Description = termSetModel.Description;
 
-            currentTermSet.IsOpenForTermCreation = termSetModel.IsOpenForTermCreation;
-            currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging;
+            if (termSetModel.IsOpenForTermCreation.HasValue)
+                currentTermSet.IsOpenForTermCreation = termSetModel.IsOpenForTermCreation.Value;
+
+            if (termSetModel.IsAvailableForTagging.HasValue)
+                currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging.Value;
         }
 
         protected TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)

@@ -23,14 +23,14 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
     {
         #region properties
 
-        [TestMethod]
-        [TestCategory("Regression.Definitions.TaxonomyTermSetDefinition")]
-        public void TaxonomyTermSetDefinition_ShouldHave_IsAvailableForTagging_As_True()
-        {
-            var def = new TaxonomyTermSetDefinition();
+        //[TestMethod]
+        //[TestCategory("Regression.Definitions.TaxonomyTermSetDefinition")]
+        //public void TaxonomyTermSetDefinition_ShouldHave_IsAvailableForTagging_As_True()
+        //{
+        //    var def = new TaxonomyTermSetDefinition();
 
-            Assert.IsTrue(def.IsAvailableForTagging);
-        }
+        //    //Assert.IsTrue(def.IsAvailableForTagging);
+        //}
 
         #endregion
     }
