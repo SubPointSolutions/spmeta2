@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions
@@ -17,6 +18,7 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [DataContract]
+    [SingletonIdentity]
     public class DeleteWebPartsDefinition : DefinitionBase
     {
         #region constructors
