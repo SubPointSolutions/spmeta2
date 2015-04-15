@@ -99,7 +99,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group");
 
-                web.SiteGroups.Add(securityGroupModel.Name, ownerUser, defaultUser, securityGroupModel.Description);
+                web.SiteGroups.Add(securityGroupModel.Name, ownerUser, defaultUser, securityGroupModel.Description ?? string.Empty);
                 currentGroup = web.SiteGroups[securityGroupModel.Name];
             }
 
@@ -135,7 +135,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(securityGroupModel.Owner))
                 currentGroup.Owner = EnsureOwnerUser(web, securityGroupModel.Owner);
 
-            currentGroup.Description = securityGroupModel.Description;
+            currentGroup.Description = securityGroupModel.Description ?? string.Empty;
 
             if (securityGroupModel.AllowMembersEditMembership.HasValue)
                 currentGroup.AllowMembersEditMembership = securityGroupModel.AllowMembersEditMembership.Value;

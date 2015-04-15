@@ -27,9 +27,13 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                        .NewAssert(definition, spObject)
                              .ShouldBeEqual(m => m.Name, o => o.Name)
-                             .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership)
-                             .ShouldBeEqual(m => m.Description, o => o.Description);
+                             .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership);
+            //ShouldBeEqual(m => m.Description, o => o.Description);
 
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description, "Description is NULL. Skipping.");
 
             if (definition.AllowMembersEditMembership.HasValue)
                 assert.ShouldBeEqual(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership);

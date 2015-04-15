@@ -28,11 +28,16 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = FindSecurityGroupByTitle(web.SiteGroups, definition.Name);
 
             var assert = ServiceFactory.AssertService
-                       .NewAssert(definition, spObject)
-                             .ShouldNotBeNull(spObject)
-                             .ShouldBeEqual(m => m.Name, o => o.Title)
-                             .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership)
-                             .ShouldBeEqual(m => m.Description, o => o.Description);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.Name, o => o.Title)
+                .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership);
+                             //.ShouldBeEqual(m => m.Description, o => o.Description);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description, "Description is NULL. Skipping.");
 
             if (definition.AllowMembersEditMembership.HasValue)
                 assert.ShouldBeEqual(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership);
