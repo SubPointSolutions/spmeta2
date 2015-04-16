@@ -123,6 +123,7 @@
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ResultScriptWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SummaryLinkWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInPublishingContentTypeNames.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
+    <Compile Include="Syntax\ResultScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\SummaryLinkWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\HTMLFieldDefinitionSyntax.cs" />

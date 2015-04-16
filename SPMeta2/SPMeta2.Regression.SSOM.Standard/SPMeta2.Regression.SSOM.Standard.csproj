@@ -124,6 +124,7 @@
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
