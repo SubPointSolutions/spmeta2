@@ -71,6 +71,16 @@ namespace SPMeta2.SSOM.Services
 
     public static class SSOMProvisionServiceExtensions
     {
+        public static void DeployFarmModel(this SSOMProvisionService modelHost, SPFarm farm, ModelNode model)
+        {
+            modelHost.DeployModel(FarmModelHost.FromFarm(farm), model);
+        }
+
+        public static void DeployWebApplicationModel(this SSOMProvisionService modelHost, SPWebApplication webApplication, ModelNode model)
+        {
+            modelHost.DeployModel(WebApplicationModelHost.FromWebApplication(webApplication), model);
+        }
+
         public static void DeploySiteModel(this SSOMProvisionService modelHost, SPSite site, ModelNode model)
         {
             modelHost.DeployModel(SiteModelHost.FromSite(site), model);
