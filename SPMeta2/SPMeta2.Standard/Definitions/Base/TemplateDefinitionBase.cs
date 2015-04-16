@@ -16,6 +16,7 @@ namespace SPMeta2.Standard.Definitions.Base
         [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         [ExpectUpdate]

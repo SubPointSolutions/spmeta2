@@ -46,10 +46,12 @@ namespace SPMeta2.Standard.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string ContentTypeName { get; set; }
 
         /// <summary>
@@ -59,6 +61,7 @@ namespace SPMeta2.Standard.Definitions
         //[ExpectValidation]
 
         [DataMember]
+        [ExpectNullable]
         public string Content { get; set; }
 
         #endregion

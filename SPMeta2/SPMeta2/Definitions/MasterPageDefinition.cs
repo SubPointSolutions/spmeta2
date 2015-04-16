@@ -46,6 +46,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         [ExpectValidation]
@@ -56,6 +57,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string DefaultCSSFile { get; set; }
 
         [ExpectValidation]

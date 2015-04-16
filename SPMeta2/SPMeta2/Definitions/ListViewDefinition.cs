@@ -82,6 +82,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdateAsCamlQuery]
         [DataMember]
+        [ExpectNullable]
         public string Query { get; set; }
 
         /// <summary>
@@ -119,6 +120,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string JSLink { get; set; }
 
         [ExpectValidation]

@@ -103,14 +103,17 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string LookupList { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string LookupListTitle { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string LookupListUrl { get; set; }
 
         /// <summary>
@@ -119,6 +122,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string LookupField { get; set; }
 
         #endregion

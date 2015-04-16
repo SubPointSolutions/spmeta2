@@ -104,6 +104,7 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string RichTextMode { get; set; }
 
         [ExpectValidation]

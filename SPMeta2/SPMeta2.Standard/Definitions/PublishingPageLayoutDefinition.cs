@@ -53,6 +53,7 @@ namespace SPMeta2.Standard.Definitions
         [ExpectUpdateAsPublishingPageContentType]
         [ExpectRequired]
         [DataMember]
+        [ExpectNullable]
         public string AssociatedContentTypeId { get; set; }
 
         #endregion

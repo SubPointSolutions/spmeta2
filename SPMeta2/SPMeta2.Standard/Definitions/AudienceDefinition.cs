@@ -34,6 +34,7 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string AudienceDescription { get; set; }
 
         #endregion

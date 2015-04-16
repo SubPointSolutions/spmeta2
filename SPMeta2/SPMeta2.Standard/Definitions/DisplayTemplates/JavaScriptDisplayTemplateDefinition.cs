@@ -44,17 +44,20 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
         [ExpectUpdateAsUrl(Extension = "png")]
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string IconUrl { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string IconDescription { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [ExpectNullable]
         public string Standalone { get; set; }
 
         [ExpectUpdate]

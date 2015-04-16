@@ -29,11 +29,13 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [DataMember]
         [IdentityKey]
+        [ExpectNullable]
         public string Title { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         #endregion

@@ -58,6 +58,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Title { get; set; }
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         /// <summary>

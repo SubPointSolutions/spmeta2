@@ -54,6 +54,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]
+        [ExpectNullable]
         public string Description { get; set; }
 
         /// <summary>

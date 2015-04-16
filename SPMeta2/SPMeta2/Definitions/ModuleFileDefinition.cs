@@ -44,10 +44,12 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string ContentTypeId { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string ContentTypeName { get; set; }
 
         [ExpectValidation]

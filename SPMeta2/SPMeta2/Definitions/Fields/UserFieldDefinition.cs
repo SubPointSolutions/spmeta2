@@ -83,6 +83,7 @@ namespace SPMeta2.Definitions.Fields
         /// Name of the target security group.
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string SelectionGroupName { get; set; }
 
         /// <summary>

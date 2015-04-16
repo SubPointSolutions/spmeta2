@@ -24,11 +24,13 @@ namespace SPMeta2.Standard.Definitions.Base
         [ExpectUpdateAsUrl(Extension = "xslt")]
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string PreviewURL { get; set; }
 
         [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string PreviewDescription { get; set; }
     }
 }

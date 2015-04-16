@@ -100,6 +100,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Data { get; set; }
 
         #endregion

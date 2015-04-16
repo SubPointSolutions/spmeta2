@@ -49,10 +49,12 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Description { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string Query { get; set; }
 
         [ExpectValidation]
