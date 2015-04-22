@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -20,13 +21,32 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
     public class ScriptEditorWebPartDefinition : WebPartDefinition
     {
         #region properties
+
+        private string id;
+
+        [DataMember]
+        public override string Id
+        {
+            get { return id; }
+            set
+            {
+                // https://github.com/SubPointSolutions/spmeta2/issues/450
+                if (string.IsNullOrEmpty(value) || value.Length < 32)
+                {
+                    throw new SPMeta2InvalidDefinitionPropertyException(
+                        "Id property for ScriptEditorWebPartDefinition must be more than 32 symbols - https://github.com/SubPointSolutions/spmeta2/issues/450");
+                }
+
+                id = value;
+            }
+        }
 
         [DataMember]
         public string Content { get; set; }
@@ -39,7 +59,7 @@ namespace SPMeta2.Definitions.Webparts
         {
             return new ToStringResult<ScriptEditorWebPartDefinition>(this, base.ToString())
                           .AddPropertyValue(p => p.Content)
-                          
+
                           .ToString();
         }
 

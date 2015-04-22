@@ -19,8 +19,8 @@ namespace SPMeta2.BuiltInDefinitions
 
         public static MasterPageSettingsDefinition Oslo = new MasterPageSettingsDefinition
         {
-            SiteMasterPageUrl = "/_catalogs/masterpage/seattle.master",
-            SystemMasterPageUrl = "/_catalogs/masterpage/seattle.master"
+            SiteMasterPageUrl = "/_catalogs/masterpage/oslo.master",
+            SystemMasterPageUrl = "/_catalogs/masterpage/oslo.master"
         };
 
         public static MasterPageSettingsDefinition Minimal = new MasterPageSettingsDefinition

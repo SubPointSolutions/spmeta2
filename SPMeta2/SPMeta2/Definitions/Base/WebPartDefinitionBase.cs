@@ -33,7 +33,7 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         /// <summary>
         /// ZoneId of the target web part.

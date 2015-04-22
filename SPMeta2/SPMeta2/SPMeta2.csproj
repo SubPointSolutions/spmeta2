@@ -253,6 +253,7 @@
     <Compile Include="Events\ModelNodeProcessingEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessingEventArgs.cs" />
     <Compile Include="Exceptions\SPMeta2Exception.cs" />
+    <Compile Include="Exceptions\SPMeta2InvalidDefinitionPropertyException.cs" />
     <Compile Include="Exceptions\SPMeta2ModelDeploymentException.cs" />
     <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
     <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
