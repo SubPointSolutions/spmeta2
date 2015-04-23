@@ -46,7 +46,16 @@ namespace SPMeta2.Standard.Definitions.Webparts
         public string WebUrl { get; set; }
 
         [DataMember]
+        public string ContentTypeBeginsWithId { get; set; }
+
+        [DataMember]
         public Guid? ListGuid { get; set; }
+
+        [DataMember]
+        public Guid? ListUrl { get; set; }
+
+        [DataMember]
+        public Guid? ListName { get; set; }
 
         [DataMember]
         public string ItemStyle { get; set; }
@@ -62,6 +71,42 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         public string ItemXslLink { get; set; }
+
+        [DataMember]
+        public string FilterValue1 { get; set; }
+
+        [DataMember]
+        public string FilterValue2 { get; set; }
+
+        [DataMember]
+        public string FilterValue3 { get; set; }
+
+        [DataMember]
+        public string FilterDisplayValue1 { get; set; }
+
+        [DataMember]
+        public string FilterDisplayValue2 { get; set; }
+
+        [DataMember]
+        public string FilterDisplayValue3 { get; set; }
+
+        [DataMember]
+        public string FilterType1 { get; set; }
+
+        [DataMember]
+        public string FilterType2 { get; set; }
+
+        [DataMember]
+        public string FilterType3 { get; set; }
+
+        [DataMember]
+        public string FilterOperator1 { get; set; }
+
+        [DataMember]
+        public string FilterOperator2 { get; set; }
+
+        [DataMember]
+        public string FilterOperator3 { get; set; }
 
         #endregion
 
