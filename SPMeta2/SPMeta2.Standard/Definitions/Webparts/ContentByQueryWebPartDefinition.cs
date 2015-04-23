@@ -16,7 +16,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -25,87 +25,115 @@ namespace SPMeta2.Standard.Definitions.Webparts
         #region properties
 
         [DataMember]
+        [ExpectValidation]
         public string DataMappings { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string DataMappingViewFields { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? PlayMediaInBrowser { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? UseCopyUtil { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public int? ItemLimit { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public int? ServerTemplate { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string WebUrl { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string ContentTypeBeginsWithId { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public Guid? ListGuid { get; set; }
 
         [DataMember]
-        public Guid? ListUrl { get; set; }
+        [ExpectValidation]
+        public string ListUrl { get; set; }
 
         [DataMember]
-        public Guid? ListName { get; set; }
+        [ExpectValidation]
+        public string ListName { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string ItemStyle { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string GroupStyle { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? ShowUntargetedItems { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string MainXslLink { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string ItemXslLink { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterValue1 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterValue2 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterValue3 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterDisplayValue1 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterDisplayValue2 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterDisplayValue3 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterType1 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterType2 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterType3 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterOperator1 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterOperator2 { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string FilterOperator3 { get; set; }
 
         #endregion
@@ -122,6 +150,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
                           .AddPropertyValue(p => p.WebUrl)
                           .AddPropertyValue(p => p.ListGuid)
+                          .AddPropertyValue(p => p.ListName)
+                          .AddPropertyValue(p => p.ListUrl)
 
                           .AddPropertyValue(p => p.ItemStyle)
                           .AddPropertyValue(p => p.GroupStyle)
