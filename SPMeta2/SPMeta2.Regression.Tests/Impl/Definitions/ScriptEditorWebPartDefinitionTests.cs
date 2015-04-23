@@ -37,9 +37,11 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [ExpectedException(typeof(SPMeta2InvalidDefinitionPropertyException))]
         public void ScriptEditorWebPartDefinition_Id_LessThan_32_ShouldFail()
         {
+            var id = Rnd.String(31);
+
             var def = new ScriptEditorWebPartDefinition
             {
-                Id = Rnd.String(31)
+                Id = id
             };
         }
 
@@ -47,10 +49,14 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions.ScriptEditorWebPartDefinition")]
         public void ScriptEditorWebPartDefinition_Id_LessThan_32_ShouldPass()
         {
+            var id = Rnd.String(32);
+
             var def = new ScriptEditorWebPartDefinition
             {
-                Id = Rnd.String(33)
+                Id = id
             };
+
+            Assert.IsTrue(id == def.Id);
         }
 
         #endregion

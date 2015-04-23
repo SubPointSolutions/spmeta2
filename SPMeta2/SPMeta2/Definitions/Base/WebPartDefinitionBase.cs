@@ -5,6 +5,7 @@ using System.Text;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System.Runtime.Serialization;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -68,16 +69,40 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         public string WebpartFileName { get; set; }
 
+        private string _webpartType;
+
         /// <summary>
         /// Type of the target web part.
         /// 
         /// WebpartType is used as a second priority to deploy web part.
         /// </summary>
-        /// 
+
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
         [DataMember]
-        public string WebpartType { get; set; }
+        public virtual string WebpartType
+        {
+            get { return _webpartType; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    return;
+
+                var parts = value.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                // expect 5 parts
+                // for instance, 
+                // System.Array, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+                // https://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname(v=vs.110).aspx
+                if (parts.Length != 5)
+                {
+                    throw new SPMeta2InvalidDefinitionPropertyException(
+                        "WebpartType must be in AssemblyQualifiedName format - https://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx");
+                }
+
+                _webpartType = value;
+            }
+        }
 
         /// <summary>
         /// XML definition of the target web part.
