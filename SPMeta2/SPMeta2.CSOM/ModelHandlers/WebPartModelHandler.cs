@@ -51,7 +51,16 @@ namespace SPMeta2.CSOM.ModelHandlers
         #region methods
 
         protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
-             Action<WebPart> action)
+            Action<WebPart> action)
+        {
+            WithWithExistingWebPart(listItem, webPartModel, (w, d) =>
+            {
+                action(w);
+            });
+        }
+
+        protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
+             Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
             var context = listItem.Context;
             var filePath = listItem["FileRef"].ToString();
@@ -67,9 +76,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQueryWithTrace();
 
-            var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel);
 
-            action(existingWebPart);
+            Microsoft.SharePoint.Client.WebParts.WebPartDefinition def = null;
+            var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel, out def);
+
+            action(existingWebPart, def);
         }
 
         protected File GetCurrentPageFile(ListItemModelHost listItemModelHost)
@@ -198,12 +209,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             return result;
         }
 
-        protected virtual string ProcessCommonWebpartProperties(string webPartXml, WebPartDefinitionBase webPartModel)
+        protected virtual string ProcessCommonWebpartProperties(string webPartXml, WebPartDefinitionBase definition)
         {
-            return WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXml)
-                                               .SetTitle(webPartModel.Title)
-                                               .SetID(webPartModel.Id)
-                                               .ToString();
+            var xml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXml)
+                                            .SetTitle(definition.Title)
+                                            .SetID(definition.Id);
+
+            if (definition.Width.HasValue)
+                xml.SetOrUpdateProperty("Width", definition.Width.Value.ToString());
+
+            return xml.ToString();
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
