@@ -72,10 +72,36 @@ namespace SPMeta2.Containers.Services
 
         #endregion
 
+        [Serializable]
+        public class ContainerValidationResultException : SPMeta2Exception
+        {
+            public ContainerValidationResultException() { }
+            public ContainerValidationResultException(string message) : base(message) { }
+            public ContainerValidationResultException(string message, Exception inner) : base(message, inner) { }
+            protected ContainerValidationResultException(
+              System.Runtime.Serialization.SerializationInfo info,
+              System.Runtime.Serialization.StreamingContext context)
+                : base(info, context) { }
 
+            public DefinitionBase Definition { get; set; }
+
+            public OnPropertyValidatedEventArgs Args { get; set; }
+        }
 
         public void OnModelPropertyValidated(object sender, OnPropertyValidatedEventArgs e)
         {
+            // immediate throw
+            // temporary solution due to multiple provision of the same model
+
+            //if (!e.Result.IsValid)
+            //{
+            //    throw new ContainerValidationResultException
+            //    {
+            //        Args = e,
+            //        Definition = e.Result.Tag as DefinitionBase
+            //    };
+            //}
+
             var existingModelResult = ModelValidations.FirstOrDefault(r => r.Model == e.Result.Tag);
 
             if (existingModelResult == null)

@@ -40,7 +40,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             EnablePropertyUpdateValidation = true;
             PropertyUpdateGenerationCount = 2;
-            RegressionService.ShowOnlyFalseResults = true;
+            RegressionService.ShowOnlyFalseResults = false;
         }
 
         #region common

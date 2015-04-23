@@ -9,6 +9,7 @@ using SPMeta2.Containers;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Definitions;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
@@ -33,6 +34,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public static void Cleanup()
         {
             InternalCleanup();
+        }
+
+        #endregion
+
+        #region v2-v3 validation
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Versions")]
+        public void CanDeploy_Random_V2_Webpart()
+        {
+            TestRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.WebpartFileName = string.Empty;
+                def.WebpartType = string.Empty;
+                def.WebpartXmlTemplate = BuiltInWebPartTemplates.ContentEditorWebPart;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Versions")]
+        public void CanDeploy_Random_V3_Webpart()
+        {
+            TestRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.WebpartFileName = string.Empty;
+                def.WebpartType = string.Empty;
+                def.WebpartXmlTemplate = BuiltInWebPartTemplates.ScriptEditorWebPart;
+            });
         }
 
         #endregion

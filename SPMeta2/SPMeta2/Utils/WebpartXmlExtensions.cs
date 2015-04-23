@@ -27,10 +27,32 @@ namespace SPMeta2.Utils
             return XDocument.Parse(value);
         }
 
-        public static XDocument SetChromeType(this XDocument webpartXmlDocument, string value)
+        public static XDocument SetDescription(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static XDocument SetWidth(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetHeight(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+
+        public static XDocument SetImportErrorMessage(this XDocument webpartXmlDocument, string value)
+        {
+            return SetOrUpdateProperty(webpartXmlDocument, "MissingAssembly", value);
+        }
+        public static string GetImportErrorMessage(this XDocument webpartXmlDocument)
+        {
+            return GetProperty(webpartXmlDocument, "MissingAssembly");
         }
 
         public static XDocument SetPrimaryTaskListUrl(this XDocument webpartXmlDocument, string value)
@@ -39,10 +61,84 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static XDocument SetChromeType(this XDocument webpartXmlDocument, string value)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeType", value, WebPartNamespaceV3, false);
+            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "FrameType", value, WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static string GetChromeType(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "ChromeType", WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "FrameType", WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static XDocument SetChromeState(this XDocument webpartXmlDocument, string value)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeState", value, WebPartNamespaceV3, false);
+            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "FrameState", value, WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static string GetChromeState(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "ChromeState", WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "FrameState", WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
         public static XDocument SetTitleUrl(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "TitleUrl", value, WebPartNamespaceV3, false);
+            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "DetailLink", value, WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static string GetTitleUrl(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "TitleIconImageUrl", WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "PartImageSmall", WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static XDocument SetTitleIconImageUrl(this XDocument webpartXmlDocument, string value)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "TitleIconImageUrl", value, WebPartNamespaceV3, false);
+            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "PartImageSmall", value, WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static string GetTitleIconImageUrl(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "TitleIconImageUrl", WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "PartImageSmall", WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
         public static XDocument SetListId(this XDocument webpartXmlDocument, string value)

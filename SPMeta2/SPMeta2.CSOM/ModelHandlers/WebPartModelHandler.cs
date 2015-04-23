@@ -216,7 +216,28 @@ namespace SPMeta2.CSOM.ModelHandlers
                                             .SetID(definition.Id);
 
             if (definition.Width.HasValue)
-                xml.SetOrUpdateProperty("Width", definition.Width.Value.ToString());
+                xml.SetWidth(definition.Width.Value);
+
+            if (definition.Height.HasValue)
+                xml.SetHeight(definition.Height.Value);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                xml.SetDescription(definition.Description);
+
+            if (!string.IsNullOrEmpty(definition.ImportErrorMessage))
+                xml.SetImportErrorMessage(definition.ImportErrorMessage);
+
+            if (!string.IsNullOrEmpty(definition.TitleUrl))
+                xml.SetTitleUrl(definition.TitleUrl);
+
+            if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
+                xml.SetTitleIconImageUrl(definition.TitleIconImageUrl);
+
+            if (!string.IsNullOrEmpty(definition.ChromeState))
+                xml.SetChromeState(definition.ChromeState);
+
+            if (!string.IsNullOrEmpty(definition.ChromeType))
+                xml.SetChromeType(definition.ChromeType);
 
             return xml.ToString();
         }
