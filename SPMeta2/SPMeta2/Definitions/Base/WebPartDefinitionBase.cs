@@ -17,6 +17,39 @@ namespace SPMeta2.Definitions.Base
     {
         #region properties
 
+        [ExpectValidation]
+        [DataMember]
+        public string ChromeState { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
+        public string ChromeType { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public int? Width { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public int? Height { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string TitleUrl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string Description { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string ImportErrorMessage { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string TitleIconImageUrl { get; set; }
+
         /// <summary>
         /// Title of the target web part.
         /// </summary>
