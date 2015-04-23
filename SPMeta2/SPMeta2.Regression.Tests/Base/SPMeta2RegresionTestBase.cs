@@ -322,6 +322,29 @@ namespace SPMeta2.Regression.Tests.Base
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsChromeState) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInPartChromeState.Minimized);
+                            values.Add(BuiltInPartChromeState.Normal);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
+                        else if (attrs.Count(a => a is ExpectUpdateAsChromeType) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInPartChromeType.BorderOnly);
+                            values.Add(BuiltInPartChromeType.Default);
+                            values.Add(BuiltInPartChromeType.None);
+                            values.Add(BuiltInPartChromeType.TitleAndBorder);
+                            values.Add(BuiltInPartChromeType.TitleOnly);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsDateTimeFieldDisplayFormat) > 0)
                         {
                             var curentValue = prop.GetValue(def) as string;

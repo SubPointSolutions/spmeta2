@@ -70,6 +70,16 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsChromeState : ExpectUpdate
+    {
+
+    }
+    public class ExpectUpdateAsChromeType : ExpectUpdate
+    {
+
+    }
+    
+
     public class ExpectUpdateAsIntRange : ExpectUpdate
     {
         public int MinValue { get; set; }

@@ -162,6 +162,8 @@
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />
     <Compile Include="Enumerations\BuiltInNumberFormatTypes.cs" />
+    <Compile Include="Enumerations\BuiltInPartChromeState.cs" />
+    <Compile Include="Enumerations\BuiltInPartChromeType.cs" />
     <Compile Include="Enumerations\BuiltInSecureStoreCredentialType.cs" />
     <Compile Include="Enumerations\BuiltInTargetApplicationType.cs" />
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />

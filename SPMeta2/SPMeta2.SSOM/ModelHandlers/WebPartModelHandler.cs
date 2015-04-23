@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.UI.WebControls;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -42,9 +43,31 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WebPartDefinition); }
         }
 
-        protected virtual void ProcessWebpartProperties(WebPart webpartInstance, WebPartDefinition webpartModel)
+        protected virtual void ProcessWebpartProperties(WebPart instance, WebPartDefinition definition)
         {
+            if (definition.Width.HasValue)
+                instance.Width = new Unit(definition.Width.Value);
 
+            if (definition.Height.HasValue)
+                instance.Height = new Unit(definition.Height.Value);
+
+            if (!string.IsNullOrEmpty(definition.ChromeState))
+                instance.ChromeState = (PartChromeState)Enum.Parse(typeof(PartChromeState), definition.ChromeState);
+
+            if (!string.IsNullOrEmpty(definition.ChromeType))
+                instance.ChromeType = (PartChromeType)Enum.Parse(typeof(PartChromeType), definition.ChromeType);
+
+            if (!string.IsNullOrEmpty(definition.ImportErrorMessage))
+                instance.ImportErrorMessage = definition.ImportErrorMessage;
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                instance.Description = definition.Description;
+
+            if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
+                instance.TitleIconImageUrl = definition.TitleIconImageUrl;
+
+            if (!string.IsNullOrEmpty(definition.TitleUrl))
+                instance.TitleUrl = definition.TitleUrl;
         }
 
         public WebpartPageModelHost CurrentHost { get; set; }

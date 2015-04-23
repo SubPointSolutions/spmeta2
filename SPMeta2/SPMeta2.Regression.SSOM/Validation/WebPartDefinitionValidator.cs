@@ -1,4 +1,5 @@
-﻿using SPMeta2.Containers.Assertion;
+﻿using System.Web.UI.WebControls;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
@@ -41,6 +42,109 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var assert = ServiceFactory.AssertService
                                   .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
+
+                if (!string.IsNullOrEmpty(definition.ChromeState))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ChromeState);
+                        var srcValue = (PartChromeState)Enum.Parse(typeof(PartChromeState), s.ChromeState);
+                        var isValid = srcValue == d.ChromeState;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.ChromeState, "ChromeType is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.ChromeType))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ChromeType);
+                        var srcValue = (PartChromeType)Enum.Parse(typeof(PartChromeType), s.ChromeType);
+                        var isValid = srcValue == d.ChromeType;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.ChromeType, "ChromeType is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.Description))
+                    assert.ShouldBeEqual(m => m.Description, o => o.Description);
+                else
+                    assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
+
+                if (definition.Height.HasValue)
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.Height);
+                        var isValid = d.Height == new Unit(s.Height.Value);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Height, "Height is null or empty. Skipping.");
+
+                if (definition.Width.HasValue)
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.Width);
+                        var isValid = d.Width == new Unit(s.Width.Value);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Width, "Width is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.ImportErrorMessage))
+                    assert.ShouldBeEqual(m => m.ImportErrorMessage, o => o.ImportErrorMessage);
+                else
+                    assert.SkipProperty(m => m.ImportErrorMessage, "ImportErrorMessage is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.TitleUrl))
+                {
+                    assert.ShouldBeEndOf(m => m.TitleUrl, o => o.TitleUrl);
+                }
+                else
+                    assert.SkipProperty(m => m.TitleUrl, "TitleUrl is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
+                {
+                    assert.ShouldBeEndOf(m => m.TitleIconImageUrl, o => o.TitleIconImageUrl);
+                }
+                else
+                    assert.SkipProperty(m => m.TitleIconImageUrl, "TitleIconImageUrl is null or empty. Skipping.");
+
 
                 if (!string.IsNullOrEmpty(definition.Id))
                     assert.ShouldBeEqual(m => m.Id, o => o.ID);

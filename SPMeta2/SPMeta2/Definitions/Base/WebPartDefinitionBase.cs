@@ -5,6 +5,7 @@ using System.Text;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System.Runtime.Serialization;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 
 namespace SPMeta2.Definitions.Base
@@ -15,39 +16,56 @@ namespace SPMeta2.Definitions.Base
     /// </summary>
     public abstract class WebPartDefinitionBase : DefinitionBase
     {
+        #region contructors
+
+        public WebPartDefinitionBase()
+        {
+            ChromeState = BuiltInPartChromeState.Normal;
+            ChromeType = BuiltInPartChromeType.Default;
+        }
+
+        #endregion
+
         #region properties
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsChromeState]
         public string ChromeState { get; set; }
-
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsChromeType]
         public string ChromeType { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 100, MaxValue = 500)]
         public int? Width { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 100, MaxValue = 500)]
         public int? Height { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsUrl]
         public string TitleUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
         public string Description { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
         public string ImportErrorMessage { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsUrl]
         public string TitleIconImageUrl { get; set; }
 
         /// <summary>
