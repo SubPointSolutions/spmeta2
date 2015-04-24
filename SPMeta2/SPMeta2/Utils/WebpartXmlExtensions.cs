@@ -27,6 +27,46 @@ namespace SPMeta2.Utils
             return XDocument.Parse(value);
         }
 
+
+        public static XDocument SetNumberOfItems(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+
+        public static XDocument SetResultsPerPage(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+
+        public static XDocument SetRenderTemplateId(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static XDocument SetItemTemplateId(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static XDocument SetGroupTemplateId(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+
+        public static XDocument SetDataProviderJSON(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
         public static XDocument SetDescription(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
@@ -48,11 +88,21 @@ namespace SPMeta2.Utils
 
         public static XDocument SetImportErrorMessage(this XDocument webpartXmlDocument, string value)
         {
-            return SetOrUpdateProperty(webpartXmlDocument, "MissingAssembly", value);
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateMetadataProperty(webpartXmlDocument, "importErrorMessage", value);
+            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "MissingAssembly", value, WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
         public static string GetImportErrorMessage(this XDocument webpartXmlDocument)
         {
-            return GetProperty(webpartXmlDocument, "MissingAssembly");
+            if (IsV3version(webpartXmlDocument))
+                return GetV3MetadataNode(webpartXmlDocument, "importErrorMessage", WebPartNamespaceV3).Value;
+            else if (IsV2version(webpartXmlDocument))
+                return GetProperty(webpartXmlDocument, "MissingAssembly");
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
         public static XDocument SetPrimaryTaskListUrl(this XDocument webpartXmlDocument, string value)

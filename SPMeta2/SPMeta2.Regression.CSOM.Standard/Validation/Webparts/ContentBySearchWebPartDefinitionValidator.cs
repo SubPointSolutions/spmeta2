@@ -1,48 +1,36 @@
 ﻿using System;
-using Microsoft.Office.Server.Search.WebControls;
-using Microsoft.SharePoint.Publishing.WebControls;
+using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
-using SPMeta2.Regression.SSOM.Validation;
-using SPMeta2.SSOM.Extensions;
-using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
+using SPMeta2.Regression.CSOM.Validation;
 
-namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
+namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 {
-    public class ContentBySearchWebPartDefinitionValidator : WebPartDefinitionValidator
+    public class ContentBySearchWebPartDefinitionValidator : ClientWebPartDefinitionValidator
     {
-        #region properties
-
         public override Type TargetType
         {
             get { return typeof(ContentBySearchWebPartDefinition); }
         }
 
-        #endregion
-
-        #region methods
-
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            // base validation
             base.DeployModel(modelHost, model);
 
-            // content editor specific validation
-
-            var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
+            var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentBySearchWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var item = host.PageListItem;
-            WebPartExtensions.WithExistingWebPart(item, definition, (spWebPartManager, spObject) =>
-            {
-                var typedWebPart = spObject as ContentBySearchWebPart;
+            var pageItem = listItemModelHost.HostListItem;
 
+            WithWithExistingWebPart(pageItem, definition, spObject =>
+            {
                 var assert = ServiceFactory.AssertService
-                                           .NewAssert(definition, typedWebPart)
-                                           .ShouldNotBeNull(typedWebPart);
+                                           .NewAssert(model, definition, spObject)
+                                                 .ShouldNotBeNull(spObject);
 
                 if (!string.IsNullOrEmpty(definition.GroupTemplateId))
                     throw new NotImplementedException();
@@ -73,10 +61,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
                     throw new NotImplementedException();
                 else
                     assert.SkipProperty(m => m.ResultsPerPage, "ResultsPerPage is null or empty, skipping.");
-
             });
         }
-
-        #endregion
     }
 }

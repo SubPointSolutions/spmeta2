@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Xml.Linq;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
@@ -17,6 +17,8 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientWebPartDefinitionValidator : WebPartModelHandler
     {
+        protected XDocument CurrentWebPartXml { get; set; }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
@@ -55,14 +57,14 @@ namespace SPMeta2.Regression.CSOM.Validation
                     webClient.UseDefaultCredentials = true;
 
                 var webPartXmlString = webClient.DownloadString(webpartExportUrl);
-                var webPartXml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXmlString);
+                CurrentWebPartXml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXmlString);
 
 
                 assert.ShouldBeEqual(m => m.Title, o => o.Title);
 
                 if (!string.IsNullOrEmpty(definition.ChromeState))
                 {
-                    var value = webPartXml.GetChromeState();
+                    var value = CurrentWebPartXml.GetChromeState();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -83,7 +85,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.ChromeType))
                 {
-                    var value = webPartXml.GetChromeType();
+                    var value = CurrentWebPartXml.GetChromeType();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -113,7 +115,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (definition.Height.HasValue)
                 {
-                    var value = ConvertUtils.ToInt(webPartXml.GetProperty("Height").Replace("px", string.Empty));
+                    var value = ConvertUtils.ToInt(CurrentWebPartXml.GetProperty("Height").Replace("px", string.Empty));
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -134,7 +136,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (definition.Width.HasValue)
                 {
-                    var value = ConvertUtils.ToInt(webPartXml.GetProperty("Width").Replace("px", string.Empty));
+                    var value = ConvertUtils.ToInt(CurrentWebPartXml.GetProperty("Width").Replace("px", string.Empty));
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -157,7 +159,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.ImportErrorMessage))
                 {
-                    var value = webPartXml.GetImportErrorMessage();
+                    var value = CurrentWebPartXml.GetImportErrorMessage();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -178,7 +180,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
                 {
-                    var value = webPartXml.GetTitleIconImageUrl();
+                    var value = CurrentWebPartXml.GetTitleIconImageUrl();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -199,7 +201,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.TitleUrl))
                 {
-                    var value = webPartXml.GetTitleUrl();
+                    var value = CurrentWebPartXml.GetTitleUrl();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {

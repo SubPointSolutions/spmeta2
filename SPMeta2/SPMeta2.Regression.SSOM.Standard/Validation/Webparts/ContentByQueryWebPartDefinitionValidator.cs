@@ -39,14 +39,6 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
             {
                 var typedWebPart = spObject as ContentByQueryWebPart;
 
-                //[FALSE] - [Title]
-                //                        [FALSE] - [Id]
-                //                        [FALSE] - [ZoneId]
-                //                        [FALSE] - [ZoneIndex]
-                //                        [FALSE] - [WebpartFileName]
-                //                        [FALSE] - [WebpartType]
-                //                        [FALSE] - [WebpartXmlTemplate]
-
                 var assert = ServiceFactory.AssertService
                                            .NewAssert(typedModel, typedWebPart)
                                            .ShouldNotBeNull(typedWebPart);
