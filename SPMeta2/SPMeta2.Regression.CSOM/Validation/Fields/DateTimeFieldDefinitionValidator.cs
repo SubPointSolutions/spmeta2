@@ -31,9 +31,22 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
 
-            textFieldAssert.ShouldBeEqual(m => m.CalendarType, o => o.GetCalendarType());
-            textFieldAssert.ShouldBeEqual(m => m.FriendlyDisplayFormat, o => o.GetFriendlyDisplayFormat());
-            textFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
+            if (!string.IsNullOrEmpty(textDefinition.CalendarType))
+                textFieldAssert.ShouldBeEqual(m => m.CalendarType, o => o.GetCalendarType());
+            else
+                textFieldAssert.SkipProperty(m => m.CalendarType, "CalendarType is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(textDefinition.FriendlyDisplayFormat))
+                textFieldAssert.ShouldBeEqual(m => m.FriendlyDisplayFormat, o => o.GetFriendlyDisplayFormat());
+            else
+                textFieldAssert.SkipProperty(m => m.FriendlyDisplayFormat, "FriendlyDisplayFormat is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(textDefinition.DisplayFormat))
+                textFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
+            else
+                textFieldAssert.SkipProperty(m => m.DisplayFormat, "FriendlyDisplayFormat is null or empty. Skipping.");
+            
+            
         }
     }
 }

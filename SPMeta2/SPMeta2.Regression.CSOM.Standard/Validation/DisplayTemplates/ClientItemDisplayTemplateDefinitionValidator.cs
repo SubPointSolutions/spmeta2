@@ -35,8 +35,10 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
                                         .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
-            assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
-
+            if (!string.IsNullOrEmpty(definition.ManagedPropertyMappings))
+                assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
+            else
+                assert.SkipProperty(m => m.ManagedPropertyMappings, "ManagedPropertyMappings is null or empty Skipping.");
         }
 
         #endregion

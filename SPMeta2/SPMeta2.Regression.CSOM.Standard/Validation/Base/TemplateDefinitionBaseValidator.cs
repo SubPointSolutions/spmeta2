@@ -39,8 +39,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
 
                                              //.ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
                                              .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
+                //.ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
                                              ;
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription());
+            else
+                assert.SkipProperty(m => m.Description, "Description is null. Skiping.");
 
             assert.ShouldBeEqual((p, s, d) =>
             {

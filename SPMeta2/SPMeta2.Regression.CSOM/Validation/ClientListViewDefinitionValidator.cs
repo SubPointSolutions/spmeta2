@@ -42,11 +42,19 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           .ShouldBeEqual(m => m.Title, o => o.Title)
                                           .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
                                           .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                                          .ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                                          //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
                                           .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
-            assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+            else
+                assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.Query))
+                assert.ShouldBeEqual(m => m.Query, o => o.ViewQuery);
+            else
+                assert.SkipProperty(m => m.Query, "Query is null or empty. Skipping.");
 
             if (definition.DefaultViewForContentType.HasValue)
                 assert.ShouldBeEqual(m => m.DefaultViewForContentType, o => o.DefaultViewForContentType);

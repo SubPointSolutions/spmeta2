@@ -102,7 +102,8 @@ namespace SPMeta2.Services.Impl
 
             if (!result.All(p => p.IsValid))
             {
-                throw new Exception(string.Format("Property [{0}] is not valid.", result.First().Name));
+                throw new Exception(string.Format("Property [{0}] is not valid.",
+                    result.First(r => !r.IsValid).Name));
             }
 
             return result.All(p => p.IsValid);

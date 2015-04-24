@@ -17,6 +17,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            base.DeployModel(modelHost, model);
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
@@ -32,41 +34,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
             context.ExecuteQuery();
 
             var assert = ServiceFactory.AssertService
-                                       .NewAssert(definition, spObject)
-                                             .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.Title, o => o.GetTitle())
-                                             .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
-
-                                             //.ShouldBeEqual(m => m.CrawlerXSLFile, o => o.GetCrawlerXSLFile())
-                                             .ShouldBeEqual(m => m.HiddenTemplate, o => o.GetHiddenTemplate())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
-                                             ;
-
-            assert.ShouldBeEqual((p, s, d) =>
-            {
-                var srcProp = s.GetExpressionValue(m => m.Content);
-                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
-
-                var isContentValid = false;
-
-                byte[] dstContent = null;
-
-                using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, spFile.ServerRelativeUrl).Stream)
-                    dstContent = ModuleFileUtils.ReadFully(stream);
-
-                var srcStringContent = Encoding.UTF8.GetString(s.Content);
-                var dstStringContent = Encoding.UTF8.GetString(dstContent);
-
-                isContentValid = dstStringContent.Contains(srcStringContent);
-
-                return new PropertyValidationResult
-                {
-                    Tag = p.Tag,
-                    Src = srcProp,
-                    // Dst = dstProp,
-                    IsValid = isContentValid
-                };
-            });
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject);
 
             #region preview field
 

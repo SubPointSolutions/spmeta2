@@ -102,10 +102,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var folder = folderModelHost.CurrentLibraryFolder;
             var list = folderModelHost.CurrentList;
 
-            var siteContentType = folderModelHost.HostSite.RootWeb.AvailableContentTypes.GetById(publishingPageModel.AssociatedContentTypeId);
+            ContentType siteContentType = null;
 
-            folderModelHost.HostSite.Context.Load(siteContentType);
-            folderModelHost.HostSite.Context.ExecuteQuery();
+            if (!string.IsNullOrEmpty(publishingPageModel.AssociatedContentTypeId))
+            {
+                siteContentType = folderModelHost.HostSite.RootWeb.AvailableContentTypes.GetById(publishingPageModel.AssociatedContentTypeId);
+
+                folderModelHost.HostSite.Context.Load(siteContentType);
+                folderModelHost.HostSite.Context.ExecuteQuery();
+            }
 
             var context = folder.Context;
 
@@ -157,7 +162,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 newFileItem["MasterPageDescription"] = publishingPageModel.Description;
                 newFileItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
 
-                newFileItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
+                if (siteContentType != null)
+                {
+                    newFileItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
+                }
                 newFileItem.Update();
 
                 context.ExecuteQueryWithTrace();

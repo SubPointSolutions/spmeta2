@@ -42,8 +42,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                                              .ShouldNotBeNull(spObject)
                                              .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
                                              .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageLayoutDescription())
-                                             .ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
+                //.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
                                              .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+
+            if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
+                assert.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId());
+            else
+                assert.SkipProperty(m => m.AssociatedContentTypeId, "AssociatedContentTypeId is null or empty.");
 
             assert.ShouldBeEqual((p, s, d) =>
             {
@@ -79,7 +84,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         #endregion
     }
 
-   
+
 
     internal static class PublishingPageLayoutItemHelper
     {

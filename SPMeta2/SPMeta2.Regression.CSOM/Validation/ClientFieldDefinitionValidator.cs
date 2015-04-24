@@ -254,7 +254,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Required, "Skipping Required prop validation.");
 
-            if (!SkipDescriptionPropValidation)
+            if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
             else
                 assert.SkipProperty(m => m.Description, "Skipping Description prop validation.");

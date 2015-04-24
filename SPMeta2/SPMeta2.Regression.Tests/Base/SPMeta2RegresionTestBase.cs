@@ -306,6 +306,16 @@ namespace SPMeta2.Regression.Tests.Base
                             var newUserValue = RegressionService.RndService.UserLogin();
                             newValue = newUserValue;
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsStandalone) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add("Override");
+                            values.Add("Standalone");
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+                        }
                         else if (attrs.Count(a => a is ExpectUpdateAsTargetControlType) > 0)
                         {
                             var values = new List<string>();
@@ -472,7 +482,8 @@ namespace SPMeta2.Regression.Tests.Base
                             if (!fileExtension.StartsWith("."))
                                 fileExtension = "." + fileExtension;
 
-                            newValue = string.Format("http://regression-ci.com/{0}{1}", RegressionService.RndService.String(), fileExtension);
+                            newValue = string.Format("http://regression-ci.com/{0}{1}",
+                                RegressionService.RndService.String(), fileExtension);
                         }
                         else if (attrs.Count(a => a is ExpectUpdateAsFileName) > 0)
                         {

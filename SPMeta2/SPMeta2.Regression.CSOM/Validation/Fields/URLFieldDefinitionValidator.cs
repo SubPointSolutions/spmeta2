@@ -30,8 +30,10 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             var typedFieldAssert = ServiceFactory.AssertService.NewAssert(model, typedDefinition, typedField);
 
-            typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
-
+            if (!string.IsNullOrEmpty(typedDefinition.DisplayFormat))
+                typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
+            else
+                typedFieldAssert.SkipProperty(m => m.DisplayFormat, "DisplayFormat is null. Skiping.");
         }
     }
 

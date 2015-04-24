@@ -51,7 +51,7 @@ namespace SPMeta2.Standard.Definitions
         /// </summary>
         [ExpectValidation]
         [ExpectUpdateAsPublishingPageContentType]
-        [ExpectRequired]
+        //[ExpectRequired]
         [DataMember]
         [ExpectNullable]
         public string AssociatedContentTypeId { get; set; }

@@ -14,6 +14,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+
+    public class ExpectUpdateAsStandalone : ExpectUpdate
+    {
+        
+    }
     public class ExpectUpdateAsLCID : ExpectUpdate
     {
 

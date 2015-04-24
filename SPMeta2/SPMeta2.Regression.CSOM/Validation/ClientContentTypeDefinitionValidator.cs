@@ -44,11 +44,18 @@ namespace SPMeta2.Regression.CSOM.Validation
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
-                  .ShouldNotBeNull(spObject)
-                  .ShouldBeEqual(m => m.Name, o => o.Name)
-                  .ShouldBeEqual(m => m.Group, o => o.Group)
-                  .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                  .ShouldBeEqual(m => m.Description, o => o.Description);
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.Name, o => o.Name)
+                .ShouldBeEqual(m => m.Group, o => o.Group)
+                .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+                  //.ShouldBeEqual(m => m.Description, o => o.Description);
+
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
+
 
             if (definition.Id == default(Guid))
             {

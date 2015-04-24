@@ -35,7 +35,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         #region properties
 
-        [ExpectUpdate]
+        [ExpectUpdateAsTargetControlType]
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
@@ -53,11 +53,10 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
         [ExpectNullable]
         public string IconDescription { get; set; }
 
-        [ExpectUpdate]
+        [ExpectUpdateAsStandalone]
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
-        [ExpectNullable]
         public string Standalone { get; set; }
 
         [ExpectUpdate]
