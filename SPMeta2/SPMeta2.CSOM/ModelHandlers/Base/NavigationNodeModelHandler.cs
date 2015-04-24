@@ -23,6 +23,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            // TMP
+            if (modelHost is WebModelHost)
+                CurrentClientContext = (modelHost as WebModelHost).HostClientContext;
+
             var quickLaunchNode = model.WithAssertAndCast<NavigationNodeDefinitionBase>("model", value => value.RequireNotNull());
 
             NavigationNode node = null;
@@ -49,10 +53,16 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             return modelHost is NavigationNodeModelHost;
         }
 
+        protected ClientContext CurrentClientContext { get; set; }
+
         protected NavigationNode LookupNodeForHost(object modelHost, NavigationNodeDefinitionBase definition)
         {
             if (modelHost is WebModelHost)
+            {
+
+
                 return LookupNavigationNode(GetNavigationNodeCollection((modelHost as WebModelHost).HostWeb), definition);
+            }
             else if (modelHost is NavigationNodeModelHost)
                 return LookupNavigationNode((modelHost as NavigationNodeModelHost).HostNavigationNode.Children, definition);
             else if (modelHost is NavigationNode)
@@ -61,7 +71,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             throw new ArgumentException("modelHost needs to be SPWeb");
         }
 
-        protected virtual NavigationNode LookupNavigationNode(NavigationNodeCollection nodes, NavigationNodeDefinitionBase definition)
+        protected virtual NavigationNode LookupNavigationNode(NavigationNodeCollection nodes,
+            NavigationNodeDefinitionBase definition)
         {
             var context = nodes.Context;
 
@@ -74,9 +85,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             if (currentNode == null)
             {
+                var url = ResolveTokenizedUrl(CurrentClientContext, definition);
+
                 currentNode = nodes
                                 .OfType<NavigationNode>()
-                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Url) && (n.Url.ToUpper().EndsWith(definition.Url.ToUpper())));
+                                .FirstOrDefault(n => !string.IsNullOrEmpty(n.Url) && (n.Url.ToUpper().EndsWith(url.ToUpper())));
             }
 
             return currentNode;
@@ -97,6 +110,23 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             var existingNode = LookupNavigationNode(quickLaunch, quickLaunchNode);
 
             return existingNode;
+        }
+
+        protected virtual string ResolveTokenizedUrl(ClientContext context, NavigationNodeDefinitionBase rootNode)
+        {
+            var urlValue = rootNode.Url;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original Url: [{0}]", urlValue);
+
+            var newUrlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = urlValue,
+                Context = context
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced Url: [{0}]", newUrlValue);
+
+            return newUrlValue;
         }
 
         private NavigationNode EnsureNavigationNode(NavigationNodeModelHost navigationNodeModelHost,
@@ -129,7 +159,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                 {
                     Title = quickLaunchNode.Title,
                     IsExternal = quickLaunchNode.IsExternal,
-                    Url = quickLaunchNode.Url,
+                    Url = ResolveTokenizedUrl(navigationNodeModelHost.HostClientContext, quickLaunchNode),
                     AsLastNode = true
                 });
 
@@ -137,7 +167,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             }
 
             existingNode.Title = quickLaunchNode.Title;
-            existingNode.Url = quickLaunchNode.Url;
+            existingNode.Url = ResolveTokenizedUrl(navigationNodeModelHost.HostClientContext, quickLaunchNode);
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -220,8 +250,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             // TODO, crazy URL matching to find 'resolved URL'
 
+            var url = ResolveTokenizedUrl(webModelHost.HostClientContext, navigationNodeModel);
+
             var existingNode = rootNavigationNodes.OfType<NavigationNode>()
-                .FirstOrDefault(n => n.Url.ToUpper().EndsWith(navigationNodeModel.Url.ToUpper()));
+                .FirstOrDefault(n => n.Url.ToUpper().EndsWith(url.ToUpper()));
 
             return existingNode;
         }
@@ -256,7 +288,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                 {
                     Title = navigationNodeModel.Title,
                     IsExternal = navigationNodeModel.IsExternal,
-                    Url = navigationNodeModel.Url,
+                    Url = ResolveTokenizedUrl(webModelHost.HostClientContext, navigationNodeModel),
                     PreviousNode = previousNode
                 });
 
@@ -268,7 +300,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             }
 
             existingNode.Title = navigationNodeModel.Title;
-            existingNode.Url = navigationNodeModel.Url;
+            existingNode.Url = ResolveTokenizedUrl(webModelHost.HostClientContext, navigationNodeModel);
             existingNode.IsVisible = navigationNodeModel.IsVisible;
 
             InvokeOnModelEvent(this, new ModelEventArgs
