@@ -20,6 +20,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
+
                 // TODO
 
             });
