@@ -922,6 +922,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_ContentBySearchWebPartDefinition()
+        {
+            TestRandomDefinition<ContentBySearchWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
         public void CanDeployRandom_ContentByQueryWebPartDefinition()
         {
             TestRandomDefinition<ContentByQueryWebPartDefinition>();

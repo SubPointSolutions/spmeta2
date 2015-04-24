@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
@@ -34,14 +35,17 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? PlayMediaInBrowser { get; set; }
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? UseCopyUtil { get; set; }
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 10, MaxValue = 100)]
         public int? ItemLimit { get; set; }
 
         [DataMember]
@@ -78,6 +82,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdate]
         public bool? ShowUntargetedItems { get; set; }
 
         [DataMember]

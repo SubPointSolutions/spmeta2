@@ -6,10 +6,11 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
+using SPMeta2.Regression.CSOM.Validation;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 {
-    public class ContentByQueryWebPartDefinitionValidator : WebPartModelHandler
+    public class ContentByQueryWebPartDefinitionValidator : ClientWebPartDefinitionValidator
     {
         public override Type TargetType
         {
@@ -18,6 +19,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            base.DeployModel(modelHost, model);
+
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentByQueryWebPartDefinition>("model", value => value.RequireNotNull());
 

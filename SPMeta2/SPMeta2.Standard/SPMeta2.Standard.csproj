@@ -122,6 +122,7 @@
     <Compile Include="Definitions\Taxonomy\TaxonomyTermLabelDefinition.cs" />
     <Compile Include="Definitions\WebNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContactFieldControlDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ContentBySearchWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ContentByQueryWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ResultScriptWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SiteFeedWebPartDefinition.cs" />
