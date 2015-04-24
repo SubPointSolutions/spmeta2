@@ -4,12 +4,13 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Regression.CSOM.Validation;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 {
-    public class ResultScriptWebPartDefinitionValidator : WebPartModelHandler
+    public class ResultScriptWebPartDefinitionValidator : ClientWebPartDefinitionValidator
     {
         public override Type TargetType
         {
@@ -18,6 +19,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            base.DeployModel(modelHost, model);
+
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ResultScriptWebPartDefinition>("model", value => value.RequireNotNull());
 
@@ -29,21 +32,26 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                                            .NewAssert(model, definition, spObject)
                                                  .ShouldNotBeNull(spObject);
 
-                // some of the properties can actually be validated
-                // http://stackoverflow.com/questions/11814829/how-to-read-webpart-content-using-sharepoint-client-om
-                // asmx calls are required to get additional information about the current web parts
+                if (!string.IsNullOrEmpty(definition.DataProviderJSON))
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.DataProviderJSON, "DataProviderJSON is null or empty, skipping.");
 
-                assert
-                    .SkipProperty(m => m.ZoneIndex, "Property is not available in CSOM. Skipping.")
+                if (!string.IsNullOrEmpty(definition.EmptyMessage))
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.EmptyMessage, "EmptyMessage is null or empty, skipping.");
 
-                    .SkipProperty(m => m.Id, "Property is not available in CSOM. Skipping.")
-                    .SkipProperty(m => m.ZoneId, "Property is not available in CSOM. Skipping.")
+                if (definition.ResultsPerPage.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.ResultsPerPage, "ResultsPerPage is null or empty, skipping.");
 
-                    .SkipProperty(m => m.WebpartFileName, "Property is not available in CSOM. Skipping.")
-                    .SkipProperty(m => m.WebpartType, "Property is not available in CSOM. Skipping.")
-                    .SkipProperty(m => m.WebpartXmlTemplate, "Property is not available in CSOM. Skipping.")
+                if (definition.ShowResultCount.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.ShowResultCount, "ShowResultCount is null or empty, skipping.");
 
-                    .ShouldBeEqual(m => m.Title, o => o.Title);
             });
         }
     }

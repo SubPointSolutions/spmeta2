@@ -38,8 +38,19 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             base.ProcessWebpartProperties(webpartInstance, webpartModel);
 
             var typedWebpart = webpartInstance.WithAssertAndCast<ResultScriptWebPart>("webpartInstance", value => value.RequireNotNull());
-            var typedModel = webpartModel.WithAssertAndCast<ResultScriptWebPartDefinition>("webpartModel", value => value.RequireNotNull());
+            var definition = webpartModel.WithAssertAndCast<ResultScriptWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
+            if (!string.IsNullOrEmpty(definition.DataProviderJSON))
+                typedWebpart.DataProviderJSON = definition.DataProviderJSON;
+
+            if (!string.IsNullOrEmpty(definition.EmptyMessage))
+                typedWebpart.EmptyMessage = definition.EmptyMessage;
+
+            if (definition.ResultsPerPage.HasValue)
+                typedWebpart.ResultsPerPage = definition.ResultsPerPage.Value;
+
+            if (definition.ShowResultCount.HasValue)
+                typedWebpart.ShowResultCount = definition.ShowResultCount.Value;
         }
 
         #endregion

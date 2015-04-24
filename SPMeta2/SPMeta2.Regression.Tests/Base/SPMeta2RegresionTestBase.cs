@@ -93,6 +93,9 @@ namespace SPMeta2.Regression.Tests.Base
 
         #region properties
 
+        public bool EnablePropertyNullableValidation { get; set; }
+        public int PropertyNullableGenerationCount { get; set; }
+
         protected RunOptions TestOptions { get; set; }
         public bool EnablePropertyUpdateValidation { get; set; }
 
@@ -173,6 +176,8 @@ namespace SPMeta2.Regression.Tests.Base
             TestModels(new[] { firstModel, secondModel });
         }
 
+
+
         protected void PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(IEnumerable<ModelNode> models)
         {
             if (EnablePropertyUpdateValidation)
@@ -183,7 +188,30 @@ namespace SPMeta2.Regression.Tests.Base
                     RegressionService.TestModels(models);
                 }
             }
+
+            if (EnablePropertyNullableValidation)
+            {
+                for (int index = 0; index < PropertyNullableGenerationCount; index++)
+                {
+                    ProcessPropertyNullableValidation(models);
+                    RegressionService.TestModels(models);
+                }
+            }
         }
+
+        private void ProcessPropertyNullableValidation(IEnumerable<ModelNode> models)
+        {
+            foreach (var model in models)
+            {
+                model.WithNodesOfType<DefinitionBase>(node =>
+                {
+                    var def = node.Value;
+                    ProcessDefinitionsPropertyNulableValidation(def);
+                });
+            }
+        }
+
+
 
         protected void TestModels(IEnumerable<ModelNode> models)
         {
@@ -201,6 +229,37 @@ namespace SPMeta2.Regression.Tests.Base
                     ProcessDefinitionsPropertyUpdateValidation(def);
                 });
             }
+        }
+
+
+        private void ProcessDefinitionsPropertyNulableValidation(DefinitionBase def)
+        {
+            var nullableProps = def.GetType()
+                .GetProperties()
+                .Where(p => p.GetCustomAttributes(typeof(ExpectNullable), true).Count() > 0);
+
+
+            TraceUtils.WithScope(trace =>
+            {
+                trace.WriteLine("");
+
+                trace.WriteLine(string.Format("[INF]\tPROPERTY NULLABLE VALIDATION"));
+                trace.WriteLine(string.Format("[INF]\tModel of type: [{0}] - [{1}]", def.GetType(), def));
+
+                if (nullableProps.Count() == 0)
+                {
+                    trace.WriteLine(string.Format("[INF]\tNo properties to be validated. Skipping."));
+                }
+                else
+                {
+                    foreach (var prop in nullableProps)
+                    {
+                        trace.WriteLine(string.Format("[INF]\tSetting NULLABLE property: [" + prop.Name + "]"));
+                        prop.SetValue(def, null);
+                    }
+                }
+
+            });
         }
 
         private void ProcessDefinitionsPropertyUpdateValidation(DefinitionBase def)

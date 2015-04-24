@@ -27,6 +27,23 @@ namespace SPMeta2.Standard.Definitions.Webparts
     {
         #region properties
 
+        [DataMember]
+        [ExpectValidation]
+        public string DataProviderJSON { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string EmptyMessage { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public int? ResultsPerPage { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowResultCount { get; set; }
+
+
         #endregion
 
         #region methods
