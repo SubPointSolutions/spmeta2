@@ -15,7 +15,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
-    public class ClientWebPartDefinitionValidator : WebPartModelHandler
+    public class WebPartDefinitionValidator : WebPartModelHandler
     {
         protected XDocument CurrentWebPartXml { get; set; }
 

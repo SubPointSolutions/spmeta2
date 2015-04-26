@@ -10,7 +10,7 @@ using SPMeta2.Regression.CSOM.Validation;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 {
-    public class ContentBySearchWebPartDefinitionValidator : ClientWebPartDefinitionValidator
+    public class ContentBySearchWebPartDefinitionValidator : WebPartDefinitionValidator
     {
         public override Type TargetType
         {

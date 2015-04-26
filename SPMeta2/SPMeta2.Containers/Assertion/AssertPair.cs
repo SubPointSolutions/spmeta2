@@ -369,6 +369,11 @@ namespace SPMeta2.Containers.Assertion
             return InternalSkipProperty<TProp>(srcPropExp, message);
         }
 
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, string>> srcPropExp)
+        {
+            return SkipProperty(srcPropExp, "Property null or empty.");
+        }
+
         public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, string>> srcPropExp, string message)
         {
             return InternalSkipProperty<string>(srcPropExp, message);
