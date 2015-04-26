@@ -23,7 +23,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             base.DeployModel(modelHost, model);
-                
+
             var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
             var folder = listModelHost.CurrentLibraryFolder;
@@ -34,7 +34,10 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
             var assert = ServiceFactory.AssertService
                                   .NewAssert(definition, spObject);
 
-            assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
+            if (!string.IsNullOrEmpty(definition.ManagedPropertyMappings))
+                assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
+            else
+                assert.SkipProperty(m => m.ManagedPropertyMappings);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

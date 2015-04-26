@@ -14,7 +14,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
 {
-   
+
 
     public abstract class TemplateModelHandlerBase : ContentFileModelHandlerBase
     {
@@ -22,8 +22,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
         {
             var typedTemplateModel = definition.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
-            //fileProperties["TemplateHidden"] = typedTemplateModel.HiddenTemplate.ToString();
-            fileProperties["TemplateHidden"] = typedTemplateModel.HiddenTemplate.ToString();
+            // SSOM provision for display templates sometimes gives invalid type case error #440
+            // HiddenTemplate.ToString() happens to fails on some SharePoint's environentns
+            // 1:0 works well
+            // https://github.com/SubPointSolutions/spmeta2/issues/440
+            fileProperties["TemplateHidden"] = typedTemplateModel.HiddenTemplate ? 1 : 0;
 
             if (!string.IsNullOrEmpty(typedTemplateModel.Description))
                 fileProperties["MasterPageDescription"] = typedTemplateModel.Description;
