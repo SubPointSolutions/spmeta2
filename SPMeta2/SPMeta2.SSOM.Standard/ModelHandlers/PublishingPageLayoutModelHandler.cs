@@ -77,7 +77,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 null,
                 afterFile =>
                 {
-                    var siteContentType = web.AvailableContentTypes[new SPContentTypeId(definition.AssociatedContentTypeId)];
+
 
                     var pageItem = afterFile.Properties;
 
@@ -85,11 +85,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     pageItem["MasterPageDescription"] = definition.Description;
                     pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
 
-                    //pageItem.SystemUpdate();
+                    if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
+                    {
+                        var siteContentType = web.AvailableContentTypes[new SPContentTypeId(definition.AssociatedContentTypeId)];
 
-                    pageItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
-
-                    //pageItem.SystemUpdate();
+                        pageItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#",
+                            siteContentType.Name,
+                            siteContentType.Id.ToString());
+                    }
                 });
         }
 

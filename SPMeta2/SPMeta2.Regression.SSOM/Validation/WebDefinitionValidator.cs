@@ -34,8 +34,12 @@ namespace SPMeta2.Regression.SSOM.Validation
                                  .ShouldBeEqual(m => m.Title, o => o.Title)
                                  .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
                                  .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
-                                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments)
-                                 .ShouldBeEqual(m => m.Description, o => o.Description);
+                                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description);
 
             assert.ShouldBeEqual((p, s, d) =>
             {
@@ -46,13 +50,14 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var dstUrl = d.Url;
 
                 var dstSubUrl = dstUrl.Replace(parentWeb.Url + "/", string.Empty);
+                var isValid = srcUrl.ToUpper() == dstSubUrl.ToUpper();
 
                 return new PropertyValidationResult
                 {
                     Tag = p.Tag,
                     Src = srcProp,
                     Dst = dstProp,
-                    IsValid = srcUrl == dstSubUrl
+                    IsValid = isValid 
                 };
             });
         }

@@ -29,10 +29,15 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
-                  .ShouldBeEqual(m => m.Name, o => o.Name)
-                  .ShouldBeEqual(m => m.Group, o => o.Group)
-                  .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                  .ShouldBeEqual(m => m.Description, o => o.Description);
+                .ShouldBeEqual(m => m.Name, o => o.Name)
+                .ShouldBeEqual(m => m.Group, o => o.Group)
+                .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+            //.ShouldBeEqual(m => m.Description, o => o.Description);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description);
 
             if (definition.Id == default(Guid))
             {

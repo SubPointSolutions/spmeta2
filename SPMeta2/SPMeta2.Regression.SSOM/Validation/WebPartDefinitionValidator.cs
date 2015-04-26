@@ -251,7 +251,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.WebpartXmlTemplate))
                 {
-                    throw new SPMeta2NotImplementedException("WebpartXmlTemplate validation is not supported yet.");
+                    assert.SkipProperty(m => m.WebpartXmlTemplate, "WebpartXmlTemplate is not empty, but no validation is required with SSOM. Skipping.");
                 }
                 else
                     assert.SkipProperty(m => m.WebpartXmlTemplate, "WebpartXmlTemplate is empty. Skipping.");

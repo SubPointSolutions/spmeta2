@@ -31,8 +31,13 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                                              .ShouldNotBeNull(spObject)
                                              .ShouldBeEqual(m => m.FileName, o => o.Name)
                                              .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
-                                             .ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
+
                                              .ShouldBeEqual(m => m.Title, o => o.Title);
+
+            if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
+                assert.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId());
+            else
+                assert.SkipProperty(m => m.AssociatedContentTypeId);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

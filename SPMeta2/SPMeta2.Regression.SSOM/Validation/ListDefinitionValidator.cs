@@ -30,14 +30,20 @@ namespace SPMeta2.Regression.SSOM.Validation
             assert
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 //.ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                .ShouldBeEqual(m => m.Description, o => o.Description)
+                //.ShouldBeEqual(m => m.Description, o => o.Description)
                 //.ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled)
                 //.ShouldBeEqual(m => m.IrmExpire, o => o.IrmExpire)
                 //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
                 //.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
                 .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 
-          if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description);
+
+
+            if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
                 var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
 

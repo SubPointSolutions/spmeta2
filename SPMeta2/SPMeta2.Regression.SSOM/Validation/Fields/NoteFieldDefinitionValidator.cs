@@ -35,8 +35,12 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             textFieldAssert.ShouldBeEqual(m => m.AppendOnly, o => o.AppendOnly);
 
             textFieldAssert.ShouldBeEqual(m => m.RichText, o => o.RichText);
-            textFieldAssert.ShouldBeEqual(m => m.RichTextMode, o => o.GetRichTextMode());
             textFieldAssert.ShouldBeEqual(m => m.UnlimitedLengthInDocumentLibrary, o => o.UnlimitedLengthInDocumentLibrary);
+
+            if (!string.IsNullOrEmpty(textDefinition.RichTextMode))
+                textFieldAssert.ShouldBeEqual(m => m.RichTextMode, o => o.GetRichTextMode());
+            else
+                textFieldAssert.SkipProperty(m => m.RichTextMode);
         }
     }
 

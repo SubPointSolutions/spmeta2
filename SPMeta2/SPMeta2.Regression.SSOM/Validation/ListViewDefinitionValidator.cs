@@ -28,10 +28,19 @@ namespace SPMeta2.Regression.SSOM.Validation
                            .NewAssert(definition, spObject)
                                .ShouldBeEqual(m => m.Title, o => o.Title)
                                .ShouldBeEqual(m => m.IsDefault, o => o.IsDefaul())
-                               .ShouldBeEqual(m => m.Query, o => o.Query)
                                .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+            if (!string.IsNullOrEmpty(definition.Query))
+                assert.ShouldBeEqual(m => m.Query, o => o.Query);
+            else
+                assert.SkipProperty(m => m.Query);
+
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
+            else
+                assert.SkipProperty(m => m.JSLink);
 
             if (definition.DefaultViewForContentType.HasValue)
                 assert.ShouldBeEqual(m => m.DefaultViewForContentType, o => o.DefaultViewForContentType);
@@ -88,8 +97,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
             else
                 assert.ShouldBePartOf(m => m.Url, o => o.ServerRelativeUrl);
-
-            assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
 
             assert.ShouldBeEqual((p, s, d) =>
             {

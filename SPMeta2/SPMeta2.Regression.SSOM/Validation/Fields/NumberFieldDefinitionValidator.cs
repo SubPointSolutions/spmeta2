@@ -34,7 +34,13 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             typedFieldAssert.ShouldBeEqual(m => m.MinimumValue, o => o.MinimumValue);
             typedFieldAssert.ShouldBeEqual(m => m.ShowAsPercentage, o => o.ShowAsPercentage);
 
-            typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
+
+            if (!string.IsNullOrEmpty(textDefinition.DisplayFormat))
+                typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
+            else
+                typedFieldAssert.SkipProperty(m => m.DisplayFormat);
+
+
         }
 
 
