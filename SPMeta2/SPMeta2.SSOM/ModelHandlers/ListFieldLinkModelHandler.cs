@@ -61,7 +61,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                 //list.Fields.Add(siteField);
 
                 var addFieldOptions = (SPAddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
-                list.Fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
+
+                if ((siteField as SPFieldLookup).IsDependentLookup)
+                {
+                    list.Fields.Add(siteField);
+                }
+                else
+                {
+                    list.Fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

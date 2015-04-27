@@ -189,6 +189,7 @@
     <Compile Include="ModelHandlers\DiagnosticsServiceBaseModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\DependentLookupFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />

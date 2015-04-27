@@ -346,6 +346,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site.TypedFields")]
+        public void CanDeployRandom_DependentLookupFieldDefinition()
+        {
+            TestRandomDefinition<DependentLookupFieldDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.TypedFields")]
         public void CanDeployRandom_NoteFieldDefinition()
         {
             TestRandomDefinition<NoteFieldDefinition>();
