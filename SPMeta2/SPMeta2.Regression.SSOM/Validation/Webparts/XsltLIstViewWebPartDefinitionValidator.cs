@@ -56,6 +56,21 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 var hasView = !string.IsNullOrEmpty(definition.ViewName) ||
                               definition.ViewId.HasValue; ;
 
+                if (definition.CacheXslStorage.HasValue)
+                    assert.ShouldBeEqual(m => m.CacheXslStorage, o => o.CacheXslStorage);
+                else
+                    assert.SkipProperty(m => m.CacheXslStorage, "CacheXslStorage is null or empty.");
+
+                if (definition.CacheXslTimeOut.HasValue)
+                    assert.ShouldBeEqual(m => m.CacheXslTimeOut, o => o.CacheXslTimeOut);
+                else
+                    assert.SkipProperty(m => m.CacheXslTimeOut, "CacheXslTimeOut is null or empty.");
+
+                if (definition.ShowTimelineIfAvailable.HasValue)
+                    assert.ShouldBeEqual(m => m.ShowTimelineIfAvailable, o => o.ShowTimelineIfAvailable);
+                else
+                    assert.SkipProperty(m => m.ShowTimelineIfAvailable, "ShowTimelineIfAvailable is null or empty.");
+
                 // list
                 if (!string.IsNullOrEmpty(definition.ListTitle))
                 {

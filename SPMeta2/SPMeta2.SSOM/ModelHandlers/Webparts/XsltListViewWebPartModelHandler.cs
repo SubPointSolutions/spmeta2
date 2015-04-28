@@ -96,6 +96,16 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             // rest
             typedWebpart.JSLink = typedModel.JSLink;
 #endif
+
+            if (typedModel.CacheXslStorage.HasValue)
+                typedWebpart.CacheXslStorage = typedModel.CacheXslStorage.Value;
+
+            if (typedModel.CacheXslTimeOut.HasValue)
+                typedWebpart.CacheXslTimeOut = typedModel.CacheXslTimeOut.Value;
+
+            if (typedModel.ShowTimelineIfAvailable.HasValue)
+                typedWebpart.ShowTimelineIfAvailable = typedModel.ShowTimelineIfAvailable.Value;
+
         }
 
         #endregion

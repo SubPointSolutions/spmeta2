@@ -65,6 +65,27 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public string TitleUrl { get; set; }
 
+        [ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? ShowTimelineIfAvailable { get; set; }
+
+        /// <summary>
+        /// Enable Data View Caching prop.
+        /// </summary>
+        [ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? CacheXslStorage { get; set; }
+
+        /// <summary>
+        /// Data View Caching Time-out (seconds)
+        /// </summary>
+        [ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public int? CacheXslTimeOut { get; set; }
+
         #endregion
 
         #region methods
