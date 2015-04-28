@@ -48,16 +48,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             var bindContext = LookupBindContext(listItemModelHost, wpModel);
 
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
-                                         .SetListName(bindContext.ListId.ToString())
-                                         .SetListId(bindContext.ListId.ToString())
-                                         .SetTitleUrl(bindContext.TitleUrl)
-                                         .SetOrUpdateProperty("JSLink", wpModel.JSLink)
-                                         .ToString();
+                                .SetListName(bindContext.ListId.ToString())
+                                .SetListId(bindContext.ListId.ToString())
+                                .SetTitleUrl(bindContext.TitleUrl)
+                                .SetOrUpdateProperty("JSLink", wpModel.JSLink);
 
-            return wpXml;
+            if (wpModel.CacheXslStorage.HasValue)
+                wpXml.SetOrUpdateProperty("CacheXslStorage", wpModel.CacheXslStorage.Value.ToString());
+
+            if (wpModel.CacheXslTimeOut.HasValue)
+                wpXml.SetOrUpdateProperty("CacheXslTimeOut", wpModel.CacheXslTimeOut.Value.ToString());
+
+            if (wpModel.ShowTimelineIfAvailable.HasValue)
+                wpXml.SetOrUpdateProperty("ShowTimelineIfAvailable", wpModel.ShowTimelineIfAvailable.Value.ToString());
+
+            return wpXml.ToString();
         }
-
-
 
         private List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
