@@ -85,6 +85,152 @@ namespace SPMeta2.BuiltInDefinitions
 
         #region lists
 
+        /// <summary>
+        /// 'Cache Profiles' list shortcut.
+        /// </summary>
+        public static ListDefinition CacheProfiles = new ListDefinition
+        {
+            Title = "Cache Profiles",
+            TemplateType = BuiltInListTemplateTypeId.GenericList,
+            Url = "Cache Profiles",
+            ContentTypesEnabled = true,
+            Hidden = true
+        };
+
+        /// <summary>
+        /// 'Composed Looks' list shortcut.
+        /// </summary>
+        public static ListDefinition ComposedLooks = new ListDefinition
+        {
+            Title = "Composed Looks",
+            TemplateType = BuiltInListTemplateTypeId.GenericList,
+            Url = "_catalogs/design",
+            ContentTypesEnabled = true,
+            Hidden = true
+        };
+
+        /// <summary>
+        /// 'Device Channels' list shortcut.
+        /// </summary>
+        public static ListDefinition DeviceChannels = new ListDefinition
+        {
+            Title = "Composed Looks",
+            TemplateType = BuiltInListTemplateTypeId.GenericList,
+            Url = "DeviceChannels",
+            ContentTypesEnabled = true,
+            Hidden = true
+        };
+
+        /// <summary>
+        /// 'Form Templates' list shortcut.
+        /// </summary>
+        public static ListDefinition FormTemplates = new ListDefinition
+        {
+            Title = "Form Templates",
+            TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+            Url = "FormServerTemplates",
+            ContentTypesEnabled = true
+        };
+
+        /// <summary>
+        /// 'Publishing Images' list shortcut.
+        /// </summary>
+        public static ListDefinition Images = new ListDefinition
+        {
+            Title = "Images",
+            TemplateType = 851,
+            Url = "PublishingImages",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'List Template Gallery' list shortcut.
+        /// </summary>
+        public static ListDefinition ListTemplateGallery = new ListDefinition
+        {
+            Title = "List Template Gallery",
+            TemplateType = 114,
+            Url = "_catalogs/lt",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'Reusable Content' list shortcut.
+        /// </summary>
+        public static ListDefinition ReusableContent = new ListDefinition
+        {
+            Title = "Reusable Content",
+            TemplateType = 100,
+            Url = "ReusableContent",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'Site Collection Documents' list shortcut.
+        /// </summary>
+        public static ListDefinition SiteCollectionDocuments = new ListDefinition
+        {
+            Title = "Site Collection Documents",
+            TemplateType = 101,
+            Url = "SiteCollectionDocuments",
+            ContentTypesEnabled = true,
+        };
+
+
+        /// <summary>
+        /// 'Site Collection Images' list shortcut.
+        /// </summary>
+        public static ListDefinition SiteCollectionImages = new ListDefinition
+        {
+            Title = "Site Collection Images",
+            TemplateType = 851,
+            Url = "SiteCollectionImages",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'Suggested Content Browser Locations' list shortcut.
+        /// </summary>
+        public static ListDefinition SuggestedContentBrowserLocations = new ListDefinition
+        {
+            Title = "Suggested Content Browser Locations",
+            TemplateType = 100,
+            Url = "PublishedLinks",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'TaxonomyHiddenList' list shortcut.
+        /// </summary>
+        public static ListDefinition TaxonomyHiddenList = new ListDefinition
+        {
+            Title = "TaxonomyHiddenList",
+            TemplateType = 100,
+            Url = "TaxonomyHiddenList",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'Variation Labels' list shortcut.
+        /// </summary>
+        public static ListDefinition VariationLabels = new ListDefinition
+        {
+            Title = "Variation Labels",
+            TemplateType = 100,
+            Url = "Variation Labels",
+            ContentTypesEnabled = true,
+        };
+
+        /// <summary>
+        /// 'Workflow Tasks' list shortcut.
+        /// </summary>
+        public static ListDefinition WorkflowTasks = new ListDefinition
+        {
+            Title = "Workflow Tasks",
+            TemplateType = 107,
+            Url = "WorkflowTasks",
+            ContentTypesEnabled = true,
+        };
 
         #endregion
 
