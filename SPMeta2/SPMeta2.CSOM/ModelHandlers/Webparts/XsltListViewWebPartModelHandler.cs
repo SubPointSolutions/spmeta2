@@ -51,7 +51,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                                 .SetListName(bindContext.ListId.ToString())
                                 .SetListId(bindContext.ListId.ToString())
                                 .SetTitleUrl(bindContext.TitleUrl)
-                                .SetOrUpdateProperty("JSLink", wpModel.JSLink);
+                                .SetJSLink(wpModel.JSLink);
 
             if (wpModel.CacheXslStorage.HasValue)
                 wpXml.SetOrUpdateProperty("CacheXslStorage", wpModel.CacheXslStorage.Value.ToString());
@@ -75,7 +75,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             if (!string.IsNullOrEmpty(wpModel.ListUrl))
             {
                 list = web.QueryAndGetListByUrl(wpModel.ListUrl);
-
             }
             else if (!string.IsNullOrEmpty(wpModel.ListTitle))
             {

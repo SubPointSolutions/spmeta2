@@ -197,6 +197,12 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static string GetListId(this XDocument webpartXmlDocument)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            return GetProperty(webpartXmlDocument, name);
+        }
+
         public static XDocument SetShowTimelineIfAvailable(this XDocument webpartXmlDocument, bool value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
@@ -221,10 +227,28 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static XDocument SetJSLink(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static string GetJSLink(this XDocument webpartXmlDocument)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            return GetProperty(webpartXmlDocument, name);
+        }
+
         public static XDocument SetListName(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static string GetListName(this XDocument webpartXmlDocument)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            return GetProperty(webpartXmlDocument, name);
         }
 
         public static XDocument SetFilterDisplayValue1(this XDocument webpartXmlDocument, string value)
@@ -420,6 +444,7 @@ namespace SPMeta2.Utils
                 else
                 {
                     newNode.Value = propValue ?? string.Empty;
+
                 }
 
                 propsNode.Add(newNode);
@@ -428,11 +453,13 @@ namespace SPMeta2.Utils
             {
                 if (isCData)
                 {
-                    propNode.ReplaceNodes(new XCData(propValue));
+                    propNode.ReplaceNodes(new XCData(propValue ?? string.Empty));
+                    propNode.SetAttributeValue("null", string.IsNullOrEmpty(propValue));
                 }
                 else
                 {
                     propNode.Value = propValue ?? string.Empty;
+                    propNode.SetAttributeValue("null", string.IsNullOrEmpty(propValue));
                 }
             }
 
