@@ -68,6 +68,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.TitleUrl))
                 instance.TitleUrl = definition.TitleUrl;
+
+            if (!string.IsNullOrEmpty(definition.ExportMode))
+                instance.ExportMode = (WebPartExportMode)Enum.Parse(typeof(WebPartExportMode), definition.ExportMode);
         }
 
         public WebpartPageModelHost CurrentHost { get; set; }

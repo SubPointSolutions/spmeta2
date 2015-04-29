@@ -159,6 +159,7 @@
     <Compile Include="Enumerations\BuiltInDraftVisibilityType.cs" />
     <Compile Include="Enumerations\BuiltInEventReceiverSynchronization.cs" />
     <Compile Include="Enumerations\BuiltInEventReceiverType.cs" />
+    <Compile Include="Enumerations\BuiltInExportMode.cs" />
     <Compile Include="Enumerations\BuiltInFieldUserSelectionMode.cs" />
     <Compile Include="Enumerations\BuiltInListTemplates.cs" />
     <Compile Include="Enumerations\BuiltInFieldAttributes.cs" />

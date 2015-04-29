@@ -145,6 +145,13 @@ namespace SPMeta2.Regression.SSOM.Validation
                 else
                     assert.SkipProperty(m => m.TitleIconImageUrl, "TitleIconImageUrl is null or empty. Skipping.");
 
+                if (!string.IsNullOrEmpty(definition.ExportMode))
+                {
+                    assert.ShouldBeEqual(m => m.ExportMode, o => o.GetExportMode());
+                }
+                else
+                    assert.SkipProperty(m => m.ExportMode, "ExportMode is null or empty. Skipping.");
+
 
                 if (!string.IsNullOrEmpty(definition.Id))
                     assert.ShouldBeEqual(m => m.Id, o => o.ID);
@@ -265,6 +272,11 @@ namespace SPMeta2.Regression.SSOM.Validation
         public static string GetZoneId(this WebPart webpart)
         {
             return webpart.Zone != null ? webpart.Zone.ID : string.Empty;
+        }
+
+        public static string GetExportMode(this WebPart webpart)
+        {
+            return webpart.ExportMode.ToString();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SPMeta2.Definitions.Base
     /// </summary>
     public abstract class WebPartDefinitionBase : DefinitionBase
     {
-        #region contructors
+        #region constructors
 
         public WebPartDefinitionBase()
         {
@@ -27,6 +27,11 @@ namespace SPMeta2.Definitions.Base
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ExportMode { get; set; }
 
         [ExpectValidation]
         [DataMember]

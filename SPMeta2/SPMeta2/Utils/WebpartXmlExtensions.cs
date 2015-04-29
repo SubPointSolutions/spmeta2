@@ -191,6 +191,18 @@ namespace SPMeta2.Utils
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
+        public static XDocument SetExportMode(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static string GetExportMode(this XDocument webpartXmlDocument)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            return GetProperty(webpartXmlDocument, name);
+        }
+
         public static XDocument SetListId(this XDocument webpartXmlDocument, string value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);

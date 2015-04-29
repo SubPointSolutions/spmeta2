@@ -62,6 +62,27 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 assert.ShouldBeEqual(m => m.Title, o => o.Title);
 
+                if (!string.IsNullOrEmpty(definition.ExportMode))
+                {
+                    var value = CurrentWebPartXml.GetExportMode();
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ExportMode);
+                        var isValid = definition.ExportMode == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.ExportMode, "ExportMode is null or empty. Skipping.");
+
                 if (!string.IsNullOrEmpty(definition.ChromeState))
                 {
                     var value = CurrentWebPartXml.GetChromeState();

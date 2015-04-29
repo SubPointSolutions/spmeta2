@@ -239,6 +239,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ChromeType))
                 xml.SetChromeType(definition.ChromeType);
 
+            if (!string.IsNullOrEmpty(definition.ExportMode))
+                xml.SetExportMode(definition.ExportMode);
+
             return xml.ToString();
         }
 
