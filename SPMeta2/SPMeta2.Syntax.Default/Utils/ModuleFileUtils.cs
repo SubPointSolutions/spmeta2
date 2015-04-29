@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SPMeta2.Definitions;
+using SPMeta2.Models;
 
 
 namespace SPMeta2.Syntax.Default.Utils
@@ -36,6 +38,39 @@ namespace SPMeta2.Syntax.Default.Utils
                 {
                     return ReadFully(reader.BaseStream);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Reads the giving directory and populates the node with folders/files structure
+        /// </summary>
+        /// <param name="hostNode"></param>
+        /// <param name="folderPath"></param>
+        public static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath)
+        {
+            var files = Directory.GetFiles(folderPath);
+            var folders = Directory.GetDirectories(folderPath);
+
+            foreach (var file in files)
+            {
+                hostNode.AddModuleFile(new ModuleFileDefinition
+                {
+                    Content = File.ReadAllBytes(file),
+                    FileName = Path.GetFileName(file),
+                    Overwrite = true
+                });
+            }
+
+            foreach (var subFolder in folders)
+            {
+                var subFolderPath = subFolder;
+
+                var folderDef = new FolderDefinition
+                {
+                    Name = Path.GetFileName(subFolderPath)
+                };
+
+                hostNode.AddFolder(folderDef, folderNode => LoadModuleFilesFromLocalFolder(folderNode, subFolderPath));
             }
         }
 
