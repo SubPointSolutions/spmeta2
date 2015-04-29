@@ -103,8 +103,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             if (typedModel.CacheXslTimeOut.HasValue)
                 typedWebpart.CacheXslTimeOut = typedModel.CacheXslTimeOut.Value;
 
+#if !NET35
             if (typedModel.ShowTimelineIfAvailable.HasValue)
                 typedWebpart.ShowTimelineIfAvailable = typedModel.ShowTimelineIfAvailable.Value;
+#endif
 
         }
 

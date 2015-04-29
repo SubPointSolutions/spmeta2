@@ -59,8 +59,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             if (wpModel.CacheXslTimeOut.HasValue)
                 wpXml.SetOrUpdateProperty("CacheXslTimeOut", wpModel.CacheXslTimeOut.Value.ToString());
 
+#if !NET35
             if (wpModel.ShowTimelineIfAvailable.HasValue)
                 wpXml.SetOrUpdateProperty("ShowTimelineIfAvailable", wpModel.ShowTimelineIfAvailable.Value.ToString());
+#endif
 
             return wpXml.ToString();
         }
