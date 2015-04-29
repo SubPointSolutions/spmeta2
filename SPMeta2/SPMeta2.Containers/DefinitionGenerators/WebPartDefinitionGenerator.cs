@@ -25,8 +25,6 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 if (Rnd.Bool())
                     def.ExportMode = BuiltInExportMode.All;
-                else
-                    def.ExportMode = BuiltInExportMode.None;
             });
         }
     }

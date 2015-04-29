@@ -62,7 +62,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var addFieldOptions = (SPAddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
 
-                if ((siteField as SPFieldLookup).IsDependentLookup)
+                if ((siteField is SPFieldLookup) &&
+                    (siteField as SPFieldLookup).IsDependentLookup)
                 {
                     list.Fields.Add(siteField);
                 }
