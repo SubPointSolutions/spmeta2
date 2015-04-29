@@ -12,7 +12,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.Taxonomy
             return WithEmptyDefinition(def =>
             {
                 def.Name = Rnd.String();
-                def.Id = null;
+                def.Id = Guid.NewGuid();
 
                 def.Description = Rnd.String();
             });

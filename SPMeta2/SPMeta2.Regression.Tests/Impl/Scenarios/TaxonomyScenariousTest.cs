@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
@@ -36,41 +36,149 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Taxonomy")]
-        public void CanDeploy_TaxonomyTermTree()
+        protected void GenerateTermsTree(ModelNode termSetOrTermNode, int deep, bool cleanGuid)
+        {
+            if (deep == 0)
+                return;
+
+            termSetOrTermNode.AddRandomTerm(term =>
+            {
+                var termDef = term.Value as TaxonomyTermDefinition;
+                termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
+
+                if (cleanGuid)
+                    termDef.Id = null;
+
+                GenerateTermsTree(term, --deep, cleanGuid);
+            });
+        }
+
+        protected ModelNode GenerateTermTaxonomyTree(int deep, bool cleanGuid)
         {
             var model = SPMeta2Model
-                 .NewSiteModel(site =>
-                 {
-                     site
-                         .AddRandomTermStore(store =>
-                         {
-                             store
-                                 .AddRandomTermGroup(group =>
-                                 {
-                                     group
-                                         .AddRandomTermSet(termSet =>
-                                         {
-                                             termSet
-                                                 .AddRandomTerm(level1 =>
-                                                 {
-                                                     level1
-                                                         .AddRandomTerm(level2 =>
-                                                         {
-                                                             level2.AddRandomTerm(level3 =>
-                                                             {
-                                                                 level3.AddRandomTerm();
-                                                             });
-                                                         });
-                                                 });
-                                         });
-                                 });
-                         });
-                 });
+               .NewSiteModel(site =>
+               {
+                   site
+                       .AddRandomTermStore(store =>
+                       {
+                           store
+                               .AddRandomTermGroup(group =>
+                               {
+                                   group
+                                       .AddRandomTermSet(termSet =>
+                                       {
+                                           GenerateTermsTree(termSet, deep, cleanGuid);
+                                       });
+                               });
+                       });
+               });
 
+            return model;
+        }
+
+        #region term tree, clean ID
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_1()
+        {
+            var model = GenerateTermTaxonomyTree(1, true);
             TestModel(model);
         }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_2()
+        {
+            var model = GenerateTermTaxonomyTree(2, true);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_3()
+        {
+            var model = GenerateTermTaxonomyTree(3, true);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_4()
+        {
+            var model = GenerateTermTaxonomyTree(4, true);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_5()
+        {
+            var model = GenerateTermTaxonomyTree(5, true);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Named_Tree_Level_6()
+        {
+            var model = GenerateTermTaxonomyTree(6, true);
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region term tree, non empty ID
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_1()
+        {
+            var model = GenerateTermTaxonomyTree(1, false);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_2()
+        {
+            var model = GenerateTermTaxonomyTree(2, false);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_3()
+        {
+            var model = GenerateTermTaxonomyTree(3, false);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_4()
+        {
+            var model = GenerateTermTaxonomyTree(4, false);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_5()
+        {
+            var model = GenerateTermTaxonomyTree(5, false);
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Taxonomy.Hierarchy")]
+        public void CanDeploy_TaxonomyTerm_Id_Tree_Level_6()
+        {
+            var model = GenerateTermTaxonomyTree(6, false);
+            TestModel(model);
+        }
+
+        #endregion
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Taxonomy")]
