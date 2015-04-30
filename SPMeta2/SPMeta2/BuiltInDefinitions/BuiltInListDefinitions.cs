@@ -161,7 +161,8 @@ namespace SPMeta2.BuiltInDefinitions
         {
             Title = "Reusable Content",
             TemplateType = 100,
-            Url = "ReusableContent",
+            //Url = "ReusableContent",
+            CustomUrl = "ReusableContent",
             ContentTypesEnabled = true,
         };
 

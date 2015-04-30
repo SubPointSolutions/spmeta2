@@ -1092,5 +1092,25 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
+
+        #region reusable content
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.ReusableItems")]
+        public void CanDeployRandom_ReusableTextItemDefinition()
+        {
+            TestRandomDefinition<ReusableTextItemDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.ReusableItems")]
+        public void CanDeployRandom_ReusableHTMLItemDefinition()
+        {
+            TestRandomDefinition<ReusableHTMLItemDefinition>();
+        }
+
+        #endregion
     }
 }

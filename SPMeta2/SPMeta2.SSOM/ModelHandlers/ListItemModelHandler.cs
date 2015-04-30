@@ -105,7 +105,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list item");
 
                 var newItem = list.Items.Add(folder.ServerRelativeUrl, SPFileSystemObjectType.File, null);
-                newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+
+                MapListItemProperties(newItem, listItemModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -126,7 +127,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list item");
 
-                currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+                MapListItemProperties(currentItem, listItemModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -143,6 +144,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 return currentItem;
             }
+        }
+
+        protected virtual void MapListItemProperties(SPListItem newItem, ListItemDefinition listItemModel)
+        {
+            newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
