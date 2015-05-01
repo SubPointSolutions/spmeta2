@@ -34,10 +34,15 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             var spObject = GetListItem(list, rootFolder, definition);
 
+            ValidateProperties(spObject, definition);
+        }
+
+        protected virtual void ValidateProperties(SPListItem item, ListItemDefinition definition)
+        {
             var assert = ServiceFactory.AssertService
-                             .NewAssert(definition, spObject)
-                                   .ShouldNotBeNull(spObject)
-                                   .ShouldBeEqual(m => m.Title, o => o.Title);
+                          .NewAssert(definition, item)
+                                .ShouldNotBeNull(item)
+                                .ShouldBeEqual(m => m.Title, o => o.Title);
         }
     }
 }

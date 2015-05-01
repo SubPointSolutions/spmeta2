@@ -150,6 +150,7 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
+    <Compile Include="Syntax\ReusableItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\ResultScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\SummaryLinkWebPartDefinitionSyntax.cs" />

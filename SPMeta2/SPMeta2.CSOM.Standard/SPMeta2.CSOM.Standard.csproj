@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\Base\ReusableTextItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ControlDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\JavaScriptDisplayTemplateModelHandler.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\ReusableHTMLItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\ReusableTextItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />

@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\Base\ItemControlTemplateDefinitionBaseValidator.cs" />
+    <Compile Include="Validation\Base\ReusableTextItemDefinitionBaseValidator.cs" />
     <Compile Include="Validation\Base\TemplateDefinitionBaseValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
@@ -87,6 +88,8 @@
     <Compile Include="Validation\Fields\ClientHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\ReusableHTMLItemDefinitionValidator.cs" />
+    <Compile Include="Validation\ReusableTextItemDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermLabelDefinitionValidator.cs" />

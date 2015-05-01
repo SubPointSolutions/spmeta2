@@ -612,6 +612,14 @@ namespace SPMeta2.Containers.Services
                             modelValidationResult.Properties.FirstOrDefault(
                                 r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
 
+                        // convert stuff
+
+                        if (validationResult == null)
+                        {
+                            validationResult = modelValidationResult.Properties.FirstOrDefault(
+                                  r => r.Src != null && r.Src.Name.Contains("." + shouldBeValidatedProp.Name + ")"));
+                        }
+
                         if (validationResult != null)
                         {
                             hasValidation = true;

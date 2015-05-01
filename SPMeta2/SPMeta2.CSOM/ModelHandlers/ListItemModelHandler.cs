@@ -200,7 +200,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     LeafName = null
                 });
 
-                newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+                MapListItemProperties(newItem, listItemModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -223,7 +223,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list item");
 
-                currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+                MapListItemProperties(currentItem, listItemModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -242,6 +242,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 return currentItem;
             }
+        }
+
+        protected virtual void MapListItemProperties(ListItem currentItem, ListItemDefinition listItemModel)
+        {
+            currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
         }
 
         private bool IsDocumentLibray(List list)

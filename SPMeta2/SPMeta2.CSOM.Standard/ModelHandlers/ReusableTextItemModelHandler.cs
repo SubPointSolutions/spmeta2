@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
-using SPMeta2.SSOM.ModelHandlers;
-using SPMeta2.SSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Standard.Definitions;
-using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
 
-namespace SPMeta2.SSOM.Standard.ModelHandlers
+namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
     public class ReusableTextItemModelHandler : ReusableTextItemModelHandlerBase
     {
@@ -22,7 +16,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             get { return typeof(ReusableTextItemDefinition); }
         }
 
-        protected override void MapListItemProperties(SPListItem newItem, ListItemDefinition listItemModel)
+        protected override void MapListItemProperties(ListItem newItem, ListItemDefinition listItemModel)
         {
             base.MapListItemProperties(newItem, listItemModel);
 
