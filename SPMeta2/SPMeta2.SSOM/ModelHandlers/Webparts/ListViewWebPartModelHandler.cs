@@ -48,7 +48,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var web = _host.SPLimitedWebPartManager.Web;
             SPList list = null;
 
-            if (typedModel.ListId.HasValue)
+            if (typedModel.ListId.HasGuidValue())
                 list = web.Lists[typedModel.ListId.Value];
             else if (!string.IsNullOrEmpty(typedModel.ListUrl))
                 list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedModel.ListUrl));
@@ -58,7 +58,27 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
             typedWebpart.ListName = list.ID.ToString();
             typedWebpart.ListId = list.ID;
-            typedWebpart.TitleUrl = list.DefaultViewUrl;
+
+            // view check
+            if (list != null)
+            {
+                SPView view = null;
+
+                if (typedModel.ViewId.HasGuidValue())
+                    view = list.Views[typedModel.ViewId.Value];
+                else if (!string.IsNullOrEmpty(typedModel.ViewName))
+                    view = list.Views[typedModel.ViewName];
+
+                if (view != null)
+                {
+                    typedWebpart.ViewGuid = view.ID.ToString("B").ToUpperInvariant();
+                    typedWebpart.TitleUrl = view.ServerRelativeUrl;
+                }
+            }
+
+            // able to 'reset', if NULL or use list-view based URLs
+            if (!string.IsNullOrEmpty(typedModel.TitleUrl))
+                typedWebpart.TitleUrl = typedModel.TitleUrl;
         }
 
         #endregion

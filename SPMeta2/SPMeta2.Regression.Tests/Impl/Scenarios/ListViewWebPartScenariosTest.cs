@@ -1,26 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
-using SPMeta2.Containers.Standard;
-using SPMeta2.CSOM;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
-using SPMeta2.Regression.Tests.Definitions;
-using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
-using SPMeta2.Standard.Definitions;
-using SPMeta2.Syntax.Default;
-using SPMeta2.Syntax.Default.Modern;
-using SPMeta2.Exceptions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
 
-namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
+namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class XsltListViewWebPartScenariosTest : ListViewWebPartScenariosTestBase
+    public class ListViewWebPartScenariosTest : ListViewWebPartScenariosTestBase
     {
         #region internal
 
@@ -41,11 +38,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         #region list binding tests
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByListTitle()
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByListTitle()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
@@ -66,7 +63,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                    page.AddListViewWebPart(listViewWebpart);
                                 });
                         });
 
@@ -76,15 +73,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByListUrl()
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByListUrl()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
-                def.ListUrl = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.GetListUrl();
+                def.ListUrl = BuiltInListDefinitions.StyleLibrary.GetListUrl();
 
                 def.ViewName = string.Empty;
                 def.ViewId = null;
@@ -101,7 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                    page.AddListViewWebPart(listViewWebpart);
                                 });
                         });
 
@@ -111,11 +108,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByListId()
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByListId()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
@@ -133,7 +130,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                         {
                             list.OnProvisioned<object>(context =>
                             {
-                                xsltListViewWebpart.ListId = ExtractListId(context);
+                                listViewWebpart.ListId = ExtractListId(context);
                             });
                         })
                         .AddHostList(BuiltInListDefinitions.SitePages, list =>
@@ -141,7 +138,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                    page.AddListViewWebPart(listViewWebpart);
                                 });
                         });
 
@@ -155,8 +152,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         #region list view binding tests
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByViewId()
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByViewId()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
             var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
@@ -171,7 +168,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 def.IsDefault = false;
             });
 
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
@@ -191,7 +188,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             {
                                 view.OnProvisioned<object>(context =>
                                 {
-                                    xsltListViewWebpart.ViewId = ExtractViewId(context);
+                                    listViewWebpart.ViewId = ExtractViewId(context);
                                 });
                             });
                         })
@@ -200,7 +197,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                    page.AddListViewWebPart(listViewWebpart);
                                 });
                         });
 
@@ -210,8 +207,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByViewName()
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByViewName()
         {
             var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
             var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
@@ -226,7 +223,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 def.IsDefault = false;
             });
 
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
@@ -249,7 +246,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                    page.AddListViewWebPart(listViewWebpart);
                                 });
                         });
 
@@ -261,6 +258,4 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #endregion
     }
-
-   
 }

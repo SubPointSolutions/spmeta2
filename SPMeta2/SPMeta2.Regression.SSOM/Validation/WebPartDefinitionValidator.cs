@@ -131,12 +131,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                 else
                     assert.SkipProperty(m => m.ImportErrorMessage, "ImportErrorMessage is null or empty. Skipping.");
 
-                if (!string.IsNullOrEmpty(definition.TitleUrl))
+                if (!DisableTitleUrlValidation)
                 {
-                    assert.ShouldBeEndOf(m => m.TitleUrl, o => o.TitleUrl);
+                    if (!string.IsNullOrEmpty(definition.TitleUrl))
+                    {
+                        assert.ShouldBeEndOf(m => m.TitleUrl, o => o.TitleUrl);
+                    }
+                    else
+                        assert.SkipProperty(m => m.TitleUrl, "TitleUrl is null or empty. Skipping.");
                 }
-                else
-                    assert.SkipProperty(m => m.TitleUrl, "TitleUrl is null or empty. Skipping.");
 
                 if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
                 {
@@ -265,6 +268,8 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             });
         }
+
+        protected bool DisableTitleUrlValidation { get; set; }
     }
 
     internal static class WebpartEx
