@@ -28,6 +28,49 @@ namespace SPMeta2.Utils
         }
 
 
+        public static XDocument SetPropertyMappings(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static XDocument SetOverwriteResultPath(this XDocument webpartXmlDocument, bool value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetShouldHideControlWhenEmpty(this XDocument webpartXmlDocument, bool value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetLogAnalyticsViewEvent(this XDocument webpartXmlDocument, bool value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetAddSEOPropertiesFromSearch(this XDocument webpartXmlDocument, bool value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetStartingItemIndex(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+        public static XDocument SetPropertyMappings(this XDocument webpartXmlDocument, int value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+        }
+
+
         public static XDocument SetNumberOfItems(this XDocument webpartXmlDocument, int value)
         {
             var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);

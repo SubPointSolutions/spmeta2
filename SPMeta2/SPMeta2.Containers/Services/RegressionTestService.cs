@@ -613,11 +613,18 @@ namespace SPMeta2.Containers.Services
                                 r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
 
                         // convert stuff
-
                         if (validationResult == null)
                         {
                             validationResult = modelValidationResult.Properties.FirstOrDefault(
                                   r => r.Src != null && r.Src.Name.Contains("." + shouldBeValidatedProp.Name + ")"));
+                        }
+
+                        // nullables
+                        if (validationResult == null)
+                        {
+                            validationResult = modelValidationResult.Properties.FirstOrDefault(
+                                  r => r.Src != null &&
+                                      (r.Src.Name.Contains("System.Nullable`1") && r.Src.Name.Contains(shouldBeValidatedProp.Name)));
                         }
 
                         if (validationResult != null)

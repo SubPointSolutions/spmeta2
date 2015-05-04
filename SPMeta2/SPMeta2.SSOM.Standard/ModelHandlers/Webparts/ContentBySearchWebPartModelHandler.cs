@@ -52,6 +52,24 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             if (!string.IsNullOrEmpty(typedModel.DataProviderJSON))
                 typedWebpart.DataProviderJSON = typedModel.DataProviderJSON;
 
+            if (!string.IsNullOrEmpty(typedModel.PropertyMappings))
+                typedWebpart.PropertyMappings = typedModel.PropertyMappings;
+
+            if (typedModel.OverwriteResultPath.HasValue)
+                typedWebpart.OverwriteResultPath = typedModel.OverwriteResultPath.Value;
+
+            if (typedModel.ShouldHideControlWhenEmpty.HasValue)
+                typedWebpart.ShouldHideControlWhenEmpty = typedModel.ShouldHideControlWhenEmpty.Value;
+
+            if (typedModel.LogAnalyticsViewEvent.HasValue)
+                typedWebpart.LogAnalyticsViewEvent = typedModel.LogAnalyticsViewEvent.Value;
+
+            if (typedModel.AddSEOPropertiesFromSearch.HasValue)
+                typedWebpart.AddSEOPropertiesFromSearch = typedModel.AddSEOPropertiesFromSearch.Value;
+
+            if (typedModel.StartingItemIndex.HasValue)
+                typedWebpart.StartingItemIndex = typedModel.StartingItemIndex.Value;
+
             // misc
             if (typedModel.NumberOfItems.HasValue)
                 typedWebpart.NumberOfItems = typedModel.NumberOfItems.Value;

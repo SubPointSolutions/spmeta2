@@ -61,6 +61,37 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                     throw new NotImplementedException();
                 else
                     assert.SkipProperty(m => m.ResultsPerPage, "ResultsPerPage is null or empty, skipping.");
+
+                //
+                if (!string.IsNullOrEmpty(definition.PropertyMappings))
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.PropertyMappings, "PropertyMappings is null or empty, skipping.");
+
+                if (definition.OverwriteResultPath.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.OverwriteResultPath, "OverwriteResultPath is null or empty, skipping.");
+
+                if (definition.ShouldHideControlWhenEmpty.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.ShouldHideControlWhenEmpty, "ShouldHideControlWhenEmpty is null or empty, skipping.");
+
+                if (definition.LogAnalyticsViewEvent.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.LogAnalyticsViewEvent, "LogAnalyticsViewEvent is null or empty, skipping.");
+
+                if (definition.AddSEOPropertiesFromSearch.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.AddSEOPropertiesFromSearch, "AddSEOPropertiesFromSearch is null or empty, skipping.");
+
+                if (definition.StartingItemIndex.HasValue)
+                    throw new NotImplementedException();
+                else
+                    assert.SkipProperty(m => m.StartingItemIndex, "StartingItemIndex is null or empty, skipping.");
             });
         }
     }

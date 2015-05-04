@@ -49,6 +49,30 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [ExpectValidation]
         public int? ResultsPerPage { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        public bool? OverwriteResultPath { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string PropertyMappings { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldHideControlWhenEmpty { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? LogAnalyticsViewEvent { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? AddSEOPropertiesFromSearch { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public int? StartingItemIndex { get; set; }
+
         #endregion
 
         #region methods

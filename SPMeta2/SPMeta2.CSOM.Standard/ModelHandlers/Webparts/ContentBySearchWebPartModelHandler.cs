@@ -46,7 +46,26 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 xml.SetNumberOfItems(definition.NumberOfItems.Value);
 
             if (definition.ResultsPerPage.HasValue)
-                xml.SetNumberOfItems(definition.ResultsPerPage.Value);
+                xml.SetResultsPerPage(definition.ResultsPerPage.Value);
+
+            // misc
+            if (!string.IsNullOrEmpty(definition.PropertyMappings))
+                xml.SetPropertyMappings(definition.PropertyMappings);
+
+            if (definition.OverwriteResultPath.HasValue)
+                xml.SetOverwriteResultPath(definition.OverwriteResultPath.Value);
+
+            if (definition.ShouldHideControlWhenEmpty.HasValue)
+                xml.SetShouldHideControlWhenEmpty(definition.ShouldHideControlWhenEmpty.Value);
+
+            if (definition.LogAnalyticsViewEvent.HasValue)
+                xml.SetLogAnalyticsViewEvent(definition.LogAnalyticsViewEvent.Value);
+
+            if (definition.AddSEOPropertiesFromSearch.HasValue)
+                xml.SetAddSEOPropertiesFromSearch(definition.AddSEOPropertiesFromSearch.Value);
+
+            if (definition.StartingItemIndex.HasValue)
+                xml.SetStartingItemIndex(definition.StartingItemIndex.Value);
 
             return xml.ToString();
         }
