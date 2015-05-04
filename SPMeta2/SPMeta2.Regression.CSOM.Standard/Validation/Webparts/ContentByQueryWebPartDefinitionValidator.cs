@@ -100,6 +100,28 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                     assert.SkipProperty(m => m.FilterType3, "FilterType3 is null or empty, skipping.");
 
 
+
+                if (!string.IsNullOrEmpty(definition.SortBy))
+                {
+                    // TODO
+                }
+                else
+                    assert.SkipProperty(m => m.SortBy, "SortBy is null or empty, skipping.");
+
+                if (!string.IsNullOrEmpty(definition.SortByFieldType))
+                {
+                    // TODO
+                }
+                else
+                    assert.SkipProperty(m => m.SortByFieldType, "SortByFieldType is null or empty, skipping.");
+
+                if (!string.IsNullOrEmpty(definition.SortByDirection))
+                {
+                    // TODO
+                }
+                else
+                    assert.SkipProperty(m => m.SortByDirection, "SortByDirection is null or empty, skipping.");
+
                 // filter values
 
                 if (!string.IsNullOrEmpty(definition.FilterValue1))

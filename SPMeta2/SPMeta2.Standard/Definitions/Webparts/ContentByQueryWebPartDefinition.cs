@@ -27,6 +27,18 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
+        public string SortBy { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string SortByDirection { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string SortByFieldType { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
         public string DataMappings { get; set; }
 
         [DataMember]
@@ -82,7 +94,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
-       // [ExpectUpdate]
+        // [ExpectUpdate]
         public bool? ShowUntargetedItems { get; set; }
 
         [DataMember]

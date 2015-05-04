@@ -106,6 +106,17 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
                     Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedModel.FilterOperator3);
             }
 
+            // sorting
+            if (!string.IsNullOrEmpty(typedModel.SortBy))
+                typedWebpart.SortBy = typedModel.SortBy;
+
+            if (!string.IsNullOrEmpty(typedModel.SortByDirection))
+                typedWebpart.SortByDirection = (ContentByQueryWebPart.SortDirection)
+                    Enum.Parse(typeof(ContentByQueryWebPart.SortDirection), typedModel.SortByDirection);
+
+            if (!string.IsNullOrEmpty(typedModel.SortByFieldType))
+                typedWebpart.SortByFieldType = typedModel.SortByFieldType;
+
             // data mappings
             if (!string.IsNullOrEmpty(typedModel.DataMappings))
                 typedWebpart.DataMappings = typedModel.DataMappings;
