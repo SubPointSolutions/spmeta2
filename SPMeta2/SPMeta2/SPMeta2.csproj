@@ -148,6 +148,7 @@
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
+    <Compile Include="Definitions\Webparts\PageViewerWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\UserCodeWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
+    <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
@@ -320,6 +322,7 @@
     <EmbeddedResource Include="Templates\Webparts\UserCodeWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ResultScriptWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ContentBySearchWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\PageViewerWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

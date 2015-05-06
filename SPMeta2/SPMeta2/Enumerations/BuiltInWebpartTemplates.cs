@@ -32,6 +32,8 @@ namespace SPMeta2.Enumerations
             ResultScriptWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ResultScriptWebPart.webpart");
 
             ContentBySearchWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ContentBySearchWebPart.webpart");
+
+            PageViewerWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.PageViewerWebPart.webpart");
         }
 
         #endregion
@@ -50,6 +52,9 @@ namespace SPMeta2.Enumerations
         public static string SummaryLinkWebPart { get; set; }
         public static string UserCodeWebPart { get; set; }
         public static string ResultScriptWebPart { get; set; }
+        public static string PageViewerWebPart { get; set; }
+
+
 
         #endregion
     }

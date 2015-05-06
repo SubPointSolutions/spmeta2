@@ -1022,6 +1022,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<XsltListViewWebPartDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_PageViewerWebPartDefinition()
+        {
+            TestRandomDefinition<PageViewerWebPartDefinition>();
+        }
+
+
         #endregion
 
         #region welcome page
