@@ -34,12 +34,15 @@ namespace SPMeta2.Enumerations
             ContentBySearchWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ContentBySearchWebPart.webpart");
 
             PageViewerWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.PageViewerWebPart.webpart");
+            ProjectSummaryWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ProjectSummaryWebPart.webpart");
         }
 
         #endregion
 
         #region properties
 
+
+        public static string ProjectSummaryWebPart { get; set; }
         public static string ContentEditorWebPart { get; set; }
         public static string XsltListViewWebPart { get; set; }
         public static string ScriptEditorWebPart { get; set; }

@@ -323,6 +323,7 @@
     <EmbeddedResource Include="Templates\Webparts\ResultScriptWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ContentBySearchWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\PageViewerWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\ProjectSummaryWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -102,6 +102,7 @@
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ProjectSummaryWebPartDefinition.cs" />
     <Compile Include="Syntax\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
     <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />

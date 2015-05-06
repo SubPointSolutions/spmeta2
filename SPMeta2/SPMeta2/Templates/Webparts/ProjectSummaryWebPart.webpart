@@ -1,0 +1,37 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.Portal.WebControls.ProjectSummaryWebPart, Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this web part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="Height" type="string" />
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="PrimaryTaskListUrl" type="string" null="true" />
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="AllowClose" type="bool">True</property>
+        <property name="HelpMode" type="helpmode">Modeless</property>
+        <property name="Hidden" type="bool">False</property>
+        <property name="ListId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">00000000-0000-0000-0000-000000000000</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="ShowTimeline" type="bool">True</property>
+        <property name="Title" type="string">Project Summary</property>
+        <property name="Description" type="string">Displays information about a project in an easy to read overview</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="TitleUrl" type="string" />
+        <property name="Width" type="string" />
+        <property name="Panels" type="System.Collections.Generic.IList`1[[Microsoft.SharePoint.Portal.WebControls.ProjectSummaryPanelConfig, Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">[{"IsLatePanel":true,"Title":"late","Enabled":true,"DaysToSearch":0,"ListUrls":null,"UpgradedPersistedProperties":null},{"IsLatePanel":false,"Title":"upcoming","Enabled":true,"DaysToSearch":14,"ListUrls":["Lists/TheCaendar"],"UpgradedPersistedProperties":null}]</property>
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="HelpUrl" type="string" />
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="MissingAssembly" type="string">Cannot import this web part.</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

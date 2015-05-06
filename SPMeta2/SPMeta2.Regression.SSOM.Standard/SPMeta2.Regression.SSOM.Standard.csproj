@@ -131,6 +131,7 @@
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentBySearchWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\ProjectSummaryWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
