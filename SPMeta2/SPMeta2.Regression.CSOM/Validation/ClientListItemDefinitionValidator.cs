@@ -47,7 +47,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
             }
 
-            var spObject = GetListItem(list, rootFolder, definition);
+            var spObject = FindListItem(list, rootFolder, definition);
 
             if (!spObject.IsPropertyAvailable(BuiltInInternalFieldNames.Title))
             {

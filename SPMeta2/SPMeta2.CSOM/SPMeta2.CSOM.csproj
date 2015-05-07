@@ -183,6 +183,7 @@
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
+    <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityRoleLinkModelHandler.cs" />

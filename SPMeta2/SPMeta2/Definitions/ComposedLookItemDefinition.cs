@@ -34,36 +34,57 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsUrl(Extension = ".master")]
+        [ExpectNullable]
         public string MasterPageUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public string MasterPageDescription { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsUrl(Extension = ".theme")]
+        [ExpectNullable]
         public string ThemeUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public string ThemePageDescription { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsUrl(Extension = ".png")]
+        [ExpectNullable]
         public string ImageUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public string ImageDescription { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsUrl(Extension = ".fontsheme")]
         public string FontSchemeUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public string FontSchemeDescription { get; set; }
 
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public int? DisplayOrder { get; set; }
 
         #endregion

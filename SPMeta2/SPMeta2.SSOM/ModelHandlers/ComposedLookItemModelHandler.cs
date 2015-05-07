@@ -34,12 +34,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void SetUrlFieldValue(SPListItem newItem, string fieldName, string url, string description)
         {
-            var urlFieldValue = new SPFieldUrlValue { Url = url };
+            if (!string.IsNullOrEmpty(url))
+            {
+                var urlFieldValue = new SPFieldUrlValue {Url = url};
 
-            if (!string.IsNullOrEmpty(description))
-                urlFieldValue.Description = description;
+                if (!string.IsNullOrEmpty(description))
+                    urlFieldValue.Description = description;
 
-            newItem[fieldName] = urlFieldValue;
+                newItem[fieldName] = urlFieldValue;
+            }
         }
 
         protected override SPListItem FindListItem(SPList list, SPFolder folder, ListItemDefinition listItemModel)
