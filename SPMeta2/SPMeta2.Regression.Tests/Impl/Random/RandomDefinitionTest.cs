@@ -1107,8 +1107,18 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
-        #region reusable content
+        #region composed looks
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.ComposedLooks")]
+        public void CanDeployRandom_ComposedLookItemDefinition()
+        {
+            TestRandomDefinition<ComposedLookItemDefinition>();
+        }
+
+        #endregion
+
+        #region reusable content
 
         [TestMethod]
         [TestCategory("Regression.Rnd.ReusableItems")]

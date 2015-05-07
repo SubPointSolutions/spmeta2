@@ -66,7 +66,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             EnsureListItem(list, folder, listItemModel);
         }
 
-        protected SPListItem GetListItem(SPList list, SPFolder folder, ListItemDefinition listItemModel)
+        protected virtual SPListItem FindListItem(SPList list, SPFolder folder, ListItemDefinition listItemModel)
         {
             var items = list.GetItems(new SPQuery
             {
@@ -87,7 +87,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPListItem EnsureListItem(SPList list, SPFolder folder, ListItemDefinition listItemModel)
         {
-            var currentItem = GetListItem(list, folder, listItemModel);
+            var currentItem = FindListItem(list, folder, listItemModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

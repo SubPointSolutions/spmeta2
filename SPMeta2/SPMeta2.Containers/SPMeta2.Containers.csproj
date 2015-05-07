@@ -86,6 +86,7 @@
     <Compile Include="DefinitionGenerators\MasterPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ResetRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentParserDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ComposedLookItemDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TreeViewSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DiagnosticsServiceBaseDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TargetApplicationDefinitionGenerator.cs" />

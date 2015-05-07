@@ -115,6 +115,7 @@
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
+    <Compile Include="Definitions\ComposedLookItemDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\DeleteWebPartsDefinition.cs" />
     <Compile Include="Definitions\Fields\DependentLookupFieldDefinition.cs" />
