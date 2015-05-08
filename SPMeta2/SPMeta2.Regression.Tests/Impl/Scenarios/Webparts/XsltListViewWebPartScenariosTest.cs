@@ -22,6 +22,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
     [TestClass]
     public class XsltListViewWebPartScenariosTest : ListViewWebPartScenariosTestBase
     {
+        #region constructors
+
+       
+
+        #endregion
+
         #region internal
 
         [ClassInitialize]

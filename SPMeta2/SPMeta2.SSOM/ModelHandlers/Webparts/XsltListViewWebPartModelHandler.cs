@@ -71,17 +71,42 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             // view check
             if (list != null)
             {
-                SPView view = null;
+                SPView srcView = null;
 
                 if (typedModel.ViewId.HasValue && typedModel.ViewId != default(Guid))
-                    view = list.Views[typedModel.ViewId.Value];
+                    srcView = list.Views[typedModel.ViewId.Value];
                 else if (!string.IsNullOrEmpty(typedModel.ViewName))
-                    view = list.Views[typedModel.ViewName];
+                    srcView = list.Views[typedModel.ViewName];
 
-                if (view != null)
+                if (srcView != null)
                 {
-                    typedWebpart.ViewGuid = view.ID.ToString("B").ToUpperInvariant();
-                    typedWebpart.TitleUrl = view.ServerRelativeUrl;
+                    if (!string.IsNullOrEmpty(typedWebpart.ViewGuid))
+                    {
+                        // update hidden view, otherwise we can have weird SharePoint exception
+                        // https://github.com/SubPointSolutions/spmeta2/issues/487
+
+                        var hiddenView = list.Views[new Guid(typedWebpart.ViewGuid)];
+
+                        hiddenView.ViewFields.DeleteAll();
+
+                        foreach (string f in srcView.ViewFields)
+                            hiddenView.ViewFields.Add(f);
+
+                        hiddenView.RowLimit = srcView.RowLimit;
+                        hiddenView.Query = srcView.Query;
+                        hiddenView.JSLink = srcView.JSLink;
+
+                        hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
+                        hiddenView.Scope = srcView.Scope;
+
+                        hiddenView.Update();
+                    }
+                    else
+                    {
+                        typedWebpart.ViewGuid = srcView.ID.ToString("B").ToUpperInvariant();
+                    }
+
+                    typedWebpart.TitleUrl = srcView.ServerRelativeUrl;
                 }
             }
 
