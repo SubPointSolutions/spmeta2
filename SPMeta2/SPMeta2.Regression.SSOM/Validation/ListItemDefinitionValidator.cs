@@ -32,7 +32,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 rootFolder = (modelHost as FolderModelHost).CurrentListItem.Folder;
             }
 
-            var spObject = GetListItem(list, rootFolder, definition);
+            var spObject = FindListItem(list, rootFolder, definition);
 
             ValidateProperties(spObject, definition);
         }

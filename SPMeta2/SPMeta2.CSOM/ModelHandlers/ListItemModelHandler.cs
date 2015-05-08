@@ -145,7 +145,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
-        protected ListItem GetListItem(List list, Folder folder, ListItemDefinition definition)
+        protected virtual ListItem FindListItem(List list, Folder folder, ListItemDefinition definition)
         {
             var context = list.Context;
 
@@ -176,7 +176,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         private ListItem EnsureListItem(List list, Folder folder, ListItemDefinition listItemModel)
         {
             var context = list.Context;
-            var currentItem = GetListItem(list, folder, listItemModel);
+            var currentItem = FindListItem(list, folder, listItemModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
