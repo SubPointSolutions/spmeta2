@@ -19,16 +19,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             base.MapListItemProperties(newItem, listItemModel);
 
             var definition = listItemModel.WithAssertAndCast<ComposedLookItemDefinition>("model", value => value.RequireNotNull());
-
-            // composed look
-            // 0x00EBB0D5D32C733345B0AA3C79625DD501
-            newItem[BuiltInInternalFieldNames.ContentTypeId] = "0x00EBB0D5D32C733345B0AA3C79625DD501";
+            
+            newItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInContentTypeId.ComposedLook;
             newItem["Name"] = definition.Name;
 
             SetUrlFieldValue(newItem, "MasterPageUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "ThemeUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "ImageUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.MasterPageUrl, definition.MasterPageDescription);
+            SetUrlFieldValue(newItem, "ThemeUrl", definition.ThemeUrl, definition.ThemeDescription);
+            SetUrlFieldValue(newItem, "ImageUrl", definition.ImageUrl, definition.ImageDescription);
+            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.FontSchemeDescription, definition.MasterPageDescription);
 
             if (definition.DisplayOrder.HasValue)
                 newItem["DisplayOrder"] = definition.DisplayOrder.Value;

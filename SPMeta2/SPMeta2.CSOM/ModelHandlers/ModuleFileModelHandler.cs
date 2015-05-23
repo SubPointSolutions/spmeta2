@@ -298,11 +298,16 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var context = folderHost.CurrentLibraryFolder.Context;
             var list = folderHost.CurrentList;
-
             var stringCustomContentType = string.Empty;
-            // preload custm content type
-            if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
+
+            if (!string.IsNullOrEmpty(moduleFile.ContentTypeId))
             {
+                stringCustomContentType = moduleFile.ContentTypeId;
+            }
+            else if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
+            {
+                // preload custom content type
+
                 var listContentTypes = list.ContentTypes;
                 context.Load(listContentTypes);
                 context.ExecuteQueryWithTrace();

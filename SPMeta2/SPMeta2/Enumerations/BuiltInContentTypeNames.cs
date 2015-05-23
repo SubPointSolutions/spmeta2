@@ -71,5 +71,7 @@ namespace SPMeta2.Enumerations
 
         public static readonly string XMLDocument = "0x010101";
         public static readonly string XSLStyle = "0x010100734778F2B7DF462491FC91844AE431CF";
+
+        public static readonly string ComposedLook = "0x00EBB0D5D32C733345B0AA3C79625DD501";
     }
 }
