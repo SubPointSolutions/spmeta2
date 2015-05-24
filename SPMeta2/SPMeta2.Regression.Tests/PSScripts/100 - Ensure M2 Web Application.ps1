@@ -1,4 +1,8 @@
-﻿clscd "$PSScriptRoot". "$PSScriptRoot\_config.ps1"
+﻿cls
+
+cd "$PSScriptRoot"
+
+. "$PSScriptRoot\_config.ps1"
 . "$PSScriptRoot\_sys.common.ps1"
 
 Write-Host "Ensuring M2 test web application with the following settings:" -fore Green
