@@ -22,6 +22,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
             for (var index = 0; index < choiceCount; index++)
             {
                 def.Choices.Add(Rnd.String(8));
+                def.Mappings.Add(Rnd.String(8));
             }
 
             def.ValidationMessage = string.Format("validatin_msg_{0}", Rnd.String());

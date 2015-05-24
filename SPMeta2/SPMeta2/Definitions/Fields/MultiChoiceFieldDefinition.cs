@@ -28,7 +28,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -39,7 +39,9 @@ namespace SPMeta2.Definitions.Fields
         public MultiChoiceFieldDefinition()
         {
             FieldType = BuiltInFieldTypes.MultiChoice;
+
             Choices = new Collection<string>();
+            Mappings = new Collection<string>();
         }
 
         #endregion
@@ -66,6 +68,11 @@ namespace SPMeta2.Definitions.Fields
         [ExpectUpdate]
         [DataMember]
         public Collection<string> Choices { get; set; }
+
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
+        public Collection<string> Mappings { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]

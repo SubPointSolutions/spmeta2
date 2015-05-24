@@ -3,6 +3,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using System;
 using System.Linq;
+using System.Xml.Linq;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 
@@ -34,6 +35,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             textFieldAssert.ShouldBeEqual(m => m.FillInChoice, o => o.FillInChoice);
 
+
+            // choices
             if (textDefinition.Choices.Count > 0)
             {
                 var hasChoices = true;
@@ -62,6 +65,41 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             else
             {
                 textFieldAssert.SkipProperty(m => m.Choices, "Choices.Count == 0. Skipping.");
+            }
+
+            // mappings
+            if (textDefinition.Mappings.Count > 0)
+            {
+                var hasMapping = true;
+
+                var mappings = XDocument.Parse(textField.Mappings)
+                                        .Descendants("MAPPING")
+                                        .Select(v => v.Value);
+
+                foreach (var dstMapping in mappings)
+                {
+                    if (textDefinition.Mappings.FirstOrDefault(c => c.ToUpper() == dstMapping.ToUpper()) == null)
+                    {
+                        hasMapping = false;
+                    }
+                }
+
+                textFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Mappings);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = hasMapping == true
+                    };
+                });
+            }
+            else
+            {
+                textFieldAssert.SkipProperty(m => m.Mappings, "Mappings.Count == 0. Skipping.");
             }
         }
     }

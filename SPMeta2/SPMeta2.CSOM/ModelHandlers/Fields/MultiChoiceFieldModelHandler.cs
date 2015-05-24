@@ -68,6 +68,24 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
                 fieldTemplate.Add(choicesNode);
             }
+
+            if (typedFieldModel.Mappings.Count > 0)
+            {
+                var mappingsNode = new XElement("MAPPINGS");
+                var currentValueIndex = 1;
+
+                foreach (var mappingValue in typedFieldModel.Mappings)
+                {
+                    var mappingValueNode = new XElement("MAPPING", mappingValue);
+                    mappingValueNode.SetAttributeValue("Value", currentValueIndex);
+
+                    mappingsNode.Add(mappingValueNode);
+
+                    currentValueIndex++;
+                }
+
+                fieldTemplate.Add(mappingsNode);
+            }
         }
 
         #endregion
