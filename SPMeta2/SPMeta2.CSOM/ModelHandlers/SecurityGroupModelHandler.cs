@@ -73,10 +73,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(web, tmpWeb => tmpWeb.SiteGroups, g => g.Id, g => g.Title);
             context.ExecuteQueryWithTrace();
 
-            Principal principal = null;
+            Principal groupOwner = null;
 
-            if (!string.IsNullOrEmpty(securityGroupModel.Owner))
-                principal = ResolvePrincipal(context, web, securityGroupModel.Owner);
+            if (!string.IsNullOrEmpty(securityGroupModel.Owner) &&
+                (securityGroupModel.Owner.ToUpper() != securityGroupModel.Name.ToUpper()))
+            {
+                groupOwner = ResolvePrincipal(context, web, securityGroupModel.Owner);
+
+                if (groupOwner == null)
+                    throw new SPMeta2Exception(string.Format("Cannot resolve Principal by string value: [{0}]", securityGroupModel.Owner));
+            }
 
             var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
@@ -104,6 +110,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentGroup.Update();
                 context.ExecuteQueryWithTrace();
 
+                // updating the owner or leave as default
+                // Enhance 'SecurityGroupDefinition' provision - add self-owner support #516
+                // https://github.com/SubPointSolutions/spmeta2/issues/516
+                if (!string.IsNullOrEmpty(securityGroupModel.Owner))
+                {
+                    groupOwner = ResolvePrincipal(context, web, securityGroupModel.Owner);
+                    currentGroup.Owner = groupOwner;
+
+                    currentGroup.Update();
+                    context.ExecuteQueryWithTrace();
+                }
+
                 context.Load(currentGroup);
                 context.ExecuteQueryWithTrace();
             }
@@ -125,14 +143,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (securityGroupModel.AutoAcceptRequestToJoinLeave.HasValue)
                 currentGroup.AutoAcceptRequestToJoinLeave = securityGroupModel.AutoAcceptRequestToJoinLeave.Value;
 
-            if (!string.IsNullOrEmpty(securityGroupModel.Owner))
-            {
-                if (principal != null)
-                    currentGroup.Owner = principal;
-                else
-                    throw new SPMeta2Exception(string.Format("Cannot resolve Principal by string value: [{0}]", securityGroupModel.Owner));
-            }
-           
+            if (groupOwner != null)
+                currentGroup.Owner = groupOwner;
+
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -208,7 +222,5 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
-
-
     }
 }

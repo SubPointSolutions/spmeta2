@@ -75,6 +75,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new[] { siteModel });
         }
 
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.SecurityGroup")]
+        public void CanDeploy_SecurityGroup_Owner_AsSelfGroup()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>(def =>
+            {
+                def.Owner = def.Name;
+            });
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            TestModels(new[] { siteModel });
+        }
+
         #endregion
     }
 }

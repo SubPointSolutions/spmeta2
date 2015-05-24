@@ -94,13 +94,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             catch (SPException)
             {
-                var ownerUser = EnsureOwnerUser(web, securityGroupModel.Owner);
                 var defaultUser = EnsureDefaultUser(web, securityGroupModel);
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group");
 
-                web.SiteGroups.Add(securityGroupModel.Name, ownerUser, defaultUser, securityGroupModel.Description ?? string.Empty);
+                // owner would be defaut site owner
+                web.SiteGroups.Add(securityGroupModel.Name, web.Site.Owner, defaultUser, securityGroupModel.Description ?? string.Empty);
                 currentGroup = web.SiteGroups[securityGroupModel.Name];
+
+                // updating the owner or leave as default
+                // Enhance 'SecurityGroupDefinition' provision - add self-owner support #516
+                // https://github.com/SubPointSolutions/spmeta2/issues/516
+                var ownerUser = EnsureOwnerUser(web, securityGroupModel.Owner);
+
+                currentGroup.Owner = ownerUser;
+                currentGroup.Update();
             }
 
             if (hasInitialGroup)
