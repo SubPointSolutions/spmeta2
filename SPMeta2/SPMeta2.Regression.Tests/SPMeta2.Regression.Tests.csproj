@@ -327,6 +327,10 @@
     <EmbeddedResource Include="Templates\Webparts\Base\ContentEditor.webpart" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PSScripts\100 - Ensure M2 Web Application.ps1" />
+    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
+    <None Include="PSScripts\_config.ps1" />
+    <None Include="PSScripts\_sys.common.ps1" />
     <None Include="SPMeta2.Regression.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

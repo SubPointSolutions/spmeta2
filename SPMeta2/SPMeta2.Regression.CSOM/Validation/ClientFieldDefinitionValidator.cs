@@ -102,6 +102,11 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             CustomFieldTypeValidation(assert, spObject, definition);
 
+            if (!string.IsNullOrEmpty(definition.StaticName))
+                assert.ShouldBeEqual(m => m.StaticName, o => o.StaticName);
+            else
+                assert.SkipProperty(m => m.StaticName);
+
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {
                 assert.SkipProperty(m => m.AddFieldOptions, "BuiltInAddFieldOptions.DefaultValue. Skipping.");

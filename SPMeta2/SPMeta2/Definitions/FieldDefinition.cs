@@ -62,19 +62,19 @@ namespace SPMeta2.Definitions
 
         #region properties
 
-        [ExpectValidation]
+
         /// <summary>
         /// Reflects AddToDefaultView option while adding field to the list
         /// </summary>
-        /// 
+        [ExpectValidation]
         [DataMember]
         public bool AddToDefaultView { get; set; }
 
-        [ExpectValidation]
+
         /// <summary>
         /// Reflects SharePoint's AddFieldOptions while provisioning field for the first time
         /// </summary>
-        /// 
+        [ExpectValidation]
         [DataMember]
         public BuiltInAddFieldOptions AddFieldOptions { get; set; }
 
@@ -159,6 +159,11 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [DataMember]
         public bool Required { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public string StaticName { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]

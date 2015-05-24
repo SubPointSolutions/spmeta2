@@ -401,6 +401,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             field.Required = definition.Required;
 
+            if (!string.IsNullOrEmpty(definition.StaticName))
+                field.StaticName = definition.StaticName;
+
             if (!string.IsNullOrEmpty(definition.ValidationMessage))
                 field.ValidationMessage = definition.ValidationMessage;
 
@@ -532,12 +535,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             // minimal set
             fieldTemplate
               .SetAttribute(BuiltInFieldAttributes.ID, fieldModel.Id.ToString("B"))
-              .SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName)
               .SetAttribute(BuiltInFieldAttributes.DisplayName, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Title, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Name, fieldModel.InternalName)
               .SetAttribute(BuiltInFieldAttributes.Type, fieldModel.FieldType)
               .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
+
+            // static name is by defaul gets InternalName
+            if (!string.IsNullOrEmpty(fieldModel.StaticName))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.StaticName);
+            else
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName);
 
             // additions
             if (!String.IsNullOrEmpty(fieldModel.JSLink))

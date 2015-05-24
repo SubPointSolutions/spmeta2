@@ -11,7 +11,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
 {
-    public class ReusableTextItemModelHandlerBase : ListItemModelHandler
+    public abstract class ReusableTextItemModelHandlerBase : ListItemModelHandler
     {
         protected override void MapListItemProperties(SPListItem newItem, ListItemDefinition listItemModel)
         {

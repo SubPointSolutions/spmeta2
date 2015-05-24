@@ -222,7 +222,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             // minimal set
             fieldTemplate
               .SetAttribute(BuiltInFieldAttributes.ID, fieldModel.Id.ToString("B"))
-              .SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName)
               .SetAttribute(BuiltInFieldAttributes.DisplayName, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Title, fieldModel.Title)
               .SetAttribute(BuiltInFieldAttributes.Name, fieldModel.InternalName)
@@ -230,6 +229,12 @@ namespace SPMeta2.SSOM.ModelHandlers
               .SetAttribute(BuiltInFieldAttributes.Description, fieldModel.Description)
               .SetAttribute(BuiltInFieldAttributes.Type, fieldModel.FieldType)
               .SetAttribute(BuiltInFieldAttributes.Group, fieldModel.Group ?? string.Empty);
+
+            // static name is by defaul gets InternalName
+            if (!string.IsNullOrEmpty(fieldModel.StaticName))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.StaticName);
+            else
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName);
 
             // additions
 #if !NET35
@@ -294,9 +299,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             object modelHost,
             SPFieldCollection fields, FieldDefinition fieldModel)
         {
-            SPField currentField = null;
+            var currentField = fields.OfType<SPField>()
+                                        .FirstOrDefault(f => f.InternalName.ToUpper() == fieldModel.InternalName.ToUpper());
 
-            if (!fields.ContainsFieldWithStaticName(fieldModel.InternalName))
+            if (currentField == null)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new field");
 
@@ -347,6 +353,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             field.Group = definition.Group ?? string.Empty;
 
             field.Required = definition.Required;
+
+            if (!string.IsNullOrEmpty(definition.StaticName))
+                field.StaticName = definition.StaticName;
 
             if (!string.IsNullOrEmpty(definition.ValidationMessage))
                 field.ValidationMessage = definition.ValidationMessage;
