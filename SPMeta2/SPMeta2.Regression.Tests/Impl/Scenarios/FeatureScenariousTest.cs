@@ -44,7 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 FileName = string.Format("{0}.wsp", Rnd.String()),
                 Activate = true,
 
-                SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
+                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
                 Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
             };
 
@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         Enable = true,
                         ForceActivate = true,
-                        Id = new Guid("167dc650-68d2-4784-bd5b-9c6709db4ac6"),
+                        Id = new Guid("32dc6bed-0298-4fca-a72f-e9b9c0d6f09a"),
                         Scope = FeatureDefinitionScope.Site
                     });
                 });
@@ -75,7 +75,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 FileName = string.Format("{0}.wsp", Rnd.String()),
                 Activate = true,
 
-                SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
+                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
                 Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
             };
 
@@ -91,7 +91,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         Enable = true,
                         ForceActivate = true,
-                        Id = new Guid("e4a8e1de-6688-493b-ad7a-d35c0268550c"),
+                        Id = new Guid("b997a462-8efb-44cf-92c0-457e75c81798"),
                         Scope = FeatureDefinitionScope.Web
                     });
                 });

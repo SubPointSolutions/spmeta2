@@ -181,6 +181,7 @@
     <Compile Include="Syntax\TaxonomyTermSetDefinitionSyntax.cs" />
     <Compile Include="Syntax\TaxonomyTermStoreDefinitionSyntax.cs" />
     <Compile Include="Syntax\PageLayoutAndSiteTemplateSettingsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\TypedWebpartsDefinitionSyntax.cs" />
     <Compile Include="Syntax\WebNavigationSettingsDefinitionSyntax.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -301,7 +301,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             SPFieldCollection fields, FieldDefinition fieldModel)
         {
             var currentField = fields.OfType<SPField>()
-                                        .FirstOrDefault(f => f.InternalName.ToUpper() == fieldModel.InternalName.ToUpper());
+                                        .FirstOrDefault(f => f.Id == fieldModel.Id);
 
             if (currentField == null)
             {

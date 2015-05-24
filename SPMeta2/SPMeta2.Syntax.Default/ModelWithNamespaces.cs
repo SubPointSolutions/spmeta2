@@ -7,6 +7,20 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
+        public static ModelNode WithReusableHTMLItems(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+        public static ModelNode WithReusableTextItems(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
+        public static ModelNode WithComposedLookItems(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithJavaScriptDisplayTemplates(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);

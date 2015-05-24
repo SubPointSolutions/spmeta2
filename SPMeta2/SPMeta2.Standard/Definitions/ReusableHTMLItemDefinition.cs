@@ -20,7 +20,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
-    [ExpectAddHostExtensionMethod]
+    //[ExpectAddHostExtensionMethod]
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]

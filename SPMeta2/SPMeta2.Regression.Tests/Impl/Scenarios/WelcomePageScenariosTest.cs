@@ -82,7 +82,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     list.AddRandomFolder(folder =>
                     {
-                        folder.AddRandomWelcomePage();
+                        folder.AddRandomWelcomePage(def =>
+                        {
+                            (def.Value as WelcomePageDefinition).Url = "Forms/AllItems.aspx";
+                        });
                     });
                 });
             });

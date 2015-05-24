@@ -358,7 +358,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 #region AddHostXXX()
 
-                var shouldCheckAddHostOverload = definitionType.GetCustomAttributes(typeof(ExpectAddHostExtensionMethod)).Any();
+                var shouldCheckAddHostOverload = definitionType.GetCustomAttributes(
+                    typeof(ExpectAddHostExtensionMethod), false).Any();
 
                 var hasAddHostDefinitionMethod = true;
                 var hasAddHostDefinitionWithCallbackMethod = true;

@@ -9,7 +9,7 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Standard.Definitions.Base
 {
-    public class ReusableItemDefinitionBase : ListItemDefinition
+    public abstract class ReusableItemDefinitionBase : ListItemDefinition
     {
         #region constructors
 
