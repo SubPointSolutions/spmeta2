@@ -14,6 +14,8 @@ namespace SPMeta2.Enumerations
     {
         #region properties
 
+        public static string CanToggleHidden = "CanToggleHidden";
+
         public static string ID = "ID";
         public static string StaticName = "StaticName";
         public static string DisplayName = "DisplayName";

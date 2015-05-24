@@ -26,6 +26,20 @@ namespace SPMeta2.Regression.SSOM.Validation
                                       .NewAssert(definition, spObject)
                                             .ShouldBeEqual(m => m.FieldId, o => o.Id);
 
+            if (!string.IsNullOrEmpty(definition.DisplayName))
+                assert.ShouldBeEqual(m => m.DisplayName, o => o.Title);
+            else
+                assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
+
+            if (definition.Required.HasValue)
+                assert.ShouldBeEqual(m => m.Required, o => o.Required);
+            else
+                assert.SkipProperty(m => m.Required, "Required is null or empty. Skipping");
+
+            if (definition.Hidden.HasValue)
+                assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+            else
+                assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping");
 
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {

@@ -118,14 +118,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list field");
 
-                //var avialableField = web.AvailableFields;
-
-                //context.Load(avialableField);
-                //context.ExecuteQueryWithTrace();
-
                 var siteField = FindExistingSiteField(web, listFieldLinkModel.FieldId);
-
-                //
 
                 var addFieldOptions = (AddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
 
@@ -140,6 +133,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else
                     listField = fields.Add(siteField);
 
+                ProcessListFieldLinkProperties(listField, listFieldLinkModel);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -151,11 +146,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+                listField.Update();
                 context.ExecuteQueryWithTrace();
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list field");
+
+                ProcessListFieldLinkProperties(existingListField, listFieldLinkModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -167,7 +165,22 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = listFieldLinkModel,
                     ModelHost = modelHost
                 });
+
+                existingListField.Update();
+                context.ExecuteQueryWithTrace();
             }
+        }
+
+        private void ProcessListFieldLinkProperties(Field existingListField, ListFieldLinkDefinition listFieldLinkModel)
+        {
+            if (!string.IsNullOrEmpty(listFieldLinkModel.DisplayName))
+                existingListField.Title = listFieldLinkModel.DisplayName;
+
+            if (listFieldLinkModel.Hidden.HasValue)
+                existingListField.Hidden = listFieldLinkModel.Hidden.Value;
+
+            if (listFieldLinkModel.Required.HasValue)
+                existingListField.Required = listFieldLinkModel.Required.Value;
         }
 
         #endregion

@@ -42,6 +42,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_ListFieldLink_RenameTitle()
+        {
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    {
+                        FieldId = BuiltInFieldId.Title,
+                        DisplayName = Rnd.String()
+                    });
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
         public void CanDeploy_ListFieldLink_WithSiteAndWebFields()
         {
             var siteField = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
@@ -64,7 +83,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-              
+
             });
 
             TestModel(siteModel, webModel);

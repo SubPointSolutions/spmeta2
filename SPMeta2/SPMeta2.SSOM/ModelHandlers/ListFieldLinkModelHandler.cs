@@ -72,20 +72,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     list.Fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
                 }
 
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioned,
-                    Object = siteField,
-                    ObjectType = typeof(SPField),
-                    ObjectDefinition = listFieldLinkModel,
-                    ModelHost = modelHost
-                });
-            }
-            else
-            {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list field");
+                existingListField = list.Fields[siteField.Id];
+                ProcessListFieldLinkProperties(existingListField, listFieldLinkModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -97,7 +85,41 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = listFieldLinkModel,
                     ModelHost = modelHost
                 });
+
+                existingListField.Update(false);
             }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list field");
+
+                ProcessListFieldLinkProperties(existingListField, listFieldLinkModel);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingListField,
+                    ObjectType = typeof(SPField),
+                    ObjectDefinition = listFieldLinkModel,
+                    ModelHost = modelHost
+                });
+
+                existingListField.Update(false);
+            }
+        }
+
+        protected virtual void ProcessListFieldLinkProperties(SPField existingListField, ListFieldLinkDefinition listFieldLinkModel)
+        {
+            if (!string.IsNullOrEmpty(listFieldLinkModel.DisplayName))
+                existingListField.Title = listFieldLinkModel.DisplayName;
+
+            if (listFieldLinkModel.Hidden.HasValue)
+                existingListField.Hidden = listFieldLinkModel.Hidden.Value;
+
+            if (listFieldLinkModel.Required.HasValue)
+                existingListField.Required = listFieldLinkModel.Required.Value;
+
         }
 
         #endregion

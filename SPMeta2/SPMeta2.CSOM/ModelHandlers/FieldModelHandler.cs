@@ -39,7 +39,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 new XAttribute(BuiltInFieldAttributes.Title, String.Empty),
                 new XAttribute(BuiltInFieldAttributes.Name, String.Empty),
                 new XAttribute(BuiltInFieldAttributes.Type, String.Empty),
-                new XAttribute(BuiltInFieldAttributes.Group, String.Empty));
+                new XAttribute(BuiltInFieldAttributes.Group, String.Empty),
+                new XAttribute(BuiltInFieldAttributes.CanToggleHidden, "TRUE"));
         }
 
         #endregion

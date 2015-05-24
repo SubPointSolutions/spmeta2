@@ -49,6 +49,22 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        public bool? Required { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public bool? Hidden { get; set; }
+
+        /// <summary>
+        /// Is not supported in CSOM yet!
+        /// https://officespdev.uservoice.com/forums/224641-general/suggestions/7024931-enhance-fieldlink-class-with-additional-properties
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public string DisplayName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
         public bool AddToDefaultView { get; set; }
 
         [ExpectValidation]
