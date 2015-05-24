@@ -153,9 +153,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.TemplateName);
-                    var listTemplate = web.ListTemplates
-                                          .OfType<SPListTemplate>()
-                                          .FirstOrDefault(t => t.InternalName == definition.TemplateName);
+                    var listTemplate = ResolveListTemplate(web, definition);
 
                     return new PropertyValidationResult
                     {

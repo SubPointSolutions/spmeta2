@@ -45,7 +45,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 Activate = true,
 
                 SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.ScenarioTest.SandboxApp.wsp")
+                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
             };
 
             var model = SPMeta2Model
@@ -76,7 +76,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 Activate = true,
 
                 SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.ScenarioTest.SandboxApp.wsp")
+                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
             };
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>

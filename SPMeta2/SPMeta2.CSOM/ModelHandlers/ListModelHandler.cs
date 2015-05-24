@@ -280,11 +280,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
 
-                    context.Load(web, tmpWeb => tmpWeb.ListTemplates);
-                    context.ExecuteQueryWithTrace();
 
-                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching all list templates and matching target one.");
-                    var listTemplate = FindListTemplateByInternalName(web.ListTemplates, listModel.TemplateName);
+                    var listTemplate = ResolveListTemplate(webModelHost, listModel);
 
                     listInfo.TemplateFeatureId = listTemplate.FeatureId;
                     listInfo.TemplateType = listTemplate.ListTemplateTypeKind;
@@ -327,6 +324,45 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentList.Update()");
             currentList.Update();
             context.ExecuteQueryWithTrace();
+        }
+
+        protected virtual ListTemplate ResolveListTemplate(WebModelHost host, ListDefinition listModel)
+        {
+            var context = host.HostClientContext;
+
+            var site = host.HostSite;
+            var web = host.HostWeb;
+
+            // internal names would be with '.STP', so just a little bit easier to define and find
+            var templateName = listModel.TemplateName.ToUpper().Replace(".STP", string.Empty);
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching all web.ListTemplates");
+
+            context.Load(web, tmpWeb => tmpWeb.ListTemplates);
+            context.ExecuteQueryWithTrace();
+
+            var listTemplate = web.ListTemplates
+                                  .FirstOrDefault(t => t.InternalName.ToUpper().Replace(".STP", string.Empty) == templateName);
+
+            if (listTemplate == null)
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                    "Searching list template in Site.GetCustomListTemplates(web)");
+
+                var customListTemplates = site.GetCustomListTemplates(web);
+                context.Load(customListTemplates);
+                context.ExecuteQueryWithTrace();
+
+                listTemplate = customListTemplates
+                                  .FirstOrDefault(t => t.InternalName.ToUpper().Replace(".STP", string.Empty) == templateName);
+            }
+
+            if (listTemplate == null)
+            {
+                throw new SPMeta2Exception(string.Format("Can't find custom list template with internal Name:[{0}]",
+                    listModel.TemplateName));
+            }
+            return listTemplate;
         }
 
         private static void MapListProperties(List list, ListDefinition definition)
@@ -411,27 +447,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             return null;
         }
 
-        //protected List FindListByTitle(ListCollection listCollection, string listTitle)
-        //{
-        //    foreach (var list in listCollection)
-        //    {
-        //        if (System.String.Compare(list.Title, listTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
-        //            return list;
-        //    }
-
-        //    return null;
-        //}
-
-        protected ListTemplate FindListTemplateByInternalName(IEnumerable<ListTemplate> listTemplateCollection, string listTemplateInternalName)
-        {
-            foreach (var listTemplate in listTemplateCollection)
-            {
-                if (System.String.Compare(listTemplate.InternalName, listTemplateInternalName, System.StringComparison.OrdinalIgnoreCase) == 0)
-                    return listTemplate;
-            }
-
-            return null;
-        }
 
         #endregion
 

@@ -174,7 +174,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 context.ExecuteQueryWithTrace();
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching all list templates and matching target one.");
-                var listTemplate = FindListTemplateByInternalName(web.ListTemplates, definition.TemplateName);
+                var listTemplate = ResolveListTemplate(webModelHost, definition);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {

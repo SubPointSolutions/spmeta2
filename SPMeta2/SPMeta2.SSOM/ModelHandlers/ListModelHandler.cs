@@ -5,6 +5,7 @@ using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.DefaultSyntax;
@@ -225,11 +226,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
 
-                    var listTemplate = web.ListTemplates
-                                           .OfType<SPListTemplate>()
-                                           .FirstOrDefault(t => t.InternalName == listModel.TemplateName);
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Searching list template in web.ListTemplates");
+                    var listTemplate = ResolveListTemplate(web, listModel);
 
-                    //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, listTemplate);
                     listId = web.Lists.Add(
                                    listModel.Title,
                                    listModel.Description ?? string.Empty,
@@ -273,6 +272,34 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             return result;
+        }
+
+        protected virtual SPListTemplate ResolveListTemplate(SPWeb web, ListDefinition listModel)
+        {
+            // internal names would be with '.STP', so just a little bit easier to define and find
+            var templateName = listModel.TemplateName.ToUpper().Replace(".STP", string.Empty);
+
+            var listTemplate = web.ListTemplates
+                .OfType<SPListTemplate>()
+                .FirstOrDefault(t => t.InternalName.ToUpper().Replace(".STP", string.Empty) == templateName);
+
+            if (listTemplate == null)
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                    "Searching list template in Site.GetCustomListTemplates(web)");
+
+                var customListTemplates = web.Site.GetCustomListTemplates(web);
+                listTemplate = customListTemplates
+                    .OfType<SPListTemplate>()
+                    .FirstOrDefault(t => t.InternalName.ToUpper().Replace(".STP", string.Empty) == templateName);
+            }
+
+            if (listTemplate == null)
+            {
+                throw new SPMeta2Exception(string.Format("Can't find custom list template with internal Name:[{0}]",
+                    listModel.TemplateName));
+            }
+            return listTemplate;
         }
 
         private static SPList GetListByUrl(SPWeb web, ListDefinition listModel)

@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Syntax.Default.Utils;
@@ -603,6 +603,56 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Lists.CustomTemplates")]
+        public void CanDeploy_List_From_STPListTemplate()
+        {
+            var stpTemplateContent = ModuleFileUtils.FromResource(
+                    GetType().Assembly,
+                    "SPMeta2.Regression.Tests.Templates.STP.M2Template.stp");
+
+            var stpTemplateFeatureId = new Guid("{00BFEA71-DE22-43B2-A848-C05709900100}");
+
+            // upload stp to list templates
+            var stpModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddHostList(BuiltInListDefinitions.Catalogs.ListTemplates, list =>
+                    {
+                        list.AddModuleFile(new ModuleFileDefinition
+                        {
+                            FileName = "M2Template.stp",
+                            Content = stpTemplateContent
+                        });
+                    });
+                });
+
+            var customListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+                def.Url = Rnd.String();
+                def.CustomUrl = string.Empty;
+
+                def.TemplateType = 0;
+                def.TemplateName = "M2Template";
+            });
+
+            // deploy template to both current and sub web
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(customListDef.Inherit<ListDefinition>());
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddList(customListDef.Inherit<ListDefinition>());
+                });
+            });
+
+            TestModel(stpModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.CustomTemplates")]
         public void CanDeploy_List_From_CustomTemplate()
         {
             var sandboxSolution = new SandboxSolutionDefinition()
@@ -610,8 +660,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 FileName = string.Format("{0}.wsp", Rnd.String()),
                 Activate = true,
 
-                SolutionId = new Guid("9f581901-7ed8-4293-9d48-c526ad5a3d7d"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.ScenarioTest.SandboxApp.wsp")
+                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
+                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
             };
 
             var customListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>

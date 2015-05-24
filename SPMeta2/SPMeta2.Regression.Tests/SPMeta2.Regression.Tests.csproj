@@ -334,7 +334,8 @@
     <None Include="SPMeta2.Regression.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="Templates\SandboxSolutions\SPMeta2.ScenarioTest.SandboxApp.wsp" />
+    <EmbeddedResource Include="Templates\STP\M2Template.stp" />
+    <EmbeddedResource Include="Templates\SandboxSolutions\SPMeta2.Containers.SandboxSolutionContainer.wsp" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
