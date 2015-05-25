@@ -211,7 +211,7 @@
     <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />
     <Compile Include="ModelHosts\TermStoreModelHost.cs" />
-    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" /> 
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>

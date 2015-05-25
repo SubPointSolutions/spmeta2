@@ -94,8 +94,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                         hiddenView.RowLimit = srcView.RowLimit;
                         hiddenView.Query = srcView.Query;
+#if !NET35
                         hiddenView.JSLink = srcView.JSLink;
-
+#endif
                         hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
                         hiddenView.Scope = srcView.Scope;
 

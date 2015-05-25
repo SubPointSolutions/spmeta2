@@ -27,32 +27,17 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
         {
             base.DeployModel(modelHost, model);
 
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<BusinessDataFieldDefinition>("model", value => value.RequireNotNull());
-
             var spObject = FindField(modelHost, definition);
 
-            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
+            var assert = ServiceFactory.AssertService
+                                       .NewAssert(model, definition, spObject);
 
             assert
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                    .ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(m => m.Id, o => o.Id)
-                    .ShouldBeEqual(m => m.Required, o => o.Required)
-                    .ShouldBeEqual(m => m.Description, o => o.Description)
-                    .ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-                    .ShouldBeEqual(m => m.Group, o => o.Group)
-
-                    .ShouldBeEqual(m => m.SystemInstanceName, o => o.GetSystemInstanceName())
-                    .ShouldBeEqual(m => m.EntityNamespace, o => o.GetEntityNamespace())
-                    .ShouldBeEqual(m => m.EntityName, o => o.GetEntityName())
-                    .ShouldBeEqual(m => m.BdcFieldName, o => o.GetBdcFieldName());
-
+                .ShouldBeEqual(m => m.SystemInstanceName, o => o.GetSystemInstanceName())
+                .ShouldBeEqual(m => m.EntityNamespace, o => o.GetEntityNamespace())
+                .ShouldBeEqual(m => m.EntityName, o => o.GetEntityName())
+                .ShouldBeEqual(m => m.BdcFieldName, o => o.GetBdcFieldName());
         }
     }
-
-    //internal static class BCSFieldExt
-    //{
-        
-    //}
 }
