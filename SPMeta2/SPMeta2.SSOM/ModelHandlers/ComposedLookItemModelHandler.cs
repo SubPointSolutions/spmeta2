@@ -24,9 +24,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             newItem["Name"] = definition.Name;
 
             SetUrlFieldValue(newItem, "MasterPageUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "ThemeUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "ImageUrl", definition.MasterPageUrl, definition.MasterPageDescription);
-            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.MasterPageUrl, definition.MasterPageDescription);
+            SetUrlFieldValue(newItem, "ThemeUrl", definition.ThemeUrl, definition.ThemeDescription);
+            SetUrlFieldValue(newItem, "ImageUrl", definition.ImageUrl, definition.ImageDescription);
+            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.FontSchemeUrl, definition.FontSchemeDescription);
 
             if (definition.DisplayOrder.HasValue)
                 newItem["DisplayOrder"] = definition.DisplayOrder.Value;
@@ -36,7 +36,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             if (!string.IsNullOrEmpty(url))
             {
-                var urlFieldValue = new SPFieldUrlValue {Url = url};
+                var urlFieldValue = new SPFieldUrlValue { Url = url };
 
                 if (!string.IsNullOrEmpty(description))
                     urlFieldValue.Description = description;
