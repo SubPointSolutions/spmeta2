@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                         .ShouldBeEqual(m => m.Name, o => o.GetComposedLookName());
 
             if (typedDefinition.DisplayOrder.HasValue)
-                assert.ShouldBeEqual(m => m.DisplayOrder, o => o.GetDisplayOrder());
+                assert.ShouldBeEqual(m => m.DisplayOrder, o => o.GetComposedLookDisplayOrder());
             else
                 assert.SkipProperty(m => m.DisplayOrder, "DisplayOrder is NULL");
 
@@ -231,7 +231,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             return ConvertToSPFieldUrlValue(item["FontSchemeUrl"]);
         }
 
-        public static int? GetDisplayOrder(this SPListItem item)
+        public static int? GetComposedLookDisplayOrder(this SPListItem item)
         {
             return ConvertUtils.ToInt(item["DisplayOrder"]);
         }

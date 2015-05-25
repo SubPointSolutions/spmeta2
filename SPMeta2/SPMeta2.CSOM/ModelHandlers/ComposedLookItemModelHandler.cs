@@ -19,14 +19,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             base.MapListItemProperties(newItem, listItemModel);
 
             var definition = listItemModel.WithAssertAndCast<ComposedLookItemDefinition>("model", value => value.RequireNotNull());
-            
+
             newItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInContentTypeId.ComposedLook;
             newItem["Name"] = definition.Name;
 
             SetUrlFieldValue(newItem, "MasterPageUrl", definition.MasterPageUrl, definition.MasterPageDescription);
             SetUrlFieldValue(newItem, "ThemeUrl", definition.ThemeUrl, definition.ThemeDescription);
             SetUrlFieldValue(newItem, "ImageUrl", definition.ImageUrl, definition.ImageDescription);
-            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.FontSchemeDescription, definition.MasterPageDescription);
+            SetUrlFieldValue(newItem, "FontSchemeUrl", definition.FontSchemeUrl, definition.FontSchemeDescription);
 
             if (definition.DisplayOrder.HasValue)
                 newItem["DisplayOrder"] = definition.DisplayOrder.Value;
