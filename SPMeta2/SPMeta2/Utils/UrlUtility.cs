@@ -13,10 +13,10 @@ namespace SPMeta2.Utils
             var result = url;
 
             while (result.StartsWith("/"))
-                result = result.Remove(0);
+                result = result.Remove(0, 1);
 
             if (result.StartsWith(@"\"))
-                result = result.Remove(0);
+                result = result.Remove(0, 1);
 
             return result;
         }
