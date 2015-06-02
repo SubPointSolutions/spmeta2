@@ -153,6 +153,68 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [ExpectValidation]
         public string FilterOperator3 { get; set; }
 
+
+
+        [DataMember]
+        public string HeaderXslLink { get; set; }
+
+        [DataMember]
+        public bool? UseCache { get; set; }
+
+        [DataMember]
+        public bool? CacheXslStorage { get; set; }
+
+        [DataMember]
+        public string FilterField1 { get; set; }
+
+        [DataMember]
+        public string FilterField2 { get; set; }
+
+        [DataMember]
+        public string FilterField3 { get; set; }
+
+        [DataMember]
+        public string ContentTypeName { get; set; }
+
+        [DataMember]
+        public Guid? ListId { get; set; }
+
+        [DataMember]
+        public string ListsOverride { get; set; }
+
+        [DataMember]
+        public string ViewFieldsOverride { get; set; }
+
+        [DataMember]
+        public bool? FilterByAudience { get; set; }
+
+        [DataMember]
+        public string CommonViewFields { get; set; }
+
+        [DataMember]
+        public string QueryOverride { get; set; }
+
+        [DataMember]
+        public string Filter1ChainingOperator { get; set; }
+
+        [DataMember]
+        public string Filter2ChainingOperator { get; set; }
+
+        [DataMember]
+        public int? CacheXslTimeOut { get; set; }
+
+        [DataMember]
+        public string GroupByDirection { get; set; }
+
+        [DataMember]
+        public bool? Filter1IsCustomValue { get; set; }
+
+        [DataMember]
+        public bool? Filter2IsCustomValue { get; set; }
+
+        [DataMember]
+        public bool? Filter3IsCustomValue { get; set; }
+
         #endregion
 
         #region methods

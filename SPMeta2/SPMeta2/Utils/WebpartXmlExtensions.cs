@@ -638,6 +638,36 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, propName, propValue, true);
         }
 
+        public static XDocument SetGroupStyle(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        
+        public static XDocument SetTypedProperty(this XDocument webpartXmlDocument, string name, string value, string type)
+        {
+            webpartXmlDocument.SetOrUpdateProperty(name, value);
+            var node = GetV3Node(webpartXmlDocument, name, WebPartNamespaceV3);
+
+            node.SetAttributeValue("type", type);
+
+            return webpartXmlDocument;
+        }
+
+        public static XDocument SetUseCache(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+
+        public static XDocument SetCacheXslStorage(this XDocument webpartXmlDocument, string value)
+        {
+            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
         #endregion
 
         #region get routines

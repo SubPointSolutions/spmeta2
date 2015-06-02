@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Publishing.WebControls;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions.Webparts;
@@ -36,123 +37,236 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             base.ProcessWebpartProperties(webpartInstance, definition);
 
             var typedWebpart = webpartInstance.WithAssertAndCast<ContentByQueryWebPart>("webpartInstance", value => value.RequireNotNull());
-            var typedModel = definition.WithAssertAndCast<ContentByQueryWebPartDefinition>("webpartModel", value => value.RequireNotNull());
+            var typedDefinition = definition.WithAssertAndCast<ContentByQueryWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
-            // lists
-            if (!string.IsNullOrEmpty(typedModel.ListUrl))
-                typedWebpart.ListUrl = typedModel.ListUrl;
-
-            if (!string.IsNullOrEmpty(typedModel.ListName))
-                typedWebpart.ListName = typedModel.ListName;
-
-            if (typedModel.ListGuid.HasGuidValue())
-                typedWebpart.ListGuid = typedModel.ListGuid.Value.ToString();
-
-            // server template
-            if (typedModel.ServerTemplate.HasValue)
-                typedWebpart.ServerTemplate = typedModel.ServerTemplate.ToString();
-
-            if (!string.IsNullOrEmpty(typedModel.ContentTypeBeginsWithId))
-                typedWebpart.ContentTypeBeginsWithId = typedModel.ContentTypeBeginsWithId;
-
-            // filter value 1-2-3
-            if (!string.IsNullOrEmpty(typedModel.FilterValue1))
-                typedWebpart.FilterValue1 = typedModel.FilterValue1;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterValue2))
-                typedWebpart.FilterValue2 = typedModel.FilterValue2;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterValue3))
-                typedWebpart.FilterValue3 = typedModel.FilterValue3;
-
-            // filter display value 1-2-3
-
-            if (!string.IsNullOrEmpty(typedModel.FilterDisplayValue1))
-                typedWebpart.FilterDisplayValue1 = typedModel.FilterDisplayValue1;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterDisplayValue2))
-                typedWebpart.FilterDisplayValue2 = typedModel.FilterDisplayValue2;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterDisplayValue3))
-                typedWebpart.FilterDisplayValue3 = typedModel.FilterDisplayValue3;
-
-            // filter type 1-2-3
-            if (!string.IsNullOrEmpty(typedModel.FilterType1))
-                typedWebpart.FilterType1 = typedModel.FilterType1;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterType2))
-                typedWebpart.FilterType2 = typedModel.FilterType2;
-
-            if (!string.IsNullOrEmpty(typedModel.FilterType3))
-                typedWebpart.FilterType3 = typedModel.FilterType3;
-
-            // filter operator 1-2-3
-
-            if (!string.IsNullOrEmpty(typedModel.FilterOperator1))
+            // xslt links
+            if (!string.IsNullOrEmpty(typedDefinition.MainXslLink))
             {
-                typedWebpart.FilterOperator1 = (ContentByQueryWebPart.FilterFieldQueryOperator)
-                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedModel.FilterOperator1);
+                var linkValue = typedDefinition.MainXslLink;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original MainXslLink: [{0}]", linkValue);
+
+                linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = linkValue,
+                    Context = CurrentHost.PageListItem.Web
+                }).Value;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced MainXslLink: [{0}]", linkValue);
+
+                typedWebpart.MainXslLink = linkValue;
             }
 
-            if (!string.IsNullOrEmpty(typedModel.FilterOperator2))
+            if (!string.IsNullOrEmpty(typedDefinition.ItemXslLink))
             {
-                typedWebpart.FilterOperator2 = (ContentByQueryWebPart.FilterFieldQueryOperator)
-                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedModel.FilterOperator2);
+                var linkValue = typedDefinition.ItemXslLink;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original ItemXslLink: [{0}]", linkValue);
+
+                linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = linkValue,
+                    Context = CurrentHost.PageListItem.Web
+                }).Value;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced ItemXslLink: [{0}]", linkValue);
+
+                typedWebpart.ItemXslLink = linkValue;
             }
 
-            if (!string.IsNullOrEmpty(typedModel.FilterOperator3))
+            if (!string.IsNullOrEmpty(typedDefinition.HeaderXslLink))
             {
-                typedWebpart.FilterOperator3 = (ContentByQueryWebPart.FilterFieldQueryOperator)
-                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedModel.FilterOperator3);
+                var linkValue = typedDefinition.HeaderXslLink;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original HeaderXslLink: [{0}]", linkValue);
+
+                linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = linkValue,
+                    Context = CurrentHost.PageListItem.Web
+                }).Value;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced HeaderXslLink: [{0}]", linkValue);
+
+                typedWebpart.HeaderXslLink = linkValue;
             }
 
-            // sorting
-            if (!string.IsNullOrEmpty(typedModel.SortBy))
-                typedWebpart.SortBy = typedModel.SortBy;
+            // styles
+            if (!string.IsNullOrEmpty(typedDefinition.ItemStyle))
+                typedWebpart.ItemStyle = typedDefinition.ItemStyle;
 
-            if (!string.IsNullOrEmpty(typedModel.SortByDirection))
-                typedWebpart.SortByDirection = (ContentByQueryWebPart.SortDirection)
-                    Enum.Parse(typeof(ContentByQueryWebPart.SortDirection), typedModel.SortByDirection);
+            if (!string.IsNullOrEmpty(typedDefinition.GroupStyle))
+                typedWebpart.GroupStyle = typedDefinition.GroupStyle;
 
-            if (!string.IsNullOrEmpty(typedModel.SortByFieldType))
-                typedWebpart.SortByFieldType = typedModel.SortByFieldType;
 
-            // data mappings
-            if (!string.IsNullOrEmpty(typedModel.DataMappings))
-                typedWebpart.DataMappings = typedModel.DataMappings;
+            // cache settings
+            if (typedDefinition.UseCache.HasValue)
+                typedWebpart.UseCache = typedDefinition.UseCache.Value;
 
-            if (!string.IsNullOrEmpty(typedModel.DataMappingViewFields))
-                typedWebpart.DataMappingViewFields = typedModel.DataMappingViewFields;
+            if (typedDefinition.CacheXslStorage.HasValue)
+                typedWebpart.CacheXslStorage = typedDefinition.CacheXslStorage.Value;
 
-            //  xslt styles
+            if (typedDefinition.CacheXslTimeOut.HasValue)
+                typedWebpart.CacheXslTimeOut = typedDefinition.CacheXslTimeOut.Value;
 
-            if (!string.IsNullOrEmpty(typedModel.ItemStyle))
-                typedWebpart.ItemStyle = typedModel.ItemStyle;
+            // item limit
+            if (typedDefinition.ItemLimit.HasValue)
+                typedWebpart.ItemLimit = typedDefinition.ItemLimit.Value;
 
-            if (!string.IsNullOrEmpty(typedModel.GroupStyle))
-                typedWebpart.GroupStyle = typedModel.GroupStyle;
+            // mappings
+            if (!string.IsNullOrEmpty(typedDefinition.DataMappings))
+                typedWebpart.DataMappings = typedDefinition.DataMappings;
 
-            // xslt files
-
-            // TODO, add token support later
-            if (!string.IsNullOrEmpty(typedModel.ItemXslLink))
-                typedWebpart.ItemXslLink = typedModel.ItemXslLink;
-
-            if (!string.IsNullOrEmpty(typedModel.MainXslLink))
-                typedWebpart.MainXslLink = typedModel.MainXslLink;
+            if (!string.IsNullOrEmpty(typedDefinition.DataMappingViewFields))
+                typedWebpart.DataMappingViewFields = typedDefinition.DataMappingViewFields;
 
             // misc
-            if (typedModel.UseCopyUtil.HasValue)
-                typedWebpart.UseCopyUtil = typedModel.UseCopyUtil.Value;
+            if (typedDefinition.ShowUntargetedItems.HasValue)
+                typedWebpart.ShowUntargetedItems = typedDefinition.ShowUntargetedItems.Value;
 
-            if (typedModel.ItemLimit.HasValue)
-                typedWebpart.ItemLimit = typedModel.ItemLimit.Value;
+            if (typedDefinition.PlayMediaInBrowser.HasValue)
+                typedWebpart.PlayMediaInBrowser = typedDefinition.PlayMediaInBrowser.Value;
 
-            if (typedModel.PlayMediaInBrowser.HasValue)
-                typedWebpart.PlayMediaInBrowser = typedModel.PlayMediaInBrowser.Value;
+            // FilterTypeXXX
+            if (!string.IsNullOrEmpty(typedDefinition.FilterType1))
+                typedWebpart.FilterType1 = typedDefinition.FilterType1;
 
-            if (typedModel.ShowUntargetedItems.HasValue)
-                typedWebpart.ShowUntargetedItems = typedModel.ShowUntargetedItems.Value;
+            if (!string.IsNullOrEmpty(typedDefinition.FilterType2))
+                typedWebpart.FilterType2 = typedDefinition.FilterType2;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterType3))
+                typedWebpart.FilterType3 = typedDefinition.FilterType3;
+
+            // FilterFieldXXX
+            if (!string.IsNullOrEmpty(typedDefinition.FilterField1))
+                typedWebpart.FilterField1 = typedDefinition.FilterField1;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterField2))
+                typedWebpart.FilterField2 = typedDefinition.FilterField2;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterField3))
+                typedWebpart.FilterField3 = typedDefinition.FilterField3;
+
+            // FilterXXXIsCustomValue
+            if (typedDefinition.Filter1IsCustomValue.HasValue)
+                typedWebpart.Filter1IsCustomValue = typedDefinition.Filter1IsCustomValue.Value;
+
+            if (typedDefinition.Filter2IsCustomValue.HasValue)
+                typedWebpart.Filter2IsCustomValue = typedDefinition.Filter2IsCustomValue.Value;
+
+            if (typedDefinition.Filter3IsCustomValue.HasValue)
+                typedWebpart.Filter3IsCustomValue = typedDefinition.Filter3IsCustomValue.Value;
+
+            // FilterValueXXX
+            if (!string.IsNullOrEmpty(typedDefinition.FilterValue1))
+                typedWebpart.FilterValue1 = typedDefinition.FilterValue1;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterValue2))
+                typedWebpart.FilterValue2 = typedDefinition.FilterValue2;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterValue3))
+                typedWebpart.FilterValue3 = typedDefinition.FilterValue3;
+
+
+            if (!string.IsNullOrEmpty(typedDefinition.Filter1ChainingOperator))
+            {
+                typedWebpart.Filter1ChainingOperator = (ContentByQueryWebPart.FilterChainingOperator)
+                   Enum.Parse(typeof(ContentByQueryWebPart.FilterChainingOperator), typedDefinition.Filter1ChainingOperator);
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.Filter2ChainingOperator))
+            {
+                typedWebpart.Filter2ChainingOperator = (ContentByQueryWebPart.FilterChainingOperator)
+                   Enum.Parse(typeof(ContentByQueryWebPart.FilterChainingOperator), typedDefinition.Filter2ChainingOperator);
+            }
+
+
+            // sorting
+            if (!string.IsNullOrEmpty(typedDefinition.SortBy))
+                typedWebpart.SortBy = typedDefinition.SortBy;
+
+            if (!string.IsNullOrEmpty(typedDefinition.SortByDirection))
+                typedWebpart.SortByDirection = (ContentByQueryWebPart.SortDirection)
+                    Enum.Parse(typeof(ContentByQueryWebPart.SortDirection), typedDefinition.SortByDirection);
+
+            if (!string.IsNullOrEmpty(typedDefinition.SortByFieldType))
+                typedWebpart.SortByFieldType = typedDefinition.SortByFieldType;
+
+            if (!string.IsNullOrEmpty(typedDefinition.GroupByDirection))
+            {
+                typedWebpart.GroupByDirection = (ContentByQueryWebPart.SortDirection)
+                    Enum.Parse(typeof(ContentByQueryWebPart.SortDirection), typedDefinition.GroupByDirection);
+            }
+
+
+            // FilterOperatorXXX
+            if (!string.IsNullOrEmpty(typedDefinition.FilterOperator1))
+            {
+                typedWebpart.FilterOperator1 = (ContentByQueryWebPart.FilterFieldQueryOperator)
+                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedDefinition.FilterOperator1);
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterOperator2))
+            {
+                typedWebpart.FilterOperator2 = (ContentByQueryWebPart.FilterFieldQueryOperator)
+                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedDefinition.FilterOperator2);
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterOperator3))
+            {
+                typedWebpart.FilterOperator3 = (ContentByQueryWebPart.FilterFieldQueryOperator)
+                    Enum.Parse(typeof(ContentByQueryWebPart.FilterFieldQueryOperator), typedDefinition.FilterOperator3);
+            }
+
+            // FilterDisplayValueXXX
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue1))
+                typedWebpart.FilterDisplayValue1 = typedDefinition.FilterDisplayValue1;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue2))
+                typedWebpart.FilterDisplayValue2 = typedDefinition.FilterDisplayValue2;
+
+            if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue3))
+                typedWebpart.FilterDisplayValue3 = typedDefinition.FilterDisplayValue3;
+
+
+            // bindings
+            if (typedDefinition.ServerTemplate.HasValue)
+                typedWebpart.ServerTemplate = typedDefinition.ServerTemplate.ToString();
+
+            if (!string.IsNullOrEmpty(typedDefinition.ContentTypeName))
+                typedWebpart.ContentTypeName = typedDefinition.ContentTypeName;
+
+            if (!string.IsNullOrEmpty(typedDefinition.ContentTypeBeginsWithId))
+                typedWebpart.ContentTypeBeginsWithId = typedDefinition.ContentTypeBeginsWithId;
+
+            if (typedDefinition.ListId.HasGuidValue())
+                typedWebpart.ListId = typedDefinition.ListId.Value;
+
+            if (typedDefinition.ListGuid.HasGuidValue())
+                typedWebpart.ListGuid = typedDefinition.ListGuid.Value.ToString("D");
+
+            if (!string.IsNullOrEmpty(typedDefinition.ListName))
+                typedWebpart.ListName = typedDefinition.ListName;
+
+            if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
+                typedWebpart.WebUrl = typedDefinition.WebUrl;
+
+            // overrides
+            if (!string.IsNullOrEmpty(typedDefinition.ListsOverride))
+                typedWebpart.ListsOverride = typedDefinition.ListsOverride;
+
+            if (!string.IsNullOrEmpty(typedDefinition.ViewFieldsOverride))
+                typedWebpart.ViewFieldsOverride = typedDefinition.ViewFieldsOverride;
+
+            if (!string.IsNullOrEmpty(typedDefinition.QueryOverride))
+                typedWebpart.QueryOverride = typedDefinition.QueryOverride;
+
+            if (!string.IsNullOrEmpty(typedDefinition.CommonViewFields))
+                typedWebpart.CommonViewFields = typedDefinition.CommonViewFields;
+
+            if (typedDefinition.FilterByAudience.HasValue)
+                typedWebpart.FilterByAudience = typedDefinition.FilterByAudience.Value;
         }
 
         #endregion
