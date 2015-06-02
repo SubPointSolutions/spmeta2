@@ -103,6 +103,7 @@
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
     <Compile Include="Definitions\Webparts\ProjectSummaryWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Syntax\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
