@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint;
@@ -13,8 +14,11 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using System.Web.UI.WebControls.WebParts;
+using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Common;
+using SPMeta2.Services.Webparts;
+using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -71,6 +75,22 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 instance.ExportMode = (WebPartExportMode)Enum.Parse(typeof(WebPartExportMode), definition.ExportMode);
+
+
+            var dataFomWebPart = instance as DataFormWebPart;
+
+            if (dataFomWebPart != null
+                && definition.ParameterBindings != null
+                && definition.ParameterBindings.Count > 0)
+            {
+                var parameterBinder = new WebPartParameterBindingsOptions();
+
+                foreach (var binding in definition.ParameterBindings)
+                    parameterBinder.AddParameterBinding(binding.Name, binding.Location);
+
+                var parameterBindingValue = SecurityElement.Escape(parameterBinder.ParameterBinding);
+                dataFomWebPart.ParameterBindings = parameterBindingValue;
+            }
         }
 
         public WebpartPageModelHost CurrentHost { get; set; }

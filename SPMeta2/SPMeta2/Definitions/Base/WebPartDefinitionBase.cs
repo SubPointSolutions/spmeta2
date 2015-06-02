@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions.Base
         {
             ChromeState = BuiltInPartChromeState.Normal;
             ChromeType = BuiltInPartChromeType.Default;
+
+            ParameterBindings = new List<ParameterBindingValue>();
         }
 
         #endregion
@@ -110,6 +112,10 @@ namespace SPMeta2.Definitions.Base
 
         public int ZoneIndex { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        public List<ParameterBindingValue> ParameterBindings { get; set; }
+
         #endregion
 
         #region properties
@@ -189,5 +195,15 @@ namespace SPMeta2.Definitions.Base
         }
 
         #endregion
+    }
+
+    [DataContract]
+    public class ParameterBindingValue
+    {
+        [DataMember]
+        public virtual string Name { get; set; }
+
+        [DataMember]
+        public virtual string Location { get; set; }
     }
 }

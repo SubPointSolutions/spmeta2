@@ -20,6 +20,8 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using System.Text;
 using System.IO;
+using System.Security;
+using SPMeta2.Services.Webparts;
 using File = Microsoft.SharePoint.Client.File;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -241,6 +243,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);
+
+            if (definition.ParameterBindings != null && definition.ParameterBindings.Count > 0)
+            {
+                var parameterBinder = new WebPartParameterBindingsOptions();
+
+                foreach (var binding in definition.ParameterBindings)
+                    parameterBinder.AddParameterBinding(binding.Name, binding.Location);
+
+                var parameterBindingValue = SecurityElement.Escape(parameterBinder.ParameterBinding);
+                xml.SetOrUpdateProperty("ParameterBindings", parameterBindingValue);
+            }
 
             return xml.ToString();
         }
