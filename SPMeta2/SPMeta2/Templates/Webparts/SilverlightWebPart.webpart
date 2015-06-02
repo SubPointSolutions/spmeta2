@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name=
+"Microsoft.SharePoint.WebPartPages.SilverlightWebPart, Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">$Resources:core,SilverlightWebPartTitle;</property>
+        <property name="Description" type="string">$Resources:core,SilverlightWebPartDescription;</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

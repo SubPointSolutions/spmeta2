@@ -198,6 +198,7 @@
     <Compile Include="ModelHandlers\WebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\PageViewerWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SilverlightWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserCodePartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ClientWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" />

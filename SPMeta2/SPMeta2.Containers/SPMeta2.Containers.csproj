@@ -152,6 +152,7 @@
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SilverlightWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\PageViewerWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\UserCodeWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\WebPartGalleryFileDefinitionGenerator.cs" />

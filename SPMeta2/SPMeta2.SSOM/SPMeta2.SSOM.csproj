@@ -258,6 +258,7 @@
     <Compile Include="ModelHandlers\Webparts\ClientWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\PageViewerWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SilverlightWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserCodePartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\WebPartGalleryFileModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />

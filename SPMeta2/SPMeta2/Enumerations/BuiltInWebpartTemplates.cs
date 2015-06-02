@@ -35,6 +35,8 @@ namespace SPMeta2.Enumerations
 
             PageViewerWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.PageViewerWebPart.webpart");
             ProjectSummaryWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ProjectSummaryWebPart.webpart");
+
+            SilverlightWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SilverlightWebPart.webpart");
         }
 
         #endregion
@@ -56,6 +58,8 @@ namespace SPMeta2.Enumerations
         public static string UserCodeWebPart { get; set; }
         public static string ResultScriptWebPart { get; set; }
         public static string PageViewerWebPart { get; set; }
+
+        public static string SilverlightWebPart { get; set; }
 
 
 

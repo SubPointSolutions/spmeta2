@@ -150,6 +150,7 @@
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
     <Compile Include="Definitions\Webparts\PageViewerWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SilverlightWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\UserCodeWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
@@ -325,6 +326,7 @@
     <EmbeddedResource Include="Templates\Webparts\ContentBySearchWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\PageViewerWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ProjectSummaryWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SilverlightWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

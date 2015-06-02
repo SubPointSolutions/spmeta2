@@ -1010,6 +1010,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Webparts")]
+        public void CanDeployRandom_SilverlightWebPartDefinition()
+        {
+            TestRandomDefinition<SilverlightWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts")]
         public void CanDeployRandom_ListViewWebPartDefinition()
         {
             TestRandomDefinition<ListViewWebPartDefinition>();
