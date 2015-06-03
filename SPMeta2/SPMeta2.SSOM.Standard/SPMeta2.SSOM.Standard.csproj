@@ -183,6 +183,7 @@
     <Compile Include="ModelHandlers\Fields\HTMLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LinkFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\ManagedPropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableTextItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableHTMLItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchSettingsModelHandler.cs" />

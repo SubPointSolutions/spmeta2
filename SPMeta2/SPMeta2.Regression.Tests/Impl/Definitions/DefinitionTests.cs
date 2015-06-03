@@ -15,6 +15,7 @@ using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
+using SPMeta2.Standard.Definitions;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -330,6 +331,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
                     if (definitionType == typeof(PropertyDefinition))
                         addArrayDefinitionMethodName = string.Format("AddProperties");
+                    if (definitionType == typeof(ManagedPropertyDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddManagedProperties");
                     if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
                         addArrayDefinitionMethodName = string.Format("AddDiagnosticsServices");
                     if (definitionType == typeof(ListItemFieldValuesDefinition))

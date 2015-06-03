@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SPMeta2.Containers.Services
 {
@@ -43,6 +45,33 @@ namespace SPMeta2.Containers.Services
                 return service.Bool();
 
             return null;
+        }
+
+        public static T RandomFromArray<T>(this RandomService service, IEnumerable<T> array)
+        {
+            return array.ToList()[service.Int(array.Count() - 1)];
+        }
+
+        public static IEnumerable<T> RandomArrayFromArray<T>(this RandomService service, IEnumerable<T> array)
+        {
+            if (array.Count() == 0)
+                return Enumerable.Empty<T>();
+
+            var resultArray = new List<T>();
+            var itemsCount = service.Int(array.Count() - 1);
+
+            if (itemsCount == 0)
+                itemsCount = array.Count() / 2;
+
+            for (var i = 0; i < itemsCount; i++)
+            {
+                var newItem = array.ToList()[service.Int(array.Count() - 1)];
+
+                if (!resultArray.Contains(newItem))
+                    resultArray.Add(newItem);
+            }
+
+            return resultArray;
         }
 
         public static string HttpUrl(this RandomService service)

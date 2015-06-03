@@ -26,7 +26,10 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
+        [DataMember]
         public string Url { get; set; }
+
+        [DataMember]
         public string CustomInitParameters { get; set; }
 
         #endregion

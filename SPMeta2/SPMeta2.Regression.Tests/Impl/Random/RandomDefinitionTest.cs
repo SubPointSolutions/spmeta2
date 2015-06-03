@@ -922,6 +922,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region search
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Search")]
+        public void CanDeployRandom_ManagedPropertyDefinition()
+        {
+            TestRandomDefinition<ManagedPropertyDefinition>();
+        }
+
+        #endregion
+
         #region webparts
 
         [TestMethod]

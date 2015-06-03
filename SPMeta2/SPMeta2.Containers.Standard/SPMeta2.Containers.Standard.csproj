@@ -65,6 +65,7 @@
     <Compile Include="DefinitionGenerators\Fields\ImageFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\LinkFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\HTMLFieldDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ManagedPropertyDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ReusableHTMLItemDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ReusableTextItemDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SearchSettingsDefinitionGenerator.cs" />

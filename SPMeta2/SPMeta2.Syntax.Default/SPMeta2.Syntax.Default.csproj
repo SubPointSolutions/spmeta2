@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComposedLookItemDefinitionSyntax.cs" />
+    <Compile Include="SilverlightWebPartDefinitionSyntax.cs" />
     <Compile Include="DependentLookupFieldDefinitionSyntax.cs" />
     <Compile Include="DeleteWebPartsDefinitionSyntax.cs" />
     <Compile Include="ChoiceFieldDefinitionSyntax.cs" />
