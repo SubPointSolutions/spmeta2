@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Standard.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
@@ -15,6 +16,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
         {
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
+            
+
             Term spObject = null;
 
             if (modelHost is TermModelHost)
@@ -24,7 +27,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             else
             {
                 throw new SPMeta2UnsupportedModelHostException(string.Format("Model host of type: [{0}] is not supported", modelHost.GetType()));
-     
+
             }
 
             TermExtensions.CurrentLCID = definition.LCID;

@@ -13,6 +13,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHosts;
 using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Standard.Utils;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
@@ -33,6 +34,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
+
+            // TODO, move to common validator infrastructure
+            if (!TaxonomyUtility.IsValidTermName(definition.Name))
+            {
+                throw new SPMeta2Exception(
+                    string.Format("Term name [{0}] cannot contain any of the following characters: \" ; < > | and Tab",
+                        definition.Name));
+            }
 
             if (modelHost is TermModelHost)
                 DeployTermUnderTerm(modelHost, modelHost as TermModelHost, definition);
