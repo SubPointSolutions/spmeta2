@@ -822,6 +822,12 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<MasterPageDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
+        public void CanDeployRandom_MasterPagePreviewDefinition()
+        {
+            TestRandomDefinition<MasterPagePreviewDefinition>();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.MasterPageGallery")]

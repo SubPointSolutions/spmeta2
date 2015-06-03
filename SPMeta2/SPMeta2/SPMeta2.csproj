@@ -123,6 +123,7 @@
     <Compile Include="Definitions\Fields\OutcomeChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\GeolocationFieldDefinition.cs" />
     <Compile Include="Definitions\ListItemFieldValuesDefinition.cs" />
+    <Compile Include="Definitions\MasterPagePreviewDefinition.cs" />
     <Compile Include="Definitions\MasterPageDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />

@@ -177,6 +177,7 @@
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
+    <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />

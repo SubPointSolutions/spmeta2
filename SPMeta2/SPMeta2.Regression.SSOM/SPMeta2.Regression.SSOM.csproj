@@ -104,6 +104,7 @@
     <Compile Include="Validation\Fields\OutcomeChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\GeolocationFieldDefinitionValidator.cs" />
     <Compile Include="Validation\ListItemFieldValuesDefinitionValidator.cs" />
+    <Compile Include="Validation\MasterPagePreviewDefinitionValidator.cs" />
     <Compile Include="Validation\MasterPageDefinitionValidator.cs" />
     <Compile Include="Validation\ResetRoleInheritanceDefinitionValidator.cs" />
     <Compile Include="Validation\DocumentParserDefinitionValidator.cs" />

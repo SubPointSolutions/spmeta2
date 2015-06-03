@@ -1,0 +1,449 @@
+Palette001.spcolor
+[SECTION]
+SharePointPersonality.spfont
+[SECTION]
+[ID] .dgp-pageHyperLinkVisited
+{
+    color: [T_THEME_COLOR_HYPERLINKFOLLOWED] !important;
+}
+[ID] #dgp-pageContainer
+{
+    width: 100%;
+    height:100%;
+    position: relative;
+    color: [T_THEME_COLOR_BODYTEXT]; 
+    background-color: [T_THEME_COLOR_PAGEBACKGROUND];
+    font-size: 1.0em;
+    font-family: [T_BODY_FONT];
+}
+[ID] .dgp-pageContent
+{
+    width: 100%;
+    height:100%;
+    position: relative;
+    z-index: 100;
+}
+[ID] .dgp-suiteBar
+{
+    display: table;
+    border-spacing: 0px;
+    width: 100%;
+    height: 3%;
+    font-size: 0.8em;
+}
+[ID] .dgp-suiteBarLeft
+{
+    display: table-cell;
+    width: 80%;
+    background-color: [T_THEME_COLOR_SUITEBARBACKGROUND];
+    color: [T_THEME_COLOR_SUITEBARTEXT];
+    padding: 0.5%;
+}
+[ID] .dgp-suiteBarRight
+{
+    display: table-cell;
+    background-color: [T_THEME_COLOR_TOPBARBACKGROUND];
+    color: [T_THEME_COLOR_TOPBARTEXT];
+    padding: 0.5%;
+    vertical-align: middle;
+}
+[ID] .dgp-topBarIcon
+{
+    display: inline-block;
+    width: 1.4em;
+    background-color: [T_THEME_COLOR_TOPBARTEXT];
+}
+[ID] .dgp-globalNav
+{
+    background-color: [T_THEME_COLOR_TOPBARBACKGROUND];
+    height: 3%;
+    color: [T_THEME_COLOR_TOPBARTEXT];
+    padding: 0.5% 0.5% 0.5% 2%;
+}
+[ID] .dgp-globalRightLink
+{
+    padding: 0 1%;
+}
+[ID] .dgp-globalNavBottomRow
+{
+    width: 100%;
+    font-size: 0.8em;
+}
+[ID] .dgp-globalBottomLink
+{
+    text-transform: uppercase;
+    padding: 0 1%;
+}
+[ID] .dgp-titleBox
+{
+    width: 100%;
+    height: 5%;
+    padding: 2% 3% 3% 2%;
+    margin-bottom: 3%;
+}
+[ID] .dgp-logoImage
+{
+    width: 14%;
+    height: 140%;
+    margin: 0% 2% 0% 0%;
+    background-color: [T_THEME_COLOR_EMPHASISBACKGROUND];
+}
+[ID] .dgp-pageTitle
+{
+    text-transform: uppercase;
+}
+[ID] .dgp-pageTitleTopRow
+{
+    font-size: 0.8em;
+    font-family: [T_NAVIGATION_FONT];
+    color: [T_THEME_COLOR_NAVIGATION];
+}
+[ID] .dgp-pageTitleBottomRow
+{
+    font-size: 2em;
+    font-family: [T_TITLE_FONT];
+    color: [T_THEME_COLOR_SITETITLE];
+}
+[ID] .dgp-searchBox
+{
+    color: [T_THEME_COLOR_SUBTLETEXT];
+    border: 1px solid [T_THEME_COLOR_LINES];
+    width: 14%;
+    padding: 0 0.3% 0.3%;
+    margin-right: 5%;
+}
+[ID] .dgp-sideNavBox
+{
+    width: 16%;
+    padding-right: 2%;
+}
+.dgp-rightToLeft [ID] .dgp-sideNavBox
+{
+    padding-right: 0;
+    padding-left: 2%;
+}
+[ID] .dgp-sidenav
+{
+    font-size: 1em;
+    font-family: [T_NAVIGATION_FONT];
+    color: [T_THEME_COLOR_NAVIGATION];
+}
+[ID] .dgp-sidenav span
+{
+    padding: 3% 10%;
+    display: block;
+}
+[ID] .dgp-sidenav .dgp-selected
+{
+    background-color: [T_THEME_COLOR_NAVIGATIONSELECTEDBACKGROUND];
+}
+.ms-core-needIEFilter [ID] .dgp-sidenav .dgp-selected
+{
+    background-color: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=[T_THEME_COLOR_NAVIGATIONSELECTEDBACKGROUND_AA],endColorstr=[T_THEME_COLOR_NAVIGATIONSELECTEDBACKGROUND_AA])";
+}
+[ID] .dgp-tablerowselected
+{
+    background-color: [T_THEME_COLOR_SELECTIONBACKGROUND];
+}
+.ms-core-needIEFilter [ID] .tablerowselected
+{
+    background-color: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=[T_THEME_COLOR_SELECTIONBACKGROUND_AA],endColorstr=[T_THEME_COLOR_SELECTIONBACKGROUND_AA])";
+}
+[ID] .dgp-tablerowselectedtd
+{
+    background-color:[T_THEME_COLOR_ROWACCENT];
+}
+[ID] .dgp-sidenav .dgp-level2
+{
+    margin-top: 8%;
+    font-size: 0.8em;
+    color: [T_THEME_COLOR_COMMANDLINKS];
+    text-transform: uppercase;
+}
+[ID] .dgp-contentBox
+{
+    width: 75%;
+}
+[ID] .dgp-accentTextCommon
+{
+    text-align:center;
+    padding:0 2em 0.3em 0em;
+}
+[ID] .dgp-accentColor1
+{
+    color: [T_THEME_COLOR_CONTENTACCENT1];
+}
+[ID] .dgp-accentColor2
+{
+    color: [T_THEME_COLOR_CONTENTACCENT2];
+}
+[ID] .dgp-accentColor3
+{
+    color: [T_THEME_COLOR_CONTENTACCENT3];
+}
+[ID] .dgp-accentColor4
+{
+    color: [T_THEME_COLOR_CONTENTACCENT4];
+}
+[ID] .dgp-accentColor5
+{
+    color: [T_THEME_COLOR_CONTENTACCENT5];
+}
+[ID] .dgp-accentColor6
+{
+    color: [T_THEME_COLOR_CONTENTACCENT6];
+}
+[ID] .dgp-accentColorBlockCommon
+{
+    padding-right:2em;
+    width:9%;
+}
+[ID] .dgp-accentColorBlock1
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT1];
+}
+[ID] .dgp-accentColorBlock2
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT2];
+}
+[ID] .dgp-accentColorBlock3
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT3];
+}
+[ID] .dgp-accentColorBlock4
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT4];
+}
+[ID] .dgp-accentColorBlock5
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT5];
+}
+[ID] .dgp-accentColorBlock6
+{
+    background-color:[T_THEME_COLOR_CONTENTACCENT6];
+}
+[ID] .dgp-contentBoxTableHeader
+{
+    color: [T_THEME_COLOR_BODYTEXT];
+    font-family: [T_BODY_FONT];
+    font-size:1.125em;
+    margin:1% 0 2% 0;
+}
+[ID] .dgp-contentBoxTableDescription
+{
+    color: [T_THEME_COLOR_BODYTEXT];
+    font-size:1.375em;
+    margin-bottom:3%;
+    line-height:1.6em;
+}
+[ID] .dgp-accentTable
+{
+    color: [T_THEME_COLOR_BODYTEXT];
+    width: 100%;
+}
+
+[ID] .dgp-contentTable
+{
+    color: [T_THEME_COLOR_BODYTEXT];
+    width: 100%;
+    border-spacing:0;
+    border-collapse:collapse;
+}
+[ID] .dgp-contentTable td
+{
+    padding: 1%;
+}
+[ID] a
+{
+    color: [T_THEME_COLOR_HYPERLINK];
+}
+[ID] .dgp-leftColumn
+{
+    width: 80%;
+}
+[ID] .dgp-rightColumn
+{
+    width: 30%;
+    margin: 1%;
+}
+[ID] .dgp-globalright
+{
+    float: right;
+}
+.dgp-rightToLeft [ID] .dgp-globalright
+{
+    float: left;
+}
+[ID] .dgp-globalleft
+{
+    float: left;
+}
+.dgp-rightToLeft [ID] .dgp-globalleft
+{
+    float: right;
+}
+[ID] .dgp-background
+{
+    background-image: url('[T_IMAGE]');
+    background-size: cover;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.ms-core-needIEFilter [ID] .dgp-background
+{
+    display: none;
+}
+.ms-core-needIEFilter [ID] .dgp-background-ie8
+{
+    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[T_IMAGE]', sizingMethod='scale');";
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+[ID] .dgp-overlay
+{
+    background-color: [T_THEME_COLOR_BACKGROUNDOVERLAY];
+    height: 93%;
+}
+.ms-core-needIEFilter [ID] .dgp-overlay
+{
+    background-color: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=[T_THEME_COLOR_BACKGROUNDOVERLAY_AA], endColorstr=[T_THEME_COLOR_BACKGROUNDOVERLAY_AA]);";
+}
+[ID] .dgp-trueDimensions
+{
+    height: [T_HEIGHT];
+    width: [T_WIDTH];
+}
+[ID] .dgp-imageDimensions
+{
+    height: [T_IMGHEIGHT];
+    width: [T_IMGWIDTH];
+}
+[ID] .dgp-absoluteposition
+{
+    position: absolute;      
+    top: 0px;
+}
+[ID] .dgp-alignLeft
+{
+    left: 0px;
+}
+[ID] .dgp-alignRight
+{
+    right: 0px;
+}
+.dgp-rightToLeft [ID] .dgp-alignLeft
+{
+    right: 0px;
+    left: auto;
+}
+.dgp-rightToLeft [ID] .dgp-alignRight
+{
+    left: 0px;
+    right: auto;
+}
+[ID] .dgp-spacing
+{
+    display: inline-block;
+    margin-right: 1.2em;
+}
+
+.dgp-rightToLeft [ID] .dgp-spacing
+{
+    margin-right: 0em;
+    margin-left: 1.2em;
+}
+[ID] .dgp-nowrap
+{
+    white-space: nowrap;
+}
+[ID] .dgp-contentBoxListHeader
+{
+    color: [T_THEME_COLOR_BODYTEXT]; 
+    font-size:1.125em;
+    font-family: [T_BODY_FONT];
+    margin-top:7%;
+    margin-bottom:2%;
+}
+[ID] .dgp-tableitemlink
+{
+    color: [T_THEME_COLOR_BODYTEXT]; 
+}
+[ID] .dgp-tableheadertext
+{
+    color: [T_THEME_COLOR_SUBTLEBODYTEXT];
+}
+
+[SECTION]
+<div id="dgp-pageContainer">
+    <div class="dgp-background"></div>
+    <div class="dgp-background-ie8"></div>
+    <div class="dgp-pageContent">
+        <div class="dgp-suiteBar">
+            <div class="ms-tableRow">
+                <div class="dgp-suiteBarLeft">
+                    <div class="dgp-globalleft">
+                        [BRANDSTRING]
+                    </div>
+                    <div class="dgp-globalright">
+                        <span class="dgp-spacing">[SUITELINK1]</span>
+                        <span class="dgp-spacing">[SUITELINK2]</span>
+                        <span class="dgp-spacing">[SUITELINK3]</span>
+                    </div>
+                </div>
+                <div class="dgp-suiteBarRight">
+                    <span class="dgp-globalRightLink dgp-globalleft">[WELCOME]</span>
+                </div>
+            </div>
+        </div>
+        <div class="dgp-globalNav">
+            <div class="dgp-globalNavBottomRow">
+                <div class="dgp-globalleft dgp-nowrap">
+                    <span class="dgp-globalBottomLink dgp-spacing">[RIBBONTAB1]</span>
+                    <span class="dgp-globalBottomLink dgp-spacing">[RIBBONTAB2]</span>
+                    <span class="dgp-globalBottomLink dgp-spacing">[RIBBONTAB3]</span>
+                </div>
+                <div class="dgp-globalright">
+                </div>
+            </div>
+        </div>
+        <div class="dgp-overlay">
+            <div class="dgp-titleBox">
+                <div class="dgp-searchBox dgp-globalright">[SEARCHBOX]</div>
+                <div class="dgp-logoImage dgp-globalleft"></div>
+                <div class="dgp-pageTitle dgp-globalleft">
+                    <div class="dgp-pageTitleTopRow">[TN1]&nbsp;&nbsp;&nbsp;&nbsp;[TN2]&nbsp;&nbsp;&nbsp;&nbsp;[TN3]</div>
+                    <div class="dgp-pageTitleBottomRow">[TITLE]</div>
+                </div>
+            </div>
+            <div class="dgp-sideNavBox dgp-globalleft">
+                <div class="dgp-sidenav">
+                    <span>[QL1]</span>
+                    <span class="dgp-selected">[QL2]</span>
+                    <span>[QL3]</span>
+                    <span>[QL4]</span>
+                    <span class="dgp-level2">[QLADD]</span>
+                </div>
+            </div>
+            <div class="dgp-contentBox dgp-globalleft"> 
+                <div class="dgp-leftColumn dgp-globalleft">
+                    <div class="dgp-contentBoxTableHeader">[CA TABLE HEADER]</div>
+                    <div class="dgp-contentBoxTableDescription">[CA TABLE DESCRIPTION]</div>
+                    <div>[CA ACCENT COLORS]</div>
+                    <div class="dgp-contentBoxListHeader">[CA LIST TITLE]</div>
+                    <table class="dgp-contentTable">[CA TABLE]</table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -67,6 +67,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultDwpWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefaultMasterPagePreviewTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultMasterPagePreviewTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="DefaultMasterPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -83,6 +88,7 @@
     <Compile Include="DefinitionGenerators\Fields\GeolocationFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\OutcomeChoiceFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ListItemFieldValuesDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\MasterPagePreviewDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\MasterPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ResetRoleInheritanceDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentParserDefinitionGenerator.cs" />
@@ -213,6 +219,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultDwpWebpartTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DefaultMasterPagePreviewTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultMasterPagePreviewTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DefaultMasterPageTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultMasterPageTemplates.Designer.cs</LastGenOutput>
@@ -235,6 +245,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Apps\SPMeta2.Containers.SandboxSolutionContainer.wsp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Oslo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Seattle.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

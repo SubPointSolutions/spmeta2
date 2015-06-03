@@ -209,6 +209,7 @@
     <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
     <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
+    <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" />

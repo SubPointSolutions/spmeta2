@@ -31,6 +31,11 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithMasterPagePreviews(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
         public static ModelNode WithRootWeb(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);
