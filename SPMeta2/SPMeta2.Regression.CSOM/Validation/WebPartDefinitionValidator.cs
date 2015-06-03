@@ -250,6 +250,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.ZoneIndex, "ZoneIndex is null or empty. Skipping.");
 
                 assert.SkipProperty(m => m.Id, "Id is null or empty. Skipping.");
+
+                if (definition.ParameterBindings.Count == 0)
+                {
+                    assert.SkipProperty(m => m.ParameterBindings, "ParameterBindings is null or empty. Skipping.");
+                }
+                else
+                {
+                    // TODO
+                }
             });
         }
     }

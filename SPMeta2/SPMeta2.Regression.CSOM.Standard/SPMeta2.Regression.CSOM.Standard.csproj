@@ -99,6 +99,7 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\RefinementScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentBySearchWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ProjectSummaryWebPartDefinitionValidator.cs" />

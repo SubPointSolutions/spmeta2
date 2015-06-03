@@ -1,0 +1,42 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="StatesJson" type="string">{}</property>
+        <property name="HelpUrl" type="string" />
+        <property name="ServerIncludeScriptsJson" type="string">null</property>
+        <property name="Height" type="string" />
+        <property name="TitleUrl" type="string" />
+        <property name="SelectedRefinementControlsJson" type="string">{"refinerConfigurations":[{"propertyName":"FileType","displayName":null,"displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_Default.js","maxNumberRefinementOptions":21,"type":"Text","refinerSpecStringOverride":null,"useDefaultDateIntervals":false,"isInherited":false,"sortBy":0,"sortOrder":0,"intervals":null,"aliases":null},{"maxNumberRefinementOptions":10,"propertyName":"contentclass","type":"Text","displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_Default.js","displayName":null,"useDefaultDateIntervals":false,"aliases":null,"refinerSpecStringOverride":null,"intervals":null,"isInherited":false,"sortBy":0,"sortOrder":0},{"maxNumberRefinementOptions":15,"propertyName":"ContentTypeId","type":"Text","displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_Default.js","displayName":null,"useDefaultDateIntervals":false,"aliases":null,"refinerSpecStringOverride":null,"intervals":null,"isInherited":false,"sortBy":0,"sortOrder":0},{"maxNumberRefinementOptions":10,"propertyName":"WebTemplate","type":"Text","displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_Default.js","displayName":null,"useDefaultDateIntervals":false,"aliases":null,"refinerSpecStringOverride":null,"intervals":null,"isInherited":false,"sortBy":0,"sortOrder":0},{"maxNumberRefinementOptions":9,"propertyName":"DisplayAuthor","type":"Text","displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_Default.js","displayName":null,"useDefaultDateIntervals":false,"aliases":null,"refinerSpecStringOverride":null,"intervals":null,"isInherited":false,"sortBy":0,"sortOrder":0},{"maxNumberRefinementOptions":0,"propertyName":"LastModifiedTime","type":"DateTime","displayTemplate":"~sitecollection/_catalogs/masterpage/Display Templates/Filters/Filter_SliderBarGraph.js","displayName":null,"useDefaultDateIntervals":true,"aliases":null,"refinerSpecStringOverride":null,"intervals":null,"isInherited":false,"sortBy":0,"sortOrder":0}]}</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="RenderTemplateId" type="string" />
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="EmptyMessage" type="string" />
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="Description" type="string">This webpart helps the users to refine search results</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="HelpMode" type="helpmode">Modeless</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="Width" type="string" />
+        <property name="AlternateErrorMessage" type="string" null="true" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="Title" type="string">Refinement</property>
+        <property name="AllowClose" type="bool">True</property>
+        <property name="MissingAssembly" type="string">Cannot import this Web Part.</property>
+        <property name="UseManagedNavigationRefiners" type="bool">False</property>
+        <property name="QueryGroupName" type="string">Default</property>
+        <property name="EmitStyleReference" type="bool">True</property>
+        <property name="Direction" type="direction">NotSet</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

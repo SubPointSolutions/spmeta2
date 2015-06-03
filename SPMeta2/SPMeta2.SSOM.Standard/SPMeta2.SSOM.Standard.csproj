@@ -202,6 +202,7 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\SummaryLinkWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />
     <Compile Include="ModelHosts\TermStoreModelHost.cs" />
-    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" /> 
+    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>

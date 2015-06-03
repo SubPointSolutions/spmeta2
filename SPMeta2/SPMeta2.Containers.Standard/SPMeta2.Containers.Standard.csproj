@@ -81,6 +81,7 @@
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentBySearchWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentByQueryWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\RefinementScriptWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ProjectSummaryWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ResultScriptWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\SummaryLinkWebPartDefinitionGenerator.cs" />

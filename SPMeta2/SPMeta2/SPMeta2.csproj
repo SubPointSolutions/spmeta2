@@ -327,6 +327,7 @@
     <EmbeddedResource Include="Templates\Webparts\PageViewerWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ProjectSummaryWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\SilverlightWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\RefinementScriptWebPart.webpart" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,7 +12,7 @@ using SPMeta2.Utils;
 namespace SPMeta2.Standard.Definitions.Webparts
 {
     /// <summary>
-    /// Allows to define and deploy 'Site Feed' web part.
+    /// Allows to define and deploy 'RefinementScriptWebPart' web part.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "System.Web.UI.WebControls.WebParts.WebPart", "System.Web")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WebParts.WebPart", "Microsoft.SharePoint.Client")]
@@ -30,14 +30,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [DataMember]
         public string SelectedRefinementControlsJson { get; set; }
 
-        [DataMember]
-        public bool? UseManagedNavigationRefiners { get; set; }
 
         [DataMember]
         public string EmptyMessage { get; set; }
-
-        [DataMember]
-        public string QueryGroupName { get; set; }
 
         #endregion
 

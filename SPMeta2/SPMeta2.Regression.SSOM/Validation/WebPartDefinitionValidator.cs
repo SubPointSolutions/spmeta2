@@ -266,6 +266,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                 else
                     assert.SkipProperty(m => m.WebpartXmlTemplate, "WebpartXmlTemplate is empty. Skipping.");
 
+                if (definition.ParameterBindings.Count == 0)
+                {
+                    assert.SkipProperty(m => m.ParameterBindings, "ParameterBindings is null or empty. Skipping.");
+                }
+                else
+                {
+                    // TODO
+                }
+
             });
         }
 
