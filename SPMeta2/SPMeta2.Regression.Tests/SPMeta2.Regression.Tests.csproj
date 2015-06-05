@@ -109,6 +109,7 @@
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\SecurityGroupScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\RootWebScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyTermStoreScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyTermScenariousTest.cs" />

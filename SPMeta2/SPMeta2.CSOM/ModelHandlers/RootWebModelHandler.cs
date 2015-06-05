@@ -25,10 +25,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<RootWebDefinition>("model", value => value.RequireNotNull());
 
-            var currentObject = GetCurrentObject(siteModelHost, definition);
+            var currentObject = GetCurrentObject(modelHost, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -62,15 +61,34 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentObject.Context.ExecuteQuery();
         }
 
-        protected Web GetCurrentObject(SiteModelHost siteModelHost, RootWebDefinition definition)
+        protected Web GetCurrentObject(object modelHost, RootWebDefinition definition)
         {
-            var site = siteModelHost.HostSite;
-            var context = site.Context;
+            if (modelHost is SiteModelHost)
+            {
+                var siteModelHost = modelHost as SiteModelHost;
 
-            context.Load(site, s => s.RootWeb);
-            context.ExecuteQuery();
+                var site = siteModelHost.HostSite;
+                var context = site.Context;
 
-            return site.RootWeb;
+                context.Load(site, s => s.RootWeb);
+                context.ExecuteQuery();
+
+                return site.RootWeb;
+            }
+            else if (modelHost is WebModelHost)
+            {
+                var webModelHost = modelHost as WebModelHost;
+
+                var site = webModelHost.HostSite;
+                var context = site.Context;
+
+                context.Load(site, s => s.RootWeb);
+                context.ExecuteQuery();
+
+                return site.RootWeb;
+            }
+
+            throw new SPMeta2UnsupportedModelHostException("ModelHost should be SiteModelHost/WebModelHost");
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
