@@ -21,11 +21,11 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [ExpectAddHostExtensionMethod]
+    //[ExpectAddHostExtensionMethod]
     [Serializable]
     [DataContract]
-    [ExpectWithExtensionMethod]
-    [ExpectArrayExtensionMethod]
+    //[ExpectWithExtensionMethod]
+    //[ExpectArrayExtensionMethod]
     public class ComposedLookItemLinkDefinition : DefinitionBase
     {
         #region properties

@@ -21,6 +21,12 @@ namespace SPMeta2.Syntax.Default
             return MakeScopeCall(model, action);
         }
 
+        public static ModelNode WithFilterDisplayTemplates(this ModelNode model, Action<ModelNode> action)
+        {
+            return MakeScopeCall(model, action);
+        }
+
+
         public static ModelNode WithJavaScriptDisplayTemplates(this ModelNode model, Action<ModelNode> action)
         {
             return MakeScopeCall(model, action);

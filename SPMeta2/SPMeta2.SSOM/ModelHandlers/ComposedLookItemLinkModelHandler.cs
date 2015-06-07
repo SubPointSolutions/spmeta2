@@ -99,7 +99,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     fontFile != null && fontFile.Exists ? fontFile : null);
             }
 
-            theme.ApplyTo(web, true);
+            theme.ApplyTo(web, false);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -123,23 +123,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             return new SPFieldUrlValue(urlValue).Url;
         }
 
-        private string GetSafeSiteRelativeUrl(string siteUrl, string url)
-        {
-            if (string.IsNullOrEmpty(url))
-                return url;
 
-            var tmpUrl = url.ToUpper();
-            var tmpSiteUrl = siteUrl.ToUpper();
-
-            tmpUrl = tmpUrl.Replace(tmpSiteUrl, string.Empty);
-
-            if (tmpUrl.StartsWith("/"))
-                return tmpUrl.Remove(0, 1);
-
-            if (tmpUrl.StartsWith(@"\"))
-                return tmpUrl.Remove(0, 1);
-
-            return tmpUrl;
-        }
     }
 }

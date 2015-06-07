@@ -136,6 +136,7 @@
     <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\WebPartGalleryFileModelHandler.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
+    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
