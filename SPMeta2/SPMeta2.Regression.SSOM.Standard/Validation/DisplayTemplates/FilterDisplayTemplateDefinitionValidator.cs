@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.SharePoint;
 using SPMeta2.Containers.Assertion;
@@ -7,13 +8,12 @@ using SPMeta2.Regression.SSOM.Standard.Validation.Base;
 using SPMeta2.Regression.SSOM.Validation;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers.DisplayTemplates;
-using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 {
-    public class ControlDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
+    public class FilterDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
     {
         public override string FileExtension
         {
@@ -26,7 +26,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
             base.DeployModel(modelHost, model);
 
             var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FilterDisplayTemplateDefinition>("model", value => value.RequireNotNull());
             var folder = listModelHost.CurrentLibraryFolder;
 
             var spObject = GetCurrentObject(folder, definition);
@@ -81,6 +81,44 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 
             #endregion
 
+            if (!string.IsNullOrEmpty(definition.CompatibleManagedProperties))
+                assert.ShouldBeEqual(m => m.CompatibleManagedProperties, o => o.GetCompatibleManagedProperties());
+            else
+                assert.SkipProperty(m => m.CompatibleManagedProperties);
+
+            if (definition.CompatibleSearchDataTypes.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TargetControlTypes);
+                    var isValid = true;
+
+                    var targetControlTypeValue = new SPFieldMultiChoiceValue(d["CompatibleSearchDataTypes"].ToString());
+                    var targetControlTypeValues = new List<string>();
+
+                    for (var i = 0; i < targetControlTypeValue.Count; i++)
+                        targetControlTypeValues.Add(targetControlTypeValue[i].ToUpper());
+
+                    foreach (var v in s.TargetControlTypes)
+                    {
+                        if (!targetControlTypeValues.Contains(v.ToUpper()))
+                            isValid = false;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CompatibleSearchDataTypes, "CompatibleSearchDataTypes count is 0. Skipping");
+            }
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(m => m.Content);
@@ -105,53 +143,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.DisplayTemplates
 
         public override System.Type TargetType
         {
-            get { return typeof(ControlDisplayTemplateDefinition); }
-        }
-    }
-
-    public static class SPListItemHelper
-    {
-
-
-        public static SPFieldUrlValue GetPreviewURL(this SPListItem item)
-        {
-            if (item["HtmlDesignPreviewUrl"] != null)
-                return new SPFieldUrlValue(item["HtmlDesignPreviewUrl"].ToString());
-
-            return null;
-        }
-
-        public static SPFieldUrlValue GetCrawlerXSLFile(this SPListItem item)
-        {
-            if (item["CrawlerXSLFile"] != null)
-                return new SPFieldUrlValue(item["CrawlerXSLFile"].ToString());
-
-            return null;
-        }
-
-
-        public static bool GetHiddenTemplate(this SPListItem item)
-        {
-            var res = ConvertUtils.ToBool(item["TemplateHidden"]);
-
-            return res.HasValue ? res.Value : false;
-        }
-
-        public static string GetMasterPageDescription(this SPListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
-
-        
-
-        public static string GetManagedPropertyMapping(this SPListItem item)
-        {
-            return item["ManagedPropertyMapping"] as string;
-        }
-
-        public static string GetCompatibleManagedProperties(this SPListItem item)
-        {
-            return item["CompatibleManagedProperties"] as string;
+            get { return typeof(FilterDisplayTemplateDefinition); }
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHosts;
-using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM.Standard.Validation.Base;
@@ -11,7 +11,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
 {
-    public class ClientControlDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
+    public class FilterDisplayTemplateDefinitionValidator : ItemControlTemplateDefinitionBaseValidator
     {
         #region methods
 
@@ -22,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
-            var definition = model.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<FilterDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
             var file = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
             var spObject = file.ListItemAllFields;
@@ -37,6 +37,11 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
                                         .ShouldNotBeNull(spObject);
 
 
+
+            if (!string.IsNullOrEmpty(definition.CompatibleManagedProperties))
+                assert.ShouldBeEqual(m => m.CompatibleManagedProperties, o => o.GetCompatibleManagedProperties());
+            else
+                assert.SkipProperty(m => m.CompatibleManagedProperties);
 
             #region crawler xslt file
 
@@ -63,7 +68,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             }
             else
             {
-                assert.SkipProperty(m => m.CrawlerXSLFileURL, "CrawlerXSLFileURL is NULL. Skipping");
+                assert.SkipProperty(m => m.CrawlerXSLFileURL, "PreviewURL is NULL. Skipping");
             }
 
             if (!string.IsNullOrEmpty(definition.CrawlerXSLFileDescription))
@@ -93,24 +98,49 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             }
 
             #endregion
+
+
+            if (definition.CompatibleSearchDataTypes.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.CompatibleSearchDataTypes);
+                    var isValid = true;
+
+                    var targetValues = (d["CompatibleSearchDataTypes"] as string[])
+                                     .Select(v => v.ToUpper()).ToList();
+
+                    foreach (var v in s.CompatibleSearchDataTypes)
+                    {
+                        if (!targetValues.Contains(v.ToUpper()))
+                            isValid = false;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CompatibleSearchDataTypes, "CompatibleSearchDataTypes count is 0. Skipping");
+            }
         }
 
         #endregion
 
-        public override string FileExtension
+        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
         {
-            get { return "html"; }
-            set { }
+
         }
 
         public override System.Type TargetType
         {
-            get { return typeof(ControlDisplayTemplateDefinition); }
-        }
-
-        protected override void MapProperties(object modelHost, ListItem item, ContentPageDefinitionBase definition)
-        {
-
+            get { return typeof(FilterDisplayTemplateDefinition); }
         }
     }
 }

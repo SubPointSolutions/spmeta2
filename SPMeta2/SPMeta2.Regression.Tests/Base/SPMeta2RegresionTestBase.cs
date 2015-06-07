@@ -316,6 +316,31 @@ namespace SPMeta2.Regression.Tests.Base
                             if (prop.PropertyType == typeof(string))
                                 newValue = values[RegressionService.RndService.Int(values.Count - 1)];
                         }
+                        else if (attrs.Count(a => a is ExpectUpdateAsCompatibleSearchDataTypes) > 0)
+                        {
+                            var values = new List<string>();
+
+                            values.Add(BuiltInCompatibleSearchDataTypes.Integer);
+                            values.Add(BuiltInCompatibleSearchDataTypes.DateTime);
+                            values.Add(BuiltInCompatibleSearchDataTypes.Decimal);
+                            values.Add(BuiltInCompatibleSearchDataTypes.Text);
+                            values.Add(BuiltInCompatibleSearchDataTypes.YesNo);
+
+                            if (prop.PropertyType == typeof(string))
+                                newValue = values[RegressionService.RndService.Int(values.Count - 1)];
+
+                            if (prop.PropertyType == typeof(List<string>))
+                            {
+                                var result = new List<string>();
+                                var resultLength = RegressionService.RndService.Int(values.Count - 1);
+
+                                for (var index = 0; index < resultLength; index++)
+                                    result.Add(values[index]);
+
+                                newValue = result;
+                            }
+                        }
+
                         else if (attrs.Count(a => a is ExpectUpdateAsTargetControlType) > 0)
                         {
                             var values = new List<string>();

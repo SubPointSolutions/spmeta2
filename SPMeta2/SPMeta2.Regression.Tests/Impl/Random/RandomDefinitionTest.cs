@@ -799,6 +799,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ItemDisplayTemplateDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
+        public void CanDeployRandom_FilterDisplayTemplateDefinition()
+        {
+            TestRandomDefinition<FilterDisplayTemplateDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.MasterPageGallery")]

@@ -78,6 +78,7 @@
     <Compile Include="Validation\Base\TemplateDefinitionBaseValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPublishingPageDefinitionValidator.cs" />
+    <Compile Include="Validation\DisplayTemplates\ClientFilterDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ClientJavaScriptDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ClientItemDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\ClientControlDisplayTemplateDefinitionValidator.cs" />

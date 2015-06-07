@@ -176,6 +176,7 @@
     <Compile Include="ModelHandlers\Base\ReusableTextItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ControlDisplayTemplateModelHandler.cs" />
+    <Compile Include="ModelHandlers\DisplayTemplates\FilterDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\JavaScriptDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ItemDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\SummaryLinkFieldModelHandler.cs" />

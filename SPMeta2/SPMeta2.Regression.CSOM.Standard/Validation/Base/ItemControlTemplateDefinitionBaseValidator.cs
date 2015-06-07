@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
@@ -100,17 +101,14 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
                     var srcProp = s.GetExpressionValue(m => m.TargetControlTypes);
                     var isValid = true;
 
-                    //var targetControlTypeValue = new FieldMultiChoiceValue(d["TargetControlType"].ToString());
-                    //var targetControlTypeValues = new List<string>();
+                    var targetControlTypeValues = (d["TargetControlType"] as string[])
+                                     .Select(v => v.ToUpper()).ToList();
 
-                    //for (var i = 0; i < targetControlTypeValue.Count; i++)
-                    //    targetControlTypeValues.Add(targetControlTypeValue[i].ToUpper());
-
-                    //foreach (var v in s.TargetControlTypes)
-                    //{
-                    //    if (!targetControlTypeValues.Contains(v.ToUpper()))
-                    //        isValid = false;
-                    //}
+                    foreach (var v in s.TargetControlTypes)
+                    {
+                        if (!targetControlTypeValues.Contains(v.ToUpper()))
+                            isValid = false;
+                    }
 
                     return new PropertyValidationResult
                     {
@@ -151,7 +149,11 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
             return null;
         }
 
-
+        // 
+        public static string GetCompatibleManagedProperties(this ListItem item)
+        {
+            return item["CompatibleManagedProperties"] as string;
+        }
 
         public static string GetManagedPropertyMapping(this ListItem item)
         {
