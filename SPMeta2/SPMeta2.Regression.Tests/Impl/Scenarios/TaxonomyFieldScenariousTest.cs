@@ -13,6 +13,7 @@ using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
