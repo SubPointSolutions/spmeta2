@@ -164,14 +164,20 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (onBeforeAction != null)
                 onBeforeAction(file);
 
-            if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
-                file.UndoCheckOut();
+            // are we inside ocument libary, so that check in stuff is needed?
+            var isDocumentLibrary = list != null && list.BaseType == SPBaseType.DocumentLibrary;
 
-            if (list != null && (list.EnableMinorVersions && file.Exists && file.Level == SPFileLevel.Published))
-                file.UnPublish("Provision");
+            if (isDocumentLibrary)
+            {
+                if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
+                    file.UndoCheckOut();
 
-            if (list != null && (file.Exists && file.CheckOutType == SPFile.SPCheckOutType.None))
-                file.CheckOut();
+                if (list != null && (list.EnableMinorVersions && file.Exists && file.Level == SPFileLevel.Published))
+                    file.UnPublish("Provision");
+
+                if (list != null && (file.Exists && file.CheckOutType == SPFile.SPCheckOutType.None))
+                    file.CheckOut();
+            }
 
             SPFile newFile;
 
@@ -185,15 +191,17 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             newFile.Update();
 
-            if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
-                newFile.CheckIn("Provision");
+            if (isDocumentLibrary)
+            {
+                if (list != null && (file.Exists && file.CheckOutType != SPFile.SPCheckOutType.None))
+                    newFile.CheckIn("Provision");
 
-            if (list != null && (list.EnableMinorVersions))
-                newFile.Publish("Provision");
+                if (list != null && (list.EnableMinorVersions))
+                    newFile.Publish("Provision");
 
-            if (list != null && list.EnableModeration)
-                newFile.Approve("Provision");
-
+                if (list != null && list.EnableModeration)
+                    newFile.Approve("Provision");
+            }
         }
 
         public static void DeployModuleFile(SPFolder folder,
@@ -204,7 +212,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             Action<SPFile> beforeProvision,
             Action<SPFile> afterProvision)
         {
-            var list = folder.DocumentLibrary;
+            // doc libs
+            SPList list = folder.DocumentLibrary;
+
+            // fallback for the lists assuming deployment to Forms or other places
+            if (list == null)
+            {
+                list = folder.ParentWeb.Lists[folder.ParentListId];
+            }
 
             WithSafeFileOperation(list, folder, fileUrl, fileName, fileContent,
                 overwrite,

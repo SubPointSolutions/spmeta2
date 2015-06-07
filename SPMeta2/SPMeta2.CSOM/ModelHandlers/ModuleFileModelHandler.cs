@@ -218,28 +218,36 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var shouldRefreshLoad = false;
 
-            if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
+            // are we inside ocument libary, so that check in stuff is needed?
+            var isDocumentLibrary = list != null && list.BaseType == BaseType.DocumentLibrary;
+
+            if (isDocumentLibrary)
             {
-                file.UndoCheckOut();
-                file.RefreshLoad();
 
-                context.ExecuteQueryWithTrace();
-            }
+                if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
+                {
+                    file.UndoCheckOut();
+                    file.RefreshLoad();
 
-            if (list != null && file != null && (list.EnableMinorVersions) && (file.Exists && file.Level == FileLevel.Published))
-            {
-                file.UnPublish("Provision");
-                file.RefreshLoad();
+                    context.ExecuteQueryWithTrace();
+                }
 
-                context.ExecuteQueryWithTrace();
-            }
+                if (list != null && file != null && (list.EnableMinorVersions) &&
+                    (file.Exists && file.Level == FileLevel.Published))
+                {
+                    file.UnPublish("Provision");
+                    file.RefreshLoad();
 
-            if (list != null && file != null && (file.Exists && file.CheckOutType == CheckOutType.None))
-            {
-                file.CheckOut();
-                file.RefreshLoad();
+                    context.ExecuteQueryWithTrace();
+                }
 
-                context.ExecuteQueryWithTrace();
+                if (list != null && file != null && (file.Exists && file.CheckOutType == CheckOutType.None))
+                {
+                    file.CheckOut();
+                    file.RefreshLoad();
+
+                    context.ExecuteQueryWithTrace();
+                }
             }
 
             var spFile = action(file);
@@ -250,7 +258,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (spFile.Exists)
             {
-                spFile.ListItemAllFields.Update();
+                if (isDocumentLibrary)
+                {
+                    spFile.ListItemAllFields.Update();
+                }
+
                 context.ExecuteQueryWithTrace();
 
                 if (onCreated != null)
@@ -262,14 +274,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
-                spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
+            if (isDocumentLibrary)
+            {
+                if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
+                    spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
 
-            if (list != null && spFile != null && (list.EnableMinorVersions))
-                spFile.Publish("Provision");
+                if (list != null && spFile != null && (list.EnableMinorVersions))
+                    spFile.Publish("Provision");
 
-            if (list != null && spFile != null && (list.EnableModeration))
-                spFile.Approve("Provision");
+                if (list != null && spFile != null && (list.EnableModeration))
+                    spFile.Approve("Provision");
+            }
 
             context.ExecuteQueryWithTrace();
         }

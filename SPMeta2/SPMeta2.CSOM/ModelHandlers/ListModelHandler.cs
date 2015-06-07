@@ -89,6 +89,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     }
                     else
                     {
+                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
                         folderModelHost.CurrentListItem = null;
                     }
 

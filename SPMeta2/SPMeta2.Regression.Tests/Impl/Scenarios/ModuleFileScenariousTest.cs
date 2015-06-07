@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Syntax.Default;
+using SPMeta2.Regression.Tests.Data;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -159,11 +160,123 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Lists")]
+        public void CanDeploy_ModuleFile_ToGenericList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            TestModuleFileDeploymentToList(list);
+        }
+
+
+        private void TestModuleFileDeploymentToList(ListDefinition list)
+        {
+            var blogSite = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Collaboration.Blog;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddWeb(blogSite, blogWeb =>
+                    {
+                        blogWeb.AddList(list, rndList =>
+                        {
+                            rndList.AddModuleFile(new ModuleFileDefinition
+                            {
+                                FileName = "AllItems.aspx",
+                                Content = Encoding.Default.GetBytes(PageTemplates.CustomAllItemsPage),
+                                Overwrite = true
+                            });
+
+                            rndList.AddWelcomePage(new WelcomePageDefinition
+                            {
+                                Url = "AllItems.aspx"
+                            });
+                        });
+                    });
+
+                });
+
+            TestModels(new[] { model });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Lists")]
+        public void CanDeploy_ModuleFile_ToIssueTrackingList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.IssueTracking;
+            });
+
+            TestModuleFileDeploymentToList(list);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Blog")]
+        public void CanDeploy_ModuleFile_ToPostList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.CustomUrl = "Lists/Posts";
+
+                def.ContentTypesEnabled = false;
+
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.Posts.InternalName;
+            });
+
+            TestModuleFileDeploymentToList(list);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Blog")]
+        public void CanDeploy_ModuleFile_ToCommentsList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.CustomUrl = "Lists/Comments";
+
+                def.ContentTypesEnabled = false;
+
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.Comments.InternalName;
+            });
+
+            TestModuleFileDeploymentToList(list);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Blog")]
+        public void CanDeploy_ModuleFile_ToCategoriesList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.CustomUrl = "Lists/Categories";
+
+                def.ContentTypesEnabled = false;
+
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.Categories.InternalName;
+            });
+
+            TestModuleFileDeploymentToList(list);
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.ModuleFiles.Hosts")]
         public void CanDeploy_ModuleFile_ToLibraryFolder()
         {
             var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
             {
+                
+
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
