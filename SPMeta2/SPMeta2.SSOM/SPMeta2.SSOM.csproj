@@ -173,6 +173,7 @@
     <Compile Include="Extensions\WebPartExtensions.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
     <Compile Include="ModelHandlers\AlternateUrlModelHandler.cs" />
