@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
+using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
 
@@ -83,6 +84,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired(GroupName = "List Url")]
         [DataMember]
         [IdentityKey]
+        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use CustomUrl property specifying URL web relative URL with/wihtout 'Lists' prefix as you need.")]
         public string Url { get; set; }
 
         /// <summary>
@@ -228,4 +230,122 @@ namespace SPMeta2.Definitions
 
         #endregion
     }
+
+
+    // ListDefinitionSyntax.GetListUrl() should be OM-independent #477
+    // https://github.com/SubPointSolutions/spmeta2/issues/477
+
+    //public static class ListDefinitionExtensions
+    //{
+    //    static ListDefinitionExtensions()
+    //    {
+    //        InitKnownListTypes();
+    //    }
+
+    //    private static void InitKnownListTypes()
+    //    {
+    //        // GenericList
+    //        KnownListTypes.Add(100);
+
+    //        // Survey
+    //        KnownListTypes.Add(102);
+
+    //        // Links
+    //        KnownListTypes.Add(103);
+
+    //        // Announcements
+    //        KnownListTypes.Add(104);
+
+    //        // Contacts
+    //        KnownListTypes.Add(105);
+
+    //        // Events
+    //        KnownListTypes.Add(106);
+
+    //        // Tasks
+    //        KnownListTypes.Add(107);
+
+    //        // DiscussionBoard
+    //        KnownListTypes.Add(108);
+
+    //        // DiscussionBoard
+    //        KnownListTypes.Add(108);
+
+    //        // SolutionCatalog
+    //        KnownListTypes.Add(121);
+
+    //        // WorkflowHistory
+    //        KnownListTypes.Add(140);
+
+    //        // WorkflowHistory
+    //        KnownListTypes.Add(140);
+
+    //        // GanttTasks
+    //        KnownListTypes.Add(150);
+
+    //        // HelpLibrary
+    //        KnownListTypes.Add(151);
+
+    //        // TasksWithTimelineAndHierarchy
+    //        KnownListTypes.Add(171);
+
+    //        // MaintenanceLogs
+    //        KnownListTypes.Add(175);
+
+    //        // Meetings
+    //        KnownListTypes.Add(200);
+
+    //        // Agenda
+    //        KnownListTypes.Add(201);
+
+    //        // MeetingUser
+    //        KnownListTypes.Add(202);
+
+    //        // Decision
+    //        KnownListTypes.Add(204);
+
+    //        // MeetingObjective
+    //        KnownListTypes.Add(207);
+
+    //        // TextBox
+    //        KnownListTypes.Add(210);
+
+    //        // ThingsToBring
+    //        KnownListTypes.Add(211);
+
+    //        // ThingsToBring
+    //        KnownListTypes.Add(211);
+
+    //        // ExternalList
+    //        KnownListTypes.Add(600);
+
+    //        // IssueTracking
+    //        KnownListTypes.Add(1100);
+
+    //        // AdminTasks
+    //        KnownListTypes.Add(1200);
+    //    }
+
+    //    public static List<int> KnownListTypes = new List<int>();
+
+    //    public static string GetListUrl(this ListDefinition listDefinition)
+    //    {
+    //        // don't change CustomUrl - suppoed to be the same
+    //        if (!string.IsNullOrEmpty(listDefinition.CustomUrl))
+    //            return listDefinition.CustomUrl;
+
+    //        // OOTB SharePoint sub fodlers
+    //        if (listDefinition.Url.ToUpper().Contains("_CATALOGS"))
+    //            return listDefinition.Url;
+
+    //        if (listDefinition.Url.ToUpper().Contains("LISTS"))
+    //            return listDefinition.Url;
+
+    //        // calculate URL based on the list type
+    //        if (KnownListTypes.Contains(listDefinition.TemplateType))
+    //            return string.Format("Lists/{0}", listDefinition.Url);
+
+    //        return listDefinition.Url;
+    //    }
+    //}
 }
