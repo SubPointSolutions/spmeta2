@@ -141,12 +141,59 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void ProcessWebModuleFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            throw new SPMeta2NotImplementedException("Module provision under web folders is not implemented yet.");
+            var folder = folderHost.CurrentWebFolder;
+
+            var currentFile = folder.ParentWeb.GetFile(GetSafeFileUrl(folder, moduleFile));
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFile.Exists ? currentFile : null,
+                ObjectType = typeof(SPFile),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
+
+            if (moduleFile.Overwrite)
+            {
+                var file = folder.Files.Add(moduleFile.FileName, moduleFile.Content, moduleFile.Overwrite);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = file,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFile.Exists ? currentFile : null,
+                    ObjectType = typeof(SPFile),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+
+            folder.Update();
         }
 
         private string GetSafeFileUrl(SPFolder folder, ModuleFileDefinition moduleFile)
         {
-            return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
+            if (folder.ServerRelativeUrl != "/")
+                return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
+
+            return moduleFile.FileName;
         }
 
         public static void WithSafeFileOperation(

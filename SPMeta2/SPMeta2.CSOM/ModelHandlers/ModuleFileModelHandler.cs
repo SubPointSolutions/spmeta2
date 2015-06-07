@@ -48,7 +48,83 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void ProcessWebFolder(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            throw new NotImplementedException();
+            var web = folderHost.HostWeb;
+            var folder = folderHost.CurrentWebFolder;
+
+            var context = web.Context;
+
+            if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                context.Load(folder, f => f.ServerRelativeUrl);
+                context.ExecuteQueryWithTrace();
+            }
+
+            var currentFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+
+            context.Load(currentFile, f => f.Exists);
+            context.ExecuteQuery();
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentFile.Exists ? currentFile : null,
+                ObjectType = typeof(File),
+                ObjectDefinition = moduleFile,
+                ModelHost = folderHost
+            });
+
+            if (moduleFile.Overwrite)
+            {
+                var fileCreatingInfo = new FileCreationInformation
+                {
+                    Url = moduleFile.FileName,
+                    Overwrite = true
+                };
+
+                if (moduleFile.Content.Length < ContentStreamFileSize)
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.Content for small file less than: [{0}]", ContentStreamFileSize);
+                    fileCreatingInfo.Content = moduleFile.Content;
+                }
+                else
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
+                    fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+                }
+
+                var file = folder.Files.Add(fileCreatingInfo);
+
+                folder.Context.ExecuteQuery();
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = file,
+                    ObjectType = typeof(File),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+            else
+            {
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = currentFile.Exists ? currentFile : null,
+                    ObjectType = typeof(File),
+                    ObjectDefinition = moduleFile,
+                    ModelHost = folderHost
+                });
+            }
+
+            folder.Update();
+            folder.Context.ExecuteQueryWithTrace();
         }
 
         private void ProcessContentTypeFolder(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
@@ -295,8 +371,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (folderHost.CurrentList != null)
                 folder = folderHost.CurrentLibraryFolder;
-            if (folderHost.CurrentContentType != null)
+            else if (folderHost.CurrentContentType != null)
                 folder = folderHost.CurrentContentTypeFolder;
+            else if (folderHost.CurrentWebFolder != null)
+                folder = folderHost.CurrentWebFolder;
 
             var web = folderHost.HostWeb;
             var context = web.Context;

@@ -46,7 +46,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
-            var modelHost = modelHostContext.ModelHost;
+            var modelHost = modelHostContext.ModelHost as ModelHostBase;
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
@@ -85,7 +85,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 HostWeb = currentWeb
             };
 
-            action(tmpWebModelHost);
+            if (childModelType == typeof (ModuleFileDefinition))
+            {
+                var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, m =>
+                {
+                    m.CurrentWeb = currentWeb;
+                    m.CurrentWebFolder = currentWeb.RootFolder; ;
+                });
+
+                action(folderModelHost);
+            }
+            else
+            {
+                action(tmpWebModelHost);
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
