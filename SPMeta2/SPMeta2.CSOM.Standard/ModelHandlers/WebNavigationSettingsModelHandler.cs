@@ -136,18 +136,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? globalNavigationIncludeTypes = null;
-
-                        if (navigationModel.GlobalNavigationShowPages == false &&
-                            navigationModel.GlobalNavigationShowSubsites == false)
-                            globalNavigationIncludeTypes = 0;
-                        else if (navigationModel.GlobalNavigationShowPages == true &&
-                           navigationModel.GlobalNavigationShowSubsites == true)
-                            globalNavigationIncludeTypes = 3;
-                        else if (navigationModel.GlobalNavigationShowPages == true)
-                            globalNavigationIncludeTypes = 2;
-                        else if (navigationModel.GlobalNavigationShowSubsites == true)
-                            globalNavigationIncludeTypes = 1;
+                        int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(navigationModel);
 
                         if (globalNavigationIncludeTypes != null)
                         {
@@ -181,18 +170,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? currentNavigationIncludeTypes = null;
-
-                        if (navigationModel.CurrentNavigationShowPages == false &&
-                            navigationModel.CurrentNavigationShowSubsites == false)
-                            currentNavigationIncludeTypes = 0;
-                        else if (navigationModel.CurrentNavigationShowPages == true &&
-                           navigationModel.CurrentNavigationShowSubsites == true)
-                            currentNavigationIncludeTypes = 3;
-                        else if (navigationModel.CurrentNavigationShowPages == true)
-                            currentNavigationIncludeTypes = 2;
-                        else if (navigationModel.CurrentNavigationShowSubsites == true)
-                            currentNavigationIncludeTypes = 1;
+                        int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(navigationModel);
 
                         if (currentNavigationIncludeTypes != null)
                         {
@@ -248,6 +226,42 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 web.Update();
                 context.ExecuteQueryWithTrace();
             }
+        }
+
+        protected int? GetGlobalNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        {
+            int? currentNavigationIncludeTypes = null;
+
+            if (navigationModel.CurrentNavigationShowPages == false
+                && navigationModel.CurrentNavigationShowSubsites == false)
+                currentNavigationIncludeTypes = 0;
+            else if (navigationModel.CurrentNavigationShowPages == true
+                && navigationModel.CurrentNavigationShowSubsites == true)
+                currentNavigationIncludeTypes = 3;
+            else if (navigationModel.CurrentNavigationShowPages == true)
+                currentNavigationIncludeTypes = 2;
+            else if (navigationModel.CurrentNavigationShowSubsites == true)
+                currentNavigationIncludeTypes = 1;
+
+            return currentNavigationIncludeTypes;
+        }
+
+        protected int? GetCurrentNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        {
+            int? globalNavigationIncludeTypes = null;
+
+            if (navigationModel.GlobalNavigationShowPages == false
+                && navigationModel.GlobalNavigationShowSubsites == false)
+                globalNavigationIncludeTypes = 0;
+            else if (navigationModel.GlobalNavigationShowPages == true
+                && navigationModel.GlobalNavigationShowSubsites == true)
+                globalNavigationIncludeTypes = 3;
+            else if (navigationModel.GlobalNavigationShowPages == true)
+                globalNavigationIncludeTypes = 2;
+            else if (navigationModel.GlobalNavigationShowSubsites == true)
+                globalNavigationIncludeTypes = 1;
+
+            return globalNavigationIncludeTypes;
         }
 
         #endregion
