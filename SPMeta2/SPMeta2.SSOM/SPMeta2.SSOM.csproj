@@ -173,7 +173,7 @@
     <Compile Include="Extensions\WebPartExtensions.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
-    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
     <Compile Include="ModelHandlers\AlternateUrlModelHandler.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
-    <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />

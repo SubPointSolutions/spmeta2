@@ -788,7 +788,7 @@ namespace SPMeta2.Utils
 
                     var defPropValue = genericMethod.Invoke(null, new object[] { xmlPropValue, CultureInfo.CurrentCulture });
 
-                    defProp.SetValue(def, defPropValue);
+                    defProp.SetValue(def, defPropValue, null);
                 }
             }
 
