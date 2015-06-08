@@ -62,6 +62,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
 
         #region utils
 
+        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ListDefinition.CustomUrl property instead.")]
         public static string GetListUrl(this ListDefinition listDefinition)
         {
             if (!string.IsNullOrEmpty(listDefinition.CustomUrl))
@@ -105,7 +106,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.Decision:
                 case ListTemplateType.DocumentLibrary:
 
-                
+
                 case ListTemplateType.HealthReports:
                 case ListTemplateType.HealthRules:
                 case ListTemplateType.Holidays:
@@ -123,7 +124,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.NoCodeWorkflows:
                 case ListTemplateType.NoListTemplate:
                 case ListTemplateType.PictureLibrary:
-                
+
                 case ListTemplateType.SolutionCatalog:
                 case ListTemplateType.Survey:
                 case ListTemplateType.TextBox:
@@ -135,7 +136,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
                 case ListTemplateType.WebPartCatalog:
                 case ListTemplateType.WebTemplateCatalog:
                 case ListTemplateType.Whereabouts:
-                
+
                 case ListTemplateType.WorkflowProcess:
                 case ListTemplateType.XMLForm:
 
@@ -146,7 +147,6 @@ namespace SPMeta2.CSOM.DefaultSyntax
 
             return listDefinition.Url;
         }
-
 
         #endregion
     }

@@ -63,7 +63,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
             }
             else
             {
-                assert.SkipProperty(m => m.CrawlerXSLFileURL, "PreviewURL is NULL. Skipping");
+                assert.SkipProperty(m => m.CrawlerXSLFileURL, "CrawlerXSLFileURL is NULL. Skipping");
             }
 
             if (!string.IsNullOrEmpty(definition.CrawlerXSLFileDescription))

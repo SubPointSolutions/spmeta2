@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
@@ -22,10 +23,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<RootWebDefinition>("model", value => value.RequireNotNull());
 
-            var currentObject = GetCurrentObject(siteModelHost, definition);
+            var currentObject = GetCurrentObject(modelHost, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -58,17 +58,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentObject.Update();
         }
 
-        protected SPWeb GetCurrentObject(SiteModelHost siteModelHost, RootWebDefinition definition)
+        protected SPWeb GetCurrentObject(object modelHost, RootWebDefinition definition)
         {
-            return siteModelHost.HostSite.RootWeb;
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+            else if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.Site.RootWeb;
+
+            throw new SPMeta2UnsupportedModelHostException("ModelHost should be SiteModelHost/WebModelHost");
         }
 
         public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<RootWebDefinition>("model", value => value.RequireNotNull());
 
-            var currentObject = GetCurrentObject(siteModelHost, definition);
+            var currentObject = GetCurrentObject(modelHost, definition);
 
             action(new WebModelHost
             {

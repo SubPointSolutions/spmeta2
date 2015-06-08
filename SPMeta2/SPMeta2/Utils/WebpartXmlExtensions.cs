@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using System.Xml.Linq;
+using SPMeta2.Definitions;
 
 namespace SPMeta2.Utils
 {
@@ -13,6 +17,23 @@ namespace SPMeta2.Utils
     /// </summary>
     public static class WebpartXmlExtensions
     {
+        #region constructors
+
+        static WebpartXmlExtensions()
+        {
+            InitDefaultIgnoredProperties();
+        }
+
+        private static void InitDefaultIgnoredProperties()
+        {
+            DefaultIgnoredProperties = new List<string>
+            {
+                "ParameterBindings"
+            };
+        }
+
+        #endregion
+
         #region properties
 
         private const string WebPartNamespaceV3 = "http://schemas.microsoft.com/WebPart/v3";
@@ -644,7 +665,7 @@ namespace SPMeta2.Utils
             return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
-        
+
         public static XDocument SetTypedProperty(this XDocument webpartXmlDocument, string name, string value, string type)
         {
             webpartXmlDocument.SetOrUpdateProperty(name, value);
@@ -702,8 +723,118 @@ namespace SPMeta2.Utils
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Creates M2 definition based on web part XML
+        /// </summary>
+        /// <typeparam name="TDefinition"></typeparam>
+        /// <param name="webpartFileXml"></param>
+        /// <returns></returns>
+        public static TDefinition LoadDefinitionFromWebpartFile<TDefinition>(string webpartFileXml)
+            where TDefinition : DefinitionBase, new()
+        {
+            return LoadDefinitionFromWebpartFile<TDefinition>(webpartFileXml, null);
+        }
+
+        /// <summary>
+        /// Creates M2 definition based on web part XML
+        /// </summary>
+        /// <typeparam name="TDefinition"></typeparam>
+        /// <param name="webpartFileXml"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static TDefinition LoadDefinitionFromWebpartFile<TDefinition>(string webpartFileXml,
+            Action<TDefinition> action)
+            where TDefinition : DefinitionBase, new()
+        {
+            return LoadDefinitionFromWebpartFile<TDefinition>(webpartFileXml, DefaultIgnoredProperties, null);
+        }
+
+        public static List<string> DefaultIgnoredProperties { get; set; }
+
+        /// <summary>
+        /// Creates M2 definition based on web part XML
+        /// </summary>
+        /// <typeparam name="TDefinition"></typeparam>
+        /// <param name="webpartFileXml"></param>
+        /// <param name="ignoredProperties">Names of the properties to be removed form the import.</param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static TDefinition LoadDefinitionFromWebpartFile<TDefinition>(string webpartFileXml,
+            IEnumerable<string> ignoredProperties,
+            Action<TDefinition> action)
+             where TDefinition : DefinitionBase, new()
+        {
+            var def = new TDefinition();
+            var wpXml = LoadWebpartXmlDocument(webpartFileXml);
+
+            var excludedProperties = ignoredProperties.ToList();
+
+            var defProps = def.GetType().GetProperties();
+
+            foreach (var defProp in defProps)
+            {
+                if (excludedProperties.Any(p => string.Equals(p, defProp.Name, StringComparison.CurrentCultureIgnoreCase)))
+                    continue;
+
+                var xmlPropValue = wpXml.GetProperty(defProp.Name);
+
+                if (!string.IsNullOrEmpty(xmlPropValue))
+                {
+                    var method = typeof(WebpartXmlExtensions).GetMethod("CustomChangeType",
+                        BindingFlags.NonPublic | BindingFlags.Static);
+                    var genericMethod = method.MakeGenericMethod(defProp.PropertyType);
+
+
+                    var defPropValue = genericMethod.Invoke(null, new object[] { xmlPropValue, CultureInfo.CurrentCulture });
+
+                    defProp.SetValue(def, defPropValue);
+                }
+            }
+
+            if (action != null)
+                action(def);
+
+            return def;
+        }
+
+        internal static T CustomChangeType<T>(object value, CultureInfo cultureInfo)
+        {
+            var toType = typeof(T);
+
+            if (value == null) return default(T);
+
+            if (value is string)
+            {
+                if (toType == typeof(Guid) || toType == typeof(Guid?))
+                {
+                    return CustomChangeType<T>(new Guid(Convert.ToString(value, cultureInfo)), cultureInfo);
+                }
+                if ((string)value == string.Empty && toType != typeof(string))
+                {
+                    return CustomChangeType<T>(null, cultureInfo);
+                }
+            }
+            else
+            {
+                if (typeof(T) == typeof(string))
+                {
+                    return CustomChangeType<T>(Convert.ToString(value, cultureInfo), cultureInfo);
+                }
+            }
+
+            if (toType.IsGenericType &&
+                toType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                toType = Nullable.GetUnderlyingType(toType); ;
+            }
+
+            bool canConvert = toType is IConvertible || (toType.IsValueType && !toType.IsEnum);
+            if (canConvert)
+            {
+                return (T)Convert.ChangeType(value, toType, cultureInfo);
+            }
+            return (T)value;
+        }
     }
-
-
-
 }

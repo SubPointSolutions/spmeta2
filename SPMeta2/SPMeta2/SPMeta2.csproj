@@ -116,6 +116,7 @@
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
     <Compile Include="Definitions\ComposedLookItemDefinition.cs" />
+    <Compile Include="Definitions\ComposedLookItemLinkDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\DeleteWebPartsDefinition.cs" />
     <Compile Include="Definitions\Fields\DependentLookupFieldDefinition.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
+    <Compile Include="Enumerations\BuiltInComposedLookItemNames.cs" />
     <Compile Include="Enumerations\BuiltInContentTypeNames.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFriendlyFormatType.cs" />
     <Compile Include="Enumerations\BuiltInDateTimeFieldFormatType.cs" />
@@ -293,6 +295,7 @@
     <Compile Include="Services\TraceServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />

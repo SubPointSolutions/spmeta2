@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Validation\ComposedLookItemLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ComposedLookItemDefinitionValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceFactory.cs" />

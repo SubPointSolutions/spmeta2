@@ -86,10 +86,24 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             using (var currentWeb = GetOrCreateWeb(parentWeb, webDefinition, false))
             {
-                action(new WebModelHost
+                if (childModelType == typeof(ModuleFileDefinition))
                 {
-                    HostWeb = currentWeb
-                });
+                    var folderModelHost = new FolderModelHost
+                    {
+                        CurrentWeb = currentWeb,
+                        CurrentWebFolder = currentWeb.RootFolder,
+                    };
+
+                    action(folderModelHost);
+                }
+                else
+                {
+                    action(new WebModelHost
+                    {
+                        HostWeb = currentWeb
+                    });
+
+                }
 
                 currentWeb.Update();
             }

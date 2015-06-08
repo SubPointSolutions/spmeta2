@@ -71,6 +71,11 @@
   <ItemGroup>
     <Compile Include="Base\ListViewWebPartScenariosTestBase.cs" />
     <Compile Include="Consts\RegWebparts.cs" />
+    <Compile Include="Data\PageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\SecurityGroupScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\RootWebScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyTermStoreScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyTermScenariousTest.cs" />
@@ -318,8 +324,13 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\CustomAllItemsPage.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Data\PageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templates\Webparts\v2\News Feed.dwp" />
     <EmbeddedResource Include="Templates\Webparts\v3\Team Tasks.webpart" />
   </ItemGroup>

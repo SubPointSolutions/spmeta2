@@ -100,12 +100,14 @@
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
+    <Compile Include="Definitions\DisplayTemplates\FilterDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\ManagedPropertyDefinition.cs" />
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
     <Compile Include="Definitions\Webparts\ProjectSummaryWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
+    <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
     <Compile Include="Syntax\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
     <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
+    <Compile Include="Syntax\FilterDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\RefinementScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\ManagedPropertyDefinitionSyntax.cs" />
     <Compile Include="Syntax\ReusableItemDefinitionSyntax.cs" />

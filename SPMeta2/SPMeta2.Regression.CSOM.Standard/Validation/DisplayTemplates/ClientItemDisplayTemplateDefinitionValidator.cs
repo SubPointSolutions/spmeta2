@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.ModelHosts;
@@ -39,6 +40,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
                 assert.ShouldBeEqual(m => m.ManagedPropertyMappings, o => o.GetManagedPropertyMapping());
             else
                 assert.SkipProperty(m => m.ManagedPropertyMappings, "ManagedPropertyMappings is null or empty Skipping.");
+
+           
         }
 
         #endregion

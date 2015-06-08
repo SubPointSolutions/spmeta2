@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComposedLookItemLinkDefinitionSyntax.cs" />
     <Compile Include="ComposedLookItemDefinitionSyntax.cs" />
     <Compile Include="MasterPagePreviewDefinitionSyntax.cs" />
     <Compile Include="SilverlightWebPartDefinitionSyntax.cs" />

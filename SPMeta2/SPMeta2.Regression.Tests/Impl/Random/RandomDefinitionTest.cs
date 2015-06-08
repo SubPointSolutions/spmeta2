@@ -799,6 +799,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ItemDisplayTemplateDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.MasterPageGallery")]
+        public void CanDeployRandom_FilterDisplayTemplateDefinition()
+        {
+            TestRandomDefinition<FilterDisplayTemplateDefinition>();
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.MasterPageGallery")]
@@ -1145,6 +1152,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_ComposedLookItemDefinition()
         {
             TestRandomDefinition<ComposedLookItemDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.ComposedLooks")]
+        public void CanDeployRandom_ComposedLookItemLinkDefinition()
+        {
+            TestRandomDefinition<ComposedLookItemLinkDefinition>();
         }
 
         #endregion

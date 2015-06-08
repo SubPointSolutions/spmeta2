@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint;
+﻿using System;
+using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
@@ -43,6 +44,7 @@ namespace SPMeta2.SSOM.DefaultSyntax
 
         #region utils
 
+        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ListDefinition.CustomUrl property instead.")]
         public static string GetListUrl(this ListDefinition listDefinition)
         {
             if (!string.IsNullOrEmpty(listDefinition.CustomUrl))

@@ -470,6 +470,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
 
+                // special handle for taxonomy field
+                // incorectly removed tax field leaves its indexed field
+                // https://github.com/SubPointSolutions/spmeta2/issues/521
+
+                HandleIncorectlyDeletedTaxonomyField(fieldModel, fieldCollection);
+
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
                 var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
@@ -486,6 +492,38 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return currentField;
             }
         }
+
+        private void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel, FieldCollection fields)
+        {
+            var context = fields.Context;
+
+            var isTaxField =
+                  fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
+                  || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
+
+            if (!isTaxField)
+                return;
+
+            var existingIndexedFieldName = fieldModel.Title + "_0";
+            var query = from field in fields
+                        where field.Title == existingIndexedFieldName
+                        select field;
+
+
+            var result = context.LoadQuery(query);
+            context.ExecuteQuery();
+
+            if (result.Count() > 0)
+            {
+                var existingIndexedField = result.FirstOrDefault();
+                if (existingIndexedField != null && existingIndexedField.FieldTypeKind == FieldType.Note)
+                {
+                    existingIndexedField.DeleteObject();
+                    context.ExecuteQuery();
+                }
+            }
+        }
+
 
         protected Field FindExistingListField(List list, FieldDefinition fieldModel)
         {

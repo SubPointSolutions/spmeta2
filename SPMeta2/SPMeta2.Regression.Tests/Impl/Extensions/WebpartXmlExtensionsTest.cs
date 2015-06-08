@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions.Webparts;
 using SPMeta2.Regression.Tests.Consts;
 using SPMeta2.Regression.Tests.Utils;
+using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Extensions
@@ -35,10 +37,34 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         #endregion
 
+        #region loading API
+
+        [TestMethod]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        public void LoadDefinitionFromV2WebpartFile()
+        {
+            var webpartXml = ResourceReaderUtils.ReadFromResourceName(GetType().Assembly, RegWebparts.V2.NewsFeed);
+
+            var def = WebpartXmlExtensions.LoadDefinitionFromWebpartFile<SiteFeedWebPartDefinition>(webpartXml);
+            Assert.IsNotNull(def);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        public void LoadDefinitionFromV3WebpartFile()
+        {
+            var webpartXml = ResourceReaderUtils.ReadFromResourceName(GetType().Assembly, RegWebparts.V3.TeamTasks);
+
+            var def = WebpartXmlExtensions.LoadDefinitionFromWebpartFile<XsltListViewWebPartDefinition>(webpartXml);
+            Assert.IsNotNull(def);
+        }
+
+        #endregion
+
         #region base tests
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanLoadWebpartDefinitionV2()
         {
             var def = WebpartXmlExtensions
@@ -48,7 +74,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanLoadWebpartDefinitionV3()
         {
             var def = WebpartXmlExtensions
@@ -57,7 +83,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetV2PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -76,7 +102,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetV3PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -95,7 +121,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetV2CDataProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -114,7 +140,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetCDataV3PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -137,7 +163,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         #region content editor tests
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetContentEditor_PlainProperty()
         {
             var propName = "ContentLink";
@@ -156,7 +182,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         }
 
         [TestMethod]
-        [TestCategory("Regression.Extensions")]
+        [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
         public void CanSetContentEditor_CDataProperty()
         {
             var propName = "Content";
