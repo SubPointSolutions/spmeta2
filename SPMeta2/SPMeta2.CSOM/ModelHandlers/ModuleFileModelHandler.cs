@@ -275,6 +275,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.Load(list, l => l.EnableMinorVersions);
             context.Load(list, l => l.EnableModeration);
+            context.Load(list, l => l.BaseType);
+
             context.ExecuteQueryWithTrace();
 
             if (file != null)

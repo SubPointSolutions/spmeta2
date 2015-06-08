@@ -27,9 +27,11 @@ namespace SPMeta2.Definitions.Webparts
         #region properties
 
         [DataMember]
+        [ExpectValidation]
         public string Url { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public string CustomInitParameters { get; set; }
 
         #endregion

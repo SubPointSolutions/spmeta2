@@ -42,6 +42,61 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEqual(m => m.Title, o => o.GetTitle())
                 .ShouldBeEqual(m => m.FileName, o => o.GetFileName());
 
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Content);
+                //var dstProp = d.GetExpressionValue(ct => ct.GetId());
+
+                var isContentValid = false;
+
+                byte[] dstContent = null;
+
+                using (var stream = File.OpenBinaryDirect(folderModelHost.HostClientContext, spFile.ServerRelativeUrl).Stream)
+                    dstContent = ModuleFileUtils.ReadFully(stream);
+
+                isContentValid = dstContent.SequenceEqual(definition.Content);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isContentValid
+                };
+            });
+
+            if (definition.UIVersion.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.UIVersion);
+                    var dstPropValue = d.GetUIVersion();
+
+                    var isValid = true;
+
+                    foreach (var v in s.UIVersion)
+                    {
+                        if (!dstPropValue.Contains(v))
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(d => d.UIVersion, "UIVersion.Count is 0. Skipping");
+            }
+
             #endregion
         }
 

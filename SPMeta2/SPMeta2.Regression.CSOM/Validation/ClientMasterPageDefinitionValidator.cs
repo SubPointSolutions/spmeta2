@@ -110,8 +110,6 @@ namespace SPMeta2.Regression.CSOM.Validation
 
     public static class SPListItemHelper
     {
-
-
         public static List<string> GetUIVersion(this ListItem item)
         {
             var result = new List<string>();

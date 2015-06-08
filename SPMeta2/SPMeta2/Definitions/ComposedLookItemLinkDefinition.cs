@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -31,6 +32,7 @@ namespace SPMeta2.Definitions
         #region properties
 
         [DataMember]
+        [IdentityKey]
         public string ComposedLookItemName { get; set; }
 
         #endregion

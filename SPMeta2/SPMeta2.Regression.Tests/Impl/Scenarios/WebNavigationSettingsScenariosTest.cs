@@ -76,6 +76,48 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(siteModel, webModel);
         }
 
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
+        public void CanDeploy_WebNavigationSettings_As_PortalProvider_OnSubWeb()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(subweb =>
+                {
+                    subweb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subweb.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
+                    {
+                        GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                        GlobalNavigationShowSubsites = true,
+                        GlobalNavigationShowPages = true,
+
+                        CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                        CurrentNavigationShowSubsites = true,
+                        CurrentNavigationShowPages = true
+                    });
+
+                });
+
+               
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.WebNavigationSettings")]
         public void CanDeploy_WebNavigationSettings_As_TaxonomyProvider()

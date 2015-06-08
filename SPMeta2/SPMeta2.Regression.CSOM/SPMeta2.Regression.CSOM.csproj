@@ -153,7 +153,7 @@
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientListViewWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\PageViewerWebPartDefinitionValidator.cs" />
-    <Compile Include="Validation\Webparts\SilverlightWebParttDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\SilverlightWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ScriptEditorWebParttDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientXsltListViewWebPartDefinitionValidator.cs" />

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -55,6 +56,7 @@ namespace SPMeta2.Standard.Definitions
         public List<ManagedPropertyMappping> Mappings { get; set; }
 
         [DataMember]
+        [IdentityKey]
         public string Name { get; set; }
 
         [DataMember]

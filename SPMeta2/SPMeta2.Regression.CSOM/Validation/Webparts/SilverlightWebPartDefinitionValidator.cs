@@ -9,7 +9,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
 {
-    public class SilverlightWebParttDefinitionValidator : WebPartDefinitionValidator
+    public class SilverlightWebPartDefinitionValidator : WebPartDefinitionValidator
     {
         public override Type TargetType
         {
@@ -22,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
 
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<ScriptEditorWebPartDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<SilverlightWebPartDefinition>("model", value => value.RequireNotNull());
 
             var pageItem = listItemModelHost.HostListItem;
 
