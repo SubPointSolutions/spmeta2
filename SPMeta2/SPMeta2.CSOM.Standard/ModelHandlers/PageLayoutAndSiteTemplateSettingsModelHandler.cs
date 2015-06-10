@@ -226,7 +226,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             xmlAttribute.Value = pageLayout[BuiltInInternalFieldNames.UniqueId].ToString();
 
             var xmlAttribute2 = xmlDocument.CreateAttribute("url");
-            xmlAttribute2.Value = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+            // remove starting slash
+            // https://github.com/SubPointSolutions/spmeta2/issues/544
+            var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+            xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 
             xmlNode.Attributes.SetNamedItem(xmlAttribute);
             xmlNode.Attributes.SetNamedItem(xmlAttribute2);
@@ -248,7 +253,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 xmlAttribute.Value = pageLayout[BuiltInInternalFieldNames.UniqueId].ToString();
 
                 var xmlAttribute2 = xmlDocument.CreateAttribute("url");
-                xmlAttribute2.Value = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+                // remove starting slash
+                // https://github.com/SubPointSolutions/spmeta2/issues/544
+                var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+                xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 
                 xmlNode.Attributes.SetNamedItem(xmlAttribute);
                 xmlNode.Attributes.SetNamedItem(xmlAttribute2);
