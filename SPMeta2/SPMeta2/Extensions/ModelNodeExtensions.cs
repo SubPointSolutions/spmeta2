@@ -4,6 +4,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace SPMeta2.Extensions
@@ -108,6 +109,65 @@ namespace SPMeta2.Extensions
 
             return model;
         }
+
+        #endregion
+
+        #region import
+
+        /// <summary>
+        /// Imports all definitions from the static class fields / props.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="classType"></param>
+        public static ModelNode AddDefinitionsFromStaticClassType<TType>(this ModelNode node)
+        {
+            return AddDefinitionsFromStaticClassType(node, typeof(TType));
+        }
+
+        /// <summary>
+        /// Imports all definitions from the static class fields.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="classType"></param>
+        public static ModelNode AddDefinitionsFromStaticClassType(this ModelNode node, Type classType)
+        {
+            foreach (var field in classType.GetFields(BindingFlags.Public | BindingFlags.Static))
+            {
+                var definition = field.GetValue(null) as DefinitionBase;
+
+                if (definition != null)
+                    node.CreateDefinitionNode(definition);
+            }
+
+            foreach (var prop in classType.GetProperties(BindingFlags.Public | BindingFlags.Static))
+            {
+                var definition = prop.GetValue(null, null) as DefinitionBase;
+
+                if (definition != null)
+                    node.CreateDefinitionNode(definition);
+            }
+
+            return node;
+        }
+
+        internal static ModelNode CreateDefinitionNode(this ModelNode node, DefinitionBase definition)
+        {
+            return CreateDefinitionNode(node, definition, null);
+        }
+
+        internal static ModelNode CreateDefinitionNode(this ModelNode node, DefinitionBase definition,
+             Action<ModelNode> action)
+        {
+            var modelNode = new ModelNode { Value = definition };
+
+            node.ChildModels.Add(modelNode);
+
+            if (action != null)
+                action(modelNode);
+
+            return node;
+        }
+
 
         #endregion
     }
