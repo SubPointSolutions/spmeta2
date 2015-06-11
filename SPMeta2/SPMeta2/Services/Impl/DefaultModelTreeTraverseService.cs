@@ -5,6 +5,7 @@ using System.Text;
 
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
 
@@ -38,80 +39,90 @@ namespace SPMeta2.Services.Impl
 
         public override void Traverse(object modelHost, ModelNode modelNode)
         {
-            var modelDefinition = modelNode.Value as DefinitionBase;
-            var modelHandler = OnModelHandlerResolve(modelNode);
-
-            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessing for model: [{0}].", modelNode);
-
-            if (OnModelFullyProcessing != null)
-                OnModelFullyProcessing(modelNode);
-
-            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessing for model: [{0}].", modelNode);
-
-            if (OnModelProcessing != null)
-                OnModelProcessing(modelNode);
-
-            var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
-
-            TraceService.InformationFormat((int)LogEventId.ModelProcessing, "Deploying model [{0}] RSP: [{1}] : [{2}].",
-                new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
-
-            if (requireselfProcessing)
+            try
             {
-                modelHandler.DeployModel(modelHost, modelNode.Value);
-            }
+                var modelDefinition = modelNode.Value as DefinitionBase;
+                var modelHandler = OnModelHandlerResolve(modelNode);
 
-            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessed for model: [{0}].", modelNode);
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessing for model: [{0}].", modelNode);
 
-            if (OnModelProcessed != null)
-                OnModelProcessed(modelNode);
+                if (OnModelFullyProcessing != null)
+                    OnModelFullyProcessing(modelNode);
 
-            var childModelTypes = GetSortedChildModelTypes(modelNode);
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessing for model: [{0}].", modelNode);
 
-            foreach (var childModelType in childModelTypes)
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Starting processing child models of type: [{0}].", new object[] { childModelType.Key });
+                if (OnModelProcessing != null)
+                    OnModelProcessing(modelNode);
 
-                var childModels = modelNode.GetChildModels(childModelType.Key).ToList();
-                ModelWeighService.SortChildModelNodes(modelNode, childModels);
+                var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Found [{0}] models of type: [{1}].", new object[] { childModels.Count(), childModelType.Key });
+                TraceService.InformationFormat((int)LogEventId.ModelProcessing, "Deploying model [{0}] RSP: [{1}] : [{2}].",
+                    new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessing of type: [{0}].", new object[] { childModelType.Key });
-
-                if (OnChildModelsProcessing != null)
-                    OnChildModelsProcessing(modelNode, childModelType.Key, childModels);
-
-                foreach (var childModel in childModels)
+                if (requireselfProcessing)
                 {
-                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Starting resolving model host of type: [{0}].", new object[] { childModelType.Key });
-
-                    modelHandler.WithResolvingModelHost(new ModelHostResolveContext
-                    {
-                        ModelHost = modelHost,
-                        Model = modelDefinition,
-                        ChildModelType = childModelType.Key,
-                        ModelNode = modelNode,
-                        Action = childModelHost =>
-                        {
-                            Traverse(childModelHost, childModel);
-                        }
-                    });
-
-                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing resolving model host of type: [{0}].", new object[] { childModelType.Key });
+                    modelHandler.DeployModel(modelHost, modelNode.Value);
                 }
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessed of type: [{0}].", new object[] { childModelType.Key });
-                if (OnChildModelsProcessed != null)
-                    OnChildModelsProcessed(modelNode, childModelType.Key, childModels);
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessed for model: [{0}].", modelNode);
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing processing child models of type: [{0}].", new object[] { childModelType.Key });
+                if (OnModelProcessed != null)
+                    OnModelProcessed(modelNode);
+
+                var childModelTypes = GetSortedChildModelTypes(modelNode);
+
+                foreach (var childModelType in childModelTypes)
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Starting processing child models of type: [{0}].", new object[] { childModelType.Key });
+
+                    var childModels = modelNode.GetChildModels(childModelType.Key).ToList();
+                    ModelWeighService.SortChildModelNodes(modelNode, childModels);
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Found [{0}] models of type: [{1}].", new object[] { childModels.Count(), childModelType.Key });
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessing of type: [{0}].", new object[] { childModelType.Key });
+
+                    if (OnChildModelsProcessing != null)
+                        OnChildModelsProcessing(modelNode, childModelType.Key, childModels);
+
+                    foreach (var childModel in childModels)
+                    {
+                        TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Starting resolving model host of type: [{0}].", new object[] { childModelType.Key });
+
+                        modelHandler.WithResolvingModelHost(new ModelHostResolveContext
+                        {
+                            ModelHost = modelHost,
+                            Model = modelDefinition,
+                            ChildModelType = childModelType.Key,
+                            ModelNode = modelNode,
+                            Action = childModelHost =>
+                            {
+                                Traverse(childModelHost, childModel);
+                            }
+                        });
+
+                        TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing resolving model host of type: [{0}].", new object[] { childModelType.Key });
+                    }
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnChildModelsProcessed of type: [{0}].", new object[] { childModelType.Key });
+                    if (OnChildModelsProcessed != null)
+                        OnChildModelsProcessed(modelNode, childModelType.Key, childModels);
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Finishing processing child models of type: [{0}].", new object[] { childModelType.Key });
+                }
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessed for model: [{0}].", modelNode);
+
+                if (OnModelFullyProcessed != null)
+                    OnModelFullyProcessed(modelNode);
             }
-
-            TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelFullyProcessed for model: [{0}].", modelNode);
-
-            if (OnModelFullyProcessed != null)
-                OnModelFullyProcessed(modelNode);
+            catch (Exception e)
+            {
+                throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
+                {
+                    ModelNode = modelNode,
+                };
+            }
         }
 
         #endregion
