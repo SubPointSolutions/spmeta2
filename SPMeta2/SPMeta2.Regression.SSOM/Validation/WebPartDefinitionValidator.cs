@@ -68,7 +68,9 @@ namespace SPMeta2.Regression.SSOM.Validation
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(m => m.ChromeType);
-                        var srcValue = (PartChromeType)Enum.Parse(typeof(PartChromeType), s.ChromeType);
+                        var chromeType = WebPartChromeTypesConvertService.NormilizeValueToPartChromeTypes(s.ChromeType);
+                       
+                        var srcValue = (PartChromeType)Enum.Parse(typeof(PartChromeType), chromeType);
                         var isValid = srcValue == d.ChromeType;
 
                         return new PropertyValidationResult

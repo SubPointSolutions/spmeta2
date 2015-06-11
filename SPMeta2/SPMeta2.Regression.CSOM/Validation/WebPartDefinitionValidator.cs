@@ -106,12 +106,20 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.ChromeType))
                 {
+                    // returns correct one depending on the V2/V3
                     var value = CurrentWebPartXml.GetChromeType();
+
+                    var chromeType = string.Empty;
+
+                    if (CurrentWebPartXml.IsV3version())
+                        chromeType = WebPartChromeTypesConvertService.NormilizeValueToPartChromeTypes(definition.ChromeType);
+                    else if (CurrentWebPartXml.IsV2version())
+                        chromeType = WebPartChromeTypesConvertService.NormilizeValueToFrameTypes(definition.ChromeType);
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(m => m.ChromeType);
-                        var isValid = definition.ChromeType == value;
+                        var isValid = chromeType == value;
 
                         return new PropertyValidationResult
                         {

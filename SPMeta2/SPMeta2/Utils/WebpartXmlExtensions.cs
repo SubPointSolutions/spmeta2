@@ -384,7 +384,7 @@ namespace SPMeta2.Utils
 
         #region version routines
 
-        private static bool IsV3version(this XDocument webpartXmlDocument)
+        public static bool IsV3version(this XDocument webpartXmlDocument)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}WebPart").FirstOrDefault();
 
@@ -394,7 +394,7 @@ namespace SPMeta2.Utils
             return webPartNode != null;
         }
 
-        private static bool IsV2version(this XDocument webpartXmlDocument)
+        public static bool IsV2version(this XDocument webpartXmlDocument)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
 

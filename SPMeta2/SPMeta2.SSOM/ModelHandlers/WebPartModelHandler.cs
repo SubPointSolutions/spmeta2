@@ -24,6 +24,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 {
     public class WebPartModelHandler : SSOMModelHandlerBase
     {
+        #region constructors
+
+        public WebPartModelHandler()
+        {
+            WebPartChromeTypesConvertService = ServiceContainer.Instance.GetService<WebPartChromeTypesConvertService>();
+        }
+
+        #endregion
+
         #region properties
 
         private const string WebPartPageCmdTemplate =
@@ -46,6 +55,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             get { return typeof(WebPartDefinition); }
         }
+        protected WebPartChromeTypesConvertService WebPartChromeTypesConvertService { get; set; }
 
         protected virtual void ProcessWebpartProperties(WebPart instance, WebPartDefinition definition)
         {
@@ -59,7 +69,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 instance.ChromeState = (PartChromeState)Enum.Parse(typeof(PartChromeState), definition.ChromeState);
 
             if (!string.IsNullOrEmpty(definition.ChromeType))
-                instance.ChromeType = (PartChromeType)Enum.Parse(typeof(PartChromeType), definition.ChromeType);
+            {
+                var chromeType = WebPartChromeTypesConvertService.NormilizeValueToPartChromeTypes(definition.ChromeType);
+                instance.ChromeType = (PartChromeType)Enum.Parse(typeof(PartChromeType), chromeType);
+            }
 
             if (!string.IsNullOrEmpty(definition.ImportErrorMessage))
                 instance.ImportErrorMessage = definition.ImportErrorMessage;

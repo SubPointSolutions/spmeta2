@@ -66,6 +66,78 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+
+        #region v2-v3 chrome
+
+        private static List<string> PartChromeTypes = new List<string>
+        {
+            "Default",
+            "TitleAndBorder",
+            "None",
+            "TitleOnly",
+            "BorderOnly"
+        };
+
+        private static List<string> FrameTypes = new List<string>
+        {
+           "None",
+		   "Standard",
+		   "TitleBarOnly",
+		   "Default",
+		   "BorderOnly"
+        };
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ChromeType")]
+        public void CanDeploy_Random_V2_Webpart_WithAllChrome()
+        {
+            var allValues = new List<string>();
+
+            allValues.AddRange(PartChromeTypes);
+            allValues.AddRange(FrameTypes);
+
+            foreach (var chromeType in allValues)
+            {
+                var type = chromeType;
+
+                TestRandomDefinition<WebPartDefinition>(def =>
+                {
+                    def.ChromeType = type;
+
+                    def.WebpartFileName = string.Empty;
+                    def.WebpartType = string.Empty;
+                    def.WebpartXmlTemplate = BuiltInWebPartTemplates.ContentEditorWebPart;
+                });
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ChromeType")]
+        public void CanDeploy_Random_V3_Webpart_WithAllChrome()
+        {
+            var allValues = new List<string>();
+
+            allValues.AddRange(PartChromeTypes);
+            allValues.AddRange(FrameTypes);
+
+            foreach (var chromeType in allValues)
+            {
+                var type = chromeType;
+
+                TestRandomDefinition<WebPartDefinition>(def =>
+                {
+                    def.ChromeType = type;
+
+                    def.WebpartFileName = string.Empty;
+                    def.WebpartType = string.Empty;
+                    def.WebpartXmlTemplate = BuiltInWebPartTemplates.ScriptEditorWebPart;
+                });
+            }
+        }
+
+        #endregion
+
+
         #region default
 
         [TestMethod]

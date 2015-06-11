@@ -28,7 +28,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 {
     public class WebPartModelHandler : CSOMModelHandlerBase
     {
+        #region contructors
+
+        public WebPartModelHandler()
+        {
+            WebPartChromeTypesConvertService = ServiceContainer.Instance.GetService<WebPartChromeTypesConvertService>();
+        }
+
+        #endregion
+
         #region properties
+
+        protected WebPartChromeTypesConvertService WebPartChromeTypesConvertService { get; set; }
 
         public override Type TargetType
         {
@@ -239,7 +250,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 xml.SetChromeState(definition.ChromeState);
 
             if (!string.IsNullOrEmpty(definition.ChromeType))
-                xml.SetChromeType(definition.ChromeType);
+            {
+                var chromeType = string.Empty;
+
+                if (xml.IsV3version())
+                    chromeType = WebPartChromeTypesConvertService.NormilizeValueToPartChromeTypes(definition.ChromeType);
+                else if (xml.IsV2version())
+                    chromeType = WebPartChromeTypesConvertService.NormilizeValueToFrameTypes(definition.ChromeType);
+
+                // SetChromeType() sets correct XML props depending on V2/V3 web part XML
+                xml.SetChromeType(chromeType);
+            }
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);

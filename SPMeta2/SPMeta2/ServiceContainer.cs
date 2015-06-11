@@ -34,6 +34,8 @@ namespace SPMeta2
 
             RegisterService(typeof(DefaultJSONSerializationService), new DefaultJSONSerializationService());
             RegisterService(typeof(DefaultXMLSerializationService), new DefaultXMLSerializationService());
+
+            RegisterService(typeof(WebPartChromeTypesConvertService), new DefaultWebPartChromeTypesConvertService());
         }
 
         #endregion
