@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
@@ -117,6 +118,129 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 {
                     list.AddListFieldLink(dependentIdLookupField);
                     list.AddListFieldLink(dependentTitleLookupField);
+
+                    list.AddListView(new ListViewDefinition
+                    {
+                        Title = "Test View",
+                        Fields = new Collection<string>
+                        {
+                            BuiltInInternalFieldNames.Edit,
+                            BuiltInInternalFieldNames.ID,
+                            BuiltInInternalFieldNames.Title,
+                            lookupField.InternalName,
+                            dependentIdLookupField.InternalName,
+                            dependentTitleLookupField.InternalName
+                        },
+                        IsDefault = true
+                    });
+                });
+            });
+
+            TestModel(depWebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
+        public void CanDeploy_DependentLookupField_OnContentType()
+        {
+            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.ShowInNewForm = true;
+                def.ShowInDisplayForm = true;
+                def.ShowInEditForm = true;
+                def.ShowInListSettings = true;
+                def.ShowInViewForms = true;
+
+                def.Hidden = false;
+                def.Required = false;
+                def.AllowMultipleValues = false;
+            });
+
+            var contentTypeWithDepLookup = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.Hidden = false;
+            });
+
+            var dependentIdLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+                def =>
+                {
+                    def.LookupField = BuiltInInternalFieldNames.ID;
+                    def.PrimaryLookupFieldId = lookupField.Id;
+                });
+
+            var dependentTitleLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+                def =>
+                {
+                    def.LookupField = BuiltInInternalFieldNames.Title;
+                    def.PrimaryLookupFieldId = lookupField.Id;
+                });
+
+            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var childList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(list =>
+            {
+                list.ContentTypesEnabled = true;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddLookupField(lookupField);
+
+                site.AddDependentLookupField(dependentIdLookupField);
+                site.AddDependentLookupField(dependentTitleLookupField);
+
+                site.AddContentType(contentTypeWithDepLookup, contentType =>
+                {
+                    contentType
+                        .AddContentTypeFieldLink(lookupField)
+                        .AddContentTypeFieldLink(dependentIdLookupField)
+                        .AddContentTypeFieldLink(dependentTitleLookupField);
+                });
+            });
+
+            TestModel(siteModel);
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(masterList, list =>
+                {
+                    for (var i = 0; i < 10; i++)
+                    {
+                        list.AddListItem(new ListItemDefinition
+                        {
+                            Title = string.Format("master item {0} - {1}", i, Rnd.String())
+                        });
+                    }
+                });
+
+                web.AddList(childList, list =>
+                {
+                    // list.AddListFieldLink(lookupField);
+                });
+            });
+
+            TestModel(webModel);
+
+            // rebind lookup 
+            lookupField.LookupListUrl = masterList.GetListUrl();
+
+            TestModel(siteModel);
+
+            // add dep field
+            var depWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(childList, list =>
+                {
+                    list.AddContentTypeLink(contentTypeWithDepLookup);
+                    list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                    {
+                        ContentTypes = new List<ContentTypeLinkValue>
+                        {
+                            new ContentTypeLinkValue { ContentTypeName = contentTypeWithDepLookup.Name }
+                        }
+                    });
+
+                    //list.AddListFieldLink(dependentIdLookupField);
+                    //list.AddListFieldLink(dependentTitleLookupField);
 
                     list.AddListView(new ListViewDefinition
                     {
