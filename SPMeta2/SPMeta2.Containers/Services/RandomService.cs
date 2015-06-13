@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace SPMeta2.Containers.Services
@@ -72,6 +73,26 @@ namespace SPMeta2.Containers.Services
             }
 
             return resultArray;
+        }
+
+        public static List<T> RandomListFromArray<T>(this RandomService service, IEnumerable<T> array)
+        {
+            var result = new List<T>();
+
+            foreach (var value in RandomArrayFromArray<T>(service, array))
+                result.Add(value);
+
+            return result;
+        }
+
+        public static Collection<T> RandomCollectionFromArray<T>(this RandomService service, IEnumerable<T> array)
+        {
+            var result = new Collection<T>();
+
+            foreach (var value in RandomArrayFromArray<T>(service, array))
+                result.Add(value);
+
+            return result;
         }
 
         public static string HttpUrl(this RandomService service)

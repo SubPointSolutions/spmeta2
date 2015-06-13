@@ -17,7 +17,7 @@ namespace SPMeta2.Attributes.Regression
 
     public class ExpectUpdateAsStandalone : ExpectUpdate
     {
-        
+
     }
     public class ExpectUpdateAsLCID : ExpectUpdate
     {
@@ -65,10 +65,6 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
-    public class ExpectUpdateAsUInt : ExpectUpdate
-    {
-
-    }
 
     public class ExpectUpdateAsByte : ExpectUpdate
     {
@@ -83,7 +79,7 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
-    
+
 
     public class ExpectUpdateAsIntRange : ExpectUpdate
     {
@@ -148,6 +144,32 @@ namespace SPMeta2.Attributes.Regression
 
     public class ExpectUpdateAsCompatibleSearchDataTypes : ExpectUpdate
     {
-        
+
     }
+
+    public abstract class ExpectUpdateAsXsltListView : ExpectUpdate
+    {
+
+    }
+
+    public class ExpectUpdateAsXsltListViewXmlDefinition : ExpectUpdateAsXsltListView
+    {
+
+    }
+
+    public class ExpectUpdateAsXsltListViewXsl : ExpectUpdateAsXsltListView
+    {
+
+    }
+
+    public class ExpectUpdateAsXsltListViewXmlLinkUrl : ExpectUpdateAsXsltListView
+    {
+
+    }
+
+    public class ExpectUpdateAsXsltListViewXslLinkUrl : ExpectUpdateAsXsltListView
+    {
+
+    }
+
 }

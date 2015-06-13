@@ -118,6 +118,9 @@ namespace SPMeta2.Services.Impl
             }
             catch (Exception e)
             {
+                if (e is SPMeta2ModelDeploymentException)
+                    throw;
+
                 throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
                 {
                     ModelNode = modelNode,

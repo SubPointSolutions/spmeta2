@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
+    xmlns:asp="http://schemas.microsoft.com/ASPNET/20"
+>
+  <xsl:output method="html" indent="no"/>
+  <xsl:decimal-format NaN=""/>
+  <xsl:param name="XmlDefinition" select="."/>
+ 
+  <xsl:template match="/">
+   
+  </xsl:template>
+</xsl:stylesheet>

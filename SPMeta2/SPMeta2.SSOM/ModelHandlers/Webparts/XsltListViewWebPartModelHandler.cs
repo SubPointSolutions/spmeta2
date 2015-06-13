@@ -10,6 +10,7 @@ using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -133,6 +134,50 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             if (typedModel.ShowTimelineIfAvailable.HasValue)
                 typedWebpart.ShowTimelineIfAvailable = typedModel.ShowTimelineIfAvailable.Value;
 #endif
+
+            if (!string.IsNullOrEmpty(typedModel.Xsl))
+            {
+                typedWebpart.Xsl = typedModel.Xsl;
+            }
+
+            if (!string.IsNullOrEmpty(typedModel.XslLink))
+            {
+                var urlValue = typedModel.XslLink;
+
+                typedWebpart.XslLink = urlValue;
+            }
+
+            if (!string.IsNullOrEmpty(typedModel.XmlDefinition))
+            {
+                typedWebpart.XmlDefinition = typedModel.XmlDefinition;
+            }
+
+            if (!string.IsNullOrEmpty(typedModel.XmlDefinitionLink))
+            {
+                var urlValue = typedModel.XmlDefinitionLink;
+                typedWebpart.XmlDefinitionLink = urlValue;
+            }
+
+            if (!string.IsNullOrEmpty(typedModel.GhostedXslLink))
+            {
+                var urlValue = typedModel.GhostedXslLink;
+                typedWebpart.GhostedXslLink = urlValue;
+            }
+
+            if (!string.IsNullOrEmpty(typedModel.BaseXsltHashKey))
+                typedWebpart.BaseXsltHashKey = typedModel.BaseXsltHashKey;
+
+            if (typedModel.DisableColumnFiltering.HasValue)
+                typedWebpart.DisableColumnFiltering = typedModel.DisableColumnFiltering.Value;
+
+            if (typedModel.DisableSaveAsNewViewButton.HasValue)
+                typedWebpart.DisableSaveAsNewViewButton = typedModel.DisableSaveAsNewViewButton.Value;
+
+            if (typedModel.DisableViewSelectorMenu.HasValue)
+                typedWebpart.DisableViewSelectorMenu = typedModel.DisableViewSelectorMenu.Value;
+
+            if (typedModel.InplaceSearchEnabled.HasValue)
+                typedWebpart.InplaceSearchEnabled = typedModel.InplaceSearchEnabled.Value;
 
         }
 

@@ -187,6 +187,26 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 // JSLink
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
 
+                if (definition.InplaceSearchEnabled.HasValue)
+                    assert.ShouldBeEqual(m => m.InplaceSearchEnabled, o => o.InplaceSearchEnabled);
+                else
+                    assert.SkipProperty(m => m.InplaceSearchEnabled, "InplaceSearchEnabled is null or empty.");
+
+                if (definition.DisableSaveAsNewViewButton.HasValue)
+                    assert.ShouldBeEqual(m => m.DisableSaveAsNewViewButton, o => o.DisableSaveAsNewViewButton);
+                else
+                    assert.SkipProperty(m => m.DisableSaveAsNewViewButton, "DisableSaveAsNewViewButton is null or empty.");
+
+                if (definition.DisableColumnFiltering.HasValue)
+                    assert.ShouldBeEqual(m => m.DisableColumnFiltering, o => o.DisableColumnFiltering);
+                else
+                    assert.SkipProperty(m => m.DisableColumnFiltering, "DisableColumnFiltering is null or empty.");
+
+                if (definition.DisableViewSelectorMenu.HasValue)
+                    assert.ShouldBeEqual(m => m.DisableViewSelectorMenu, o => o.DisableViewSelectorMenu);
+                else
+                    assert.SkipProperty(m => m.DisableViewSelectorMenu, "DisableViewSelectorMenu is null or empty.");
+
                 // title link
                 if (string.IsNullOrEmpty(definition.TitleUrl))
                 {
@@ -229,6 +249,51 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 {
                     assert.ShouldBeEqual(m => m.TitleUrl, o => o.TitleUrl);
                 }
+
+                if (!string.IsNullOrEmpty(definition.XslLink))
+                    assert.ShouldBeEqual(m => m.XslLink, o => o.XslLink);
+                else
+                    assert.SkipProperty(m => m.XslLink);
+
+                if (!string.IsNullOrEmpty(definition.XmlDefinitionLink))
+                    assert.ShouldBeEqual(m => m.XmlDefinitionLink, o => o.XmlDefinitionLink);
+                else
+                    assert.SkipProperty(m => m.XmlDefinitionLink);
+
+                if (!string.IsNullOrEmpty(definition.GhostedXslLink))
+                    assert.ShouldBeEqual(m => m.GhostedXslLink, o => o.GhostedXslLink);
+                else
+                    assert.SkipProperty(m => m.GhostedXslLink);
+
+                if (!string.IsNullOrEmpty(definition.BaseXsltHashKey))
+                    assert.ShouldBeEqual(m => m.BaseXsltHashKey, o => o.BaseXsltHashKey);
+                else
+                    assert.SkipProperty(m => m.BaseXsltHashKey);
+
+
+                if (!string.IsNullOrEmpty(definition.XmlDefinition))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.XmlDefinition);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = d.XmlDefinition.Contains("BaseViewID=\"2\"")
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.XmlDefinition);
+
+                if (!string.IsNullOrEmpty(definition.Xsl))
+                    assert.ShouldBeEqual(m => m.Xsl, o => o.Xsl);
+                else
+                    assert.SkipProperty(m => m.Xsl);
+
             });
         }
 

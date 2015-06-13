@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.CSOM;
 using SPMeta2.CSOM.DefaultSyntax;
@@ -24,7 +25,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
     {
         #region constructors
 
-       
+
 
         #endregion
 
@@ -266,7 +267,197 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
 
         #endregion
+
+        #region xml - xslt
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
+        public void CanDeploy_XsltListViewWebPart_WithXmlDefinition()
+        {
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInListDefinitions.SitePages.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+
+                def.XmlDefinition = string.Format("<View BaseViewID=\"{0}\" />", 2);
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
+        public void CanDeploy_XsltListViewWebPart_WithXmlDefinitionLink()
+        {
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInListDefinitions.SitePages.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+
+                def.XmlDefinitionLink = Rnd.HttpUrl();
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
+        public void CanDeploy_XsltListViewWebPart_WithXslLink()
+        {
+            var xslFileName = string.Format("m2.{0}.xsl", Rnd.String());
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInListDefinitions.SitePages.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+
+                // this needs to be set to get XslLink working
+                // either SP1 issue or http context = null 
+                def.BaseXsltHashKey = Guid.NewGuid().ToString();
+                def.XslLink = "/Style Library/" + xslFileName;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.StyleLibrary, list =>
+                        {
+                            list.AddModuleFile(new ModuleFileDefinition
+                            {
+                                Content = Encoding.UTF8.GetBytes(XsltStrings.XsltListViewWebPart_TestXsl),
+                                FileName = xslFileName
+                            });
+                        })
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
+        public void CanDeploy_XsltListViewWebPart_WithXsl()
+        {
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInListDefinitions.SitePages.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+
+                // this needs to be set to get XslLink working
+                // either SP1 issue or http context = null 
+                def.BaseXsltHashKey = Guid.NewGuid().ToString();
+                def.Xsl = XsltStrings.XsltListViewWebPart_TestXsl;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
+        public void CanDeploy_XsltListViewWebPart_WithGhostedXslLink()
+        {
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInListDefinitions.SitePages.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+
+                def.GhostedXslLink = "blog.xsl";
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 
-   
+
 }

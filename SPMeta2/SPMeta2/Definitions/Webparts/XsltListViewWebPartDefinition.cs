@@ -86,6 +86,61 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public int? CacheXslTimeOut { get; set; }
 
+
+        //[ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? DisableSaveAsNewViewButton { get; set; }
+
+
+        //[ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? DisableViewSelectorMenu { get; set; }
+
+
+        //[ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? DisableColumnFiltering { get; set; }
+
+        //[ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public bool? InplaceSearchEnabled { get; set; }
+
+        [ExpectUpdate]
+        [ExpectValidation]
+        [DataMember]
+        public string BaseXsltHashKey { get; set; }
+
+
+        #region xml-xslt props
+
+        [ExpectValidation]
+        [DataMember]
+        public string XmlDefinition { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string XmlDefinitionLink { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string Xsl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string XslLink { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string GhostedXslLink { get; set; }
+
+        #endregion
+
+
+
         #endregion
 
         #region methods
