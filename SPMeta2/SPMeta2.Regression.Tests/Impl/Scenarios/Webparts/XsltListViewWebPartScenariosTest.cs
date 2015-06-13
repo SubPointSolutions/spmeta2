@@ -274,6 +274,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
         public void CanDeploy_XsltListViewWebPart_WithXmlDefinition()
         {
+            // this test gonna fail for CSOM due lack of API support
+            // XmlDefinition setup is not supported via CSOM
+
+            // http://officespdev.uservoice.com/forums/224641-general/suggestions/6358731-import-xsltlistviewwebpart-definition
+            // http://sharepoint.stackexchange.com/questions/90433/add-document-library-xsltlistviewwebpart-using-csom-or-web-services
+
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;

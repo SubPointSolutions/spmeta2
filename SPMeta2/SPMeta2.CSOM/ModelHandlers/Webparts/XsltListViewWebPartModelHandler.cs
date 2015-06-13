@@ -59,6 +59,26 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             if (wpModel.CacheXslTimeOut.HasValue)
                 wpXml.SetOrUpdateProperty("CacheXslTimeOut", wpModel.CacheXslTimeOut.Value.ToString());
 
+            if (!string.IsNullOrEmpty(wpModel.BaseXsltHashKey))
+                wpXml.SetOrUpdateProperty("BaseXsltHashKey", wpModel.BaseXsltHashKey);
+
+            // xsl
+            if (!string.IsNullOrEmpty(wpModel.Xsl))
+                wpXml.SetOrUpdateCDataProperty("Xsl", wpModel.Xsl);
+
+            if (!string.IsNullOrEmpty(wpModel.XslLink))
+                wpXml.SetOrUpdateProperty("XslLink", wpModel.XslLink);
+
+            if (!string.IsNullOrEmpty(wpModel.GhostedXslLink))
+                wpXml.SetOrUpdateProperty("GhostedXslLink", wpModel.GhostedXslLink);
+
+            // xml
+            if (!string.IsNullOrEmpty(wpModel.XmlDefinition))
+                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.Xsl);
+
+            if (!string.IsNullOrEmpty(wpModel.XmlDefinitionLink))
+                wpXml.SetOrUpdateProperty("XmlDefinitionLink", wpModel.XmlDefinitionLink);
+
 #if !NET35
             if (wpModel.ShowTimelineIfAvailable.HasValue)
                 wpXml.SetOrUpdateProperty("ShowTimelineIfAvailable", wpModel.ShowTimelineIfAvailable.Value.ToString());

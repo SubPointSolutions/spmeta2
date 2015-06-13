@@ -348,6 +348,246 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 else
                     assert.SkipProperty(m => m.ShowTimelineIfAvailable, "ShowTimelineIfAvailable is null or empty. Skipping.");
 
+                if (definition.InplaceSearchEnabled.HasValue)
+                {
+                    var value = ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("InplaceSearchEnabled"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.InplaceSearchEnabled);
+                        var isValid = definition.InplaceSearchEnabled == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.InplaceSearchEnabled, "InplaceSearchEnabled is null or empty. Skipping.");
+
+
+                if (definition.DisableSaveAsNewViewButton.HasValue)
+                {
+                    var value = ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("DisableSaveAsNewViewButton"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DisableSaveAsNewViewButton);
+                        var isValid = definition.DisableSaveAsNewViewButton == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.DisableSaveAsNewViewButton, "DisableSaveAsNewViewButton is null or empty. Skipping.");
+
+
+                if (definition.DisableColumnFiltering.HasValue)
+                {
+                    var value = ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("DisableColumnFiltering"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DisableColumnFiltering);
+                        var isValid = definition.DisableColumnFiltering == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.DisableColumnFiltering, "DisableColumnFiltering is null or empty. Skipping.");
+
+                if (definition.DisableViewSelectorMenu.HasValue)
+                {
+                    var value = ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("DisableViewSelectorMenu"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DisableViewSelectorMenu);
+                        var isValid = definition.DisableViewSelectorMenu == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.DisableViewSelectorMenu, "DisableViewSelectorMenu is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.BaseXsltHashKey))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("BaseXsltHashKey"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.BaseXsltHashKey);
+                        var isValid = definition.BaseXsltHashKey == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.BaseXsltHashKey, "BaseXsltHashKey is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.GhostedXslLink))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("GhostedXslLink"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.GhostedXslLink);
+                        var isValid = definition.GhostedXslLink == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.GhostedXslLink, "GhostedXslLink is null or empty. Skipping.");
+
+                // xsl
+                if (!string.IsNullOrEmpty(definition.Xsl))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("Xsl"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.Xsl);
+                        var isValid = value
+                                        .Replace("\r", string.Empty)
+                                        .Replace("\n", string.Empty) == 
+                                     definition.Xsl
+                                                .Replace("\r", string.Empty)
+                                                .Replace("\n", string.Empty);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Xsl, "Xsl is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.XslLink))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XslLink"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.XslLink);
+                        var isValid = definition.XslLink == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.XslLink, "XslLink is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.GhostedXslLink))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("GhostedXslLink"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.GhostedXslLink);
+                        var isValid = definition.GhostedXslLink == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.GhostedXslLink, "GhostedXslLink is null or empty. Skipping.");
+
+                // xml
+                if (!string.IsNullOrEmpty(definition.XmlDefinition))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.XmlDefinition);
+                        var isValid = value.Contains("BaseViewID=\"2\"");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.XmlDefinition, "XmlDefinition is null or empty. Skipping.");
+
+                if (!string.IsNullOrEmpty(definition.XmlDefinitionLink))
+                {
+                    var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinitionLink"));
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.XmlDefinitionLink);
+                        var isValid = definition.XmlDefinitionLink == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.XmlDefinitionLink, "XmlDefinitionLink is null or empty. Skipping.");
+
             });
         }
 
