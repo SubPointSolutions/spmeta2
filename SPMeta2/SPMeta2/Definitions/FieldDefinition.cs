@@ -129,6 +129,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [ExpectNullable]
         public string Group { get; set; }
 
         /// <summary>

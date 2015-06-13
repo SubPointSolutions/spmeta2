@@ -45,10 +45,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 //.ShouldBeEqual(m => m.InternalName, o => o.InternalName)
                     .ShouldBeEqual(m => m.Id, o => o.Id)
-                    .ShouldBeEqual(m => m.Required, o => o.Required)
-                    //.ShouldBeEqual(m => m.Description, o => o.Description)
-                //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-                    .ShouldBeEqual(m => m.Group, o => o.Group);
+                    .ShouldBeEqual(m => m.Required, o => o.Required);
+            //.ShouldBeEqual(m => m.Description, o => o.Description)
+            //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
+            //.ShouldBeEqual(m => m.Group, o => o.Group);
+
+            if (!string.IsNullOrEmpty(definition.Group))
+                assert.ShouldBeEqual(m => m.Group, o => o.Group);
+            else
+                assert.SkipProperty(m => m.Group);
 
             if (!string.IsNullOrEmpty(definition.StaticName))
                 assert.ShouldBeEqual(m => m.StaticName, o => o.StaticName);

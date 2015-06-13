@@ -9,17 +9,6 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientContentTypeFieldLinkDefinitionValidator : ContentTypeFieldLinkModelHandler
     {
-        protected FieldLink FindFieldLinkById(FieldLinkCollection fiedLinks, Guid fieldId)
-        {
-            foreach (var fieldLink in fiedLinks)
-            {
-                if (fieldLink.Id == fieldId)
-                    return fieldLink;
-            }
-
-            return null;
-        }
-
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var modelHostContext = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
@@ -30,14 +19,21 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = site.Context;
 
-            var spObject = contentType.FieldLinks.GetById(definition.FieldId);
-            context.Load(spObject);
-            context.ExecuteQuery();
+            var spObject = FindExistingFieldLink(contentType, definition);
 
             var assert = ServiceFactory.AssertService
-                                       .NewAssert(definition, spObject)
-                                             .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.FieldId, o => o.Id);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject);
+
+            if (!string.IsNullOrEmpty(definition.FieldInternalName))
+                assert.ShouldBeEqual(m => m.FieldInternalName, o => o.Name);
+            else
+                assert.SkipProperty(m => m.FieldInternalName, "FieldInternalName is NULL or empty. Skipping.");
+
+            if (definition.FieldId.HasGuidValue())
+                assert.ShouldBeEqual(m => m.FieldId, o => o.Id);
+            else
+                assert.SkipProperty(m => m.FieldId, "FieldId is NULL. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.DisplayName))
             {

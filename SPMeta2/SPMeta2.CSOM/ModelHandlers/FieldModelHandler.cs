@@ -398,7 +398,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             field.Title = definition.Title;
 
             field.Description = definition.Description ?? string.Empty;
-            field.Group = definition.Group ?? string.Empty;
+            field.Group = string.IsNullOrEmpty(definition.Group) ? "Custom" : definition.Group;
 
             field.Required = definition.Required;
 

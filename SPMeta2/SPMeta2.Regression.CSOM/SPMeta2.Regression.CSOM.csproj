@@ -114,6 +114,7 @@
     <Compile Include="Validation\ClientMasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientDeleteWebPartsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientComposedLookItemDefinitionValidator.cs" />
+    <Compile Include="Validation\Fields\DependentLookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\WebPartDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebPartPageDefinitionValidator.cs" />

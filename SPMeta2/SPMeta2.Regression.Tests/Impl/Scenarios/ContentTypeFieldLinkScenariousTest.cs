@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Containers;
+using SPMeta2.Enumerations;
 using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -27,6 +28,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public static void Cleanup()
         {
             InternalCleanup();
+        }
+
+        #endregion
+
+        #region by id or by internla name
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypeFieldLink.IdOrName")]
+        public void CanDeploy_ContentTypeFieldLink_WithFieldId()
+        {
+            var siteFieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var siteFieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(siteFieldOne);
+                site.AddField(siteFieldTwo);
+
+                site.AddContentType(siteContentType, c =>
+                {
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        FieldId = siteFieldOne.Id
+                    });
+
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        FieldId = siteFieldTwo.Id
+                    });
+                });
+            });
+
+            TestModels(new[] { siteModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypeFieldLink.IdOrName")]
+        public void CanDeploy_ContentTypeFieldLink_WithFieldInternalName()
+        {
+            var siteFieldOne = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var siteFieldTwo = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(siteFieldOne);
+                site.AddField(siteFieldTwo);
+
+                site.AddContentType(siteContentType, c =>
+                {
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        FieldInternalName = siteFieldOne.InternalName
+                    });
+
+                    c.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                    {
+                        FieldInternalName = siteFieldTwo.InternalName
+                    });
+                });
+            });
+
+            TestModels(new[] { siteModel });
         }
 
         #endregion

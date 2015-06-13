@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers;
+using SPMeta2.Containers.DefinitionGenerators.Fields;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -92,6 +93,15 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 var siteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
 
                 siteModel.AddField(siteField);
+
+                // dep lookiup
+                if (siteField is DependentLookupFieldDefinition)
+                {
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+
+                    (siteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
+                    siteModel.AddField(primaryLookupField);
+                }
 
                 siteField.ValidationMessage = string.Format("validatin_msg_{0}", RegressionService.RndService.String());
                 siteField.ValidationFormula = string.Format("=[ID] * {0}", RegressionService.RndService.Int(100));

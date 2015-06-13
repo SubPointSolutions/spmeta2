@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
@@ -18,25 +19,56 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(ContentTypeFieldLinkDefinition); }
         }
 
-        private Field FindExistingField(Web web, Guid id)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Finding site field by ID: [{0}]", id);
+        //protected Field FindExistingListField(List list, ContentTypeFieldLinkDefinition listFieldLinkModel)
+        //{
+        //    return FindField(list.Fields, listFieldLinkModel);
+        //}
 
-            var context = web.Context;
+        protected Field FindAvailableField(Web web, ContentTypeFieldLinkDefinition listFieldLinkModel)
+        {
+            return FindField(web.AvailableFields, listFieldLinkModel);
+        }
+
+        private Field FindField(FieldCollection fields, ContentTypeFieldLinkDefinition listFieldLinkModel)
+        {
+            var context = fields.Context;
+
             var scope = new ExceptionHandlingScope(context);
 
             Field field = null;
 
-            using (scope.StartScope())
+            if (listFieldLinkModel.FieldId.HasGuidValue())
             {
-                using (scope.StartTry())
+                var id = listFieldLinkModel.FieldId.Value;
+
+                using (scope.StartScope())
                 {
-                    web.AvailableFields.GetById(id);
+                    using (scope.StartTry())
+                    {
+                        fields.GetById(id);
+                    }
+
+                    using (scope.StartCatch())
+                    {
+
+                    }
                 }
+            }
+            else if (!string.IsNullOrEmpty(listFieldLinkModel.FieldInternalName))
+            {
+                var fieldInternalName = listFieldLinkModel.FieldInternalName;
 
-                using (scope.StartCatch())
+                using (scope.StartScope())
                 {
+                    using (scope.StartTry())
+                    {
+                        fields.GetByInternalNameOrTitle(fieldInternalName);
+                    }
 
+                    using (scope.StartCatch())
+                    {
+
+                    }
                 }
             }
 
@@ -44,19 +76,47 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!scope.HasException)
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field by ID: [{0}]", id);
+                if (listFieldLinkModel.FieldId.HasGuidValue())
+                {
+                    field = fields.GetById(listFieldLinkModel.FieldId.Value);
+                }
+                else if (!string.IsNullOrEmpty(listFieldLinkModel.FieldInternalName))
+                {
+                    field = fields.GetByInternalNameOrTitle(listFieldLinkModel.FieldInternalName);
+                }
 
-                field = web.AvailableFields.GetById(id);
                 context.Load(field);
+                context.Load(field, f => f.SchemaXml);
 
                 context.ExecuteQueryWithTrace();
             }
-            else
-            {
-                TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find site field by ID: [{0}]. Provision might fatally fail.", id);
-            }
 
             return field;
+        }
+
+        protected FieldLink FindExistingFieldLink(ContentType contentType, ContentTypeFieldLinkDefinition contentTypeFieldLinkModel)
+        {
+            var context = contentType.Context;
+
+            context.Load(contentType);
+            context.Load(contentType, c => c.FieldLinks);
+
+            context.ExecuteQuery();
+
+            if (contentTypeFieldLinkModel.FieldId.HasGuidValue())
+            {
+                return contentType.FieldLinks
+                                  .ToList()
+                                  .FirstOrDefault(l => l.Id == contentTypeFieldLinkModel.FieldId.Value);
+            }
+            else if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.FieldInternalName))
+            {
+                return contentType.FieldLinks
+                                  .ToList()
+                                  .FirstOrDefault(l => l.Name.ToUpper() == contentTypeFieldLinkModel.FieldInternalName.ToUpper());
+            }
+
+            throw new ArgumentException("FieldId or FieldInternalName must be defined");
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -72,17 +132,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Getting content type field link by ID: [{0}]", contentTypeFieldLinkModel.FieldId);
 
-            var tmp = contentType.FieldLinks.GetById(contentTypeFieldLinkModel.FieldId);
-            context.ExecuteQueryWithTrace();
-
-            FieldLink fieldLink = null;
-
-            if (tmp != null && tmp.ServerObjectIsNull.HasValue && !tmp.ServerObjectIsNull.Value)
-            {
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Found existing field link");
-
-                fieldLink = tmp;
-            }
+            FieldLink fieldLink = FindExistingFieldLink(contentType, contentTypeFieldLinkModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -99,7 +149,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type field link");
 
-                var targetField = FindExistingField(web, contentTypeFieldLinkModel.FieldId);
+                var targetField = FindAvailableField(web, contentTypeFieldLinkModel);
 
                 fieldLink = contentType.FieldLinks.Add(new FieldLinkCreationInformation
                 {
@@ -139,5 +189,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             contentType.Update(true);
             context.ExecuteQueryWithTrace();
         }
+
+
     }
 }

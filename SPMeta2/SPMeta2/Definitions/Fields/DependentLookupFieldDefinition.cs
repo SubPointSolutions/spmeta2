@@ -40,6 +40,22 @@ namespace SPMeta2.Definitions.Fields
         [ExpectRequired(GroupName = "PrimaryLookup")]
         public Guid? PrimaryLookupFieldId { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        public override string ValidationMessage
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
+        [ExpectValidation]
+        [DataMember]
+        public override string ValidationFormula
+        {
+            get { return string.Empty; }
+            set { }
+        }
+
         #endregion
 
         public override string ToString()

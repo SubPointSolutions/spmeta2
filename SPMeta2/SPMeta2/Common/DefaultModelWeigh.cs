@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Common
 {
@@ -96,6 +97,9 @@ namespace SPMeta2.Common
                     // field and field links could be added with 'AddToAllContentTypes' options
                     // we need content types deployed first
                     typeof (FieldDefinition),
+                    typeof (LookupFieldDefinition),
+                    typeof (DependentLookupFieldDefinition),
+
                     typeof (ListFieldLinkDefinition),
 
                     typeof (SP2013WorkflowSubscriptionDefinition),
@@ -128,6 +132,9 @@ namespace SPMeta2.Common
                     typeof (PropertyDefinition),
                     
                     typeof (FieldDefinition),
+                    typeof (LookupFieldDefinition),
+                    typeof (DependentLookupFieldDefinition),
+
                     typeof (ContentTypeDefinition),
                     
                     typeof (SP2013WorkflowDefinition),
@@ -159,6 +166,9 @@ namespace SPMeta2.Common
                     typeof (UserCustomActionDefinition),
 
                     typeof (FieldDefinition),
+                    typeof (LookupFieldDefinition),
+                    typeof (DependentLookupFieldDefinition),
+
                     typeof (ContentTypeDefinition),
                     
                     typeof (WebDefinition)

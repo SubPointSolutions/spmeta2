@@ -155,11 +155,24 @@ namespace SPMeta2.Services.Impl
                     // subclasses lookup is required for all XXX_FieldDefinitions 
 
                     // this to be extracted later as service 
+                    // stongly by type, and then by casting
                     var p1Type = currentModelWeights.ChildModels
-                        .Keys.FirstOrDefault(k => k == p1.Key || k.IsAssignableFrom(p1.Key));
+                                                    .Keys.FirstOrDefault(k => k == p1.Key);
+
+                    if (p1Type == null)
+                    {
+                        p1Type = currentModelWeights.ChildModels
+                                                    .Keys.FirstOrDefault(k => k.IsAssignableFrom(p1.Key));
+                    }
 
                     var p2Type = currentModelWeights.ChildModels
-                        .Keys.FirstOrDefault(k => k == p2.Key || k.IsAssignableFrom(p2.Key));
+                                                    .Keys.FirstOrDefault(k => k == p2.Key);
+
+                    if (p2Type == null)
+                    {
+                        p2Type = currentModelWeights.ChildModels
+                                                    .Keys.FirstOrDefault(k => k.IsAssignableFrom(p2.Key));
+                    }
 
                     if (p1Type != null)
                         srcW = currentModelWeights.ChildModels[p1Type];

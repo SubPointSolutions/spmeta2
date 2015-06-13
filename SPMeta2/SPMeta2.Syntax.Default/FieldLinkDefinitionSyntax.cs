@@ -48,9 +48,17 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
         {
+            if (definition.Id != default(Guid))
+            {
+                return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                {
+                    FieldId = definition.Id
+                }, action);
+            }
+
             return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
             {
-                FieldId = definition.Id
+                FieldInternalName = definition.InternalName
             }, action);
         }
 
