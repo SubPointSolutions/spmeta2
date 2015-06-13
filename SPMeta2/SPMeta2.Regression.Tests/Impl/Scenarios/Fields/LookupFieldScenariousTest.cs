@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Definitions;
@@ -64,6 +65,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             public ModelNode SiteModel { get; set; }
 
+            public ModelNode WebModel { get; set; }
+
             public LookupFieldDefinition LookupField { get; set; }
 
             public ListDefinition ChildList { get; set; }
@@ -99,6 +102,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 site.AddField(lookupField);
             });
 
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(lookupField);
+            });
+
             var childWebModel = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(dataList, list =>
@@ -132,6 +140,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             result.MasterListModel = masterWebModel;
 
             result.SiteModel = siteModel;
+            result.WebModel = webModel;
 
             if (action != null)
                 action(result);
@@ -303,6 +312,76 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         #endregion
 
+        #region scopes
+
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Fields.LookupField.Scopes")]
+        //public void CanDeploy_LookupField_ToSite()
+        //{
+        //    WithDisabledPropertyUpdateValidation(() =>
+        //    {
+        //        var lookupEnvironment = GetLookupFieldEnvironment(env =>
+        //        {
+        //            env.LookupField.AllowMultipleValues = true;
+        //            env.LookupField.LookupListTitle = env.ChildList.Title;
+        //        });
+
+        //        TestModels(new[]
+        //        {
+        //            lookupEnvironment.ChildListModel,
+        //            lookupEnvironment.SiteModel,
+        //            lookupEnvironment.MasterListModel
+        //        });
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Fields.LookupField.Scopes")]
+        //public void CanDeploy_LookupField_ToRootWeb()
+        //{
+        //    WithDisabledPropertyUpdateValidation(() =>
+        //    {
+        //        var lookupEnvironment = GetLookupFieldEnvironment(env =>
+        //        {
+        //            env.LookupField.AllowMultipleValues = true;
+        //            env.LookupField.LookupListTitle = env.ChildList.Title;
+        //        });
+
+        //        TestModels(new[]
+        //        {
+        //            lookupEnvironment.ChildListModel,
+        //            lookupEnvironment.WebModel,
+        //            lookupEnvironment.MasterListModel
+        //        });
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Fields.LookupField.Scopes")]
+        //public void CanDeploy_LookupField_ToSubWeb()
+        //{
+        //    WithDisabledPropertyUpdateValidation(() =>
+        //    {
+        //        var lookupEnvironment = GetLookupFieldEnvironment(env =>
+        //        {
+        //            env.LookupField.AllowMultipleValues = true;
+        //            env.LookupField.LookupListTitle = env.ChildList.Title;
+        //        });
+
+        //        TestModels(new[]
+        //        {
+        //            lookupEnvironment.ChildListModel,
+        //            lookupEnvironment.WebModel,
+        //            lookupEnvironment.MasterListModel
+        //        });
+        //    });
+        //}
+
+        #endregion
+
         #region multi seelct
 
         [TestMethod]
@@ -349,7 +428,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         {
             WithDisabledPropertyUpdateValidation(() =>
             {
-
                 var lookupEnvironment = GetLookupFieldEnvironment(env =>
                 {
                     env.LookupField.AllowMultipleValues = true;
@@ -364,8 +442,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 });
             });
         }
-
-
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.LookupField.MultiSelect")]

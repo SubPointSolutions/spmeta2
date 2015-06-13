@@ -21,48 +21,9 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
-    public class DependentLookupFieldDefinition : DefinitionBase
+    public class DependentLookupFieldDefinition : LookupFieldDefinition
     {
         #region properties
-
-        [ExpectValidation]
-        [ExpectRequired]
-        [DataMember]
-        [IdentityKey]
-        public string InternalName { get; set; }
-
-        /// <summary>
-        /// Title of the target field.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        [ExpectUpdate]
-        [ExpectRequired]
-        [DataMember]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Description of the target field.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        [ExpectUpdate]
-        [DataMember]
-        [ExpectNullable]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Group of the target field.
-        /// </summary>
-        /// 
-        [ExpectValidation]
-        [ExpectUpdate]
-        [DataMember]
-        public string Group { get; set; }
-
-        [ExpectValidation]
-        [DataMember]
-        public string LookupField { get; set; }
 
         [ExpectValidation]
         [DataMember]

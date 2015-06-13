@@ -20,6 +20,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
     [TestClass]
     public class DependentLookupFieldScenariousTest : SPMeta2RegresionScenarioTestBase
     {
+
+
         #region internal
 
         [ClassInitialize]
@@ -54,29 +56,30 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 def.Required = false;
                 def.AllowMultipleValues = false;
             });
-            var dependentLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+
+            var dependentIdLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
                 def =>
                 {
                     def.LookupField = BuiltInInternalFieldNames.ID;
                     def.PrimaryLookupFieldId = lookupField.Id;
                 });
 
+            var dependentTitleLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+                def =>
+                {
+                    def.LookupField = BuiltInInternalFieldNames.Title;
+                    def.PrimaryLookupFieldId = lookupField.Id;
+                });
+
             var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
             var childList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
-
-            var depFieldId = Guid.Empty;
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
                 site.AddLookupField(lookupField);
-                site.AddDependentLookupField(dependentLookupField, field =>
-                {
-                    field.OnProvisioned<object>(context =>
-                    {
-                        depFieldId = ExtractFieldId(context);
-                    });
-                });
 
+                site.AddDependentLookupField(dependentIdLookupField);
+                site.AddDependentLookupField(dependentTitleLookupField);
             });
 
             TestModel(siteModel);
@@ -93,6 +96,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                         });
                     }
                 });
+
                 web.AddList(childList, list =>
                 {
                     list.AddListFieldLink(lookupField);
@@ -101,7 +105,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             TestModel(webModel);
 
-            // rebind llookup 
+            // rebind lookup 
             lookupField.LookupListUrl = masterList.GetListUrl();
 
             TestModel(siteModel);
@@ -111,11 +115,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             {
                 web.AddList(childList, list =>
                 {
-                    list.AddListFieldLink(new ListFieldLinkDefinition
-                    {
-                        FieldId = depFieldId
-                    });
-
+                    list.AddListFieldLink(dependentIdLookupField);
+                    list.AddListFieldLink(dependentTitleLookupField);
 
                     list.AddListView(new ListViewDefinition
                     {
@@ -126,7 +127,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                             BuiltInInternalFieldNames.ID,
                             BuiltInInternalFieldNames.Title,
                             lookupField.InternalName,
-                            dependentLookupField.InternalName
+                            dependentIdLookupField.InternalName,
+                            dependentTitleLookupField.InternalName
                         },
                         IsDefault = true
                     });
@@ -136,174 +138,206 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             TestModel(depWebModel);
         }
 
-        private Guid ExtractFieldId(Models.OnCreatingContext<object, DefinitionBase> context)
-        {
-            var obj = context.Object;
-            var objType = context.Object.GetType();
+        //private Guid ExtractFieldId(Models.OnCreatingContext<object, DefinitionBase> context)
+        //{
+        //    var obj = context.Object;
+        //    var objType = context.Object.GetType();
 
-            if (objType.ToString().Contains("Microsoft.SharePoint.Client.FieldLookup"))
-            {
-                return (Guid)obj.GetPropertyValue("Id");
-            }
-            else if (objType.ToString().Contains("Microsoft.SharePoint.SPFieldLookup"))
-            {
-                return (Guid)obj.GetPropertyValue("Id");
-            }
-            else
-            {
-                throw new SPMeta2NotImplementedException(string.Format("ID property extraction is not implemented for type: [{0}]", objType));
-            }
-        }
+        //    if (objType.ToString().Contains("Microsoft.SharePoint.Client.FieldLookup"))
+        //    {
+        //        return (Guid)obj.GetPropertyValue("Id");
+        //    }
+        //    else if (objType.ToString().Contains("Microsoft.SharePoint.SPFieldLookup"))
+        //    {
+        //        return (Guid)obj.GetPropertyValue("Id");
+        //    }
+        //    else
+        //    {
+        //        throw new SPMeta2NotImplementedException(string.Format("ID property extraction is not implemented for type: [{0}]", objType));
+        //    }
+        //}
 
-        private Guid ExtractWebId(Models.OnCreatingContext<object, DefinitionBase> context)
-        {
-            var obj = context.Object;
-            var objType = context.Object.GetType();
+        //private Guid ExtractWebId(Models.OnCreatingContext<object, DefinitionBase> context)
+        //{
+        //    var obj = context.Object;
+        //    var objType = context.Object.GetType();
 
-            if (objType.ToString().Contains("Microsoft.SharePoint.Client.Web"))
-            {
-                return (Guid)obj.GetPropertyValue("Id");
-            }
-            else if (objType.ToString().Contains("Microsoft.SharePoint.SPWeb"))
-            {
-                return (Guid)obj.GetPropertyValue("ID");
-            }
-            else
-            {
-                throw new SPMeta2NotImplementedException(string.Format("ID property extraction is not implemented for type: [{0}]", objType));
-            }
-        }
+        //    if (objType.ToString().Contains("Microsoft.SharePoint.Client.Web"))
+        //    {
+        //        return (Guid)obj.GetPropertyValue("Id");
+        //    }
+        //    else if (objType.ToString().Contains("Microsoft.SharePoint.SPWeb"))
+        //    {
+        //        return (Guid)obj.GetPropertyValue("ID");
+        //    }
+        //    else
+        //    {
+        //        throw new SPMeta2NotImplementedException(string.Format("ID property extraction is not implemented for type: [{0}]", objType));
+        //    }
+        //}
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
         public void CanDeploy_DependentLookupField_OnWeb()
         {
-            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
-            {
-                def.ShowInNewForm = true;
-                def.ShowInDisplayForm = true;
-                def.ShowInEditForm = true;
-                def.ShowInListSettings = true;
-                def.ShowInViewForms = true;
+            throw new SPMeta2NotImplementedException("");
 
-                def.Hidden = false;
-                def.Required = false;
-                def.AllowMultipleValues = false;
-            });
-            var dependentLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
-                def =>
-                {
-                    def.LookupField = BuiltInInternalFieldNames.ID;
-                    def.PrimaryLookupFieldId = lookupField.Id;
-                });
+            //WithDisabledPropertyUpdateValidation(() =>
+            //{
 
-            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
-            var childList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            //    var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            //    {
+            //        def.ShowInNewForm = true;
+            //        def.ShowInDisplayForm = true;
+            //        def.ShowInEditForm = true;
+            //        def.ShowInListSettings = true;
+            //        def.ShowInViewForms = true;
 
-            var lookupSubWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>();
+            //        def.Indexed = false;
 
-            var depFieldId = Guid.Empty;
-            var lookupWebId = Guid.Empty;
+            //        def.Hidden = false;
+            //        def.Required = false;
+            //        def.AllowMultipleValues = false;
+            //    });
 
+            //    var dependentIdLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+            //        def =>
+            //        {
+            //            def.LookupField = BuiltInInternalFieldNames.ID;
+            //            def.PrimaryLookupFieldId = lookupField.Id;
+            //        });
 
-            var subwebVootstrapperModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWeb(lookupSubWeb, subWeb =>
-                {
-                    subWeb.OnProvisioned<object>(context =>
-                    {
-                        lookupWebId = ExtractWebId(context);
-                        lookupField.LookupWebId = lookupWebId;
-                    });
+            //    var dependentTitleLookupField = ModelGeneratorService
+            //        .GetRandomDefinition<DependentLookupFieldDefinition>(
+            //            def =>
+            //            {
+            //                def.LookupField = BuiltInInternalFieldNames.Title;
+            //                def.PrimaryLookupFieldId = lookupField.Id;
+            //            });
 
-                });
+            //    var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            //    var childList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
 
-            });
+            //    var lookupSubWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>();
 
-            TestModel(subwebVootstrapperModel);
+            //    var depIdFieldId = Guid.Empty;
+            //    var depTitleFieldId = Guid.Empty;
 
-            var subWebModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWeb(lookupSubWeb, subWeb =>
-                {
-                    subWeb.AddLookupField(lookupField);
-                    subWeb.AddDependentLookupField(dependentLookupField, field =>
-                    {
-                        field.OnProvisioned<object>(context =>
-                        {
-                            depFieldId = ExtractFieldId(context);
-                        });
-                    });
-                });
-            });
+            //    var lookupWebId = Guid.Empty;
 
-            TestModel(subWebModel);
+            //    var subWebBootstrapperModel = SPMeta2Model.NewWebModel(web =>
+            //    {
+            //        web.AddWeb(lookupSubWeb, subWeb =>
+            //        {
+            //            subWeb.OnProvisioned<object>(context =>
+            //            {
+            //                //lookupWebId = ExtractWebId(context);
+            //                lookupField.LookupWebId = lookupWebId;
+            //            });
+            //        });
+            //    });
 
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWeb(lookupSubWeb, subWeb =>
-                {
-                    subWeb.AddList(masterList, list =>
-                    {
-                        for (var i = 0; i < 10; i++)
-                        {
-                            list.AddListItem(new ListItemDefinition
-                            {
-                                Title = string.Format("master item {0} - {1}", i, Rnd.String())
-                            });
-                        }
-                    });
-                    subWeb.AddList(childList, list =>
-                    {
-                        list.AddListFieldLink(lookupField);
-                    });
-                });
-            });
+            //    TestModel(subWebBootstrapperModel);
 
-            TestModel(webModel);
+            //    var subWebModel = SPMeta2Model.NewWebModel(web =>
+            //    {
+            //        web.AddWeb(lookupSubWeb, subWeb =>
+            //        {
+            //            subWeb.AddLookupField(lookupField);
 
-            // rebind llookup 
-            lookupField.LookupListUrl = masterList.GetListUrl();
+            //            subWeb.AddDependentLookupField(dependentIdLookupField, field =>
+            //            {
+            //                field.OnProvisioned<object>(context =>
+            //                {
+            //                    depIdFieldId = ExtractFieldId(context);
+            //                });
+            //            });
 
-            TestModel(subWebModel);
+            //            subWeb.AddDependentLookupField(dependentTitleLookupField, field =>
+            //            {
+            //                field.OnProvisioned<object>(context =>
+            //                {
+            //                    depTitleFieldId = ExtractFieldId(context);
+            //                });
+            //            });
+            //        });
+            //    });
 
-            // add dep field
-            var depWebModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWeb(lookupSubWeb, subWeb =>
-                {
-                    subWeb.AddList(childList, list =>
-                    {
-                        list.AddListFieldLink(new ListFieldLinkDefinition
-                        {
-                            FieldId = depFieldId
-                        });
+            //    TestModel(subWebModel);
 
-                        list.AddListView(new ListViewDefinition
-                        {
-                            Title = "Test View",
-                            Fields = new Collection<string>
-                            {
-                                BuiltInInternalFieldNames.Edit,
-                                BuiltInInternalFieldNames.ID,
-                                BuiltInInternalFieldNames.Title,
-                                lookupField.InternalName,
-                                dependentLookupField.InternalName
-                            },
-                            IsDefault = true
-                        });
-                    });
-                });
-            });
+            //    var webModel = SPMeta2Model.NewWebModel(web =>
+            //    {
+            //        web.AddWeb(lookupSubWeb, subWeb =>
+            //        {
+            //            subWeb.AddList(masterList, list =>
+            //            {
+            //                for (var i = 0; i < 10; i++)
+            //                {
+            //                    list.AddListItem(new ListItemDefinition
+            //                    {
+            //                        Title = string.Format("master item {0} - {1}", i, Rnd.String())
+            //                    });
+            //                }
+            //            });
 
-            TestModel(depWebModel);
+            //            subWeb.AddList(childList, list =>
+            //            {
+            //                list.AddListFieldLink(lookupField);
+            //            });
+            //        });
+            //    });
+
+            //    TestModel(webModel);
+
+            //    // rebind llookup 
+            //    lookupField.LookupListUrl = masterList.GetListUrl();
+
+            //    TestModel(subWebModel);
+
+            //    // add dep field
+            //    var depWebModel = SPMeta2Model.NewWebModel(web =>
+            //    {
+            //        web.AddWeb(lookupSubWeb, subWeb =>
+            //        {
+            //            subWeb.AddList(childList, list =>
+            //            {
+            //                list.AddListFieldLink(new ListFieldLinkDefinition
+            //                {
+            //                    FieldId = depIdFieldId
+            //                });
+
+            //                list.AddListFieldLink(new ListFieldLinkDefinition
+            //                {
+            //                    FieldId = depTitleFieldId
+            //                });
+
+            //                list.AddListView(new ListViewDefinition
+            //                {
+            //                    Title = "Test View",
+            //                    Fields = new Collection<string>
+            //                    {
+            //                        BuiltInInternalFieldNames.Edit,
+            //                        BuiltInInternalFieldNames.ID,
+            //                        BuiltInInternalFieldNames.Title,
+            //                        lookupField.InternalName,
+            //                        dependentIdLookupField.InternalName,
+            //                        dependentTitleLookupField.InternalName
+            //                    },
+            //                    IsDefault = true
+            //                });
+            //            });
+            //        });
+            //    });
+
+            //    TestModel(depWebModel);
+            //});
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
         public void CanDeploy_DependentLookupField_OnList()
         {
-            throw new NotImplementedException("");
+            throw new SPMeta2NotImplementedException("");
         }
 
         #endregion

@@ -24,7 +24,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -42,10 +42,16 @@ namespace SPMeta2.Definitions
         /// 
 
         [ExpectValidation]
-        [ExpectRequired]
+        [ExpectRequired(GroupName = "FieldIdOrName")]
         [DataMember]
         [IdentityKey]
-        public Guid FieldId { get; set; }
+        public Guid? FieldId { get; set; }
+
+        [ExpectValidation]
+        [ExpectRequired(GroupName = "FieldIdOrName")]
+        [DataMember]
+        [IdentityKey]
+        public string FieldInternalName { get; set; }
 
         [ExpectValidation]
         [DataMember]

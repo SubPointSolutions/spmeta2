@@ -19,14 +19,25 @@ namespace SPMeta2.Regression.CSOM.Validation
             var list = listModelHost.HostList;
             var context = list.Context;
 
-            var spObject = list.Fields.GetById(definition.FieldId);
+            var spObject = FindExistingListField(list, definition);
+
             context.Load(spObject);
             context.ExecuteQuery();
 
             var assert = ServiceFactory.AssertService
-                                      .NewAssert(definition, spObject)
-                                            .ShouldNotBeNull(spObject)
-                                            .ShouldBeEqual(m => m.FieldId, o => o.Id);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject);
+            //.ShouldBeEqual(m => m.FieldId, o => o.Id);
+
+            if (!string.IsNullOrEmpty(definition.FieldInternalName))
+                assert.ShouldBeEqual(m => m.FieldInternalName, o => o.InternalName);
+            else
+                assert.SkipProperty(m => m.FieldInternalName, "FieldInternalName is null or empty. Skipping");
+
+            if (definition.FieldId.HasGuidValue())
+                assert.ShouldBeEqual(m => m.FieldId, o => o.Id);
+            else
+                assert.SkipProperty(m => m.FieldId, "FieldId is null or empty. Skipping");
 
             if (!string.IsNullOrEmpty(definition.DisplayName))
                 assert.ShouldBeEqual(m => m.DisplayName, o => o.Title);
@@ -72,7 +83,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         context.Load(ct, c => c.FieldLinks);
                         context.ExecuteQuery();
 
-                        isValid = ct.FieldLinks.OfType<FieldLink>().Count(l => l.Id == s.FieldId) > 0;
+                        isValid = ct.FieldLinks.OfType<FieldLink>().Count(l => l.Id == spObject.Id) > 0;
 
                         if (!isValid)
                             break;
@@ -112,7 +123,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(m => m.AddToDefaultView);
 
-                    var field = list.Fields.GetById(definition.FieldId);
+                    var field = FindExistingListField(list, definition);
                     var defaultView = list.DefaultView;
 
                     context.Load(defaultView);

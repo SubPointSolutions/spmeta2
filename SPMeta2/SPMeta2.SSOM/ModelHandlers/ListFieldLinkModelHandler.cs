@@ -36,11 +36,40 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployListFieldLink(modelHost, list, listFieldLinkModel);
         }
 
+
+        private SPField FindField(SPFieldCollection fields, ListFieldLinkDefinition listFieldLinkModel)
+        {
+            if (listFieldLinkModel.FieldId.HasGuidValue())
+            {
+
+                return fields
+                    .OfType<SPField>()
+                    .FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(listFieldLinkModel.FieldInternalName))
+            {
+                return fields
+                   .OfType<SPField>()
+                   .FirstOrDefault(f => f.InternalName.ToUpper() == listFieldLinkModel.FieldInternalName.ToUpper());
+            }
+
+            throw new ArgumentException("FieldId or FieldInternalName should be defined");
+        }
+
+        protected SPField FindExistingListField(SPList list, ListFieldLinkDefinition listFieldLinkModel)
+        {
+            return FindField(list.Fields, listFieldLinkModel);
+        }
+
+        protected SPField FindAvailableField(SPWeb web, ListFieldLinkDefinition listFieldLinkModel)
+        {
+            return FindField(web.AvailableFields, listFieldLinkModel);
+        }
+
         private void DeployListFieldLink(object modelHost, SPList list, ListFieldLinkDefinition listFieldLinkModel)
         {
-            var existingListField = list.Fields
-                                        .OfType<SPField>()
-                                        .FirstOrDefault(f => f.Id == listFieldLinkModel.FieldId);
+            var existingListField = FindExistingListField(list, listFieldLinkModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -57,9 +86,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list field");
 
-                var siteField = list.ParentWeb.AvailableFields[listFieldLinkModel.FieldId];
-                //list.Fields.Add(siteField);
-
+                var siteField = FindAvailableField(list.ParentWeb, listFieldLinkModel);
                 var addFieldOptions = (SPAddFieldOptions)(int)listFieldLinkModel.AddFieldOptions;
 
                 if ((siteField is SPFieldLookup) &&
@@ -69,7 +96,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    list.Fields.AddFieldAsXml(siteField.SchemaXmlWithResourceTokens, listFieldLinkModel.AddToDefaultView, addFieldOptions);
+                    list.Fields.AddFieldAsXml(siteField.SchemaXml, listFieldLinkModel.AddToDefaultView, addFieldOptions);
                 }
 
                 existingListField = list.Fields[siteField.Id];

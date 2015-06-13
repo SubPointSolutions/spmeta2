@@ -38,6 +38,46 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region by id or by internla name
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListFieldLinkDefinition.IdOrName")]
+        public void CanDeploy_ListFieldLink_WithFieldId()
+        {
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    {
+                        FieldId = BuiltInFieldId.URL
+                    });
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListFieldLinkDefinition.IdOrName")]
+        public void CanDeploy_ListFieldLink_WithFieldInternalName()
+        {
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    {
+                        FieldInternalName = BuiltInInternalFieldNames.URL
+                    });
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        #endregion
+
         #region default
 
         [TestMethod]

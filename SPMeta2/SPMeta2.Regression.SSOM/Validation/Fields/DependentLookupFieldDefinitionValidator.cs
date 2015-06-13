@@ -23,6 +23,37 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 .ShouldBeEqual(m => m.InternalName, o => o.InternalName);
 
+            // skip base lookup field props
+            assert.SkipProperty(m => m.AddFieldOptions, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.AdditionalAttributes, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.AddToDefaultView, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.AllowDeletion, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.AllowMultipleValues, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.DefaultValue, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.EnforceUniqueValues, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.FieldType, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.Hidden, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.Id, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.Indexed, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.JSLink, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.LookupList, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.LookupListTitle, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.LookupListUrl, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.LookupWebId, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.RawXml, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.Required, "DependentLookupFieldDefinition");
+
+            assert.SkipProperty(m => m.ShowInDisplayForm, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ShowInEditForm, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ShowInListSettings, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ShowInNewForm, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ShowInVersionHistory, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ShowInViewForms, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.StaticName, "DependentLookupFieldDefinition");
+
+            assert.SkipProperty(m => m.ValidationFormula, "DependentLookupFieldDefinition");
+            assert.SkipProperty(m => m.ValidationMessage, "DependentLookupFieldDefinition");
+
             if (!string.IsNullOrEmpty(definition.Group))
                 assert.ShouldBeEqual(m => m.Group, o => o.Group);
             else

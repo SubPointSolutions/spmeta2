@@ -20,13 +20,19 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelNode AddListFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
         {
+            if (definition.Id != default(Guid))
+            {
+                return model.AddDefinitionNode(new ListFieldLinkDefinition
+                {
+                    FieldId = definition.Id
+                }, action);
+            }
+
             return model.AddDefinitionNode(new ListFieldLinkDefinition
             {
-                FieldId = definition.Id
+                FieldInternalName = definition.InternalName
             }, action);
         }
-
-
 
         public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition)
         {
