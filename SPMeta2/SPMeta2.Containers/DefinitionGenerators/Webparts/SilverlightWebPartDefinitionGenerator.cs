@@ -1,4 +1,5 @@
 ﻿using System;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -18,9 +19,8 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
-                // TODO, URL and params
-
-
+                def.Url = "/_LAYOUTS/AddGallery.xap";
+                def.CustomInitParameters = string.Format("p1={0}", Rnd.String());
             });
         }
     }

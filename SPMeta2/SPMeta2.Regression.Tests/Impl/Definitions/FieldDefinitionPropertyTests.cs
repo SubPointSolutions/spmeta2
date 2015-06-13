@@ -63,6 +63,16 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 indexedSiteModel.AddField(indexedSiteField);
                 indexedSiteField.Indexed = true;
+
+                // dep lookiup
+                if (indexedSiteField is DependentLookupFieldDefinition)
+                {
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+
+                    (indexedSiteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
+                    indexedSiteModel.AddField(primaryLookupField);
+                }
+
                 TestModel(indexedSiteModel);
 
                 Trace.WriteLine(string.Format("Checking Indexed prop for non-Indexed def:[{0}]", fieldDefintion.GetType().Name));
@@ -72,6 +82,16 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 nonIdexedSiteModel.AddField(nonIndexedSiteField);
                 nonIndexedSiteField.Indexed = false;
+
+                // dep lookiup
+                if (indexedSiteField is DependentLookupFieldDefinition)
+                {
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+
+                    (nonIndexedSiteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
+                    nonIdexedSiteModel.AddField(primaryLookupField);
+                }
+
                 TestModel(nonIdexedSiteModel);
             }
         }
