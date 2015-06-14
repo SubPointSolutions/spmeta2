@@ -35,7 +35,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(definition.ContentLink))
                 {
-                    var value = CurrentWebPartXml.GetProperty("ContentLink");
+                    var value = CurrentWebPartXml.GetPageViewerWebPartProperty("ContentLink");
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -58,7 +58,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(definition.SourceType))
                 {
-                    var value = CurrentWebPartXml.GetProperty("SourceType");
+                    var value = CurrentWebPartXml.GetPageViewerWebPartProperty("SourceType");
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {

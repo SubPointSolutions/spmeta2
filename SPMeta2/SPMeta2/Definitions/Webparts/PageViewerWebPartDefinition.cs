@@ -24,14 +24,22 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     public class PageViewerWebPartDefinition : WebPartDefinition
     {
+        #region constructors
+
+
+        #endregion
+
         #region properties
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsUrl]
         public string ContentLink { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
         public string SourceType { get; set; }
 
         #endregion

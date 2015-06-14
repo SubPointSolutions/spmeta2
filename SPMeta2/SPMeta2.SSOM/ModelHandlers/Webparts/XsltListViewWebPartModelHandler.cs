@@ -170,6 +170,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             if (typedModel.DisableColumnFiltering.HasValue)
                 typedWebpart.DisableColumnFiltering = typedModel.DisableColumnFiltering.Value;
 
+#if !NET35
             if (typedModel.DisableSaveAsNewViewButton.HasValue)
                 typedWebpart.DisableSaveAsNewViewButton = typedModel.DisableSaveAsNewViewButton.Value;
 
@@ -178,7 +179,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
             if (typedModel.InplaceSearchEnabled.HasValue)
                 typedWebpart.InplaceSearchEnabled = typedModel.InplaceSearchEnabled.Value;
-
+#endif
         }
 
         #endregion

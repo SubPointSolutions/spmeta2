@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -19,7 +20,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
-                // TODO
+                def.ContentLink = Rnd.HttpUrl();
             });
         }
     }
