@@ -7,18 +7,6 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class TaxonomyTermStoreDefinitionSyntax
     {
-        [Obsolete("Use AddTaxonomyTermStore() instead.")]
-        public static ModelNode AddTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition)
-        {
-            return AddTermStore(model, definition, null);
-        }
-
-        [Obsolete("Use AddTaxonomyTermStore() instead.")]
-        public static ModelNode AddTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNode(definition, action);
-        }
-
         public static ModelNode AddTaxonomyTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition)
         {
             return AddTaxonomyTermStore(model, definition, null);

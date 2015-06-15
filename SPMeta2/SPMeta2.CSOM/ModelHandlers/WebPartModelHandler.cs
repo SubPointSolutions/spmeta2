@@ -164,7 +164,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         var rootWebContext = rootWeb.Context;
 
                         var webPartCatalog =
-                            rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Calalogs.Wp.GetListUrl());
+                            rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Catalogs.Wp.GetListUrl());
                         //var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
 
                         //rootWebContext.Load(webParts);

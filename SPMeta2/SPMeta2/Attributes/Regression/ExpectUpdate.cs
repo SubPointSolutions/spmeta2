@@ -7,7 +7,7 @@ using System.Text;
 namespace SPMeta2.Attributes.Regression
 {
     /// <summary>
-    /// Used by regression testing infrastructure to indicate properties which have to be changes with a new provision.
+    /// Used by regression testing infrastructure to indicate properties which have to be changed with a new provision.
     /// </summary>
     public class ExpectUpdate : Attribute
     {

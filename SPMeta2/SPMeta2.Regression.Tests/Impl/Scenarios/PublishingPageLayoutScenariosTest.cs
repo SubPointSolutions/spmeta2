@@ -79,7 +79,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var webModel = SPMeta2Model.NewWebModel(rootWeb =>
             {
                 rootWeb.AddWebFeature(webFeature);
-                rootWeb.AddHostList(BuiltInListDefinitions.Calalogs.MasterPage, list =>
+                rootWeb.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
                 {
                     list.AddPublishingPageLayout(pageLayout);
                 });
@@ -111,7 +111,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddRootWeb(new RootWebDefinition(), rootWeb =>
                 {
                     rootWeb.AddWebFeature(webFeature);
-                    rootWeb.AddHostList(BuiltInListDefinitions.Calalogs.MasterPage, list =>
+                    rootWeb.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
                     {
                         list.AddPublishingPageLayout(pageLayout, p =>
                         {

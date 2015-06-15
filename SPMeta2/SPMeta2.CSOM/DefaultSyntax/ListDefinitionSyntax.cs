@@ -9,57 +9,6 @@ namespace SPMeta2.CSOM.DefaultSyntax
     [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
     public static class ListDefinitionSyntax
     {
-        #region methods
-
-        #region behavior support
-
-        //public static DefinitionBase OnCreating(this DefinitionBase model, Action<ListDefinition, SPList> action)
-        //{
-        //    model.RegisterModelUpdatingEvent(action);
-
-        //    return model;
-        //}
-
-        //public static DefinitionBase OnCreated(this DefinitionBase model, Action<ListDefinition, SPList> action)
-        //{
-        //    model.RegisterModelUpdatedEvent(action);
-
-        //    return model;
-        //}
-
-        #endregion
-
-        #region add content type
-
-        //public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeId contentTypeId)
-        //{
-        //    return ContentTypeLinkDefinitionSyntax.AddContentTypeLink(model, new ContentTypeLinkDefinition
-        //    {
-        //        ContentTypeId = contentTypeId.ToString()
-        //    });
-        //}
-
-        #endregion
-
-        #endregion
-
-        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
-        public static ModelNode OnCreating(this ModelNode model, Action<ListDefinition, List> action)
-        {
-            model.RegisterModelEvent<ListDefinition, List>(SPMeta2.Common.ModelEventType.OnUpdating, action);
-
-            return model;
-        }
-
-        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ModernSyntax.OnProvisioning/OnProvisioned events.")]
-        public static ModelNode OnCreated(this ModelNode model, Action<ListDefinition, List> action)
-        {
-            model.RegisterModelEvent<ListDefinition, List>(SPMeta2.Common.ModelEventType.OnUpdated, action);
-
-            return model;
-        }
-
-
         #region utils
 
         [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ListDefinition.CustomUrl property instead.")]

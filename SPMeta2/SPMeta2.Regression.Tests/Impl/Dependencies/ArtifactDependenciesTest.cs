@@ -158,7 +158,7 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
                    site.AddList(webList, list =>
                    {
                        list.AddField(listField);
-                       list.AddView(webListView);
+                       list.AddListView(webListView);
                    });
                });
 

@@ -113,21 +113,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultSyntax\ContentTypeDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\FieldDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\ListItemDefinitionSyntax.cs" />
     <Compile Include="DefaultSyntax\ListDefinitionSyntax.cs" />
     <Compile Include="Common\ModelHostContext.cs" />
-    <Compile Include="DefaultSyntax\ModuleFileDefinitionSyntaz.cs" />
-    <Compile Include="DefaultSyntax\QuickLaunchNavigationNodeDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\WebPartDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\WebtDefinitionSyntax.cs" />
     <Compile Include="Extensions\CamlQueryTemplates.cs" />
     <Compile Include="Extensions\ClientRuntimeContextExtensions.cs" />
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
-    <Compile Include="ListItemDefinitionSyntax.cs" />
     <Compile Include="ModelHandlers\AppModelHandler.cs" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
@@ -245,10 +237,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
-      <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
-      <Name>SPMeta2.Syntax.Default</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
       <Name>SPMeta2</Name>

@@ -10,36 +10,6 @@ namespace SPMeta2.SSOM.DefaultSyntax
     {
         #region methods
 
-        #region behavior support
-
-        //public static DefinitionBase OnCreating(this DefinitionBase model, Action<ListDefinition, SPList> action)
-        //{
-        //    model.RegisterModelUpdatingEvent(action);
-
-        //    return model;
-        //}
-
-        //public static DefinitionBase OnCreated(this DefinitionBase model, Action<ListDefinition, SPList> action)
-        //{
-        //    model.RegisterModelUpdatedEvent(action);
-
-        //    return model;
-        //}
-
-        #endregion
-
-        #region add content type
-
-        public static ModelNode AddContentTypeLink(this ModelNode model, SPContentTypeId contentTypeId)
-        {
-            return ContentTypeLinkDefinitionSyntax.AddContentTypeLink(model, new ContentTypeLinkDefinition
-            {
-                ContentTypeId = contentTypeId.ToString()
-            });
-        }
-
-        #endregion
-
         #endregion
 
         #region utils

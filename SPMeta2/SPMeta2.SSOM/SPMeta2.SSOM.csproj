@@ -160,14 +160,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultSyntax\ContentTypeDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\FeaturesDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\FieldDefinitionSyntax.cs" />
     <Compile Include="DefaultSyntax\ListDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\ListViewDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\SecurityGroupDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\SecurityRoleLinkDefinitionSyntax.cs" />
-    <Compile Include="DefaultSyntax\WebPartDefinitionSyntax.cs" />
     <Compile Include="Extensions\SPContextExtensions.cs" />
     <Compile Include="Extensions\SPViewCollectionExtensions.cs" />
     <Compile Include="Extensions\WebPartExtensions.cs" />
@@ -300,11 +293,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
-      <Project>{6f7e5d77-0a17-4409-be8c-94389d276fa9}</Project>
-      <Name>SPMeta2.Syntax.Default</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{ee49d3fd-6180-40e6-829f-6831ff89dac6}</Project>
       <Name>SPMeta2</Name>

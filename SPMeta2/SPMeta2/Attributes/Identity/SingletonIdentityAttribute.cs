@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 
 namespace SPMeta2.Attributes.Identity
 {
+    /// <summary>
+    /// Used by M2 infrastructure to identify that current definition is a siglenton to a parent one.
+    /// </summary>
     public class SingletonIdentityAttribute : Attribute
     {
     }

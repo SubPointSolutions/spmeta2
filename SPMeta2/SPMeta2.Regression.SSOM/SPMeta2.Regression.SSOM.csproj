@@ -199,10 +199,6 @@
       <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>
       <Name>SPMeta2.SSOM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPMeta2.Syntax.Default\SPMeta2.Syntax.Default.csproj">
-      <Project>{6F7E5D77-0A17-4409-BE8C-94389D276FA9}</Project>
-      <Name>SPMeta2.Syntax.Default</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>

@@ -75,7 +75,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddHostList(BuiltInListDefinitions.Calalogs.MasterPage, list =>
+                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
                 {
                     list.AddModuleFile(moduleFile);
                 });

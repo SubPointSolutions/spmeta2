@@ -9,18 +9,6 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class TaxonomyTermGroupDefinitionSyntax
     {
-        [Obsolete("Use AddTaxonomyTermGroup() instead.")]
-        public static ModelNode AddTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition)
-        {
-            return AddTermGroup(model, definition, null);
-        }
-
-        [Obsolete("Use AddTaxonomyTermGroup() instead.")]
-        public static ModelNode AddTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNode(definition, action);
-        }
-
         public static ModelNode AddTaxonomyTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition)
         {
             return AddTaxonomyTermGroup(model, definition, null);

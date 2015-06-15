@@ -34,7 +34,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
         public override DefinitionBase GetCustomParenHost()
         {
-            return BuiltInListDefinitions.Calalogs.MasterPage.Inherit<ListDefinition>(def =>
+            return BuiltInListDefinitions.Catalogs.MasterPage.Inherit<ListDefinition>(def =>
             {
                 def.RequireSelfProcessing = false;
             });

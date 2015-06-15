@@ -28,7 +28,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 
         public override DefinitionBase GetCustomParenHost()
         {
-            return BuiltInListDefinitions.Calalogs.Wp.Inherit<ListDefinition>(def =>
+            return BuiltInListDefinitions.Catalogs.Wp.Inherit<ListDefinition>(def =>
             {
                 def.RequireSelfProcessing = false;
             });

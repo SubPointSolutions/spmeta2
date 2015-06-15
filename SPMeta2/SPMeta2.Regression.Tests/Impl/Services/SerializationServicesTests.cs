@@ -1,13 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Definitions;
 using SPMeta2.Services.Impl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-
-namespace SPMeta2.Regression.Tests.Services
+namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
     public class SerializationServicesTests

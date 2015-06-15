@@ -189,7 +189,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddWebFeature(webFeature);
 
-                web.AddHostList(BuiltInListDefinitions.Calalogs.MasterPage, list =>
+                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
                 {
                     list.AddPublishingPageLayout(publishingPageLayout);
                 });
