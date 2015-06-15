@@ -8,33 +8,40 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class WebApplicationModelNode : TypedModelNode
+    {
+
+
+
+    }
+
     public static class WebApplicationDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddWebApplication(this ModelNode model, WebApplicationDefinition definition)
+        public static WebApplicationModelNode AddWebApplication(this WebApplicationModelNode model, WebApplicationDefinition definition)
         {
             return AddWebApplication(model, definition, null);
         }
 
-        public static ModelNode AddWebApplication(this ModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddWebApplication(this WebApplicationModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
- 
+
         #endregion
 
         #region add host
 
-        public static ModelNode AddHostWebApplication(this ModelNode model, WebApplicationDefinition definition)
+        public static WebApplicationModelNode AddHostWebApplication(this WebApplicationModelNode model, WebApplicationDefinition definition)
         {
             return AddHostWebApplication(model, definition, null);
         }
 
-        public static ModelNode AddHostWebApplication(this ModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddHostWebApplication(this WebApplicationModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        } 
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

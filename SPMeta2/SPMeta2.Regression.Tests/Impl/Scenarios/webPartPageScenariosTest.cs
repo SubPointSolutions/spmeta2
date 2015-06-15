@@ -72,7 +72,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                .NewWebModel(web =>
                {
                    web
-                       .AddFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
+                       .AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
                        {
                            def.Enable = true;
                        }))

@@ -192,7 +192,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                     env.LookupField.LookupListTitle = env.ChildList.Title;
                 });
 
-                TestModels(new[]{
+                TestModels(new  ModelNode[]{
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.MasterListModel
@@ -213,7 +213,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 });
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -230,7 +230,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupList = "Self";
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -247,7 +247,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //        env.LookupField.LookupList = "Docs";
         //    });
 
-        //    TestModels(new[]
+        //    TestModels(new  ModelNode[]
         //    {
         //        lookupEnvironment.ChildListModel, 
         //        lookupEnvironment.SiteModel, 
@@ -264,7 +264,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupList = "UserInfo";
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -281,7 +281,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -327,7 +327,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //            env.LookupField.LookupListTitle = env.ChildList.Title;
         //        });
 
-        //        TestModels(new[]
+        //        TestModels(new  ModelNode[]
         //        {
         //            lookupEnvironment.ChildListModel,
         //            lookupEnvironment.SiteModel,
@@ -349,7 +349,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //            env.LookupField.LookupListTitle = env.ChildList.Title;
         //        });
 
-        //        TestModels(new[]
+        //        TestModels(new  ModelNode[]
         //        {
         //            lookupEnvironment.ChildListModel,
         //            lookupEnvironment.WebModel,
@@ -371,7 +371,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //            env.LookupField.LookupListTitle = env.ChildList.Title;
         //        });
 
-        //        TestModels(new[]
+        //        TestModels(new  ModelNode[]
         //        {
         //            lookupEnvironment.ChildListModel,
         //            lookupEnvironment.WebModel,
@@ -434,7 +434,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                     env.LookupField.LookupListTitle = env.ChildList.Title;
                 });
 
-                TestModels(new[]
+                TestModels(new  ModelNode[]
                 {
                     lookupEnvironment.ChildListModel,
                     lookupEnvironment.SiteModel,
@@ -456,7 +456,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 });
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -474,7 +474,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupList = "Self";
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -492,7 +492,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //        env.LookupField.LookupList = "Docs";
         //    });
 
-        //    TestModels(new[]
+        //    TestModels(new  ModelNode[]
         //    {
         //        lookupEnvironment.ChildListModel, 
         //        lookupEnvironment.SiteModel, 
@@ -510,7 +510,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupList = "UserInfo";
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -528,7 +528,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.ChildListModel, 
                 lookupEnvironment.SiteModel, 
@@ -551,7 +551,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupListUrl = string.Empty;
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.ChildListModel, 
@@ -561,7 +561,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             // binding
             lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.ChildList.Title;
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
             });
@@ -571,7 +571,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             {
                 lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
 
-                TestModels(new[]            {
+                TestModels(new  ModelNode[]            {
                     lookupEnvironment.SiteModel, 
                 });
             });
@@ -588,7 +588,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 env.LookupField.LookupListUrl = string.Empty;
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.ChildListModel, 
@@ -598,7 +598,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             // binding
             lookupEnvironment.LookupField.LookupListUrl = lookupEnvironment.ChildList.GetListUrl();
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
             });
@@ -608,7 +608,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             {
                 lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
 
-                TestModels(new[]            {
+                TestModels(new  ModelNode[]            {
                     lookupEnvironment.SiteModel, 
                 });
             });
@@ -630,14 +630,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 lookupEnvironment.LookupField.LookupList = ExtractListId(context).ToString();
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
                 lookupEnvironment.MasterListModel,
                 lookupEnvironment.ChildListModel, 
             });
 
-            TestModels(new[]
+            TestModels(new  ModelNode[]
             {
                 lookupEnvironment.SiteModel, 
             });
@@ -647,7 +647,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             {
                 lookupEnvironment.LookupField.LookupListTitle = lookupEnvironment.MasterList.Title;
 
-                TestModels(new[]            {
+                TestModels(new  ModelNode[]            {
                     lookupEnvironment.SiteModel, 
                 });
             });

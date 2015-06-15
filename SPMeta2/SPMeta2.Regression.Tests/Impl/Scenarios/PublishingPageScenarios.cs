@@ -96,7 +96,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         #endregion
@@ -122,7 +122,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         private void WithPublishingPageNode(Action<ModelNode> pageSetup)
@@ -250,7 +250,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]

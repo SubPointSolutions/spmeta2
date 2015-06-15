@@ -372,7 +372,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, contentModel });
+            TestModels(new  ModelNode[] { siteModel, contentModel });
         }
 
 
@@ -420,7 +420,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { webModel, siteModel, contentModel });
+            TestModels(new  ModelNode[] { webModel, siteModel, contentModel });
         }
 
         [TestMethod]
@@ -475,7 +475,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { webModel, siteModel, contentModel });
+            TestModels(new  ModelNode[] { webModel, siteModel, contentModel });
         }
 
         #endregion

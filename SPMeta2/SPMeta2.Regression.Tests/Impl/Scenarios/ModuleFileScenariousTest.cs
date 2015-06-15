@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Data;
 
@@ -202,7 +202,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-            TestModels(new[] { model });
+            TestModels(new  ModelNode[] { model });
         }
 
         [TestMethod]

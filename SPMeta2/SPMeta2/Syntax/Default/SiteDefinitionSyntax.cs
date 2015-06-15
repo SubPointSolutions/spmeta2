@@ -12,32 +12,39 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class SiteModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SiteDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddSite(this ModelNode model, SiteDefinition definition)
+
+
+        public static WebApplicationModelNode AddSite(this WebApplicationModelNode model, SiteDefinition definition)
         {
             return AddSite(model, definition, null);
         }
 
-        public static ModelNode AddSite(this ModelNode model, SiteDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddSite(this WebApplicationModelNode model, SiteDefinition definition, Action<SiteModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region add host
 
-        public static ModelNode AddHostSite(this ModelNode model, SiteDefinition definition)
+        public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition)
         {
             return AddHostSite(model, definition, null);
         }
 
-        public static ModelNode AddHostSite(this ModelNode model, SiteDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition, Action<SiteModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

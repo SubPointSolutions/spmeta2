@@ -8,25 +8,50 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class WebModelNode : TypedModelNode
+    {
+
+
+
+    }
+
     public static class WebDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddWeb(this ModelNode model, WebDefinition definition)
+        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition)
         {
             return AddWeb(model, definition, null);
         }
 
-        public static ModelNode AddWeb(this ModelNode model, WebDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition, Action<WebModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition)
+        {
+            return AddWeb(model, definition, null);
+        }
+
+        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition, Action<WebModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddWebs(this ModelNode model, IEnumerable<WebDefinition> definitions)
+        public static WebModelNode AddWebs(this WebModelNode model, IEnumerable<WebDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        public static SiteModelNode AddWebs(this SiteModelNode model, IEnumerable<WebDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -35,17 +60,27 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-        
+
         #region host override
 
-        public static ModelNode AddHostWeb(this ModelNode model, WebDefinition definition)
+        public static SiteModelNode AddHostWeb(this SiteModelNode model, WebDefinition definition)
         {
             return AddHostWeb(model, definition, null);
         }
 
-        public static ModelNode AddHostWeb(this ModelNode model, WebDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddHostWeb(this SiteModelNode model, WebDefinition definition, Action<WebModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        public static WebModelNode AddHostWeb(this WebModelNode model, WebDefinition definition)
+        {
+            return AddHostWeb(model, definition, null);
+        }
+
+        public static WebModelNode AddHostWeb(this WebModelNode model, WebDefinition definition, Action<WebModelNode> action)
+        {
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

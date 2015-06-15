@@ -32,7 +32,7 @@ namespace SPMeta2.Syntax.Default
         /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
         /// </summary>
         /// <returns></returns>
-        public static ModelNode NewFarmModel()
+        public static FarmModelNode NewFarmModel()
         {
             return NewFarmModel((FarmDefinition)null);
         }
@@ -44,7 +44,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewFarmModel(Action<ModelNode> action)
+        public static ModelNode NewFarmModel(Action<FarmModelNode> action)
         {
             return NewFarmModel(new FarmDefinition { RequireSelfProcessing = false }, action);
         }
@@ -56,7 +56,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="farmDefinition"></param>
         /// <returns></returns>
-        public static ModelNode NewFarmModel(FarmDefinition farmDefinition)
+        public static FarmModelNode NewFarmModel(FarmDefinition farmDefinition)
         {
             return NewFarmModel(farmDefinition, null);
         }
@@ -69,9 +69,9 @@ namespace SPMeta2.Syntax.Default
         /// <param name="farmDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewFarmModel(FarmDefinition farmDefinition, Action<ModelNode> action)
+        public static FarmModelNode NewFarmModel(FarmDefinition farmDefinition, Action<FarmModelNode> action)
         {
-            return NewModelNode<FarmDefinition>(farmDefinition, action);
+            return NewModelNode<FarmDefinition, FarmModelNode>(farmDefinition, action);
 
         }
 
@@ -85,7 +85,7 @@ namespace SPMeta2.Syntax.Default
         /// Model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
         /// </summary>
         /// <returns></returns>
-        public static ModelNode NewWebApplicationModel()
+        public static WebApplicationModelNode NewWebApplicationModel()
         {
             return NewWebApplicationModel((WebApplicationDefinition)null);
         }
@@ -97,7 +97,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewWebApplicationModel(Action<ModelNode> action)
+        public static WebApplicationModelNode NewWebApplicationModel(Action<WebApplicationModelNode> action)
         {
             return NewWebApplicationModel(new WebApplicationDefinition { RequireSelfProcessing = false }, action);
         }
@@ -108,7 +108,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="webApplicationDefinition"></param>
         /// <returns></returns>
-        public static ModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition)
+        public static WebApplicationModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition)
         {
             return NewWebApplicationModel(webApplicationDefinition, null);
         }
@@ -121,9 +121,9 @@ namespace SPMeta2.Syntax.Default
         /// <param name="webApplicationDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition, Action<ModelNode> action)
+        public static WebApplicationModelNode NewWebApplicationModel(WebApplicationDefinition webApplicationDefinition, Action<WebApplicationModelNode> action)
         {
-            return NewModelNode<WebApplicationDefinition>(webApplicationDefinition, action);
+            return NewModelNode<WebApplicationDefinition, WebApplicationModelNode>(webApplicationDefinition, action);
 
         }
 
@@ -138,7 +138,7 @@ namespace SPMeta2.Syntax.Default
         /// Site model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
         /// </summary>
         /// <returns></returns>
-        public static ModelNode NewSiteModel()
+        public static SiteModelNode NewSiteModel()
         {
             return NewSiteModel((SiteDefinition)null);
         }
@@ -150,7 +150,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewSiteModel(Action<ModelNode> action)
+        public static SiteModelNode NewSiteModel(Action<SiteModelNode> action)
         {
             return NewSiteModel(new SiteDefinition { RequireSelfProcessing = false }, action);
         }
@@ -161,7 +161,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="siteDefinition"></param>
         /// <returns></returns>
-        public static ModelNode NewSiteModel(SiteDefinition siteDefinition)
+        public static SiteModelNode NewSiteModel(SiteDefinition siteDefinition)
         {
             return NewSiteModel(siteDefinition, null);
         }
@@ -174,9 +174,9 @@ namespace SPMeta2.Syntax.Default
         /// <param name="siteDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewSiteModel(SiteDefinition siteDefinition, Action<ModelNode> action)
+        public static SiteModelNode NewSiteModel(SiteDefinition siteDefinition, Action<SiteModelNode> action)
         {
-            return NewModelNode<SiteDefinition>(siteDefinition, action);
+            return NewModelNode<SiteDefinition, SiteModelNode>(siteDefinition, action);
         }
 
         #endregion
@@ -188,7 +188,7 @@ namespace SPMeta2.Syntax.Default
         /// Web model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
         /// </summary>
         /// <returns></returns>
-        public static ModelNode NewWebModel()
+        public static WebModelNode NewWebModel()
         {
             return NewWebModel((WebDefinition)null);
         }
@@ -199,7 +199,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="webDefinition"></param>
         /// <returns></returns>
-        public static ModelNode NewWebModel(WebDefinition webDefinition)
+        public static WebModelNode NewWebModel(WebDefinition webDefinition)
         {
             return NewWebModel(webDefinition, null);
         }
@@ -211,7 +211,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewWebModel(Action<ModelNode> action)
+        public static WebModelNode NewWebModel(Action<WebModelNode> action)
         {
             return NewWebModel(new WebDefinition { RequireSelfProcessing = false }, action);
         }
@@ -224,9 +224,9 @@ namespace SPMeta2.Syntax.Default
         /// <param name="webDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewWebModel(WebDefinition webDefinition, Action<ModelNode> action)
+        public static WebModelNode NewWebModel(WebDefinition webDefinition, Action<WebModelNode> action)
         {
-            return NewModelNode<WebDefinition>(webDefinition, action);
+            return NewModelNode<WebDefinition, WebModelNode>(webDefinition, action);
         }
 
         #endregion
@@ -276,17 +276,18 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewListModel(ListDefinition listDefinition, Action<ModelNode> action)
         {
-            return NewModelNode<ListDefinition>(listDefinition, action);
+            return NewModelNode<ListDefinition, ListModelNode>(listDefinition, action);
         }
 
         #endregion
 
         #region utils
 
-        private static ModelNode NewModelNode<TModelDefinition>(TModelDefinition model, Action<ModelNode> action)
-          where TModelDefinition : DefinitionBase, new()
+        private static TNodeType NewModelNode<TModelDefinition, TNodeType>(TModelDefinition model, Action<TNodeType> action)
+            where TModelDefinition : DefinitionBase, new()
+            where TNodeType : TypedModelNode, new()
         {
-            var newModelNode = new ModelNode { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
+            var newModelNode = new TNodeType { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
 
             // levacy
             newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;

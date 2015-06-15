@@ -49,7 +49,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
 
-            TestModels(new[] { siteModel });
+            TestModels(new  ModelNode[] { siteModel });
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
 
-            TestModels(new[] { webModel });
+            TestModels(new  ModelNode[] { webModel });
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
 
-            TestModels(new[] { webModel });
+            TestModels(new  ModelNode[] { webModel });
         }
 
         #endregion

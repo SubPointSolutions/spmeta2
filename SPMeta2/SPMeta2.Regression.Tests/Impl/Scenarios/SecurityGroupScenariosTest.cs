@@ -52,7 +52,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     site.AddSecurityGroup(securityGroup);
                                 });
 
-            TestModels(new[] { siteModel });
+            TestModels(new  ModelNode[] { siteModel });
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     site.AddSecurityGroup(securityGroup);
                                 });
 
-            TestModels(new[] { siteModel });
+            TestModels(new  ModelNode[] { siteModel });
         }
 
 
@@ -91,7 +91,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     site.AddSecurityGroup(securityGroup);
                                 });
 
-            TestModels(new[] { siteModel });
+            TestModels(new  ModelNode[] { siteModel });
         }
 
         #endregion

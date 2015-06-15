@@ -417,7 +417,7 @@ namespace SPMeta2.Containers.Services
 
         public void TestModel(ModelNode model)
         {
-            TestModels(new[] { model });
+            TestModels(new  ModelNode[] { model });
         }
 
         public void TestModels(IEnumerable<ModelNode> models)

@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SPMeta2.Models;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -70,7 +71,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         web.AddRandomAuditSetting();
                     });
 
-                TestModels(new[] { siteModel, webModel });
+                TestModels(new ModelNode[] { siteModel, webModel });
             });
         }
 
@@ -116,7 +117,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         });
                     });
 
-                TestModels(new[] { siteModel, webModel });
+                TestModels(new ModelNode[] { siteModel, webModel });
 
             });
         }

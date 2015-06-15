@@ -168,7 +168,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             };
         }
 
-        protected void AddWebWorkflow(ModelNode web)
+        protected void AddWebWorkflow(WebModelNode web)
         {
             var workflow = ModelGeneratorService.GetRandomDefinition<SP2013WorkflowDefinition>();
 
@@ -176,19 +176,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var taskList = GetTaskList();
 
             web
-                          .AddSP2013Workflow(workflow)
-                          .AddList(historyList)
-                          .AddList(taskList)
-                          .AddSP2013WorkflowSubscription(new SP2013WorkflowSubscriptionDefinition
-                          {
-                              Name = Rnd.String(),
-                              WorkflowDisplayName = workflow.DisplayName,
-                              HistoryListUrl = historyList.GetListUrl(),
-                              TaskListUrl = taskList.GetListUrl()
-                          });
+                .AddList(historyList)
+                .AddList(taskList)
+                .AddSP2013Workflow(workflow)
+                .AddSP2013WorkflowSubscription(new SP2013WorkflowSubscriptionDefinition
+                {
+                    Name = Rnd.String(),
+                    WorkflowDisplayName = workflow.DisplayName,
+                    HistoryListUrl = historyList.GetListUrl(),
+                    TaskListUrl = taskList.GetListUrl()
+                });
         }
 
-        protected void AddListWorkflow(ModelNode web)
+        protected void AddListWorkflow(WebModelNode web)
         {
             var workflow = ModelGeneratorService.GetRandomDefinition<SP2013WorkflowDefinition>();
             var workflowEnableList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
@@ -197,7 +197,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var taskList = GetTaskList();
 
             web
-                        .AddSP2013Workflow(workflow)
+                        
                         .AddList(historyList)
                         .AddList(taskList)
                         .AddList(workflowEnableList, list =>
@@ -209,7 +209,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 HistoryListUrl = historyList.GetListUrl(),
                                 TaskListUrl = taskList.GetListUrl()
                             });
-                        });
+                        })
+                        .AddSP2013Workflow(workflow);
         }
 
         #endregion

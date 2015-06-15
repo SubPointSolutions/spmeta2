@@ -275,6 +275,7 @@
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
+    <Compile Include="Models\TypedModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Syntax\Default\DocumentParserSyntax.cs" />
     <Compile Include="Syntax\Default\EventReceiverDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Extensions\ModelNodeExtensions.cs" />
+    <Compile Include="Syntax\Default\Extensions\TypedModelNodeExtensions.cs" />
     <Compile Include="Syntax\Default\FarmDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\FarmSolutionDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\FeatureDefinitionSyntax.cs" />

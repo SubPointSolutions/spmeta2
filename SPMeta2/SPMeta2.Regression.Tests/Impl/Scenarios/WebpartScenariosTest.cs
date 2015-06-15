@@ -187,7 +187,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                .NewWebModel(web =>
                {
                    web
-                       .AddFeature(RegWebFeatures.Publishing)
+                       .AddWebFeature(RegWebFeatures.Publishing)
                        .AddHostList(BuiltInListDefinitions.Pages, list =>
                        {
                            list

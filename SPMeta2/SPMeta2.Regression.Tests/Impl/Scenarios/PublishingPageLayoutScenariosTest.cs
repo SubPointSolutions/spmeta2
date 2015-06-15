@@ -85,7 +85,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         private IEnumerable<ModelNode> WithPublishingPagelayoutNodeAsSite(Action<ModelNode> pageSetup)
@@ -108,18 +108,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddSiteFeature(siteFeature);
                 site.AddContentType(pageLayoutContentType);
 
-                site.AddRootWeb(new RootWebDefinition(), rootWeb =>
-                {
-                    rootWeb.AddWebFeature(webFeature);
-                    rootWeb.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
-                    {
-                        list.AddPublishingPageLayout(pageLayout, p =>
-                        {
-                            if (pageSetup != null)
-                                pageSetup(p);
-                        });
-                    });
-                });
+                // TODO
+
+                //site.AddRootWeb(new RootWebDefinition(), rootWeb =>
+                //{
+                //    rootWeb.AddWebFeature(webFeature);
+                //    rootWeb.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+                //    {
+                //        list.AddPublishingPageLayout(pageLayout, p =>
+                //        {
+                //            if (pageSetup != null)
+                //                pageSetup(p);
+                //        });
+                //    });
+                //});
             });
 
             return new[] { siteModel };

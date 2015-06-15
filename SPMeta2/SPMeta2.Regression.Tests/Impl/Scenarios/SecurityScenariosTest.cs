@@ -381,7 +381,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    });
                });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -413,7 +413,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    });
                });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -453,7 +453,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -493,7 +493,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
 
         }
 
@@ -531,7 +531,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
 
@@ -568,7 +568,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -604,7 +604,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -628,7 +628,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  {
                      web.AddRandomWeb(rndWeb =>
                      {
-                         rndWeb.AddSiteFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(f =>
+                         rndWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(f =>
                          {
                              f.Enable = true;
                          }));
@@ -649,7 +649,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         #endregion
@@ -700,7 +700,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -738,7 +738,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -778,7 +778,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
 
@@ -817,7 +817,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -845,7 +845,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new[] { webModel });
+            TestModels(new  ModelNode[] { webModel });
         }
 
         [TestMethod]
@@ -870,7 +870,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      });
                  });
 
-            TestModels(new[] { webModel });
+            TestModels(new  ModelNode[] { webModel });
         }
 
         [TestMethod]
@@ -895,7 +895,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      });
                  });
 
-            TestModels(new[] { webModel });
+            TestModels(new  ModelNode[] { webModel });
         }
 
         #endregion

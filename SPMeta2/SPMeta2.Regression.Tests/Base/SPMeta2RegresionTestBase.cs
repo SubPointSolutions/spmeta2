@@ -168,12 +168,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new[] { model });
+            TestModels(new  ModelNode[] { model });
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
         {
-            TestModels(new[] { firstModel, secondModel });
+            TestModels(new  ModelNode[] { firstModel, secondModel });
         }
 
 

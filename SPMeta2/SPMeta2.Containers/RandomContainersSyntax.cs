@@ -7,6 +7,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Enumerations;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers
 {
@@ -31,14 +32,14 @@ namespace SPMeta2.Containers
 
         #region webs
 
-        public static ModelNode AddRandomWeb(this ModelNode model)
+        public static WebModelNode AddRandomWeb(this WebModelNode model)
         {
-            return AddRandomWebPartPage(model, null);
+            return AddRandomWeb(model, null);
         }
 
-        public static ModelNode AddRandomWeb(this ModelNode model, Action<ModelNode> action)
+        public static WebModelNode AddRandomWeb(this WebModelNode model, Action<WebModelNode> action)
         {
-            return model.AddRandomDefinition<WebDefinition>(action);
+            return model.AddRandomTypedDefinition<WebDefinition, WebModelNode>(action);
         }
 
         #endregion
@@ -262,6 +263,20 @@ namespace SPMeta2.Containers
               where TDefinition : DefinitionBase
         {
             return model.AddDefinitionNode(ModelGeneratorService.GetRandomDefinition<TDefinition>(), action);
+        }
+
+        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode>(this TModelNode model)
+            where TDefinition : DefinitionBase
+            where TModelNode : TypedModelNode, new()
+        {
+            return AddRandomTypedDefinition<TDefinition, TModelNode>(model, null);
+        }
+
+        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode>(this TModelNode model, Action<TModelNode> action)
+            where TDefinition : DefinitionBase
+            where TModelNode : TypedModelNode, new()
+        {
+            return model.AddTypedDefinitionNode(ModelGeneratorService.GetRandomDefinition<TDefinition>(), action);
         }
 
         #endregion

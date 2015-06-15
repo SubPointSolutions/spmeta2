@@ -11,6 +11,7 @@ using SPMeta2.Containers;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Models;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -157,7 +158,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        });
                    });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -229,7 +230,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             //           });
             //       });
 
-            TestModels(new[] { siteModel, webModel });
+            TestModels(new  ModelNode[] { siteModel, webModel });
         }
 
         #endregion

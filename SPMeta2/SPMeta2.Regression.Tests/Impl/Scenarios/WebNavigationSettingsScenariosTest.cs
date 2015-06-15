@@ -189,7 +189,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddWeb(taxWeb, subWeb =>
                 {
-                    subWeb.AddSiteFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
                     {
                         def.Enable = true;
                     }));

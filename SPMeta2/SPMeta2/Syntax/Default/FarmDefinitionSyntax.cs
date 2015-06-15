@@ -5,32 +5,37 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class FarmModelNode : TypedModelNode
+    {
+
+    }
+
     public static class FarmDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddFarm(this ModelNode model, FarmDefinition definition)
+        public static FarmModelNode AddFarm(this FarmModelNode model, FarmDefinition definition)
         {
             return AddFarm(model, definition, null);
         }
 
-        public static ModelNode AddFarm(this ModelNode model, FarmDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddFarm(this FarmModelNode model, FarmDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region methods
 
-        public static ModelNode AddHostFarm(this ModelNode model, FarmDefinition definition)
+        public static FarmModelNode AddHostFarm(this FarmModelNode model, FarmDefinition definition)
         {
             return AddHostFarm(model, definition, null);
         }
 
-        public static ModelNode AddHostFarm(this ModelNode model, FarmDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddHostFarm(this FarmModelNode model, FarmDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

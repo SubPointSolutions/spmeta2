@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Syntax;
@@ -154,7 +154,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new[] { taxonomyModel, fieldModel });
+            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
         }
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
@@ -190,7 +190,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new[] { taxonomyModel, fieldModel });
+            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new[] { taxonomyModel, fieldModel });
+            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
         }
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
@@ -285,7 +285,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new[] { taxonomyModel, fieldModel });
+            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
         }
 
         #endregion
