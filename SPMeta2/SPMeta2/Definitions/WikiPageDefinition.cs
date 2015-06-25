@@ -3,6 +3,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(ListDefinition))]
     public class WikiPageDefinition : PageDefinitionBase
     {
         #region properties

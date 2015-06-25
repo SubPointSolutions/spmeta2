@@ -91,6 +91,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\Capabilities\CapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\ParentHostCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Identity\IdentityKeyAttribute.cs" />
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInMasterPageDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
+    <Compile Include="Common\DefaultDefinitionRelationship.cs" />
     <Compile Include="Common\FieldValue.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
@@ -278,6 +282,7 @@
     <Compile Include="Models\TypedModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Impl\DefaultXMLSerializationService.cs" />
@@ -285,6 +290,7 @@
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
     <Compile Include="Services\LogEventId.cs" />
+    <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />

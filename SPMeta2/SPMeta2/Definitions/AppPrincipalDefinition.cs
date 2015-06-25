@@ -9,6 +9,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -21,6 +22,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
 
+    [ParentHostCapability(typeof(WebDefinition))]
     public class AppPrincipalDefinition : DefinitionBase
     {
         #region properties

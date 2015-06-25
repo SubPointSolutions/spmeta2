@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(SiteDefinition))]
     public class SecurityRoleDefinition : DefinitionBase
     {
         #region constructors

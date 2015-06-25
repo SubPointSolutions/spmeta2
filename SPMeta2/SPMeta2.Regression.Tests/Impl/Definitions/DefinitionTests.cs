@@ -10,12 +10,15 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Regression.Tests.Config;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -264,11 +267,17 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             Assert.IsTrue(result);
         }
 
+        #endregion
+
+        #region API and Syntax
 
         [TestMethod]
-        [TestCategory("Regression.Definitions")]
-        public void DefinitionsShouldHaveXXX_DefinitionSyntax()
+        [TestCategory("Regression.Definitions.Syntax.v11")]
+        public void DefinitionsShouldHaveAddXXX_DefinitionSyntax_v11()
         {
+            if (!M2RegressionRuntime.IsV11)
+                return;
+
             var showTrace = false;
 
             var methods = GetModelNodeExtensionMethods(new[]
@@ -418,45 +427,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             Assert.IsTrue(hasAllAddMethods);
         }
 
-        #endregion
-
-        #region utils
-
-
-        static IEnumerable<MethodInfo> GetExtensionMethods(Assembly assembly, Type extendedType)
-        {
-            var query = from type in assembly.GetTypes()
-                        where type.IsSealed && !type.IsGenericType && !type.IsNested
-                        from method in type.GetMethods(BindingFlags.Static
-                            | BindingFlags.Public | BindingFlags.NonPublic)
-                        where method.IsDefined(typeof(ExtensionAttribute), false)
-                        where method.GetParameters()[0].ParameterType == extendedType
-                        select method;
-            return query;
-        }
-
-        private List<MethodInfo> GetModelNodeExtensionMethods(IEnumerable<Assembly> assemblies)
-        {
-            var methods = new List<MethodInfo>();
-
-            foreach (var asm in assemblies)
-            {
-                foreach (var definitionType in DefinitionTypes)
-                {
-                    var methodInfos = GetExtensionMethods(asm, typeof(ModelNode));
-                    foreach (var method in methodInfos)
-                        if (!methods.Contains(method))
-                            methods.Add(method);
-                }
-            }
-
-            return methods;
-        }
-
         [TestMethod]
-        [TestCategory("Regression.Definitions")]
-        public void DefinitionsShouldHaveWithXXX_DefinitionSyntax()
+        [TestCategory("Regression.Definitions.Syntax.v11")]
+        public void DefinitionsShouldHaveWithXXX_DefinitionSyntax_v11()
         {
+            if (M2RegressionRuntime.CurrentAPIVersion < M2Consts.APIv12)
+                return;
+
             var showSkipping = false;
 
             var methods = GetModelNodeExtensionMethods(new[]
@@ -521,6 +498,315 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             Assert.IsTrue(hasAllAddMethods);
         }
+
+        #region v12
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.Syntax.v12")]
+        public void DefinitionsShouldHave_RelationshipMap_v12()
+        {
+            if (!M2RegressionRuntime.IsV12)
+                return;
+
+            var showFails = true;
+
+            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(FieldDefinition).Assembly);
+            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(TaxonomyFieldDefinition).Assembly);
+
+            var relationshipService = ServiceContainer.Instance.GetService<DefinitionRelationshipServiceBase>();
+            var allRelationships = relationshipService.GetDefinitionRelationships();
+
+            var passed = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var hasRelationship = allRelationships.Any(r => r.DefinitionType == definitionType);
+
+                if (showFails)
+                {
+                    if (!hasRelationship)
+                    {
+                        Trace.WriteLine(string.Format("Definition: [{0}]", definitionType.Name));
+                        Trace.WriteLine(string.Format(" - Has relationship: [{0}]", hasRelationship.ToString().ToUpper()));
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("Definition: [{0}]", definitionType.Name));
+                    Trace.WriteLine(string.Format(" - Has relationship: [{0}]", hasRelationship.ToString().ToUpper()));
+                }
+
+                if (!hasRelationship)
+                    passed = false;
+            }
+
+            Assert.IsTrue(passed);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.Syntax.v12")]
+        public void DefinitionsShouldHaveAddXXX_DefinitionSyntax_v12()
+        {
+            if (!M2RegressionRuntime.IsV12)
+                return;
+
+            var showTrace = false;
+
+            var methods = GetModelNodeExtensionMethods(new[]
+            {
+                typeof(DefinitionBase).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly,
+                typeof(ListDefinitionSyntax).Assembly
+            });
+
+            var hasAllAddMethods = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var definitionName = definitionType.Name.Replace("Definition", string.Empty);
+
+                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
+
+                #region AddXXX()
+
+                // validate (this ModelNode model, XXXDefinition definition)
+                Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
+                var addDefinitionMethodName = string.Format("Add{0}", definitionName);
+
+                var hasAddDefinitionMethod = methods.FirstOrDefault(m =>
+                                                        m.Name == addDefinitionMethodName &&
+                                                        m.GetParameters().Count() == 2 &&
+                                                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                                                        m.GetParameters()[1].ParameterType == definitionType) != null;
+
+                Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
+                // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
+                var hasAddDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
+                                   m.Name == addDefinitionMethodName &&
+                                   m.GetParameters().Count() == 3 &&
+                                    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                                    m.GetParameters()[1].ParameterType == definitionType &&
+                                    m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
+
+
+                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
+                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
+
+                #endregion
+
+                #region AddXXXs array overload
+
+                var hasAddArrayDefinitionMethod = true;
+                var shouldCheckArrayOverload = definitionType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
+
+                if (shouldCheckArrayOverload)
+                {
+                    // validate (this ModelNode model, XXXDefinition definition)
+                    Trace.WriteLine(
+                        string.Format(
+                            "     Add{0}s(this ModelNode model, IEnumerable<{0}Definition> definitions, Action<ModelNode> action))",
+                            definitionName));
+                    var addArrayDefinitionMethodName = string.Format("Add{0}s", definitionName);
+
+                    if (definitionType == typeof(PrefixDefinition))
+                        addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
+                    if (definitionType == typeof(PropertyDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddProperties");
+                    if (definitionType == typeof(ManagedPropertyDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddManagedProperties");
+                    if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddDiagnosticsServices");
+                    if (definitionType == typeof(ListItemFieldValuesDefinition))
+                        addArrayDefinitionMethodName = string.Format("ListItemFieldValues");
+
+                    var arrayTypoe = typeof(IEnumerable<>);
+                    var arrayDefinitionType = arrayTypoe.MakeGenericType(definitionType);
+
+                    hasAddArrayDefinitionMethod = methods.FirstOrDefault(m =>
+                        m.Name == addArrayDefinitionMethodName &&
+                        m.GetParameters().Count() == 2 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == arrayDefinitionType) != null;
+
+                    Trace.WriteLine(
+                      string.Format("    [{0}] - {1}(this ModelNode model, IEnumerable<{2}Definition> definitions))",
+                          hasAddArrayDefinitionMethod.ToString().ToUpper(), addArrayDefinitionMethodName, definitionName));
+
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddXXXs() arrary overload as there is no ExpectArrayExtensionMethod attr"));
+                }
+
+                #endregion
+
+                #region AddHostXXX()
+
+                var shouldCheckAddHostOverload = definitionType.GetCustomAttributes(
+                    typeof(ExpectAddHostExtensionMethod), false).Any();
+
+                var hasAddHostDefinitionMethod = true;
+                var hasAddHostDefinitionWithCallbackMethod = true;
+
+                if (shouldCheckAddHostOverload)
+                {
+                    // validate (this ModelNode model, XXXDefinition definition)
+                    Trace.WriteLine(string.Format("     AddHost{0}(this ModelNode model, {0}Definition definition)",
+                        definitionName));
+                    var addHostDefinitionMethodName = string.Format("AddHost{0}", definitionName);
+
+                    hasAddHostDefinitionMethod = methods.FirstOrDefault(m =>
+                        m.Name == addHostDefinitionMethodName &&
+                        m.GetParameters().Count() == 2 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == definitionType) != null;
+
+                    Trace.WriteLine(
+                        string.Format(
+                            "     AddHost{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))",
+                            definitionName));
+                    // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
+                    hasAddHostDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
+                        m.Name == addHostDefinitionMethodName &&
+                        m.GetParameters().Count() == 3 &&
+                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                        m.GetParameters()[1].ParameterType == definitionType &&
+                        m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
+
+
+                    Trace.WriteLine(
+                        string.Format("    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition))",
+                            hasAddHostDefinitionMethod.ToString().ToUpper(), definitionName));
+                    Trace.WriteLine(
+                        string.Format(
+                            "    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))",
+                            hasAddHostDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
+                }
+                else
+                {
+                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddHostXXX() methods as there is no ExpectAddHostExtensionMethod attr"));
+                }
+
+                #endregion
+
+                // push back
+                if (hasAddDefinitionMethod != true || hasAddDefinitionWithCallbackMethod != true ||
+                    hasAddHostDefinitionMethod != true || hasAddHostDefinitionWithCallbackMethod != true ||
+                    hasAddArrayDefinitionMethod != true)
+                    hasAllAddMethods = false;
+            }
+
+            Assert.IsTrue(hasAllAddMethods);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.Syntax.v12")]
+        public void DefinitionsShouldHaveWithXXX_DefinitionSyntax_v12()
+        {
+            if (!M2RegressionRuntime.IsV12)
+                return;
+
+            var showSkipping = false;
+
+            var methods = GetModelNodeExtensionMethods(new[]
+            {
+                typeof(DefinitionBase).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly,
+                typeof(ListDefinitionSyntax).Assembly
+            });
+
+            var hasAllAddMethods = true;
+
+            foreach (var definitionType in DefinitionTypes)
+            {
+                var definitionName = definitionType.Name.Replace("Definition", string.Empty);
+
+                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
+
+                var shouldCheckWithMethod = definitionType.GetCustomAttributes(typeof(ExpectWithExtensionMethod), false).Any();
+
+
+                #region WithXXX()
+
+                // validate (this ModelNode model, XXXDefinition definition)
+                var addDefinitionMethodName = string.Format("With{0}s", definitionName);
+
+                if (definitionType == typeof(PrefixDefinition))
+                    addDefinitionMethodName = string.Format("With{0}es", definitionName);
+                if (definitionType == typeof(PropertyDefinition))
+                    addDefinitionMethodName = string.Format("WithProperties");
+                if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
+                    addDefinitionMethodName = string.Format("WithDiagnosticsServices");
+                if (definitionType == typeof(RootWebDefinition))
+                    addDefinitionMethodName = string.Format("WithRootWeb");
+
+                if (!shouldCheckWithMethod)
+                {
+                    if (showSkipping)
+                        Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - SKIPPING", addDefinitionMethodName));
+
+                    continue;
+                }
+
+
+                var hasWithMethod = methods.FirstOrDefault(m =>
+                                                        m.Name == addDefinitionMethodName &&
+                                                        m.GetParameters().Count() == 2 &&
+                                                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
+                                                        m.GetParameters()[1].ParameterType == typeof(Action<ModelNode>)) != null;
+
+                if (hasWithMethod)
+                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - TRUE", addDefinitionMethodName));
+                else
+                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - FALSE", addDefinitionMethodName));
+
+
+                #endregion
+
+                // push back
+                if (hasWithMethod != true)
+                    hasAllAddMethods = false;
+            }
+
+            Assert.IsTrue(hasAllAddMethods);
+        }
+        #endregion
+
+        #endregion
+
+        #region utils
+
+        static IEnumerable<MethodInfo> GetExtensionMethods(Assembly assembly, Type extendedType)
+        {
+            var query = from type in assembly.GetTypes()
+                        where type.IsSealed && !type.IsGenericType && !type.IsNested
+                        from method in type.GetMethods(BindingFlags.Static
+                            | BindingFlags.Public | BindingFlags.NonPublic)
+                        where method.IsDefined(typeof(ExtensionAttribute), false)
+                        where method.GetParameters()[0].ParameterType == extendedType
+                        select method;
+            return query;
+        }
+
+        private List<MethodInfo> GetModelNodeExtensionMethods(IEnumerable<Assembly> assemblies)
+        {
+            var methods = new List<MethodInfo>();
+
+            foreach (var asm in assemblies)
+            {
+                foreach (var definitionType in DefinitionTypes)
+                {
+                    var methodInfos = GetExtensionMethods(asm, typeof(ModelNode));
+                    foreach (var method in methodInfos)
+                        if (!methods.Contains(method))
+                            methods.Add(method);
+                }
+            }
+
+            return methods;
+        }
+
+
 
         #endregion
     }

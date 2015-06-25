@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -25,6 +26,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(WebDefinition))]
     public class ListDefinition : DefinitionBase
     {
         public ListDefinition()

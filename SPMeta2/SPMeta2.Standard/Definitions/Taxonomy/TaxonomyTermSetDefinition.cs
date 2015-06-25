@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
@@ -23,6 +24,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(TaxonomyTermGroupDefinition))]
     public class TaxonomyTermSetDefinition : DefinitionBase
     {
         #region constructors

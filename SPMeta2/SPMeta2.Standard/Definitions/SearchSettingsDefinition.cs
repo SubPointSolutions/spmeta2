@@ -10,6 +10,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -26,6 +27,9 @@ namespace SPMeta2.Standard.Definitions
     [Serializable] 
     [DataContract]
     [SingletonIdentity]
+
+    [ParentHostCapability(typeof(SiteDefinition))]
+    [ParentHostCapability(typeof(WebDefinition))]
     public class SearchSettingsDefinition : DefinitionBase
     {
         #region constructors

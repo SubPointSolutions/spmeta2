@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,8 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [SingletonIdentity]
+
+    [ParentHostCapability(typeof(WebDefinition))]
     public class ResetRoleInheritanceDefinition : DefinitionBase
     {
         #region properties

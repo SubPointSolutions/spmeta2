@@ -7,6 +7,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -26,6 +27,8 @@ namespace SPMeta2.Definitions.Webparts
     //[ExpectAddHostExtensionMethod]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(ListDefinition))]
     public class WebPartGalleryFileDefinition : ContentPageDefinitionBase
     {
         #region constructors

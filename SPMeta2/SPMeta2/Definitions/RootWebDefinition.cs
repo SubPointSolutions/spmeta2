@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -21,6 +22,9 @@ namespace SPMeta2.Definitions
     [DataContract]
     [ExpectAddHostExtensionMethod]
     [ExpectWithExtensionMethod]
+
+    [ParentHostCapability(typeof(SiteDefinition))]
+    [ParentHostCapability(typeof(WebDefinition))]
     public class RootWebDefinition : DefinitionBase
     {
         #region properties

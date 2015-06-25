@@ -2,6 +2,8 @@
 using SPMeta2.Attributes.Regression;
 using System;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
+
 namespace SPMeta2.Definitions
 {
     /// <summary>
@@ -19,6 +21,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(ListDefinition))]
     public class WebPartPageDefinition : PageDefinitionBase
     {
         #region constructors

@@ -9,6 +9,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 
 namespace SPMeta2.Definitions
@@ -28,6 +29,8 @@ namespace SPMeta2.Definitions
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(ListDefinition))]
 
     public class ListFieldLinkDefinition : DefinitionBase
     {

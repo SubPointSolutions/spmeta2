@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -13,8 +14,11 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable] [DataContract]
+    [Serializable]
+    [DataContract]
 
+
+    [ParentHostCapability(typeof(ListDefinition))]
     public class InformationRightsManagementSettingsDefinition : DefinitionBase
     {
         #region properties

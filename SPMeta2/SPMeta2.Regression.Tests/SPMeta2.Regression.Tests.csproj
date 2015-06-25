@@ -70,6 +70,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Base\ListViewWebPartScenariosTestBase.cs" />
+    <Compile Include="Config\M2RegressionRuntime.cs" />
     <Compile Include="Consts\RegWebparts.cs" />
     <Compile Include="Data\PageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
