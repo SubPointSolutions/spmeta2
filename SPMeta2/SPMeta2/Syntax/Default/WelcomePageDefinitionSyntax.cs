@@ -13,15 +13,41 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWelcomePage(this ModelNode model, WelcomePageDefinition definition)
+        public static WebModelNode AddWelcomePage(this WebModelNode model, WelcomePageDefinition definition)
         {
             return AddWelcomePage(model, definition, null);
         }
 
-        public static ModelNode AddWelcomePage(this ModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddWelcomePage(this WebModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
+
+
+        public static ListModelNode AddWelcomePage(this ListModelNode model, WelcomePageDefinition definition)
+        {
+            return AddWelcomePage(model, definition, null);
+        }
+
+        public static ListModelNode AddWelcomePage(this ListModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+
+        public static FolderModelNode AddWelcomePage(this FolderModelNode model, WelcomePageDefinition definition)
+        {
+            return AddWelcomePage(model, definition, null);
+        }
+
+        public static FolderModelNode AddWelcomePage(this FolderModelNode model, WelcomePageDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+
+
+
 
         #endregion
     }

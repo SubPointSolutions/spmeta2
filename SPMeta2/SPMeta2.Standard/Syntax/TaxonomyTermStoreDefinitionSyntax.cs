@@ -5,6 +5,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class TaxonomyTermStoreModelNode : TypedModelNode
+    {
+
+    }
+
     public static class TaxonomyTermStoreDefinitionSyntax
     {
         public static ModelNode AddTaxonomyTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition)

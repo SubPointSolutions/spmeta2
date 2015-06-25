@@ -8,18 +8,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class FolderModelNode : TypedModelNode
+    {
+
+    }
+
     public static class FolderDefinitionSyntax
     {
         #region add folders
 
-        public static ModelNode AddFolder(this ModelNode model, FolderDefinition definition)
+        public static ListModelNode AddFolder(this ListModelNode model, FolderDefinition definition)
         {
             return AddFolder(model, definition, null);
         }
 
-        public static ModelNode AddFolder(this ModelNode model, FolderDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddFolder(this ListModelNode model, FolderDefinition definition, Action<FolderModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+
+        public static FolderModelNode AddFolder(this FolderModelNode model, FolderDefinition definition)
+        {
+            return AddFolder(model, definition, null);
+        }
+
+        public static FolderModelNode AddFolder(this FolderModelNode model, FolderDefinition definition, Action<FolderModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

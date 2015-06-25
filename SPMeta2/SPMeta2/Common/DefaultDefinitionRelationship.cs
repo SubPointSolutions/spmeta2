@@ -54,6 +54,9 @@ namespace SPMeta2.Common
             {
                 foreach (var attr in parentHostAttrs)
                 {
+                    if (attr.HostType == null)
+                        continue;
+
                     var parentType = attr.HostType;
 
                     var currentRelationShip = Relationships.FirstOrDefault(r => r.DefinitionType == definitionType);

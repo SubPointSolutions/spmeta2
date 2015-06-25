@@ -66,7 +66,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region utils
 
-        private void WithSitePagesList(Action<ModelNode> pagesList)
+        private void WithSitePagesList(Action<ListModelNode> pagesList)
         {
             var webModel = SPMeta2Model
                .NewWebModel(web =>

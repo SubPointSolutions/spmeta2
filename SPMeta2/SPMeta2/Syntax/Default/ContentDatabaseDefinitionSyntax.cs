@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentDatabase(this ModelNode model, ContentDatabaseDefinition definition)
+        public static WebApplicationModelNode AddContentDatabase(this WebApplicationModelNode model, ContentDatabaseDefinition definition)
         {
             return AddContentDatabase(model, definition, null);
         }
 
-        public static ModelNode AddContentDatabase(this ModelNode model, ContentDatabaseDefinition definition, Action<ModelNode> action)
+       public static WebApplicationModelNode AddContentDatabase(this WebApplicationModelNode model, ContentDatabaseDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

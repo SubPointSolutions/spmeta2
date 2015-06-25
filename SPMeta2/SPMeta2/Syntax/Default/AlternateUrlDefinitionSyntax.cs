@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region base
 
-        public static ModelNode AddAlternateUrl(this ModelNode model, AlternateUrlDefinition definition)
+        public static WebApplicationModelNode AddAlternateUrl(this WebApplicationModelNode model, AlternateUrlDefinition definition)
         {
             return AddAlternateUrl(model, definition, null);
         }
 
-        public static ModelNode AddAlternateUrl(this ModelNode model, AlternateUrlDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddAlternateUrl(this WebApplicationModelNode model, AlternateUrlDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

@@ -14,14 +14,34 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddAuditSettings(this ModelNode model, AuditSettingsDefinition definition)
+        public static ListModelNode AddAuditSettings(this ListModelNode model, AuditSettingsDefinition definition)
         {
             return AddAuditSettings(model, definition, null);
         }
 
-        public static ModelNode AddAuditSettings(this ModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddAuditSettings(this ListModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static SiteModelNode AddAuditSettings(this SiteModelNode model, AuditSettingsDefinition definition)
+        {
+            return AddAuditSettings(model, definition, null);
+        }
+
+        public static SiteModelNode AddAuditSettings(this SiteModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddAuditSettings(this WebModelNode model, AuditSettingsDefinition definition)
+        {
+            return AddAuditSettings(model, definition, null);
+        }
+
+        public static WebModelNode AddAuditSettings(this WebModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

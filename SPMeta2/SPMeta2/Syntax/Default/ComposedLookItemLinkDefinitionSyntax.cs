@@ -10,14 +10,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddComposedLookItemLink(this ModelNode model, ComposedLookItemLinkDefinition definition)
+        public static WebModelNode AddComposedLookItemLink(this WebModelNode model, ComposedLookItemLinkDefinition definition)
         {
             return AddComposedLookItemLink(model, definition, null);
         }
 
-        public static ModelNode AddComposedLookItemLink(this ModelNode model, ComposedLookItemLinkDefinition definition, Action<ModelNode> action)
+       public static WebModelNode AddComposedLookItemLink(this WebModelNode model, ComposedLookItemLinkDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         public static ModelNode AddComposedLookItemLinks(this ModelNode model, IEnumerable<ComposedLookItemLinkDefinition> definitions)

@@ -39,7 +39,7 @@ namespace SPMeta2.Containers
 
         public static WebModelNode AddRandomWeb(this WebModelNode model, Action<WebModelNode> action)
         {
-            return model.AddRandomTypedDefinition<WebDefinition, WebModelNode>(action);
+            return model.AddRandomTypedDefinition<WebDefinition, WebModelNode, WebModelNode>(action);
         }
 
         #endregion
@@ -124,14 +124,14 @@ namespace SPMeta2.Containers
 
         #region lists
 
-        public static ModelNode AddRandomList(this ModelNode model)
+        public static WebModelNode AddRandomList(this WebModelNode model)
         {
-            return AddRandomWebPartPage(model, null);
+            return AddRandomWebPartPage(model, null) as WebModelNode;
         }
 
-        public static ModelNode AddRandomList(this ModelNode model, Action<ModelNode> action)
+        public static WebModelNode AddRandomList(this WebModelNode model, Action<ListModelNode> action)
         {
-            return model.AddRandomDefinition<ListDefinition>(action);
+            return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(action);
         }
 
         public static ModelNode AddRandomDocumentLibrary(this ModelNode model, Action<ModelNode> action)
@@ -192,14 +192,24 @@ namespace SPMeta2.Containers
 
         #region fodlers
 
-        public static ModelNode AddRandomFolder(this ModelNode model)
+        public static ListModelNode AddRandomFolder(this ListModelNode model)
         {
             return AddRandomFolder(model, null);
         }
 
-        public static ModelNode AddRandomFolder(this ModelNode model, Action<ModelNode> action)
+        public static ListModelNode AddRandomFolder(this ListModelNode model, Action<FolderModelNode> action)
         {
-            return model.AddRandomDefinition<FolderDefinition>(action);
+            return model.AddRandomTypedDefinition<FolderDefinition, ListModelNode, FolderModelNode>(action);
+        }
+
+        public static FolderModelNode AddRandomFolder(this FolderModelNode model)
+        {
+            return AddRandomFolder(model, null);
+        }
+
+        public static FolderModelNode AddRandomFolder(this FolderModelNode model, Action<FolderModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<FolderDefinition, FolderModelNode, FolderModelNode>(action);
         }
 
         #endregion
@@ -265,16 +275,20 @@ namespace SPMeta2.Containers
             return model.AddDefinitionNode(ModelGeneratorService.GetRandomDefinition<TDefinition>(), action);
         }
 
-        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode>(this TModelNode model)
+        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode, TDefinitionNode>(
+           this TModelNode model)
             where TDefinition : DefinitionBase
             where TModelNode : TypedModelNode, new()
+            where TDefinitionNode : TypedModelNode, new()
         {
-            return AddRandomTypedDefinition<TDefinition, TModelNode>(model, null);
+            return AddRandomTypedDefinition<TDefinition, TModelNode, TDefinitionNode>(model, null);
         }
 
-        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode>(this TModelNode model, Action<TModelNode> action)
+        public static TModelNode AddRandomTypedDefinition<TDefinition, TModelNode, TDefinitionNode>(
+            this TModelNode model, Action<TDefinitionNode> action)
             where TDefinition : DefinitionBase
             where TModelNode : TypedModelNode, new()
+            where TDefinitionNode : TypedModelNode, new()
         {
             return model.AddTypedDefinitionNode(ModelGeneratorService.GetRandomDefinition<TDefinition>(), action);
         }

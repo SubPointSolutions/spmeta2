@@ -8,18 +8,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+
+    public class ListItemModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ListItemDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition definition)
+        public static ListModelNode AddListItem(this ListModelNode model, ListItemDefinition definition)
         {
             return AddListItem(model, definition, null);
         }
 
-        public static ModelNode AddListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddListItem(this ListModelNode model, ListItemDefinition definition, Action<ListItemModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static FolderModelNode AddListItem(this FolderModelNode model, ListItemDefinition definition)
+        {
+            return AddListItem(model, definition, null);
+        }
+
+        public static FolderModelNode AddListItem(this FolderModelNode model, ListItemDefinition definition, Action<ListItemModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

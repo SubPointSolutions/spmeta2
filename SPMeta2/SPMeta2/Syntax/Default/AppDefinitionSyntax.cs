@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddApp(this ModelNode model, AppDefinition definition)
+        public static WebModelNode AddApp(this WebModelNode model, AppDefinition definition)
         {
             return AddApp(model, definition, null);
         }
 
-        public static ModelNode AddApp(this ModelNode model, AppDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddApp(this WebModelNode model, AppDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
