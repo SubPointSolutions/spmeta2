@@ -93,7 +93,9 @@
   <ItemGroup>
     <Compile Include="Attributes\Capabilities\CapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\ParentHostCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\SiteCollectionTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\WebTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Identity\IdentityKeyAttribute.cs" />
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />

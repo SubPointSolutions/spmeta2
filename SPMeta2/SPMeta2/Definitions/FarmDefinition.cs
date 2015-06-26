@@ -24,7 +24,7 @@ namespace SPMeta2.Definitions
     [ExpectAddHostExtensionMethod]
     [SingletonIdentity]
 
-    [ParentHostCapability(null, IsRoot = true)]
+    [ParentHostCapability(typeof(FarmDefinition), IsRoot = true)]
     public class FarmDefinition : DefinitionBase
     {
         #region properties

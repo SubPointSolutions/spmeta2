@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -35,6 +36,9 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         [ExpectNullable]
         [ExpectUpdateAsUrl]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string ContentLink { get; set; }
 
         [ExpectValidation]

@@ -101,6 +101,9 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string DocumentTemplate { get; set; }
 
         #endregion

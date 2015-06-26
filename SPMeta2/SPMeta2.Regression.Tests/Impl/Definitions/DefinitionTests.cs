@@ -530,7 +530,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(TaxonomyFieldDefinition).Assembly);
 
             var relationshipService = ServiceContainer.Instance.GetService<DefinitionRelationshipServiceBase>();
-            var allRelationships = relationshipService.GetDefinitionRelationships();
+            var allRelationships = relationshipService.GetDefinitionRelationships().ToList();
+
+            allRelationships = allRelationships.OrderBy(s => s.DefinitionType.Name).ToList();
 
             var passed = true;
 

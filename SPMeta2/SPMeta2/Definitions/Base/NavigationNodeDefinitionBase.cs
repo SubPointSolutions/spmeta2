@@ -7,6 +7,7 @@ using System.Text;
 
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -46,6 +47,9 @@ namespace SPMeta2.Definitions.Base
         [ExpectRequired]
         [DataMember]
         [IdentityKey]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string Url { get; set; }
 
         /// <summary>

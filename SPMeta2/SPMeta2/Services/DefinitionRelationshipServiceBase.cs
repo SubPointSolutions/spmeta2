@@ -16,6 +16,14 @@ namespace SPMeta2.Services
         public Type DefinitionType { get; set; }
 
         public List<Type> HostTypes { get; set; }
+
+        public override string ToString()
+        {
+            if (DefinitionType != null)
+                return DefinitionType.Name;
+
+            return base.ToString();
+        }
     }
 
     public abstract class DefinitionRelationshipServiceBase
