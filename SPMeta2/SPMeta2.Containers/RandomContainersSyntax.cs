@@ -167,15 +167,29 @@ namespace SPMeta2.Containers
 
 
 
-        public static ModelNode AddRandomListItem(this ModelNode model)
+        public static FolderModelNode AddRandomListItem(this FolderModelNode model)
         {
             return AddRandomListItem(model, null);
         }
 
-        public static ModelNode AddRandomListItem(this ModelNode model, Action<ModelNode> action)
+        public static FolderModelNode AddRandomListItem(this FolderModelNode model,
+            Action<ListItemModelNode> action)
         {
-            return model.AddRandomDefinition<ListItemDefinition>(action);
+            return model.AddRandomTypedDefinition<ListItemDefinition, FolderModelNode, ListItemModelNode>(action);
         }
+
+        public static ListModelNode AddRandomListItem(this ListModelNode model)
+        {
+            return AddRandomListItem(model, null);
+        }
+
+        public static ListModelNode AddRandomListItem(this ListModelNode model,
+            Action<ListItemModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<ListItemDefinition, ListModelNode, ListItemModelNode>(action);
+        }
+
+
 
         #endregion
 
@@ -231,28 +245,50 @@ namespace SPMeta2.Containers
 
         #region fields
 
-        public static ModelNode AddRandomField(this ModelNode model)
+        public static SiteModelNode AddRandomField(this SiteModelNode model)
         {
             return AddRandomField(model, null);
         }
 
-        public static ModelNode AddRandomField(this ModelNode model, Action<ModelNode> action)
+        public static SiteModelNode AddRandomField(this SiteModelNode model, Action<ModelNode> action)
         {
-            return model.AddRandomDefinition<FieldDefinition>(action);
+            return model.AddRandomTypedDefinition<FieldDefinition, SiteModelNode, FieldModelNode>(action);
+        }
+
+        public static WebModelNode AddRandomField(this WebModelNode model)
+        {
+            return AddRandomField(model, null);
+        }
+
+        public static WebModelNode AddRandomField(this WebModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<FieldDefinition, WebModelNode, FieldModelNode>(action);
         }
 
         #endregion
 
         #region content types
 
-        public static ModelNode AddRandomContentType(this ModelNode model)
+        public static SiteModelNode AddRandomContentType(this SiteModelNode model)
         {
             return AddRandomContentType(model, null);
         }
 
-        public static ModelNode AddRandomContentType(this ModelNode model, Action<ModelNode> action)
+        public static SiteModelNode AddRandomContentType(this SiteModelNode model,
+            Action<ContentTypeModelNode> action)
         {
-            return model.AddRandomDefinition<ContentTypeDefinition>(action);
+            return model.AddRandomTypedDefinition<ContentTypeDefinition, SiteModelNode, ContentTypeModelNode>(action);
+        }
+
+        public static WebModelNode AddRandomContentType(this WebModelNode model)
+        {
+            return AddRandomContentType(model, null);
+        }
+
+        public static WebModelNode AddRandomContentType(this WebModelNode model,
+            Action<ContentTypeModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<ContentTypeDefinition, WebModelNode, ContentTypeModelNode>(action);
         }
 
         #endregion

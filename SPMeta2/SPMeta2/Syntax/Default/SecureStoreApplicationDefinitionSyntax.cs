@@ -19,14 +19,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition)
+        public static FarmModelNode AddSecureStoreApplication(this FarmModelNode model, SecureStoreApplicationDefinition definition)
         {
             return AddSecureStoreApplication(model, definition, null);
         }
 
-        public static ModelNode AddSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddSecureStoreApplication(this FarmModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

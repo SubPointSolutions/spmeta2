@@ -13,14 +13,28 @@ namespace SPMeta2.Standard.Syntax
 
     public static class TaxonomyTermDefinitionSyntax
     {
-        public static ModelNode AddTaxonomyTerm(this ModelNode model, TaxonomyTermDefinition definition)
+        public static TaxonomyTermSetModelNode AddTaxonomyTerm(this TaxonomyTermSetModelNode model,
+            TaxonomyTermDefinition definition)
         {
             return AddTaxonomyTerm(model, definition, null);
         }
 
-        public static ModelNode AddTaxonomyTerm(this ModelNode model, TaxonomyTermDefinition definition, Action<ModelNode> action)
+        public static TaxonomyTermSetModelNode AddTaxonomyTerm(this TaxonomyTermSetModelNode model,
+            TaxonomyTermDefinition definition, Action<TaxonomyTermModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static TaxonomyTermModelNode AddTaxonomyTerm(this TaxonomyTermModelNode model,
+            TaxonomyTermDefinition definition)
+        {
+            return AddTaxonomyTerm(model, definition, null);
+        }
+
+        public static TaxonomyTermModelNode AddTaxonomyTerm(this TaxonomyTermModelNode model,
+            TaxonomyTermDefinition definition, Action<TaxonomyTermModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #region array overload

@@ -3,21 +3,53 @@ using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default.Extensions;
 using System.Collections.Generic;
+using SPMeta2.Definitions;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class PublishingPageModelNode : TypedModelNode
+    {
+
+    }
+
+    public static class DeleteWebPartsDefinitionSyntax
+    {
+        public static PublishingPageModelNode AddDeleteWebParts(this PublishingPageModelNode model, DeleteWebPartsDefinition definition)
+        {
+            return AddDeleteWebParts(model, definition, null);
+        }
+
+        public static PublishingPageModelNode AddDeleteWebParts(this PublishingPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+    }
+
     public static class PublishingPageDefinitionSyntax
     {
         #region publishing page
 
-        public static ModelNode AddPublishingPage(this ModelNode model, PublishingPageDefinition definition)
+        public static ListModelNode AddPublishingPage(this ListModelNode model, PublishingPageDefinition definition)
         {
             return AddPublishingPage(model, definition, null);
         }
 
-        public static ModelNode AddPublishingPage(this ModelNode model, PublishingPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddPublishingPage(this ListModelNode model, PublishingPageDefinition definition,
+            Action<PublishingPageModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static FolderModelNode AddPublishingPage(this FolderModelNode model, PublishingPageDefinition definition)
+        {
+            return AddPublishingPage(model, definition, null);
+        }
+
+        public static FolderModelNode AddPublishingPage(this FolderModelNode model, PublishingPageDefinition definition,
+            Action<PublishingPageModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
@@ -36,14 +68,15 @@ namespace SPMeta2.Standard.Syntax
 
         #region host override
 
-        public static ModelNode AddHostPublishingPage(this ModelNode model, PublishingPageDefinition definition)
+        public static ListModelNode AddHostPublishingPage(this ListModelNode model, PublishingPageDefinition definition)
         {
             return AddHostPublishingPage(model, definition, null);
         }
 
-        public static ModelNode AddHostPublishingPage(this ModelNode model, PublishingPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddHostPublishingPage(this ListModelNode model,
+            PublishingPageDefinition definition, Action<PublishingPageModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

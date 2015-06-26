@@ -48,14 +48,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             public ModelNode SecondLink { get; set; }
             public ModelNode ThirdLink { get; set; }
 
-            public ModelNode SiteModel { get; set; }
-            public ModelNode WebModel { get; set; }
+            public SiteModelNode SiteModel { get; set; }
+            public WebModelNode WebModel { get; set; }
         }
 
         private ContentTypeEnvironment GetContentTypeLinksSandbox(
-            Action<ModelNode, ContentTypeEnvironment> siteModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> webModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> listModelConfig)
+            Action<SiteModelNode, ContentTypeEnvironment> siteModelConfig,
+            Action<WebModelNode, ContentTypeEnvironment> webModelConfig,
+            Action<ListModelNode, ContentTypeEnvironment> listModelConfig)
         {
             var result = new ContentTypeEnvironment();
 

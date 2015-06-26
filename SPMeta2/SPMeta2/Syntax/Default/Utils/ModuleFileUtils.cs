@@ -64,7 +64,7 @@ namespace SPMeta2.Syntax.Default.Utils
 
             foreach (var file in files)
             {
-                hostNode.AddModuleFile(new ModuleFileDefinition
+                hostNode.AddDefinitionNode(new ModuleFileDefinition
                 {
                     Content = File.ReadAllBytes(file),
                     FileName = Path.GetFileName(file),

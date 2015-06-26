@@ -81,7 +81,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region utils
 
-        private void WithListItemValue(Action<ModelNode, List<FieldDefinition>> setup)
+        private void WithListItemValue(Action<ListItemModelNode, List<FieldDefinition>> setup)
         {
             var fieldDefs = new List<FieldDefinition>();
 

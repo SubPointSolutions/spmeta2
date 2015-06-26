@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddDocumentParser(this ModelNode model, DocumentParserDefinition definition)
+        public static FarmModelNode AddDocumentParser(this FarmModelNode model, DocumentParserDefinition definition)
         {
             return AddDocumentParser(model, definition, null);
         }
 
-        public static ModelNode AddDocumentParser(this ModelNode model, DocumentParserDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddDocumentParser(this FarmModelNode model, DocumentParserDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

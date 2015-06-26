@@ -12,12 +12,12 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, Guid fieldId, object fieldValue)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, Guid fieldId, object fieldValue)
         {
             return AddListItemFieldValue(model, fieldId, fieldValue, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, Guid fieldId, object fieldValue, Action<ModelNode> action)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, Guid fieldId, object fieldValue, Action<ModelNode> action)
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -26,12 +26,12 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, string fieldName, object fieldValue)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, string fieldName, object fieldValue)
         {
             return AddListItemFieldValue(model, fieldName, fieldValue, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, string fieldName, object fieldValue, Action<ModelNode> action)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, string fieldName, object fieldValue, Action<ModelNode> action)
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -40,14 +40,14 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, ListItemFieldValueDefinition definition)
         {
             return AddListItemFieldValue(model, definition, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition, Action<ModelNode> action)
+        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, ListItemFieldValueDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
 
@@ -65,6 +65,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-      
+
     }
 }

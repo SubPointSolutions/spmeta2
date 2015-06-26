@@ -21,28 +21,46 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition)
+        public static SiteModelNode AddContentType(this SiteModelNode model, ContentTypeDefinition definition)
         {
             return AddContentType(model, definition, null);
         }
 
-        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddContentType(this SiteModelNode model, ContentTypeDefinition definition, 
+            Action<ContentTypeModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, params ContentTypeDefinition[] definitions)
+        public static WebModelNode AddContentType(this WebModelNode model, ContentTypeDefinition definition)
         {
-            return AddContentTypes(siteModel, (IEnumerable<ContentTypeDefinition>)definitions);
+            return AddContentType(model, definition, null);
         }
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
+        public static WebModelNode AddContentType(this WebModelNode model, ContentTypeDefinition definition,
+            Action<ContentTypeModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+       
+
+        public static SiteModelNode AddContentTypes(this SiteModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
         {
             foreach (var definition in definitions)
                 AddContentType(siteModel, definition);
 
             return siteModel;
         }
+
+        public static WebModelNode AddContentTypes(this WebModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
+        {
+            foreach (var definition in definitions)
+                AddContentType(siteModel, definition);
+
+            return siteModel;
+        }
+
 
         public static bool IsChildOf(this ContentTypeDefinition childContentTypeDefinition,
             ContentTypeDefinition parentContentTypeDefinition)

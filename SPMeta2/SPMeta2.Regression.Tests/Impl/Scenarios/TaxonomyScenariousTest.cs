@@ -41,16 +41,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             if (deep == 0)
                 return;
 
-            termSetOrTermNode.AddRandomTerm(term =>
+            if (termSetOrTermNode is TaxonomyTermModelNode)
             {
-                var termDef = term.Value as TaxonomyTermDefinition;
-                termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
+                (termSetOrTermNode as TaxonomyTermModelNode).AddRandomTerm(term =>
+                 {
+                     var termDef = term.Value as TaxonomyTermDefinition;
+                     termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
 
-                if (cleanGuid)
-                    termDef.Id = null;
+                     if (cleanGuid)
+                         termDef.Id = null;
 
-                GenerateTermsTree(term, --deep, cleanGuid);
-            });
+                     GenerateTermsTree(term, --deep, cleanGuid);
+                 });
+            }
+            else if (termSetOrTermNode is TaxonomyTermSetModelNode)
+            {
+                (termSetOrTermNode as TaxonomyTermSetModelNode).AddRandomTerm(term =>
+                {
+                    var termDef = term.Value as TaxonomyTermDefinition;
+                    termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
+
+                    if (cleanGuid)
+                        termDef.Id = null;
+
+                    GenerateTermsTree(term, --deep, cleanGuid);
+                });
+            }
+
+
         }
 
         protected ModelNode GenerateTermTaxonomyTree(int deep, bool cleanGuid)

@@ -15,14 +15,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWebPartPage(this ModelNode model, WebPartPageDefinition definition)
+        public static ListModelNode AddWebPartPage(this ListModelNode model, WebPartPageDefinition definition)
         {
             return AddWebPartPage(model, definition, null);
         }
 
-        public static ModelNode AddWebPartPage(this ModelNode model, WebPartPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddWebPartPage(this ListModelNode model, WebPartPageDefinition definition, Action<WebPartPageModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
@@ -41,14 +41,15 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static ModelNode AddHostWebPartPage(this ModelNode model, WebPartPageDefinition definition)
+        public static ListModelNode AddHostWebPartPage(this ListModelNode model, WebPartPageDefinition definition)
         {
             return AddHostWebPartPage(model, definition, null);
         }
 
-        public static ModelNode AddHostWebPartPage(this ModelNode model, WebPartPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddHostWebPartPage(this ListModelNode model, WebPartPageDefinition definition,
+            Action<WebPartPageModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

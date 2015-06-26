@@ -6,26 +6,64 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class FieldModelNode : TypedModelNode
+    {
+        
+    }
+
+
     public static class FieldDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddField(this ModelNode siteModel, FieldDefinition definition)
+        public static SiteModelNode AddField(this SiteModelNode siteModel, FieldDefinition definition)
         {
-            return AddFields(siteModel, new[] { definition });
+            return AddField(siteModel, null);
         }
 
-        public static ModelNode AddField(this ModelNode model, FieldDefinition fielDefinition, Action<ModelNode> action)
+        public static SiteModelNode AddField(this SiteModelNode model, FieldDefinition definition,
+            Action<FieldModelNode> action)
         {
-            return model.AddDefinitionNode(fielDefinition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddFields(this ModelNode siteModel, FieldDefinition[] fielDefinition)
+        public static WebModelNode AddField(this WebModelNode siteModel, FieldDefinition definition)
         {
-            return AddFields(siteModel, (IEnumerable<FieldDefinition>)fielDefinition);
+            return AddField(siteModel, null);
         }
 
-        public static ModelNode AddFields(this ModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
+        public static WebModelNode AddField(this WebModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddField(this ListModelNode siteModel, FieldDefinition definition)
+        {
+            return AddField(siteModel, null);
+        }
+
+        public static ListModelNode AddField(this ListModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static SiteModelNode AddFields(this SiteModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
+        {
+            foreach (var fieldDefinition in fieldDefinitions)
+                model.AddDefinitionNode(fieldDefinition);
+
+            return model;
+        }
+
+        public static WebModelNode AddFields(this WebModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
+        {
+            foreach (var fieldDefinition in fieldDefinitions)
+                model.AddDefinitionNode(fieldDefinition);
+
+            return model;
+        }
+
+        public static ListModelNode AddFields(this ListModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
         {
             foreach (var fieldDefinition in fieldDefinitions)
                 model.AddDefinitionNode(fieldDefinition);

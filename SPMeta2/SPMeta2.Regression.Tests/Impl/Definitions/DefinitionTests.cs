@@ -586,6 +586,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var allRelationships = relationshipService.GetDefinitionRelationships();
 
             var missedModelNodeTypes = new List<string>();
+            var falseMethodsCount = 0;
 
             foreach (var definitionType in DefinitionTypes)
             {
@@ -653,6 +654,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         {
                             Trace.WriteLine(string.Format("[FALSE] public static {1} Add{0}(this {1} model, {0}Definition definition)",
                                 definitionName, parentNodeModelType.Name));
+
+                            falseMethodsCount++;
                         }
                     }
                 }
@@ -784,10 +787,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                     hasAllAddMethods = false;
             }
 
-            Trace.WriteLine("Missed model node types");
+            Trace.WriteLine("S: Missed model node types");
 
             foreach (var m in missedModelNodeTypes)
                 Trace.WriteLine("   " + m);
+
+            Trace.WriteLine("S: Missed methods: " + falseMethodsCount);
+            
 
             Assert.IsTrue(hasAllAddMethods);
         }

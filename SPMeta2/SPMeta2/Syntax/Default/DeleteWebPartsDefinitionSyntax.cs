@@ -15,14 +15,24 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddDeleteWebParts(this ModelNode model, DeleteWebPartsDefinition definition)
+        public static WebPartPageModelNode AddDeleteWebParts(this WebPartPageModelNode model, DeleteWebPartsDefinition definition)
         {
             return AddDeleteWebParts(model, definition, null);
         }
 
-        public static ModelNode AddDeleteWebParts(this ModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
+        public static WebPartPageModelNode AddDeleteWebParts(this WebPartPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WikiPageModelNode AddDeleteWebParts(this WikiPageModelNode model, DeleteWebPartsDefinition definition)
+        {
+            return AddDeleteWebParts(model, definition, null);
+        }
+
+        public static WikiPageModelNode AddDeleteWebParts(this WikiPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

@@ -15,14 +15,33 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddLookupField(this ModelNode model, LookupFieldDefinition definition)
+        public static SiteModelNode AddLookupField(this SiteModelNode model, LookupFieldDefinition definition)
         {
             return AddLookupField(model, definition, null);
         }
 
-        public static ModelNode AddLookupField(this ModelNode model, LookupFieldDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddLookupField(this SiteModelNode model, LookupFieldDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+        public static WebModelNode AddLookupField(this WebModelNode model, LookupFieldDefinition definition)
+        {
+            return AddLookupField(model, definition, null);
+        }
+
+        public static WebModelNode AddLookupField(this WebModelNode model, LookupFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddLookupField(this ListModelNode model, LookupFieldDefinition definition)
+        {
+            return AddLookupField(model, definition, null);
+        }
+
+        public static ListModelNode AddLookupField(this ListModelNode model, LookupFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

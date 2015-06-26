@@ -10,16 +10,44 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ModuleFileModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ModuleFileDefinitionSyntax
     {
-        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition definition)
+        public static WebModelNode AddModuleFile(this WebModelNode model, ModuleFileDefinition definition)
         {
             return AddModuleFile(model, definition, null);
         }
 
-        public static ModelNode AddModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddModuleFile(this WebModelNode model, ModuleFileDefinition definition,
+            Action<ModuleFileModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ContentTypeModelNode AddModuleFile(this ContentTypeModelNode model, ModuleFileDefinition definition)
+        {
+            return AddModuleFile(model, definition, null);
+        }
+
+        public static ContentTypeModelNode AddModuleFile(this ContentTypeModelNode model, ModuleFileDefinition definition,
+            Action<ModuleFileModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddModuleFile(this ListModelNode model, ModuleFileDefinition definition)
+        {
+            return AddModuleFile(model, definition, null);
+        }
+
+        public static ListModelNode AddModuleFile(this ListModelNode model, ModuleFileDefinition definition,
+            Action<ModuleFileModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
 

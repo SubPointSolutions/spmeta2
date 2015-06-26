@@ -15,14 +15,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddMasterPagePreview(this ModelNode model, MasterPagePreviewDefinition definition)
+        public static ListModelNode AddMasterPagePreview(this ListModelNode model, MasterPagePreviewDefinition definition)
         {
             return AddMasterPagePreview(model, definition, null);
         }
 
-        public static ModelNode AddMasterPagePreview(this ModelNode model, MasterPagePreviewDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddMasterPagePreview(this ListModelNode model, MasterPagePreviewDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

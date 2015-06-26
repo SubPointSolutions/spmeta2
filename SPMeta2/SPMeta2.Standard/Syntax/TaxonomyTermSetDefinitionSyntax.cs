@@ -13,14 +13,15 @@ namespace SPMeta2.Standard.Syntax
 
     public static class TaxonomyTermSetDefinitionSyntax
     {
-        public static ModelNode AddTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition)
+        public static TaxonomyTermGroupModelNode AddTaxonomyTermSet(this TaxonomyTermGroupModelNode model, TaxonomyTermSetDefinition definition)
         {
             return AddTaxonomyTermSet(model, definition, null);
         }
 
-        public static ModelNode AddTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition, Action<ModelNode> action)
+        public static TaxonomyTermGroupModelNode AddTaxonomyTermSet(this TaxonomyTermGroupModelNode model,
+            TaxonomyTermSetDefinition definition, Action<TaxonomyTermSetModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #region array overload
@@ -35,14 +36,16 @@ namespace SPMeta2.Standard.Syntax
 
         #endregion
 
-        public static ModelNode AddHostTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition)
+        public static TaxonomyTermGroupModelNode AddHostTaxonomyTermSet(this TaxonomyTermGroupModelNode model,
+            TaxonomyTermSetDefinition definition)
         {
             return AddHostTaxonomyTermSet(model, definition, null);
         }
 
-        public static ModelNode AddHostTaxonomyTermSet(this ModelNode model, TaxonomyTermSetDefinition definition, Action<ModelNode> action)
+        public static TaxonomyTermGroupModelNode AddHostTaxonomyTermSet(this TaxonomyTermGroupModelNode model, TaxonomyTermSetDefinition definition,
+            Action<TaxonomyTermSetModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
     }
 }

@@ -180,12 +180,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             public ContentTypeDefinition ContentType { get; set; }
 
-            public ModelNode SiteModel { get; set; }
+            public SiteModelNode SiteModel { get; set; }
         }
 
         private ContentTypeEnvironment GetContentTypeSandbox(
-            Action<ModelNode, ContentTypeEnvironment> siteModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> contentTypeModelConfig)
+            Action<SiteModelNode, ContentTypeEnvironment> siteModelConfig,
+            Action<ContentTypeModelNode, ContentTypeEnvironment> contentTypeModelConfig)
         {
             var result = new ContentTypeEnvironment();
 

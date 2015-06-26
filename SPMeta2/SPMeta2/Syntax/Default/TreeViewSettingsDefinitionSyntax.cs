@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddTreeViewSettings(this ModelNode model, TreeViewSettingsDefinition definition)
+        public static WebModelNode AddTreeViewSettings(this WebModelNode model, TreeViewSettingsDefinition definition)
         {
             return AddTreeViewSettings(model, definition, null);
         }
 
-        public static ModelNode AddTreeViewSettings(this ModelNode model, TreeViewSettingsDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddTreeViewSettings(this WebModelNode model, TreeViewSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

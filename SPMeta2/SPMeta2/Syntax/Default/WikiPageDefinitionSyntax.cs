@@ -15,14 +15,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition definition)
+        public static ListModelNode AddWikiPage(this ListModelNode model, WikiPageDefinition definition)
         {
             return AddWikiPage(model, definition, null);
         }
 
-        public static ModelNode AddWikiPage(this ModelNode model, WikiPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddWikiPage(this ListModelNode model, WikiPageDefinition definition, Action<WikiPageModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
@@ -41,14 +41,15 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static ModelNode AddHostWikiPage(this ModelNode model, WikiPageDefinition definition)
+        public static ListModelNode AddHostWikiPage(this ListModelNode model, WikiPageDefinition definition)
         {
             return AddHostWikiPage(model, definition, null);
         }
 
-        public static ModelNode AddHostWikiPage(this ModelNode model, WikiPageDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddHostWikiPage(this ListModelNode model, WikiPageDefinition definition,
+            Action<WikiPageModelNode> action)
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

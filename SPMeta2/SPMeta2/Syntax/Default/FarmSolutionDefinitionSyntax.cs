@@ -13,14 +13,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
+        public static FarmModelNode AddFarmSolution(this FarmModelNode model, FarmSolutionDefinition definition)
         {
             return AddFarmSolution(model, definition, null);
         }
 
-        public static ModelNode AddFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddFarmSolution(this FarmModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

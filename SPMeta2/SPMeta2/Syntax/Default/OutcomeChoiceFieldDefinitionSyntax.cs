@@ -15,14 +15,34 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddOutcomeChoiceField(this ModelNode model, OutcomeChoiceFieldDefinition definition)
+        public static SiteModelNode AddOutcomeChoiceField(this SiteModelNode model, OutcomeChoiceFieldDefinition definition)
         {
             return AddOutcomeChoiceField(model, definition, null);
         }
 
-        public static ModelNode AddOutcomeChoiceField(this ModelNode model, OutcomeChoiceFieldDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddOutcomeChoiceField(this SiteModelNode model, OutcomeChoiceFieldDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddOutcomeChoiceField(this WebModelNode model, OutcomeChoiceFieldDefinition definition)
+        {
+            return AddOutcomeChoiceField(model, definition, null);
+        }
+
+        public static WebModelNode AddOutcomeChoiceField(this WebModelNode model, OutcomeChoiceFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddOutcomeChoiceField(this ListModelNode model, OutcomeChoiceFieldDefinition definition)
+        {
+            return AddOutcomeChoiceField(model, definition, null);
+        }
+
+        public static ListModelNode AddOutcomeChoiceField(this ListModelNode model, OutcomeChoiceFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

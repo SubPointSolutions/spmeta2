@@ -11,14 +11,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
 
-        public static ModelNode AddRemoveContentTypeLinks(this ModelNode model, RemoveContentTypeLinksDefinition definition)
+        public static ListModelNode AddRemoveContentTypeLinks(this ListModelNode model, RemoveContentTypeLinksDefinition definition)
         {
             return AddRemoveContentTypeLinks(model, definition, null);
         }
 
-        public static ModelNode AddRemoveContentTypeLinks(this ModelNode model, RemoveContentTypeLinksDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddRemoveContentTypeLinks(this ListModelNode model, RemoveContentTypeLinksDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

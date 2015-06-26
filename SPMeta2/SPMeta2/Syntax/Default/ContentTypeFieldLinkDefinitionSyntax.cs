@@ -9,18 +9,18 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, ContentTypeFieldLinkDefinition definition)
         {
             return AddContentTypeFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, ContentTypeFieldLinkDefinition definition, Action<ModelNode> action)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, ContentTypeFieldLinkDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
-        
+
         #endregion
 
-       
+
     }
 }

@@ -10,14 +10,44 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddEventReceiver(this ModelNode model, EventReceiverDefinition definition)
+        public static SiteModelNode AddEventReceiver(this SiteModelNode model, EventReceiverDefinition definition)
         {
             return AddEventReceiver(model, definition, null);
         }
 
-        public static ModelNode AddEventReceiver(this ModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddEventReceiver(this SiteModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddEventReceiver(this WebModelNode model, EventReceiverDefinition definition)
+        {
+            return AddEventReceiver(model, definition, null);
+        }
+
+        public static WebModelNode AddEventReceiver(this WebModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddEventReceiver(this ListModelNode model, EventReceiverDefinition definition)
+        {
+            return AddEventReceiver(model, definition, null);
+        }
+
+        public static ListModelNode AddEventReceiver(this ListModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ContentTypeModelNode AddEventReceiver(this ContentTypeModelNode model, EventReceiverDefinition definition)
+        {
+            return AddEventReceiver(model, definition, null);
+        }
+
+        public static ContentTypeModelNode AddEventReceiver(this ContentTypeModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

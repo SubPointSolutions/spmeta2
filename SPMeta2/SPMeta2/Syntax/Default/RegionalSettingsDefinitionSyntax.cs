@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddRegionalSettings(this ModelNode model, RegionalSettingsDefinition definition)
+        public static WebModelNode AddRegionalSettings(this WebModelNode model, RegionalSettingsDefinition definition)
         {
             return AddRegionalSettings(model, definition, null);
         }
 
-        public static ModelNode AddRegionalSettings(this ModelNode model, RegionalSettingsDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddRegionalSettings(this WebModelNode model, RegionalSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

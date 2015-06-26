@@ -10,14 +10,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
 
-        public static ModelNode AddWebConfigModification(this ModelNode model, WebConfigModificationDefinition definition)
+        public static WebApplicationModelNode AddWebConfigModification(this WebApplicationModelNode model, WebConfigModificationDefinition definition)
         {
             return AddWebConfigModification(model, definition, null);
         }
 
-        public static ModelNode AddWebConfigModification(this ModelNode model, WebConfigModificationDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddWebConfigModification(this WebApplicationModelNode model, WebConfigModificationDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

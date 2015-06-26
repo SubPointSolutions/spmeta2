@@ -14,14 +14,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddInformationRightsManagementSettings(this ModelNode model, InformationRightsManagementSettingsDefinition definition)
+        public static ListModelNode AddInformationRightsManagementSettings(this ListModelNode model, InformationRightsManagementSettingsDefinition definition)
         {
             return AddInformationRightsManagementSettings(model, definition, null);
         }
 
-        public static ModelNode AddInformationRightsManagementSettings(this ModelNode model, InformationRightsManagementSettingsDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddInformationRightsManagementSettings(this ListModelNode model, InformationRightsManagementSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

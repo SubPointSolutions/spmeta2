@@ -11,14 +11,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
 
-        public static ModelNode AddUniqueContentTypeFieldsOrder(this ModelNode model, UniqueContentTypeFieldsOrderDefinition definition)
+        public static ContentTypeModelNode AddUniqueContentTypeFieldsOrder(this ContentTypeModelNode model, UniqueContentTypeFieldsOrderDefinition definition)
         {
             return AddUniqueContentTypeFieldsOrder(model, definition, null);
         }
 
-        public static ModelNode AddUniqueContentTypeFieldsOrder(this ModelNode model, UniqueContentTypeFieldsOrderDefinition definition, Action<ModelNode> action)
+        public static ContentTypeModelNode AddUniqueContentTypeFieldsOrder(this ContentTypeModelNode model, UniqueContentTypeFieldsOrderDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

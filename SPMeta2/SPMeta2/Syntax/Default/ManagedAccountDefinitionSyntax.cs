@@ -10,14 +10,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddManagedAccount(this ModelNode siteModel, ManagedAccountDefinition definition)
+        public static FarmModelNode AddManagedAccount(this FarmModelNode siteModel, ManagedAccountDefinition definition)
         {
             return AddManagedAccount(siteModel, definition, null);
         }
 
-        public static ModelNode AddManagedAccount(this ModelNode model, ManagedAccountDefinition fielDefinition, Action<ModelNode> action)
+        public static FarmModelNode AddManagedAccount(this FarmModelNode model, ManagedAccountDefinition fielDefinition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(fielDefinition, action);
+            return model.AddTypedDefinitionNode(fielDefinition, action);
         }
 
         #endregion

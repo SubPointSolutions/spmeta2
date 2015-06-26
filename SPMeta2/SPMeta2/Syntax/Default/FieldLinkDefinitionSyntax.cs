@@ -10,7 +10,7 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<Guid> fieldIds)
+        public static ContentTypeModelNode AddContentTypeFieldLinks(this ContentTypeModelNode model, IEnumerable<Guid> fieldIds)
         {
             foreach (var fieldId in fieldIds)
                 AddContentTypeFieldLink(model, fieldId);
@@ -20,12 +20,12 @@ namespace SPMeta2.Syntax.Default
 
 
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, Guid fieldId)
         {
             return AddContentTypeFieldLink(model, fieldId, null);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId, Action<ModelNode> action)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, Guid fieldId, Action<ModelNode> action)
         {
             return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
             {
@@ -33,7 +33,7 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
+        public static ContentTypeModelNode AddContentTypeFieldLinks(this ContentTypeModelNode model, IEnumerable<FieldDefinition> definitions)
         {
             foreach (var definition in definitions)
                 AddContentTypeFieldLink(model, definition);
@@ -41,12 +41,12 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, FieldDefinition definition)
         {
             return AddContentTypeFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
+        public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, FieldDefinition definition, Action<ModelNode> action)
         {
             if (definition.Id != default(Guid))
             {

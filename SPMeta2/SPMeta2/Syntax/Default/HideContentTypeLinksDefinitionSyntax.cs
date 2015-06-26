@@ -10,18 +10,18 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddHideContentTypeLinks(this ModelNode model, HideContentTypeLinksDefinition definition)
+        public static ListModelNode AddHideContentTypeLinks(this ListModelNode model, HideContentTypeLinksDefinition definition)
         {
             return AddHideContentTypeLinks(model, definition, null);
         }
 
-        public static ModelNode AddHideContentTypeLinks(this ModelNode model, HideContentTypeLinksDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddHideContentTypeLinks(this ListModelNode model, HideContentTypeLinksDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-       
+
     }
 }

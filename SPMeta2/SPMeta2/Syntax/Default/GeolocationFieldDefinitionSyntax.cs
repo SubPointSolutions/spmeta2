@@ -15,14 +15,34 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddGeolocationField(this ModelNode model, GeolocationFieldDefinition definition)
+        public static SiteModelNode AddGeolocationField(this SiteModelNode model, GeolocationFieldDefinition definition)
         {
             return AddGeolocationField(model, definition, null);
         }
 
-        public static ModelNode AddGeolocationField(this ModelNode model, GeolocationFieldDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddGeolocationField(this SiteModelNode model, GeolocationFieldDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddGeolocationField(this WebModelNode model, GeolocationFieldDefinition definition)
+        {
+            return AddGeolocationField(model, definition, null);
+        }
+
+        public static WebModelNode AddGeolocationField(this WebModelNode model, GeolocationFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListModelNode AddGeolocationField(this ListModelNode model, GeolocationFieldDefinition definition)
+        {
+            return AddGeolocationField(model, definition, null);
+        }
+
+        public static ListModelNode AddGeolocationField(this ListModelNode model, GeolocationFieldDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

@@ -8,18 +8,35 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class RootWebModelNode : TypedModelNode
+    {
+
+    }
+
     public static class RootWebDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddRootWeb(this ModelNode model, RootWebDefinition definition)
+        public static SiteModelNode AddRootWeb(this SiteModelNode model, RootWebDefinition definition)
         {
             return AddRootWeb(model, definition, null);
         }
 
-        public static ModelNode AddRootWeb(this ModelNode model, RootWebDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddRootWeb(this SiteModelNode model, RootWebDefinition definition,
+            Action<RootWebModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddRootWeb(this WebModelNode model, RootWebDefinition definition)
+        {
+            return AddRootWeb(model, definition, null);
+        }
+
+        public static WebModelNode AddRootWeb(this WebModelNode model, RootWebDefinition definition,
+            Action<RootWebModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

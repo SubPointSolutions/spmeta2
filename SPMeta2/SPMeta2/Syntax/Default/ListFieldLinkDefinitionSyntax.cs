@@ -13,35 +13,35 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddListFieldLink(this ModelNode model, FieldDefinition definition)
+        public static ListModelNode AddListFieldLink(this ListModelNode model, FieldDefinition definition)
         {
             return AddListFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddListFieldLink(this ListModelNode model, FieldDefinition definition, Action<ModelNode> action)
         {
             if (definition.Id != default(Guid))
             {
                 return model.AddDefinitionNode(new ListFieldLinkDefinition
                 {
                     FieldId = definition.Id
-                }, action);
+                }, action) as ListModelNode;
             }
 
             return model.AddDefinitionNode(new ListFieldLinkDefinition
             {
                 FieldInternalName = definition.InternalName
-            }, action);
+            }, action) as ListModelNode;
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition)
+        public static ListModelNode AddListFieldLink(this ListModelNode model, ListFieldLinkDefinition definition)
         {
             return AddListFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddListFieldLink(this ListModelNode model, ListFieldLinkDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
+        public static ListModelNode AddListFieldLinks(this ListModelNode model, IEnumerable<FieldDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddListFieldLink(definition);

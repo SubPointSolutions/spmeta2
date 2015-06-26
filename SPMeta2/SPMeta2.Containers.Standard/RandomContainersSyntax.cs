@@ -7,6 +7,8 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Taxonomy;
+using SPMeta2.Standard.Syntax;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Containers.Standard
@@ -50,44 +52,60 @@ namespace SPMeta2.Containers.Standard
 
         #region taxonomy
 
-        public static ModelNode AddRandomTermStore(this ModelNode model)
+        public static SiteModelNode AddRandomTermStore(this SiteModelNode model)
         {
             return AddRandomTermStore(model, null);
         }
 
-        public static ModelNode AddRandomTermStore(this ModelNode model, Action<ModelNode> action)
+        public static SiteModelNode AddRandomTermStore(this SiteModelNode model,
+            Action<TaxonomyTermStoreModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyTermStoreDefinition>(action);
+            return model.AddRandomTypedDefinition<TaxonomyTermStoreDefinition, SiteModelNode, TaxonomyTermStoreModelNode>(action);
         }
 
-        public static ModelNode AddRandomTermGroup(this ModelNode model)
+        public static TaxonomyTermStoreModelNode AddRandomTermGroup(this TaxonomyTermStoreModelNode model)
         {
             return AddRandomTermGroup(model, null);
         }
 
-        public static ModelNode AddRandomTermGroup(this ModelNode model, Action<ModelNode> action)
+        public static TaxonomyTermStoreModelNode AddRandomTermGroup(this TaxonomyTermStoreModelNode model,
+            Action<TaxonomyTermGroupModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyTermGroupDefinition>(action);
+            return model.AddRandomTypedDefinition<TaxonomyTermGroupDefinition, TaxonomyTermStoreModelNode, TaxonomyTermGroupModelNode>(action);
         }
 
-        public static ModelNode AddRandomTermSet(this ModelNode model)
+        public static TaxonomyTermGroupModelNode AddRandomTermSet(this TaxonomyTermGroupModelNode model)
         {
             return AddRandomTermSet(model, null);
         }
 
-        public static ModelNode AddRandomTermSet(this ModelNode model, Action<ModelNode> action)
+        public static TaxonomyTermGroupModelNode AddRandomTermSet(this TaxonomyTermGroupModelNode model,
+            Action<TaxonomyTermSetModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyTermSetDefinition>(action);
+            return model.AddRandomTypedDefinition<TaxonomyTermSetDefinition, TaxonomyTermGroupModelNode, TaxonomyTermSetModelNode>(action);
         }
 
-        public static ModelNode AddRandomTerm(this ModelNode model)
+        public static TaxonomyTermSetModelNode AddRandomTerm(this TaxonomyTermSetModelNode model)
         {
             return AddRandomTerm(model, null);
         }
 
-        public static ModelNode AddRandomTerm(this ModelNode model, Action<ModelNode> action)
+        public static TaxonomyTermSetModelNode AddRandomTerm(this TaxonomyTermSetModelNode model,
+            Action<TaxonomyTermModelNode> action)
         {
-            return model.AddRandomDefinition<TaxonomyTermDefinition>(action);
+            return model.AddRandomTypedDefinition<TaxonomyTermDefinition, TaxonomyTermSetModelNode, TaxonomyTermModelNode>(action);
+        }
+
+
+        public static TaxonomyTermModelNode AddRandomTerm(this TaxonomyTermModelNode model)
+        {
+            return AddRandomTerm(model, null);
+        }
+
+        public static TaxonomyTermModelNode AddRandomTerm(this TaxonomyTermModelNode model,
+            Action<TaxonomyTermModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<TaxonomyTermDefinition, TaxonomyTermModelNode, TaxonomyTermModelNode>(action);
         }
 
         #endregion
