@@ -12,14 +12,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSP2013Workflow(this ModelNode model, SP2013WorkflowDefinition definition)
+        public static WebModelNode AddSP2013Workflow(this WebModelNode model, SP2013WorkflowDefinition definition)
         {
             return AddSP2013Workflow(model, definition, null);
         }
 
-        public static ModelNode AddSP2013Workflow(this ModelNode model, SP2013WorkflowDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddSP2013Workflow(this WebModelNode model, SP2013WorkflowDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

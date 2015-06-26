@@ -15,14 +15,14 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static ModelNode AddListView(this ModelNode model, ListViewDefinition definition)
+        public static ListModelNode AddListView(this ListModelNode model, ListViewDefinition definition)
         {
             return AddListView(model, definition, null);
         }
 
-        public static ModelNode AddListView(this ModelNode model, ListViewDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddListView(this ListModelNode model, ListViewDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

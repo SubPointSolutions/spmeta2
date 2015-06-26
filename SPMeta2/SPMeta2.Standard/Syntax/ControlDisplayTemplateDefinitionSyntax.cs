@@ -6,6 +6,7 @@ using System.Text;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -14,14 +15,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddControlDisplayTemplate(this ModelNode model, ControlDisplayTemplateDefinition definition)
+        public static ListModelNode AddControlDisplayTemplate(this ListModelNode model, ControlDisplayTemplateDefinition definition)
         {
             return AddControlDisplayTemplate(model, definition, null);
         }
 
-        public static ModelNode AddControlDisplayTemplate(this ModelNode model, ControlDisplayTemplateDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddControlDisplayTemplate(this ListModelNode model, ControlDisplayTemplateDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

@@ -4,6 +4,7 @@ using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -12,14 +13,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddManagedProperty(this ModelNode model, ManagedPropertyDefinition definition)
+        public static FarmModelNode AddManagedProperty(this FarmModelNode model, ManagedPropertyDefinition definition)
         {
             return AddManagedProperty(model, definition, null);
         }
 
-        public static ModelNode AddManagedProperty(this ModelNode model, ManagedPropertyDefinition definition, Action<ModelNode> action)
+        public static FarmModelNode AddManagedProperty(this FarmModelNode model, ManagedPropertyDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

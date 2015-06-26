@@ -5,6 +5,7 @@ using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using System.Collections.Generic;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
@@ -12,14 +13,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddJavaScriptDisplayTemplate(this ModelNode model, JavaScriptDisplayTemplateDefinition definition)
+        public static ListModelNode AddJavaScriptDisplayTemplate(this ListModelNode model, JavaScriptDisplayTemplateDefinition definition)
         {
             return AddJavaScriptDisplayTemplate(model, definition, null);
         }
 
-        public static ModelNode AddJavaScriptDisplayTemplate(this ModelNode model, JavaScriptDisplayTemplateDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddJavaScriptDisplayTemplate(this ListModelNode model, JavaScriptDisplayTemplateDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

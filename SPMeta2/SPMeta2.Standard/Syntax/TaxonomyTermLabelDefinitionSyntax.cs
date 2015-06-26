@@ -8,14 +8,14 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class TaxonomyTermLabelDefinitionSyntax
     {
-        public static ModelNode AddTaxonomyTermLabel(this ModelNode model, TaxonomyTermLabelDefinition definition)
+        public static TaxonomyTermSetModelNode AddTaxonomyTermLabel(this TaxonomyTermSetModelNode model, TaxonomyTermLabelDefinition definition)
         {
             return AddTaxonomyTermLabel(model, definition, null);
         }
 
-        public static ModelNode AddTaxonomyTermLabel(this ModelNode model, TaxonomyTermLabelDefinition definition, Action<ModelNode> action)
+        public static TaxonomyTermSetModelNode AddTaxonomyTermLabel(this TaxonomyTermSetModelNode model, TaxonomyTermLabelDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #region array overload

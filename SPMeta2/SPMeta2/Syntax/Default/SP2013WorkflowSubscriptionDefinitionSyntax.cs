@@ -12,14 +12,24 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, SP2013WorkflowSubscriptionDefinition definition)
+        public static ListModelNode AddSP2013WorkflowSubscription(this ListModelNode model, SP2013WorkflowSubscriptionDefinition definition)
         {
             return AddSP2013WorkflowSubscription(model, definition, null);
         }
 
-        public static ModelNode AddSP2013WorkflowSubscription(this ModelNode model, SP2013WorkflowSubscriptionDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddSP2013WorkflowSubscription(this ListModelNode model, SP2013WorkflowSubscriptionDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddSP2013WorkflowSubscription(this WebModelNode model, SP2013WorkflowSubscriptionDefinition definition)
+        {
+            return AddSP2013WorkflowSubscription(model, definition, null);
+        }
+
+        public static WebModelNode AddSP2013WorkflowSubscription(this WebModelNode model, SP2013WorkflowSubscriptionDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

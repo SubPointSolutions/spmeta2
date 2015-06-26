@@ -8,16 +8,33 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class QuickLaunchNavigationNodeModelNode : TypedModelNode
+    {
+        
+    }
+
     public static class QuickLaunchNavigationSyntax
     {
-        public static ModelNode AddQuickLaunchNavigationNode(this ModelNode model, QuickLaunchNavigationNodeDefinition definition)
+        public static WebModelNode AddQuickLaunchNavigationNode(this WebModelNode model, QuickLaunchNavigationNodeDefinition definition)
         {
             return AddQuickLaunchNavigationNode(model, definition, null);
         }
 
-        public static ModelNode AddQuickLaunchNavigationNode(this ModelNode model, QuickLaunchNavigationNodeDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddQuickLaunchNavigationNode(this WebModelNode model, QuickLaunchNavigationNodeDefinition definition,
+            Action<QuickLaunchNavigationNodeModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static QuickLaunchNavigationNodeModelNode AddQuickLaunchNavigationNode(this QuickLaunchNavigationNodeModelNode model, QuickLaunchNavigationNodeDefinition definition)
+        {
+            return AddQuickLaunchNavigationNode(model, definition, null);
+        }
+
+        public static QuickLaunchNavigationNodeModelNode AddQuickLaunchNavigationNode(this QuickLaunchNavigationNodeModelNode model, QuickLaunchNavigationNodeDefinition definition,
+            Action<QuickLaunchNavigationNodeModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #region array overload

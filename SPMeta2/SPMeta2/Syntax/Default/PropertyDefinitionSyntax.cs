@@ -57,6 +57,25 @@ namespace SPMeta2.Syntax.Default
             return model.AddTypedDefinitionNode(definition, action);
         }
 
+        public static FolderModelNode AddProperty(this FolderModelNode model, PropertyDefinition definition)
+        {
+            return AddProperty(model, definition, null);
+        }
+
+        public static FolderModelNode AddProperty(this FolderModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static ListItemModelNode AddProperty(this ListItemModelNode model, PropertyDefinition definition)
+        {
+            return AddProperty(model, definition, null);
+        }
+
+        public static ListItemModelNode AddProperty(this ListItemModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
 
 
         #region array overload

@@ -15,14 +15,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddPrefix(this ModelNode model, PrefixDefinition definition)
+        public static WebApplicationModelNode AddPrefix(this WebApplicationModelNode model, PrefixDefinition definition)
         {
             return AddPrefix(model, definition, null);
         }
 
-        public static ModelNode AddPrefix(this ModelNode model, PrefixDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddPrefix(this WebApplicationModelNode model, PrefixDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

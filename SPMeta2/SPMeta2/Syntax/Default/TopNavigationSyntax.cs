@@ -8,16 +8,33 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class TopNavigationNodeModelNode : TypedModelNode
+    {
+
+    }
+
     public static class TopNavigationSyntax
     {
-        public static ModelNode AddTopNavigationNode(this ModelNode model, TopNavigationNodeDefinition definition)
+        public static WebModelNode AddTopNavigationNode(this WebModelNode model, TopNavigationNodeDefinition definition)
         {
             return AddTopNavigationNode(model, definition, null);
         }
 
-        public static ModelNode AddTopNavigationNode(this ModelNode model, TopNavigationNodeDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddTopNavigationNode(this WebModelNode model, TopNavigationNodeDefinition definition,
+            Action<TopNavigationNodeModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static TopNavigationNodeModelNode AddTopNavigationNode(this TopNavigationNodeModelNode model, TopNavigationNodeDefinition definition)
+        {
+            return AddTopNavigationNode(model, definition, null);
+        }
+
+        public static TopNavigationNodeModelNode AddTopNavigationNode(this TopNavigationNodeModelNode model, TopNavigationNodeDefinition definition,
+            Action<TopNavigationNodeModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
     }
 }

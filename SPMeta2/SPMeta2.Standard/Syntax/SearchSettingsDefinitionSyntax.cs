@@ -2,6 +2,7 @@
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -10,14 +11,24 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddSearchSettings(this ModelNode model, SearchSettingsDefinition definition)
+        public static SiteModelNode AddSearchSettings(this SiteModelNode model, SearchSettingsDefinition definition)
         {
             return AddSearchSettings(model, definition, null);
         }
 
-        public static ModelNode AddSearchSettings(this ModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddSearchSettings(this SiteModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddSearchSettings(this WebModelNode model, SearchSettingsDefinition definition)
+        {
+            return AddSearchSettings(model, definition, null);
+        }
+
+        public static WebModelNode AddSearchSettings(this WebModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

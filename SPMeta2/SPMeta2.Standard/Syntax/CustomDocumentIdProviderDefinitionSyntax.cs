@@ -2,6 +2,7 @@
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -10,14 +11,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddCustomDocumentIdProvider(this ModelNode model, CustomDocumentIdProviderDefinition definition)
+        public static SiteModelNode AddCustomDocumentIdProvider(this SiteModelNode model, CustomDocumentIdProviderDefinition definition)
         {
             return AddCustomDocumentIdProvider(model, definition, null);
         }
 
-        public static ModelNode AddCustomDocumentIdProvider(this ModelNode model, CustomDocumentIdProviderDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddCustomDocumentIdProvider(this SiteModelNode model, CustomDocumentIdProviderDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

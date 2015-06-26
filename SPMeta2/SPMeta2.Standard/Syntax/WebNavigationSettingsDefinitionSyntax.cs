@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -9,14 +10,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static ModelNode AddWebNavigationSettings(this ModelNode model, WebNavigationSettingsDefinition definition)
+        public static WebModelNode AddWebNavigationSettings(this WebModelNode model, WebNavigationSettingsDefinition definition)
         {
             return AddWebNavigationSettings(model, definition, null);
         }
 
-        public static ModelNode AddWebNavigationSettings(this ModelNode model, WebNavigationSettingsDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddWebNavigationSettings(this WebModelNode model, WebNavigationSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

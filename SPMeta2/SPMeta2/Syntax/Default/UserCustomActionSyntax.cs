@@ -12,15 +12,38 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition definition)
+        public static SiteModelNode AddUserCustomAction(this SiteModelNode model, UserCustomActionDefinition definition)
         {
             return AddUserCustomAction(model, definition, null);
         }
 
-        public static ModelNode AddUserCustomAction(this ModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddUserCustomAction(this SiteModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
+
+        public static WebModelNode AddUserCustomAction(this WebModelNode model, UserCustomActionDefinition definition)
+        {
+            return AddUserCustomAction(model, definition, null);
+        }
+
+        public static WebModelNode AddUserCustomAction(this WebModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+
+        public static ListModelNode AddUserCustomAction(this ListModelNode model, UserCustomActionDefinition definition)
+        {
+            return AddUserCustomAction(model, definition, null);
+        }
+
+        public static ListModelNode AddUserCustomAction(this ListModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+
 
         #endregion
 

@@ -30,6 +30,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {

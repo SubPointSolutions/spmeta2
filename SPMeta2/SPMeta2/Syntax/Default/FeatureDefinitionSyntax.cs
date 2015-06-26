@@ -36,12 +36,42 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition)
+        public static FarmModelNode AddFeature(this FarmModelNode model, FeatureDefinition definition)
         {
             return AddFeature(model, definition, null);
         }
 
-        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        public static FarmModelNode AddFeature(this FarmModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebApplicationModelNode AddFeature(this WebApplicationModelNode model, FeatureDefinition definition)
+        {
+            return AddFeature(model, definition, null);
+        }
+
+        public static WebApplicationModelNode AddFeature(this WebApplicationModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static SiteModelNode AddFeature(this SiteModelNode model, FeatureDefinition definition)
+        {
+            return AddFeature(model, definition, null);
+        }
+
+        public static SiteModelNode AddFeature(this SiteModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static WebModelNode AddFeature(this WebModelNode model, FeatureDefinition definition)
+        {
+            return AddFeature(model, definition, null);
+        }
+
+        public static WebModelNode AddFeature(this WebModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

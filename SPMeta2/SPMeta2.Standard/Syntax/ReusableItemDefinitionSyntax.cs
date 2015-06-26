@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -11,14 +12,24 @@ namespace SPMeta2.Standard.Syntax
     {
         #region html
 
-        public static ModelNode AddReusableHTMLItem(this ModelNode model, ReusableHTMLItemDefinition definition)
+        public static ListModelNode AddReusableHTMLItem(this ListModelNode model, ReusableHTMLItemDefinition definition)
         {
             return AddReusableHTMLItem(model, definition, null);
         }
 
-        public static ModelNode AddReusableHTMLItem(this ModelNode model, ReusableHTMLItemDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddReusableHTMLItem(this ListModelNode model, ReusableHTMLItemDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static FolderModelNode AddReusableHTMLItem(this FolderModelNode model, ReusableHTMLItemDefinition definition)
+        {
+            return AddReusableHTMLItem(model, definition, null);
+        }
+
+        public static FolderModelNode AddReusableHTMLItem(this FolderModelNode model, ReusableHTMLItemDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
@@ -37,14 +48,24 @@ namespace SPMeta2.Standard.Syntax
 
         #region text
 
-        public static ModelNode AddReusableTextItem(this ModelNode model, ReusableTextItemDefinition definition)
+        public static ListModelNode AddReusableTextItem(this ListModelNode model, ReusableTextItemDefinition definition)
         {
             return AddReusableTextItem(model, definition, null);
         }
 
-        public static ModelNode AddReusableTextItem(this ModelNode model, ReusableTextItemDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddReusableTextItem(this ListModelNode model, ReusableTextItemDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        public static FolderModelNode AddReusableTextItem(this FolderModelNode model, ReusableTextItemDefinition definition)
+        {
+            return AddReusableTextItem(model, definition, null);
+        }
+
+        public static FolderModelNode AddReusableTextItem(this FolderModelNode model, ReusableTextItemDefinition definition, Action<ModelNode> action)
+        {
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
