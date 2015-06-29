@@ -17,95 +17,27 @@ namespace SPMeta2.Syntax.Default
     public static class PropertyDefinitionSyntax
     {
 
-        public static FarmModelNode AddProperty(this FarmModelNode model, PropertyDefinition definition)
+        #region methods
+
+        public static TModelNode AddProperty<TModelNode>(this TModelNode model, PropertyDefinition definition)
+            where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
         {
             return AddProperty(model, definition, null);
         }
 
-        public static FarmModelNode AddProperty(this FarmModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
+        public static TModelNode AddProperty<TModelNode>(this TModelNode model, PropertyDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebApplicationModelNode AddProperty(this WebApplicationModelNode model, PropertyDefinition definition)
-        {
-            return AddProperty(model, definition, null);
-        }
-
-        public static WebApplicationModelNode AddProperty(this WebApplicationModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static SiteModelNode AddProperty(this SiteModelNode model, PropertyDefinition definition)
-        {
-            return AddProperty(model, definition, null);
-        }
-
-        public static SiteModelNode AddProperty(this SiteModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddProperty(this WebModelNode model, PropertyDefinition definition)
-        {
-            return AddProperty(model, definition, null);
-        }
-
-        public static WebModelNode AddProperty(this WebModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static FolderModelNode AddProperty(this FolderModelNode model, PropertyDefinition definition)
-        {
-            return AddProperty(model, definition, null);
-        }
-
-        public static FolderModelNode AddProperty(this FolderModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static ListItemModelNode AddProperty(this ListItemModelNode model, PropertyDefinition definition)
-        {
-            return AddProperty(model, definition, null);
-        }
-
-        public static ListItemModelNode AddProperty(this ListItemModelNode model, PropertyDefinition definition, Action<PropertyModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-
-        #region array overload
-
-        public static FarmModelNode AddProperties(this FarmModelNode model, IEnumerable<PropertyDefinition> definitions)
-        {
-            return AddPropertiesInternal(model, definitions);
-        }
-
-        public static WebApplicationModelNode AddProperties(this WebApplicationModelNode model, IEnumerable<PropertyDefinition> definitions)
-        {
-            return AddPropertiesInternal(model, definitions);
-        }
-
-        public static SiteModelNode AddProperties(this SiteModelNode model, IEnumerable<PropertyDefinition> definitions)
-        {
-            return AddPropertiesInternal(model, definitions);
-        }
-
-        public static WebModelNode AddProperties(this WebModelNode model, IEnumerable<PropertyDefinition> definitions)
-        {
-            return AddPropertiesInternal(model, definitions);
         }
 
         #endregion
 
-        #region utils
+        #region array overload
 
-        private static T AddPropertiesInternal<T>(T model, IEnumerable<PropertyDefinition> definitions)
-            where T : ModelNode
+        public static TModelNode AddProperties<TModelNode>(this TModelNode model, IEnumerable<PropertyDefinition> definitions)
+           where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

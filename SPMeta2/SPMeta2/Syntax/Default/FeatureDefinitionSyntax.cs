@@ -7,26 +7,7 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public static class DefinitionExtensions
-    {
-        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition)
-            where TDefinition : DefinitionBase, new()
-        {
-            return Inherit<TDefinition>(definition, null);
-        }
-
-        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition, Action<TDefinition> config)
-            where TDefinition : DefinitionBase, new()
-        {
-            var model = definition.Clone() as TDefinition;
-
-            if (config != null)
-                config(model);
-
-            return model;
-        }
-    }
-
+   
     public class FeatureModelNode : TypedModelNode
     {
 
@@ -36,49 +17,27 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static FarmModelNode AddFeature(this FarmModelNode model, FeatureDefinition definition)
+        #region methods
+
+        public static TModelNode AddFeature<TModelNode>(this TModelNode model, FeatureDefinition definition)
+            where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             return AddFeature(model, definition, null);
         }
 
-        public static FarmModelNode AddFeature(this FarmModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        public static TModelNode AddFeature<TModelNode>(this TModelNode model, FeatureDefinition definition,
+            Action<FeatureModelNode> action)
+            where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static WebApplicationModelNode AddFeature(this WebApplicationModelNode model, FeatureDefinition definition)
-        {
-            return AddFeature(model, definition, null);
-        }
-
-        public static WebApplicationModelNode AddFeature(this WebApplicationModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static SiteModelNode AddFeature(this SiteModelNode model, FeatureDefinition definition)
-        {
-            return AddFeature(model, definition, null);
-        }
-
-        public static SiteModelNode AddFeature(this SiteModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddFeature(this WebModelNode model, FeatureDefinition definition)
-        {
-            return AddFeature(model, definition, null);
-        }
-
-        public static WebModelNode AddFeature(this WebModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
+        #endregion
 
         #region array overload
 
-        public static ModelNode AddFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        public static TModelNode AddFeatures<TModelNode>(this TModelNode model, IEnumerable<FeatureDefinition> definitions)
+           where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -169,30 +128,30 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddFarmFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
+        //public static ModelNode AddFarmFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        //{
+        //    foreach (var definition in definitions)
+        //        model.AddDefinitionNode(definition);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         #endregion
 
-        public static FeatureDefinition Inherit(this FeatureDefinition definition)
-        {
-            return Inherit(definition, null);
-        }
+        //public static FeatureDefinition Inherit(this FeatureDefinition definition)
+        //{
+        //    return Inherit(definition, null);
+        //}
 
-        public static FeatureDefinition Inherit(this FeatureDefinition definition, Action<FeatureDefinition> config)
-        {
-            var model = definition.Clone() as FeatureDefinition;
+        //public static FeatureDefinition Inherit(this FeatureDefinition definition, Action<FeatureDefinition> config)
+        //{
+        //    var model = definition.Clone() as FeatureDefinition;
 
-            if (config != null)
-                config(model);
+        //    if (config != null)
+        //        config(model);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         public static FeatureDefinition Enable(this FeatureDefinition definition)
         {

@@ -15,18 +15,18 @@ namespace SPMeta2.Syntax.Default
             return AddComposedLookItemLink(model, definition, null);
         }
 
-       public static WebModelNode AddComposedLookItemLink(this WebModelNode model, ComposedLookItemLinkDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddComposedLookItemLink(this WebModelNode model, ComposedLookItemLinkDefinition definition, Action<ModelNode> action)
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddComposedLookItemLinks(this ModelNode model, IEnumerable<ComposedLookItemLinkDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
+        //public static WebModelNode AddComposedLookItemLinks(this WebModelNode model, IEnumerable<ComposedLookItemLinkDefinition> definitions)
+        // {
+        //     foreach (var definition in definitions)
+        //         model.AddDefinitionNode(definition);
 
-            return model;
-        }
+        //     return model;
+        // }
 
         #endregion
     }

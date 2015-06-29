@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -10,21 +11,21 @@ namespace SPMeta2.Standard.Syntax
     {
         #region publishing page
 
-        public static ModelNode AddImageRendition(this ModelNode model, ImageRenditionDefinition definition)
+        public static SiteModelNode AddImageRendition(this SiteModelNode model, ImageRenditionDefinition definition)
         {
             return AddImageRendition(model, definition, null);
         }
 
-        public static ModelNode AddImageRendition(this ModelNode model, ImageRenditionDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddImageRendition(this SiteModelNode model, ImageRenditionDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddImageRenditions(this ModelNode model, IEnumerable<ImageRenditionDefinition> definitions)
+        public static SiteModelNode AddImageRenditions(this SiteModelNode model, IEnumerable<ImageRenditionDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

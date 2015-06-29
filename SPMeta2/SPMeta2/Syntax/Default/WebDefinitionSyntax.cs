@@ -8,10 +8,18 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class WebModelNode : TypedModelNode
+    public class WebModelNode : TypedModelNode,
+        IFieldHostModelNode,
+        IContentTypeHostModelNode,
+        ISecurableObjectHostModelNode,
+        IPropertyBagHostModelNode,
+        IEventReceiverHostModelNode,
+        IWebHostModelNode,
+        IWelcomePageHostModelNode,
+        IModuleFileHostModelNode,
+        IAuditSettingsHostModelNode,
+        IFeatureHostModelNode
     {
-
-
 
     }
 
@@ -19,22 +27,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition)
+        public static TModelNode AddWeb<TModelNode>(this TModelNode model, WebDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddWeb(model, definition, null);
         }
 
-        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition, Action<WebModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition)
-        {
-            return AddWeb(model, definition, null);
-        }
-
-        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition, Action<WebModelNode> action)
+        public static TModelNode AddWeb<TModelNode>(this TModelNode model, WebDefinition definition,
+            Action<WebModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -43,15 +44,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static WebModelNode AddWebs(this WebModelNode model, IEnumerable<WebDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
-
-            return model;
-        }
-
-        public static SiteModelNode AddWebs(this SiteModelNode model, IEnumerable<WebDefinition> definitions)
+        public static TModelNode AddWebs<TModelNode>(this TModelNode model, IEnumerable<WebDefinition> definitions)
+           where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

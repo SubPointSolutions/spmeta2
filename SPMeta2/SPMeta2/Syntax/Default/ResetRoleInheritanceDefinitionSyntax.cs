@@ -14,18 +14,19 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddResetRoleInheritance(this ModelNode model, ResetRoleInheritanceDefinition definition)
+        public static TModelNode AddResetRoleInheritance<TModelNode>(this TModelNode model, ResetRoleInheritanceDefinition definition)
+            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
             return AddResetRoleInheritance(model, definition, null);
         }
 
-        public static ModelNode AddResetRoleInheritance(this ModelNode model, ResetRoleInheritanceDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddResetRoleInheritance<TModelNode>(this TModelNode model, ResetRoleInheritanceDefinition definition,
+            Action<TModelNode> action)
+            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
-
-     
     }
 }

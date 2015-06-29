@@ -9,7 +9,8 @@ using SPMeta2.Syntax.Default.Extensions;
 namespace SPMeta2.Syntax.Default
 {
 
-    public class ListItemModelNode : TypedModelNode
+    public class ListItemModelNode : TypedModelNode,
+        ISecurableObjectHostModelNode
     {
 
     }
@@ -54,15 +55,15 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition)
-        {
-            return AddHostListItem(model, definition, null);
-        }
+        //public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition)
+        //{
+        //    return AddHostListItem(model, definition, null);
+        //}
 
-        public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        }
+        //public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
+        //{
+        //    return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        //}
 
         #endregion
     }

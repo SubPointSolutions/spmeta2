@@ -19,7 +19,7 @@ namespace SPMeta2.Syntax.Default
             return AddContentDatabase(model, definition, null);
         }
 
-       public static WebApplicationModelNode AddContentDatabase(this WebApplicationModelNode model, ContentDatabaseDefinition definition, Action<ModelNode> action)
+        public static WebApplicationModelNode AddContentDatabase(this WebApplicationModelNode model, ContentDatabaseDefinition definition, Action<ModelNode> action)
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddContentDatabases(this ModelNode model, IEnumerable<ContentDatabaseDefinition> definitions)
+        public static WebApplicationModelNode AddContentDatabases(this WebApplicationModelNode model, IEnumerable<ContentDatabaseDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

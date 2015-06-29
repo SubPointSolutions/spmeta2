@@ -15,30 +15,18 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebPartPageModelNode AddDeleteWebParts(this WebPartPageModelNode model, DeleteWebPartsDefinition definition)
+        public static TModelNode AddDeleteWebParts<TModelNode>(this TModelNode model, DeleteWebPartsDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddDeleteWebParts(model, definition, null);
         }
 
-        public static WebPartPageModelNode AddDeleteWebParts(this WebPartPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddDeleteWebParts<TModelNode>(this TModelNode model, DeleteWebPartsDefinition definition,
+            Action<ModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-        public static WikiPageModelNode AddDeleteWebParts(this WikiPageModelNode model, DeleteWebPartsDefinition definition)
-        {
-            return AddDeleteWebParts(model, definition, null);
-        }
-
-        public static WikiPageModelNode AddDeleteWebParts(this WikiPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        #endregion
-
-        #region array overload
-
 
         #endregion
     }

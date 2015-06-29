@@ -20,7 +20,7 @@ namespace SPMeta2.Syntax.Default
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddComposedLookItems(this ModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
+        public static ListModelNode AddComposedLookItems(this ListModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

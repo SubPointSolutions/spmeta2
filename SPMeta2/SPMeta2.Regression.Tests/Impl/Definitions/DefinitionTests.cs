@@ -588,14 +588,19 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var missedModelNodeTypes = new List<string>();
             var falseMethodsCount = 0;
 
+            var missedRelationships = new List<string>();
+            var missedMethods = new List<string>();
+
             foreach (var definitionType in DefinitionTypes)
             {
                 var definitionRelationships = allRelationships.FirstOrDefault(r => r.DefinitionType == definitionType);
 
                 if (definitionRelationships == null)
                 {
-                    Trace.WriteLine(string.Format("[FALSE] Miss definition relationship for type: [{0}]",
-                        definitionType.Name));
+                    var missedRelationshipMessage = string.Format("[FALSE] Miss definition relationship for type: [{0}]", definitionType.Name);
+                    Trace.WriteLine(missedRelationshipMessage);
+
+                    missedRelationships.Add(missedRelationshipMessage);
 
                     hasAllAddMethods = false;
                     continue;
@@ -652,8 +657,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                         if (!hasAddDefinitionMethod)
                         {
-                            Trace.WriteLine(string.Format("[FALSE] public static {1} Add{0}(this {1} model, {0}Definition definition)",
-                                definitionName, parentNodeModelType.Name));
+                            var missMethod =
+                                (string.Format(
+                                    "[FALSE] public static {1} Add{0}(this {1} model, {0}Definition definition)",
+                                    definitionName, parentNodeModelType.Name));
+
+                            Trace.WriteLine(missMethod);
+                            missedMethods.Add(missMethod);
 
                             falseMethodsCount++;
                         }
@@ -787,13 +797,15 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                     hasAllAddMethods = false;
             }
 
-            Trace.WriteLine("S: Missed model node types");
-
+            Trace.WriteLine("S: Missed model node types count:" + missedModelNodeTypes.Count);
             foreach (var m in missedModelNodeTypes)
                 Trace.WriteLine("   " + m);
 
             Trace.WriteLine("S: Missed methods: " + falseMethodsCount);
-            
+            foreach (var m in missedMethods.OrderBy(m =>
+                m.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[4]))
+                Trace.WriteLine("   " + m);
+
 
             Assert.IsTrue(hasAllAddMethods);
         }

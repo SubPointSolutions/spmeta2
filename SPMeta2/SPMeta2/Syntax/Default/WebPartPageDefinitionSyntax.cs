@@ -6,7 +6,9 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class WebPartPageModelNode : TypedModelNode
+    public class WebPartPageModelNode : TypedModelNode,
+        IWebpartHostModelNode,
+        ISecurableObjectHostModelNode
     {
 
     }
@@ -15,12 +17,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddWebPartPage(this ListModelNode model, WebPartPageDefinition definition)
+        public static TModelNode AddWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return AddWebPartPage(model, definition, null);
         }
 
-        public static ListModelNode AddWebPartPage(this ListModelNode model, WebPartPageDefinition definition, Action<WebPartPageModelNode> action)
+        public static TModelNode AddWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition,
+            Action<WebPartPageModelNode> action)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -29,7 +34,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddWebPartPages(this ModelNode model, IEnumerable<WebPartPageDefinition> definitions)
+        public static TModelNode AddWebPartPages<TModelNode>(this TModelNode model, IEnumerable<WebPartPageDefinition> definitions)
+           where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

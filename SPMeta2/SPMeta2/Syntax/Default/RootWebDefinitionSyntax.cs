@@ -17,27 +17,23 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddRootWeb(this SiteModelNode model, RootWebDefinition definition)
+        public static TModelNode AddRootWeb<TModelNode>(this TModelNode model, RootWebDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddRootWeb(model, definition, null);
         }
 
-        public static SiteModelNode AddRootWeb(this SiteModelNode model, RootWebDefinition definition,
+        public static TModelNode AddRootWeb<TModelNode>(this TModelNode model, RootWebDefinition definition,
             Action<RootWebModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static WebModelNode AddRootWeb(this WebModelNode model, RootWebDefinition definition)
-        {
-            return AddRootWeb(model, definition, null);
-        }
+        #endregion
 
-        public static WebModelNode AddRootWeb(this WebModelNode model, RootWebDefinition definition,
-            Action<RootWebModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
+        #region array overload
+
 
         #endregion
 

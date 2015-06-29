@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddAlternateUrls(this ModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+        public static WebApplicationModelNode AddAlternateUrls(this WebApplicationModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

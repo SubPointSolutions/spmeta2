@@ -48,21 +48,21 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<ListFieldLinkDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
+        //public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<ListFieldLinkDefinition> definitions)
+        //{
+        //    foreach (var definition in definitions)
+        //        model.AddDefinitionNode(definition);
 
-            return model;
-        }
+        //    return model;
+        //}
 
-        public static ListModelNode AddListFieldLinks(this ListModelNode model, IEnumerable<FieldDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddListFieldLink(definition);
+        //public static ListModelNode AddListFieldLinks(this ListModelNode model, IEnumerable<FieldDefinition> definitions)
+        //{
+        //    foreach (var definition in definitions)
+        //        model.AddListFieldLink(definition);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         #endregion
     }

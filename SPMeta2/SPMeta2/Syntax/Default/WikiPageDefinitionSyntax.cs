@@ -6,7 +6,9 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class WikiPageModelNode : TypedModelNode
+    public class WikiPageModelNode : TypedModelNode,
+        IWebpartHostModelNode,
+        ISecurableObjectHostModelNode
     {
 
     }
@@ -15,12 +17,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddWikiPage(this ListModelNode model, WikiPageDefinition definition)
+        public static TModelNode AddWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return AddWikiPage(model, definition, null);
         }
 
-        public static ListModelNode AddWikiPage(this ListModelNode model, WikiPageDefinition definition, Action<WikiPageModelNode> action)
+        public static TModelNode AddWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition,
+            Action<WikiPageModelNode> action)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -29,7 +34,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddWikiPages(this ModelNode model, IEnumerable<WikiPageDefinition> definitions)
+        public static TModelNode AddWikiPages<TModelNode>(this TModelNode model, IEnumerable<WikiPageDefinition> definitions)
+           where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

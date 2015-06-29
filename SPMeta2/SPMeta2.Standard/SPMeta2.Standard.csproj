@@ -108,7 +108,7 @@
     <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
-    <Compile Include="Syntax\ContentBySearchWebPartSyntax.cs" />
+    <Compile Include="Syntax\Webparts\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
     <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
     <Compile Include="Definitions\CustomDocumentIdProviderDefinition.cs" />
@@ -156,39 +156,39 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\SortByValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
-    <Compile Include="Syntax\FilterDisplayTemplateDefinitionSyntax.cs" />
-    <Compile Include="Syntax\RefinementScriptWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\DisplayTemplates\FilterDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\RefinementScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\ManagedPropertyDefinitionSyntax.cs" />
     <Compile Include="Syntax\ReusableItemDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ResultScriptWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\ResultScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
-    <Compile Include="Syntax\SummaryLinkWebPartDefinitionSyntax.cs" />
-    <Compile Include="Syntax\HTMLFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SummaryLinkWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\HTMLFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\ImageFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\LinkFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\SummaryLinkFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\MediaFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ItemDisplayTemplateDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ControlDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\LinkFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\SummaryLinkFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\MediaFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\DisplayTemplates\ItemDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\DisplayTemplates\ControlDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\SearchSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\CustomDocumentIdProviderDefinitionSyntax.cs" />
     <Compile Include="Syntax\AudienceDefinitionSyntax.cs" />
     <Compile Include="Syntax\SearchResultDefinitionSyntax.cs" />
     <Compile Include="Syntax\SearchConfigurationDefinitionSyntax.cs" />
     <Compile Include="Syntax\PublishingPageLayoutDefinitionSyntax.cs" />
-    <Compile Include="Syntax\SiteFeedWebPartDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ContentByQueryWebPartDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ContactFieldControlDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SiteFeedWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\ContentByQueryWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\ContactFieldControlDefinitionSyntax.cs" />
     <Compile Include="Syntax\ImageRenditionDefinitionSyntax.cs" />
     <Compile Include="Syntax\PublishingPageDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyTermLabelDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyTermDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyTermGroupDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyTermSetDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TaxonomyTermStoreDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\TaxonomyFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Taxonomy\TaxonomyTermLabelDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Taxonomy\TaxonomyTermDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Taxonomy\TaxonomyTermGroupDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Taxonomy\TaxonomyTermSetDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Taxonomy\TaxonomyTermStoreDefinitionSyntax.cs" />
     <Compile Include="Syntax\PageLayoutAndSiteTemplateSettingsDefinitionSyntax.cs" />
-    <Compile Include="Syntax\TypedWebpartsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\ProjectSummaryWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\WebNavigationSettingsDefinitionSyntax.cs" />
     <Compile Include="Utils\TaxonomyUtility.cs" />
   </ItemGroup>
@@ -201,6 +201,7 @@
   <ItemGroup>
     <None Include="SPMeta2.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -16,21 +16,21 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddWebPartGalleryFile(this ModelNode model, WebPartGalleryFileDefinition definition)
+        public static ListModelNode AddWebPartGalleryFile(this ListModelNode model, WebPartGalleryFileDefinition definition)
         {
             return AddWebPartGalleryFile(model, definition, null);
         }
 
-        public static ModelNode AddWebPartGalleryFile(this ModelNode model, WebPartGalleryFileDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddWebPartGalleryFile(this ListModelNode model, WebPartGalleryFileDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddWebPartGalleryFiles(this ModelNode model, IEnumerable<WebPartGalleryFileDefinition> definitions)
+        public static ListModelNode AddWebPartGalleryFiles(this ListModelNode model, IEnumerable<WebPartGalleryFileDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

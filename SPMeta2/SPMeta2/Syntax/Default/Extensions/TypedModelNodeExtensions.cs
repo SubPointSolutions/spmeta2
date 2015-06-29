@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 
+// legacy
 namespace SPMeta2.Syntax.Default.Extensions
+{
+    
+}
+
+// new
+namespace SPMeta2.Syntax.Default
 {
     public static class TypedModelNodeExtensions
     {

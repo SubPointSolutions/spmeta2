@@ -96,14 +96,16 @@ namespace SPMeta2.Containers
 
         #region webpart pages
 
-        public static ModelNode AddRandomWebPartPage(this ModelNode model)
+        public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model)
+            where TModelNode : TypedModelNode, IPageHostModelNode, new()
         {
             return AddRandomWebPartPage(model, null);
         }
 
-        public static ModelNode AddRandomWebPartPage(this ModelNode model, Action<ModelNode> action)
+        public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model, Action<WebPartPageModelNode> action)
+            where TModelNode : TypedModelNode, IPageHostModelNode, new()
         {
-            return model.AddRandomDefinition<WebPartPageDefinition>(action);
+            return model.AddRandomTypedDefinition<WebPartPageDefinition, TModelNode, WebPartPageModelNode>(action);
         }
 
         #endregion
@@ -126,7 +128,7 @@ namespace SPMeta2.Containers
 
         public static WebModelNode AddRandomList(this WebModelNode model)
         {
-            return AddRandomWebPartPage(model, null) as WebModelNode;
+            return AddRandomList(model, null);
         }
 
         public static WebModelNode AddRandomList(this WebModelNode model, Action<ListModelNode> action)
@@ -134,9 +136,9 @@ namespace SPMeta2.Containers
             return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(action);
         }
 
-        public static ModelNode AddRandomDocumentLibrary(this ModelNode model, Action<ModelNode> action)
+        public static WebModelNode AddRandomDocumentLibrary(this WebModelNode model, Action<ListModelNode> action)
         {
-            return model.AddRandomDefinition<ListDefinition>(node =>
+            return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(node =>
             {
                 var def = node.Value as ListDefinition;
 

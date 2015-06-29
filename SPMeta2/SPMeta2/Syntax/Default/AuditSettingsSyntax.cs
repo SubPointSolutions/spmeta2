@@ -10,36 +10,24 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class AuditSettingsModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AuditSettingsSyntax
     {
         #region methods
 
-        public static ListModelNode AddAuditSettings(this ListModelNode model, AuditSettingsDefinition definition)
+        public static TModelNode AddAuditSettings<TModelNode>(this TModelNode model, AuditSettingsDefinition definition)
+            where TModelNode : ModelNode, IAuditSettingsHostModelNode, new()
         {
             return AddAuditSettings(model, definition, null);
         }
 
-        public static ListModelNode AddAuditSettings(this ListModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static SiteModelNode AddAuditSettings(this SiteModelNode model, AuditSettingsDefinition definition)
-        {
-            return AddAuditSettings(model, definition, null);
-        }
-
-        public static SiteModelNode AddAuditSettings(this SiteModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddAuditSettings(this WebModelNode model, AuditSettingsDefinition definition)
-        {
-            return AddAuditSettings(model, definition, null);
-        }
-
-        public static WebModelNode AddAuditSettings(this WebModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddAuditSettings<TModelNode>(this TModelNode model, AuditSettingsDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IAuditSettingsHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

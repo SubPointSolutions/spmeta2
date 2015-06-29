@@ -8,71 +8,39 @@ namespace SPMeta2.Syntax.Default
 {
     public class FieldModelNode : TypedModelNode
     {
-        
-    }
 
+    }
 
     public static class FieldDefinitionSyntax
     {
         #region methods
 
-        public static SiteModelNode AddField(this SiteModelNode siteModel, FieldDefinition definition)
+        public static TModelNode AddField<TModelNode>(this TModelNode model, FieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return AddField(siteModel, null);
+            return AddField(model, definition, null);
         }
 
-        public static SiteModelNode AddField(this SiteModelNode model, FieldDefinition definition,
+        public static TModelNode AddField<TModelNode>(this TModelNode model, FieldDefinition definition,
             Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static WebModelNode AddField(this WebModelNode siteModel, FieldDefinition definition)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddFields<TModelNode>(this TModelNode model, IEnumerable<FieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return AddField(siteModel, null);
-        }
-
-        public static WebModelNode AddField(this WebModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static ListModelNode AddField(this ListModelNode siteModel, FieldDefinition definition)
-        {
-            return AddField(siteModel, null);
-        }
-
-        public static ListModelNode AddField(this ListModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static SiteModelNode AddFields(this SiteModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
-        {
-            foreach (var fieldDefinition in fieldDefinitions)
-                model.AddDefinitionNode(fieldDefinition);
-
-            return model;
-        }
-
-        public static WebModelNode AddFields(this WebModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
-        {
-            foreach (var fieldDefinition in fieldDefinitions)
-                model.AddDefinitionNode(fieldDefinition);
-
-            return model;
-        }
-
-        public static ListModelNode AddFields(this ListModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
-        {
-            foreach (var fieldDefinition in fieldDefinitions)
-                model.AddDefinitionNode(fieldDefinition);
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
 
             return model;
         }
 
         #endregion
-
-
     }
 }

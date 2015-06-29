@@ -10,11 +10,6 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-
-        #endregion
-
-        #region methods
-
         public static ListModelNode AddListView(this ListModelNode model, ListViewDefinition definition)
         {
             return AddListView(model, definition, null);
@@ -29,7 +24,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddListViews(this ModelNode model, IEnumerable<ListViewDefinition> definitions)
+        public static ListModelNode AddListViews(this ListModelNode model, IEnumerable<ListViewDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

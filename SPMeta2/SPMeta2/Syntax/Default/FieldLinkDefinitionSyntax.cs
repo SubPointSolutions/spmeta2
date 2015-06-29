@@ -18,8 +18,6 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-
-
         public static ContentTypeModelNode AddContentTypeFieldLink(this ContentTypeModelNode model, Guid fieldId)
         {
             return AddContentTypeFieldLink(model, fieldId, null);

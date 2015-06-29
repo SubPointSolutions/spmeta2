@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddApps(this ModelNode model, IEnumerable<AppDefinition> definitions)
+        public static WebModelNode AddApps(this WebModelNode model, IEnumerable<AppDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

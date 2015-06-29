@@ -27,15 +27,15 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
-        {
-            return AddHostFarmSolution(model, definition, null);
-        }
+        //public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
+        //{
+        //    return AddHostFarmSolution(model, definition, null);
+        //}
 
-        public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        }
+        //public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
+        //{
+        //    return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        //}
 
         #endregion
     }

@@ -14,18 +14,23 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddBreakRoleInheritance(this ModelNode model, BreakRoleInheritanceDefinition definition)
+        public static TModelNode AddBreakRoleInheritance<TModelNode>(this TModelNode model, BreakRoleInheritanceDefinition definition)
+            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
             return AddBreakRoleInheritance(model, definition, null);
         }
 
-        public static ModelNode AddBreakRoleInheritance(this ModelNode model, BreakRoleInheritanceDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddBreakRoleInheritance<TModelNode>(this TModelNode model, BreakRoleInheritanceDefinition definition,
+            Action<TModelNode> action)
+            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-     
+        #region array overload
+
+        #endregion
     }
 }

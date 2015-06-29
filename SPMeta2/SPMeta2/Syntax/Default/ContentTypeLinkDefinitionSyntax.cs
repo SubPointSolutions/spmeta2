@@ -10,19 +10,19 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition)
+        public static ListModelNode AddContentTypeLink(this ListModelNode model, ContentTypeLinkDefinition definition)
         {
             return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddContentTypeLink(this ListModelNode model, ContentTypeLinkDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #region array overload
 
-        public static ModelNode AddContentTypeLinks(this ModelNode model, IEnumerable<ContentTypeLinkDefinition> definitions)
+        public static ListModelNode AddContentTypeLinks(this ListModelNode model, IEnumerable<ContentTypeLinkDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -32,7 +32,7 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, string contentTypdId)
+        public static ListModelNode AddContentTypeLink(this ListModelNode model, string contentTypdId)
         {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {
@@ -41,12 +41,12 @@ namespace SPMeta2.Syntax.Default
             });
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition)
+        public static ListModelNode AddContentTypeLink(this ListModelNode model, ContentTypeDefinition definition)
         {
             return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static ListModelNode AddContentTypeLink(this ListModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
         {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {

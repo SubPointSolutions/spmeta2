@@ -8,46 +8,26 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public class PublishingPageModelNode : TypedModelNode
+    public class PublishingPageModelNode : TypedModelNode,
+        IWebpartHostModelNode,
+        ISecurableObjectHostModelNode
     {
 
-    }
-
-    public static class DeleteWebPartsDefinitionSyntax
-    {
-        public static PublishingPageModelNode AddDeleteWebParts(this PublishingPageModelNode model, DeleteWebPartsDefinition definition)
-        {
-            return AddDeleteWebParts(model, definition, null);
-        }
-
-        public static PublishingPageModelNode AddDeleteWebParts(this PublishingPageModelNode model, DeleteWebPartsDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
     }
 
     public static class PublishingPageDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ListModelNode AddPublishingPage(this ListModelNode model, PublishingPageDefinition definition)
+        public static TModelNode AddPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return AddPublishingPage(model, definition, null);
         }
 
-        public static ListModelNode AddPublishingPage(this ListModelNode model, PublishingPageDefinition definition,
+        public static TModelNode AddPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition,
             Action<PublishingPageModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static FolderModelNode AddPublishingPage(this FolderModelNode model, PublishingPageDefinition definition)
-        {
-            return AddPublishingPage(model, definition, null);
-        }
-
-        public static FolderModelNode AddPublishingPage(this FolderModelNode model, PublishingPageDefinition definition,
-            Action<PublishingPageModelNode> action)
+            where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -56,7 +36,8 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static ModelNode AddPublishingPages(this ModelNode model, IEnumerable<PublishingPageDefinition> definitions)
+        public static TModelNode AddPublishingPages<TModelNode>(this TModelNode model, IEnumerable<PublishingPageDefinition> definitions)
+           where TModelNode : ModelNode, IPageHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

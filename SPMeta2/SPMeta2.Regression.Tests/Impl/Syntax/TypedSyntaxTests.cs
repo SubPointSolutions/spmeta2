@@ -61,6 +61,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddAuditSettings(new AuditSettingsDefinition());
                 site.AddImageRendition(new ImageRenditionDefinition());
 
                 site.AddRootWeb(new RootWebDefinition());
@@ -118,6 +119,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web.AddAuditSettings(new AuditSettingsDefinition());
                 web.AddWebNavigationSettings(new WebNavigationSettingsDefinition());
                 web.AddPageLayoutAndSiteTemplateSettings(new PageLayoutAndSiteTemplateSettingsDefinition());
 
@@ -143,8 +145,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 web.AddFeature(new FeatureDefinition());
                 web.AddWebFeature(new FeatureDefinition());
 
-                web.AddSecurityGroup(new SecurityGroupDefinition());
-                web.AddSecurityRole(new SecurityRoleDefinition());
+                //web.AddSecurityGroup(new SecurityGroupDefinition());
+                //web.AddSecurityRole(new SecurityRoleDefinition());
 
                 web.AddWeb(new WebDefinition());
 
@@ -155,6 +157,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddAuditSettings(new AuditSettingsDefinition());
+
                     list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition());
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
                     list.AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition());

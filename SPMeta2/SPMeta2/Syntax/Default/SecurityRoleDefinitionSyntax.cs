@@ -10,21 +10,21 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition)
+        public static SiteModelNode AddSecurityRole(this SiteModelNode model, SecurityRoleDefinition definition)
         {
             return AddSecurityRole(model, definition, null);
         }
 
-        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
+        public static SiteModelNode AddSecurityRole(this SiteModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSecurityRoles(this ModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
+        public static SiteModelNode AddSecurityRoles(this SiteModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -6,7 +6,16 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class ListModelNode : TypedModelNode
+    public class ListModelNode : TypedModelNode,
+        IFieldHostModelNode,
+        ISecurableObjectHostModelNode,
+        IPageHostModelNode,
+        IListItemHostModelNode,
+        IFolderHostModelNode,
+        IEventReceiverHostModelNode,
+        IWelcomePageHostModelNode,
+        IModuleFileHostModelNode,
+        IAuditSettingsHostModelNode
     {
 
     }

@@ -15,19 +15,16 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddAppPrincipal(this ModelNode model, AppPrincipalDefinition definition)
+        public static WebModelNode AddAppPrincipal(this WebModelNode model, AppPrincipalDefinition definition)
         {
             return AddAppPrincipal(model, definition, null);
         }
 
-        public static ModelNode AddAppPrincipal(this ModelNode model, AppPrincipalDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddAppPrincipal(this WebModelNode model, AppPrincipalDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
-
-       
-
     }
 }

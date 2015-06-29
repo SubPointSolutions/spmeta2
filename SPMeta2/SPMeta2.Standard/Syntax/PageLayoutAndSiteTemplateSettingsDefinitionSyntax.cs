@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
@@ -9,14 +10,14 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static ModelNode AddPageLayoutAndSiteTemplateSettings(this ModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        public static WebModelNode AddPageLayoutAndSiteTemplateSettings(this WebModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition)
         {
             return AddPageLayoutAndSiteTemplateSettings(model, definition, null);
         }
 
-        public static ModelNode AddPageLayoutAndSiteTemplateSettings(this ModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition, Action<ModelNode> action)
+        public static WebModelNode AddPageLayoutAndSiteTemplateSettings(this WebModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

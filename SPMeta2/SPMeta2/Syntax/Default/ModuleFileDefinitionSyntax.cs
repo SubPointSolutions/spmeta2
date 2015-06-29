@@ -17,43 +17,27 @@ namespace SPMeta2.Syntax.Default
 
     public static class ModuleFileDefinitionSyntax
     {
-        public static WebModelNode AddModuleFile(this WebModelNode model, ModuleFileDefinition definition)
+        #region methods
+
+        public static TModelNode AddModuleFile<TModelNode>(this TModelNode model, ModuleFileDefinition definition)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddModuleFile(model, definition, null);
         }
 
-        public static WebModelNode AddModuleFile(this WebModelNode model, ModuleFileDefinition definition,
+        public static TModelNode AddModuleFile<TModelNode>(this TModelNode model, ModuleFileDefinition definition,
             Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ContentTypeModelNode AddModuleFile(this ContentTypeModelNode model, ModuleFileDefinition definition)
-        {
-            return AddModuleFile(model, definition, null);
-        }
-
-        public static ContentTypeModelNode AddModuleFile(this ContentTypeModelNode model, ModuleFileDefinition definition,
-            Action<ModuleFileModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static ListModelNode AddModuleFile(this ListModelNode model, ModuleFileDefinition definition)
-        {
-            return AddModuleFile(model, definition, null);
-        }
-
-        public static ListModelNode AddModuleFile(this ListModelNode model, ModuleFileDefinition definition,
-            Action<ModuleFileModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
+        #endregion
 
         #region array overload
 
-        public static ModelNode AddModuleFiles(this ModelNode model, IEnumerable<ModuleFileDefinition> definitions)
+        public static TModelNode AddModuleFiles<TModelNode>(this TModelNode model, IEnumerable<ModuleFileDefinition> definitions)
+           where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

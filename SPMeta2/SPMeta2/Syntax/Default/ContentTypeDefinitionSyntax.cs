@@ -6,7 +6,9 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class ContentTypeModelNode : TypedModelNode
+    public class ContentTypeModelNode : TypedModelNode,
+        IEventReceiverHostModelNode,
+        IModuleFileHostModelNode
     {
 
     }
@@ -21,46 +23,35 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static SiteModelNode AddContentType(this SiteModelNode model, ContentTypeDefinition definition)
+        public static TModelNode AddContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             return AddContentType(model, definition, null);
         }
 
-        public static SiteModelNode AddContentType(this SiteModelNode model, ContentTypeDefinition definition, 
+        public static TModelNode AddContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition,
             Action<ContentTypeModelNode> action)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static WebModelNode AddContentType(this WebModelNode model, ContentTypeDefinition definition)
-        {
-            return AddContentType(model, definition, null);
-        }
+        #endregion
 
-        public static WebModelNode AddContentType(this WebModelNode model, ContentTypeDefinition definition,
-            Action<ContentTypeModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
+        #region array overload
 
-       
-
-        public static SiteModelNode AddContentTypes(this SiteModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
+        public static TModelNode AddContentTypes<TModelNode>(this TModelNode model, IEnumerable<ContentTypeDefinition> definitions)
+           where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             foreach (var definition in definitions)
-                AddContentType(siteModel, definition);
+                model.AddDefinitionNode(definition);
 
-            return siteModel;
+            return model;
         }
 
-        public static WebModelNode AddContentTypes(this WebModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                AddContentType(siteModel, definition);
+        #endregion
 
-            return siteModel;
-        }
-
+        #region utils
 
         public static bool IsChildOf(this ContentTypeDefinition childContentTypeDefinition,
             ContentTypeDefinition parentContentTypeDefinition)

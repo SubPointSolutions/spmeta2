@@ -4,6 +4,7 @@ using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax

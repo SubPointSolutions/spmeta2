@@ -9,16 +9,27 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ManagedPropertyModelNode : TypedModelNode
+    {
+
+    }
+
+    
+
     public static class ManagedPropertyDefinitionSyntax
     {
         #region publishing page
+        #region methods
 
-        public static FarmModelNode AddManagedProperty(this FarmModelNode model, ManagedPropertyDefinition definition)
+        public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition)
+            where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             return AddManagedProperty(model, definition, null);
         }
 
-        public static FarmModelNode AddManagedProperty(this FarmModelNode model, ManagedPropertyDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -27,13 +38,16 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static ModelNode AddManagedProperties(this ModelNode model, IEnumerable<ManagedPropertyDefinition> definitions)
+        public static TModelNode AddManagedProperties<TModelNode>(this TModelNode model, IEnumerable<ManagedPropertyDefinition> definitions)
+           where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
 
             return model;
         }
+
+        #endregion
 
         #endregion
     }

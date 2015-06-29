@@ -12,21 +12,21 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, ListItemFieldValuesDefinition definition)
+        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, ListItemFieldValuesDefinition definition)
         {
             return AddListItemFieldValues(model, definition, null);
         }
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, ListItemFieldValuesDefinition definition, Action<ModelNode> action)
+        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, ListItemFieldValuesDefinition definition, Action<ModelNode> action)
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
+        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
