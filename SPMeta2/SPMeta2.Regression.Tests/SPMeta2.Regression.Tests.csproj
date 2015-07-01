@@ -345,10 +345,6 @@
       <Link>SPMeta2.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Syntax.Default\bin\Debug\SPMeta2.Syntax.Default.dll">
-      <Link>SPMeta2.Syntax.Default.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\SPMeta2\bin\Debug\SPMeta2.dll">
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

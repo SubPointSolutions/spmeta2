@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Fields;
 using SPMeta2.Models;
+using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
+using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public static class TaxonomyFieldDefinitionSyntax
+    public static class ImageFieldDefinitionSyntax
     {
         #region methods
 
-        public static TModelNode AddTaxonomyField<TModelNode>(this TModelNode model, TaxonomyFieldDefinition definition)
+        public static TModelNode AddImageField<TModelNode>(this TModelNode model, ImageFieldDefinition definition)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return AddTaxonomyField(model, definition, null);
+            return AddImageField(model, definition, null);
         }
 
-        public static TModelNode AddTaxonomyField<TModelNode>(this TModelNode model, TaxonomyFieldDefinition definition,
+        public static TModelNode AddImageField<TModelNode>(this TModelNode model, ImageFieldDefinition definition,
             Action<FieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
@@ -30,7 +30,7 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static TModelNode AddTaxonomyFields<TModelNode>(this TModelNode model, IEnumerable<TaxonomyFieldDefinition> definitions)
+        public static TModelNode AddImageFields<TModelNode>(this TModelNode model, IEnumerable<ImageFieldDefinition> definitions)
            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)

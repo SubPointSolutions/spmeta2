@@ -10,23 +10,27 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class ResultScriptWebPartDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddResultScriptWebPart(this ModelNode model, ResultScriptWebPartDefinition definition)
+        public static TModelNode AddResultScriptWebPart<TModelNode>(this TModelNode model, ResultScriptWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddResultScriptWebPart(model, definition, null);
         }
 
-        public static ModelNode AddResultScriptWebPart(this ModelNode model, ResultScriptWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddResultScriptWebPart<TModelNode>(this TModelNode model, ResultScriptWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddResultScriptWebParts(this ModelNode model, IEnumerable<ResultScriptWebPartDefinition> definitions)
+        public static TModelNode AddResultScriptWebParts<TModelNode>(this TModelNode model, IEnumerable<ResultScriptWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

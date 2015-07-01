@@ -11,23 +11,27 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class MediaFieldDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddMediaField(this ModelNode model, MediaFieldDefinition definition)
+        public static TModelNode AddMediaField<TModelNode>(this TModelNode model, MediaFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddMediaField(model, definition, null);
         }
 
-        public static ModelNode AddMediaField(this ModelNode model, MediaFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddMediaField<TModelNode>(this TModelNode model, MediaFieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddMediaFields(this ModelNode model, IEnumerable<MediaFieldDefinition> definitions)
+        public static TModelNode AddMediaFields<TModelNode>(this TModelNode model, IEnumerable<MediaFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

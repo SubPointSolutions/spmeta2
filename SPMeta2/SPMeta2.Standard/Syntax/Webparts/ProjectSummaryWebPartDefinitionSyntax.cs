@@ -13,19 +13,27 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class ProjectSummaryWebPartDefinitionSyntax
     {
-        #region ProjectSummaryWebPart
+        #region methods
 
-        public static ModelNode AddProjectSummaryWebPart(this ModelNode model, ProjectSummaryWebPartDefinition definition)
+        public static TModelNode AddProjectSummaryWebPart<TModelNode>(this TModelNode model, ProjectSummaryWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddProjectSummaryWebPart(model, definition, null);
         }
 
-        public static ModelNode AddProjectSummaryWebPart(this ModelNode model, ProjectSummaryWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddProjectSummaryWebPart<TModelNode>(this TModelNode model, ProjectSummaryWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddProjectSummaryWebParts(this ModelNode model, IEnumerable<ProjectSummaryWebPartDefinition> definitions)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddProjectSummaryWebParts<TModelNode>(this TModelNode model, IEnumerable<ProjectSummaryWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

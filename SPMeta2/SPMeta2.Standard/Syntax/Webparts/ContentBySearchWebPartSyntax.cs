@@ -12,21 +12,25 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static ModelNode AddContentBySearchWebPart(this ModelNode model, ContentBySearchWebPartDefinition definition)
+        public static TModelNode AddContentBySearchWebPart<TModelNode>(this TModelNode model, ContentBySearchWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddContentBySearchWebPart(model, definition, null);
         }
 
-        public static ModelNode AddContentBySearchWebPart(this ModelNode model, ContentBySearchWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentBySearchWebPart<TModelNode>(this TModelNode model, ContentBySearchWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddContentBySearchWebParts(this ModelNode model, IEnumerable<ContentBySearchWebPartDefinition> definitions)
+        public static TModelNode AddContentBySearchWebParts<TModelNode>(this TModelNode model, IEnumerable<ContentBySearchWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

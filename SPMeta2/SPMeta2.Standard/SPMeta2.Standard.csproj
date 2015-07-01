@@ -108,6 +108,7 @@
     <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
+    <Compile Include="Syntax\Interfaces\ITaxonomyTermHostModelNode.cs" />
     <Compile Include="Syntax\Webparts\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
     <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
@@ -164,7 +165,7 @@
     <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\SummaryLinkWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\HTMLFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ImageFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\ImageFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\LinkFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\SummaryLinkFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\MediaFieldDefinitionSyntax.cs" />

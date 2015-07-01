@@ -11,23 +11,27 @@ namespace SPMeta2.Standard.Syntax
 {
     public static class SummaryLinkFieldDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddSummaryLinkField(this ModelNode model, SummaryLinkFieldDefinition definition)
+        public static TModelNode AddSummaryLinkField<TModelNode>(this TModelNode model, SummaryLinkFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddSummaryLinkField(model, definition, null);
         }
 
-        public static ModelNode AddSummaryLinkField(this ModelNode model, SummaryLinkFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSummaryLinkField<TModelNode>(this TModelNode model, SummaryLinkFieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSummaryLinkFields(this ModelNode model, IEnumerable<SummaryLinkFieldDefinition> definitions)
+        public static TModelNode AddSummaryLinkFields<TModelNode>(this TModelNode model, IEnumerable<SummaryLinkFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

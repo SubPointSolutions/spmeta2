@@ -7,40 +7,35 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public class TaxonomyTermModelNode : TypedModelNode
+    public class TaxonomyTermModelNode : TypedModelNode,
+        ITaxonomyTermHostModelNode
     {
 
     }
 
     public static class TaxonomyTermDefinitionSyntax
     {
-        public static TaxonomyTermSetModelNode AddTaxonomyTerm(this TaxonomyTermSetModelNode model,
-            TaxonomyTermDefinition definition)
+        #region methods
+
+        public static TModelNode AddTaxonomyTerm<TModelNode>(this TModelNode model, TaxonomyTermDefinition definition)
+            where TModelNode : ModelNode, ITaxonomyTermHostModelNode, new()
         {
             return AddTaxonomyTerm(model, definition, null);
         }
 
-        public static TaxonomyTermSetModelNode AddTaxonomyTerm(this TaxonomyTermSetModelNode model,
-            TaxonomyTermDefinition definition, Action<TaxonomyTermModelNode> action)
+        public static TModelNode AddTaxonomyTerm<TModelNode>(this TModelNode model, TaxonomyTermDefinition definition,
+            Action<TaxonomyTermModelNode> action)
+            where TModelNode : ModelNode, ITaxonomyTermHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static TaxonomyTermModelNode AddTaxonomyTerm(this TaxonomyTermModelNode model,
-            TaxonomyTermDefinition definition)
-        {
-            return AddTaxonomyTerm(model, definition, null);
-        }
-
-        public static TaxonomyTermModelNode AddTaxonomyTerm(this TaxonomyTermModelNode model,
-            TaxonomyTermDefinition definition, Action<TaxonomyTermModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
+        #endregion
 
         #region array overload
 
-        public static ModelNode AddTaxonomyTerms(this ModelNode model, IEnumerable<TaxonomyTermDefinition> definitions)
+        public static TModelNode AddTaxonomyTerms<TModelNode>(this TModelNode model, IEnumerable<TaxonomyTermDefinition> definitions)
+           where TModelNode : ModelNode, ITaxonomyTermHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -7,7 +7,8 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public class TaxonomyTermSetModelNode : TypedModelNode
+    public class TaxonomyTermSetModelNode : TypedModelNode,
+        ITaxonomyTermHostModelNode
     {
 
     }

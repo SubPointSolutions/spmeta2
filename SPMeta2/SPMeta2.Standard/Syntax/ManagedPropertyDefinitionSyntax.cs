@@ -19,6 +19,7 @@ namespace SPMeta2.Standard.Syntax
     public static class ManagedPropertyDefinitionSyntax
     {
         #region publishing page
+
         #region methods
 
         public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition)
