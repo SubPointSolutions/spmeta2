@@ -40,11 +40,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 if (field.Context.HasPendingRequest)
                 {
                     field.Update();
-                    field.Context.ExecuteQuery();
+                    field.Context.ExecuteQueryWithTrace();
                 }
 
                 typedField.Context.Load(typedField);
-                typedField.Context.ExecuteQuery();
+                typedField.Context.ExecuteQueryWithTrace();
             }
 
             typedField.AllowMultipleValues = typedFieldModel.AllowMultipleValues;
@@ -75,7 +75,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                     if (!web.IsPropertyAvailable("ServerRelativeUrl"))
                     {
                         context.Load(web, w => w.ServerRelativeUrl);
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
                     }
 
                     var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
@@ -94,7 +94,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                     var list = web.Lists.GetByTitle(typedFieldModel.LookupListTitle);
 
                     context.Load(list);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     typedField.LookupList = list.Id.ToString();
                 }
@@ -132,7 +132,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 if (!web.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     context.Load(web, w => w.ServerRelativeUrl);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
                 }
 
                 var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
@@ -151,7 +151,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 var list = web.Lists.GetByTitle(typedFieldModel.LookupListTitle);
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, list.Id.ToString());
             }

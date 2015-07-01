@@ -155,7 +155,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
 
             termStore.CommitAll();
-            termStore.Context.ExecuteQuery();
+            termStore.Context.ExecuteQueryWithTrace();
         }
 
         private void DeployTermUnderTerm(object modelHost, TermModelHost groupModelHost, TaxonomyTermDefinition termModel)
@@ -216,7 +216,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
 
             termStore.CommitAll();
-            termStore.Context.ExecuteQuery();
+            termStore.Context.ExecuteQueryWithTrace();
         }
 
 
@@ -233,7 +233,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 var id = termModel.Id.Value;
 
                 results = context.LoadQuery(term.Terms.Where(t => t.Id == id));
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
             }
             else if (!string.IsNullOrEmpty(termModel.Name))
@@ -247,7 +247,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
 
                 results = context.LoadQuery(term.Terms.Where(t => t.Name == name));
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
                 //result = term.Terms.FirstOrDefault(t => t.Name == termModel.Name);
             }
 

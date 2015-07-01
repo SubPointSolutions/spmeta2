@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -25,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var spObjectContext = spObject.Context;
 
                 spObjectContext.Load(spObject, o => o.Xaml);
-                spObjectContext.ExecuteQuery();
+                spObjectContext.ExecuteQueryWithTrace();
             }
 
             var assert = ServiceFactory.AssertService

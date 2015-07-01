@@ -7,6 +7,7 @@ using SPMeta2.Utils;
 using FeatureDefinitionScope = SPMeta2.Definitions.FeatureDefinitionScope;
 using SPMeta2.Exceptions;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -44,7 +45,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     var siteContext = siteModelHost.HostSite.Context;
                     siteContext.Load(features);
-                    siteContext.ExecuteQuery();
+                    siteContext.ExecuteQueryWithTrace();
 
 
                     break;
@@ -58,7 +59,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     var webContext = webModelHost.HostWeb.Context;
                     webContext.Load(features);
-                    webContext.ExecuteQuery();
+                    webContext.ExecuteQueryWithTrace();
 
                     break;
             }
@@ -67,7 +68,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             spObject = features.GetById(featureId);
             features.Context.Load(spObject, o => o.DefinitionId);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryWithTrace();
 
             assert.Dst = spObject;
 

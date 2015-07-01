@@ -25,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(web, w => w.ServerRelativeUrl);
 
             var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = FindListByUrl(lists, definition.GetListUrl());
 
@@ -42,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spObject, list => list.OnQuickLaunch);
             context.Load(spObject, list => list.DraftVersionVisibility);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 

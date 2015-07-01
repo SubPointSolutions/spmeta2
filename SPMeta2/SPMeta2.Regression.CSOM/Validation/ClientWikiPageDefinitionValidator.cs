@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -26,7 +27,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = file.ListItemAllFields;
 
             context.Load(spObject);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)

@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -138,7 +139,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         context.Load(defaultView, v => v.ViewFields);
                         context.Load(field);
 
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         var isValid = HostList.DefaultView
                             .ViewFields

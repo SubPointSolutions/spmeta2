@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers.ContentTypes;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -19,7 +20,7 @@ namespace SPMeta2.Regression.CSOM.Validation.ContentTypes
 
             spObject.Context.Load(spObject, c => c.Fields);
             spObject.Context.Load(spObject, c => c.FieldLinks);
-            spObject.Context.ExecuteQuery();
+            spObject.Context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                              .NewAssert(definition, spObject)

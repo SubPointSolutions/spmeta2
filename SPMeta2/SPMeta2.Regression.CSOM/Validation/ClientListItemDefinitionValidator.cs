@@ -54,7 +54,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var context = spObject.Context;
 
                 context.Load(spObject, o => o.DisplayName);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
 

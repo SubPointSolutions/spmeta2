@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
@@ -20,7 +21,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             var context = siteModelHost.HostSite.Context;
 
             var renditions = SiteImageRenditions.GetRenditions(siteModelHost.HostSite.Context);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = GetCurrentImageRendition(renditions, definition);
 

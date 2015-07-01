@@ -70,3 +70,17 @@ c:\_spmeta_builds\40\SPMeta2.CSOM.XML
 c:\_spmeta_builds\45\SPMeta2.CSOM.dll
 c:\_spmeta_builds\45\SPMeta2.CSOM.pdb
 c:\_spmeta_builds\45\SPMeta2.CSOM.XML
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.XML
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.dll
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.pdb
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.dll
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.pdb
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\bin\Debug\SPMeta2.xml
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.csprojResolveAssemblyReference.cache
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.PublishingPageTemplates.resources
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.WebPartPageTemplates.resources
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.WebPartTemplates.resources
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.csproj.GenerateResource.Cache
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.dll
+C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.CSOM\obj\Debug\SPMeta2.CSOM.pdb

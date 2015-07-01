@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
@@ -84,7 +85,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
 
             termStore.CommitAll();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected Label FindLabelInTerm(Term termSet, TaxonomyTermLabelDefinition labelModel)
@@ -93,7 +94,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var labels = termSet.Labels;
 
             context.Load(labels);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return termSet.Labels.ToList().FirstOrDefault(l => l.Value.ToUpper() == labelModel.Name.ToUpper());
         }

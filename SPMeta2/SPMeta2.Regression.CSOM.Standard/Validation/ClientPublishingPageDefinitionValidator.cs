@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
@@ -28,7 +29,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             context.Load(spObject, o => o.DisplayName);
             context.Load(spObject, o => o.ContentType);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)

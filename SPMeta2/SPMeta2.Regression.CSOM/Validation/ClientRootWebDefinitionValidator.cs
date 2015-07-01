@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -42,13 +43,13 @@ namespace SPMeta2.Regression.CSOM.Validation
                 if (!d.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     context.Load(d, o => o.ServerRelativeUrl);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
                 }
 
                 if (!site.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     site.Context.Load(site, o => o.ServerRelativeUrl);
-                    site.Context.ExecuteQuery();
+                    site.Context.ExecuteQueryWithTrace();
                 }
 
                 var isValid = d.ServerRelativeUrl.ToUpper() == site.ServerRelativeUrl.ToUpper();

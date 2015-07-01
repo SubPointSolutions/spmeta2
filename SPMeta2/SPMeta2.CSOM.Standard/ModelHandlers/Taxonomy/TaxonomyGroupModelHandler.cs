@@ -60,7 +60,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, false);
 
             context.Load(currentGroup);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
             return currentGroup;
         }
 
@@ -180,7 +180,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
 
             termStore.CommitAll();
-            termStore.Context.ExecuteQuery();
+            termStore.Context.ExecuteQueryWithTrace();
         }
 
         #endregion

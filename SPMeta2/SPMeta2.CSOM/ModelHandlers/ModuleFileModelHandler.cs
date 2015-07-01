@@ -62,7 +62,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
 
             context.Load(currentFile, f => f.Exists);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -96,7 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var file = folder.Files.Add(fileCreatingInfo);
 
-                folder.Context.ExecuteQuery();
+                folder.Context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -143,7 +143,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
 
             context.Load(currentFile, f => f.Exists);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -177,7 +177,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var file = folder.Files.Add(fileCreatingInfo);
 
-                folder.Context.ExecuteQuery();
+                folder.Context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

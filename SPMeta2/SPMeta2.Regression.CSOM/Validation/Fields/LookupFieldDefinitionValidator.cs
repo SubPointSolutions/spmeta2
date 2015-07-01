@@ -84,12 +84,12 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                     : site.RootWeb;
 
                 context.Load(web);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var list = web.Lists.GetByTitle(typedDefinition.LookupListTitle);
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -121,12 +121,12 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                     : site.RootWeb;
 
                 context.Load(web);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedDefinition.LookupListUrl));
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -161,7 +161,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
                         var userInfoList = site.RootWeb.SiteUserInfoList;
                         context.Load(userInfoList);
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         var isValid = userInfoList.Id == new Guid(typedField.LookupList);
 

@@ -436,7 +436,7 @@ function SetO365MManagedMetadataApplicationParams($siteUrl) {
     $store = $taxSession.GetDefaultSiteCollectionTermStore();
 
     $context.Load($store)
-    $context.ExecuteQuery()
+    $context.ExecuteQueryWithTrace()
 
     Write-Host "Setting up taxonomy store vars" -fore Yellow
 

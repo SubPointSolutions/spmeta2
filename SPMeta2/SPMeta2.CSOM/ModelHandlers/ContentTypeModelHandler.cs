@@ -109,7 +109,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 context.Load(web, w => w.ServerRelativeUrl);
                 currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
-                currentContentType.Context.ExecuteQuery();
+                currentContentType.Context.ExecuteQueryWithTrace();
             }
 
             var ctDocument = XDocument.Parse(currentContentType.SchemaXml);
@@ -135,7 +135,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
             var tmpContentType = context.LoadQuery(web.ContentTypes.Where(ct => ct.StringId == contentTypeId));
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var tmp = tmpContentType.FirstOrDefault();
 

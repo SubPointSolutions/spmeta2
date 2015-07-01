@@ -109,7 +109,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 siteContentType = folderModelHost.HostSite.RootWeb.AvailableContentTypes.GetById(publishingPageModel.AssociatedContentTypeId);
 
                 folderModelHost.HostSite.Context.Load(siteContentType);
-                folderModelHost.HostSite.Context.ExecuteQuery();
+                folderModelHost.HostSite.Context.ExecuteQueryWithTrace();
             }
 
             var context = folder.Context;
