@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -24,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(securableObject, s => s.RoleAssignments.Include(r => r.Member));
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = ResolveSecurityGroup(definition, web, context);
 

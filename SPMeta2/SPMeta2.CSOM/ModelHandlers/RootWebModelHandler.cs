@@ -58,7 +58,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             currentObject.Update();
-            currentObject.Context.ExecuteQuery();
+            currentObject.Context.ExecuteQueryWithTrace();
         }
 
         protected Web GetCurrentObject(object modelHost, RootWebDefinition definition)
@@ -71,7 +71,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = site.Context;
 
                 context.Load(site, s => s.RootWeb);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return site.RootWeb;
             }
@@ -83,7 +83,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = site.Context;
 
                 context.Load(site, s => s.RootWeb);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return site.RootWeb;
             }
@@ -106,7 +106,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             action(rootModelHost);
 
             currentObject.Update();
-            currentObject.Context.ExecuteQuery();
+            currentObject.Context.ExecuteQueryWithTrace();
         }
 
         #endregion

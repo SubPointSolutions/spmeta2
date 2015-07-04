@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
@@ -61,7 +62,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var context = term.Context;
 
             var resultValue = term.GetDescription(CurrentLCID);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return resultValue.Value;
         }

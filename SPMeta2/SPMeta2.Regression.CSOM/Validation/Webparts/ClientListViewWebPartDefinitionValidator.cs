@@ -152,7 +152,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
                     context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var isValid = false;
 
@@ -193,7 +193,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
                     context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var isValid = false;
 

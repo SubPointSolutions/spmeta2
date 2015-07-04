@@ -164,7 +164,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             dependentLookupField.UpdateAndPushChanges(true);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         protected virtual FieldLookup GetDependentLookupField(FieldCollection fields, 
@@ -221,7 +221,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 result = fields.GetByTitle(definition.PrimaryLookupFieldTitle);
 
             context.Load(result);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return context.CastTo<FieldLookup>(result);
         }

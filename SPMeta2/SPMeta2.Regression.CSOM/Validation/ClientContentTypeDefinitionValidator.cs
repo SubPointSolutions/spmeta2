@@ -36,7 +36,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(rootWeb);
             context.Load(contentTypes);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var contentTypeId = definition.GetContentTypeId();
             var spObject = contentTypes.FindByName(definition.Name);

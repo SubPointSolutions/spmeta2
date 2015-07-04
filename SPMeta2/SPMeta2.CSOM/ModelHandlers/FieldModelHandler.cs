@@ -511,7 +511,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
             var result = context.LoadQuery(query);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (result.Count() > 0)
             {
@@ -519,7 +519,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (existingIndexedField != null && existingIndexedField.FieldTypeKind == FieldType.Note)
                 {
                     existingIndexedField.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
                 }
             }
         }

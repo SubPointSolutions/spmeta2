@@ -101,7 +101,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(contentType);
             context.Load(contentType, c => c.FieldLinks);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             if (contentTypeFieldLinkModel.FieldId.HasGuidValue())
             {

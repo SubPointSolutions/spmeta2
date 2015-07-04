@@ -177,7 +177,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!targetList.IsPropertyAvailable("ContentTypes"))
             {
                 targetList.Context.Load(targetList, l => l.ContentTypes);
-                targetList.Context.ExecuteQuery();
+                targetList.Context.ExecuteQueryWithTrace();
             }
 
             var targetContentType = targetList.ContentTypes.FindByName(name);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -23,7 +24,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             // well, this should be pulled up to the site handler and init Load/Exec query
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = FindSecurityGroupByTitle(web.SiteGroups, definition.Name);
 
@@ -102,7 +103,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var owner = group.Owner;
 
                 group.Context.Load(owner, g => g.LoginName);
-                group.Context.ExecuteQuery();
+                group.Context.ExecuteQueryWithTrace();
 
                 return owner.LoginName;
             }
@@ -117,7 +118,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var users = group.Users;
 
                 group.Context.Load(users, g => g.Include(gg => gg.LoginName));
-                group.Context.ExecuteQuery();
+                group.Context.ExecuteQueryWithTrace();
 
                 return users[0].LoginName;
             }

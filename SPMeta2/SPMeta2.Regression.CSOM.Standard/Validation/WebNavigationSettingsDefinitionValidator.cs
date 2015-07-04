@@ -1,4 +1,5 @@
 ﻿using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
@@ -31,7 +32,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             context.Load(web, w => w.AllProperties);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)

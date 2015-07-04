@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -33,7 +34,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                             w => w.Url
                         );
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
@@ -55,7 +56,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 if (!parentWeb.IsObjectPropertyInstantiated("Url"))
                 {
                     parentWeb.Context.Load(parentWeb, o => o.Url);
-                    parentWeb.Context.ExecuteQuery();
+                    parentWeb.Context.ExecuteQueryWithTrace();
                 }
 
                 var srcProp = s.GetExpressionValue(def => def.Url);

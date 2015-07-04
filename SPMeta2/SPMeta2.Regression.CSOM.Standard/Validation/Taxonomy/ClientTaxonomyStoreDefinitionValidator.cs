@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
@@ -46,7 +47,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                     client.Load(termStore, t => t.Id);
                     client.Load(termStore, t => t.Name);
 
-                    siteModelHost.HostClientContext.ExecuteQuery();
+                    siteModelHost.HostClientContext.ExecuteQueryWithTrace();
 
                     var isValid = termStore.Id == spObject.Id;
 

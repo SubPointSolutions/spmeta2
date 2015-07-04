@@ -179,7 +179,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 //var principalInfos = Utility.ResolvePrincipal(context, web, owner, targetSource, PrincipalSource.All, null, false);
                 var principalInfos = Utility.SearchPrincipals(context, web, owner, targetSource, PrincipalSource.All, null, 2);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 if (principalInfos.Count > 0)
                 //if (principalInfos.Value != null)
@@ -196,7 +196,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         result = web.SiteGroups.GetById(info.PrincipalId);
 
                     context.Load(result);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     // nic, found, break, profit!
                     break;

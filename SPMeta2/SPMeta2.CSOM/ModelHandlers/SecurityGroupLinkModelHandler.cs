@@ -118,7 +118,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {

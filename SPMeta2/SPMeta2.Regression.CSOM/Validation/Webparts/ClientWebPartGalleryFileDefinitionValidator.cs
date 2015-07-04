@@ -11,6 +11,7 @@ using SPMeta2.Definitions.Webparts;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
@@ -31,7 +32,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
             context.Load(file, f => f.ServerRelativeUrl);
             context.Load(spObject);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                          .NewAssert(definition, spObject)

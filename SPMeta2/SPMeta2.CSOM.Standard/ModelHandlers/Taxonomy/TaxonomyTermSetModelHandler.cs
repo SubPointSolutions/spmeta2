@@ -109,7 +109,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
 
             termStore.CommitAll();
-            termStore.Context.ExecuteQuery();
+            termStore.Context.ExecuteQueryWithTrace();
         }
 
         private static void MapTermSet(TermSet currentTermSet, TaxonomyTermSetDefinition termSetModel)

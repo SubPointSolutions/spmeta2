@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -22,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = FindExistingListField(list, definition);
 
             context.Load(spObject);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
@@ -68,7 +69,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     var listContentTypes = list.ContentTypes;
                     context.Load(listContentTypes);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     foreach (ContentType ct in listContentTypes)
                     {
@@ -81,7 +82,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                         context.Load(ct);
                         context.Load(ct, c => c.FieldLinks);
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         isValid = ct.FieldLinks.OfType<FieldLink>().Count(l => l.Id == spObject.Id) > 0;
 
@@ -131,7 +132,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     context.Load(field);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var isValid = list.DefaultView
                         .ViewFields

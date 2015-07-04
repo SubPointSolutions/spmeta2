@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
@@ -24,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             var fileItem = spObject.ListItemAllFields;
             context.Load(fileItem);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, fileItem)

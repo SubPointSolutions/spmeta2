@@ -96,7 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 context.Load(hiddenView);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 hiddenView.ViewFields.RemoveAll();
 
@@ -112,7 +112,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 hiddenView.Scope = srcView.Scope;
 
                 hiddenView.Update();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
         }
 

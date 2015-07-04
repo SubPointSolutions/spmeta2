@@ -16,23 +16,27 @@ namespace SPMeta2.Standard.Syntax
 
     public static class HTMLFieldDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddHTMLField(this ModelNode model, HTMLFieldDefinition definition)
+        public static TModelNode AddHTMLField<TModelNode>(this TModelNode model, HTMLFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddHTMLField(model, definition, null);
         }
 
-        public static ModelNode AddHTMLField(this ModelNode model, HTMLFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHTMLField<TModelNode>(this TModelNode model, HTMLFieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddHTMLFields(this ModelNode model, IEnumerable<HTMLFieldDefinition> definitions)
+        public static TModelNode AddHTMLFields<TModelNode>(this TModelNode model, IEnumerable<HTMLFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

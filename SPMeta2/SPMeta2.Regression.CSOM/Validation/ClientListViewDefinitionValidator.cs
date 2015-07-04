@@ -7,6 +7,7 @@ using SPMeta2.Definitions.Base;
 
 using SPMeta2.Utils;
 using System.Linq;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -33,7 +34,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.DefaultViewForContentType,
                 o => o.ContentTypeId,
                 v => v.Title));
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
             var assert = ServiceFactory.AssertService

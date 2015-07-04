@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Syntax.Default.Utils;
 using System.Text;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -35,7 +36,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spFile);
             context.Load(spFile, o => o.ServerRelativeUrl);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)

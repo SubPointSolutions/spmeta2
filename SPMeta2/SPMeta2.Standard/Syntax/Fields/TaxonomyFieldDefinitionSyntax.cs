@@ -18,21 +18,25 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static ModelNode AddTaxonomyField(this ModelNode model, TaxonomyFieldDefinition definition)
+        public static TModelNode AddTaxonomyField<TModelNode>(this TModelNode model, TaxonomyFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddTaxonomyField(model, definition, null);
         }
 
-        public static ModelNode AddTaxonomyField(this ModelNode model, TaxonomyFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddTaxonomyField<TModelNode>(this TModelNode model, TaxonomyFieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddTaxonomyFields(this ModelNode model, IEnumerable<TaxonomyFieldDefinition> definitions)
+        public static TModelNode AddTaxonomyFields<TModelNode>(this TModelNode model, IEnumerable<TaxonomyFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
