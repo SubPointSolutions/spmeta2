@@ -10,25 +10,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class SiteFeedWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class SiteFeedWebPartDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddSiteFeedWebPart(this ModelNode model, SiteFeedWebPartDefinition definition)
+        public static TModelNode AddSiteFeedWebPart<TModelNode>(this TModelNode model, SiteFeedWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddSiteFeedWebPart(model, definition, null);
         }
 
-        public static ModelNode AddSiteFeedWebPart(this ModelNode model, SiteFeedWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSiteFeedWebPart<TModelNode>(this TModelNode model, SiteFeedWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSiteFeedWebParts(this ModelNode model, IEnumerable<SiteFeedWebPartDefinition> definitions)
+        public static TModelNode AddSiteFeedWebParts<TModelNode>(this TModelNode model, IEnumerable<SiteFeedWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -8,6 +8,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class SP2013WorkflowSubscriptionModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SP2013WorkflowSubscriptionDefinitionSyntax
     {
         #region methods

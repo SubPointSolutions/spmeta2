@@ -10,16 +10,24 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class AlternateUrlModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AlternateUrlDefinitionSyntax
     {
-        #region base
+        #region methods
 
-        public static WebApplicationModelNode AddAlternateUrl(this WebApplicationModelNode model, AlternateUrlDefinition definition)
+        public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition)
+            where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             return AddAlternateUrl(model, definition, null);
         }
 
-        public static WebApplicationModelNode AddAlternateUrl(this WebApplicationModelNode model, AlternateUrlDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition,
+            Action<ContentTypeModelNode> action)
+            where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -28,7 +36,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static WebApplicationModelNode AddAlternateUrls(this WebApplicationModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+        public static TModelNode AddAlternateUrls<TModelNode>(this TModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+           where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

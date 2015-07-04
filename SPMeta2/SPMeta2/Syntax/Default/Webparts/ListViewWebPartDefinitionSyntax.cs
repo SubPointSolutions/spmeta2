@@ -12,6 +12,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ListViewWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ListViewWebPartDefinitionSyntax
     {
         #region methods

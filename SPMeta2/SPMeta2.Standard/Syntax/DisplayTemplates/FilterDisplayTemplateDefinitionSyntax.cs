@@ -9,6 +9,11 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class FilterDisplayTemplateModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class FilterDisplayTemplateDefinitionSyntax
     {
         #region add

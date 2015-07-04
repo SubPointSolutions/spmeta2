@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class SecurityGroupModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class SecurityGroupDefinitionSyntax
     {
         #region methods

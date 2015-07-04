@@ -7,6 +7,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ImageRenditionModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class ImageRenditionDefinitionSyntax
     {
         #region publishing page

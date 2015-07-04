@@ -15,7 +15,8 @@ namespace SPMeta2.Syntax.Default
         IEventReceiverHostModelNode,
         IWelcomePageHostModelNode,
         IModuleFileHostModelNode,
-        IAuditSettingsHostModelNode
+        IAuditSettingsHostModelNode,
+        IContentTypeLinkHostModelNode
     {
 
     }

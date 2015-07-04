@@ -12,7 +12,7 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class SiteModelNode : TypedModelNode,
+    public class SiteModelNode : TypedModelNode, ISiteModelNode,
         IFieldHostModelNode,
         IContentTypeHostModelNode,
         IPropertyBagHostModelNode,

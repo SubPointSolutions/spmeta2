@@ -11,6 +11,10 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ItemDisplayTemplateModelNode : ListItemModelNode
+    {
+
+    }
     public static class ItemDisplayTemplateDefinitionSyntax
     {
         #region publishing page

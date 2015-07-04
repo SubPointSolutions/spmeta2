@@ -9,6 +9,14 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+
+
+    public class ImageFieldModelNode : FieldModelNode
+    {
+
+    }
+
+
     public static class ImageFieldDefinitionSyntax
     {
         #region publishing page

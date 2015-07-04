@@ -7,6 +7,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class CustomDocumentIdProviderModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class CustomDocumentIdProviderDefinitionSyntax
     {
         #region publishing page

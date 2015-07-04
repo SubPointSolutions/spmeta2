@@ -11,6 +11,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ControlDisplayTemplateModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class ControlDisplayTemplateDefinitionSyntax
     {
         #region publishing page

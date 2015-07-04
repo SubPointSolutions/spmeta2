@@ -159,12 +159,12 @@
     <Compile Include="Syntax\DisplayTemplates\FilterDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\RefinementScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\ManagedPropertyDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ReusableItemDefinitionSyntax.cs" />
+    <Compile Include="Syntax\ReusableIHTMLtemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\ResultScriptWebPartDefinitionSyntax.cs" />
-    <Compile Include="Syntax\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\DisplayTemplates\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\SummaryLinkWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\HTMLFieldDefinitionSyntax.cs" />
-    <Compile Include="Syntax\ImageFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Fields\ImageFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\LinkFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\SummaryLinkFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\MediaFieldDefinitionSyntax.cs" />
@@ -201,7 +201,9 @@
   <ItemGroup>
     <None Include="SPMeta2.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Syntax\Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

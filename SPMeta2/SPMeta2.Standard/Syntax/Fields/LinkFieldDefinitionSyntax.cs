@@ -9,6 +9,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class LinkFieldModelNode : FieldModelNode
+    {
+
+    }
+
     public static class LinkFieldDefinitionSyntax
     {
         #region publishing page

@@ -10,6 +10,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class BreakRoleInheritanceModelNode : TypedModelNode
+    {
+
+    }
+
     public static class BreakRoleInheritanceDefinitionSyntax
     {
         #region methods

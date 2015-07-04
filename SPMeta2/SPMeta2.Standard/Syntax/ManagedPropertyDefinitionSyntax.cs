@@ -14,8 +14,6 @@ namespace SPMeta2.Standard.Syntax
 
     }
 
-    
-
     public static class ManagedPropertyDefinitionSyntax
     {
         #region publishing page

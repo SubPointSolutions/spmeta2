@@ -9,25 +9,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class SummaryLinkWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class SummaryLinkWebPartDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddSummaryLinkWebPart(this ModelNode model, SummaryLinkWebPartDefinition definition)
+        public static TModelNode AddSummaryLinkWebPart<TModelNode>(this TModelNode model, SummaryLinkWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddSummaryLinkWebPart(model, definition, null);
         }
 
-        public static ModelNode AddSummaryLinkWebPart(this ModelNode model, SummaryLinkWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSummaryLinkWebPart<TModelNode>(this TModelNode model, SummaryLinkWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSummaryLinkWebParts(this ModelNode model, IEnumerable<SummaryLinkWebPartDefinition> definitions)
+        public static TModelNode AddSummaryLinkWebParts<TModelNode>(this TModelNode model, IEnumerable<SummaryLinkWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

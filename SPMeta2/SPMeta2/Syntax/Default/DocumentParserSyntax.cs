@@ -10,7 +10,12 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public static class DocumentParserSyntax
+    public class DocumentParserModelNode : ListItemModelNode
+    {
+
+    }
+
+    public static class DocumentParserDefinitionSyntax
     {
         #region methods
 

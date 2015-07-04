@@ -9,6 +9,11 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class JavaScriptDisplayTemplateModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class JavaScriptDisplayTemplateDefinitionSyntax
     {
         #region publishing page
@@ -32,6 +37,5 @@ namespace SPMeta2.Standard.Syntax
 
             return model;
         }
-
     }
 }

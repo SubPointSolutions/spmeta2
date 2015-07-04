@@ -10,16 +10,24 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class AppModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AppDefinitionSyntax
     {
         #region methods
 
-        public static WebModelNode AddApp(this WebModelNode model, AppDefinition definition)
+        public static TModelNode AddApp<TModelNode>(this TModelNode model, AppDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddApp(model, definition, null);
         }
 
-        public static WebModelNode AddApp(this WebModelNode model, AppDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddApp<TModelNode>(this TModelNode model, AppDefinition definition,
+            Action<AppModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -28,7 +36,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static WebModelNode AddApps(this WebModelNode model, IEnumerable<AppDefinition> definitions)
+        public static TModelNode AddApps<TModelNode>(this TModelNode model, IEnumerable<AppDefinition> definitions)
+           where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

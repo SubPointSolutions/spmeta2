@@ -8,7 +8,8 @@ namespace SPMeta2.Syntax.Default
 {
     public class ContentTypeModelNode : TypedModelNode,
         IEventReceiverHostModelNode,
-        IModuleFileHostModelNode
+        IModuleFileHostModelNode,
+        IContentTypeFieldLinkHostModelNode
     {
 
     }

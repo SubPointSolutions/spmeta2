@@ -10,7 +10,8 @@ namespace SPMeta2.Syntax.Default
 {
     public class WebApplicationModelNode : TypedModelNode,
         IPropertyBagHostModelNode,
-        IFeatureHostModelNode
+        IFeatureHostModelNode,
+        IWebApplicationHostModelNode
     {
 
 

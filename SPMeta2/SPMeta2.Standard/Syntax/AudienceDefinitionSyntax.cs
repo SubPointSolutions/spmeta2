@@ -4,21 +4,43 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
+using System.Collections.Generic;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class AudienceModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AudienceDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static SiteModelNode AddAudience(this SiteModelNode model, AudienceDefinition definition)
+        public static TModelNode AddAudience<TModelNode>(this TModelNode model, AudienceDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddAudience(model, definition, null);
         }
 
-        public static SiteModelNode AddAudience(this SiteModelNode model, AudienceDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddAudience<TModelNode>(this TModelNode model, AudienceDefinition definition,
+            Action<AudienceModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddAudiences<TModelNode>(this TModelNode model, IEnumerable<AudienceDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

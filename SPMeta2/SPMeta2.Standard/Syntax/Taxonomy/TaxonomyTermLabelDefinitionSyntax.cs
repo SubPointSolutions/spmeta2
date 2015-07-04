@@ -7,6 +7,11 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class TaxonomyTermLabelModelNode : TypedModelNode
+    {
+
+    }
+
     public static class TaxonomyTermLabelDefinitionSyntax
     {
         public static TaxonomyTermModelNode AddTaxonomyTermLabel(this TaxonomyTermModelNode model, TaxonomyTermLabelDefinition definition)

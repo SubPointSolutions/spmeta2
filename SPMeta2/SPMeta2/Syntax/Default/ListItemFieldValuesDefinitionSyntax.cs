@@ -8,6 +8,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ListItemFieldValuesModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ListItemFieldValuesDefinitionSyntax
     {
         #region methods

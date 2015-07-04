@@ -12,6 +12,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class WebPartGalleryFileModelNode : TypedModelNode
+    {
+
+    }
+
     public static class WebPartGalleryFileDefinitionSyntax
     {
         #region methods

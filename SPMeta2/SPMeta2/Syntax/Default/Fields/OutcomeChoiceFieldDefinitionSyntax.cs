@@ -11,17 +11,22 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class OutcomeChoiceFieldModelNode : FieldModelNode
+    {
+
+    }
+
     public static class OutcomeChoiceFieldDefinitionSyntax
     {
         #region methods
 
-        public static TModelNode OutcomeChoiceField<TModelNode>(this TModelNode model, OutcomeChoiceFieldDefinition definition)
+        public static TModelNode AddOutcomeChoiceField<TModelNode>(this TModelNode model, OutcomeChoiceFieldDefinition definition)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return OutcomeChoiceField(model, definition, null);
+            return AddOutcomeChoiceField(model, definition, null);
         }
 
-        public static TModelNode OutcomeChoiceField<TModelNode>(this TModelNode model, OutcomeChoiceFieldDefinition definition,
+        public static TModelNode AddOutcomeChoiceField<TModelNode>(this TModelNode model, OutcomeChoiceFieldDefinition definition,
             Action<FieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
@@ -32,7 +37,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static TModelNode OutcomeChoiceFields<TModelNode>(this TModelNode model, IEnumerable<OutcomeChoiceFieldDefinition> definitions)
+        public static TModelNode AddOutcomeChoiceFields<TModelNode>(this TModelNode model, IEnumerable<OutcomeChoiceFieldDefinition> definitions)
            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)

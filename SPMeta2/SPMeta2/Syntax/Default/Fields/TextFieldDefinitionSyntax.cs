@@ -11,6 +11,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class TextFieldModelNode : FieldModelNode
+    {
+
+    }
+
     public static class TextFieldDefinitionSyntax
     {
         #region methods

@@ -11,6 +11,12 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+
+    public class GuidFieldModelNode : FieldModelNode
+    {
+
+    }
+
     public static class GuidFieldDefinitionSyntax
     {
         #region methods

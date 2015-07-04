@@ -9,25 +9,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ContactFieldControlModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ContactFieldControlDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddContactFieldControl(this ModelNode model, ContactFieldControlDefinition definition)
+        public static TModelNode AddContactFieldControl<TModelNode>(this TModelNode model, ContactFieldControlDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddContactFieldControl(model, definition, null);
         }
 
-        public static ModelNode AddContactFieldControl(this ModelNode model, ContactFieldControlDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContactFieldControl<TModelNode>(this TModelNode model, ContactFieldControlDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddContactFieldControls(this ModelNode model, IEnumerable<ContactFieldControlDefinition> definitions)
+        public static TModelNode AddContactFieldControls<TModelNode>(this TModelNode model, IEnumerable<ContactFieldControlDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

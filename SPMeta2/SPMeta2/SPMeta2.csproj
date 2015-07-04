@@ -316,8 +316,14 @@
     <Compile Include="Syntax\Default\Fields\BusinessDataFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\CalculatedFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IContentTypeLinkHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IContentTypeFieldLinkHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFeatureHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IListHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IModuleFileHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ISiteModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ISiteHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IPageHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IListItemHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFolderHostModelNode.cs" />
@@ -325,7 +331,9 @@
     <Compile Include="Syntax\Default\Interfaces\IEventReceiverHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IManagedPropertyHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IAuditSettingsHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IWelcomePageHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IWebHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IWebApplicationModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IWebpartHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurableObjectHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IContentTypeHostModelNode.cs" />
@@ -395,7 +403,7 @@
     <Compile Include="Syntax\Default\SecurityGroupLinkDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SecurityRoleDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SecurityRoleLinkDefinitionSyntax.cs" />
-    <Compile Include="Syntax\Default\SilverlightWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\SilverlightWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SiteDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SP2013WorkflowDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SP2013WorkflowSubscriptionDefinitionSyntax.cs" />
@@ -404,7 +412,7 @@
     <Compile Include="Syntax\Default\Fields\TextFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\TopNavigationSyntax.cs" />
     <Compile Include="Syntax\Default\TreeViewSettingsDefinitionSyntax.cs" />
-    <Compile Include="Syntax\Default\TYpedWebpartsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\PageViewerWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ContentTypes\UniqueContentTypeFieldsOrderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ContentTypes\UniqueContentTypeOrderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\URLFieldDefinitionSyntax.cs" />

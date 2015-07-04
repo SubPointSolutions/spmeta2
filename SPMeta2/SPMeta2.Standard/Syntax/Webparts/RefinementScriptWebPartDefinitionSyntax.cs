@@ -9,25 +9,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+
+    public class RefinementScriptWebPartModelNode : WebPartModelNode
+    {
+
+    }
     public static class RefinementScriptWebPartDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddRefinementScriptWebPart(this ModelNode model, RefinementScriptWebPartDefinition definition)
+        public static TModelNode AddRefinementScriptWebPart<TModelNode>(this TModelNode model, RefinementScriptWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddRefinementScriptWebPart(model, definition, null);
         }
 
-        public static ModelNode AddRefinementScriptWebPart(this ModelNode model, RefinementScriptWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddRefinementScriptWebPart<TModelNode>(this TModelNode model, RefinementScriptWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddRefinementScriptWebParts(this ModelNode model, IEnumerable<RefinementScriptWebPartDefinition> definitions)
+        public static TModelNode AddRefinementScriptWebParts<TModelNode>(this TModelNode model, IEnumerable<RefinementScriptWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

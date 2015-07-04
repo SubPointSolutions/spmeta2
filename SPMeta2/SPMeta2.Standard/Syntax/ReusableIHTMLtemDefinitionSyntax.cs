@@ -8,7 +8,17 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public static class ReusableItemDefinitionSyntax
+    public class ReusableHTMLItemModelNode : ListItemModelNode
+    {
+
+    }
+
+    public class ReusableTextItemModelNode : ListItemModelNode
+    {
+
+    }
+
+    public static class ReusableHTMLItemDefinitionSyntax
     {
         #region html
 

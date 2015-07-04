@@ -10,25 +10,34 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class ContentByQueryWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ContentByQueryWebPartDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddContentByQueryWebPart(this ModelNode model, ContentByQueryWebPartDefinition definition)
+        public static TModelNode AddContentByQueryWebPart<TModelNode>(this TModelNode model, ContentByQueryWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddContentByQueryWebPart(model, definition, null);
         }
 
-        public static ModelNode AddContentByQueryWebPart(this ModelNode model, ContentByQueryWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentByQueryWebPart<TModelNode>(this TModelNode model, ContentByQueryWebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddContentByQueryWebParts(this ModelNode model, IEnumerable<ContentByQueryWebPartDefinition> definitions)
+        public static TModelNode AddContentByQueryWebParts<TModelNode>(this TModelNode model, IEnumerable<ContentByQueryWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

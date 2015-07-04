@@ -12,6 +12,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ScriptEditorWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ScriptEditorWebPartDefinitionSyntax
     {
         #region methods
@@ -33,7 +38,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static TModelNode AddUserCAddScriptEditorWebPartodeWebParts<TModelNode>(this TModelNode model, IEnumerable<ScriptEditorWebPartDefinition> definitions)
+        public static TModelNode AddScriptEditorWebPartodeWebParts<TModelNode>(this TModelNode model, IEnumerable<ScriptEditorWebPartDefinition> definitions)
            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)

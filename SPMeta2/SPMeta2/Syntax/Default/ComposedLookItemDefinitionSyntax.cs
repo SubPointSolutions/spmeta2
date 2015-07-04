@@ -6,21 +6,34 @@ using System.Collections.Generic;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ComposedLookItemModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ComposedLookItemDefinitionSyntax
     {
         #region methods
 
-        public static ListModelNode AddComposedLookItem(this ListModelNode model, ComposedLookItemDefinition definition)
+        public static TModelNode AddComposedLookItem<TModelNode>(this TModelNode model, ComposedLookItemDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddComposedLookItem(model, definition, null);
         }
 
-        public static ListModelNode AddComposedLookItem(this ListModelNode model, ComposedLookItemDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddComposedLookItem<TModelNode>(this TModelNode model, ComposedLookItemDefinition definition,
+            Action<ComposedLookItemModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ListModelNode AddComposedLookItems(this ListModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddComposedLookItems<TModelNode>(this TModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

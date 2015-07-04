@@ -7,6 +7,11 @@ using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class SearchResultModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SearchResultDefinitionSyntax
     {
         #region publishing page

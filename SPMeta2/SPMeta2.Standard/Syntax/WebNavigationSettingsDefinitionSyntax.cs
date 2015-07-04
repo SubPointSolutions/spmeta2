@@ -6,6 +6,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    public class WebNavigationSettingsModelNode : TypedModelNode
+    {
+
+    }
+
     public static class WebNavigationSettingsDefinitionSyntax
     {
         #region methods

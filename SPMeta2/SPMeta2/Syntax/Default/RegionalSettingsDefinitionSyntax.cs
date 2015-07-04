@@ -10,6 +10,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class RegionalSettingsModelNode : TypedModelNode
+    {
+
+    }
+
     public static class RegionalSettingsDefinitionSyntax
     {
         #region methods

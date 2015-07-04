@@ -12,6 +12,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ClientWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ClientWebPartDefinitionSyntax
     {
         #region methods
@@ -23,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddClientWebPart<TModelNode>(this TModelNode model, ClientWebPartDefinition definition,
-            Action<FieldModelNode> action)
+            Action<WebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -6,6 +6,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class HideContentTypeFieldLinksModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class HideContentTypeFieldLinksDefinitionSyntax
     {
         #region methods

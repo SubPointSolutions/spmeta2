@@ -19,6 +19,7 @@ using SPMeta2.Utils;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Regression.Tests.Config;
 using SPMeta2.Services;
+using SPMeta2.Containers.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -27,8 +28,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
     {
         #region properties
 
-        protected static List<Type> DefinitionTypes = new List<Type>();
-        protected static List<Type> ModelNodeTypes = new List<Type>();
+        protected static List<Type> AllDefinitionTypes = new List<Type>();
+        protected static List<Type> AllModelNodeTypes = new List<Type>();
 
         #endregion
 
@@ -46,7 +47,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            ModelNodeTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[]
+            AllModelNodeTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
@@ -58,7 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            DefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            AllDefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
@@ -83,7 +84,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void Can_CreateDefinition()
         {
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var impl = Activator.CreateInstance(definitionType) as DefinitionBase;
 
@@ -95,7 +96,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionPropertyBag_ShouldNotbeNull()
         {
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var impl = Activator.CreateInstance(definitionType) as DefinitionBase;
 
@@ -108,7 +109,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldHaveToStringOverride()
         {
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var hasToStringOverride = definitionType.GetMethod("ToString").DeclaringType == definitionType;
 
@@ -126,7 +127,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var showOnlyFails = true;
             var result = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var hasAttr = definitionType.GetCustomAttributes(typeof(SerializableAttribute)).Any();
 
@@ -147,7 +148,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var showOnlyFails = true;
             var result = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var hasAttr = definitionType.GetCustomAttributes(typeof(DataContractAttribute)).Any();
 
@@ -172,7 +173,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var showOnlyFails = true;
             var result = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var isSingleIdenity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
                 var isInstanceIdentity = !definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
@@ -252,7 +253,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var result = true;
             var errors = 0;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
 
                 var props = definitionType.GetProperties();
@@ -303,7 +304,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             var hasAllAddMethods = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
@@ -461,7 +462,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             var hasAllAddMethods = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            foreach (var definitionType in AllDefinitionTypes)
             {
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
@@ -517,48 +518,106 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         #region v12
 
+
+        protected static IEnumerable<DefinitionRelationship> AllDefinitionRelationships
+        {
+            get
+            {
+                DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(FieldDefinition).Assembly);
+                DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(TaxonomyFieldDefinition).Assembly);
+
+                return ServiceContainer.Instance
+                                       .GetService<DefinitionRelationshipServiceBase>()
+                                       .GetDefinitionRelationships();
+            }
+        }
+
+        protected static List<MethodInfo> allExtensionMethods;
+
+        protected static List<MethodInfo> AllExtensionMethods
+        {
+            get
+            {
+                if (allExtensionMethods == null)
+                    allExtensionMethods = GetModelNodeExtensionMethods(new[]{
+                    typeof(DefinitionBase).Assembly,
+                    typeof(TaxonomyFieldDefinition).Assembly,
+                    typeof(ListDefinitionSyntax).Assembly
+                });
+
+                return allExtensionMethods;
+            }
+        }
+
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
-        public void DefinitionsShouldHave_RelationshipMap_v12()
+        public void DefinitionsShouldHave_ParentHostCapabilityAttribute_v12()
         {
             if (!M2RegressionRuntime.IsV12)
                 return;
 
-            var showFails = true;
-
-            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(FieldDefinition).Assembly);
-            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(TaxonomyFieldDefinition).Assembly);
-
-            var relationshipService = ServiceContainer.Instance.GetService<DefinitionRelationshipServiceBase>();
-            var allRelationships = relationshipService.GetDefinitionRelationships().ToList();
-
-            allRelationships = allRelationships.OrderBy(s => s.DefinitionType.Name).ToList();
-
             var passed = true;
 
-            foreach (var definitionType in DefinitionTypes)
+            // definitions must have a relationship attt
+
+            var defTypesWithoutRelationships = AllDefinitionTypes.Where(d => AllDefinitionRelationships.All(r => r.DefinitionType != d));
+
+            Trace.WriteLine("Cheking ParentHostCapability attr presence for all definitions");
+
+            TraceUtils.WithScope(trace =>
             {
-                var hasRelationship = allRelationships.Any(r => r.DefinitionType == definitionType);
+                foreach (var def in defTypesWithoutRelationships)
+                    Trace.WriteLine(string.Format("missing relationship for definition:[{0}]", def.Name));
+            });
 
-                if (showFails)
-                {
-                    if (!hasRelationship)
-                    {
-                        Trace.WriteLine(string.Format("Definition: [{0}]", definitionType.Name));
-                        Trace.WriteLine(string.Format(" - Has relationship: [{0}]", hasRelationship.ToString().ToUpper()));
-                    }
-                }
-                else
-                {
-                    Trace.WriteLine(string.Format("Definition: [{0}]", definitionType.Name));
-                    Trace.WriteLine(string.Format(" - Has relationship: [{0}]", hasRelationship.ToString().ToUpper()));
-                }
+            if (defTypesWithoutRelationships.Any())
+                passed = false;
 
-                if (!hasRelationship)
-                    passed = false;
-            }
+            if (defTypesWithoutRelationships.Any())
+                Trace.WriteLine("[FALSE] Missing definition relationships detected");
+            else
+                Trace.WriteLine("[TRUE] Missing definition relationships detected");
 
             Assert.IsTrue(passed);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions.Syntax.v12")]
+        public void DefinitionsShouldHave_TypedModelNodes_v12()
+        {
+            Trace.WriteLine("Checking typed model nodes");
+            Trace.WriteLine("");
+
+            var passes = true;
+            var showOnlyFalseOutput = true;
+
+            TraceUtils.WithScope(trace =>
+            {
+                foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
+                {
+                    var pureDefName = defType.Name.Replace("Definition", string.Empty);
+
+                    var targetModelNodeTypeName = string.Format("{0}ModelNode", pureDefName);
+                    var modelNodelType = AllModelNodeTypes.FirstOrDefault(n => n.Name == targetModelNodeTypeName);
+
+                    if (!showOnlyFalseOutput)
+                        trace.WriteLine(defType.Name);
+
+                    if (modelNodelType == null)
+                    {
+                        passes = false;
+
+                        if (showOnlyFalseOutput)
+                            trace.WriteLine(defType.Name);
+
+                        trace.WriteLine(string.Format("[FALSE] Missing model node: [{0}]", targetModelNodeTypeName));
+                        trace.WriteLine("");
+                    }
+                }
+            });
+
+            Assert.IsTrue(passes);
         }
 
         [TestMethod]
@@ -568,247 +627,239 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             if (!M2RegressionRuntime.IsV12)
                 return;
 
-            var showTrace = false;
+            var passed = true;
+            var showOnlyFalseOutput = true;
 
-            var methods = GetModelNodeExtensionMethods(new[]
+            var allCount = AllDefinitionTypes.Count;
+            var missesCount = 0;
+
+            // add definitions should have AddXXX() methods
+
+            // #1 - must be generic
+            // #2 - typed model node
+            // #3 - definitions type as a second param
+            // #4 - overload with typed node call back
+
+            // AddField<TModelNode>(this TModelNode model, FieldDefinition definition)
+            // where TModelNode : ModelNode, IFieldHostModelNode, new()
+
+            // AddField<TModelNode>(this TModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
+            // where TModelNode : ModelNode, IFieldHostModelNode, new()
+
+            Trace.WriteLine("Checking AddXXX() method specs");
+            Trace.WriteLine("");
+
+            TraceUtils.WithScope(trace =>
             {
-                typeof(DefinitionBase).Assembly,
-                typeof(TaxonomyFieldDefinition).Assembly,
-                typeof(ListDefinitionSyntax).Assembly
+                foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
+                {
+                    var pureDefName = defType.Name.Replace("Definition", string.Empty);
+
+                    var shouldCheckArrayOverload = defType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
+                    var targetModelNodeTypeName = string.Format("{0}ModelNode", pureDefName);
+                    var modelNodelType = AllModelNodeTypes.FirstOrDefault(n => n.Name == targetModelNodeTypeName);
+
+
+                    trace.WriteLine(defType.Name);
+
+                    if (modelNodelType == null)
+                    {
+                        trace.WriteLine(string.Format("[FALSE] Missing model node: [{0}]", targetModelNodeTypeName));
+                    }
+
+                    trace.WithTraceIndent(addXXXTrace =>
+                    {
+                        if (!showOnlyFalseOutput)
+                            trace.WriteLine("Checking AddXXX() method");
+
+                        var relationships = AllDefinitionRelationships.FirstOrDefault(r => r.DefinitionType == defType);
+                        var interfaceNames = relationships.HostTypes.Select(
+                                            t => string.Format("{0}HostModelNode", t.Name.Replace("Definition", string.Empty)));
+
+                        var addXXXMethodName = string.Format("Add{0}", pureDefName);
+                        var addXXXArrayDefinitionMethodName = string.Format("Add{0}s", pureDefName);
+
+                        var lastChar = defType.Name[defType.Name.Length - 1];
+
+                        switch (lastChar)
+                        {
+                            case 'x':
+                            case 'y':
+                            case 'e':
+                                {
+                                    addXXXArrayDefinitionMethodName = addXXXArrayDefinitionMethodName.Substring(0, addXXXArrayDefinitionMethodName.Length - 1);
+                                    addXXXArrayDefinitionMethodName += "es";
+                                } break;
+
+                            case 's':
+                                {
+                                    addXXXArrayDefinitionMethodName = string.Format("Add{0}s", pureDefName);
+                                } break;
+                        }
+
+                        Func<MethodInfo, bool> addMethodPlainSpec = (m) =>
+                        {
+                            // public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition)
+                            // where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
+
+                            return m.Name == addXXXMethodName
+                                   && m.IsGenericMethod
+
+                                   && (m.GetParameters().Count() == 2)
+                                   && m.ReturnType.Name == "TModelNode"
+
+                                   && m.GetGenericArguments()[0].Name == "TModelNode"
+                                   && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
+
+                                   && m.GetParameters()[1].ParameterType == defType
+                                ;
+                        };
+
+                        Func<MethodInfo, bool> addMethodWithCallbackSpec = (m) =>
+                        {
+                            // public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition,
+                            // Action<ContentTypeModelNode> action)
+                            // where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
+
+
+
+                            //var callbackType = typeof(Action<>);
+                            //var typedCallbackType = callbackType.MakeGenericType(modelNodelType);
+
+                            return m.Name == addXXXMethodName
+                                   && m.IsGenericMethod
+
+                                   && (m.GetParameters().Count() == 3)
+
+                                   && m.ReturnType.Name == "TModelNode"
+
+                                   && m.GetGenericArguments()[0].Name == "TModelNode"
+                                   && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
+
+                                   && m.GetParameters()[1].ParameterType == defType
+
+                                  // && m.GetParameters()[2].ParameterType == typedCallbackType
+                                   ;
+                        };
+
+                        Func<MethodInfo, bool> addMethodWithArraySpec = (m) =>
+                        {
+                            //  public static TModelNode AddAlternateUrls<TModelNode>(this TModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+                            //  where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
+
+                            var arrayType = typeof(IEnumerable<>);
+                            var arrayDefinitionType = arrayType.MakeGenericType(defType);
+
+                            return m.Name == addXXXArrayDefinitionMethodName
+                                   && m.IsGenericMethod
+                                   && (m.GetParameters().Count() == 2)
+                                   && m.ReturnType.Name == "TModelNode"
+
+                                   && m.GetGenericArguments()[0].Name == "TModelNode"
+                                   && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
+
+                                   && m.GetParameters()[1].ParameterType == arrayDefinitionType
+                                   ;
+                        };
+
+
+                        var addMethodPlain = AllExtensionMethods.FirstOrDefault(addMethodPlainSpec);
+                        var addMethodPlainWithCallBack = AllExtensionMethods.FirstOrDefault(addMethodWithCallbackSpec);
+
+                        if (addMethodPlain == null)
+                        {
+                            passed = false;
+                            addXXXTrace.WriteLine("[FALSE] AddXXX()");
+                        }
+                        else
+                        {
+                            var missedRelationshipModelNodeTypes = GetUnsupportedRelationshipModelNodeTypes(addMethodPlainWithCallBack, relationships);
+
+                            if (missedRelationshipModelNodeTypes.Any())
+                            {
+                                passed = false;
+                                addXXXTrace.WriteLine(string.Format(
+                                        "[FALSE] AddXXX() misses relationships: [{0}]",
+                                        string.Join(",", missedRelationshipModelNodeTypes)));
+                            }
+                        }
+
+                        if (addMethodPlainWithCallBack == null)
+                        {
+                            passed = false;
+                            addXXXTrace.WriteLine("[FALSE] AddXXX(callback)");
+                        }
+                        else
+                        {
+                            var missedRelationshipModelNodeTypes = GetUnsupportedRelationshipModelNodeTypes(addMethodPlainWithCallBack, relationships);
+
+                            if (missedRelationshipModelNodeTypes.Any())
+                            {
+                                passed = false;
+                                addXXXTrace.WriteLine(string.Format(
+                                        "[FALSE] AddXXX(callback) misses relationships: [{0}]",
+                                        string.Join(",", missedRelationshipModelNodeTypes)));
+                            }
+                        }
+
+                        if (shouldCheckArrayOverload)
+                        {
+                            var addMethodWithArraySupport = AllExtensionMethods.FirstOrDefault(addMethodWithArraySpec);
+
+                            if (addMethodWithArraySupport == null)
+                            {
+                                passed = false;
+                                addXXXTrace.WriteLine("[FALSE] AddXXXs()");
+                            }
+                            else
+                            {
+                                var missedRelationshipModelNodeTypes = GetUnsupportedRelationshipModelNodeTypes(addMethodWithArraySupport, relationships);
+
+                                if (missedRelationshipModelNodeTypes.Any())
+                                {
+                                    passed = false;
+                                    addXXXTrace.WriteLine(string.Format(
+                                            "[FALSE] AddXXXs() misses relationships: [{0}]",
+                                            string.Join(",", missedRelationshipModelNodeTypes)));
+                                }
+                            }
+                        }
+                    });
+
+                    if (!showOnlyFalseOutput)
+                        trace.WriteLine("");
+                }
             });
 
-            var hasAllAddMethods = true;
+            Trace.WriteLine("");
+            Trace.WriteLine(string.Format("{0}/{1}", missesCount, allCount));
 
-            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(FieldDefinition).Assembly);
-            DefaultDefinitionRelationship.InitFromParentHostCapabilityAttribute(typeof(TaxonomyFieldDefinition).Assembly);
-
-            var relationshipService = ServiceContainer.Instance.GetService<DefinitionRelationshipServiceBase>();
-            var allRelationships = relationshipService.GetDefinitionRelationships();
-
-            var missedModelNodeTypes = new List<string>();
-            var falseMethodsCount = 0;
-
-            var missedRelationships = new List<string>();
-            var missedMethods = new List<string>();
-
-            foreach (var definitionType in DefinitionTypes)
-            {
-                var definitionRelationships = allRelationships.FirstOrDefault(r => r.DefinitionType == definitionType);
-
-                if (definitionRelationships == null)
-                {
-                    var missedRelationshipMessage = string.Format("[FALSE] Miss definition relationship for type: [{0}]", definitionType.Name);
-                    Trace.WriteLine(missedRelationshipMessage);
-
-                    missedRelationships.Add(missedRelationshipMessage);
-
-                    hasAllAddMethods = false;
-                    continue;
-                }
-
-                var definitionName = definitionType.Name.Replace("Definition", string.Empty);
-
-                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
-
-                #region AddXXX()
-
-                // validate (this ModelNode model, XXXDefinition definition)
-                Trace.WriteLine(string.Format("    Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
-                var addDefinitionMethodName = string.Format("Add{0}", definitionName);
-
-                var hasAddDefinitionMethod = true;
-
-                if (definitionRelationships.HostTypes != null)
-                {
-                    var parentModelNodeTypeNames = definitionRelationships.HostTypes
-                        .Select(t =>
-                        {
-                            var defName = t.Name.Replace("Definition", string.Empty);
-                            return string.Format("{0}ModelNode", defName);
-                        });
-
-                    var parentModelNodeTypes = ModelNodeTypes.Where(m => parentModelNodeTypeNames.Contains(m.Name));
-
-                    if (parentModelNodeTypes.Count() != parentModelNodeTypeNames.Count())
-                    {
-                        Trace.WriteLine(string.Format("[FALSE] Miss ModelNode types: [{0}]",
-                            string.Join(" , ", parentModelNodeTypeNames)));
-
-                        foreach (var m in parentModelNodeTypeNames)
-                        {
-                            if (parentModelNodeTypes.Any(t => t.Name == m))
-                                continue;
-
-                            if (!missedModelNodeTypes.Contains(m))
-                                missedModelNodeTypes.Add(m);
-                        }
-                    }
-
-
-                    // V12
-                    foreach (var parentNodeModelType in parentModelNodeTypes)
-                    {
-                        hasAddDefinitionMethod = methods.Any(m =>
-                            m.Name == addDefinitionMethodName
-                            && m.GetParameters().Count() == 2
-                            && m.ReturnType == parentNodeModelType
-                            && m.GetParameters()[0].ParameterType == parentNodeModelType
-                            && m.GetParameters()[1].ParameterType == definitionType);
-
-                        if (!hasAddDefinitionMethod)
-                        {
-                            var missMethod =
-                                (string.Format(
-                                    "[FALSE] public static {1} Add{0}(this {1} model, {0}Definition definition)",
-                                    definitionName, parentNodeModelType.Name));
-
-                            Trace.WriteLine(missMethod);
-                            missedMethods.Add(missMethod);
-
-                            falseMethodsCount++;
-                        }
-                    }
-                }
-
-                // V11
-                //hasAddDefinitionMethod = methods.FirstOrDefault(m =>
-                //                                       m.Name == addDefinitionMethodName &&
-                //                                       m.GetParameters().Count() == 2 &&
-                //                                       m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                //                                       m.GetParameters()[1].ParameterType == definitionType) != null;
-
-                //Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
-                // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
-                var hasAddDefinitionWithCallbackMethod = true;
-
-                //  hasAddDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
-                //                   m.Name == addDefinitionMethodName &&
-                //                   m.GetParameters().Count() == 3 &&
-                //                    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                //                    m.GetParameters()[1].ParameterType == definitionType &&
-                //                    m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
-
-
-                //Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
-                //Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
-
-                #endregion
-
-                #region AddXXXs array overload
-
-                var hasAddArrayDefinitionMethod = true;
-                var shouldCheckArrayOverload = definitionType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
-
-                if (shouldCheckArrayOverload)
-                {
-                    // validate (this ModelNode model, XXXDefinition definition)
-                    Trace.WriteLine(
-                        string.Format(
-                            "     Add{0}s(this ModelNode model, IEnumerable<{0}Definition> definitions, Action<ModelNode> action))",
-                            definitionName));
-                    var addArrayDefinitionMethodName = string.Format("Add{0}s", definitionName);
-
-                    if (definitionType == typeof(PrefixDefinition))
-                        addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
-                    if (definitionType == typeof(PropertyDefinition))
-                        addArrayDefinitionMethodName = string.Format("AddProperties");
-                    if (definitionType == typeof(ManagedPropertyDefinition))
-                        addArrayDefinitionMethodName = string.Format("AddManagedProperties");
-                    if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
-                        addArrayDefinitionMethodName = string.Format("AddDiagnosticsServices");
-                    if (definitionType == typeof(ListItemFieldValuesDefinition))
-                        addArrayDefinitionMethodName = string.Format("ListItemFieldValues");
-
-                    var arrayTypoe = typeof(IEnumerable<>);
-                    var arrayDefinitionType = arrayTypoe.MakeGenericType(definitionType);
-
-                    //hasAddArrayDefinitionMethod = methods.FirstOrDefault(m =>
-                    //    m.Name == addArrayDefinitionMethodName &&
-                    //    m.GetParameters().Count() == 2 &&
-                    //    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                    //    m.GetParameters()[1].ParameterType == arrayDefinitionType) != null;
-
-                    //Trace.WriteLine(
-                    //  string.Format("    [{0}] - {1}(this ModelNode model, IEnumerable<{2}Definition> definitions))",
-                    //      hasAddArrayDefinitionMethod.ToString().ToUpper(), addArrayDefinitionMethodName, definitionName));
-
-                }
-                else
-                {
-                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddXXXs() arrary overload as there is no ExpectArrayExtensionMethod attr"));
-                }
-
-                #endregion
-
-                #region AddHostXXX()
-
-                var shouldCheckAddHostOverload = definitionType.GetCustomAttributes(
-                    typeof(ExpectAddHostExtensionMethod), false).Any();
-
-                var hasAddHostDefinitionMethod = true;
-                var hasAddHostDefinitionWithCallbackMethod = true;
-
-                if (shouldCheckAddHostOverload)
-                {
-                    // validate (this ModelNode model, XXXDefinition definition)
-                    Trace.WriteLine(string.Format("     AddHost{0}(this ModelNode model, {0}Definition definition)",
-                        definitionName));
-                    var addHostDefinitionMethodName = string.Format("AddHost{0}", definitionName);
-
-                    //hasAddHostDefinitionMethod = methods.FirstOrDefault(m =>
-                    //    m.Name == addHostDefinitionMethodName &&
-                    //    m.GetParameters().Count() == 2 &&
-                    //    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                    //    m.GetParameters()[1].ParameterType == definitionType) != null;
-
-                    Trace.WriteLine(
-                        string.Format(
-                            "     AddHost{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))",
-                            definitionName));
-
-                    // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
-                    //hasAddHostDefinitionWithCallbackMethod = methods.FirstOrDefault(m =>
-                    //    m.Name == addHostDefinitionMethodName &&
-                    //    m.GetParameters().Count() == 3 &&
-                    //    m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                    //    m.GetParameters()[1].ParameterType == definitionType &&
-                    //    m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
-
-
-                    //Trace.WriteLine(
-                    //    string.Format("    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition))",
-                    //        hasAddHostDefinitionMethod.ToString().ToUpper(), definitionName));
-                    //Trace.WriteLine(
-                    //    string.Format(
-                    //        "    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))",
-                    //        hasAddHostDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
-                }
-                else
-                {
-                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddHostXXX() methods as there is no ExpectAddHostExtensionMethod attr"));
-                }
-
-                #endregion
-
-                // push back
-                if (hasAddDefinitionMethod != true || hasAddDefinitionWithCallbackMethod != true ||
-                    hasAddHostDefinitionMethod != true || hasAddHostDefinitionWithCallbackMethod != true ||
-                    hasAddArrayDefinitionMethod != true)
-                    hasAllAddMethods = false;
-            }
-
-            Trace.WriteLine("S: Missed model node types count:" + missedModelNodeTypes.Count);
-            foreach (var m in missedModelNodeTypes)
-                Trace.WriteLine("   " + m);
-
-            Trace.WriteLine("S: Missed methods: " + falseMethodsCount);
-            foreach (var m in missedMethods.OrderBy(m =>
-                m.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[4]))
-                Trace.WriteLine("   " + m);
-
-
-            Assert.IsTrue(hasAllAddMethods);
+            Assert.IsTrue(passed);
         }
+
+        private static IEnumerable<string> GetUnsupportedRelationshipModelNodeTypes(
+            MethodInfo modelSyntaxMethodInfo,
+            DefinitionRelationship relationships)
+        {
+            var currentInterfaceTypes = modelSyntaxMethodInfo.GetGenericArguments()[0]
+                .GetInterfaces()
+                .Where(i => i != typeof(IHostModelNode))
+                .ToList();
+
+            var currentModelModeTypeNames = AllModelNodeTypes.Where(n => n.GetInterfaces()
+                .Any(i => currentInterfaceTypes.Contains(i)))
+                .Select(t => t.Name);
+
+            var expectedModelNodeTypeNames =
+                relationships.HostTypes.Select(
+                    t => string.Format("{0}ModelNode", t.Name.Replace("Definition", string.Empty)));
+
+            var unsupportedRelationshipModelNodeTypes =
+                expectedModelNodeTypeNames.Where(i => !currentModelModeTypeNames.Contains(i));
+
+            return unsupportedRelationshipModelNodeTypes;
+        }
+
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
@@ -817,70 +868,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             if (!M2RegressionRuntime.IsV12)
                 return;
 
-            var showSkipping = false;
 
-            var methods = GetModelNodeExtensionMethods(new[]
-            {
-                typeof(DefinitionBase).Assembly,
-                typeof(TaxonomyFieldDefinition).Assembly,
-                typeof(ListDefinitionSyntax).Assembly
-            });
-
-            var hasAllAddMethods = true;
-
-            foreach (var definitionType in DefinitionTypes)
-            {
-                var definitionName = definitionType.Name.Replace("Definition", string.Empty);
-
-                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
-
-                var shouldCheckWithMethod = definitionType.GetCustomAttributes(typeof(ExpectWithExtensionMethod), false).Any();
-
-
-                #region WithXXX()
-
-                // validate (this ModelNode model, XXXDefinition definition)
-                var addDefinitionMethodName = string.Format("With{0}s", definitionName);
-
-                if (definitionType == typeof(PrefixDefinition))
-                    addDefinitionMethodName = string.Format("With{0}es", definitionName);
-                if (definitionType == typeof(PropertyDefinition))
-                    addDefinitionMethodName = string.Format("WithProperties");
-                if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
-                    addDefinitionMethodName = string.Format("WithDiagnosticsServices");
-                if (definitionType == typeof(RootWebDefinition))
-                    addDefinitionMethodName = string.Format("WithRootWeb");
-
-                if (!shouldCheckWithMethod)
-                {
-                    if (showSkipping)
-                        Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - SKIPPING", addDefinitionMethodName));
-
-                    continue;
-                }
-
-
-                var hasWithMethod = methods.FirstOrDefault(m =>
-                                                        m.Name == addDefinitionMethodName &&
-                                                        m.GetParameters().Count() == 2 &&
-                                                        m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
-                                                        m.GetParameters()[1].ParameterType == typeof(Action<ModelNode>)) != null;
-
-                if (hasWithMethod)
-                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - TRUE", addDefinitionMethodName));
-                else
-                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - FALSE", addDefinitionMethodName));
-
-
-                #endregion
-
-                // push back
-                if (hasWithMethod != true)
-                    hasAllAddMethods = false;
-            }
-
-            Assert.IsTrue(hasAllAddMethods);
         }
+
         #endregion
 
         #endregion
@@ -907,13 +897,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             return query;
         }
 
-        private List<MethodInfo> GetModelNodeExtensionMethods(IEnumerable<Assembly> assemblies)
+        private static List<MethodInfo> GetModelNodeExtensionMethods(IEnumerable<Assembly> assemblies)
         {
             var methods = new List<MethodInfo>();
 
             foreach (var asm in assemblies)
             {
-                foreach (var definitionType in DefinitionTypes)
+                foreach (var definitionType in AllDefinitionTypes)
                 {
                     var methodInfos = GetExtensionMethods(asm, typeof(ModelNode), true);
                     foreach (var method in methodInfos)

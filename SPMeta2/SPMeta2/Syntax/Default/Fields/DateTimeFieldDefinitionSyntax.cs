@@ -11,6 +11,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class DateTimeFieldModelNode : FieldModelNode
+    {
+
+    }
+
     public static class DateTimeFieldDefinitionSyntax
     {
         #region methods

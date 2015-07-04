@@ -6,6 +6,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class JobModelNode : TypedModelNode
+    {
+
+    }
+
     public static class JobDefinitionSyntax
     {
         #region methods

@@ -5,6 +5,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class SecurityGroupLinkModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SecurityGroupLinkDefinitionSyntax
     {
         #region methods

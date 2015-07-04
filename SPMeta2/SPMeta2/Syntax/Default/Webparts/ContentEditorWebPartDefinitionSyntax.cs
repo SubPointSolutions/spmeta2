@@ -12,6 +12,11 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    public class ContentEditorWebPartModelNode : WebPartModelNode
+    {
+
+    }
+
     public static class ContentEditorWebPartDefinitionSyntax
     {
         #region methods
@@ -23,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddContentEditorWebPart<TModelNode>(this TModelNode model, ContentEditorWebPartDefinition definition,
-            Action<FieldModelNode> action)
+            Action<WebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
