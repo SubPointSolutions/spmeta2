@@ -18,14 +18,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
         public static TModelNode AddWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddWikiPage(model, definition, null);
         }
 
         public static TModelNode AddWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition,
             Action<WikiPageModelNode> action)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -35,7 +35,7 @@ namespace SPMeta2.Syntax.Default
         #region array overload
 
         public static TModelNode AddWikiPages<TModelNode>(this TModelNode model, IEnumerable<WikiPageDefinition> definitions)
-           where TModelNode : ModelNode, IPageHostModelNode, new()
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

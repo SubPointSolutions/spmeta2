@@ -6,23 +6,31 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public class TaxonomyTermStoreModelNode : TypedModelNode
+    public class TaxonomyTermStoreModelNode : TypedModelNode,
+        ITaxonomyTermGroupHostModelNode
     {
 
     }
 
     public static class TaxonomyTermStoreDefinitionSyntax
     {
-        public static SiteModelNode AddTaxonomyTermStore(this SiteModelNode model, TaxonomyTermStoreDefinition definition)
+        #region methods
+
+        public static TModelNode AddTaxonomyTermStore<TModelNode>(this TModelNode model, TaxonomyTermStoreDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddTaxonomyTermStore(model, definition, null);
         }
 
-        public static SiteModelNode AddTaxonomyTermStore(this SiteModelNode model, TaxonomyTermStoreDefinition definition,
+        public static TModelNode AddTaxonomyTermStore<TModelNode>(this TModelNode model, TaxonomyTermStoreDefinition definition,
             Action<TaxonomyTermStoreModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
+
+        #endregion
+
 
         public static ModelNode AddHostTaxonomyTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition)
         {

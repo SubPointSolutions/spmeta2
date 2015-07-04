@@ -8,28 +8,35 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
-    public class TaxonomyTermGroupModelNode : TypedModelNode
+    public class TaxonomyTermGroupModelNode : TypedModelNode,
+        ITaxonomyTermSetHostModelNode
     {
 
     }
 
     public static class TaxonomyTermGroupDefinitionSyntax
     {
-        public static TaxonomyTermStoreModelNode AddTaxonomyTermGroup(this TaxonomyTermStoreModelNode model,
-            TaxonomyTermGroupDefinition definition)
+        #region methods
+
+        public static TModelNode AddTaxonomyTermGroup<TModelNode>(this TModelNode model, TaxonomyTermGroupDefinition definition)
+            where TModelNode : ModelNode, ITaxonomyTermGroupHostModelNode, new()
         {
             return AddTaxonomyTermGroup(model, definition, null);
         }
 
-        public static TaxonomyTermStoreModelNode AddTaxonomyTermGroup(this TaxonomyTermStoreModelNode model,
-            TaxonomyTermGroupDefinition definition, Action<TaxonomyTermGroupModelNode> action)
+        public static TModelNode AddTaxonomyTermGroup<TModelNode>(this TModelNode model, TaxonomyTermGroupDefinition definition,
+            Action<TaxonomyTermGroupModelNode> action)
+            where TModelNode : ModelNode, ITaxonomyTermGroupHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
+        #endregion
+
         #region array overload
 
-        public static ModelNode AddTaxonomyTermGroups(this ModelNode model, IEnumerable<TaxonomyTermGroupDefinition> definitions)
+        public static TModelNode AddTaxonomyTermGroups<TModelNode>(this TModelNode model, IEnumerable<TaxonomyTermGroupDefinition> definitions)
+           where TModelNode : ModelNode, ITaxonomyTermGroupHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -38,6 +45,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         #endregion
+
 
         public static ModelNode AddHostTaxonomyTermGroup(this ModelNode model, 
             TaxonomyTermGroupDefinition definition)

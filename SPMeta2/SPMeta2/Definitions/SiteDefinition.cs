@@ -23,7 +23,8 @@ namespace SPMeta2.Definitions
     [CSOMParentHostAttribute(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [ExpectArrayExtensionMethod]
+    [Serializable]
     [DataContract]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]

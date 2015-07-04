@@ -16,12 +16,15 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static WebModelNode AddPageLayoutAndSiteTemplateSettings(this WebModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition)
+        public static TModelNode AddPageLayoutAndSiteTemplateSettings<TModelNode>(this TModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddPageLayoutAndSiteTemplateSettings(model, definition, null);
         }
 
-        public static WebModelNode AddPageLayoutAndSiteTemplateSettings(this WebModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddPageLayoutAndSiteTemplateSettings<TModelNode>(this TModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition,
+            Action<ContentDatabaseModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

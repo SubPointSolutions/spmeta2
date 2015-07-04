@@ -14,19 +14,27 @@ namespace SPMeta2.Standard.Syntax
 
     public static class TaxonomyTermLabelDefinitionSyntax
     {
-        public static TaxonomyTermModelNode AddTaxonomyTermLabel(this TaxonomyTermModelNode model, TaxonomyTermLabelDefinition definition)
+        #region methods
+
+        public static TModelNode AddTaxonomyTermLabel<TModelNode>(this TModelNode model, TaxonomyTermLabelDefinition definition)
+            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             return AddTaxonomyTermLabel(model, definition, null);
         }
 
-        public static TaxonomyTermModelNode AddTaxonomyTermLabel(this TaxonomyTermModelNode model, TaxonomyTermLabelDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddTaxonomyTermLabel<TModelNode>(this TModelNode model, TaxonomyTermLabelDefinition definition,
+            Action<TaxonomyTermSetModelNode> action)
+            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
+        #endregion
+
         #region array overload
 
-        public static TaxonomyTermModelNode AddTaxonomyTermLabels(this TaxonomyTermModelNode model, IEnumerable<TaxonomyTermLabelDefinition> definitions)
+        public static TModelNode AddTaxonomyTermLabels<TModelNode>(this TModelNode model, IEnumerable<TaxonomyTermLabelDefinition> definitions)
+           where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

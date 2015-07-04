@@ -23,6 +23,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(FarmDefinition))]
     public class DiagnosticsServiceBaseDefinition : DefinitionBase

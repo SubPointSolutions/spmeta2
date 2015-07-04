@@ -14,10 +14,9 @@ namespace SPMeta2.Syntax.Default
 
     public class QuickLaunchNavigationNodeModelNode : NavigationNodeModelNode
     {
-        
+
     }
 
-    // TODO
     public static class QuickLaunchNavigationSyntax
     {
         public static WebModelNode AddQuickLaunchNavigationNode(this WebModelNode model, QuickLaunchNavigationNodeDefinition definition)

@@ -15,24 +15,18 @@ namespace SPMeta2.Standard.Syntax
     {
         #region methods
 
-        public static WebModelNode AddWebNavigationSettings(this WebModelNode model, WebNavigationSettingsDefinition definition)
+        public static TModelNode AddWebNavigationSettings<TModelNode>(this TModelNode model, WebNavigationSettingsDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddWebNavigationSettings(model, definition, null);
         }
 
-        public static WebModelNode AddWebNavigationSettings(this WebModelNode model, WebNavigationSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddWebNavigationSettings<TModelNode>(this TModelNode model, WebNavigationSettingsDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-        #endregion
-
-        #region model
-
-        //public static IEnumerable<WebPartPageDefinition> GetWebPartPages(this DefinitionBase model)
-        //{
-        //    return model.GetChildModelsAsType<WebPartPageDefinition>();
-        //}
 
         #endregion
     }

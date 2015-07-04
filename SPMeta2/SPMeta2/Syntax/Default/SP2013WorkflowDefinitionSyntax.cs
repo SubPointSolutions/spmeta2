@@ -17,12 +17,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebModelNode AddSP2013Workflow(this WebModelNode model, SP2013WorkflowDefinition definition)
+        public static TModelNode AddSP2013Workflow<TModelNode>(this TModelNode model, SP2013WorkflowDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddSP2013Workflow(model, definition, null);
         }
 
-        public static WebModelNode AddSP2013Workflow(this WebModelNode model, SP2013WorkflowDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSP2013Workflow<TModelNode>(this TModelNode model, SP2013WorkflowDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -31,7 +34,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddSP2013Workflows(this ModelNode model, IEnumerable<SP2013WorkflowDefinition> definitions)
+        public static TModelNode AddSP2013Workflows<TModelNode>(this TModelNode model, IEnumerable<SP2013WorkflowDefinition> definitions)
+           where TModelNode : ModelNode, IWebModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

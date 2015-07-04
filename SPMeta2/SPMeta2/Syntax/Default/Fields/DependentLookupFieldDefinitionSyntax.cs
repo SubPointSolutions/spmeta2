@@ -20,31 +20,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddDependentLookupField(this SiteModelNode model, DependentLookupFieldDefinition definition)
+        public static TModelNode AddDependentLookupField<TModelNode>(this TModelNode model, DependentLookupFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddDependentLookupField(model, definition, null);
         }
 
-        public static SiteModelNode AddDependentLookupField(this SiteModelNode model, DependentLookupFieldDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-        public static WebModelNode AddDependentLookupField(this WebModelNode model, DependentLookupFieldDefinition definition)
-        {
-            return AddDependentLookupField(model, definition, null);
-        }
-
-        public static WebModelNode AddDependentLookupField(this WebModelNode model, DependentLookupFieldDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static ListModelNode AddDependentLookupField(this ListModelNode model, DependentLookupFieldDefinition definition)
-        {
-            return AddDependentLookupField(model, definition, null);
-        }
-
-        public static ListModelNode AddDependentLookupField(this ListModelNode model, LookupFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddDependentLookupField<TModelNode>(this TModelNode model, DependentLookupFieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -53,13 +37,14 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        //public static ModelNode AddDependentLookupFields(this ModelNode model, IEnumerable<DependentLookupFieldDefinition> definitions)
-        //{
-        //    foreach (var definition in definitions)
-        //        model.AddDefinitionNode(definition);
+        public static TModelNode AddDependentLookupFields<TModelNode>(this TModelNode model, IEnumerable<DependentLookupFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
 
-        //    return model;
-        //}
+            return model;
+        }
 
         #endregion
     }

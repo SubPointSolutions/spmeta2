@@ -653,12 +653,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             {
                 foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
                 {
+                    var completedtype = true;
+
                     var pureDefName = defType.Name.Replace("Definition", string.Empty);
 
                     var shouldCheckArrayOverload = defType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
                     var targetModelNodeTypeName = string.Format("{0}ModelNode", pureDefName);
                     var modelNodelType = AllModelNodeTypes.FirstOrDefault(n => n.Name == targetModelNodeTypeName);
-
 
                     trace.WriteLine(defType.Name);
 
@@ -679,21 +680,32 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         var addXXXMethodName = string.Format("Add{0}", pureDefName);
                         var addXXXArrayDefinitionMethodName = string.Format("Add{0}s", pureDefName);
 
-                        var lastChar = defType.Name[defType.Name.Length - 1];
+                        var lastChar = pureDefName[pureDefName.Length - 1];
 
                         switch (lastChar)
                         {
-                            case 'x':
                             case 'y':
+                                {
+                                    addXXXArrayDefinitionMethodName = string.Format("Add{0}", pureDefName);
+                                    addXXXArrayDefinitionMethodName = addXXXArrayDefinitionMethodName.Substring(0,
+                                        addXXXArrayDefinitionMethodName.Length - 1);
+                                    addXXXArrayDefinitionMethodName += "ies";
+                                }
+                                ;
+                                break;
+
+                            case 'x':
                             case 'e':
                                 {
-                                    addXXXArrayDefinitionMethodName = addXXXArrayDefinitionMethodName.Substring(0, addXXXArrayDefinitionMethodName.Length - 1);
-                                    addXXXArrayDefinitionMethodName += "es";
+                                    addXXXArrayDefinitionMethodName = string.Format("Add{0}", pureDefName);
+                                    addXXXArrayDefinitionMethodName += "s";
+
                                 } break;
 
                             case 's':
                                 {
-                                    addXXXArrayDefinitionMethodName = string.Format("Add{0}s", pureDefName);
+                                    addXXXArrayDefinitionMethodName = string.Format("Add{0}", pureDefName);
+                                    addXXXArrayDefinitionMethodName += "es";
                                 } break;
                         }
 
@@ -769,6 +781,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         if (addMethodPlain == null)
                         {
                             passed = false;
+                            completedtype = false;
+
                             addXXXTrace.WriteLine("[FALSE] AddXXX()");
                         }
                         else
@@ -778,6 +792,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             if (missedRelationshipModelNodeTypes.Any())
                             {
                                 passed = false;
+                                completedtype = false;
+
                                 addXXXTrace.WriteLine(string.Format(
                                         "[FALSE] AddXXX() misses relationships: [{0}]",
                                         string.Join(",", missedRelationshipModelNodeTypes)));
@@ -787,6 +803,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         if (addMethodPlainWithCallBack == null)
                         {
                             passed = false;
+                            completedtype = false;
+
                             addXXXTrace.WriteLine("[FALSE] AddXXX(callback)");
                         }
                         else
@@ -796,6 +814,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             if (missedRelationshipModelNodeTypes.Any())
                             {
                                 passed = false;
+                                completedtype = false;
+
                                 addXXXTrace.WriteLine(string.Format(
                                         "[FALSE] AddXXX(callback) misses relationships: [{0}]",
                                         string.Join(",", missedRelationshipModelNodeTypes)));
@@ -809,6 +829,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             if (addMethodWithArraySupport == null)
                             {
                                 passed = false;
+                                completedtype = false;
+
                                 addXXXTrace.WriteLine("[FALSE] AddXXXs()");
                             }
                             else
@@ -818,6 +840,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 if (missedRelationshipModelNodeTypes.Any())
                                 {
                                     passed = false;
+                                    completedtype = false;
+
                                     addXXXTrace.WriteLine(string.Format(
                                             "[FALSE] AddXXXs() misses relationships: [{0}]",
                                             string.Join(",", missedRelationshipModelNodeTypes)));
@@ -828,6 +852,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                     if (!showOnlyFalseOutput)
                         trace.WriteLine("");
+
+                    if (!completedtype)
+                        missesCount++;
                 }
             });
 

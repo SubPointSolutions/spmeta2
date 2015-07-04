@@ -20,12 +20,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddMasterPage(this ListModelNode model, MasterPageDefinition definition)
+        public static TModelNode AddMasterPage<TModelNode>(this TModelNode model, MasterPageDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddMasterPage(model, definition, null);
         }
 
-        public static ListModelNode AddMasterPage(this ListModelNode model, MasterPageDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddMasterPage<TModelNode>(this TModelNode model, MasterPageDefinition definition,
+            Action<MasterPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -34,7 +37,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddMasterPages(this ModelNode model, IEnumerable<MasterPageDefinition> definitions)
+        public static TModelNode AddMasterPages<TModelNode>(this TModelNode model, IEnumerable<MasterPageDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

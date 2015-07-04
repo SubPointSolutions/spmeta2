@@ -16,19 +16,27 @@ namespace SPMeta2.Syntax.Default
 
     public static class PageViewerWebPartDefinitionSyntax
     {
-        #region AddPageViewerWebPart
+        #region methods
 
-        public static ModelNode AddPageViewerWebPart(this ModelNode model, PageViewerWebPartDefinition definition)
+        public static TModelNode AddPageViewerWebPart<TModelNode>(this TModelNode model, PageViewerWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddPageViewerWebPart(model, definition, null);
         }
 
-        public static ModelNode AddPageViewerWebPart(this ModelNode model, PageViewerWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddPageViewerWebPart<TModelNode>(this TModelNode model, PageViewerWebPartDefinition definition,
+            Action<PageViewerWebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddPageViewerWebParts(this ModelNode model, IEnumerable<PageViewerWebPartDefinition> definitions)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddPageViewerWebParts<TModelNode>(this TModelNode model, IEnumerable<PageViewerWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -38,6 +46,6 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-       
+
     }
 }

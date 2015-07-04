@@ -18,29 +18,31 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static FarmModelNode AddFarmSolution(this FarmModelNode model, FarmSolutionDefinition definition)
+        public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return AddFarmSolution(model, definition, null);
         }
 
-        public static FarmModelNode AddFarmSolution(this FarmModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition,
+            Action<DiagnosticsServiceBaseModelNode> action)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-        #region methods
+        #region array overload
 
-        //public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
-        //{
-        //    return AddHostFarmSolution(model, definition, null);
-        //}
+        public static TModelNode AddFarmSolutions<TModelNode>(this TModelNode model, IEnumerable<FarmSolutionDefinition> definitions)
+           where TModelNode : ModelNode, IFarmModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
 
-        //public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
-        //{
-        //    return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        //}
+            return model;
+        }
 
         #endregion
     }

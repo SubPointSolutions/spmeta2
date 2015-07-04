@@ -18,12 +18,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddSandboxSolution(this SiteModelNode model, SandboxSolutionDefinition definition)
+        public static TModelNode AddSandboxSolution<TModelNode>(this TModelNode model, SandboxSolutionDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSandboxSolution(model, definition, null);
         }
 
-        public static SiteModelNode AddSandboxSolution(this SiteModelNode model, SandboxSolutionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSandboxSolution<TModelNode>(this TModelNode model, SandboxSolutionDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -32,7 +35,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddSandboxSolutions(this ModelNode model, IEnumerable<SandboxSolutionDefinition> definitions)
+        public static TModelNode AddSandboxSolutions<TModelNode>(this TModelNode model, IEnumerable<SandboxSolutionDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -16,26 +16,34 @@ namespace SPMeta2.Standard.Syntax
 
     public static class JavaScriptDisplayTemplateDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ListModelNode AddJavaScriptDisplayTemplate(this ListModelNode model, JavaScriptDisplayTemplateDefinition definition)
+        public static TModelNode AddJavaScriptDisplayTemplate<TModelNode>(this TModelNode model, JavaScriptDisplayTemplateDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddJavaScriptDisplayTemplate(model, definition, null);
         }
 
-        public static ListModelNode AddJavaScriptDisplayTemplate(this ListModelNode model, JavaScriptDisplayTemplateDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddJavaScriptDisplayTemplate<TModelNode>(this TModelNode model, JavaScriptDisplayTemplateDefinition definition,
+            Action<ControlDisplayTemplateModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-        public static ModelNode AddJavaScriptDisplayTemplates(this ModelNode model, IEnumerable<JavaScriptDisplayTemplateDefinition> definitions)
+        #region array overload
+
+        public static TModelNode AddJavaScriptDisplayTemplates<TModelNode>(this TModelNode model, IEnumerable<JavaScriptDisplayTemplateDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
 
             return model;
         }
+
+        #endregion
     }
 }

@@ -20,14 +20,14 @@ namespace SPMeta2.Standard.Syntax
         #region methods
 
         public static TModelNode AddPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddPublishingPage(model, definition, null);
         }
 
         public static TModelNode AddPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition,
             Action<PublishingPageModelNode> action)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -37,7 +37,7 @@ namespace SPMeta2.Standard.Syntax
         #region array overload
 
         public static TModelNode AddPublishingPages<TModelNode>(this TModelNode model, IEnumerable<PublishingPageDefinition> definitions)
-           where TModelNode : ModelNode, IPageHostModelNode, new()
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

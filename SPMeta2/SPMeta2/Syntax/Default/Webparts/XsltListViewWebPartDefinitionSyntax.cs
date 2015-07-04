@@ -38,7 +38,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static TModelNode AddXsltListViewWebPart<TModelNode>(this TModelNode model, IEnumerable<XsltListViewWebPartDefinition> definitions)
+        public static TModelNode AddXsltListViewWebParts<TModelNode>(this TModelNode model, IEnumerable<XsltListViewWebPartDefinition> definitions)
            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)

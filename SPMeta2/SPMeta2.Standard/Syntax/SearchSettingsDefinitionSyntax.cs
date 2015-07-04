@@ -14,24 +14,17 @@ namespace SPMeta2.Standard.Syntax
 
     public static class SearchSettingsDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static SiteModelNode AddSearchSettings(this SiteModelNode model, SearchSettingsDefinition definition)
+        public static TModelNode AddSearchSettings<TModelNode>(this TModelNode model, SearchSettingsDefinition definition)
+            where TModelNode : ModelNode, ISearchSettingsHostModelNode, new()
         {
             return AddSearchSettings(model, definition, null);
         }
 
-        public static SiteModelNode AddSearchSettings(this SiteModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddSearchSettings(this WebModelNode model, SearchSettingsDefinition definition)
-        {
-            return AddSearchSettings(model, definition, null);
-        }
-
-        public static WebModelNode AddSearchSettings(this WebModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSearchSettings<TModelNode>(this TModelNode model, SearchSettingsDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, ISearchSettingsHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

@@ -19,12 +19,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SecureStoreApplicationModelNode AddTargetApplication(this SecureStoreApplicationModelNode model, TargetApplicationDefinition definition)
+        public static TModelNode AddTargetApplication<TModelNode>(this TModelNode model, TargetApplicationDefinition definition)
+            where TModelNode : ModelNode, ITargetApplicationHostModelNode, new()
         {
             return AddTargetApplication(model, definition, null);
         }
 
-        public static SecureStoreApplicationModelNode AddTargetApplication(this SecureStoreApplicationModelNode model, TargetApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddTargetApplication<TModelNode>(this TModelNode model, TargetApplicationDefinition definition,
+            Action<TargetApplicationModelNode> action)
+            where TModelNode : ModelNode, ITargetApplicationHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

@@ -19,12 +19,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebModelNode AddRegionalSettings(this WebModelNode model, RegionalSettingsDefinition definition)
+        public static TModelNode AddRegionalSettings<TModelNode>(this TModelNode model, RegionalSettingsDefinition definition)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddRegionalSettings(model, definition, null);
         }
 
-        public static WebModelNode AddRegionalSettings(this WebModelNode model, RegionalSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddRegionalSettings<TModelNode>(this TModelNode model, RegionalSettingsDefinition definition,
+            Action<RegionalSettingsModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

@@ -6,17 +6,18 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class ListModelNode : TypedModelNode,
+    public class ListModelNode : TypedModelNode, IListModelNode,
         IFieldHostModelNode,
         ISecurableObjectHostModelNode,
-        IPageHostModelNode,
         IListItemHostModelNode,
         IFolderHostModelNode,
         IEventReceiverHostModelNode,
         IWelcomePageHostModelNode,
         IModuleFileHostModelNode,
         IAuditSettingsHostModelNode,
-        IContentTypeLinkHostModelNode
+        IContentTypeLinkHostModelNode,
+        IUserCustomActionHostModelNode,
+        ISP2013WorkflowSubscriptionHostModelNode
     {
 
     }
@@ -25,12 +26,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebModelNode AddList(this WebModelNode model, ListDefinition definition)
+        public static TModelNode AddList<TModelNode>(this TModelNode model, ListDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddList(model, definition, null);
         }
 
-        public static WebModelNode AddList(this WebModelNode model, ListDefinition definition, Action<ListModelNode> action)
+        public static TModelNode AddList<TModelNode>(this TModelNode model, ListDefinition definition,
+            Action<ListModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -39,7 +43,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static WebModelNode AddLists(this WebModelNode model, IEnumerable<ListDefinition> definitions)
+        public static TModelNode AddLists<TModelNode>(this TModelNode model, IEnumerable<ListDefinition> definitions)
+           where TModelNode : ModelNode, IWebModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -48,6 +53,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
 
         #region host override
 

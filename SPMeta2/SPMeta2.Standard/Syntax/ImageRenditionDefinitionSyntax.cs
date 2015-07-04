@@ -14,14 +14,17 @@ namespace SPMeta2.Standard.Syntax
 
     public static class ImageRenditionDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static SiteModelNode AddImageRendition(this SiteModelNode model, ImageRenditionDefinition definition)
+        public static TModelNode AddImageRendition<TModelNode>(this TModelNode model, ImageRenditionDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddImageRendition(model, definition, null);
         }
 
-        public static SiteModelNode AddImageRendition(this SiteModelNode model, ImageRenditionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddImageRendition<TModelNode>(this TModelNode model, ImageRenditionDefinition definition,
+            Action<ImageFieldModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -30,7 +33,8 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static SiteModelNode AddImageRenditions(this SiteModelNode model, IEnumerable<ImageRenditionDefinition> definitions)
+        public static TModelNode AddImageRenditions<TModelNode>(this TModelNode model, IEnumerable<ImageRenditionDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

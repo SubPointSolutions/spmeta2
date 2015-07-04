@@ -18,14 +18,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
         public static TModelNode AddWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddWebPartPage(model, definition, null);
         }
 
         public static TModelNode AddWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition,
             Action<WebPartPageModelNode> action)
-            where TModelNode : ModelNode, IPageHostModelNode, new()
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -35,7 +35,7 @@ namespace SPMeta2.Syntax.Default
         #region array overload
 
         public static TModelNode AddWebPartPages<TModelNode>(this TModelNode model, IEnumerable<WebPartPageDefinition> definitions)
-           where TModelNode : ModelNode, IPageHostModelNode, new()
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

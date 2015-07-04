@@ -8,17 +8,21 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class WebModelNode : TypedModelNode,
+    public class WebModelNode : TypedModelNode, IWebModelNode,
         IFieldHostModelNode,
         IContentTypeHostModelNode,
         ISecurableObjectHostModelNode,
-        IPropertyBagHostModelNode,
+        IPropertyHostModelNode,
         IEventReceiverHostModelNode,
         IWebHostModelNode,
         IWelcomePageHostModelNode,
         IModuleFileHostModelNode,
         IAuditSettingsHostModelNode,
-        IFeatureHostModelNode
+        IFeatureHostModelNode,
+        IUserCustomActionHostModelNode,
+        ITopNavigationNodeHostModelNode,
+        ISP2013WorkflowSubscriptionHostModelNode,
+        ISearchSettingsHostModelNode
     {
 
     }

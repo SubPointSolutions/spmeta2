@@ -20,14 +20,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
         public static TModelNode AddProperty<TModelNode>(this TModelNode model, PropertyDefinition definition)
-            where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
+            where TModelNode : ModelNode, IPropertyHostModelNode, new()
         {
             return AddProperty(model, definition, null);
         }
 
         public static TModelNode AddProperty<TModelNode>(this TModelNode model, PropertyDefinition definition,
             Action<FieldModelNode> action)
-            where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
+            where TModelNode : ModelNode, IPropertyHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -37,7 +37,7 @@ namespace SPMeta2.Syntax.Default
         #region array overload
 
         public static TModelNode AddProperties<TModelNode>(this TModelNode model, IEnumerable<PropertyDefinition> definitions)
-           where TModelNode : ModelNode, IPropertyBagHostModelNode, new()
+           where TModelNode : ModelNode, IPropertyHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

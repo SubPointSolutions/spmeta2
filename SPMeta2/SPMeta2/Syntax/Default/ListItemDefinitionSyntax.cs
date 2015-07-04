@@ -19,22 +19,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddListItem(this ListModelNode model, ListItemDefinition definition)
+        public static TModelNode AddListItem<TModelNode>(this TModelNode model, ListItemDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddListItem(model, definition, null);
         }
 
-        public static ListModelNode AddListItem(this ListModelNode model, ListItemDefinition definition, Action<ListItemModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static FolderModelNode AddListItem(this FolderModelNode model, ListItemDefinition definition)
-        {
-            return AddListItem(model, definition, null);
-        }
-
-        public static FolderModelNode AddListItem(this FolderModelNode model, ListItemDefinition definition, Action<ListItemModelNode> action)
+        public static TModelNode AddListItem<TModelNode>(this TModelNode model, ListItemDefinition definition,
+            Action<ListItemModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -43,7 +36,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddListItems(this ModelNode model, IEnumerable<ListItemDefinition> definitions)
+        public static TModelNode AddListItems<TModelNode>(this TModelNode model, IEnumerable<ListItemDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -52,6 +46,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
 
         #region add host
 

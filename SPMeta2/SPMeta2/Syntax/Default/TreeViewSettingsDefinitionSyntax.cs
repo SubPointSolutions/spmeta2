@@ -19,12 +19,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebModelNode AddTreeViewSettings(this WebModelNode model, TreeViewSettingsDefinition definition)
+        public static TModelNode AddTreeViewSettings<TModelNode>(this TModelNode model, TreeViewSettingsDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddTreeViewSettings(model, definition, null);
         }
 
-        public static WebModelNode AddTreeViewSettings(this WebModelNode model, TreeViewSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddTreeViewSettings<TModelNode>(this TModelNode model, TreeViewSettingsDefinition definition,
+            Action<TreeViewSettingsModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

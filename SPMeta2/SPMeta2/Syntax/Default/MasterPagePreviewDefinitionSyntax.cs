@@ -20,12 +20,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddMasterPagePreview(this ListModelNode model, MasterPagePreviewDefinition definition)
+        public static TModelNode AddMasterPagePreview<TModelNode>(this TModelNode model, MasterPagePreviewDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddMasterPagePreview(model, definition, null);
         }
 
-        public static ListModelNode AddMasterPagePreview(this ListModelNode model, MasterPagePreviewDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddMasterPagePreview<TModelNode>(this TModelNode model, MasterPagePreviewDefinition definition,
+            Action<MasterPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -34,7 +37,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddMasterPagePreviews(this ModelNode model, IEnumerable<MasterPagePreviewDefinition> definitions)
+        public static TModelNode AddMasterPagePreviews<TModelNode>(this TModelNode model, IEnumerable<MasterPagePreviewDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

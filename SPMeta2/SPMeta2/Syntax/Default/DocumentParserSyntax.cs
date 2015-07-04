@@ -10,25 +10,43 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class DocumentParserModelNode : ListItemModelNode
+    public class DocumentParserModelNode : TypedModelNode
     {
 
     }
+
 
     public static class DocumentParserDefinitionSyntax
     {
         #region methods
 
-        public static FarmModelNode AddDocumentParser(this FarmModelNode model, DocumentParserDefinition definition)
+        public static TModelNode AddDocumentParser<TModelNode>(this TModelNode model, DocumentParserDefinition definition)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return AddDocumentParser(model, definition, null);
         }
 
-        public static FarmModelNode AddDocumentParser(this FarmModelNode model, DocumentParserDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddDocumentParser<TModelNode>(this TModelNode model, DocumentParserDefinition definition,
+            Action<DocumentParserModelNode> action)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
+
+        #region array overload
+
+        public static TModelNode AddDocumentParsers<TModelNode>(this TModelNode model, IEnumerable<DocumentParserDefinition> definitions)
+           where TModelNode : ModelNode, IFarmModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
+
     }
 }

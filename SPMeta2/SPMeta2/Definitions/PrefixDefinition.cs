@@ -26,6 +26,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
     public class PrefixDefinition : DefinitionBase

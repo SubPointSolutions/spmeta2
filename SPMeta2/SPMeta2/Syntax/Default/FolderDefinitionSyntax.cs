@@ -10,7 +10,6 @@ namespace SPMeta2.Syntax.Default
 {
     public class FolderModelNode : TypedModelNode,
         ISecurableObjectHostModelNode,
-        IPageHostModelNode,
         IListItemHostModelNode,
         IFolderHostModelNode,
         IWelcomePageHostModelNode,

@@ -97,13 +97,13 @@ namespace SPMeta2.Containers
         #region webpart pages
 
         public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model)
-            where TModelNode : TypedModelNode, IPageHostModelNode, new()
+            where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
             return AddRandomWebPartPage(model, null);
         }
 
         public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model, Action<WebPartPageModelNode> action)
-            where TModelNode : TypedModelNode, IPageHostModelNode, new()
+            where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
             return model.AddRandomTypedDefinition<WebPartPageDefinition, TModelNode, WebPartPageModelNode>(action);
         }

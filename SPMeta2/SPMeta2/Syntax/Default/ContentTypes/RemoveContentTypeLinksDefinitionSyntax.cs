@@ -15,13 +15,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-
-        public static ListModelNode AddRemoveContentTypeLinks(this ListModelNode model, RemoveContentTypeLinksDefinition definition)
+        public static TModelNode AddRemoveContentTypeLinks<TModelNode>(this TModelNode model, RemoveContentTypeLinksDefinition definition)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return AddRemoveContentTypeLinks(model, definition, null);
         }
 
-        public static ListModelNode AddRemoveContentTypeLinks(this ListModelNode model, RemoveContentTypeLinksDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddRemoveContentTypeLinks<TModelNode>(this TModelNode model, RemoveContentTypeLinksDefinition definition,
+            Action<HideContentTypeFieldLinksModelNode> action)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

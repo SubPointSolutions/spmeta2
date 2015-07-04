@@ -8,33 +8,42 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class TopNavigationNodeModelNode : NavigationNodeModelNode
+    public class TopNavigationNodeModelNode : NavigationNodeModelNode,
+        ITopNavigationNodeHostModelNode
     {
 
     }
 
     public static class TopNavigationSyntax
     {
-        public static WebModelNode AddTopNavigationNode(this WebModelNode model, TopNavigationNodeDefinition definition)
+        #region methods
+
+        public static TModelNode AddTopNavigationNode<TModelNode>(this TModelNode model, TopNavigationNodeDefinition definition)
+            where TModelNode : ModelNode, ITopNavigationNodeHostModelNode, new()
         {
             return AddTopNavigationNode(model, definition, null);
         }
 
-        public static WebModelNode AddTopNavigationNode(this WebModelNode model, TopNavigationNodeDefinition definition,
+        public static TModelNode AddTopNavigationNode<TModelNode>(this TModelNode model, TopNavigationNodeDefinition definition,
             Action<TopNavigationNodeModelNode> action)
+            where TModelNode : ModelNode, ITopNavigationNodeHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static TopNavigationNodeModelNode AddTopNavigationNode(this TopNavigationNodeModelNode model, TopNavigationNodeDefinition definition)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddTopNavigationNodes<TModelNode>(this TModelNode model, IEnumerable<TopNavigationNodeDefinition> definitions)
+           where TModelNode : ModelNode, ITopNavigationNodeHostModelNode, new()
         {
-            return AddTopNavigationNode(model, definition, null);
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
-        public static TopNavigationNodeModelNode AddTopNavigationNode(this TopNavigationNodeModelNode model, TopNavigationNodeDefinition definition,
-            Action<TopNavigationNodeModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
+        #endregion
     }
 }

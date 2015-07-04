@@ -13,47 +13,34 @@ namespace SPMeta2.Syntax.Default
 
     public static class SecurityGroupDefinitionSyntax
     {
+
         #region methods
 
-        public static SiteModelNode AddSecurityGroup(this SiteModelNode model, SecurityGroupDefinition definition)
+        public static TModelNode AddSecurityGroup<TModelNode>(this TModelNode model, SecurityGroupDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSecurityGroup(model, definition, null);
         }
 
-        public static SiteModelNode AddSecurityGroup(this SiteModelNode model, SecurityGroupDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSecurityGroup<TModelNode>(this TModelNode model, SecurityGroupDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-        //public static WebModelNode AddSecurityGroup(this WebModelNode model, SecurityGroupDefinition definition)
-        //{
-        //    return AddSecurityGroup(model, definition, null);
-        //}
-
-        //public static WebModelNode AddSecurityGroup(this WebModelNode model, SecurityGroupDefinition definition, Action<ModelNode> action)
-        //{
-        //    return model.AddTypedDefinitionNode(definition, action);
-        //}
 
         #endregion
 
         #region array overload
 
-        public static SiteModelNode AddSecurityGroups(this SiteModelNode model, IEnumerable<SecurityGroupDefinition> definitions)
+        public static TModelNode AddSecurityGroups<TModelNode>(this TModelNode model, IEnumerable<SecurityGroupDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
 
             return model;
         }
-
-        //public static WebModelNode AddSecurityGroups(this WebModelNode model, IEnumerable<SecurityGroupDefinition> definitions)
-        //{
-        //    foreach (var definition in definitions)
-        //        model.AddDefinitionNode(definition);
-
-        //    return model;
-        //}
 
         #endregion
     }

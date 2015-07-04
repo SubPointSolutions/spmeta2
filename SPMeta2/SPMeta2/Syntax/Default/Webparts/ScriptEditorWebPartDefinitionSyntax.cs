@@ -38,7 +38,7 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static TModelNode AddScriptEditorWebPartodeWebParts<TModelNode>(this TModelNode model, IEnumerable<ScriptEditorWebPartDefinition> definitions)
+        public static TModelNode AddScriptEditorWebParts<TModelNode>(this TModelNode model, IEnumerable<ScriptEditorWebPartDefinition> definitions)
            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)

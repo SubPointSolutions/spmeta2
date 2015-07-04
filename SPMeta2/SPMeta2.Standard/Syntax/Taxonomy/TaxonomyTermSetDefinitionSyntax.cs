@@ -15,20 +15,27 @@ namespace SPMeta2.Standard.Syntax
 
     public static class TaxonomyTermSetDefinitionSyntax
     {
-        public static TaxonomyTermGroupModelNode AddTaxonomyTermSet(this TaxonomyTermGroupModelNode model, TaxonomyTermSetDefinition definition)
+        #region methods
+
+        public static TModelNode AddTaxonomyTermSet<TModelNode>(this TModelNode model, TaxonomyTermSetDefinition definition)
+            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             return AddTaxonomyTermSet(model, definition, null);
         }
 
-        public static TaxonomyTermGroupModelNode AddTaxonomyTermSet(this TaxonomyTermGroupModelNode model,
-            TaxonomyTermSetDefinition definition, Action<TaxonomyTermSetModelNode> action)
+        public static TModelNode AddTaxonomyTermSet<TModelNode>(this TModelNode model, TaxonomyTermSetDefinition definition,
+            Action<TaxonomyTermSetModelNode> action)
+            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
+        #endregion
+
         #region array overload
 
-        public static ModelNode AddTaxonomyTermSets(this ModelNode model, IEnumerable<TaxonomyTermSetDefinition> definitions)
+        public static TModelNode AddTaxonomyTermSets<TModelNode>(this TModelNode model, IEnumerable<TaxonomyTermSetDefinition> definitions)
+           where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -49,5 +56,9 @@ namespace SPMeta2.Standard.Syntax
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
+
+
+
+
     }
 }

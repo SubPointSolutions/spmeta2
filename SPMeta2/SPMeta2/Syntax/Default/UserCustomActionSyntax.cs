@@ -17,44 +17,25 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddUserCustomAction(this SiteModelNode model, UserCustomActionDefinition definition)
+        public static TModelNode AddUserCustomAction<TModelNode>(this TModelNode model, UserCustomActionDefinition definition)
+            where TModelNode : ModelNode, IUserCustomActionHostModelNode, new()
         {
             return AddUserCustomAction(model, definition, null);
         }
 
-        public static SiteModelNode AddUserCustomAction(this SiteModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddUserCustomAction<TModelNode>(this TModelNode model, UserCustomActionDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IUserCustomActionHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-        public static WebModelNode AddUserCustomAction(this WebModelNode model, UserCustomActionDefinition definition)
-        {
-            return AddUserCustomAction(model, definition, null);
-        }
-
-        public static WebModelNode AddUserCustomAction(this WebModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-
-        public static ListModelNode AddUserCustomAction(this ListModelNode model, UserCustomActionDefinition definition)
-        {
-            return AddUserCustomAction(model, definition, null);
-        }
-
-        public static ListModelNode AddUserCustomAction(this ListModelNode model, UserCustomActionDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddUserCustomActions(this ModelNode model, IEnumerable<UserCustomActionDefinition> definitions)
+        public static TModelNode AddUserCustomActions<TModelNode>(this TModelNode model, IEnumerable<UserCustomActionDefinition> definitions)
+           where TModelNode : ModelNode, IUserCustomActionHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

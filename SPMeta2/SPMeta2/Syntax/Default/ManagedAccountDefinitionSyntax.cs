@@ -15,17 +15,32 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static FarmModelNode AddManagedAccount(this FarmModelNode siteModel, ManagedAccountDefinition definition)
+        public static TModelNode AddManagedAccount<TModelNode>(this TModelNode model, ManagedAccountDefinition definition)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
-            return AddManagedAccount(siteModel, definition, null);
+            return AddManagedAccount(model, definition, null);
         }
 
-        public static FarmModelNode AddManagedAccount(this FarmModelNode model, ManagedAccountDefinition fielDefinition, Action<ModelNode> action)
+        public static TModelNode AddManagedAccount<TModelNode>(this TModelNode model, ManagedAccountDefinition definition,
+            Action<ManagedAccountModelNode> action)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
-            return model.AddTypedDefinitionNode(fielDefinition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
+        #region array overload
+
+        public static TModelNode AddManagedAccounts<TModelNode>(this TModelNode model, IEnumerable<ManagedAccountDefinition> definitions)
+           where TModelNode : ModelNode, IFarmModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
+        }
+
+        #endregion
     }
 }

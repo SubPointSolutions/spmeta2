@@ -15,12 +15,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddListView(this ListModelNode model, ListViewDefinition definition)
+        public static TModelNode AddListView<TModelNode>(this TModelNode model, ListViewDefinition definition)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return AddListView(model, definition, null);
         }
 
-        public static ListModelNode AddListView(this ListModelNode model, ListViewDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListView<TModelNode>(this TModelNode model, ListViewDefinition definition,
+            Action<ListViewModelNode> action)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -29,7 +32,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ListModelNode AddListViews(this ListModelNode model, IEnumerable<ListViewDefinition> definitions)
+        public static TModelNode AddListViews<TModelNode>(this TModelNode model, IEnumerable<ListViewDefinition> definitions)
+           where TModelNode : ModelNode, IListModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -41,7 +45,7 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-      
+
 
         #endregion
     }

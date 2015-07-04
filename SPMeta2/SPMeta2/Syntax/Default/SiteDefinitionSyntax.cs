@@ -15,12 +15,15 @@ namespace SPMeta2.Syntax.Default
     public class SiteModelNode : TypedModelNode, ISiteModelNode,
         IFieldHostModelNode,
         IContentTypeHostModelNode,
-        IPropertyBagHostModelNode,
+        IPropertyHostModelNode,
         IEventReceiverHostModelNode,
         IWebHostModelNode,
         IManagedPropertyHostModelNode,
         IAuditSettingsHostModelNode,
-        IFeatureHostModelNode
+        IFeatureHostModelNode,
+        IUserCustomActionHostModelNode,
+        ITaxonomyTermStoreHostModelNode,
+        ISearchSettingsHostModelNode
     {
 
     }
@@ -28,18 +31,6 @@ namespace SPMeta2.Syntax.Default
     public static class SiteDefinitionSyntax
     {
         #region methods
-
-
-
-        public static WebApplicationModelNode AddSite(this WebApplicationModelNode model, SiteDefinition definition)
-        {
-            return AddSite(model, definition, null);
-        }
-
-        public static WebApplicationModelNode AddSite(this WebApplicationModelNode model, SiteDefinition definition, Action<SiteModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
 
         #endregion
 
@@ -53,6 +44,37 @@ namespace SPMeta2.Syntax.Default
         public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition, Action<SiteModelNode> action)
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
+
+        #endregion
+
+
+        #region methods
+
+        public static TModelNode AddSite<TModelNode>(this TModelNode model, SiteDefinition definition)
+            where TModelNode : ModelNode, ISiteHostModelNode, new()
+        {
+            return AddSite(model, definition, null);
+        }
+
+        public static TModelNode AddSite<TModelNode>(this TModelNode model, SiteDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, ISiteHostModelNode, new()
+        {
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddSites<TModelNode>(this TModelNode model, IEnumerable<SiteDefinition> definitions)
+           where TModelNode : ModelNode, ISiteHostModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

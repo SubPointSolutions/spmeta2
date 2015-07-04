@@ -21,12 +21,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListModelNode AddWebPartGalleryFile(this ListModelNode model, WebPartGalleryFileDefinition definition)
+        public static TModelNode AddWebPartGalleryFile<TModelNode>(this TModelNode model, WebPartGalleryFileDefinition definition)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddWebPartGalleryFile(model, definition, null);
         }
 
-        public static ListModelNode AddWebPartGalleryFile(this ListModelNode model, WebPartGalleryFileDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddWebPartGalleryFile<TModelNode>(this TModelNode model, WebPartGalleryFileDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -35,7 +38,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ListModelNode AddWebPartGalleryFiles(this ListModelNode model, IEnumerable<WebPartGalleryFileDefinition> definitions)
+        public static TModelNode AddWebPartGalleryFiles<TModelNode>(this TModelNode model, IEnumerable<WebPartGalleryFileDefinition> definitions)
+           where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

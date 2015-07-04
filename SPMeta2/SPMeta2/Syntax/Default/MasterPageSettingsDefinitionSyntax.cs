@@ -18,18 +18,19 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static WebModelNode AddMasterPageSettings(this WebModelNode model, MasterPageSettingsDefinition definition)
+        public static TModelNode AddMasterPageSettings<TModelNode>(this TModelNode model, MasterPageSettingsDefinition definition)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddMasterPageSettings(model, definition, null);
         }
 
-        public static WebModelNode AddMasterPageSettings(this WebModelNode model, MasterPageSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddMasterPageSettings<TModelNode>(this TModelNode model, MasterPageSettingsDefinition definition,
+            Action<MasterPageSettingsModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
-
-
     }
 }

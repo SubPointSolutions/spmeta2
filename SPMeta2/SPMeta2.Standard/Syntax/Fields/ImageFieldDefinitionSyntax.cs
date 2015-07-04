@@ -19,23 +19,27 @@ namespace SPMeta2.Standard.Syntax
 
     public static class ImageFieldDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddImageField(this ModelNode model, ImageFieldDefinition definition)
+        public static TModelNode AddImageField<TModelNode>(this TModelNode model, ImageFieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return AddImageField(model, definition, null);
         }
 
-        public static ModelNode AddImageField(this ModelNode model, ImageFieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddImageField<TModelNode>(this TModelNode model, ImageFieldDefinition definition,
+            Action<ImageFieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddImageFields(this ModelNode model, IEnumerable<ImageFieldDefinition> definitions)
+        public static TModelNode AddImageFields<TModelNode>(this TModelNode model, IEnumerable<ImageFieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

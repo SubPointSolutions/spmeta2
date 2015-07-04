@@ -16,21 +16,27 @@ namespace SPMeta2.Standard.Syntax
 
     public static class FilterDisplayTemplateDefinitionSyntax
     {
-        #region add
+        #region methods
 
-        public static ListModelNode AddFilterDisplayTemplate(this ListModelNode model, FilterDisplayTemplateDefinition definition)
+        public static TModelNode AddFilterDisplayTemplate<TModelNode>(this TModelNode model, FilterDisplayTemplateDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddFilterDisplayTemplate(model, definition, null);
         }
 
-        public static ListModelNode AddFilterDisplayTemplate(this ListModelNode model, FilterDisplayTemplateDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddFilterDisplayTemplate<TModelNode>(this TModelNode model, FilterDisplayTemplateDefinition definition,
+            Action<ControlDisplayTemplateModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-        public static ModelNode AddFilterDisplayTemplates(this ModelNode model, IEnumerable<FilterDisplayTemplateDefinition> definitions)
+        #region array overload
+
+        public static TModelNode AddFilterDisplayTemplates<TModelNode>(this TModelNode model, IEnumerable<FilterDisplayTemplateDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -38,5 +44,6 @@ namespace SPMeta2.Standard.Syntax
             return model;
         }
 
+        #endregion
     }
 }

@@ -15,13 +15,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-
-        public static ContentTypeModelNode AddUniqueContentTypeFieldsOrder(this ContentTypeModelNode model, UniqueContentTypeFieldsOrderDefinition definition)
+        public static TModelNode AddUniqueContentTypeFieldsOrder<TModelNode>(this TModelNode model, UniqueContentTypeFieldsOrderDefinition definition)
+            where TModelNode : ModelNode, IContentTypeModelNode, new()
         {
             return AddUniqueContentTypeFieldsOrder(model, definition, null);
         }
 
-        public static ContentTypeModelNode AddUniqueContentTypeFieldsOrder(this ContentTypeModelNode model, UniqueContentTypeFieldsOrderDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddUniqueContentTypeFieldsOrder<TModelNode>(this TModelNode model, UniqueContentTypeFieldsOrderDefinition definition,
+            Action<HideContentTypeFieldLinksModelNode> action)
+            where TModelNode : ModelNode, IContentTypeModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

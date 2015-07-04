@@ -4,6 +4,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
+using System.Collections.Generic;
 
 namespace SPMeta2.Standard.Syntax
 {
@@ -14,14 +15,17 @@ namespace SPMeta2.Standard.Syntax
 
     public static class CustomDocumentIdProviderDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static SiteModelNode AddCustomDocumentIdProvider(this SiteModelNode model, CustomDocumentIdProviderDefinition definition)
+        public static TModelNode AddCustomDocumentIdProvider<TModelNode>(this TModelNode model, CustomDocumentIdProviderDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddCustomDocumentIdProvider(model, definition, null);
         }
 
-        public static SiteModelNode AddCustomDocumentIdProvider(this SiteModelNode model, CustomDocumentIdProviderDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddCustomDocumentIdProvider<TModelNode>(this TModelNode model, CustomDocumentIdProviderDefinition definition,
+            Action<ControlDisplayTemplateModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

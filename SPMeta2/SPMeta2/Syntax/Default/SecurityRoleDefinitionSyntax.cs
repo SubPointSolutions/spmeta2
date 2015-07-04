@@ -15,12 +15,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddSecurityRole(this SiteModelNode model, SecurityRoleDefinition definition)
+        public static TModelNode AddSecurityRole<TModelNode>(this TModelNode model, SecurityRoleDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSecurityRole(model, definition, null);
         }
 
-        public static SiteModelNode AddSecurityRole(this SiteModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSecurityRole<TModelNode>(this TModelNode model, SecurityRoleDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -29,7 +32,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static SiteModelNode AddSecurityRoles(this SiteModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
+        public static TModelNode AddSecurityRoles<TModelNode>(this TModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

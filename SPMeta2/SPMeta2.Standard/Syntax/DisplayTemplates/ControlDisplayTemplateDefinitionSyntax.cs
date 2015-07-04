@@ -18,14 +18,17 @@ namespace SPMeta2.Standard.Syntax
 
     public static class ControlDisplayTemplateDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ListModelNode AddControlDisplayTemplate(this ListModelNode model, ControlDisplayTemplateDefinition definition)
+        public static TModelNode AddControlDisplayTemplate<TModelNode>(this TModelNode model, ControlDisplayTemplateDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddControlDisplayTemplate(model, definition, null);
         }
 
-        public static ListModelNode AddControlDisplayTemplate(this ListModelNode model, ControlDisplayTemplateDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddControlDisplayTemplate<TModelNode>(this TModelNode model, ControlDisplayTemplateDefinition definition,
+            Action<ControlDisplayTemplateModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -34,7 +37,8 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static ModelNode AddControlDisplayTemplates(this ModelNode model, IEnumerable<ControlDisplayTemplateDefinition> definitions)
+        public static TModelNode AddControlDisplayTemplates<TModelNode>(this TModelNode model, IEnumerable<ControlDisplayTemplateDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -10,7 +10,8 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class SecureStoreApplicationModelNode : TypedModelNode
+    public class SecureStoreApplicationModelNode : TypedModelNode,
+        ITargetApplicationHostModelNode
     {
 
     }
@@ -19,12 +20,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static FarmModelNode AddSecureStoreApplication(this FarmModelNode model, SecureStoreApplicationDefinition definition)
+        public static TModelNode AddSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
             return AddSecureStoreApplication(model, definition, null);
         }
 
-        public static FarmModelNode AddSecureStoreApplication(this FarmModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition,
+            Action<SecureStoreApplicationModelNode> action)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }

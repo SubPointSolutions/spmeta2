@@ -21,21 +21,25 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddSilverlightWebPart(this ModelNode model, SilverlightWebPartDefinition definition)
+        public static TModelNode AddSilverlightWebPart<TModelNode>(this TModelNode model, SilverlightWebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddSilverlightWebPart(model, definition, null);
         }
 
-        public static ModelNode AddSilverlightWebPart(this ModelNode model, SilverlightWebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSilverlightWebPart<TModelNode>(this TModelNode model, SilverlightWebPartDefinition definition,
+            Action<SilverlightWebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSilverlightWebParts(this ModelNode model, IEnumerable<SilverlightWebPartDefinition> definitions)
+        public static TModelNode AddSilverlightWebParts<TModelNode>(this TModelNode model, IEnumerable<SilverlightWebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
