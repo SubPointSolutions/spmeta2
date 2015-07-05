@@ -5,10 +5,13 @@ using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Standard.Syntax
 {
+    [Serializable]
+    [DataContract]
     public class JavaScriptDisplayTemplateModelNode : ListItemModelNode
     {
 

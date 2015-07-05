@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -11,6 +12,8 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    [Serializable]
+    [DataContract]
     public class ItemDisplayTemplateModelNode : ListItemModelNode
     {
 

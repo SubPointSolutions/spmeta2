@@ -5,9 +5,12 @@ using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Syntax.Default;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Standard.Syntax
 {
+    [Serializable]
+    [DataContract]
     public class SearchResultModelNode : TypedModelNode
     {
 

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -20,7 +22,8 @@ namespace SPMeta2.Syntax.Default
 
         static SPMeta2Model()
         {
-            RegisterKnownDefinition(typeof(FieldDefinition).Assembly);
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[] { typeof(FieldDefinition).Assembly }));
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[] { typeof(FieldDefinition).Assembly }));
         }
 
         #endregion
@@ -302,27 +305,58 @@ namespace SPMeta2.Syntax.Default
 
         #region serialization
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(Type type)
         {
             RegisterKnownDefinition(new[] { type });
         }
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(Assembly assembly)
         {
             RegisterKnownDefinition(new[] { assembly });
         }
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(IEnumerable<Assembly> assemblies)
         {
             RegisterKnownDefinition(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(assemblies));
         }
 
+
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(IEnumerable<Type> types)
+        {
+            RegisterKnownType(types);
+        }
+
+        #region type registration
+
+        public static void RegisterKnownType(Type type)
+        {
+            RegisterKnownType(new[] { type });
+        }
+
+        public static void RegisterKnownType(Assembly assembly)
+        {
+            RegisterKnownType(new[] { assembly });
+        }
+
+        public static void RegisterKnownType(IEnumerable<Assembly> assemblies)
+        {
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(assemblies));
+        }
+
+
+        public static void RegisterKnownType(IEnumerable<Type> types)
         {
             foreach (var type in types)
                 if (!KnownTypes.Contains(type))
                     KnownTypes.Add(type);
         }
+
+        #endregion
+
 
         public static List<Type> KnownTypes = new List<Type>();
 
@@ -336,26 +370,64 @@ namespace SPMeta2.Syntax.Default
 
         public static string ToJSON(ModelNode model)
         {
+            EnureKnownTypes(model);
+
             var serializer = ServiceContainer.Instance.GetService<DefaultJSONSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
             return serializer.Serialize(model);
         }
 
-        public static ModelNode FromXML(string jsonString)
+        public static ModelNode FromXML(string xmlString)
+        {
+            return FromXML<ModelNode>(xmlString);
+        }
+
+        public static TModelNode FromXML<TModelNode>(string xmlString)
+            where TModelNode : ModelNode
+        {
+            // corrrect type convertion for the typed root models
+            if (typeof(TModelNode) == typeof(ModelNode))
+            {
+                var xmlRootDoc = XDocument.Parse(xmlString);
+
+                var rootModelNodeTypeUpperName = xmlRootDoc.Root.Name.LocalName.ToUpper();
+                var rootModelNodeType = KnownTypes.FirstOrDefault(t => t.Name.ToUpper() == rootModelNodeTypeUpperName);
+
+                return FromXML(rootModelNodeType, xmlString) as TModelNode;
+            }
+
+            return FromXML(typeof(TModelNode), xmlString) as TModelNode;
+        }
+
+        public static ModelNode FromXML(Type modelNodetype, string xmlString)
         {
             var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
-            return serializer.Deserialize(typeof(ModelNode), jsonString) as ModelNode;
+            return serializer.Deserialize(modelNodetype, xmlString) as ModelNode;
         }
+
 
         public static string ToXML(ModelNode model)
         {
+            EnureKnownTypes(model);
+
             var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
             return serializer.Serialize(model);
+        }
+
+        private static void EnureKnownTypes(ModelNode model)
+        {
+            var allModelNodes = model.FindNodes(n => true);
+
+            foreach (var node in allModelNodes)
+            {
+                RegisterKnownType(node.GetType());
+                RegisterKnownType(node.Value.GetType());
+            }
         }
 
         #endregion

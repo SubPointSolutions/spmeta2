@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Definitions.Webparts;
@@ -12,6 +13,8 @@ using SPMeta2.Syntax.Default;
 namespace SPMeta2.Standard.Syntax
 {
 
+    [Serializable]
+    [DataContract]
     public class ProjectSummaryWebPartModelNode : WebPartModelNode
     {
 

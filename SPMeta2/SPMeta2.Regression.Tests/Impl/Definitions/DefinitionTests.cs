@@ -168,6 +168,31 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         }
 
         [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void ModelNodesShouldBeMarkedAsDataContract_v12()
+        {
+            var showOnlyFails = true;
+            var result = true;
+
+            foreach (var modelNodeType in AllModelNodeTypes)
+            {
+                var hasAttr = modelNodeType.GetCustomAttributes(typeof(DataContractAttribute)).Any();
+
+                if (!hasAttr)
+                {
+                    Trace.WriteLine(string.Format("[{2}] - Checking model node type:[{0}]. Has DataContractAttribute:[{1}]",
+                        modelNodeType, hasAttr, hasAttr.ToString().ToUpper()));
+
+                }
+
+                if (!hasAttr)
+                    result = false;
+            }
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Definitions.Identity")]
         public void DefinitionsShouldHasIdentityOrIdentityKey()
         {

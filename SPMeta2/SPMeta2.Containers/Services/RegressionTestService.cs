@@ -12,9 +12,11 @@ using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.Extensions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers.Services
 {
@@ -417,11 +419,14 @@ namespace SPMeta2.Containers.Services
 
         public void TestModel(ModelNode model)
         {
-            TestModels(new  ModelNode[] { model });
+            TestModels(new ModelNode[] { model });
         }
 
         public void TestModels(IEnumerable<ModelNode> models)
         {
+            // force XML serialiation
+            EnsureSerializationSupport(models);
+
             _hookMap.Clear();
 
             foreach (var model in models)
@@ -466,6 +471,27 @@ namespace SPMeta2.Containers.Services
             }
         }
 
+        protected virtual void EnsureSerializationSupport(ModelNode model)
+        {
+            EnsureSerializationSupport(new[] { model });
+        }
+
+        protected virtual void EnsureSerializationSupport(IEnumerable<ModelNode> models)
+        {
+            foreach (var model in models)
+            {
+                
+
+                
+
+                var xml = SPMeta2Model.ToXML(model);
+                var xmlModelInstance = SPMeta2Model.FromXML(xml);
+
+                var json = SPMeta2Model.ToJSON(model);
+                var jsonModelInstance = SPMeta2Model.FromJSON(json);
+            }
+        }
+
         public ModelNode TestRandomDefinition<TDefinition>(Action<TDefinition> definitionSetup)
           where TDefinition : DefinitionBase, new()
         {
@@ -495,6 +521,8 @@ namespace SPMeta2.Containers.Services
 
                 foreach (var hook in hooks)
                     hook.Tag = runner.Name;
+
+                EnsureSerializationSupport(definitionSandbox);
 
                 allHooks.AddRange(hooks);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Models;
@@ -6,6 +7,9 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+
+    [Serializable]
+    [DataContract]
     public class RemoveContentTypeLinksModelNode : ListItemModelNode
     {
 
