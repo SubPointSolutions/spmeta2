@@ -16,6 +16,7 @@ using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
+
     public class ListModelHandler : CSOMModelHandlerBase
     {
         #region properties
