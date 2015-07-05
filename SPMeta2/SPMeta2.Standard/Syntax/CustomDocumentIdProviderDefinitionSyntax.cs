@@ -24,7 +24,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddCustomDocumentIdProvider<TModelNode>(this TModelNode model, CustomDocumentIdProviderDefinition definition,
-            Action<ControlDisplayTemplateModelNode> action)
+            Action<CustomDocumentIdProviderModelNode> action)
             where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

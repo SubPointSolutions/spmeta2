@@ -26,7 +26,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition,
-            Action<ContentTypeModelNode> action)
+            Action<AlternateUrlModelNode> action)
             where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

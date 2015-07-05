@@ -6,12 +6,12 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class SecurityRoleLinkModelNode : TypedModelNode
+    public class SecurityRoleModelNode : TypedModelNode
     {
 
     }
 
-    public static class SecurityRoleLinkDefinitionSyntax
+    public static class SecurityRoleDefinitionSyntax
     {
         #region methods
 
@@ -22,7 +22,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSecurityRole<TModelNode>(this TModelNode model, SecurityRoleDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SecurityRoleModelNode> action)
             where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

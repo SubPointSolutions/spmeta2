@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddGeolocationField<TModelNode>(this TModelNode model, GeolocationFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<GeolocationFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

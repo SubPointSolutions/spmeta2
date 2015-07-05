@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddOutcomeChoiceField<TModelNode>(this TModelNode model, OutcomeChoiceFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<OutcomeChoiceFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

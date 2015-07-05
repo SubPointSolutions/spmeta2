@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddCurrencyField<TModelNode>(this TModelNode model, CurrencyFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<CurrencyFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddBooleanField<TModelNode>(this TModelNode model, BooleanFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<BooleanFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddRefinementScriptWebPart<TModelNode>(this TModelNode model, RefinementScriptWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<RefinementScriptWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

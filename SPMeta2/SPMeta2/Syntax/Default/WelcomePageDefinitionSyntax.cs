@@ -25,7 +25,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddWelcomePage<TModelNode>(this TModelNode model, WelcomePageDefinition definition,
-            Action<FieldModelNode> action)
+            Action<WelcomePageModelNode> action)
             where TModelNode : ModelNode, IWelcomePageHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

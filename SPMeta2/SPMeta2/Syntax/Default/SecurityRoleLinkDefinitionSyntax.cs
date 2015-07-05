@@ -6,24 +6,24 @@ using System.Collections.Generic;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class SecurityRoleModelNode : TypedModelNode
+    public class SecurityRoleLinkModelNode : TypedModelNode
     {
 
     }
 
-    public static class SecurityRoleDefinitionSyntax
+    public static class SecurityRoleLinkDefinitionSyntax
     {
         #region methods
 
         public static TModelNode AddSecurityRoleLink<TModelNode>(this TModelNode model, SecurityRoleLinkDefinition definition)
-            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+            where TModelNode : ModelNode, ISecurityGroupLinkModelNode, new()
         {
             return AddSecurityRoleLink(model, definition, null);
         }
 
         public static TModelNode AddSecurityRoleLink<TModelNode>(this TModelNode model, SecurityRoleLinkDefinition definition,
-            Action<SecurityRoleModelNode> action)
-            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+            Action<SecurityRoleLinkModelNode> action)
+            where TModelNode : ModelNode, ISecurityGroupLinkModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -33,7 +33,7 @@ namespace SPMeta2.Syntax.Default
         #region array overload
 
         public static TModelNode AddSecurityRoleLinks<TModelNode>(this TModelNode model, IEnumerable<SecurityRoleLinkDefinition> definitions)
-           where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+           where TModelNode : ModelNode, ISecurityGroupLinkModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -44,14 +44,14 @@ namespace SPMeta2.Syntax.Default
         #endregion
 
         public static TModelNode AddSecurityRoleLink<TModelNode>(this TModelNode model, string securityRoleName)
-               where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+               where TModelNode : ModelNode, ISecurityGroupLinkModelNode, new()
         {
             return AddSecurityRoleLink(model, securityRoleName, null);
         }
 
         public static TModelNode AddSecurityRoleLink<TModelNode>(this TModelNode model, string securityRoleName,
-            Action<SecurityRoleModelNode> action)
-            where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+            Action<SecurityRoleLinkModelNode> action)
+            where TModelNode : ModelNode, ISecurityGroupLinkModelNode, new()
         {
             var roleLinkDefinition = new SecurityRoleLinkDefinition
             {

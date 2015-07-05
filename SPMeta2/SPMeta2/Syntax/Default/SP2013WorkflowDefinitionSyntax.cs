@@ -24,7 +24,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSP2013Workflow<TModelNode>(this TModelNode model, SP2013WorkflowDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SP2013WorkflowModelNode> action)
             where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

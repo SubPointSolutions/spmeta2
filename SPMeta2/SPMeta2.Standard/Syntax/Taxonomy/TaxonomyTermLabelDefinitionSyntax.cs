@@ -23,7 +23,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddTaxonomyTermLabel<TModelNode>(this TModelNode model, TaxonomyTermLabelDefinition definition,
-            Action<TaxonomyTermSetModelNode> action)
+            Action<TaxonomyTermLabelModelNode> action)
             where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

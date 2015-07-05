@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddMasterPagePreview<TModelNode>(this TModelNode model, MasterPagePreviewDefinition definition,
-            Action<MasterPageModelNode> action)
+            Action<MasterPagePreviewModelNode> action)
             where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

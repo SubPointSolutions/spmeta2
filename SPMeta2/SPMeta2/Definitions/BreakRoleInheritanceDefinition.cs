@@ -30,6 +30,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(ListDefinition))]
     [ParentHostCapability(typeof(FolderDefinition))]
     [ParentHostCapability(typeof(ListItemDefinition))]
+
+    [SelfHostCapabilityAttribute]
+
     public class BreakRoleInheritanceDefinition : DefinitionBase
     {
         #region properties

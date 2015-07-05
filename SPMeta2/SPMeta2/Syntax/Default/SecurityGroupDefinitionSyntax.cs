@@ -23,7 +23,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSecurityGroup<TModelNode>(this TModelNode model, SecurityGroupDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SecurityGroupModelNode> action)
             where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

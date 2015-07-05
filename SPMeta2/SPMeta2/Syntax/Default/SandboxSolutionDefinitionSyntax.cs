@@ -25,7 +25,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSandboxSolution<TModelNode>(this TModelNode model, SandboxSolutionDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SandboxSolutionModelNode> action)
             where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

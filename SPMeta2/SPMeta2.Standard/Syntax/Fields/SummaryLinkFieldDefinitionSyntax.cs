@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddSummaryLinkField<TModelNode>(this TModelNode model, SummaryLinkFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<SummaryLinkFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

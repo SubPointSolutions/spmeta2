@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddHTMLField<TModelNode>(this TModelNode model, HTMLFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<HTMLFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

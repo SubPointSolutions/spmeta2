@@ -27,7 +27,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition,
-            Action<FieldModelNode> action)
+            Action<ManagedPropertyModelNode> action)
             where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

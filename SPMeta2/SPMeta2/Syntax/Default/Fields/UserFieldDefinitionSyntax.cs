@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddUserField<TModelNode>(this TModelNode model, UserFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<UserFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

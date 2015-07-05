@@ -23,7 +23,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddPageLayoutAndSiteTemplateSettings<TModelNode>(this TModelNode model, PageLayoutAndSiteTemplateSettingsDefinition definition,
-            Action<ContentDatabaseModelNode> action)
+            Action<PageLayoutAndSiteTemplateSettingsModelNode> action)
             where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

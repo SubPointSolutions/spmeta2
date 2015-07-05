@@ -22,7 +22,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddUniqueContentTypeFieldsOrder<TModelNode>(this TModelNode model, UniqueContentTypeFieldsOrderDefinition definition,
-            Action<HideContentTypeFieldLinksModelNode> action)
+            Action<UniqueContentTypeFieldsOrderModelNode> action)
             where TModelNode : ModelNode, IContentTypeModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

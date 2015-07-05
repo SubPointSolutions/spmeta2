@@ -22,7 +22,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddRemoveContentTypeFieldLinks<TModelNode>(this TModelNode model, RemoveContentTypeFieldLinksDefinition definition,
-            Action<HideContentTypeFieldLinksModelNode> action)
+            Action<RemoveContentTypeFieldLinksModelNode> action)
             where TModelNode : ModelNode, IContentTypeModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

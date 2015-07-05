@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddDeleteWebParts<TModelNode>(this TModelNode model, DeleteWebPartsDefinition definition,
-            Action<ModelNode> action)
+            Action<DeleteWebPartsModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -42,7 +42,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddWebApplication<TModelNode>(this TModelNode model, WebApplicationDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<WebApplicationModelNode> action)
             where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

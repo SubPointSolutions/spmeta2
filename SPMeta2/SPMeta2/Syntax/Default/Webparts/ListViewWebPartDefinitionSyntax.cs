@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddListViewWebPart<TModelNode>(this TModelNode model, ListViewWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<ListViewWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

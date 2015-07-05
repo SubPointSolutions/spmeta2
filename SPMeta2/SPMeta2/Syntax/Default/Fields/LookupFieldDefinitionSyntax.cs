@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddLookupField<TModelNode>(this TModelNode model, LookupFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<LookupFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

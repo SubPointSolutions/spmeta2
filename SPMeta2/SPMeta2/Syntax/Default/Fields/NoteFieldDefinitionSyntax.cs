@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddNoteField<TModelNode>(this TModelNode model, NoteFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<NoteFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -26,7 +26,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddProperty<TModelNode>(this TModelNode model, PropertyDefinition definition,
-            Action<FieldModelNode> action)
+            Action<PropertyModelNode> action)
             where TModelNode : ModelNode, IPropertyHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

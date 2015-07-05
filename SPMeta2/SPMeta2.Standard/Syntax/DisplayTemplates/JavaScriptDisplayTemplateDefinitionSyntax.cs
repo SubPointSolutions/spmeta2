@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddJavaScriptDisplayTemplate<TModelNode>(this TModelNode model, JavaScriptDisplayTemplateDefinition definition,
-            Action<ControlDisplayTemplateModelNode> action)
+            Action<JavaScriptDisplayTemplateModelNode> action)
             where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

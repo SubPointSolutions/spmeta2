@@ -26,7 +26,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddSiteFeedWebPart<TModelNode>(this TModelNode model, SiteFeedWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<SiteFeedWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

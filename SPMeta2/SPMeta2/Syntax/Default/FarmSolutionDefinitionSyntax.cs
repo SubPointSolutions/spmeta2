@@ -25,7 +25,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition,
-            Action<DiagnosticsServiceBaseModelNode> action)
+            Action<FarmSolutionModelNode> action)
             where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

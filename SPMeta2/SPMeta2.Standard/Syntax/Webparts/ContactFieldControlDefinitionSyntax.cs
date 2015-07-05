@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddContactFieldControl<TModelNode>(this TModelNode model, ContactFieldControlDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<ContactFieldControlModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

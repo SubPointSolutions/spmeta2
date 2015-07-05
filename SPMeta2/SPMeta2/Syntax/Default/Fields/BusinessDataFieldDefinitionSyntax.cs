@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddBusinessDataField<TModelNode>(this TModelNode model, BusinessDataFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<BusinessDataFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddXsltListViewWebPart<TModelNode>(this TModelNode model, XsltListViewWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<XsltListViewWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

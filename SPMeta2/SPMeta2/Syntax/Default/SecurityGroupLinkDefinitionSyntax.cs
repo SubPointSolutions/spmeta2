@@ -5,7 +5,8 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class SecurityGroupLinkModelNode : TypedModelNode
+    public class SecurityGroupLinkModelNode : TypedModelNode, ISecurityGroupLinkModelNode
+
     {
 
     }
@@ -23,7 +24,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSecurityGroupLink<TModelNode>(this TModelNode model, SecurityGroupLinkDefinition definition,
-            Action<SecurityGroupModelNode> action)
+            Action<SecurityGroupLinkModelNode> action)
             where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
@@ -38,7 +39,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSecurityGroupLink<TModelNode>(this TModelNode model, SecurityGroupDefinition definition,
-            Action<SecurityGroupModelNode> action)
+            Action<SecurityGroupLinkModelNode> action)
             where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
         {
             return AddSecurityGroupLink(model, new SecurityGroupLinkDefinition

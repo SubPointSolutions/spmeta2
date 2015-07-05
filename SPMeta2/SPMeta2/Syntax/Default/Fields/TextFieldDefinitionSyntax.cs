@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddTextField<TModelNode>(this TModelNode model, TextFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<TextFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

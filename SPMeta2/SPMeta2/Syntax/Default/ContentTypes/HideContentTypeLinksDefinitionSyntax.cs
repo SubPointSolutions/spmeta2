@@ -22,7 +22,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddHideContentTypeLinks<TModelNode>(this TModelNode model, HideContentTypeLinksDefinition definition,
-            Action<HideContentTypeFieldLinksModelNode> action)
+            Action<HideContentTypeLinksModelNode> action)
             where TModelNode : ModelNode, IListModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

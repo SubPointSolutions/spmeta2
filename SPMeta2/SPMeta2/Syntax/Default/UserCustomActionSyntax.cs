@@ -24,7 +24,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddUserCustomAction<TModelNode>(this TModelNode model, UserCustomActionDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<UserCustomActionModelNode> action)
             where TModelNode : ModelNode, IUserCustomActionHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

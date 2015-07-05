@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddPrefix<TModelNode>(this TModelNode model, PrefixDefinition definition,
-            Action<ContentDatabaseModelNode> action)
+            Action<PrefixModelNode> action)
             where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

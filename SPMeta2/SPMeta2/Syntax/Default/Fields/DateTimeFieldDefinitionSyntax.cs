@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddDateTimeField<TModelNode>(this TModelNode model, DateTimeFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<DateTimeFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

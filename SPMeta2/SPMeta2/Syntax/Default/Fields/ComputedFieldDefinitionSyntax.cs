@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddComputedField<TModelNode>(this TModelNode model, ComputedFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<ComputedFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

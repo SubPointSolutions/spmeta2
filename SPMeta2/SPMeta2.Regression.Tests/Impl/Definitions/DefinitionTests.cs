@@ -636,10 +636,11 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             // add definitions should have AddXXX() methods
 
-            // #1 - must be generic
-            // #2 - typed model node
-            // #3 - definitions type as a second param
-            // #4 - overload with typed node call back
+            // - must be generic
+            // - typed model node
+            // - definitions type as a second param
+            // - overload with typed node call back
+            // - allback with typed model node
 
             // AddField<TModelNode>(this TModelNode model, FieldDefinition definition)
             // where TModelNode : ModelNode, IFieldHostModelNode, new()
@@ -655,7 +656,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
                 {
                     var isRootDef = (defType.GetCustomAttributes(typeof(ParentHostCapabilityAttribute))
-                        .FirstOrDefault() as ParentHostCapabilityAttribute).IsRoot;
+                                     .FirstOrDefault() as ParentHostCapabilityAttribute).IsRoot;
+
+                    var isSelfHostDefinition = (defType.GetCustomAttributes(typeof(SelfHostCapabilityAttribute)).Any());
 
                     if (isRootDef)
                     {
@@ -743,10 +746,29 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             // Action<ContentTypeModelNode> action)
                             // where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
 
+                            var callbackType = typeof(Action<>);
+                            var typedCallbackType = callbackType.MakeGenericType(modelNodelType);
 
+                            Func<MethodInfo, bool> selfHostCallbackCheck = (method => true);
 
-                            //var callbackType = typeof(Action<>);
-                            //var typedCallbackType = callbackType.MakeGenericType(modelNodelType);
+                            if (isSelfHostDefinition)
+                            {
+                                selfHostCallbackCheck = (method) =>
+                                {
+                                    // self return
+                                    // callback has the same type as TModelNode
+                                    // that works for ResetRoleInheritance/BreakRoleInheritance as they 'pass' the current object further to the chain
+
+                                    // public static TModelNode AddResetRoleInheritance<TModelNode>(this TModelNode model, ResetRoleInheritanceDefinition definition)
+                                    // where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+
+                                    return typeof(Action<>).MakeGenericType(method.GetParameters()[0].ParameterType) == method.GetParameters()[2].ParameterType;
+                                };
+                            }
+                            else
+                            {
+                                selfHostCallbackCheck = (method) => method.GetParameters()[2].ParameterType == typedCallbackType;
+                            }
 
                             return m.Name == addXXXMethodName
                                    && m.IsGenericMethod
@@ -759,9 +781,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                    && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
 
                                    && m.GetParameters()[1].ParameterType == defType
-
-                                  // && m.GetParameters()[2].ParameterType == typedCallbackType
-                                   ;
+                                   && selfHostCallbackCheck(m);
                         };
 
                         Func<MethodInfo, bool> addMethodWithArraySpec = (m) =>
@@ -878,6 +898,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             MethodInfo modelSyntaxMethodInfo,
             DefinitionRelationship relationships)
         {
+            if (modelSyntaxMethodInfo == null)
+                return Enumerable.Empty<string>();
+
             var currentInterfaceTypes = modelSyntaxMethodInfo.GetGenericArguments()[0]
                 .GetInterfaces()
                 .Where(i => i != typeof(IHostModelNode))

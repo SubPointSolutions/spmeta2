@@ -24,7 +24,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddReusableTextItem<TModelNode>(this TModelNode model, ReusableTextItemDefinition definition,
-            Action<MasterPageModelNode> action)
+            Action<ReusableTextItemModelNode> action)
             where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

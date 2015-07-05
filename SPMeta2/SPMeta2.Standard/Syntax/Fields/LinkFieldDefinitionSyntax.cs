@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddLinkField<TModelNode>(this TModelNode model, LinkFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<LinkFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

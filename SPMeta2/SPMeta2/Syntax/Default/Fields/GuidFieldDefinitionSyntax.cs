@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddGuidField<TModelNode>(this TModelNode model, GuidFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<GuidFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

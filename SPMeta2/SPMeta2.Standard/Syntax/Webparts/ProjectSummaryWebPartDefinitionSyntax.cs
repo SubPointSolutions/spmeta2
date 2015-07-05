@@ -28,7 +28,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddProjectSummaryWebPart<TModelNode>(this TModelNode model, ProjectSummaryWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<ProjectSummaryWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

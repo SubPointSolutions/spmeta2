@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddScriptEditorWebPart<TModelNode>(this TModelNode model, ScriptEditorWebPartDefinition definition,
-            Action<FieldModelNode> action)
+            Action<ScriptEditorWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

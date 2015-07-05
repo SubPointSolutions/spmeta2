@@ -23,7 +23,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddImageRendition<TModelNode>(this TModelNode model, ImageRenditionDefinition definition,
-            Action<ImageFieldModelNode> action)
+            Action<ImageRenditionModelNode> action)
             where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -26,7 +26,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddAuditSettings<TModelNode>(this TModelNode model, AuditSettingsDefinition definition,
-            Action<FieldModelNode> action)
+            Action<AuditSettingsModelNode> action)
             where TModelNode : ModelNode, IAuditSettingsHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

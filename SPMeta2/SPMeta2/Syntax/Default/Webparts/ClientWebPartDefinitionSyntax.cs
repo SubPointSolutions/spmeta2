@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddClientWebPart<TModelNode>(this TModelNode model, ClientWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<ClientWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

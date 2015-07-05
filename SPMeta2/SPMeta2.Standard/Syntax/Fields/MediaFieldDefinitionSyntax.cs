@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddMediaField<TModelNode>(this TModelNode model, MediaFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<MediaFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

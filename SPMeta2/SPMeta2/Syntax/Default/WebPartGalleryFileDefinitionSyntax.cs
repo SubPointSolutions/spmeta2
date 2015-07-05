@@ -28,7 +28,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddWebPartGalleryFile<TModelNode>(this TModelNode model, WebPartGalleryFileDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<WebPartGalleryFileModelNode> action)
             where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

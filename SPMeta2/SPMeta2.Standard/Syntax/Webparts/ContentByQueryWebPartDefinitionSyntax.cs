@@ -26,7 +26,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddContentByQueryWebPart<TModelNode>(this TModelNode model, ContentByQueryWebPartDefinition definition,
-            Action<WebPartModelNode> action)
+            Action<ContentByQueryWebPartModelNode> action)
             where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

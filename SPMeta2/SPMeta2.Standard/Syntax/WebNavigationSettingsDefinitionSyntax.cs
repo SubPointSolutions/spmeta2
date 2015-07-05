@@ -22,7 +22,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddWebNavigationSettings<TModelNode>(this TModelNode model, WebNavigationSettingsDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<WebNavigationSettingsModelNode> action)
             where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

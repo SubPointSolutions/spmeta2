@@ -30,10 +30,6 @@ namespace SPMeta2.Syntax.Default
 
     public static class SiteDefinitionSyntax
     {
-        #region methods
-
-        #endregion
-
         #region add host
 
         public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition)
@@ -48,7 +44,6 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-
         #region methods
 
         public static TModelNode AddSite<TModelNode>(this TModelNode model, SiteDefinition definition)
@@ -58,7 +53,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddSite<TModelNode>(this TModelNode model, SiteDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SiteModelNode> action)
             where TModelNode : ModelNode, ISiteHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

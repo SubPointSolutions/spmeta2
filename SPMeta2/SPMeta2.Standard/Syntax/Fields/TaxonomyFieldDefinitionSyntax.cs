@@ -25,7 +25,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddTaxonomyField<TModelNode>(this TModelNode model, TaxonomyFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<TaxonomyFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

@@ -26,7 +26,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddItemDisplayTemplate<TModelNode>(this TModelNode model, ItemDisplayTemplateDefinition definition,
-            Action<ControlDisplayTemplateModelNode> action)
+            Action<ItemDisplayTemplateModelNode> action)
             where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

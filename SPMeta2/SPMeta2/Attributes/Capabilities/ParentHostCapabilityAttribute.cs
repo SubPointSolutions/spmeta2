@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace SPMeta2.Attributes.Capabilities
 {
+    [AttributeUsage(AttributeTargets.Class)]
+    public class SelfHostCapabilityAttribute : CapabilityAttribute
+    {
+
+    }
+
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ParentHostCapabilityAttribute : CapabilityAttribute
     {

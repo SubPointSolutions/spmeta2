@@ -26,6 +26,8 @@ namespace SPMeta2.Definitions
     [SingletonIdentity]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [SelfHostCapabilityAttribute]
     public class ResetRoleInheritanceDefinition : DefinitionBase
     {
         #region properties

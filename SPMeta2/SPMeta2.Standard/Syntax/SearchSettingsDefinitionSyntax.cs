@@ -23,7 +23,7 @@ namespace SPMeta2.Standard.Syntax
         }
 
         public static TModelNode AddSearchSettings<TModelNode>(this TModelNode model, SearchSettingsDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<SearchSettingsModelNode> action)
             where TModelNode : ModelNode, ISearchSettingsHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

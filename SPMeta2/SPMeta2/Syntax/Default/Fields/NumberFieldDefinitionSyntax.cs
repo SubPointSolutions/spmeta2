@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddNumberField<TModelNode>(this TModelNode model, NumberFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<NumberFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

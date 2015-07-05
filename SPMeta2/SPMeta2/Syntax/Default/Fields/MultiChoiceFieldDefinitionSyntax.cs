@@ -27,7 +27,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddMultiChoiceField<TModelNode>(this TModelNode model, MultiChoiceFieldDefinition definition,
-            Action<FieldModelNode> action)
+            Action<MultiChoiceFieldModelNode> action)
             where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

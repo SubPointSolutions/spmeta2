@@ -22,7 +22,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddWebConfigModification<TModelNode>(this TModelNode model, WebConfigModificationDefinition definition,
-            Action<ModuleFileModelNode> action)
+            Action<WebConfigModificationModelNode> action)
             where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
