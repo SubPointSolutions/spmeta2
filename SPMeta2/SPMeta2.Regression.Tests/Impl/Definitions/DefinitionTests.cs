@@ -29,8 +29,18 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
     {
         #region properties
 
-        protected static List<Type> AllDefinitionTypes = new List<Type>();
-        protected static List<Type> AllModelNodeTypes = new List<Type>();
+        protected static List<Type> allDefinitionTypes;
+        protected static List<Type> allModelNodesTypes;
+
+        protected static List<Type> AllDefinitionTypes
+        {
+            get { return allDefinitionTypes ?? (allDefinitionTypes = LoadDefinitions().ToList()); }
+        }
+
+        protected static List<Type> AllModelNodeTypes
+        {
+            get { return allModelNodesTypes ?? (allModelNodesTypes = LoadModelNodes().ToList()); }
+        }
 
         #endregion
 
@@ -39,32 +49,31 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [ClassInitializeAttribute]
         public static void Init(TestContext context)
         {
-            LoadDefinitions();
-            LoadModelNodes();
+
         }
 
-        private static void LoadModelNodes()
+        private static IEnumerable<Type> LoadModelNodes()
         {
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            AllModelNodeTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[]
+            return ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
-            }));
+            });
         }
 
-        protected static void LoadDefinitions()
+        protected static IEnumerable<Type> LoadDefinitions()
         {
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            AllDefinitionTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            return ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
-            }));
+            });
         }
 
         [ClassCleanupAttribute]

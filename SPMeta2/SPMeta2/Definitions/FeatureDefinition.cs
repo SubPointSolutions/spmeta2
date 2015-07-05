@@ -13,11 +13,16 @@ using SPMeta2.Attributes.Capabilities;
 namespace SPMeta2.Definitions
 {
     [DataContract]
+    [Serializable]
     public enum FeatureDefinitionScope
     {
+        [EnumMember]
         Farm,
+        [EnumMember]
         WebApplication,
+        [EnumMember]
         Site,
+        [EnumMember]
         Web
     }
 

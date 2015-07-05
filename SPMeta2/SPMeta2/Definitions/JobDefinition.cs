@@ -23,7 +23,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebApplicationDefinition))]
     [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
 
@@ -96,10 +96,13 @@ namespace SPMeta2.Definitions
     }
 
     [DataContract]
+    [Serializable]
 
     public enum JobDefinitionCtorParams
     {
+        [EnumMember]
         WebApplication,
+        [EnumMember]
         JobName
     }
 }

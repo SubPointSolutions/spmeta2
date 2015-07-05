@@ -24,7 +24,6 @@ namespace SPMeta2.Containers.Services
             DefinitionGenerators = new Dictionary<Type, DefinitionGeneratorServiceBase>();
 
             RegisterDefinitionGenerators(Assembly.GetExecutingAssembly());
-            RegisterDefinitionGenerators(typeof(ListViewDefinitionGenerator).Assembly);
         }
 
         public Dictionary<Type, DefinitionGeneratorServiceBase> DefinitionGenerators { get; set; }

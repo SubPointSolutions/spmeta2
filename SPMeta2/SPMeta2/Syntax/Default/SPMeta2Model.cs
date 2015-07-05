@@ -264,7 +264,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(Action<ModelNode> action)
+        public static ModelNode NewListModel(Action<ListModelNode> action)
         {
             return NewListModel(new ListDefinition { RequireSelfProcessing = false }, action);
         }
@@ -277,7 +277,7 @@ namespace SPMeta2.Syntax.Default
         /// <param name="listDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ModelNode> action)
+        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ListModelNode> action)
         {
             return NewModelNode<ListDefinition, ListModelNode>(listDefinition, action);
         }

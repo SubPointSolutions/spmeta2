@@ -51,7 +51,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, FieldDefinition definition,
-            Action<ModelNode> action)
+            Action<ContentTypeFieldLinkModelNode> action)
             where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             if (definition.Id != default(Guid))

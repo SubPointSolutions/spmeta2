@@ -2,6 +2,7 @@
 using System.Reflection;
 using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
@@ -13,16 +14,16 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Containers.Standard
 {
-    public static class RandomContainersSyntax
+    public static class RandomStandardContainersSyntax
     {
         #region constructors
 
-        static RandomContainersSyntax()
+        static RandomStandardContainersSyntax()
         {
             ModelGeneratorService = new ModelGeneratorService();
-
             ModelGeneratorService.RegisterDefinitionGenerators(Assembly.GetExecutingAssembly());
-            ModelGeneratorService.RegisterDefinitionGenerators(typeof(PublishingPageDefinition).Assembly);
+
+            RandomContainersSyntax.ModelGeneratorService.RegisterDefinitionGenerators(Assembly.GetExecutingAssembly());
         }
 
         #endregion

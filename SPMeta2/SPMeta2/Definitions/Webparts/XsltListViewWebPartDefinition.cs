@@ -61,10 +61,6 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public string JSLink { get; set; }
 
-        [ExpectValidation]
-        [DataMember]
-        public string TitleUrl { get; set; }
-
         [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
