@@ -299,6 +299,7 @@
     <Compile Include="Services\Impl\TraceSourceService.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
+    <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />

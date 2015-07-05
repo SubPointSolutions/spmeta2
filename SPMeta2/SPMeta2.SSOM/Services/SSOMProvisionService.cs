@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace SPMeta2.SSOM.Services
 {
-    public class SSOMProvisionService : ModelServiceBase
+    public class SSOMProvisionService : ProvisionServiceBase
     {
         #region constructors
 

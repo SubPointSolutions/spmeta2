@@ -14,7 +14,7 @@ using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.Services
 {
-    public class CSOMProvisionService : ModelServiceBase
+    public class CSOMProvisionService : ProvisionServiceBase
     {
         #region constructors
 
