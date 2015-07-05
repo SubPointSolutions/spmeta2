@@ -9,6 +9,8 @@ using SPMeta2.Definitions;
 
 namespace SPMeta2.Standard.Definitions.Base
 {
+    [Serializable]
+    [DataContract]
     public abstract class ReusableItemDefinitionBase : ListItemDefinition
     {
         #region constructors

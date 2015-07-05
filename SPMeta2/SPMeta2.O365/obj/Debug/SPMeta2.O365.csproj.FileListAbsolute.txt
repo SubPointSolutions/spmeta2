@@ -29,3 +29,13 @@ C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\S
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.XML
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.dll
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.pdb
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\Microsoft.Online.SharePoint.Client.Tenant.dll
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.dll
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.pdb
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.xml
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
+C:\Users\administrator.TESLA\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb
