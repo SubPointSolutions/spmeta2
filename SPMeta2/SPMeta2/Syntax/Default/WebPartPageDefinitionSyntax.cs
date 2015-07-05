@@ -50,13 +50,14 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static ListModelNode AddHostWebPartPage(this ListModelNode model, WebPartPageDefinition definition)
+        public static TModelNode AddHostWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddHostWebPartPage(model, definition, null);
         }
-
-        public static ListModelNode AddHostWebPartPage(this ListModelNode model, WebPartPageDefinition definition,
+        public static TModelNode AddHostWebPartPage<TModelNode>(this TModelNode model, WebPartPageDefinition definition,
             Action<WebPartPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

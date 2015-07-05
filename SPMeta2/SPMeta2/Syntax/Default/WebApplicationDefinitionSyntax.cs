@@ -24,16 +24,18 @@ namespace SPMeta2.Syntax.Default
     {
         #region add host
 
-        public static FarmModelNode AddHostWebApplication(this FarmModelNode model, WebApplicationDefinition definition)
+        public static TModelNode AddHostWebApplication<TModelNode>(this TModelNode model, WebApplicationDefinition definition)
+             where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             return AddHostWebApplication(model, definition, null);
         }
-
-        public static FarmModelNode AddHostWebApplication(this FarmModelNode model, WebApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostWebApplication<TModelNode>(this TModelNode model, WebApplicationDefinition definition,
+            Action<WebApplicationModelNode> action)
+            where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
-
+        
         #endregion
 
         #region methods

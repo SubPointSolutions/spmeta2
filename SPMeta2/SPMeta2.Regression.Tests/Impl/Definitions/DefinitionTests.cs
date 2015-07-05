@@ -704,7 +704,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                     var pureDefName = defType.Name.Replace("Definition", string.Empty);
 
-                    var shouldCheckArrayOverload = defType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod)).Any();
+                    var shouldCheckArrayOverload = defType.GetCustomAttributes(typeof(ExpectArrayExtensionMethod), false).Any();
+                    var shouldCheckAddHostMethod = defType.GetCustomAttributes(typeof(ExpectAddHostExtensionMethod), false).Any();
+
                     var targetModelNodeTypeName = string.Format("{0}ModelNode", pureDefName);
                     var modelNodelType = AllModelNodeTypes.FirstOrDefault(n => n.Name == targetModelNodeTypeName);
 
@@ -721,11 +723,11 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             trace.WriteLine("Checking AddXXX() method");
 
                         var relationships = AllDefinitionRelationships.FirstOrDefault(r => r.DefinitionType == defType);
-                        var interfaceNames = relationships.HostTypes.Select(
-                                            t => string.Format("{0}HostModelNode", t.Name.Replace("Definition", string.Empty)));
 
                         var addXXXMethodName = string.Format("Add{0}", pureDefName);
                         var addXXXArrayDefinitionMethodName = string.Format("Add{0}s", pureDefName);
+
+                        var addXXXHostMethodName = string.Format("AddHost{0}", pureDefName);
 
                         var lastChar = pureDefName[pureDefName.Length - 1];
 
@@ -734,8 +736,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             case 'y':
                                 {
                                     addXXXArrayDefinitionMethodName = string.Format("Add{0}", pureDefName);
-                                    addXXXArrayDefinitionMethodName = addXXXArrayDefinitionMethodName.Substring(0,
-                                        addXXXArrayDefinitionMethodName.Length - 1);
+                                    addXXXArrayDefinitionMethodName = addXXXArrayDefinitionMethodName.Substring(0, addXXXArrayDefinitionMethodName.Length - 1);
                                     addXXXArrayDefinitionMethodName += "ies";
                                 }
                                 ;
@@ -755,6 +756,56 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     addXXXArrayDefinitionMethodName += "es";
                                 } break;
                         }
+
+                        // host
+
+                        Func<MethodInfo, bool> addHostMethodPlainSpec = (m) =>
+                        {
+                            // public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition)
+                            // where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
+
+                            return m.Name == addXXXHostMethodName
+                                   && m.IsGenericMethod
+
+                                   && (m.GetParameters().Count() == 2)
+                                   && m.ReturnType.Name == "TModelNode"
+
+                                   && m.GetGenericArguments()[0].Name == "TModelNode"
+                                   && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
+
+                                   && m.GetParameters()[1].ParameterType == defType
+                                ;
+                        };
+
+                        Func<MethodInfo, bool> addHostMethodWithCallbackSpec = (m) =>
+                        {
+                            // public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition,
+                            // Action<ContentTypeModelNode> action)
+                            // where TModelNode : ModelNode, IWebApplicationHostModelNode, new()
+
+                            var callbackType = typeof(Action<>);
+                            var typedCallbackType = callbackType.MakeGenericType(modelNodelType);
+
+                            Func<MethodInfo, bool> selfHostCallbackCheck = (method => true);
+                            selfHostCallbackCheck = (method) => method.GetParameters()[2].ParameterType == typedCallbackType;
+
+                            return m.Name == addXXXHostMethodName
+                                   && m.IsGenericMethod
+
+                                   && (m.GetParameters().Count() == 3)
+
+                                   && m.ReturnType.Name == "TModelNode"
+
+                                   && m.GetGenericArguments()[0].Name == "TModelNode"
+                                   && m.GetGenericArguments()[0].BaseType == typeof(ModelNode)
+
+                                   && m.GetParameters()[1].ParameterType == defType
+                                   && selfHostCallbackCheck(m);
+                        };
+
+
+
+                        // add
 
                         Func<MethodInfo, bool> addMethodPlainSpec = (m) =>
                         {
@@ -908,6 +959,57 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                                     addXXXTrace.WriteLine(string.Format(
                                             "[FALSE] AddXXXs() misses relationships: [{0}]",
+                                            string.Join(",", missedRelationshipModelNodeTypes)));
+                                }
+                            }
+                        }
+
+
+                        if (shouldCheckAddHostMethod)
+                        {
+                            var addHostMethodPlain = AllExtensionMethods.FirstOrDefault(addHostMethodPlainSpec);
+                            var addHostMethodPlainWithCallBack = AllExtensionMethods.FirstOrDefault(addHostMethodWithCallbackSpec);
+
+                            if (addHostMethodPlain == null)
+                            {
+                                passed = false;
+                                completedtype = false;
+
+                                addXXXTrace.WriteLine("[FALSE] AddHostXXX()");
+                            }
+                            else
+                            {
+                                var missedRelationshipModelNodeTypes = GetUnsupportedRelationshipModelNodeTypes(addHostMethodPlain, relationships);
+
+                                if (missedRelationshipModelNodeTypes.Any())
+                                {
+                                    passed = false;
+                                    completedtype = false;
+
+                                    addXXXTrace.WriteLine(string.Format(
+                                            "[FALSE] AddHostXXX() misses relationships: [{0}]",
+                                            string.Join(",", missedRelationshipModelNodeTypes)));
+                                }
+                            }
+
+                            if (addHostMethodPlainWithCallBack == null)
+                            {
+                                passed = false;
+                                completedtype = false;
+
+                                addXXXTrace.WriteLine("[FALSE] AddHostXXX(callback)");
+                            }
+                            else
+                            {
+                                var missedRelationshipModelNodeTypes = GetUnsupportedRelationshipModelNodeTypes(addHostMethodPlainWithCallBack, relationships);
+
+                                if (missedRelationshipModelNodeTypes.Any())
+                                {
+                                    passed = false;
+                                    completedtype = false;
+
+                                    addXXXTrace.WriteLine(string.Format(
+                                            "[FALSE] AddHostXXX(callback) misses relationships: [{0}]",
                                             string.Join(",", missedRelationshipModelNodeTypes)));
                                 }
                             }

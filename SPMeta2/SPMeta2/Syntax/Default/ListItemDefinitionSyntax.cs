@@ -53,15 +53,17 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        //public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition)
-        //{
-        //    return AddHostListItem(model, definition, null);
-        //}
-
-        //public static ModelNode AddHostListItem(this ModelNode model, ListItemDefinition definition, Action<ModelNode> action)
-        //{
-        //    return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        //}
+        public static TModelNode AddHostListItem<TModelNode>(this TModelNode model, ListItemDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
+        {
+            return AddHostListItem(model, definition, null);
+        }
+        public static TModelNode AddHostListItem<TModelNode>(this TModelNode model, ListItemDefinition definition,
+            Action<ListItemModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
+        {
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

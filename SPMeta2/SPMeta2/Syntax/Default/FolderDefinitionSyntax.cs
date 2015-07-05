@@ -70,15 +70,17 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        //public static ModelNode AddHostFolder(this ModelNode model, FolderDefinition definition)
-        //{
-        //    return AddHostFolder(model, definition, null);
-        //}
-
-        //public static ModelNode AddHostFolder(this ModelNode model, FolderDefinition definition, Action<ModelNode> action)
-        //{
-        //    return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        //}
+        public static TModelNode AddHostFolder<TModelNode>(this TModelNode model, FolderDefinition definition)
+           where TModelNode : ModelNode, IFolderHostModelNode, new()
+        {
+            return AddHostFolder(model, definition, null);
+        }
+        public static TModelNode AddHostFolder<TModelNode>(this TModelNode model, FolderDefinition definition,
+            Action<FolderModelNode> action)
+            where TModelNode : ModelNode, IFolderHostModelNode, new()
+        {
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

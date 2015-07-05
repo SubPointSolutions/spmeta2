@@ -50,13 +50,14 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static ListModelNode AddHostWikiPage(this ListModelNode model, WikiPageDefinition definition)
+        public static TModelNode AddHostWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition)
+             where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddHostWikiPage(model, definition, null);
         }
-
-        public static ListModelNode AddHostWikiPage(this ListModelNode model, WikiPageDefinition definition,
+        public static TModelNode AddHostWikiPage<TModelNode>(this TModelNode model, WikiPageDefinition definition,
             Action<WikiPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

@@ -42,14 +42,16 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static ModelNode AddHostRootWeb(this ModelNode model, RootWebDefinition definition)
+        public static TModelNode AddHostRootWeb<TModelNode>(this TModelNode model, RootWebDefinition definition)
+             where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddHostRootWeb(model, definition, null);
         }
-
-        public static ModelNode AddHostRootWeb(this ModelNode model, RootWebDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostRootWeb<TModelNode>(this TModelNode model, RootWebDefinition definition,
+            Action<RootWebModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

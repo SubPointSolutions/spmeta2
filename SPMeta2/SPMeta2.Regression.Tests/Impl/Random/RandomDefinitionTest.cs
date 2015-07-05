@@ -941,7 +941,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Search")]
         public void CanDeployRandom_ManagedPropertyDefinition()
         {
-            TestRandomDefinition<ManagedPropertyDefinition>();
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ManagedPropertyDefinition>();
+            });
         }
 
         #endregion

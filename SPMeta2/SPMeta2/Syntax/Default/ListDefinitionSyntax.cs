@@ -60,12 +60,14 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static WebModelNode AddHostList(this WebModelNode model, ListDefinition definition)
+        public static TModelNode AddHostList<TModelNode>(this TModelNode model, ListDefinition definition)
+           where TModelNode : ModelNode, IWebModelNode, new()
         {
             return AddHostList(model, definition, null);
         }
-
-        public static WebModelNode AddHostList(this WebModelNode model, ListDefinition definition, Action<ListModelNode> action)
+        public static TModelNode AddHostList<TModelNode>(this TModelNode model, ListDefinition definition,
+            Action<ListModelNode> action)
+            where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

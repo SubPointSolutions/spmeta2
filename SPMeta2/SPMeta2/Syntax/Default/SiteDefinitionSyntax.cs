@@ -35,12 +35,14 @@ namespace SPMeta2.Syntax.Default
     {
         #region add host
 
-        public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition)
+        public static TModelNode AddHostSite<TModelNode>(this TModelNode model, SiteDefinition definition)
+             where TModelNode : ModelNode, ISiteHostModelNode, new()
         {
             return AddHostSite(model, definition, null);
         }
-
-        public static WebApplicationModelNode AddHostSite(this WebApplicationModelNode model, SiteDefinition definition, Action<SiteModelNode> action)
+        public static TModelNode AddHostSite<TModelNode>(this TModelNode model, SiteDefinition definition,
+            Action<SiteModelNode> action)
+            where TModelNode : ModelNode, ISiteHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

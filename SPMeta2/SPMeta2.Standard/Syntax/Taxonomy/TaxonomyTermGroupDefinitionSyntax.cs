@@ -49,15 +49,14 @@ namespace SPMeta2.Standard.Syntax
 
         #endregion
 
-
-        public static ModelNode AddHostTaxonomyTermGroup(this ModelNode model, 
-            TaxonomyTermGroupDefinition definition)
+        public static TModelNode AddHostTaxonomyTermGroup<TModelNode>(this TModelNode model, TaxonomyTermGroupDefinition definition)
+            where TModelNode : ModelNode, ITaxonomyTermGroupHostModelNode, new()
         {
             return AddHostTaxonomyTermGroup(model, definition, null);
         }
-
-        public static ModelNode AddHostTaxonomyTermGroup(this ModelNode model, TaxonomyTermGroupDefinition definition,
+        public static TModelNode AddHostTaxonomyTermGroup<TModelNode>(this TModelNode model, TaxonomyTermGroupDefinition definition,
             Action<TaxonomyTermGroupModelNode> action)
+            where TModelNode : ModelNode, ITaxonomyTermGroupHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

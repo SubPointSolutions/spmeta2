@@ -34,14 +34,14 @@ namespace SPMeta2.Standard.Syntax
 
         #endregion
 
-
-        public static ModelNode AddHostTaxonomyTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition)
+        public static TModelNode AddHostTaxonomyTermStore<TModelNode>(this TModelNode model, TaxonomyTermStoreDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddHostTaxonomyTermStore(model, definition, null);
         }
-
-        public static ModelNode AddHostTaxonomyTermStore(this ModelNode model, TaxonomyTermStoreDefinition definition,
+        public static TModelNode AddHostTaxonomyTermStore<TModelNode>(this TModelNode model, TaxonomyTermStoreDefinition definition,
             Action<TaxonomyTermStoreModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

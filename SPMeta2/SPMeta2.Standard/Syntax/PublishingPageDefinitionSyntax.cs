@@ -52,13 +52,14 @@ namespace SPMeta2.Standard.Syntax
 
         #region host override
 
-        public static ListModelNode AddHostPublishingPage(this ListModelNode model, PublishingPageDefinition definition)
+        public static TModelNode AddHostPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddHostPublishingPage(model, definition, null);
         }
-
-        public static ListModelNode AddHostPublishingPage(this ListModelNode model,
-            PublishingPageDefinition definition, Action<PublishingPageModelNode> action)
+        public static TModelNode AddHostPublishingPage<TModelNode>(this TModelNode model, PublishingPageDefinition definition,
+            Action<PublishingPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

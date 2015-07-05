@@ -111,16 +111,17 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition)
+        public static TModelNode AddHostContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition)
+             where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             return AddHostContentType(model, definition, null);
         }
-
-        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition,
+            Action<ContentTypeModelNode> action)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
-
 
         #endregion
     }

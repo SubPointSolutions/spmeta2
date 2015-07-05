@@ -40,14 +40,16 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        public static ModelNode AddHostSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition)
+        public static TModelNode AddHostSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition)
+             where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
             return AddHostSecureStoreApplication(model, definition, null);
         }
-
-        public static ModelNode AddHostSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition,
+            Action<SecureStoreApplicationModelNode> action)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion
