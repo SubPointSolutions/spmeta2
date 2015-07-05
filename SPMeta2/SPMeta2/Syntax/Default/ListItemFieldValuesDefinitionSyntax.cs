@@ -17,12 +17,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, ListItemFieldValuesDefinition definition)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, ListItemFieldValuesDefinition definition)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValues(model, definition, null);
         }
 
-        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, ListItemFieldValuesDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, ListItemFieldValuesDefinition definition,
+            Action<ListItemFieldValuesModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -31,7 +34,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ListItemModelNode AddListItemFieldValues(this ListItemModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
+           where TModelNode : ModelNode, IListItemModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -40,6 +44,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-      
+
     }
 }

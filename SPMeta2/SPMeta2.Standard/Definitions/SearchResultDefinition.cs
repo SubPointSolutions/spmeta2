@@ -26,6 +26,7 @@ namespace SPMeta2.Standard.Definitions
     [Serializable] 
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
     public class SearchResultDefinition : DefinitionBase

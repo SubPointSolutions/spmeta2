@@ -112,14 +112,17 @@ namespace SPMeta2.Containers
 
         #region wiki pages
 
-        public static ModelNode AddRandomWikiPage(this ModelNode model)
+        public static TModelNode AddRandomWikiPage<TModelNode>(this TModelNode model)
+               where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
             return AddRandomWikiPage(model, null);
         }
 
-        public static ModelNode AddRandomWikiPage(this ModelNode model, Action<ModelNode> action)
+        public static TModelNode AddRandomWikiPage<TModelNode>(this TModelNode model,
+            Action<WikiPageModelNode> action)
+               where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
-            return model.AddRandomDefinition<WikiPageDefinition>(action);
+            return model.AddRandomTypedDefinition<WikiPageDefinition, TModelNode, WikiPageModelNode>(action);
         }
 
         #endregion

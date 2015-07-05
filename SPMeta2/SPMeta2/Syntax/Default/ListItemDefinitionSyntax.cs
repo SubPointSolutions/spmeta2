@@ -9,7 +9,7 @@ using SPMeta2.Syntax.Default.Extensions;
 namespace SPMeta2.Syntax.Default
 {
 
-    public class ListItemModelNode : TypedModelNode,
+    public class ListItemModelNode : TypedModelNode, IListItemModelNode,
         ISecurableObjectHostModelNode
     {
 

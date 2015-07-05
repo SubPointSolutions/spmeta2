@@ -316,11 +316,13 @@
     <Compile Include="Syntax\Default\Fields\BusinessDataFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\CalculatedFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IListItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IQuickLaunchNavigationNodeHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermGroupHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermSetHostModelNode.cs" />
@@ -406,7 +408,7 @@
     <Compile Include="Syntax\Default\Fields\OutcomeChoiceFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PrefixDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PropertyDefinitionSyntax.cs" />
-    <Compile Include="Syntax\Default\QuickLaunchNavigationSyntax.cs" />
+    <Compile Include="Syntax\Default\QuickLaunchNavigationNodeDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\RegionalSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ContentTypes\RemoveContentTypeFieldLinksDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ContentTypes\RemoveContentTypeLinksDefinitionSyntax.cs" />

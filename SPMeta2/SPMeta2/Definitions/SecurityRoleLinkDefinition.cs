@@ -21,6 +21,7 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
     public class SecurityRoleLinkDefinition : DefinitionBase

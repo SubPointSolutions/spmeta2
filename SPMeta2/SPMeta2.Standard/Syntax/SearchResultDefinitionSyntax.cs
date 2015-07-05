@@ -4,6 +4,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Syntax.Default;
+using System.Collections.Generic;
 
 namespace SPMeta2.Standard.Syntax
 {
@@ -14,16 +15,32 @@ namespace SPMeta2.Standard.Syntax
 
     public static class SearchResultDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static SiteModelNode AddSearchResult(this SiteModelNode model, SearchResultDefinition definition)
+        public static TModelNode AddSearchResult<TModelNode>(this TModelNode model, SearchResultDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSearchResult(model, definition, null);
         }
 
-        public static SiteModelNode AddSearchResult(this SiteModelNode model, SearchResultDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSearchResult<TModelNode>(this TModelNode model, SearchResultDefinition definition,
+            Action<SearchResultModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddSearchResults<TModelNode>(this TModelNode model, IEnumerable<SearchResultDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

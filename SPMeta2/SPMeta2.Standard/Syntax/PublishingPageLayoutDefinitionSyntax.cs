@@ -15,16 +15,17 @@ namespace SPMeta2.Standard.Syntax
 
     public static class PublishingPageLayoutDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ListModelNode AddPublishingPageLayout(this ListModelNode model,
-            PublishingPageLayoutDefinition definition)
+        public static TModelNode AddPublishingPageLayout<TModelNode>(this TModelNode model, PublishingPageLayoutDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddPublishingPageLayout(model, definition, null);
         }
 
-        public static ListModelNode AddPublishingPageLayout(this ListModelNode model,
-            PublishingPageLayoutDefinition definition, Action<PublishingPageLayoutModelNode> action)
+        public static TModelNode AddPublishingPageLayout<TModelNode>(this TModelNode model, PublishingPageLayoutDefinition definition,
+            Action<PublishingPageLayoutModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -33,7 +34,8 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-        public static ModelNode AddPublishingPageLayouts(this ModelNode model, IEnumerable<PublishingPageLayoutDefinition> definitions)
+        public static TModelNode AddPublishingPageLayouts<TModelNode>(this TModelNode model, IEnumerable<PublishingPageLayoutDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

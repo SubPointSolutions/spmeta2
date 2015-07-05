@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Common;
@@ -653,6 +654,15 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             {
                 foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
                 {
+                    var isRootDef = (defType.GetCustomAttributes(typeof(ParentHostCapabilityAttribute))
+                        .FirstOrDefault() as ParentHostCapabilityAttribute).IsRoot;
+
+                    if (isRootDef)
+                    {
+                        trace.WriteLine(string.Format("Skipping root def"));
+                        continue;
+                    }
+
                     var completedtype = true;
 
                     var pureDefName = defType.Name.Replace("Definition", string.Empty);

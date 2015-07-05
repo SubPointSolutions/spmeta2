@@ -15,14 +15,16 @@ namespace SPMeta2.Syntax.Default
 
     public static class ListItemFieldValueDefinitionSyntax
     {
-        #region methods
-
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, Guid fieldId, object fieldValue)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            Guid fieldId, object fieldValue)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, fieldId, fieldValue, null);
         }
 
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, Guid fieldId, object fieldValue, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            Guid fieldId, object fieldValue, Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -31,12 +33,16 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, string fieldName, object fieldValue)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            string fieldName, object fieldValue)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, fieldName, fieldValue, null);
         }
 
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, string fieldName, object fieldValue, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            string fieldName, object fieldValue, Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -45,23 +51,27 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, ListItemFieldValueDefinition definition)
+        #region methods
+
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model, ListItemFieldValueDefinition definition)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, definition, null);
         }
 
-        public static ListItemModelNode AddListItemFieldValue(this ListItemModelNode model, ListItemFieldValueDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model, ListItemFieldValueDefinition definition,
+            Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, IEnumerable<ListItemFieldValueDefinition> definitions)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, IEnumerable<ListItemFieldValueDefinition> definitions)
+           where TModelNode : ModelNode, IListItemModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

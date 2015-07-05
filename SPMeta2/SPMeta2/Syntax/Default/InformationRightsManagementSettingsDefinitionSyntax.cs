@@ -17,18 +17,17 @@ namespace SPMeta2.Syntax.Default
 
     public static class InformationRightsManagementSettingsDefinitionSyntax
     {
-        #region methods
-
-        public static ListModelNode AddInformationRightsManagementSettings(this ListModelNode model, InformationRightsManagementSettingsDefinition definition)
+        public static TModelNode AddInformationRightsManagementSettings<TModelNode>(this TModelNode model, InformationRightsManagementSettingsDefinition definition)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddInformationRightsManagementSettings(model, definition, null);
         }
 
-        public static ListModelNode AddInformationRightsManagementSettings(this ListModelNode model, InformationRightsManagementSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddInformationRightsManagementSettings<TModelNode>(this TModelNode model, InformationRightsManagementSettingsDefinition definition,
+            Action<InformationRightsManagementSettingsModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
-
-        #endregion
     }
 }

@@ -37,14 +37,17 @@ namespace SPMeta2.Containers.Standard
 
         #region publishing pages
 
-        public static ModelNode AddRandomPublishingPage(this ModelNode model)
+        public static TModelNode AddRandomPublishingPage<TModelNode>(this TModelNode model)
+              where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
             return AddRandomPublishingPage(model, null);
         }
 
-        public static ModelNode AddRandomPublishingPage(this ModelNode model, Action<ModelNode> action)
+        public static TModelNode AddRandomPublishingPage<TModelNode>(this TModelNode model,
+            Action<PublishingPageModelNode> action)
+               where TModelNode : TypedModelNode, IListItemHostModelNode, new()
         {
-            return model.AddRandomDefinition<PublishingPageDefinition>(action);
+            return model.AddRandomTypedDefinition<PublishingPageDefinition, TModelNode, PublishingPageModelNode>(action);
         }
 
         #endregion

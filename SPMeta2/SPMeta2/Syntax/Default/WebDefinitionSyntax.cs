@@ -21,6 +21,7 @@ namespace SPMeta2.Syntax.Default
         IFeatureHostModelNode,
         IUserCustomActionHostModelNode,
         ITopNavigationNodeHostModelNode,
+        IQuickLaunchNavigationNodeHostModelNode,
         ISP2013WorkflowSubscriptionHostModelNode,
         ISearchSettingsHostModelNode
     {
