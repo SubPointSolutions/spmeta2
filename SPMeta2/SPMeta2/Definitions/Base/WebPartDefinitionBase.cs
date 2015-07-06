@@ -7,6 +7,7 @@ using SPMeta2.Attributes.Regression;
 using System.Runtime.Serialization;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -176,6 +177,8 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
         [DataMember]
+
+        [XmlPropertyCapability]
         public string WebpartXmlTemplate { get; set; }
 
         /// <summary>

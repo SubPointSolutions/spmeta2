@@ -146,6 +146,13 @@ namespace SPMeta2.Containers.Services
             return (byte)service.Int(maxValue);
         }
 
+        public static string CamlQuery(this RandomService service)
+        {
+            return string.Format(
+                        "<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
+                        service.String());
+        }
+
         public static uint UInt(this RandomService service)
         {
             return service.UInt(uint.MaxValue);

@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -115,6 +116,8 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [DataMember]
+
+        [XmlPropertyCapability]
         public string XmlDefinition { get; set; }
 
         [ExpectValidation]
@@ -123,6 +126,8 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [DataMember]
+
+        [XsltPropertyCapabilityAttribute]
         public string Xsl { get; set; }
 
         [ExpectValidation]
@@ -134,8 +139,6 @@ namespace SPMeta2.Definitions.Webparts
         public string GhostedXslLink { get; set; }
 
         #endregion
-
-
 
         #endregion
 

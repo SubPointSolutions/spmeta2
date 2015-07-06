@@ -23,6 +23,7 @@ namespace SPMeta2.Services
             // https://github.com/SubPointSolutions/spmeta2/issues/422
 
             PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
+            PreDeploymentServices.Add(new DefaultXmlBasedPropertiesValidationService());
         }
 
         private void InitDefaultPreDeploymentServices()

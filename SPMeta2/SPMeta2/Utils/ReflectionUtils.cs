@@ -23,6 +23,51 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        #region get prop methods
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), typeof(TType), false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), typeof(TType), inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(Type type)
+        {
+            return GetPropertiesWithCustomAttribute(type, typeof(TType), false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(Type type, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(type, typeof(TType), inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(object obj, Type attributeType)
+        {
+            return GetPropertiesWithCustomAttribute(obj, attributeType, false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(object obj, Type attributeType, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), attributeType, inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(Type type, Type attributeType)
+        {
+            return GetPropertiesWithCustomAttribute(type, attributeType, false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(Type type, Type attributeType, bool inherit)
+        {
+            return type
+                           .GetProperties()
+                           .Where(p => p.GetCustomAttributes(attributeType, inherit).Any());
+        } 
+        #endregion
+
         public static IEnumerable<object> GetStaticFieldValues(Type staticClassType)
         {
             return GetStaticFieldValues<object>(staticClassType);

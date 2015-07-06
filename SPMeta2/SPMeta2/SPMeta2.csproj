@@ -96,6 +96,9 @@
     <Compile Include="Attributes\Capabilities\SiteCollectionTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\WebTokenCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\CamlPropertyCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\XsltPropertyCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\XmlPropertyCapabilityAttribute.cs" />
     <Compile Include="Attributes\Identity\IdentityKeyAttribute.cs" />
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />
@@ -272,6 +275,7 @@
     <Compile Include="Exceptions\SPMeta2Exception.cs" />
     <Compile Include="Exceptions\SPMeta2InvalidDefinitionPropertyException.cs" />
     <Compile Include="Exceptions\SPMeta2ModelDeploymentException.cs" />
+    <Compile Include="Exceptions\SPMeta2ModelValidationException.cs" />
     <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
     <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedModelHost.cs" />
@@ -283,8 +287,10 @@
     <Compile Include="Models\ModelNode.cs" />
     <Compile Include="Models\TypedModelNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DefaultPreDeploymentTreeTraverseServiceBase.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
+    <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Impl\DefaultXMLSerializationService.cs" />
@@ -301,6 +307,9 @@
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultXmlBasedPropertiesModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\ServiceModelHandlerBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />

@@ -85,6 +85,8 @@ namespace SPMeta2.Definitions
         [ExpectUpdateAsCamlQuery]
         [DataMember]
         [ExpectNullable]
+
+        [CamlPropertyCapabilityAttribute]
         public string Query { get; set; }
 
         /// <summary>
