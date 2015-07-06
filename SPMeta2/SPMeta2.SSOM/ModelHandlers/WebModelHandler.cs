@@ -73,8 +73,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
