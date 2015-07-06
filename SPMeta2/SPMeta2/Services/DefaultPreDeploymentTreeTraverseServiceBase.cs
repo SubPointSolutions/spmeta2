@@ -33,11 +33,16 @@ namespace SPMeta2.Services
         {
             var defaultTraserveService = ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
 
-            defaultTraserveService.OnModelHandlerResolve += ResolveModelHandler;
+            defaultTraserveService.OnModelHandlerResolve += ResolveDefaultModelHandler;
             defaultTraserveService.Traverse(modelHost, model);
         }
 
-        protected virtual ModelHandlerBase ResolveModelHandler(ModelNode modelNode)
+        private ModelHandlerBase ResolveDefaultModelHandler(ModelNode arg)
+        {
+            return ModelHandler;
+        }
+
+        protected override ModelHandlerBase ResolveModelHandler(Type modelType)
         {
             return ModelHandler;
         }
