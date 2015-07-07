@@ -21,7 +21,7 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -33,6 +33,14 @@ namespace SPMeta2.Standard.Definitions.Fields
         public ImageFieldDefinition()
         {
             FieldType = BuiltInPublishingFieldTypes.Image;
+
+            // RichTextMode/RichText should be set as follow to make sure field can be edited and displayed correctly
+            // Skipping these atts would resul a pure HTML string on the publishing page layout
+
+            // Enhance 'ImageFieldDefinition' - add default AdditionalAttributes #552
+            // https://github.com/SubPointSolutions/spmeta2/issues/552
+            AdditionalAttributes.Add(new FieldAttributeValue { Name = "RichTextMode", Value = "FullHtml" });
+            AdditionalAttributes.Add(new FieldAttributeValue { Name = "RichText", Value = "TRUE" });
         }
 
         #endregion
