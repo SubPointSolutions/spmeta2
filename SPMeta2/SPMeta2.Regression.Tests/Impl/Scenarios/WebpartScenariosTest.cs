@@ -16,6 +16,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
+using SPMeta2.Models;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -162,6 +163,39 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     page
                                         .AddRandomWebpart()
                                         .AddRandomWebpart();
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_Webpart_WithTitleUrl_WithTokens()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page
+                                        .AddRandomWebpart(w =>
+                                        {
+                                            (w.Value as WebPartDefinition).TitleUrl =
+                                                string.Format("~sitecollection/{0}.html", Rnd.String());
+                                        })
+                                        .AddRandomWebpart(w =>
+                                        {
+                                            (w.Value as WebPartDefinition).TitleUrl =
+                                                string.Format("~site/{0}.html", Rnd.String());
+
+                                        });
                                 });
                         });
 

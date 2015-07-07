@@ -84,11 +84,28 @@ namespace SPMeta2.SSOM.ModelHandlers
                 instance.TitleIconImageUrl = definition.TitleIconImageUrl;
 
             if (!string.IsNullOrEmpty(definition.TitleUrl))
-                instance.TitleUrl = definition.TitleUrl;
+            {
+                if (!string.IsNullOrEmpty(definition.TitleUrl))
+                {
+                    var urlValue = definition.TitleUrl ?? string.Empty;
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]",
+                        urlValue);
+
+                    urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = urlValue,
+                        Context = CurrentHost.PageListItem.Web
+                    }).Value;
+
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
+
+                    instance.TitleUrl = urlValue;
+                }
+            }
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 instance.ExportMode = (WebPartExportMode)Enum.Parse(typeof(WebPartExportMode), definition.ExportMode);
-
 
             var dataFomWebPart = instance as DataFormWebPart;
 

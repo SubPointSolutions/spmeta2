@@ -241,7 +241,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                 xml.SetImportErrorMessage(definition.ImportErrorMessage);
 
             if (!string.IsNullOrEmpty(definition.TitleUrl))
-                xml.SetTitleUrl(definition.TitleUrl);
+            {
+                var urlValue = definition.TitleUrl ?? string.Empty;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]", urlValue);
+
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = urlValue,
+                    Context = CurrentClientContext
+                }).Value;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
+
+                xml.SetTitleUrl(urlValue);
+            }
 
             if (!string.IsNullOrEmpty(definition.TitleIconImageUrl))
                 xml.SetTitleIconImageUrl(definition.TitleIconImageUrl);
@@ -279,12 +293,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             return xml.ToString();
         }
 
+        protected ClientContext CurrentClientContext { get; set; }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var webPartModel = model.WithAssertAndCast<WebPartDefinitionBase>("model", value => value.RequireNotNull());
 
             var listItem = listItemModelHost.HostListItem;
+            CurrentClientContext = listItemModelHost.HostClientContext;
 
             var context = listItem.Context;
             var currentPageFile = GetCurrentPageFile(listItemModelHost);

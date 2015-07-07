@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -231,11 +232,17 @@ namespace SPMeta2.Regression.CSOM.Validation
                 if (!string.IsNullOrEmpty(definition.TitleUrl))
                 {
                     var value = CurrentWebPartXml.GetTitleUrl();
+                    var defValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Context = listItemModelHost.HostClientContext,
+                        Value = value
+                    }).Value;
+
+                    var isValid = defValue.ToUpper() == value.ToUpper();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
-                        var srcProp = s.GetExpressionValue(m => m.TitleIconImageUrl);
-                        var isValid = definition.TitleIconImageUrl == value;
+                        var srcProp = s.GetExpressionValue(m => m.TitleUrl);
 
                         return new PropertyValidationResult
                         {

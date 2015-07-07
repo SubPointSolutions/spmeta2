@@ -29,6 +29,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             var definition = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
 
             var item = host.PageListItem;
+            var web = host.HostFile.Web;
+
             WebPartExtensions.WithExistingWebPart(item, definition, (spWebPartManager, spObject) =>
             {
                 //[FALSE] - [Title]
@@ -69,7 +71,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                     {
                         var srcProp = s.GetExpressionValue(m => m.ChromeType);
                         var chromeType = WebPartChromeTypesConvertService.NormilizeValueToPartChromeTypes(s.ChromeType);
-                       
+
                         var srcValue = (PartChromeType)Enum.Parse(typeof(PartChromeType), chromeType);
                         var isValid = srcValue == d.ChromeType;
 
@@ -137,7 +139,41 @@ namespace SPMeta2.Regression.SSOM.Validation
                 {
                     if (!string.IsNullOrEmpty(definition.TitleUrl))
                     {
-                        assert.ShouldBeEndOf(m => m.TitleUrl, o => o.TitleUrl);
+                        assert.ShouldBeEqual((p, s, d) =>
+                        {
+                            var srcProp = s.GetExpressionValue(m => m.TitleUrl);
+                            var dstProp = d.GetExpressionValue(o => o.TitleUrl);
+
+                            var srcUrl = srcProp.Value as string;
+                            var dstUrl = dstProp.Value as string;
+
+                            var isValid = false;
+
+                            if (definition.TitleUrl.Contains("~sitecollection"))
+                            {
+                                var siteCollectionUrl = web.Site.ServerRelativeUrl == "/" ? string.Empty : web.Site.ServerRelativeUrl;
+
+                                isValid = srcUrl.Replace("~sitecollection", siteCollectionUrl) == dstUrl;
+                            }
+                            else if (definition.TitleUrl.Contains("~site"))
+                            {
+                                var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
+
+                                isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
+                            }
+                            else
+                            {
+                                isValid = srcUrl == dstUrl;
+                            }
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = dstProp,
+                                IsValid = isValid
+                            };
+                        });
                     }
                     else
                         assert.SkipProperty(m => m.TitleUrl, "TitleUrl is null or empty. Skipping.");

@@ -37,19 +37,19 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             if (!string.IsNullOrEmpty(typedModel.ContentLink))
             {
-                var contentLinkValue = typedModel.ContentLink ?? string.Empty;
+                var urlValue = typedModel.ContentLink ?? string.Empty;
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original contentLinkValue: [{0}]", contentLinkValue);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]", urlValue);
 
-                contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    Value = contentLinkValue,
+                    Value = urlValue,
                     Context = listItemModelHost.HostClientContext
                 }).Value;
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
 
-                wpXml.SetOrUpdateContentEditorWebPartProperty("ContentLink", contentLinkValue);
+                wpXml.SetOrUpdateContentEditorWebPartProperty("ContentLink", urlValue);
             }
 
             return wpXml.ToString();
