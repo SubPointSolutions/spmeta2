@@ -49,7 +49,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewFarmModel(Action<FarmModelNode> action)
         {
-            return NewFarmModel(new FarmDefinition { RequireSelfProcessing = false }, action);
+            var node = NewFarmModel(new FarmDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
 
@@ -102,7 +109,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static WebApplicationModelNode NewWebApplicationModel(Action<WebApplicationModelNode> action)
         {
-            return NewWebApplicationModel(new WebApplicationDefinition { RequireSelfProcessing = false }, action);
+            var node = NewWebApplicationModel(new WebApplicationDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -155,7 +169,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static SiteModelNode NewSiteModel(Action<SiteModelNode> action)
         {
-            return NewSiteModel(new SiteDefinition { RequireSelfProcessing = false }, action);
+            var node = NewSiteModel(new SiteDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -216,7 +237,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static WebModelNode NewWebModel(Action<WebModelNode> action)
         {
-            return NewWebModel(new WebDefinition { RequireSelfProcessing = false }, action);
+            var node = NewWebModel(new WebDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -266,7 +294,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewListModel(Action<ListModelNode> action)
         {
-            return NewListModel(new ListDefinition { RequireSelfProcessing = false }, action);
+            var node = NewListModel(new ListDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -290,10 +325,20 @@ namespace SPMeta2.Syntax.Default
             where TModelDefinition : DefinitionBase, new()
             where TNodeType : TypedModelNode, new()
         {
-            var newModelNode = new TNodeType { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
+            var newModelNode = new TNodeType
+            {
+                Value = model ?? new TModelDefinition
+                    {
+                        //RequireSelfProcessing = false
+                    }
+            };
 
+            if (model == null)
+            {
+                newModelNode.Options.RequireSelfProcessing = false;
+            }
             // levacy
-            newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
+            ///newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
 
             if (action != null)
                 action(newModelNode);

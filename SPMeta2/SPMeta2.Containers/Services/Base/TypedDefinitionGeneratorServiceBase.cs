@@ -3,7 +3,8 @@ using SPMeta2.Containers.Services.Rnd;
 
 namespace SPMeta2.Containers.Services.Base
 {
-    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> : DefinitionGeneratorServiceBase
+    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> :
+        DefinitionGeneratorServiceBase
     {
         public TypedDefinitionGeneratorServiceBase()
         {

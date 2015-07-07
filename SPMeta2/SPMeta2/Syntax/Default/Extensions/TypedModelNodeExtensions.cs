@@ -46,7 +46,7 @@ namespace SPMeta2.Syntax.Default
             {
                 modelNode.Options = options;
 
-                definition.RequireSelfProcessing = options.RequireSelfProcessing;
+                //definition.RequireSelfProcessing = options.RequireSelfProcessing;
             }
 
             node.ChildModels.Add(modelNode);

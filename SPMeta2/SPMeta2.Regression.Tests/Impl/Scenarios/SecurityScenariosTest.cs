@@ -904,7 +904,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         protected void TurnOffValidation(ModelNode node)
         {
-            node.Value.RequireSelfProcessing = false;
+            //node.Value.RequireSelfProcessing = false;
             node.Options.RequireSelfProcessing = false;
         }
 

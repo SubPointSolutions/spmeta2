@@ -98,17 +98,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                  .AddContentTypeLink(ctFirst, link =>
                                  {
                                      result.FirstLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeLink(ctSecond, link =>
                                  {
                                      result.SecondLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeLink(ctThird, link =>
                                  {
                                      result.ThirdLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing =  true;
                                  });
 
                              result.List = list.Value as ListDefinition;
@@ -162,9 +165,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            {
                                // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
 
-                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
-                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
-                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing =  false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
                            });
                        });
                 });
@@ -209,9 +216,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            {
                                // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
 
-                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
-                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
-                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing =  false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing =  false;
                            });
                        });
                 });
