@@ -71,8 +71,8 @@ namespace SPMeta2.Definitions
         {
             var targetType = typeof(TDefinition);
 
-            if (GetType() != targetType ||
-                !GetType().IsSubclassOf(targetType))
+            if (GetType() != targetType 
+                && !GetType().IsSubclassOf(targetType))
             {
                 throw new InvalidCastException("TDefinition should be either current class or one of the parants.");
             }

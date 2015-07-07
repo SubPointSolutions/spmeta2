@@ -80,12 +80,22 @@
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
-    <Compile Include="Impl\Definitions\FieldDefinitionPropertyTests.cs" />
+    <Compile Include="Impl\Definitions\ImageFieldDefinitionTests.cs" />
+    <Compile Include="Impl\Definitions\FieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ChoiceFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\WebPartDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ScriptEditorWebPartDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
+    <None Include="Impl\DefnitionCoverage\WebpartDefinitionCoverageTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WebpartDefinitionCoverageTest2.cs</LastGenOutput>
+    </None>
+    <Compile Include="Impl\DefnitionCoverage\WebpartDefinitionCoverageTest2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebpartDefinitionCoverageTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
     <Compile Include="Impl\Misc\ProvisionServiceTest.cs" />
@@ -379,7 +389,9 @@
     <EmbeddedResource Include="Templates\STP\M2Template.stp" />
     <EmbeddedResource Include="Templates\SandboxSolutions\SPMeta2.Containers.SandboxSolutionContainer.wsp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
