@@ -42,9 +42,23 @@ namespace SPMeta2.CSOM.Services.Impl
             get { return _allowedStatusCodes; }
         }
 
+        public Action<ClientRuntimeContext> CustomExecuteQueryHandler { get; set; }
+
         #endregion
 
         #region methods
+
+        protected virtual void InternalExecuteQuery(ClientRuntimeContext context)
+        {
+            if (CustomExecuteQueryHandler != null)
+            {
+                CustomExecuteQueryHandler(context);
+            }
+            else
+            {
+                context.ExecuteQuery();
+            }
+        }
 
         public override void ExecuteQuery(ClientRuntimeContext context)
         {
@@ -55,7 +69,7 @@ namespace SPMeta2.CSOM.Services.Impl
             {
                 try
                 {
-                    context.ExecuteQuery();
+                    InternalExecuteQuery(context);
                     return;
                 }
                 catch (Exception ex)

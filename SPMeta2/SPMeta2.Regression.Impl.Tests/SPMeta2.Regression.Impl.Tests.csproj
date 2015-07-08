@@ -194,12 +194,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ModelHandlers\Base\ModelHandlerTestBase.cs" />
-    <Compile Include="ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
-    <Compile Include="ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
-    <Compile Include="ProvisionServiceTests.cs" />
+    <Compile Include="Impl\ModelHandlers\Base\ModelHandlerTestBase.cs" />
+    <Compile Include="Impl\ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
+    <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
+    <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
+    <Compile Include="Impl\Services\ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenarios\TaxonomyFieldScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers.CSOM\SPMeta2.Containers.CSOM.csproj">
