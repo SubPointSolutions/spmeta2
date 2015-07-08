@@ -34,7 +34,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var folderModelHost = modelHost as FolderModelHost;
             var webPartPageDefinition = model as WebPartPageDefinition;
 
@@ -43,10 +42,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (folder != null && webPartPageDefinition != null)
             {
                 var context = folder.Context;
-                var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageDefinition));
+                var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageDefinition));
 
-                var currentListItem = currentPage.ListItemAllFields;
-                context.Load(currentListItem);
+                //var currentListItem = currentPage.ListItemAllFields;
+
+                //context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
@@ -54,7 +54,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
-                        itemHost.HostListItem = currentListItem;
+                        //itemHost.HostListItem = currentListItem;
+                        itemHost.HostFile = currentPage;
+                        itemHost.HostList = folderModelHost.CurrentList;
                     });
 
                     action(listItemHost);
@@ -64,6 +66,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else if (typeof(BreakRoleInheritanceDefinition).IsAssignableFrom(childModelType)
                         || typeof(SecurityGroupLinkDefinition).IsAssignableFrom(childModelType))
                 {
+
+                    var currentListItem = currentPage.ListItemAllFields;
+
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
                         itemHost.HostListItem = currentListItem;
@@ -84,43 +92,67 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected ListItem SearchItemByName(List list, Folder folder, string pageName)
+        protected File SearchFileByName(List list, Folder folder, string pageName)
         {
             var context = list.Context;
 
             if (folder != null)
             {
-                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl")
+                    || !folder.IsPropertyAvailable("Properties"))
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    folder.Context.Load(folder, f => f.Properties);
+
                     folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
-            var dQuery = new CamlQuery();
+            // Forms folder im the libraries
+            // otherwise pure list items search
+            if (folder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                && folder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012")
+            {
+                var files = folder.Files;
 
-            string QueryString = "<View><Query><Where>" +
-                             "<Eq>" +
-                               "<FieldRef Name=\"FileLeafRef\"/>" +
-                                "<Value Type=\"Text\">" + pageName + "</Value>" +
-                             "</Eq>" +
-                            "</Where></Query></View>";
+                context.Load(files);
+                context.ExecuteQueryWithTrace();
 
-            dQuery.ViewXml = QueryString;
+                var targetFile = files.FirstOrDefault(f => f.Name.ToUpper() == pageName.ToUpper());
 
-            if (folder != null)
-                dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+                return targetFile;
+            }
+            else
+            {
+                var dQuery = new CamlQuery();
 
-            var collListItems = list.GetItems(dQuery);
+                string QueryString = "<View><Query><Where>" +
+                                     "<Eq>" +
+                                     "<FieldRef Name=\"FileLeafRef\"/>" +
+                                     "<Value Type=\"Text\">" + pageName + "</Value>" +
+                                     "</Eq>" +
+                                     "</Where></Query></View>";
 
-            context.Load(collListItems);
-            context.ExecuteQueryWithTrace();
+                dQuery.ViewXml = QueryString;
 
-            return collListItems.FirstOrDefault();
+                if (folder != null)
+                    dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+
+                var collListItems = list.GetItems(dQuery);
+
+                context.Load(collListItems);
+                context.ExecuteQueryWithTrace();
+
+                var item = collListItems.FirstOrDefault();
+                if (item != null)
+                    return item.File;
+
+                return null;
+            }
 
         }
 
-        protected File GetCurrentWebPartPage(List list, Folder folder, string pageName)
+        protected File GetCurrentWebPartPageFile(List list, Folder folder, string pageName)
         {
             var context = folder.Context;
 
@@ -134,9 +166,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             //        return file;
             //}
 
-            var item = SearchItemByName(list, folder, pageName);
-
-            return item != null ? item.File : null;
+            return SearchFileByName(list, folder, pageName);
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -157,7 +187,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
-            var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageModel));
+            var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageModel));
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

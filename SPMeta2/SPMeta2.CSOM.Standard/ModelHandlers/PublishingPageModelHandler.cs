@@ -36,8 +36,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
-
             var folderModelHost = modelHost as FolderModelHost;
             var pageDefinition = model as PublishingPageDefinition;
 
@@ -48,16 +46,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 var context = folder.Context;
                 var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(pageDefinition));
 
-                var currentListItem = currentPage.ListItemAllFields;
-                context.Load(currentListItem);
-                context.ExecuteQueryWithTrace();
-
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
-                        itemHost.HostListItem = currentListItem;
+                        itemHost.HostFile = currentPage;
+                        itemHost.HostList = folderModelHost.CurrentList;
                     });
 
                     action(listItemHost);
@@ -67,8 +62,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 else if (typeof(BreakRoleInheritanceDefinition).IsAssignableFrom(childModelType)
                         || typeof(SecurityGroupLinkDefinition).IsAssignableFrom(childModelType))
                 {
+                    var currentListItem = currentPage.ListItemAllFields;
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
+
                         itemHost.HostListItem = currentListItem;
                     });
 

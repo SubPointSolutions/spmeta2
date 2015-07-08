@@ -28,10 +28,10 @@ namespace SPMeta2.Regression.SSOM.Validation
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
 
-            var item = host.PageListItem;
+            var file = host.HostFile;
             var web = host.HostFile.Web;
 
-            WebPartExtensions.WithExistingWebPart(item, definition, (spWebPartManager, spObject) =>
+            WebPartExtensions.WithExistingWebPart(file, definition, (spWebPartManager, spObject) =>
             {
                 //[FALSE] - [Title]
                 //                        [FALSE] - [Id]
@@ -233,7 +233,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.WebpartFileName))
                 {
-                    var site = host.PageListItem.Web.Site;
+                    var site = host.HostFile.Web.Site;
 
                     var webPartManager = host.SPLimitedWebPartManager;
 
@@ -277,7 +277,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.WebpartType))
                 {
-                    var webPartInstance = WebPartExtensions.ResolveWebPartInstance(host.PageListItem.Web.Site, host.SPLimitedWebPartManager, definition);
+                    var webPartInstance = WebPartExtensions.ResolveWebPartInstance(host.HostFile.Web.Site, host.SPLimitedWebPartManager, definition);
                     var webPartInstanceType = webPartInstance.GetType();
 
                     assert.ShouldBeEqual((p, s, d) =>

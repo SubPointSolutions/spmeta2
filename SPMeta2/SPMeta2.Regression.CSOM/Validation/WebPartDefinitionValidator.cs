@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
@@ -25,9 +26,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<WebPartDefinition>("model", value => value.RequireNotNull());
 
-            var pageItem = listItemModelHost.HostListItem;
+            var pageFile = listItemModelHost.HostFile;
+            var context = pageFile.Context;
 
-            var context = pageItem.Context;
+            context.Load(pageFile);
+            context.ExecuteQueryWithTrace();
 
             var siteServerUrl = listItemModelHost.HostSite.ServerRelativeUrl;
             var webUrl = listItemModelHost.HostWeb.Url;
@@ -37,9 +40,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (siteServerUrl != "/")
                 serverUrl = context.Url.Split(new string[] { siteServerUrl }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-            var absItemUrl = UrlUtility.CombineUrl(serverUrl, pageItem["FileRef"].ToString());
+            var absItemUrl = UrlUtility.CombineUrl(serverUrl, pageFile.ServerRelativeUrl);
 
-            WithWithExistingWebPart(pageItem, definition, (spObject, spObjectDefintion) =>
+            WithWithExistingWebPart(pageFile, definition, (spObject, spObjectDefintion) =>
             {
                 var webpartExportUrl = UrlUtility.CombineUrl(new[]{
                         webUrl,

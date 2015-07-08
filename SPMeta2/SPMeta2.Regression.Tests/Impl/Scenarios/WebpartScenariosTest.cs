@@ -155,7 +155,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             {
                                 folder.AddHostWebPartPage(new WebPartPageDefinition
                                 {
-                                    FileName = "AllPages.aspx",
+                                    FileName = "AllItems.aspx",
                                     PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
                                     NeedOverride = false
                                 }, page =>

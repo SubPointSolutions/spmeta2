@@ -18,7 +18,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.LCID = 0;
 
-                def.Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestFarmApp.wsp");
+                // TODO
+                //def.Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestFarmApp.wsp");
             });
         }
     }

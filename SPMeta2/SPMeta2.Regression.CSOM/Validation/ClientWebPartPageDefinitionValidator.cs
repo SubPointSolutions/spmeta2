@@ -24,7 +24,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var context = folder.Context;
 
             var pageName = GetSafeWebPartPageFileName(definition);
-            var pageFile = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, pageName);
+            var pageFile = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, pageName);
 
             var spObject = pageFile.ListItemAllFields;
 

@@ -20,7 +20,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.ProductId = new Guid("{d3d5b953-e1a9-438c-a09b-b8cc4df35788}");
                 def.Version = "1.0.0.0";
 
-                def.Content = ResourceReaderUtils.ReadFromResourceName(typeof(AppDefinitionGenerator).Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSPHostedApp.app");
+                // TODO
+                //def.Content = ResourceReaderUtils.ReadFromResourceName(typeof(AppDefinitionGenerator).Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSPHostedApp.app");
             });
         }
 

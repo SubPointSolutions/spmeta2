@@ -73,7 +73,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
-             Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
+            Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
             var context = listItem.Context;
             var filePath = listItem["FileRef"].ToString();
@@ -81,6 +81,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             var web = listItem.ParentList.ParentWeb;
 
             var pageFile = web.GetFileByServerRelativeUrl(filePath);
+
+            WithWithExistingWebPart(pageFile, webPartModel, action);
+        }
+
+        protected void WithWithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
+             Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
+        {
+            var context = pageFile.Context;   
             var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             // web part on the page
@@ -88,8 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
             context.ExecuteQueryWithTrace();
-
-
+            
             Microsoft.SharePoint.Client.WebParts.WebPartDefinition def = null;
             var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel, out def);
 
@@ -98,11 +105,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected File GetCurrentPageFile(ListItemModelHost listItemModelHost)
         {
-            var listItem = listItemModelHost.HostListItem;
-            var filePath = listItem["FileRef"].ToString();
+            if (listItemModelHost.HostFile != null)
+                return listItemModelHost.HostFile;
 
-            var web = listItem.ParentList.ParentWeb;
-            return web.GetFileByServerRelativeUrl(filePath);
+            return listItemModelHost.HostListItem.File;
         }
 
         protected ListItem SearchItemByName(List list, Folder folder, string pageName)
@@ -147,7 +153,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected virtual string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var result = string.Empty;
-            var context = listItemModelHost.HostListItem.Context;
+            var context = listItemModelHost.HostList.Context;
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
             {
@@ -300,13 +306,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var webPartModel = model.WithAssertAndCast<WebPartDefinitionBase>("model", value => value.RequireNotNull());
 
-            var listItem = listItemModelHost.HostListItem;
             CurrentClientContext = listItemModelHost.HostClientContext;
 
-            var context = listItem.Context;
+            var context = listItemModelHost.HostClientContext;
             var currentPageFile = GetCurrentPageFile(listItemModelHost);
 
-            ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
+            ModuleFileModelHandler.WithSafeFileOperation(listItemModelHost.HostList,
+                currentPageFile, pageFile =>
             {
                 Guid? webPartStoreKey = null;
 
@@ -318,12 +324,19 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 //var fileContext = pageFile.Context;
-                var fileListItem = pageFile.ListItemAllFields;
-                var fileContext = pageFile.Context;
+                ListItem fileListItem = null;
 
-                fileContext.Load(fileListItem);
+                if (webPartModel.AddToPageContent)
+                {
+                    // pre load here to be used later
 
-                fileContext.ExecuteQueryWithTrace();
+                    var fileContext = pageFile.Context;
+
+                    fileListItem = pageFile.ListItemAllFields;
+
+                    fileContext.Load(fileListItem);
+                    fileContext.ExecuteQueryWithTrace();
+                }
 
                 var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
@@ -375,8 +388,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     webPartXML = ProcessCommonWebpartProperties(webPartXML, webPartModel);
 
                     // handle wiki page
+                    if (webPartModel.AddToPageContent)
+                    {
 
-                    HandleWikiPageProvision(fileListItem, webPartModel);
+                        HandleWikiPageProvision(fileListItem, webPartModel);
+                    }
+
 
                     var webPartDefinition = webPartManager.ImportWebPart(webPartXML);
                     webPartAddedDefinition = webPartManager.AddWebPart(webPartDefinition.WebPart,
@@ -407,7 +424,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
                         "Processing existing web part");
 
-                    HandleWikiPageProvision(fileListItem, webPartModel);
+                    if (webPartModel.AddToPageContent)
+                    {
+                        HandleWikiPageProvision(fileListItem, webPartModel);
+                    }
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {

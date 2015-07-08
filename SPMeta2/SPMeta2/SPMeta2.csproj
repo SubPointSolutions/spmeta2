@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\Capabilities\CapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\HashCodePartCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\ParentHostCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\SiteCollectionTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DefaultPreDeploymentTreeTraverseServiceBase.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
     <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />

@@ -88,7 +88,14 @@ namespace SPMeta2.SSOM.Extensions
             WebPartDefinition definition,
             Action<SPLimitedWebPartManager, WebPart> webpart)
         {
-            WithLimitedWebPartManager(targetPage, webPartManager =>
+            WithExistingWebPart(targetPage.File, definition, webpart);
+        }
+
+        public static void WithExistingWebPart(SPFile file,
+            WebPartDefinition definition,
+            Action<SPLimitedWebPartManager, WebPart> webpart)
+        {
+            WithLimitedWebPartManager(file, webPartManager =>
             {
                 var webParts = webPartManager.WebParts.OfType<WebPart>();
 
@@ -196,7 +203,12 @@ namespace SPMeta2.SSOM.Extensions
 
         public static void WithLimitedWebPartManager(SPListItem targetPage, Action<SPLimitedWebPartManager> action)
         {
-            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            WithLimitedWebPartManager(targetPage.File, action);
+        }
+
+        public static void WithLimitedWebPartManager(SPFile file, Action<SPLimitedWebPartManager> action)
+        {
+            using (var webPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared))
             {
                 action(webPartManager);
             }

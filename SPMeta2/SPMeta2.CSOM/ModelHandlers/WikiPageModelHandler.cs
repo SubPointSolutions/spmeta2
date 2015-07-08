@@ -44,16 +44,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = folder.Context;
 
-            var currentListItem = currentPage.ListItemAllFields;
-            context.Load(currentListItem);
-            context.ExecuteQueryWithTrace();
-
             if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))
             {
                 var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                 {
-                    itemHost.HostListItem = currentListItem;
+                    itemHost.HostFile = currentPage;
+                    itemHost.HostList = folderModelHost.CurrentList;
                 });
 
                 action(listItemHost);
@@ -64,6 +61,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                 {
+                    var currentListItem = currentPage.ListItemAllFields;
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     itemHost.HostListItem = currentListItem;
                 });
 

@@ -23,7 +23,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -43,6 +43,9 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         [IdentityKey]
+
+        [HashCodePartCapability]
+
         public string Name { get; set; }
 
         #endregion

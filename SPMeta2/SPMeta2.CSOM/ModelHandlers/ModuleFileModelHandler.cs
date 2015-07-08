@@ -344,7 +344,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (isDocumentLibrary)
                 {
-                    spFile.ListItemAllFields.Update();
+                    if (spFile.ListItemAllFields != null)
+                    {
+                        spFile.ListItemAllFields.Update();
+                    }
                 }
 
                 context.ExecuteQueryWithTrace();

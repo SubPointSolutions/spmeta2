@@ -6,6 +6,7 @@ using System.Text;
 
 namespace SPMeta2.Attributes.Capabilities
 {
+    
     public class CapabilityAttribute : Attribute
     {
     }

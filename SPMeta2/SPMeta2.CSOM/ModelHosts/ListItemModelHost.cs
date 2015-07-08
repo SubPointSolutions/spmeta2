@@ -11,7 +11,10 @@ namespace SPMeta2.CSOM.ModelHosts
     {
         #region properties
         public ListItem HostListItem { get; set; }
+        public File HostFile { get; set; }
 
         #endregion
+
+        public List HostList { get; set; }
     }
 }
