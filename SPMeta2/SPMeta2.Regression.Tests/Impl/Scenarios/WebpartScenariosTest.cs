@@ -139,7 +139,62 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #endregion
 
 
-        #region default
+        #region webpart
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartTo_ListForm_InLibrary()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomDocumentLibrary(list =>
+                        {
+                            list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                            {
+                                folder.AddHostWebPartPage(new WebPartPageDefinition
+                                {
+                                    FileName = "AllPages.aspx",
+                                    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                                    NeedOverride = false
+                                }, page =>
+                                {
+                                    page.AddRandomWebpart();
+                                });
+                            });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartTo_ListForm_InList()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomList(list =>
+                        {
+                            list.AddHostWebPartPage(new WebPartPageDefinition
+                            {
+                                FileName = "AllItems.aspx",
+                                PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                                NeedOverride = false
+                            }, page =>
+                            {
+                                page.AddRandomWebpart();
+                            });
+                        });
+
+                });
+
+            TestModel(model);
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
