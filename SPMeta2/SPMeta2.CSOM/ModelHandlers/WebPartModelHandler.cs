@@ -63,29 +63,30 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
-            Action<WebPart> action)
+        //protected void WithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
+        //  Action<WebPart> action)
+        //{
+        //    WithExistingWebPart(listItem.File, webPartModel, action);
+        //}
+
+        protected void WithExistingWebPart(File  file, WebPartDefinition webPartModel,
+           Action<WebPart> action)
         {
-            WithWithExistingWebPart(listItem, webPartModel, (w, d) =>
+            WithExistingWebPart(file, webPartModel, (w, d) =>
             {
                 action(w);
             });
         }
 
-        protected void WithWithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
-            Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
-        {
-            var context = listItem.Context;
-            var filePath = listItem["FileRef"].ToString();
+        //protected void WithExistingWebPart(ListItem listItem, WebPartDefinition webPartModel,
+        //    Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
+        //{
+        //    WithExistingWebPart(listItem.File, webPartModel, action);
+        //}
 
-            var web = listItem.ParentList.ParentWeb;
 
-            var pageFile = web.GetFileByServerRelativeUrl(filePath);
 
-            WithWithExistingWebPart(pageFile, webPartModel, action);
-        }
-
-        protected void WithWithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
+        protected void WithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
              Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
             var context = pageFile.Context;

@@ -42,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var absItemUrl = UrlUtility.CombineUrl(serverUrl, pageFile.ServerRelativeUrl);
 
-            WithWithExistingWebPart(pageFile, definition, (spObject, spObjectDefintion) =>
+            WithExistingWebPart(pageFile, definition, (spObject, spObjectDefintion) =>
             {
                 var webpartExportUrl = UrlUtility.CombineUrl(new[]{
                         webUrl,
