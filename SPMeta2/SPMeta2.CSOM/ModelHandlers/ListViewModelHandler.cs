@@ -5,10 +5,12 @@ using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 
@@ -21,6 +23,89 @@ namespace SPMeta2.CSOM.ModelHandlers
         #endregion
 
         #region methods
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+
+            var web = listModelHost.HostWeb;
+            var list = listModelHost.HostList;
+
+            var listViewDefinition = model as ListViewDefinition;
+            var context = web.Context;
+
+            if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
+                                || childModelType == typeof(DeleteWebPartsDefinition))
+            {
+                var targetView = FindView(list, listViewDefinition);
+                var serverRelativeFileUrl = string.Empty;
+
+                Folder targetFolder = null;
+
+                if (list.BaseType == BaseType.DocumentLibrary)
+                {
+                    targetFolder = FolderModelHandler.GetLibraryFolder(list.RootFolder, "Forms");
+                }
+
+                if (targetView != null)
+                    serverRelativeFileUrl = targetView.ServerRelativeUrl;
+                else
+                {
+
+
+                    context.Load(list.RootFolder);
+                    context.ExecuteQueryWithTrace();
+
+                    //  maybe forms files?
+                    // they aren't views, but files
+
+                    if (list.BaseType == BaseType.DocumentLibrary)
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            "Forms",
+                            listViewDefinition.Url
+                        });
+                    }
+                    else
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            listViewDefinition.Url
+                        });
+                    }
+                }
+
+                var file = web.GetFileByServerRelativeUrl(serverRelativeFileUrl);
+                context.Load(file);
+                context.ExecuteQueryWithTrace();
+
+
+
+                var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(listModelHost, itemHost =>
+                {
+                    itemHost.HostFolder = targetFolder;
+                    //itemHost.HostListItem = folderModelHost.CurrentListItem;
+                    itemHost.HostFile = file;
+
+                    itemHost.HostList = list;
+                });
+
+                action(listItemHost);
+            }
+            else
+            {
+                action(listModelHost);
+            }
+        }
 
         protected string GetSafeViewUrl(string url)
         {
@@ -56,8 +141,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listMOdelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listViewModel = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+
+            var list = listMOdelHost.HostList;
 
             var currentView = FindView(list, listViewModel);
 

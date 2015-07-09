@@ -236,7 +236,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected Folder GetLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
-            var parentFolder = folderModelHost.CurrentListFolder;
+            return GetLibraryFolder(folderModelHost.CurrentListFolder, folderModel.Name);
+        }
+
+        internal static Folder GetLibraryFolder(Folder folder, string folderName)
+        {
+            var parentFolder = folder;
             var context = parentFolder.Context;
 
             context.Load(parentFolder, f => f.Folders);
@@ -246,18 +251,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFolder = parentFolder
                                    .Folders
                                    .OfType<Folder>()
-                                   .FirstOrDefault(f => f.Name == folderModel.Name);
+                                   .FirstOrDefault(f => f.Name == folderName);
 
             if (currentFolder != null)
             {
                 context.Load(currentFolder, f => f.Name);
                 context.ExecuteQueryWithTrace();
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does exist: [{0}]", folderModel.Name);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does exist: [{0}]", folderName);
             }
             else
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does not exist: [{0}]", folderModel.Name);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does not exist: [{0}]", folderName);
             }
 
             return currentFolder;

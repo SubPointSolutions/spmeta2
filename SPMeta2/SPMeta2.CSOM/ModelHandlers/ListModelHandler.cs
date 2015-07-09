@@ -69,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load<List>(list, l => l.Views);
                     context.ExecuteQueryWithTrace();
 
-                    action(list);
+                    action(listModelHost);
                 }
                 else if (childModelType == typeof(ModuleFileDefinition))
                 {
