@@ -99,7 +99,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var publishingPageModel = model.WithAssertAndCast<PublishingPageLayoutDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var list = folderModelHost.CurrentList;
 
             ContentType siteContentType = null;

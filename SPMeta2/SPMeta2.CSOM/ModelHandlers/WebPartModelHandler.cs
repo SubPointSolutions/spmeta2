@@ -88,7 +88,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected void WithWithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
              Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
-            var context = pageFile.Context;   
+            var context = pageFile.Context;
             var webPartManager = pageFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             // web part on the page
@@ -96,7 +96,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var webPartDefenitions = context.LoadQuery(webpartOnPage);
 
             context.ExecuteQueryWithTrace();
-            
+
             Microsoft.SharePoint.Client.WebParts.WebPartDefinition def = null;
             var existingWebPart = FindExistingWebPart(webPartDefenitions, webPartModel, out def);
 
@@ -311,6 +311,27 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = listItemModelHost.HostClientContext;
             var currentPageFile = GetCurrentPageFile(listItemModelHost);
 
+
+            if (listItemModelHost.HostFolder != null)
+            {
+                if (!listItemModelHost.HostFolder.IsPropertyAvailable("Properties") ||
+                    listItemModelHost.HostFolder.Properties.FieldValues.Count == 0)
+                {
+                    listItemModelHost.HostFolder.Context.Load(listItemModelHost.HostFolder, f => f.Properties);
+                    //folder.Context.Load(folder, f => f.Properties);
+
+                    listItemModelHost.HostFolder.Context.ExecuteQueryWithTrace();
+                }
+            }
+
+            // TODO
+            var doesFileHasListItem =
+                //Forms folders
+               !(listItemModelHost.HostFolder != null
+                &&
+                (listItemModelHost.HostFolder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                 && listItemModelHost.HostFolder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012"));
+
             ModuleFileModelHandler.WithSafeFileOperation(listItemModelHost.HostList,
                 currentPageFile, pageFile =>
             {
@@ -457,7 +478,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 return pageFile;
-            });
+            }, doesFileHasListItem);
         }
 
         protected virtual void InternalOnBeforeWebPartProvision(WebPartProcessingContext context)

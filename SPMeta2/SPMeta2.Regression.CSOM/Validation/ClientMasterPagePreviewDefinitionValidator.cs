@@ -25,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost",
                 value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<MasterPagePreviewDefinition>("model", value => value.RequireNotNull());
 
             var spFile = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);

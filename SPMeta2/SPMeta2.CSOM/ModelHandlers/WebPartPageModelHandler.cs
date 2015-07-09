@@ -37,7 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost as FolderModelHost;
             var webPartPageDefinition = model as WebPartPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            Folder folder = folderModelHost.CurrentListFolder;
 
             if (folder != null && webPartPageDefinition != null)
             {
@@ -54,7 +54,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
-                        //itemHost.HostListItem = currentListItem;
+                        itemHost.HostFolder = folderModelHost.CurrentListFolder;
+                        itemHost.HostListItem = folderModelHost.CurrentListItem;
                         itemHost.HostFile = currentPage;
                         itemHost.HostList = folderModelHost.CurrentList;
                     });
@@ -99,56 +100,81 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (folder != null)
             {
                 if (!folder.IsPropertyAvailable("ServerRelativeUrl")
-                    || !folder.IsPropertyAvailable("Properties"))
+                    // || !folder.IsPropertyAvailable("Properties"))
+                    )
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                    folder.Context.Load(folder, f => f.Properties);
+                    //folder.Context.Load(folder, f => f.Properties);
 
                     folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
+           
+
+            // one more time..
+            var dQuery = new CamlQuery();
+
+            string QueryString = "<View><Query><Where>" +
+                                 "<Eq>" +
+                                 "<FieldRef Name=\"FileLeafRef\"/>" +
+                                 "<Value Type=\"Text\">" + pageName + "</Value>" +
+                                 "</Eq>" +
+                                 "</Where></Query></View>";
+
+            dQuery.ViewXml = QueryString;
+
+            if (folder != null)
+                dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
+
+            var collListItems = list.GetItems(dQuery);
+
+            context.Load(collListItems);
+            context.ExecuteQueryWithTrace();
+
+            var item = collListItems.FirstOrDefault();
+            if (item != null)
+                return item.File;
+
+            //one more time
+            // by full path
+            var fileServerRelativePath = UrlUtility.CombineUrl(folder.ServerRelativeUrl, pageName);
+
+            File file = null;
+
+            var scope = new ExceptionHandlingScope(context);
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    file = list.ParentWeb.GetFileByServerRelativeUrl(fileServerRelativePath);
+
+                    context.Load(file);
+
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            context.ExecuteQueryWithTrace();
+
             // Forms folder im the libraries
             // otherwise pure list items search
-            if (folder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
-                && folder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012")
+            if (!scope.HasException && file != null && file.ServerObjectIsNull != null)
             {
-                var files = folder.Files;
+                context.Load(file);
+                context.Load(file, f => f.Exists);
 
-                context.Load(files);
                 context.ExecuteQueryWithTrace();
 
-                var targetFile = files.FirstOrDefault(f => f.Name.ToUpper() == pageName.ToUpper());
-
-                return targetFile;
+                if (file.Exists)
+                    return file;
             }
-            else
-            {
-                var dQuery = new CamlQuery();
 
-                string QueryString = "<View><Query><Where>" +
-                                     "<Eq>" +
-                                     "<FieldRef Name=\"FileLeafRef\"/>" +
-                                     "<Value Type=\"Text\">" + pageName + "</Value>" +
-                                     "</Eq>" +
-                                     "</Where></Query></View>";
-
-                dQuery.ViewXml = QueryString;
-
-                if (folder != null)
-                    dQuery.FolderServerRelativeUrl = folder.ServerRelativeUrl;
-
-                var collListItems = list.GetItems(dQuery);
-
-                context.Load(collListItems);
-                context.ExecuteQueryWithTrace();
-
-                var item = collListItems.FirstOrDefault();
-                if (item != null)
-                    return item.File;
-
-                return null;
-            }
+            return null;
 
         }
 
@@ -174,7 +200,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost as FolderModelHost;
             var webPartPageModel = model as WebPartPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            Folder folder = folderModelHost.CurrentListFolder;
 
             //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
             //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");

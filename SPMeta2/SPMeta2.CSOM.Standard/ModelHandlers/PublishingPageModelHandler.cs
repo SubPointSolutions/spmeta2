@@ -39,7 +39,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var folderModelHost = modelHost as FolderModelHost;
             var pageDefinition = model as PublishingPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            Folder folder = folderModelHost.CurrentListFolder;
 
             if (folder != null && pageDefinition != null)
             {
@@ -157,7 +157,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var list = folderModelHost.CurrentList;
 
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());

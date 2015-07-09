@@ -86,11 +86,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                         folderModelHost.CurrentListItem = null;
                     }
 
@@ -111,10 +111,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                         folderModelHost.CurrentListItem = null;
                     }
 
@@ -146,11 +147,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
-                        folderModelHost.CurrentListItem = null;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
 
                     action(folderModelHost);

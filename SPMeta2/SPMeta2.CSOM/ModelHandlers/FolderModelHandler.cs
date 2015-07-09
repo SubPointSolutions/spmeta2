@@ -49,7 +49,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
                     c.CurrentList = folderModelHost.CurrentList;
-                    c.CurrentLibraryFolder = currentFolder;
+                    c.CurrentListFolder = currentFolder;
                     c.CurrentWeb = folderModelHost.CurrentWeb;
                 });
 
@@ -236,7 +236,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected Folder GetLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
-            var parentFolder = folderModelHost.CurrentLibraryFolder;
+            var parentFolder = folderModelHost.CurrentListFolder;
             var context = parentFolder.Context;
 
             context.Load(parentFolder, f => f.Folders);
@@ -267,7 +267,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "EnsureLibraryFolder()");
 
-            var parentFolder = folderModelHost.CurrentLibraryFolder;
+            var parentFolder = folderModelHost.CurrentListFolder;
             var context = parentFolder.Context;
 
             var currentFolder = GetLibraryFolder(folderModelHost, folderModel);

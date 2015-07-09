@@ -272,10 +272,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public static void WithSafeFileOperation(List list, File file, Func<File, File> action)
         {
-            WithSafeFileOperation(list, file, action, null);
+            WithSafeFileOperation(list, file, action, null, true);
+        }
+
+        public static void WithSafeFileOperation(List list, File file, Func<File, File> action, bool doesFileHasListItem)
+        {
+            WithSafeFileOperation(list, file, action, null, doesFileHasListItem);
         }
 
         public static void WithSafeFileOperation(List list, File file, Func<File, File> action, Action<File> onCreated)
+        {
+            WithSafeFileOperation(list, file, action, onCreated, true);
+        }
+
+        public static void WithSafeFileOperation(List list, File file,
+            Func<File, File> action, Action<File> onCreated,
+            bool doesFileHasListItem)
         {
             var context = list.Context;
 
@@ -342,7 +354,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (spFile.Exists)
             {
-                if (isDocumentLibrary)
+                // super hack with doesFileHasListItem
+                // once filed under Forms folder
+                // CanDeploy_WebpartTo_ListForm_InLibrary / CanDeploy_WebpartTo_ListForm_InLibrary
+                if (isDocumentLibrary && doesFileHasListItem)
                 {
                     if (spFile.ListItemAllFields != null)
                     {
@@ -361,7 +376,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            if (isDocumentLibrary)
+            // super hack with doesFileHasListItem
+            // once filed under Forms folder
+            // CanDeploy_WebpartTo_ListForm_InLibrary / CanDeploy_WebpartTo_ListForm_InLibrary
+            if (isDocumentLibrary && doesFileHasListItem)
             {
                 if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
                     spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
@@ -381,7 +399,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             Folder folder = null;
 
             if (folderHost.CurrentList != null)
-                folder = folderHost.CurrentLibraryFolder;
+                folder = folderHost.CurrentListFolder;
             else if (folderHost.CurrentContentType != null)
                 folder = folderHost.CurrentContentTypeFolder;
             else if (folderHost.CurrentWebFolder != null)
@@ -400,7 +418,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected string ResolveContentTypeId(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            var context = folderHost.CurrentLibraryFolder.Context;
+            var context = folderHost.CurrentListFolder.Context;
             var list = folderHost.CurrentList;
             var stringCustomContentType = string.Empty;
 
@@ -438,11 +456,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            var context = folderHost.CurrentLibraryFolder.Context;
+            var context = folderHost.CurrentListFolder.Context;
 
             var web = folderHost.CurrentWeb;
             var list = folderHost.CurrentList;
-            var folder = folderHost.CurrentLibraryFolder;
+            var folder = folderHost.CurrentListFolder;
 
             context.Load(folder, f => f.ServerRelativeUrl);
             context.ExecuteQueryWithTrace();

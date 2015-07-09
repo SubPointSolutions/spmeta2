@@ -35,8 +35,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var folderModelHost = modelHost as FolderModelHost;
 
-                if (folderModelHost.CurrentLibraryFolder != null)
-                    return folderModelHost.CurrentLibraryFolder.ListItemAllFields;
+                if (folderModelHost.CurrentListFolder != null)
+                    return folderModelHost.CurrentListFolder.ListItemAllFields;
                 else
                     return folderModelHost.CurrentListItem;
             }

@@ -18,7 +18,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindPublishingPage(folderModelHost.CurrentList, folder, definition);

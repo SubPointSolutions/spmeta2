@@ -23,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
                 stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
-            var folder = folderHost.CurrentLibraryFolder;
+            var folder = folderHost.CurrentListFolder;
             var spObject = GetFile(folderHost, definition);
 
             if (folderHost.CurrentList != null)

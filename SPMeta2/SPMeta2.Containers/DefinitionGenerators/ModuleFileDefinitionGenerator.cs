@@ -29,7 +29,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
             var node = new ListModelNode
             {
                 Value = listDefinition,
-                Options = { RequireSelfProcessing = false }
+                //Options = { RequireSelfProcessing = false }
             };
 
             return node;

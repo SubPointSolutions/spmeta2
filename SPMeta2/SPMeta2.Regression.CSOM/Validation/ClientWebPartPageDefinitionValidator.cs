@@ -20,7 +20,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var context = folder.Context;
 
             var pageName = GetSafeWebPartPageFileName(definition);

@@ -87,7 +87,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             //var definition = model.WithAssertAndCast<ControlDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var list = folderModelHost.CurrentList;
 
             var context = folder.Context;

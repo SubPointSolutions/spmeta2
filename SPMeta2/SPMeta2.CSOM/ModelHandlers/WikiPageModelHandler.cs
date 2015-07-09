@@ -38,7 +38,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
             var web = folderModelHost.CurrentList.ParentWeb;
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
 
             var currentPage = GetWikiPageFile(web, folder, wikiPageModel);
 
@@ -91,7 +91,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
 
             DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folder, wikiPageModel);
         }
