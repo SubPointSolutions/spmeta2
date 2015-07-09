@@ -208,6 +208,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 currentFolder = currentFolderItem.Folder;
+
+                context.Load(currentFolder, f => f.ListItemAllFields);
+                context.Load(currentFolder, f => f.Name);
+
+                context.ExecuteQueryWithTrace();
+
+                currentFolderItem = currentFolder.ListItemAllFields;
             }
             else
             {
