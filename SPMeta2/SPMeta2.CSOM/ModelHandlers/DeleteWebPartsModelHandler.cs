@@ -31,11 +31,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected File GetCurrentPageFile(ListItemModelHost listItemModelHost)
         {
-            var listItem = listItemModelHost.HostListItem;
-            var filePath = listItem["FileRef"].ToString();
+            if (listItemModelHost.HostFile != null)
+                return listItemModelHost.HostFile;
 
-            var web = listItem.ParentList.ParentWeb;
-            return web.GetFileByServerRelativeUrl(filePath);
+            return listItemModelHost.HostListItem.File;
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -43,12 +42,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var webPartModel = model.WithAssertAndCast<DeleteWebPartsDefinition>("model", value => value.RequireNotNull());
 
-            var listItem = listItemModelHost.HostListItem;
+            //var listItem = listItemModelHost.HostListItem;
+            var list = listItemModelHost.HostList;
 
-            var context = listItem.Context;
+            var context = list.Context;
             var currentPageFile = GetCurrentPageFile(listItemModelHost);
 
-            ModuleFileModelHandler.WithSafeFileOperation(listItem.ParentList, currentPageFile, pageFile =>
+            ModuleFileModelHandler.WithSafeFileOperation(list, currentPageFile, pageFile =>
             {
                 var fileListItem = pageFile.ListItemAllFields;
                 var fileContext = pageFile.Context;

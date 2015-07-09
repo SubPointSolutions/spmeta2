@@ -49,6 +49,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                 {
+                    itemHost.HostFolder = folderModelHost.CurrentListFolder;
+                    itemHost.HostListItem = folderModelHost.CurrentListItem;
                     itemHost.HostFile = currentPage;
                     itemHost.HostList = folderModelHost.CurrentList;
                 });

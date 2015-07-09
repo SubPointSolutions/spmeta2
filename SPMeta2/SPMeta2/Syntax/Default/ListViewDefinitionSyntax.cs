@@ -9,7 +9,8 @@ namespace SPMeta2.Syntax.Default
 {
     [Serializable]
     [DataContract]
-    public class ListViewModelNode : TypedModelNode
+    public class ListViewModelNode : TypedModelNode,
+        IWebpartHostModelNode
     {
 
     }
@@ -48,7 +49,17 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-
+        public static TModelNode AddHostListView<TModelNode>(this TModelNode model, ListViewDefinition definition)
+           where TModelNode : ModelNode, IListModelNode, new()
+        {
+            return AddHostListView(model, definition, null);
+        }
+        public static TModelNode AddHostListView<TModelNode>(this TModelNode model, ListViewDefinition definition,
+            Action<ListViewModelNode> action)
+            where TModelNode : ModelNode, IListModelNode, new()
+        {
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+        }
 
         #endregion
     }

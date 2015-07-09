@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
@@ -138,11 +139,159 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region  list views
 
-        #region webpart
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts")]
+        [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        public void CanDeploy_WebpartTo_OOTBListViews_InLibrary()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomDocumentLibrary(list =>
+                        {
+                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.AllItems, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.DispForm, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.EditForm, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.Upload, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        public void CanDeploy_WebpartTo_CustomListViews_InLibrary()
+        {
+            var model = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddRandomDocumentLibrary(list =>
+                       {
+                           // custom with title only
+                           list.AddRandomListView(listView =>
+                           {
+                               var def = listView.Value as ListViewDefinition;
+                               def.Url = string.Empty;
+                               def.IsDefault = false;
+
+                               listView.AddRandomWebpart();
+                           });
+
+                           // custom with UTL
+                           list.AddRandomListView(listView =>
+                           {
+                               var def = listView.Value as ListViewDefinition;
+                               def.Url = Rnd.AspxFileName();
+                               def.IsDefault = false;
+
+                               listView.AddRandomWebpart();
+                           });
+                       });
+
+               });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        public void CanDeploy_WebpartTo_OOTBListViews_InList()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomList(list =>
+                        {
+                            list.AddHostListView(BuiltInListViewDefinitions.Lists.AllItems, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Lists.EditForm, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Lists.NewForm, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+
+                            list.AddHostListView(BuiltInListViewDefinitions.Lists.DispForm, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                            });
+                        });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        public void CanDeploy_WebpartTo_CustomListViews_InList()
+        {
+            var model = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddRandomList(list =>
+                       {
+                           // custom with title only
+                           list.AddRandomListView(listView =>
+                           {
+                               var def = listView.Value as ListViewDefinition;
+                               def.Url = string.Empty;
+                               def.IsDefault = false;
+
+                               listView.AddRandomWebpart();
+                           });
+
+                           // custom with UTL
+                           list.AddRandomListView(listView =>
+                           {
+                               var def = listView.Value as ListViewDefinition;
+                               def.Url = Rnd.AspxFileName();
+                               def.IsDefault = false;
+
+                               listView.AddRandomWebpart();
+                           });
+                       });
+
+               });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region manual list forms
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListForms")]
         public void CanDeploy_WebpartTo_ListForm_InLibrary()
         {
             var model = SPMeta2Model
@@ -171,7 +320,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts")]
+        [TestCategory("Regression.Scenarios.Webparts.ListForms")]
         public void CanDeploy_WebpartTo_ListForm_InList()
         {
             var model = SPMeta2Model
@@ -195,6 +344,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(model);
         }
+
+        #endregion
+
+
+        #region webpart
+
+
+
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]

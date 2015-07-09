@@ -154,6 +154,20 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region list views
+
+        public static ListModelNode AddRandomListView(this ListModelNode model)
+        {
+            return AddRandomListView(model, null);
+        }
+
+        public static ListModelNode AddRandomListView(this ListModelNode model, Action<ListViewModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<ListViewDefinition, ListModelNode, ListViewModelNode>(action);
+        }
+
+        #endregion
+
         #region audit settings
 
         public static ModelNode AddRandomAuditSetting(this ModelNode model)

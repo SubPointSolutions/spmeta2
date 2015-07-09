@@ -361,7 +361,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     if (spFile.ListItemAllFields != null)
                     {
-                        spFile.ListItemAllFields.Update();
+                        // weird issues while deployin in a row for wiki
+                        if (list.BaseTemplate != 119)
+                        {
+                            spFile.ListItemAllFields.Update();
+                        }
                     }
                 }
 

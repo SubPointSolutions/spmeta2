@@ -182,7 +182,14 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     list.AddField(new FieldDefinition());
                     list.AddContentTypeLink(new ContentTypeLinkDefinition());
 
-                    list.AddListView(new ListViewDefinition());
+                    list.AddListView(new ListViewDefinition(), listView =>
+                    {
+                        // Enhance 'WebPartDefinition' provision - enabne privision under list views #590
+                        // https://github.com/SubPointSolutions/spmeta2/issues/590
+
+                        listView.AddDeleteWebParts(new DeleteWebPartsDefinition());
+                        listView.AddWebPart(new WebPartDefinition());
+                    });
 
                     list.AddListItem(new ListItemDefinition(), listItem =>
                     {

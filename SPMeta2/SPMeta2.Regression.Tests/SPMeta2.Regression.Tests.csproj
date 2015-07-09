@@ -80,6 +80,7 @@
     <Compile Include="Definitions\RegWebFeatures.cs" />
     <Compile Include="Definitions\RegSiteFeatures.cs" />
     <Compile Include="Definitions\RegWebs.cs" />
+    <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Impl\Definitions\ImageFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\FieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ChoiceFieldDefinitionTests.cs" />

@@ -22,6 +22,7 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Services.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
 {
@@ -169,40 +170,75 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
 
         #region utils
 
-        private void DeployWebpartOnSupportedHosts<TWebpartType>()
+		private void DeployWebpartOnSupportedHosts<TWebpartType>()
             where TWebpartType : WebPartDefinitionBase
         {
             var initialDef = ModelGeneratorService.GetRandomDefinition(typeof(TWebpartType)) as TWebpartType;
 
-            var wikiDef = initialDef.Clone<TWebpartType>();
-            var webpartPageDef = initialDef.Clone<TWebpartType>();
-            var publichingPageDef = initialDef.Clone<TWebpartType>();
+            var wikiWebPartDef = initialDef.Clone<TWebpartType>();
+            var webpartPageWebPartDef = initialDef.Clone<TWebpartType>();
+            var publishingPageWebPartDef = initialDef.Clone<TWebpartType>();
 
+            var listFormWebPartDef = initialDef.Clone<TWebpartType>();
+            var documentLibraryFormWebPartDef = initialDef.Clone<TWebpartType>();
 
             var model = SPMeta2Model
                 .NewWebModel(web =>
                 {
                     web
+                        // to web part and wiki pages
                         .AddHostList(BuiltInListDefinitions.SitePages, list =>
                         {
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    page.AddDefinitionNode(webpartPageDef);
+                                    page.AddDefinitionNode(webpartPageWebPartDef);
                                 })
                                 .AddRandomWikiPage(page =>
                                 {
-                                    page.AddDefinitionNode(wikiDef);
+                                    page.AddDefinitionNode(wikiWebPartDef);
                                 });
                         })
+                        // to publishing pages
                         .AddHostList(BuiltInListDefinitions.Pages, list =>
                         {
                             list
                                 .AddRandomPublishingPage(page =>
                                 {
-                                    page.AddDefinitionNode(publichingPageDef);
+                                    page.AddDefinitionNode(publishingPageWebPartDef);
                                 });
-                        });
+                        })
+                        // to list form
+                         .AddRandomList(list =>
+                         {
+                             list.AddHostWebPartPage(new WebPartPageDefinition
+                             {
+                                 FileName = "AllItems.aspx",
+                                 PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                                 NeedOverride = false
+                             }, page =>
+                             {
+                                 page.AddDefinitionNode(listFormWebPartDef);
+                             });
+                         })
+
+                         // to document form
+                         .AddRandomDocumentLibrary(list =>
+                         {
+                             list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                             {
+                                 folder.AddHostWebPartPage(new WebPartPageDefinition
+                                 {
+                                     FileName = "AllItems.aspx",
+                                     PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                                     NeedOverride = false
+                                 }, page =>
+                                 {
+                                     page.AddDefinitionNode(documentLibraryFormWebPartDef);
+                                 });
+                             });
+                         });
+                    ;
                 });
 
             TestModel(model);

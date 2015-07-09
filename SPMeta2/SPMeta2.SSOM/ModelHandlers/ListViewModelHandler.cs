@@ -12,6 +12,7 @@ using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using System.Web.UI.WebControls.WebParts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -22,6 +23,71 @@ namespace SPMeta2.SSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(ListViewDefinition); }
+        }
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
+            var web = list.ParentWeb;
+
+            if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
+            {
+                var listViewDefinition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+                var currentView = FindView(list, listViewDefinition);
+
+                var serverRelativeFileUrl = string.Empty;
+
+                if (currentView != null)
+                    serverRelativeFileUrl = currentView.ServerRelativeUrl;
+                else
+                {
+                    //  maybe forms files?
+                    // they aren't views, but files
+
+                    if (list.BaseType == SPBaseType.DocumentLibrary)
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            "Forms",
+                            listViewDefinition.Url
+                        });
+                    }
+                    else
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            listViewDefinition.Url
+                        });
+                    }
+                }
+
+                var targetFile = web.GetFile(serverRelativeFileUrl);
+
+                using (var webPartManager = targetFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                {
+                    var webpartPageHost = new WebpartPageModelHost
+                    {
+                        HostFile = targetFile,
+                        PageListItem = targetFile.Item,
+                        SPLimitedWebPartManager = webPartManager
+                    };
+
+                    action(webpartPageHost);
+                }
+            }
+            else
+            {
+                action(modelHost);
+            }
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)

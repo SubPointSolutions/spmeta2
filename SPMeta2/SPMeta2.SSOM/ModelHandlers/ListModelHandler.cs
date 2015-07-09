@@ -188,7 +188,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
             var web = webModelHost.HostWeb;
 
@@ -259,7 +258,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     action(folderModelHost);
                 }
-
                 else
                 {
                     action(listModelHost);

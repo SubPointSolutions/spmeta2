@@ -22,9 +22,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<DeleteWebPartsDefinition>("model", value => value.RequireNotNull());
 
-            var listItem = listItemModelHost.HostListItem;
+            //var listItem = listItemModelHost.HostListItem;
+            var list = listItemModelHost.HostList;
 
-            var context = listItem.Context;
+            var context = list.Context;
+            var currentPageFile = GetCurrentPageFile(listItemModelHost);
             var spObject = GetCurrentPageFile(listItemModelHost);
 
             var webPartManager = spObject.GetLimitedWebPartManager(PersonalizationScope.Shared);
