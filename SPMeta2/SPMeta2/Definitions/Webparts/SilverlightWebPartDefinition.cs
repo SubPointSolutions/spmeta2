@@ -29,13 +29,15 @@ namespace SPMeta2.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
-
+        [ExpectUpdateAsUrl(Extension = "xap")]
         [SiteCollectionTokenCapability]
         [WebTokenCapability]
+
         public string Url { get; set; }
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdate]
         public string CustomInitParameters { get; set; }
 
         #endregion

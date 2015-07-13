@@ -22,11 +22,11 @@ namespace SPMeta2.Standard.Definitions.Webparts
     {
         #region properties
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public string PrimaryTaskListUrl { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public Guid? ListId { get; set; }
 

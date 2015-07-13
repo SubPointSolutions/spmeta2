@@ -85,23 +85,20 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.TitleUrl))
             {
-                if (!string.IsNullOrEmpty(definition.TitleUrl))
+                var urlValue = definition.TitleUrl ?? string.Empty;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]",
+                    urlValue);
+
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    var urlValue = definition.TitleUrl ?? string.Empty;
+                    Value = urlValue,
+                    Context = CurrentHost.HostFile.Web
+                }).Value;
 
-                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]",
-                        urlValue);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
 
-                    urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
-                    {
-                        Value = urlValue,
-                        Context = CurrentHost.PageListItem.Web
-                    }).Value;
-
-                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
-
-                    instance.TitleUrl = urlValue;
-                }
+                instance.TitleUrl = urlValue;
             }
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
