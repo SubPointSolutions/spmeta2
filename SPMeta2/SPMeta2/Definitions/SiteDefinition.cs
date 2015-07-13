@@ -28,6 +28,9 @@ namespace SPMeta2.Definitions
     [DataContract]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
+
+    [ExpectManyInstances]
+
     public class SiteDefinition : DefinitionBase
     {
         #region constructors

@@ -30,6 +30,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
+
     public class SandboxSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors

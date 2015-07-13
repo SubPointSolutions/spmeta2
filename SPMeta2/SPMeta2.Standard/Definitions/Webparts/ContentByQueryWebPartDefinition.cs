@@ -22,6 +22,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class ContentByQueryWebPartDefinition : WebPartDefinition
     {
         #region properties

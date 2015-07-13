@@ -24,7 +24,7 @@ namespace SPMeta2.Definitions.Webparts
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
-
+    [ExpectManyInstances]
     public class XsltListViewWebPartDefinition : WebPartDefinition
     {
         #region constructors

@@ -24,6 +24,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
+
     public class SecurityGroupDefinition : DefinitionBase
     {
         #region  constructors

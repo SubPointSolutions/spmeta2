@@ -28,6 +28,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class QuickLaunchNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
         #region methods

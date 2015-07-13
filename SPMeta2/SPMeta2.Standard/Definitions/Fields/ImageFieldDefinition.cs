@@ -26,6 +26,9 @@ namespace SPMeta2.Standard.Definitions.Fields
     //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+
     public class ImageFieldDefinition : FieldDefinition
     {
         #region constructors

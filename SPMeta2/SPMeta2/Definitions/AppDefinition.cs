@@ -29,6 +29,8 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     [ParentHostCapability(typeof(WebDefinition))]
     public class AppDefinition : DefinitionBase
     {

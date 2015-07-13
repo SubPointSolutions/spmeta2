@@ -23,6 +23,8 @@ namespace SPMeta2.Definitions.Webparts
 
     [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
     public class PageViewerWebPartDefinition : WebPartDefinition
     {
         #region constructors

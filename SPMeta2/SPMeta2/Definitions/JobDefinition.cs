@@ -28,6 +28,8 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
+
+    [ExpectManyInstances]
     public class JobDefinition : DefinitionBase
     {
         #region constructors

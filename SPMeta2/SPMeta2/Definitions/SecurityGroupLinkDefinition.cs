@@ -27,6 +27,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(ListDefinition))]
     [ParentHostCapability(typeof(FolderDefinition))]
     [ParentHostCapability(typeof(ListItemDefinition))]
+
+    [ExpectManyInstances]
+
     public class SecurityGroupLinkDefinition : DefinitionBase
     {
         public SecurityGroupLinkDefinition()

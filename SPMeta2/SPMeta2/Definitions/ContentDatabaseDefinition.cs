@@ -29,6 +29,7 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
 
+    [ExpectManyInstances]
     public class ContentDatabaseDefinition : DefinitionBase
     {
         #region constructors

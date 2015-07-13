@@ -24,6 +24,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
         #region constructors

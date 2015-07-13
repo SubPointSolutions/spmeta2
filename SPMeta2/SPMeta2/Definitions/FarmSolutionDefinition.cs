@@ -28,6 +28,7 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
 
     [ParentHostCapability(typeof(FarmDefinition))]
+    [ExpectManyInstances]
     public class FarmSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors

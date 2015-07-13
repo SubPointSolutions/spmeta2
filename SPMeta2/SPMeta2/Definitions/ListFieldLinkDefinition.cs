@@ -32,6 +32,8 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(ListDefinition))]
 
+    [ExpectManyInstances]
+
     public class ListFieldLinkDefinition : DefinitionBase
     {
         #region properties

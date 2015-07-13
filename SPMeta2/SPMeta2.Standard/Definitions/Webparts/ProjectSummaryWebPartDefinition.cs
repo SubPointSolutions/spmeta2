@@ -18,6 +18,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
+
     public class ProjectSummaryWebPartDefinition : WebPartDefinition
     {
         #region properties

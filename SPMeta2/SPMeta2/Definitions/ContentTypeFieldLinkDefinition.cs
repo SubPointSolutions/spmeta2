@@ -23,6 +23,8 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     [ParentHostCapability(typeof(ContentTypeDefinition))]
     public class ContentTypeFieldLinkDefinition : DefinitionBase
     {

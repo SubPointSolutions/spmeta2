@@ -41,6 +41,9 @@ namespace SPMeta2.Standard.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(FarmDefinition))]
+
+    [ExpectManyInstances]
+
     public class ManagedPropertyDefinition : DefinitionBase
     {
         #region constructors

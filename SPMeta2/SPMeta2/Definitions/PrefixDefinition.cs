@@ -29,6 +29,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
+
+    [ExpectManyInstances]
+
     public class PrefixDefinition : DefinitionBase
     {
         #region properties

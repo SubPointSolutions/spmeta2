@@ -25,6 +25,9 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(TaxonomyTermGroupDefinition))]
+
+    [ExpectManyInstances]
+
     public class TaxonomyTermSetDefinition : DefinitionBase
     {
         #region constructors

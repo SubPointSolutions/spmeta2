@@ -26,6 +26,8 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(SiteDefinition))]
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
     public class ContentTypeDefinition : DefinitionBase
     {
         #region properties

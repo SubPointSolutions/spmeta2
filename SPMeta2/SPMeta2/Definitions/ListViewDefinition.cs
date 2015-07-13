@@ -28,6 +28,9 @@ namespace SPMeta2.Definitions
     [ExpectAddHostExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class ListViewDefinition : DefinitionBase
     {
         #region constructors

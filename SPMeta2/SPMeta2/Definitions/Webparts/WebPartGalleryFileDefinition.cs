@@ -28,6 +28,8 @@ namespace SPMeta2.Definitions.Webparts
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     [ParentHostCapability(typeof(ListDefinition))]
     public class WebPartGalleryFileDefinition : ContentPageDefinitionBase
     {

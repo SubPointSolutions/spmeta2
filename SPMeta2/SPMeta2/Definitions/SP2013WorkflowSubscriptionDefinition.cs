@@ -32,6 +32,9 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
         #region constructors

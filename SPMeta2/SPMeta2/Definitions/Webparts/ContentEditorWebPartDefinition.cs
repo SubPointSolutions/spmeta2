@@ -25,6 +25,7 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
     public class ContentEditorWebPartDefinition : WebPartDefinition
     {
         #region properties

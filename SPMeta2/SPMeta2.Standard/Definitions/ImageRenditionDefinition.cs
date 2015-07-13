@@ -28,6 +28,9 @@ namespace SPMeta2.Standard.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
+
     public class ImageRenditionDefinition : DefinitionBase
     {
         #region properties

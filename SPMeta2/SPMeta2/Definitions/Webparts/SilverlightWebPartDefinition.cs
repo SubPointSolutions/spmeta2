@@ -23,6 +23,8 @@ namespace SPMeta2.Definitions.Webparts
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
     public class SilverlightWebPartDefinition : WebPartDefinition
     {
         #region properties

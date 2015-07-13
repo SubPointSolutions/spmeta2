@@ -29,6 +29,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class SP2013WorkflowDefinition : DefinitionBase
     {
         #region constructors

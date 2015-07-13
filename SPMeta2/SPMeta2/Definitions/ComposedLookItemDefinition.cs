@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
     public class ComposedLookItemDefinition : ListItemDefinition
     {
         #region properties

@@ -32,6 +32,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(FolderDefinition))]
     [ParentHostCapability(typeof(ListItemDefinition))]
+
+    [ExpectManyInstances]
+
     public class PropertyDefinition : DefinitionBase
     {
         #region properties

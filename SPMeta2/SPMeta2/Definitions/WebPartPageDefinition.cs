@@ -22,6 +22,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class WebPartPageDefinition : PageDefinitionBase
     {
         #region constructors

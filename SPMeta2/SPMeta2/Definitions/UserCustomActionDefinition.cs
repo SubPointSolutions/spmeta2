@@ -32,6 +32,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(SiteDefinition))]
     [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class UserCustomActionDefinition : DefinitionBase
     {
         #region constructors

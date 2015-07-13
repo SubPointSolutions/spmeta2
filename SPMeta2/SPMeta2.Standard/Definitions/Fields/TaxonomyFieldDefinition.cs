@@ -21,6 +21,8 @@ namespace SPMeta2.Standard.Definitions.Fields
     [Serializable] [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class TaxonomyFieldDefinition : FieldDefinition
     {
         #region constructors

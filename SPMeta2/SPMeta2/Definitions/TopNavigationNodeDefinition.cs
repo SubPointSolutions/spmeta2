@@ -28,6 +28,9 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class TopNavigationNodeDefinition : NavigationNodeDefinitionBase
     {
         #region methods

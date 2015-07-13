@@ -26,6 +26,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(ListDefinition))]
     [ParentHostCapability(typeof(FolderDefinition))]
 
+    [ExpectManyInstances]
+
+
     public class WelcomePageDefinition : DefinitionBase
     {
         #region properties

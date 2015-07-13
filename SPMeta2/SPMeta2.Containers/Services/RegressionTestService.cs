@@ -400,7 +400,7 @@ namespace SPMeta2.Containers.Services
         private void AttachHooks(ModelNode modeNode, List<EventHooks> hooks)
         {
             //if (modeNode.Value.RequireSelfProcessing || modeNode.Options.RequireSelfProcessing)
-            if ( modeNode.Options.RequireSelfProcessing)
+            if (modeNode.Options.RequireSelfProcessing)
             {
                 var hook = CreateHook();
 
@@ -481,9 +481,9 @@ namespace SPMeta2.Containers.Services
         {
             foreach (var model in models)
             {
-                
 
-                
+
+
 
                 var xml = SPMeta2Model.ToXML(model);
                 var xmlModelInstance = SPMeta2Model.FromXML(xml);
@@ -516,7 +516,10 @@ namespace SPMeta2.Containers.Services
                 ModelGeneratorService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, omModelType);
 
                 if (definitionSetup != null)
-                    definitionSetup(ModelGeneratorService.CurrentDefinition as TDefinition);
+                {
+                    foreach (var def in ModelGeneratorService.CurrentDefinitions)
+                        definitionSetup(def as TDefinition);
+                }
 
                 var hooks = GetHooks(definitionSandbox);
 
@@ -584,7 +587,7 @@ namespace SPMeta2.Containers.Services
             Trace.WriteLine(string.Format("[INF]{2}MODEL CHECK [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
 
             //if (model.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
-            if ( modelNode.Options.RequireSelfProcessing)
+            if (modelNode.Options.RequireSelfProcessing)
             {
                 var modelValidationResult = ModelValidations.FirstOrDefault(r => r.Model == model);
 

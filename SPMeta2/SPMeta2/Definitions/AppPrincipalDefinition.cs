@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
 
+    [ExpectManyInstances]
+
     [ParentHostCapability(typeof(WebDefinition))]
     public class AppPrincipalDefinition : DefinitionBase
     {

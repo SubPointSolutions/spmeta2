@@ -31,6 +31,8 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
     [ParentHostCapability(typeof(ContentTypeDefinition))]
+
+    [ExpectManyInstances]
     public class EventReceiverDefinition : DefinitionBase
     {
         #region constructors

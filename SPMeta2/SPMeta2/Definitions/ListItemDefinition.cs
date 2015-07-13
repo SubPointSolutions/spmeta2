@@ -29,6 +29,8 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
     public class ListItemDefinition : DefinitionBase
     {
         #region constructors

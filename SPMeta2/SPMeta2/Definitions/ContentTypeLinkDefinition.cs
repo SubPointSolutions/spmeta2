@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     [ParentHostCapability(typeof(ListDefinition))]
     public class ContentTypeLinkDefinition : DefinitionBase
     {

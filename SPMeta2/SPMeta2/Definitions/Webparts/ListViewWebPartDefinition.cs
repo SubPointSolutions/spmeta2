@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
     public class ListViewWebPartDefinition : WebPartDefinition
     {
         #region properties

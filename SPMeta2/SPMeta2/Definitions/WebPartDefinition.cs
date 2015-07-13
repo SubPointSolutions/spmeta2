@@ -27,6 +27,8 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(WikiPageDefinition))]
     [ParentHostCapability(typeof(WebPartPageDefinition))]
 
+    [ExpectManyInstances]
+
     public class WebPartDefinition : WebPartDefinitionBase
     {
         #region constructors

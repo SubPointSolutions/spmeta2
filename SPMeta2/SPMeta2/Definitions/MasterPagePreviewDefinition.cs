@@ -28,6 +28,8 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+    [ExpectManyInstances]
+
     public class MasterPagePreviewDefinition : ContentPageDefinitionBase
     {
         #region constructors

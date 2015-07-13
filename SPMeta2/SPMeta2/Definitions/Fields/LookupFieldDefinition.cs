@@ -26,6 +26,7 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
     public class LookupFieldDefinition : FieldDefinition
     {
         #region constructors

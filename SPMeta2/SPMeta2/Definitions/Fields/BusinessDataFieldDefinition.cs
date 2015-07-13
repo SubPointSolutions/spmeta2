@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class BusinessDataFieldDefinition : FieldDefinition
     {
         #region constructors

@@ -25,6 +25,9 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class WikiPageDefinition : PageDefinitionBase
     {
         #region properties

@@ -27,6 +27,9 @@ namespace SPMeta2.Standard.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class PublishingPageDefinition : PageDefinitionBase
     {
         #region properties

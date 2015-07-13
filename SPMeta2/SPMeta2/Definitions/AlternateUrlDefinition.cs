@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
 
     [ParentHostCapabilityAttribute(typeof(WebApplicationDefinition))]
     public class AlternateUrlDefinition : DefinitionBase

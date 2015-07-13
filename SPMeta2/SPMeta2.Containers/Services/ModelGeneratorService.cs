@@ -6,6 +6,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
+using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
@@ -58,7 +59,9 @@ namespace SPMeta2.Containers.Services
             return GetAdditionalDefinitions(typeof(TDefinition));
         }
 
-        public DefinitionBase CurrentDefinition { get; set; }
+        public List<DefinitionBase> CurrentDefinitions = new List<DefinitionBase>();
+
+        RandomService Rnd = new DefaultRandomService();
 
         public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
              where TDefinition : DefinitionBase, new()
@@ -69,8 +72,26 @@ namespace SPMeta2.Containers.Services
             var parentHostType = GetParentHostType<TDefinition>(objectModelType);
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
+            var expectManyInstancesAttr = typeof(TDefinition).GetCustomAttribute<ExpectManyInstances>(false);
 
-            CurrentDefinition = currentDefinition;
+            var manyInstances = new List<TDefinition>();
+
+            if (expectManyInstancesAttr != null)
+            {
+                var maxCount = expectManyInstancesAttr.MinInstancesCount +
+                               Rnd.Int(expectManyInstancesAttr.MaxInstancesCount -
+                                       expectManyInstancesAttr.MinInstancesCount);
+
+                for (int i = 0; i < maxCount; i++)
+                    manyInstances.Add(GetRandomDefinition<TDefinition>());
+            }
+
+            CurrentDefinitions.Clear();
+
+            CurrentDefinitions.Add(currentDefinition);
+            CurrentDefinitions.AddRange(manyInstances);
+
+            //CurrentDefinition = currentDefinition;
 
             var defs = new List<GeneratedNodes>();
 
@@ -109,6 +130,8 @@ namespace SPMeta2.Containers.Services
 
                 _m.AddDefinitionNode(currentDefinition);
 
+                foreach (var manyDef in manyInstances)
+                    _m.AddDefinitionNode(manyDef);
 
                 result = model;
             }

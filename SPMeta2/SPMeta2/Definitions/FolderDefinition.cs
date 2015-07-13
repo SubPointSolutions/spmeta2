@@ -30,6 +30,8 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(ListDefinition))]
     [ParentHostCapability(typeof(FolderDefinition))]
+
+    [ExpectManyInstances]
     public class FolderDefinition : DefinitionBase
     {
         #region properties

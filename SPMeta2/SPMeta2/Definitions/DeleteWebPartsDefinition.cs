@@ -23,6 +23,8 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(WebPartPageDefinition))]
     [ParentHostCapability(typeof(WikiPageDefinition))]
+
+    [ExpectManyInstances]
     public class DeleteWebPartsDefinition : DefinitionBase
     {
         #region constructors
