@@ -63,11 +63,11 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Caml")]
         public void ShouldFail_On_Invalid_CAML()
         {
-            WithExcpectedExceptions(new[]
+            var isValid = false;
+
+            try
             {
-                typeof (SPMeta2ModelValidationException)
-            }, () =>
-            {
+
                 var model = SPMeta2Model.NewWebModel(web =>
                 {
                     web.AddRandomList(list =>
@@ -82,7 +82,16 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 });
 
                 Service.DeployModel(null, model);
-            });
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e is SPMeta2Exception);
+                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
+
+                isValid = true;
+            }
+
+            Assert.IsTrue(isValid);
         }
 
         #endregion
@@ -115,10 +124,9 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Xml")]
         public void ShouldFail_On_Invalid_Xml()
         {
-            WithExcpectedExceptions(new[]
-            {
-                typeof (SPMeta2ModelValidationException)
-            }, () =>
+            var isValid = false;
+
+            try
             {
                 var model = SPMeta2Model.NewWebModel(web =>
                 {
@@ -136,7 +144,16 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 });
 
                 Service.DeployModel(null, model);
-            });
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e is SPMeta2Exception);
+                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
+
+                isValid = true;
+            }
+
+            Assert.IsTrue(isValid);
         }
 
         #endregion

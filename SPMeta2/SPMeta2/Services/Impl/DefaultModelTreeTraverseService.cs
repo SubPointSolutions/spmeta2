@@ -39,8 +39,8 @@ namespace SPMeta2.Services.Impl
 
         public override void Traverse(object modelHost, ModelNode modelNode)
         {
-            //try
-            //{
+            try
+            {
                 var modelDefinition = modelNode.Value as DefinitionBase;
                 var modelHandler = OnModelHandlerResolve(modelNode);
 
@@ -55,7 +55,7 @@ namespace SPMeta2.Services.Impl
                     OnModelProcessing(modelNode);
 
                 //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
-                var requireselfProcessing =  modelNode.Options.RequireSelfProcessing;
+                var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
 
                 TraceService.InformationFormat((int)LogEventId.ModelProcessing, "Deploying model [{0}] RSP: [{1}] : [{2}].",
                     new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
@@ -116,17 +116,17 @@ namespace SPMeta2.Services.Impl
 
                 if (OnModelFullyProcessed != null)
                     OnModelFullyProcessed(modelNode);
-            //}
-            //catch (Exception e)
-            //{
-            //    if (e is SPMeta2ModelDeploymentException)
-            //        throw;
+            }
+            catch (Exception e)
+            {
+                if (e is SPMeta2ModelDeploymentException)
+                    throw;
 
-            //    throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
-            //    {
-            //        ModelNode = modelNode,
-            //    };
-            //}
+                throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
+                {
+                    ModelNode = modelNode,
+                };
+            }
         }
 
         #endregion
