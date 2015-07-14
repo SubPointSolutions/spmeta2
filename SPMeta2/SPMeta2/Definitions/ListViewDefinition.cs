@@ -29,7 +29,8 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(ListDefinition))]
 
-    [ExpectManyInstances]
+    // this not going to work due to IsDefault prop on view
+    //[ExpectManyInstances]
 
     public class ListViewDefinition : DefinitionBase
     {
