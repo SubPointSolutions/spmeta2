@@ -56,7 +56,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var webClient = new WebClient();
 
                 if (context.Credentials != null)
+                {
                     webClient.Credentials = context.Credentials;
+                    webClient.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
+                }
                 else
                     webClient.UseDefaultCredentials = true;
 

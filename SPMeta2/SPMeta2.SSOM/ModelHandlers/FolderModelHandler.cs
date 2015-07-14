@@ -65,7 +65,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 action(newContext);
 
-                currentListItem.Update();
+                if (newContext.ShouldUpdateHost)
+                    currentListItem.Update();
             }
         }
 

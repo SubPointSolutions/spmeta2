@@ -311,7 +311,7 @@ function EnsureAssociatedGroups($web) {
 # test environment settings
 
 $envType = $g_M2TestEnvironment.EnvironmentType
-$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM"
+$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204"
 
 $o365_UserName = $g_M2TestEnvironment.O365UserName
 $o365_UserPassword = $g_M2TestEnvironment.O365UserPassword
@@ -436,7 +436,7 @@ function SetO365MManagedMetadataApplicationParams($siteUrl) {
     $store = $taxSession.GetDefaultSiteCollectionTermStore();
 
     $context.Load($store)
-    $context.ExecuteQueryWithTrace()
+    $context.ExecuteQuery()
 
     Write-Host "Setting up taxonomy store vars" -fore Yellow
 

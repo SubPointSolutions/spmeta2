@@ -7,4 +7,4 @@ M2ShowSettings $g_M2TestEnvironment
 # CSOM, SSOM, O365
 SetupSPMeta2RegressionTestEnvironment "SSOM"
 SetupSPMeta2RegressionTestEnvironment "CSOM"
-#SetupSPMeta2RegressionTestEnvironment "O365"
+SetupSPMeta2RegressionTestEnvironment "O365"
