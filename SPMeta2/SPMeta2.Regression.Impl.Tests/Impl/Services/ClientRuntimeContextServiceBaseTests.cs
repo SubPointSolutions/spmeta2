@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Services;
@@ -12,8 +8,7 @@ using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Services.Impl;
 using SPMeta2.Exceptions;
-using SPMeta2.SSOM.Services;
-using SPMeta2.Utils;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 {
@@ -26,7 +21,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
     //}
 
     [TestClass]
-    public class ClientRuntimeContextServiceBaseTests
+    public class ClientRuntimeContextServiceBaseTests : SPMeta2RegresionScenarioTestBase
     {
         #region constructors
 
@@ -60,6 +55,14 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         #endregion
 
         #region tests
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [ExpectedException(typeof(Exception))]
+        public void ClientRuntimeContextService_Should_Survive_IISReset()
+        {
+            throw new NotImplementedException();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]

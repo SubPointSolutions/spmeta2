@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 using Microsoft.SharePoint.Client;
@@ -20,6 +21,12 @@ namespace SPMeta2.CSOM.Services.Impl
             ExecuteQueryRetryAttempts = 10;
 
             InitAllowedStatusCodes();
+            InitAllowedIISResetSocketStatusCodes();
+        }
+
+        private void InitAllowedIISResetSocketStatusCodes()
+        {
+            _allowedIISResetSocketStatusCodes.Add(SocketError.ConnectionReset);
         }
 
         private void InitAllowedStatusCodes()
@@ -40,6 +47,13 @@ namespace SPMeta2.CSOM.Services.Impl
         protected virtual List<int> AllowedStatusCodes
         {
             get { return _allowedStatusCodes; }
+        }
+
+        private readonly List<SocketError> _allowedIISResetSocketStatusCodes = new List<SocketError>();
+
+        protected virtual List<SocketError> AllowedIISResetSocketStatusCodes
+        {
+            get { return _allowedIISResetSocketStatusCodes; }
         }
 
         public Action<ClientRuntimeContext> CustomExecuteQueryHandler { get; set; }
@@ -98,6 +112,56 @@ namespace SPMeta2.CSOM.Services.Impl
 
         protected virtual bool ShouldRetryExecuteQuery(Exception ex)
         {
+            // O365 related handling
+            if (IsAllowedHttpWebResponseStatusCode(ex))
+                return true;
+
+            // local IISReset or something else?
+            if (IsAllowedWebException(ex))
+                return true;
+
+            return false;
+        }
+
+        protected virtual bool IsAllowedWebException(Exception ex)
+        {
+            // handles allowed WebException
+            // IISReset, for instance
+
+            var webEx = ex as WebException;
+
+            if (webEx != null)
+            {
+                if (IsIISReset(webEx))
+                    return true;
+            }
+
+            return false;
+        }
+
+        protected virtual bool IsIISReset(WebException ex)
+        {
+            if (ex != null)
+            {
+                var lastInnerException = ex.InnerException;
+
+                while (lastInnerException.InnerException != null)
+                    lastInnerException = lastInnerException.InnerException;
+
+                if (lastInnerException is SocketException)
+                {
+                    var socketException = lastInnerException as SocketException;
+                    return AllowedIISResetSocketStatusCodes.Contains(socketException.SocketErrorCode);
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IsAllowedHttpWebResponseStatusCode(Exception ex)
+        {
+            // handles allowed http responce statuses with AllowedStatusCodes collection
+
             var webEx = ex as WebException;
 
             if (webEx != null && webEx.Response != null)
