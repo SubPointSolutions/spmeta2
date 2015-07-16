@@ -141,6 +141,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region  list views
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        public void CanDeploy_WebpartTo_UploadForm_InLibrary()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomDocumentLibrary(list =>
+                        {
+                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.Upload, listView =>
+                            {
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                            });
+                        });
+                });
+
+            TestModel(model);
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
@@ -155,24 +176,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             list.AddHostListView(BuiltInListViewDefinitions.Libraries.AllItems, listView =>
                             {
                                 listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
                             });
 
                             list.AddHostListView(BuiltInListViewDefinitions.Libraries.DispForm, listView =>
                             {
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
                                 listView.AddRandomWebpart();
                             });
 
                             list.AddHostListView(BuiltInListViewDefinitions.Libraries.EditForm, listView =>
                             {
                                 listView.AddRandomWebpart();
-                            });
-
-                            list.AddHostListView(BuiltInListViewDefinitions.Libraries.Upload, listView =>
-                            {
+                                listView.AddRandomWebpart();
                                 listView.AddRandomWebpart();
                             });
                         });
-
                 });
 
             TestModel(model);
@@ -196,6 +217,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                def.IsDefault = false;
 
                                listView.AddRandomWebpart();
+                               listView.AddRandomWebpart();
                            });
 
                            // custom with UTL
@@ -205,6 +227,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                def.Url = Rnd.AspxFileName();
                                def.IsDefault = false;
 
+                               listView.AddRandomWebpart();
                                listView.AddRandomWebpart();
                            });
                        });
@@ -227,20 +250,29 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             list.AddHostListView(BuiltInListViewDefinitions.Lists.AllItems, listView =>
                             {
                                 listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
                             });
 
                             list.AddHostListView(BuiltInListViewDefinitions.Lists.EditForm, listView =>
                             {
                                 listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+
                             });
 
                             list.AddHostListView(BuiltInListViewDefinitions.Lists.NewForm, listView =>
                             {
                                 listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
                             });
 
                             list.AddHostListView(BuiltInListViewDefinitions.Lists.DispForm, listView =>
                             {
+                                listView.AddRandomWebpart();
+                                listView.AddRandomWebpart();
                                 listView.AddRandomWebpart();
                             });
                         });
@@ -268,6 +300,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                def.IsDefault = false;
 
                                listView.AddRandomWebpart();
+                               listView.AddRandomWebpart();
                            });
 
                            // custom with UTL
@@ -277,6 +310,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                def.Url = Rnd.AspxFileName();
                                def.IsDefault = false;
 
+                               listView.AddRandomWebpart();
                                listView.AddRandomWebpart();
                            });
                        });
@@ -310,6 +344,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 }, page =>
                                 {
                                     page.AddRandomWebpart();
+                                    page.AddRandomWebpart();
+                                    page.AddRandomWebpart();
                                 });
                             });
                         });
@@ -336,6 +372,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 NeedOverride = false
                             }, page =>
                             {
+                                page.AddRandomWebpart();
+                                page.AddRandomWebpart();
                                 page.AddRandomWebpart();
                             });
                         });

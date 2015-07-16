@@ -36,6 +36,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.ServerRelativeUrl,
                 o => o.DefaultViewForContentType,
                 o => o.ContentTypeId,
+                o => o.ViewType,
                 v => v.Title));
             context.ExecuteQueryWithTrace();
 
@@ -49,6 +50,33 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
                                           .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+            if (!string.IsNullOrEmpty(definition.ViewData))
+                assert.ShouldBeEqual(m => m.ViewData, o => o.ViewData);
+            else
+                assert.SkipProperty(m => m.ViewData);
+
+            if (!string.IsNullOrEmpty(definition.Type))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Type);
+                    var dstProp = d.GetExpressionValue(o => o.ViewType);
+
+                    var isValid = srcProp.Value.ToString().ToUpper() ==
+                        dstProp.Value.ToString().ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.Type);
 
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);

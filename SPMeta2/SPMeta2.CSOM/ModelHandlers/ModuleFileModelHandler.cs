@@ -304,6 +304,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (file.Exists)
                 {
+                    context.Load(file);
+
                     context.Load(file, f => f.CheckOutType);
                     context.Load(file, f => f.CheckedOutByUser);
                     context.Load(file, f => f.Level);
@@ -317,7 +319,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // are we inside ocument libary, so that check in stuff is needed?
             var isDocumentLibrary = list != null && list.BaseType == BaseType.DocumentLibrary;
 
-            if (isDocumentLibrary)
+            if (isDocumentLibrary && doesFileHasListItem)
             {
 
                 if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
@@ -349,7 +351,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             var spFile = action(file);
             context.ExecuteQueryWithTrace();
 
+            context.Load(spFile);
             context.Load(spFile, f => f.Exists);
+
             context.ExecuteQueryWithTrace();
 
             if (spFile.Exists)
@@ -374,6 +378,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (onCreated != null)
                     onCreated(spFile);
 
+                context.Load(spFile);
+
                 context.Load(spFile, f => f.CheckOutType);
                 context.Load(spFile, f => f.Level);
 
@@ -386,7 +392,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (isDocumentLibrary && doesFileHasListItem)
             {
                 if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
+                {
                     spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
+                }
 
                 if (list != null && spFile != null && (list.EnableMinorVersions))
                     spFile.Publish("Provision");

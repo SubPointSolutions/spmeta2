@@ -210,3 +210,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/SPMeta2.v2.ncrunchsolution
+/SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj.DotSettings
+/SPMeta2/SPMeta2/SPMeta2.csproj.DotSettings

@@ -37,6 +37,33 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.SkipProperty(m => m.Query);
 
+            if (!string.IsNullOrEmpty(definition.ViewData))
+                assert.ShouldBeEqual(m => m.ViewData, o => o.ViewData);
+            else
+                assert.SkipProperty(m => m.ViewData);
+
+            if (!string.IsNullOrEmpty(definition.Type))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Type);
+                    var dstProp = d.GetExpressionValue(o => o.Type);
+
+                    var isValid = srcProp.Value.ToString().ToUpper() ==
+                        dstProp.Value.ToString().ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.Type);
+
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
             else
@@ -131,6 +158,16 @@ namespace SPMeta2.Regression.SSOM.Validation
 
     internal static class ViewDefault
     {
+        public static string GetType(this ListViewDefinition def)
+        {
+            return def.Type.ToUpper();
+        }
+
+        public static string GetType(this SPView view)
+        {
+            return view.Type.ToUpper();
+        }
+
         public static bool IsDefaul(this SPView view)
         {
             return view.ParentList.DefaultView.ID == view.ID;
