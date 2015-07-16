@@ -79,16 +79,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                     // .AddSecurityRoleLink() is missed on SecurityGroup #601
                     // https://github.com/SubPointSolutions/spmeta2/issues/601 
-                    // group.AddSecurityRoleLink(new SecurityRoleLinkDefinition());
+                    group.AddSecurityRoleLink(new SecurityRoleLinkDefinition());
+                    group.AddSecurityRoleLink(new SecurityRoleLinkDefinition());
                 });
 
                 site.AddSecurityRole(new SecurityRoleDefinition());
-
-                // TODO
-
-                // .AddTaxonomyTermLabel() is missed on TaxonomyTermDefinition #602
-                // https://github.com/SubPointSolutions/spmeta2/issues/602
-                // term.AddTaxonomyTermLabel(new TaxonomyTermLabelDefinition());
 
                 site.AddWeb(new WebDefinition());
 
@@ -118,7 +113,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                                 // .AddTaxonomyTermLabel() is missed on TaxonomyTermDefinition #602
                                 // https://github.com/SubPointSolutions/spmeta2/issues/602
-                                // term.AddTaxonomyTermLabel(new TaxonomyTermLabelDefinition());
+                                term.AddTaxonomyTermLabel(new TaxonomyTermLabelDefinition());
                             });
                         });
                     });

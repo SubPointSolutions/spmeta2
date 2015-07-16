@@ -8,7 +8,7 @@ namespace SPMeta2.Syntax.Default
 {
     [Serializable]
     [DataContract]
-    public class SecurityGroupLinkModelNode : TypedModelNode, ISecurityGroupLinkModelNode
+    public class SecurityGroupLinkModelNode : TypedModelNode, ISecurityRoleLinkHostModelNode
 
     {
 

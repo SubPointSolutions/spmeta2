@@ -333,12 +333,13 @@
     <Compile Include="Syntax\Default\Fields\ChoiceFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Interfaces\IListItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
-    <Compile Include="Syntax\Default\Interfaces\ISecurityGroupLinkModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IQuickLaunchNavigationNodeHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermGroupHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermSetHostModelNode.cs" />

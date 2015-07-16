@@ -26,6 +26,7 @@ namespace SPMeta2.Definitions
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+    [ExpectAddHostExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
 

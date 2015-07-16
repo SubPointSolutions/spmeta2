@@ -50,15 +50,16 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-        public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition)
+        public static TModelNode AddHostModuleFile<TModelNode>(this TModelNode model, ModuleFileDefinition definition)
+          where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddHostModuleFile(model, definition, null);
         }
-
-        public static ModelNode AddHostModuleFile(this ModelNode model, ModuleFileDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostModuleFile<TModelNode>(this TModelNode model, ModuleFileDefinition definition,
+            Action<ModuleFileModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
-
     }
 }
