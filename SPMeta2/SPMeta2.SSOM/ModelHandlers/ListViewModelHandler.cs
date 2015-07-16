@@ -13,6 +13,7 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using System.Web.UI.WebControls.WebParts;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -144,6 +145,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var viewFields = new StringCollection();
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
+                var isPersonalView = false;
+                var viewType = (Microsoft.SharePoint.SPViewCollection.SPViewType)Enum.Parse(typeof(Microsoft.SharePoint.SPViewCollection.SPViewType),
+                    string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
+
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
                             string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : GetSafeViewUrl(listViewModel.Url),
@@ -151,7 +156,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                             listViewModel.Query,
                             (uint)listViewModel.RowLimit,
                             listViewModel.IsPaged,
-                            listViewModel.IsDefault);
+                            listViewModel.IsDefault,
+                            viewType,
+                            isPersonalView);
 
                 currentView.Title = listViewModel.Title;
             }
@@ -170,6 +177,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 foreach (var viewField in listViewModel.Fields)
                     currentView.ViewFields.Add(viewField);
             }
+
+            if (!string.IsNullOrEmpty(listViewModel.ViewData))
+                currentView.ViewData = listViewModel.ViewData;
 
             currentView.Hidden = listViewModel.Hidden;
             currentView.Title = listViewModel.Title;

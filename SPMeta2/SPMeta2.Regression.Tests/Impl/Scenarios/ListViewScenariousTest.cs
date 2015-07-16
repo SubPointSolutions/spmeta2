@@ -30,6 +30,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsHtml()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Html;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsCalendar()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Calendar;
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsChart()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Chart;
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsGantt()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Gantt;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsGrid()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Grid;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_AsRecurrence()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Type = BuiltInViewType.Recurrence;
+            });
+        }
+
+        #endregion
+
         #region default
 
         [TestMethod]

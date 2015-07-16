@@ -7,6 +7,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Definitions
 {
@@ -21,7 +22,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -44,6 +45,8 @@ namespace SPMeta2.Definitions
 
             Url = string.Empty;
             Query = string.Empty;
+
+            Type = BuiltInViewType.Html;
         }
 
         #endregion
@@ -99,6 +102,14 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
+        [DataMember]
+        public string ViewData { get; set; }
+
+        /// <summary>
+        /// IsPaged flag of the target list view.
+        /// </summary>
+        /// 
+        [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
         public bool IsPaged { get; set; }
@@ -144,6 +155,11 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public string Type { get; set; }
 
         #endregion
 

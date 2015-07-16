@@ -141,7 +141,7 @@ namespace SPMeta2.CSOM.Services.Impl
 
         protected virtual bool IsIISReset(WebException ex)
         {
-            if (ex != null)
+            if (ex != null && ex.InnerException != null)
             {
                 var lastInnerException = ex.InnerException;
 

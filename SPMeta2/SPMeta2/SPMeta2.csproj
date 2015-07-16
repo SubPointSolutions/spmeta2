@@ -189,6 +189,7 @@
     <Compile Include="Enumerations\BuiltInTargetApplicationType.cs" />
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInUrlZone.cs" />
+    <Compile Include="Enumerations\BuiltInViewType.cs" />
     <Compile Include="Enumerations\BuiltInWebConfigModificationType.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />

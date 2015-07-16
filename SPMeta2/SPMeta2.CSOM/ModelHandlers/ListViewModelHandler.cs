@@ -13,6 +13,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -177,8 +178,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (listViewModel.Fields != null && listViewModel.Fields.Count() > 0)
                     newView.ViewFields = listViewModel.Fields.ToArray();
 
+                if (!string.IsNullOrEmpty(listViewModel.Type))
+                {
+                    newView.ViewTypeKind = (ViewType)Enum.Parse(typeof(ViewType),
+                        string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
+                }
+
                 currentView = list.Views.Add(newView);
 
+                if (!string.IsNullOrEmpty(listViewModel.ViewData))
+                    currentView.ViewData = listViewModel.ViewData;
 
                 if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
                     currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
@@ -218,6 +227,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (!string.IsNullOrEmpty(listViewModel.Query))
                     currentView.ViewQuery = listViewModel.Query;
+
+                if (!string.IsNullOrEmpty(listViewModel.ViewData))
+                    currentView.ViewData = listViewModel.ViewData;
 
                 if (listViewModel.Fields != null && listViewModel.Fields.Count() > 0)
                 {
