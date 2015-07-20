@@ -260,6 +260,13 @@ namespace SPMeta2.Containers.Services
                     var def = GetRandomDefinition(additionalParentHostType);
                     var node = new ModelNode { Value = def };
 
+                    // in paraller tests these should not be processed
+                    // we need RootWebDefinition as a parent onmly to llokup the wroot web
+                    if (def is RootWebDefinition)
+                    {
+                        node.Options.RequireSelfProcessing = false;
+                    }
+
                     defs.Add(new GeneratedNodes
                     {
                         ModelNode = node
@@ -288,6 +295,13 @@ namespace SPMeta2.Containers.Services
                 {
                     var def = GetRandomDefinition(additionalParentHostType);
                     var node = new ModelNode { Value = def };
+
+                    // in paraller tests these should not be processed
+                    // we need RootWebDefinition as a parent onmly to llokup the wroot web
+                    if (def is RootWebDefinition)
+                    {
+                        node.Options.RequireSelfProcessing = false;
+                    }
 
                     defs.Add(new GeneratedNodes
                     {

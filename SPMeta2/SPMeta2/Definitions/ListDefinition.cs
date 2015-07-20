@@ -223,12 +223,13 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("Title: [{0}] Url: [{1}] TemplateType:[{2}] TemplateName:[{3}]",
+            return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
                             new[] {
                                 Title,
                                 Url,
                                 TemplateType.ToString(),
-                                TemplateName                                
+                                TemplateName,
+                                ContentTypesEnabled.ToString()
                             });
         }
 

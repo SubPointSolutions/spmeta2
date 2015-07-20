@@ -38,6 +38,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Html;
             });
         }
@@ -48,6 +49,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Calendar;
             });
         }
@@ -59,6 +61,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Chart;
             });
         }
@@ -70,6 +73,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Gantt;
             });
         }
@@ -80,6 +84,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Grid;
             });
         }
@@ -90,6 +95,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Hidden = false;
                 def.Type = BuiltInViewType.Recurrence;
             });
         }

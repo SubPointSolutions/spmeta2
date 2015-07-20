@@ -704,7 +704,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ContentTypeLinkDefinition()
         {
-            TestRandomDefinition<ContentTypeLinkDefinition>();
+            // preserver list 'EnableContentTypes' from changes
+            WithDisabledPropertyUpdateValidation(() =>
+            {
+                TestRandomDefinition<ContentTypeLinkDefinition>();
+            });
+
+
         }
 
         [TestMethod]

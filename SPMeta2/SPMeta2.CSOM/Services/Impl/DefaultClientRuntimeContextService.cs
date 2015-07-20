@@ -102,7 +102,7 @@ namespace SPMeta2.CSOM.Services.Impl
                 }
             }
 
-            throw new SPMeta2Exception(string.Format("ClientRuntimeContext.ExecuteQuery() exceeded [{0}] retry attempts.", ExecuteQueryDelayInMilliseconds));
+            throw new SPMeta2Exception(string.Format("ClientRuntimeContext.ExecuteQuery() exceeded [{0}] retry attempts.", ExecuteQueryRetryAttempts));
         }
 
         protected virtual int GetNextExecuteQueryDelayInMilliseconds(int currentDelay)

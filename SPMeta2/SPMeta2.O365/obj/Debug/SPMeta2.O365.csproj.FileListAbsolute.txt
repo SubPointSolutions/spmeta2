@@ -29,3 +29,13 @@ C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\S
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
 C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.XML
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.dll
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.O365.pdb
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\Microsoft.Online.SharePoint.Client.Tenant.dll
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.dll
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.pdb
+Z:\spmeta2\SPMeta2\SPMeta2.O365\bin\Debug\SPMeta2.xml
+Z:\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.csprojResolveAssemblyReference.cache
+Z:\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.dll
+Z:\spmeta2\SPMeta2\SPMeta2.O365\obj\Debug\SPMeta2.O365.pdb

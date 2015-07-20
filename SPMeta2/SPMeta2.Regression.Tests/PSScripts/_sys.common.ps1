@@ -311,7 +311,8 @@ function EnsureAssociatedGroups($web) {
 # test environment settings
 
 $envType = $g_M2TestEnvironment.EnvironmentType
-$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204"
+#$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204"
+$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.0.2617.1200"
 
 $o365_UserName = $g_M2TestEnvironment.O365UserName
 $o365_UserPassword = $g_M2TestEnvironment.O365UserPassword
@@ -332,6 +333,15 @@ function SetTestOnPremTestLogins()
     $loginsString = [string]::Join(",", $logins);
 
     SetEnvironmentVar "SPMeta2_DefaultTestUserLogins" $loginsString
+}
+
+function SetTestO365Logins() {
+
+     $logins = $g_M2TestEnvironment.OO365TestLogins
+    $loginsString = [string]::Join(",", $logins);
+
+    SetEnvironmentVar "SPMeta2_DefaultTestUserLogins" $loginsString
+
 }
 
 function SetTestOnPremTestADGroups()
@@ -468,6 +478,8 @@ function SetupO365v16Environment() {
 function SetupO365Environment() {
 
     Write-Host "Setting up O365 environment" -fore Yellow
+
+    SetTestO365Logins
 
     SetEnvironmentVar "SPMeta2_RunnerLibraries" "SPMeta2.Containers.O365.dll"
 
