@@ -94,6 +94,12 @@ namespace SPMeta2.Containers.O365
 
             WebUrls.Clear();
             WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
+
+            WebUrls.Clear();
+            WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
+
+            RandomBalancedUrls.Clear();
+            RandomBalancedUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_RandomBalancedUrls));
         }
 
         #endregion

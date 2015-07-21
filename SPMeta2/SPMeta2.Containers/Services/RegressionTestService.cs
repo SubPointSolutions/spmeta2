@@ -777,6 +777,12 @@ namespace SPMeta2.Containers.Services
                 CurrentProvisionRunner = provisionRunner;
 
                 Trace.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
+                Trace.WriteLine(string.Empty);
+
+                Trace.WriteLine(string.Format("[INF]        - Current VM: [{0}]", Environment.MachineName));
+                Trace.WriteLine(string.Format("[INF]        - Current VM CPU: [{0}]", Environment.ProcessorCount));
+                Trace.WriteLine(string.Empty);
+
                 Trace.WriteLine(string.Format("[INF]        - ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
                 Trace.WriteLine(string.Format("[INF]        - EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
 

@@ -337,7 +337,7 @@ function SetTestOnPremTestLogins()
 
 function SetTestO365Logins() {
 
-     $logins = $g_M2TestEnvironment.OO365TestLogins
+    $logins = $g_M2TestEnvironment.O365DefaultTestUserLogins
     $loginsString = [string]::Join(",", $logins);
 
     SetEnvironmentVar "SPMeta2_DefaultTestUserLogins" $loginsString
@@ -454,6 +454,12 @@ function SetO365MManagedMetadataApplicationParams($siteUrl) {
     SetEnvironmentVar "SPMeta2_DefaultTaxonomyStoreName"  $store.Name    
 }
 
+function SetO365RandomBalancedUrls() {
+    $urls =   $g_M2TestEnvironment.RandomBalancedUrls  -join ','
+
+	SetEnvironmentVar "SPMeta2_O365_RandomBalancedUrls" $urls
+}
+
 function SetupO365v16Environment() {
 
     Write-Host "Setting up O365 environment" -fore Yellow
@@ -480,6 +486,7 @@ function SetupO365Environment() {
     Write-Host "Setting up O365 environment" -fore Yellow
 
     SetTestO365Logins
+	SetO365RandomBalancedUrls 
 
     SetEnvironmentVar "SPMeta2_RunnerLibraries" "SPMeta2.Containers.O365.dll"
 

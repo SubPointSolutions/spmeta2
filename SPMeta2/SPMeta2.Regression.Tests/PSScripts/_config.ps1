@@ -51,7 +51,7 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     # CSOM, SSOM or O365
     EnvironmentType = "SSOM"
 
-   #O365 specific settings
+  #O365 specific settings
     O365UserName = ""
     O365UserPassword = ""
 
@@ -62,8 +62,14 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     O365WebUrls = @(
         ""
     )
+   
+   RandomBalancedUrls = @( 
 
+	 )
 
+	O365DefaultTestUserLogins = @(
+		""
+	)
 
     # CSOM specific settings
     CSOMWebApplicationUrls = @(

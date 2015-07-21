@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="build.v12.ps1" />
-    <None Include="build.ps1" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
