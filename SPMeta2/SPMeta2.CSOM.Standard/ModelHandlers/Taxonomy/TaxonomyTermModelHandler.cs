@@ -129,7 +129,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -146,7 +146,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -162,6 +162,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             termStore.CommitAll();
             termStore.Context.ExecuteQueryWithTrace();
+        }
+
+        private void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel)
+        {
+            currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
+            foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
+            {
+                currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
+            }
         }
 
         private void DeployTermUnderTerm(object modelHost, TermModelHost groupModelHost, TaxonomyTermDefinition termModel)
@@ -190,7 +200,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -207,7 +217,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

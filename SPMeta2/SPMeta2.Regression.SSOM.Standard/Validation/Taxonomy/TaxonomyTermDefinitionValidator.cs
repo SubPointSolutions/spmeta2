@@ -12,6 +12,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.SSOM.Standard.ModelHosts;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
 {
@@ -40,6 +41,44 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             {
                 assert.SkipProperty(m => m.Id, "Id is null. Skipping property.");
             }
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.CustomProperties);
+
+                var isValid = true;
+
+                // missed props, or too much
+                // should be equal on the first provision
+                if (s.CustomProperties.Count != d.CustomProperties.Count)
+                {
+                    isValid = false;
+                }
+
+                // per prop
+                foreach (var customProp in s.CustomProperties)
+                {
+                    if (!d.CustomProperties.ContainsKey(customProp.Name))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (d.CustomProperties[customProp.Name] != customProp.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
         }
     }
 }
