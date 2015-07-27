@@ -50,6 +50,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>
@@ -70,6 +71,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public string Url { get; set; }
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string SiteTemplate { get; set; }
 
         /// <summary>
@@ -105,6 +108,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string OwnerLogin { get; set; }
 
         /// <summary>
