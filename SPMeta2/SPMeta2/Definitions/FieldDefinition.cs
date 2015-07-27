@@ -89,6 +89,8 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [DataMember]
+
+        [XmlPropertyCapability]
         public string RawXml { get; set; }
 
         /// <summary>

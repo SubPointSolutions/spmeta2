@@ -106,13 +106,78 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             {
                 web.AddHostList(BuiltInListDefinitions.SitePages, list =>
                 {
+                    // #1, web part XML
                     list.AddRandomWebPartPage(page =>
                     {
+                        // web parts v2
                         page.AddWebPart(new WebPartDefinition
                         {
                             WebpartXmlTemplate = BuiltInWebPartTemplates.ContentEditorWebPart
                         });
+
+                        // web parts v3
+                        page.AddWebPart(new WebPartDefinition
+                        {
+                            WebpartXmlTemplate = BuiltInWebPartTemplates.ScriptEditorWebPart
+                        });
                     });
+
+                    // #2.1, bit of CAML in list view
+                    list.AddRandomListView();
+
+                    // #2.2 views with custom CAML
+                    list.AddListView(new ListViewDefinition
+                    {
+                        Title = "Custom View",
+                        Query = @"<GroupBy Collapse='TRUE' GroupLimit='30'>
+                                    <FieldRef Name='STW_FAQCategory' />
+                                    <FieldRef Name='STW_FAQQuestion' />
+                                    </GroupBy>
+                                    <OrderBy>
+                                    <FieldRef Name='ID' />
+                                    <FieldRef Name='STW_FAQQuestion' />
+                                    </OrderBy>"
+                    });
+
+                    // #3.1, Raw field XML
+                    list.AddField(new FieldDefinition
+                    {
+                        Id = Guid.NewGuid(),
+                        InternalName = Guid.NewGuid().ToString(),
+                        FieldType = BuiltInFieldTypes.Boolean,
+                        RawXml = @"<Field ID='{060E50AC-E9C1-4D3C-B1F9-DE0BCAC300F6}'
+                                     Name='Amount'
+                                     DisplayName='Amount'
+                                     Type='Currency'
+                                     Decimals='2'
+                                     Min='0'
+                                     Required='FALSE'
+                                     Group='Financial Columns' />"
+                    });
+
+                    // #3.2, Raw field XML
+                    list.AddField(new FieldDefinition
+                    {
+                        Id = Guid.NewGuid(),
+                        InternalName = Guid.NewGuid().ToString(),
+                        FieldType = BuiltInFieldTypes.Boolean,
+                        RawXml = @"<Field ID='{943E7530-5E2B-4C02-8259-CCD93A9ECB18}'
+                                         Name='CostCenter'
+                                         DisplayName='Cost Center'
+                                         Type='Choice'
+                                         Required='FALSE'
+                                         Group='Financial Columns'>
+                                    <CHOICES>
+                                      <CHOICE>Administration</CHOICE>
+                                      <CHOICE>Information</CHOICE>
+                                      <CHOICE>Facilities</CHOICE>
+                                      <CHOICE>Operations</CHOICE>
+                                      <CHOICE>Sales</CHOICE>
+                                      <CHOICE>Marketing</CHOICE>
+                                    </CHOICES>
+                                  </Field>"
+                    });
+
                 });
             });
 

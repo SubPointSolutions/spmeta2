@@ -64,6 +64,18 @@ namespace SPMeta2.Services.ServiceModelHandlers
         {
             try
             {
+                //  Well formed XML validation throws errors on some XMLs #608
+                //  https://github.com/SubPointSolutions/spmeta2/issues/608
+                //  
+                // handling bits of XML such as list view CAML
+                // need to surround it with 'RootNode', a single node 
+                if (!string.IsNullOrEmpty(propValue) && !propValue.ToUpper().Contains("<?XML"))
+                {
+                    propValue = string.Format("<RootNode_{0}>{1}</RootNode_{0}>",
+                        Guid.NewGuid().ToString("N"),
+                        propValue);
+                }
+
                 var doc = XDocument.Parse(propValue);
             }
             catch (Exception ee)
