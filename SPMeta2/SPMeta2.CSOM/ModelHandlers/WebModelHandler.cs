@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.Remoting.Contexts;
+using System.Linq;
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
@@ -85,7 +84,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 HostWeb = currentWeb
             };
 
-            if (childModelType == typeof (ModuleFileDefinition))
+            if (childModelType == typeof(ModuleFileDefinition))
             {
                 var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, m =>
                 {
@@ -141,8 +140,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static Web GetParentWeb(WebModelHost csomModelHost)
         {
-            Web parentWeb = null;
-
+            Web parentWeb;
             if (csomModelHost.HostWeb != null)
                 parentWeb = csomModelHost.HostWeb;
             else if (csomModelHost.HostSite != null)
@@ -166,7 +164,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
-            Web web = null;
+            Web web;
 
             var scope = new ExceptionHandlingScope(context);
 
@@ -253,24 +251,55 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web");
 
-                var newWebInfo = new WebCreationInformation
+                WebCreationInformation newWebInfo;
+                if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
                 {
-                    Title = webModel.Title,
-                    Url = webModel.Url,
-                    Description = webModel.Description ?? string.Empty,
-                    WebTemplate = webModel.WebTemplate,
-                    UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
-                    Language = (int)webModel.LCID
-                };
+                    newWebInfo = new WebCreationInformation
+                    {
+                        Title = webModel.Title,
+                        Url = webModel.Url,
+                        Description = webModel.Description ?? string.Empty,
+                        WebTemplate = webModel.WebTemplate,
+                        UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
+                        Language = (int)webModel.LCID
+                    };
+                }
+                else
+                {
+                    var templateCollection = parentWeb.GetAvailableWebTemplates(webModel.LCID, false);
+                    var templateResult = context.LoadQuery(templateCollection
+                                                                    .Include(tmp => tmp.Name, tmp => tmp.Title)
+                                                                    .Where(tmp => tmp.Title == webModel.CustomWebTemplate || tmp.Name == webModel.CustomWebTemplate));
+
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Trying to find template based on the given CustomWebTemplate and calling ExecuteQuery.");
+                    context.ExecuteQueryWithTrace();
+
+                    var template = templateResult.FirstOrDefault();
+                    if (template == null)
+                    {
+                        throw new SPMeta2ModelDeploymentException("Couldn't find custom web template: " + webModel.CustomWebTemplate);
+                    }
+
+                    newWebInfo = new WebCreationInformation
+                    {
+                        Title = webModel.Title,
+                        Url = webModel.Url,
+                        Description = webModel.Description ?? string.Empty,
+                        WebTemplate = template.Name,
+                        UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
+                        Language = (int)webModel.LCID
+                    };
+                }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Adding new web to the web collection and calling ExecuteQuery.");
                 var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQueryWithTrace();
 
-                context.Load(newWeb);
+                // This is not required in csom, since this method is void, there is not value in firing a second ExecuteQuery()
+                //context.Load(newWeb);
 
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-                context.ExecuteQueryWithTrace();
+                //TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
+                //context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
