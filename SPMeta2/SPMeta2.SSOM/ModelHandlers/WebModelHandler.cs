@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -43,33 +44,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void CreateWeb(object modelHost, SPWeb parentWeb, WebDefinition webModel)
         {
-            if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+            using (var web = GetOrCreateWeb(parentWeb, webModel, true))
             {
-                // TODO
-                using (var web = GetOrCreateWeb(parentWeb, webModel, true))
+                web.Title = webModel.Title;
+                web.Description = webModel.Description;
+
+                web.Locale = new CultureInfo((int)webModel.LCID);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
-                    web.Title = webModel.Title;
-                    web.Description = webModel.Description;
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = web,
+                    ObjectType = typeof(SPWeb),
+                    ObjectDefinition = webModel,
+                    ModelHost = modelHost
+                });
 
-                    web.Locale = new CultureInfo((int)webModel.LCID);
-
-                    InvokeOnModelEvent(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = web,
-                        ObjectType = typeof(SPWeb),
-                        ObjectDefinition = webModel,
-                        ModelHost = modelHost
-                    });
-
-                    web.Update();
-                }
-            }
-            else
-            {
-                throw new SPMeta2NotImplementedException("Custom web templates is not supported yet");
+                web.Update();
             }
         }
 
@@ -139,20 +132,39 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = webModel
                 });
 
-                currentWeb = parentWeb.Webs.Add(webUrl,
+                if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+                {
+                    currentWeb = parentWeb.Webs.Add(webUrl,
                     webModel.Title,
                     webDescription,
                     webModel.LCID,
                     webModel.WebTemplate,
                     webModel.UseUniquePermission,
                     webModel.ConvertIfThere);
+                }
+                else
+                {
+                    var webTemplates = currentWeb.Site.GetWebTemplates(webModel.LCID);
+                    var customWebTemplate = webTemplates.Cast<SPWebTemplate>().FirstOrDefault(tmpl => tmpl.Title == webModel.CustomWebTemplate || tmpl.Name == webModel.CustomWebTemplate);
+                    if (customWebTemplate == null)
+                    {
+                        throw new SPMeta2ModelDeploymentException("Couldn't find custom web template: " + webModel.CustomWebTemplate);
+                    }
+
+                    currentWeb = parentWeb.Webs.Add(webUrl,
+                        webModel.Title,
+                        webModel.Description,
+                        webModel.LCID,
+                        customWebTemplate,
+                        webModel.UseUniquePermission,
+                        webModel.ConvertIfThere);
+                }
             }
             else
             {
                 if (updateProperties)
                 {
-                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
-                        "Current web is not null. Updating Title/Description.");
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Current web is not null. Updating Title/Description.");
 
                     currentWeb.Title = webModel.Title;
                     currentWeb.Description = webModel.Description ?? string.Empty;
