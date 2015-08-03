@@ -100,7 +100,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
-                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+                var draftOption =
+                    (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
                 list.DraftVersionVisibility = draftOption;
             }
 
@@ -147,6 +148,31 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
+
+            var docLibrary = list as SPDocumentLibrary;
+
+            if (docLibrary != null)
+            {
+                if (!string.IsNullOrEmpty(definition.DocumentTemplateUrl))
+                {
+                    var urlValue = definition.DocumentTemplateUrl;
+
+                    urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = urlValue,
+                        Context = list.ParentWeb
+                    }).Value;
+
+                    if (!urlValue.StartsWith("/")
+                        && !urlValue.StartsWith("http:")
+                        && !urlValue.StartsWith("https:"))
+                    {
+                        urlValue = "/" + urlValue;
+                    }
+
+                    docLibrary.DocumentTemplateUrl = urlValue;
+                }
+            }
         }
 
         #region utils

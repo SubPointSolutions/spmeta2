@@ -475,6 +475,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folder = folderHost.CurrentListFolder;
 
             context.Load(folder, f => f.ServerRelativeUrl);
+            context.Load(folder, f => f.Properties);
+
             context.ExecuteQueryWithTrace();
 
             var stringCustomContentType = ResolveContentTypeId(folderHost, moduleFile);
@@ -506,10 +508,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = folderHost
             });
 
+            var doesFileHasListItem =
+                //Forms folders
+             !(folder != null
+              &&
+              (folder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+               && folder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012"));
+
             WithSafeFileOperation(list, file, f =>
             {
-
-
                 var fileName = moduleFile.FileName;
                 var fileContent = moduleFile.Content;
 
@@ -533,21 +540,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwriting file");
                 var updatedFile = folder.Files.Add(fileCreatingInfo);
 
-                var newFileItem = updatedFile.ListItemAllFields;
-                //context.Load(newFileItem);
-                //context.ExecuteQueryWithTrace();
-
                 if (!string.IsNullOrEmpty(stringCustomContentType))
-                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
                 if (moduleFile.DefaultValues.Count > 0)
-                    EnsureDefaultValues(newFileItem, moduleFile);
+                    EnsureDefaultValues(updatedFile.ListItemAllFields, moduleFile);
 
                 if (!string.IsNullOrEmpty(stringCustomContentType) || moduleFile.DefaultValues.Count > 0)
-                    newFileItem.Update();
+                    updatedFile.ListItemAllFields.Update();
 
                 return updatedFile;
-            });
+            }, doesFileHasListItem);
 
             var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
 
@@ -564,6 +567,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = moduleFile,
                 ModelHost = folderHost
             });
+
             InvokeOnModelEvent<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
 
             return resultFile;

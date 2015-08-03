@@ -153,6 +153,16 @@ namespace SPMeta2.Containers.Services
                         service.String());
         }
 
+        public static string TxtFileName(this RandomService service)
+        {
+            return string.Format("{0}.txt", service.String());
+        }
+
+        public static string DocxFileName(this RandomService service)
+        {
+            return string.Format("{0}.docx", service.String());
+        }
+
         public static string AspxFileName(this RandomService service)
         {
             return string.Format("{0}.aspx", service.String());

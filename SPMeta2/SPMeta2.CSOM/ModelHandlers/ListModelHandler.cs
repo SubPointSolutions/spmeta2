@@ -368,7 +368,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return listTemplate;
         }
 
-        private static void MapListProperties(List list, ListDefinition definition)
+        private void MapListProperties(List list, ListDefinition definition)
         {
             list.Title = definition.Title;
             list.Description = definition.Description ?? string.Empty;
@@ -436,6 +436,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
                 //list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
+            }
+
+            if (!string.IsNullOrEmpty(definition.DocumentTemplateUrl))
+            {
+                var urlValue = definition.DocumentTemplateUrl;
+
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = urlValue,
+                    Context = list.Context,
+                }).Value;
+
+                if (!urlValue.StartsWith("/")
+                    && !urlValue.StartsWith("http:")
+                    && !urlValue.StartsWith("https:"))
+                {
+                    urlValue = "/" + urlValue;
+                }
+
+                list.DocumentTemplateUrl = urlValue;
             }
         }
 

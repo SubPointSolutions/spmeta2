@@ -164,6 +164,7 @@
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
+    <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsServerRelativeUrlService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsXsltListViewXslLinkUrlService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsXsltListViewXmlLinkUrlService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsXsltListViewXslService.cs" />

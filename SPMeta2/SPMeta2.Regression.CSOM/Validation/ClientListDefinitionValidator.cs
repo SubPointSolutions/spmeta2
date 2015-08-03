@@ -40,6 +40,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spObject, list => list.Hidden);
             context.Load(spObject, list => list.NoCrawl);
             context.Load(spObject, list => list.OnQuickLaunch);
+            context.Load(spObject, list => list.DocumentTemplateUrl);
             context.Load(spObject, list => list.DraftVersionVisibility);
 
             context.ExecuteQueryWithTrace();
@@ -219,6 +220,56 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
                     "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
+
+
+            // template url
+            if (string.IsNullOrEmpty(definition.DocumentTemplateUrl))
+            {
+                assert.SkipProperty(m => m.DocumentTemplateUrl, string.Format("Skipping DocumentTemplateUrl or library. Skipping."));
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DocumentTemplateUrl);
+                    var dstProp = d.DocumentTemplateUrl;
+
+                    var srcUrl = srcProp.Value as string;
+                    var dstUrl = dstProp;
+
+                    if (!dstUrl.StartsWith("/"))
+                        dstUrl = "/" + dstUrl;
+
+                    var isValid = false;
+
+                    if (s.DocumentTemplateUrl.Contains("~sitecollection"))
+                    {
+                        var siteCollectionUrl = webModelHost.HostSite.ServerRelativeUrl == "/" ?
+                                string.Empty : webModelHost.HostSite.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~sitecollection", siteCollectionUrl) == dstUrl;
+                    }
+                    else if (s.DocumentTemplateUrl.Contains("~site"))
+                    {
+                        var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
+
+                        isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
+                    }
+                    else
+                    {
+                        isValid = dstUrl.EndsWith(srcUrl);
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+
 
         }
     }

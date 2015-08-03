@@ -217,6 +217,20 @@ namespace SPMeta2.Definitions
 
         public int? MajorWithMinorVersionsLimit { get; set; }
 
+        /// <summary>
+        /// Corresponds to SPDocumentLibrary.DocumentTemplateUrl 
+        /// Should be server-relative URL of the document template for the list, but also supports tokens.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+        
+        [ExpectNullable]
+        [ExpectUpdateAsServerRelativeUrl]
+        public string DocumentTemplateUrl { get; set; }
+
         #endregion
 
         #region methods

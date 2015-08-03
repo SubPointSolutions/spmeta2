@@ -101,6 +101,12 @@ namespace SPMeta2.Attributes.Regression
         public string Extension { get; set; }
     }
 
+
+    public class ExpectUpdateAsServerRelativeUrl : ExpectUpdateAsUrl
+    {
+
+    }
+
     public class ExpectUpdateAsCalculatedFieldFormula : ExpectUpdate
     {
 
