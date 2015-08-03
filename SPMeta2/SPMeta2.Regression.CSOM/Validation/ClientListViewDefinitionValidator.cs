@@ -37,6 +37,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.DefaultViewForContentType,
                 o => o.ContentTypeId,
                 o => o.ViewType,
+                o => o.ViewData,
                 v => v.Title));
             context.ExecuteQueryWithTrace();
 
@@ -47,12 +48,31 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           .ShouldBeEqual(m => m.Title, o => o.Title)
                                           .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
                                           .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                                          //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
                                           .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
             if (!string.IsNullOrEmpty(definition.ViewData))
-                assert.ShouldBeEqual(m => m.ViewData, o => o.ViewData);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+               {
+                   var srcProp = s.GetExpressionValue(def => def.ViewData);
+                   var dstProp = d.GetExpressionValue(o => o.ViewData);
+
+                   var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                   var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                   var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                   return new PropertyValidationResult
+                   {
+                       Tag = p.Tag,
+                       Src = srcProp,
+                       Dst = dstProp,
+                       IsValid = isValid
+                   };
+               });
+            }
             else
                 assert.SkipProperty(m => m.ViewData);
 
@@ -84,7 +104,26 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Query))
-                assert.ShouldBeEqual(m => m.Query, o => o.ViewQuery);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Query);
+                    var dstProp = d.GetExpressionValue(o => o.ViewQuery);
+
+                    var srcViewDate = assert.Src.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                    var dstViewDate = assert.Dst.ViewQuery.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
             else
                 assert.SkipProperty(m => m.Query, "Query is null or empty. Skipping.");
 

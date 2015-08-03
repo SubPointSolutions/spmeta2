@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.BuiltInDefinitions;
+using SPMeta2.Containers;
+using SPMeta2.Syntax.Default;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -47,11 +50,45 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
         public void CanDeploy_ListView_AsCalendar()
         {
-            TestRandomDefinition<ListViewDefinition>(def =>
-            {
-                def.Hidden = false;
-                def.Type = BuiltInViewType.Calendar;
-            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomList(list =>
+                        {
+                            var listDef = list.Value as ListDefinition;
+
+                            listDef.TemplateType = BuiltInListTemplateTypeId.Events;
+
+                            list.AddRandomListView(view =>
+                            {
+                                var viewDef = view.Value as ListViewDefinition;
+
+                                viewDef.Hidden = false;
+                                viewDef.Type = BuiltInViewType.Calendar;
+
+                                viewDef.Query = @"<Where>
+<DateRangesOverlap>
+<FieldRef Name=""EventDate"" />
+<FieldRef Name=""EndDate"" />
+<FieldRef Name=""RecurrenceID"" />
+<Value Type=""DateTime""><Month />
+</Value>
+</DateRangesOverlap>
+</Where>";
+
+
+                                viewDef.ViewData = @"<FieldRef Name=""Title"" Type=""CalendarMonthTitle""/>
+<FieldRef Name=""Title"" Type=""CalendarWeekTitle""/>
+<FieldRef Name=""Created"" Type=""CalendarWeekLocation""/>
+<FieldRef Name=""Title"" Type=""CalendarDayTitle""/>
+<FieldRef Name=""Created"" Type=""CalendarDayLocation""/>";
+                            });
+                        });
+                });
+
+            TestModel(model);
         }
 
 
