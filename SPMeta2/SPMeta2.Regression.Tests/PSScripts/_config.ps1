@@ -114,6 +114,6 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     )
 
     OnPremTestActiveDirectoryGroups = @(
-        "$([Environment]::UserDomainName)\Domain Admins"
+        "$([Environment]::UserDomainName)\test-g1"
     )
 }

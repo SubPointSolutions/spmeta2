@@ -334,6 +334,7 @@
     <Compile Include="Syntax\Default\Interfaces\IListItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ISecurityGroupHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />

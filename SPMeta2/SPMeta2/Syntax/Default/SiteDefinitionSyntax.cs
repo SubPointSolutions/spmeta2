@@ -26,7 +26,8 @@ namespace SPMeta2.Syntax.Default
         IFeatureHostModelNode,
         IUserCustomActionHostModelNode,
         ITaxonomyTermStoreHostModelNode,
-        ISearchSettingsHostModelNode
+        ISearchSettingsHostModelNode,
+        ISecurityGroupHostModelNode
     {
 
     }
