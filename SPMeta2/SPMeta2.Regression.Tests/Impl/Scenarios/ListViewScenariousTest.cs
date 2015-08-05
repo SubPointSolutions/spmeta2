@@ -109,11 +109,49 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
         public void CanDeploy_ListView_AsGantt()
         {
-            TestRandomDefinition<ListViewDefinition>(def =>
-            {
-                def.Hidden = false;
-                def.Type = BuiltInViewType.Gantt;
-            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddRandomList(list =>
+                        {
+                            var listDef = list.Value as ListDefinition;
+
+                            listDef.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+
+                            list.AddRandomListView(view =>
+                            {
+                                var viewDef = view.Value as ListViewDefinition;
+
+                                viewDef.Hidden = false;
+
+                                viewDef.Type = BuiltInViewType.Gantt;
+                                viewDef.Query = string.Empty;
+
+                                viewDef.Fields = new Collection<string>
+                                {
+                                    "LinkTitle",
+                                    "StartDate",
+                                    "DueDate",
+                                    "PercentComplete",
+                                    "Predecessors",
+                                    "AssignedTo",
+                                    "GUID"
+                                };
+
+                                viewDef.ViewData = @"<FieldRef Name=""Title"" Type=""GanttTitle"" />
+<FieldRef Name=""StartDate"" Type=""GanttStartDate"" />
+<FieldRef Name=""DueDate"" Type=""GanttEndDate"" />
+<FieldRef Name=""PercentComplete"" Type=""GanttPercentComplete"" />
+<FieldRef Name=""Predecessors"" Type=""GanttPredecessors"" />
+<FieldRef Name=""ParentID"" Type=""HierarchyParentID"" />
+<FieldRef Name=""DueDate"" Type=""TimelineDueDate"" />";
+                            });
+                        });
+                });
+
+            TestModel(model);
         }
 
         [TestMethod]
