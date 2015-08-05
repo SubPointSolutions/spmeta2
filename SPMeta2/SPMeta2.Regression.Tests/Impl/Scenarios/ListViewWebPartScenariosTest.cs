@@ -6,11 +6,14 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Standard;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Standard.Definitions;
+using SPMeta2.Standard.Enumerations;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 
@@ -257,5 +260,126 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         #endregion
+
+        #region calendar provision issue
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart.Calendar")]
+        public void CanDeploy_ListViewWebPart_As_CalendarView_ToWebPartPage()
+        {
+            // CSOM sometime fails to provision ListViewWebPart + CalendarView #570
+            // https://github.com/SubPointSolutions/spmeta2/issues/570
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Events;
+            });
+
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = sourceList.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList)
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list.AddRandomWebPartPage(page =>
+                        {
+                            page.AddListViewWebPart(listViewWebpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart.Calendar")]
+        public void CanDeploy_ListViewWebPart_As_CalendarView_ToPublishingPage()
+        {
+            // CSOM sometime fails to provision ListViewWebPart + CalendarView #570
+            // https://github.com/SubPointSolutions/spmeta2/issues/570
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Events;
+            });
+
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = sourceList.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList)
+                    .AddHostList(BuiltInListDefinitions.Pages, list =>
+                    {
+                        list.AddRandomPublishingPage(page =>
+                        {
+                            (page.Value as PublishingPageDefinition).PageLayoutFileName = BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+
+                            page.AddListViewWebPart(listViewWebpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart.Calendar")]
+        public void CanDeploy_ListViewWebPart_As_CalendarView_ToWikiPage()
+        {
+            // CSOM sometime fails to provision ListViewWebPart + CalendarView #570
+            // https://github.com/SubPointSolutions/spmeta2/issues/570
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Events;
+            });
+
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = sourceList.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList)
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list.AddRandomWikiPage(page =>
+                        {
+                            page.AddListViewWebPart(listViewWebpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
     }
 }
