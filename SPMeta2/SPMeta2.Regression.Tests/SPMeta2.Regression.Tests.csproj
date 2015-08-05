@@ -124,6 +124,7 @@
     <Compile Include="Impl\Scenarios\PublishingPageLayoutScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\PublishingPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\ReusableItemScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\SiteScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\SandboxSolutionScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\QuickLaunchNavigationNodeScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\SecurityGroupScenariosTest.cs" />
