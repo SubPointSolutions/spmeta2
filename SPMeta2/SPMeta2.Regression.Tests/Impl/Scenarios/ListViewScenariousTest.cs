@@ -5,6 +5,7 @@ using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using SPMeta2.BuiltInDefinitions;
@@ -117,10 +118,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
-        public void CanDeploy_ListView_AsGrid()
+        public void CanDeploy_ListView_AsDatasheetView()
         {
             TestRandomDefinition<ListViewDefinition>(def =>
             {
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Title
+                };
+
                 def.Hidden = false;
                 def.Type = BuiltInViewType.Grid;
             });
