@@ -163,6 +163,7 @@
     <Compile Include="Impl\Syntax\TypedSyntaxTests.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
+    <Compile Include="Impl\Validation\PublishingPageLayoutValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsServerRelativeUrlService.cs" />

@@ -11,7 +11,8 @@ namespace SPMeta2.Syntax.Default
 {
     [Serializable]
     [DataContract]
-    public class RootWebModelNode : TypedModelNode
+    public class RootWebModelNode : TypedModelNode,
+        IWebModelNode
     {
 
     }

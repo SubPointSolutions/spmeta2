@@ -77,12 +77,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 null,
                 afterFile =>
                 {
-
-
                     var pageItem = afterFile.Properties;
 
-                    pageItem["vti_title"] = definition.Title;
-                    pageItem["MasterPageDescription"] = definition.Description;
+                    if (!string.IsNullOrEmpty(definition.Title))
+                        pageItem["vti_title"] = definition.Title;
+
+                    if (!string.IsNullOrEmpty(definition.Description))
+                        pageItem["MasterPageDescription"] = definition.Description;
+
                     pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
 
                     if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))

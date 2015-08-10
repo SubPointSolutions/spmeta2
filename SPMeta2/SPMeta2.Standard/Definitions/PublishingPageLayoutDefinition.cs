@@ -34,6 +34,18 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         /// <summary>
+        /// Title of the target page.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectUpdate]
+        // That is not required for PublishingPageLayoutDefinition
+        // https://github.com/SubPointSolutions/spmeta2/issues/607
+        //[ExpectRequired]
+        [DataMember]
+        public override string Title { get; set; }
+
+        /// <summary>
         /// Description of the target publishing page.
         /// </summary>
         /// 

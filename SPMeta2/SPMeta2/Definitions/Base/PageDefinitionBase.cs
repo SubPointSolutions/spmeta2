@@ -48,7 +48,7 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [ExpectRequired]
         [DataMember]
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// File name of the target page.

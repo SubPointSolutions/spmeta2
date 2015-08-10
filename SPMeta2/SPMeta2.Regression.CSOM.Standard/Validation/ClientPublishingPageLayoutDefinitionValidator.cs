@@ -41,10 +41,18 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
                                              .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageLayoutDescription())
-                //.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
-                                             .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+                                             .ShouldBeEqual(m => m.FileName, o => o.GetFileName());
+
+
+            if (!string.IsNullOrEmpty(definition.Title))
+                assert.ShouldBeEqual(m => m.Title, o => o.GetTitle());
+            else
+                assert.SkipProperty(m => m.Title);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.GetPublishingPageLayoutDescription());
+            else
+                assert.SkipProperty(m => m.Description);
 
             if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
                 assert.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId());

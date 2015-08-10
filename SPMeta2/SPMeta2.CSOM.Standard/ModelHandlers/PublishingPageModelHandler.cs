@@ -236,8 +236,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 // settig up dfault values if there is PublishingPageLayout setup
                 EnsureDefaultValues(newFileItem, publishingPageModel);
 
-                newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
-                newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
+                if (!string.IsNullOrEmpty(publishingPageModel.Title))
+                    newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
+
+                if (!string.IsNullOrEmpty(publishingPageModel.Description))
+                    newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
 
                 newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
 
