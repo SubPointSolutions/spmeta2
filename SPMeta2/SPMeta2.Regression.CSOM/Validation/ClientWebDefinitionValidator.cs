@@ -65,6 +65,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var srcUrl = s.Url;
                 var dstUrl = d.Url;
 
+                srcUrl = UrlUtility.RemoveStartingSlash(srcUrl);
+
                 var dstSubUrl = dstUrl.Replace(parentWeb.Url + "/", string.Empty);
 
                 return new PropertyValidationResult

@@ -33,6 +33,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region slash stuff
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs.Fixes")]
+        public void CanDeploy_Web_With_Slash_In_Url()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                def.Url = string.Format("/{0}", Rnd.String());
+                def.WebTemplate = BuiltInWebTemplates.Collaboration.BlankSite;
+            });
+        }
+
+        #endregion
+
+
         #region default
 
         [TestMethod]

@@ -128,6 +128,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             var webUrl = webModel.Url;
             var webDescription = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
 
+            // Enhance web provision - handle '/' slash #620
+            // https://github.com/SubPointSolutions/spmeta2/issues/620
+            webUrl = UrlUtility.RemoveStartingSlash(webUrl);
+
             var currentWeb = GetWeb(parentWeb, webModel);
 
             if (!currentWeb.Exists)

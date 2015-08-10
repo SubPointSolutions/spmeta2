@@ -49,6 +49,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var srcUrl = s.Url;
                 var dstUrl = d.Url;
 
+                srcUrl = UrlUtility.RemoveStartingSlash(srcUrl);
+
                 var dstSubUrl = dstUrl.Replace(parentWeb.Url + "/", string.Empty);
                 var isValid = srcUrl.ToUpper() == dstSubUrl.ToUpper();
 

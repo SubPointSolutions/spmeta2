@@ -85,7 +85,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 HostWeb = currentWeb
             };
 
-            if (childModelType == typeof (ModuleFileDefinition))
+            if (childModelType == typeof(ModuleFileDefinition))
             {
                 var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, m =>
                 {
@@ -124,7 +124,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return (modelHost as WebModelHost).HostSite;
 
             throw new SPMeta2NotSupportedException(string.Format("Cannot get host site from model host of type:[{0}]", modelHost.GetType()));
-
         }
 
         protected ClientContext ExtractHostClientContext(object modelHost)
@@ -136,7 +135,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return (modelHost as WebModelHost).HostClientContext;
 
             throw new SPMeta2NotSupportedException(string.Format("Cannot get host client context from model host of type:[{0}]", modelHost.GetType()));
-
         }
 
         private static Web GetParentWeb(WebModelHost csomModelHost)
@@ -253,10 +251,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web");
 
+                var webUrl = webModel.Url;
+                // Enhance web provision - handle '/' slash #620
+                // https://github.com/SubPointSolutions/spmeta2/issues/620
+                webUrl = UrlUtility.RemoveStartingSlash(webUrl);
+
                 var newWebInfo = new WebCreationInformation
                 {
                     Title = webModel.Title,
-                    Url = webModel.Url,
+                    Url = webUrl,
                     Description = webModel.Description ?? string.Empty,
                     WebTemplate = webModel.WebTemplate,
                     UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
