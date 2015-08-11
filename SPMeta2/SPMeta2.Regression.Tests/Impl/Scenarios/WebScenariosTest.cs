@@ -49,6 +49,36 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region templates
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs.Templates")]
+        public void CanDeploy_Custom_WebTemplate_As_SaveAsTemplate()
+        {
+            var mainWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = string.Empty;
+                def.CustomWebTemplate = "{D270F1BE-1943-4064-9509-DA4F14B32228}#M2CustomWebAsTemplate";
+            });
+
+            var subWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = string.Empty;
+                def.CustomWebTemplate = "{D270F1BE-1943-4064-9509-DA4F14B32228}#M2CustomWebAsTemplate";
+            });
+
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(mainWeb, web =>
+                {
+                    web.AddWeb(subWeb);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
 
         #region default
 

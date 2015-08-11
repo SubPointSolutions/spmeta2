@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
@@ -43,33 +44,25 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void CreateWeb(object modelHost, SPWeb parentWeb, WebDefinition webModel)
         {
-            if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+            using (var web = GetOrCreateWeb(parentWeb, webModel, true))
             {
-                // TODO
-                using (var web = GetOrCreateWeb(parentWeb, webModel, true))
+                web.Title = webModel.Title;
+                web.Description = webModel.Description;
+
+                web.Locale = new CultureInfo((int)webModel.LCID);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
-                    web.Title = webModel.Title;
-                    web.Description = webModel.Description;
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = web,
+                    ObjectType = typeof(SPWeb),
+                    ObjectDefinition = webModel,
+                    ModelHost = modelHost
+                });
 
-                    web.Locale = new CultureInfo((int)webModel.LCID);
-
-                    InvokeOnModelEvent(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = web,
-                        ObjectType = typeof(SPWeb),
-                        ObjectDefinition = webModel,
-                        ModelHost = modelHost
-                    });
-
-                    web.Update();
-                }
-            }
-            else
-            {
-                throw new SPMeta2NotImplementedException("Custom web templates is not supported yet");
+                web.Update();
             }
         }
 
@@ -123,6 +116,38 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentWeb;
         }
 
+        protected virtual SPWebTemplate LookupCustomWebTemplateFromWeb(SPWeb web, WebDefinition definition)
+        {
+            // smain lookup by the internal name
+            var result = web.GetAvailableWebTemplates(definition.LCID)
+                            .OfType<SPWebTemplate>()
+                            .FirstOrDefault(tmpl => tmpl.IsCustomTemplate
+                                                    && !string.IsNullOrEmpty(tmpl.Name)
+                                                    && tmpl.Name.ToUpper() == definition.CustomWebTemplate.ToUpper());
+
+            if (result != null)
+                return result;
+
+            // one more try by title
+            return web.GetAvailableWebTemplates(definition.LCID)
+                      .OfType<SPWebTemplate>()
+                      .FirstOrDefault(tmpl => tmpl.IsCustomTemplate
+                                            && !string.IsNullOrEmpty(tmpl.Title)
+                                            && tmpl.Title.ToUpper() == definition.CustomWebTemplate.ToUpper());
+        }
+
+        protected virtual SPWebTemplate LookupCustomWebTemplate(SPWeb web, WebDefinition definition)
+        {
+            // lookup on the current web?
+            SPWebTemplate result = LookupCustomWebTemplateFromWeb(web, definition);
+
+            // lookup on the site?
+            if (result == null)
+                result = LookupCustomWebTemplateFromWeb(web.Site.RootWeb, definition);
+
+            return result;
+        }
+
         protected SPWeb GetOrCreateWeb(SPWeb parentWeb, WebDefinition webModel, bool updateProperties)
         {
             var webUrl = webModel.Url;
@@ -149,13 +174,33 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = webModel
                 });
 
-                currentWeb = parentWeb.Webs.Add(webUrl,
-                    webModel.Title,
-                    webDescription,
-                    webModel.LCID,
-                    webModel.WebTemplate,
-                    webModel.UseUniquePermission,
-                    webModel.ConvertIfThere);
+                // custom web template handling
+                // based on pull request Implematation for CustomWebTemplate included #612 by @andreasblueher 
+                if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+                {
+                    currentWeb = parentWeb.Webs.Add(webUrl,
+                        webModel.Title,
+                        webDescription,
+                        webModel.LCID,
+                        webModel.WebTemplate,
+                        webModel.UseUniquePermission,
+                        webModel.ConvertIfThere);
+                }
+                else
+                {
+                    var customWebTemplate = LookupCustomWebTemplate(parentWeb, webModel);
+
+                    if (customWebTemplate == null)
+                        throw new SPMeta2ModelDeploymentException("Couldn't find custom web template: " + webModel.CustomWebTemplate);
+
+                    currentWeb = parentWeb.Webs.Add(webUrl,
+                        webModel.Title,
+                        webModel.Description,
+                        webModel.LCID,
+                        customWebTemplate,
+                        webModel.UseUniquePermission,
+                        webModel.ConvertIfThere);
+                }
             }
             else
             {

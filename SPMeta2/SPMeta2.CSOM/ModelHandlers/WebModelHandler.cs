@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Runtime.Remoting.Contexts;
 using Microsoft.SharePoint.Client;
@@ -256,15 +257,62 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // https://github.com/SubPointSolutions/spmeta2/issues/620
                 webUrl = UrlUtility.RemoveStartingSlash(webUrl);
 
-                var newWebInfo = new WebCreationInformation
+                WebCreationInformation newWebInfo;
+
+                if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
                 {
-                    Title = webModel.Title,
-                    Url = webUrl,
-                    Description = webModel.Description ?? string.Empty,
-                    WebTemplate = webModel.WebTemplate,
-                    UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
-                    Language = (int)webModel.LCID
-                };
+                    newWebInfo = new WebCreationInformation
+                    {
+                        Title = webModel.Title,
+                        Url = webUrl,
+                        Description = webModel.Description ?? string.Empty,
+                        WebTemplate = webModel.WebTemplate,
+                        UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
+                        Language = (int)webModel.LCID
+                    };
+                }
+                else
+                {
+                    var customWebTemplateName = webModel.CustomWebTemplate;
+
+                    // by internal name
+                    var templateCollection = parentWeb.GetAvailableWebTemplates(webModel.LCID, false);
+                    var templateResult = context.LoadQuery(templateCollection
+                                                                    .Include(tmp => tmp.Name, tmp => tmp.Title)
+                                                                    .Where(tmp => tmp.Name == customWebTemplateName));
+
+
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Trying to find template based on the given CustomWebTemplate and calling ExecuteQuery.");
+                    context.ExecuteQueryWithTrace();
+
+                    if (templateResult.FirstOrDefault() == null)
+                    {
+                        // one more try by title
+                        templateResult = context.LoadQuery(templateCollection
+                                                                   .Include(tmp => tmp.Name, tmp => tmp.Title)
+                                                                   .Where(tmp => tmp.Title == customWebTemplateName));
+
+
+
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Trying to find template based on the given CustomWebTemplate and calling ExecuteQuery.");
+                        context.ExecuteQueryWithTrace();
+                    }
+
+                    var template = templateResult.FirstOrDefault();
+
+                    if (template == null)
+                        throw new SPMeta2ModelDeploymentException("Couldn't find custom web template: " + webModel.CustomWebTemplate);
+
+                    newWebInfo = new WebCreationInformation
+                    {
+                        Title = webModel.Title,
+                        Url = webModel.Url,
+                        Description = webModel.Description ?? string.Empty,
+                        WebTemplate = template.Name,
+                        UseSamePermissionsAsParentSite = !webModel.UseUniquePermission,
+                        Language = (int)webModel.LCID
+                    };
+                }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Adding new web to the web collection and calling ExecuteQuery.");
                 var newWeb = parentWeb.Webs.Add(newWebInfo);

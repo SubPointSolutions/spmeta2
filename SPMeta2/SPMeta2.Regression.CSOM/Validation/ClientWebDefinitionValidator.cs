@@ -40,10 +40,23 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .NewAssert(definition, spObject)
                 .ShouldBeEqual(m => m.Title, o => o.Title)
                 .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
-                .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
-                                 //.ShouldBeEqual(m => m.Description, o => o.Description);
 
+            if (!string.IsNullOrEmpty(definition.WebTemplate))
+            {
+                assert.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate());
+                assert.SkipProperty(m => m.CustomWebTemplate);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.WebTemplate);
+                assert.SkipProperty(m => m.CustomWebTemplate);
+            }
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            else
+                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);

@@ -117,6 +117,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectRequired(GroupName = "Web Template")]
         [DataMember]
+        [ExpectValidation]
         public string CustomWebTemplate { get; set; }
 
         #endregion

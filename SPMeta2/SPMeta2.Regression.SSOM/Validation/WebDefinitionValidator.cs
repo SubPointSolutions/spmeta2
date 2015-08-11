@@ -33,8 +33,20 @@ namespace SPMeta2.Regression.SSOM.Validation
                            .NewAssert(definition, spObject)
                                  .ShouldBeEqual(m => m.Title, o => o.Title)
                                  .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
-                                 .ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+                //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
                                  .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+
+            if (!string.IsNullOrEmpty(definition.WebTemplate))
+            {
+                assert.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate());
+                assert.SkipProperty(m => m.CustomWebTemplate);
+            }
+            else
+            {
+                // no sense to chek custom web template
+                assert.SkipProperty(m => m.WebTemplate);
+                assert.SkipProperty(m => m.CustomWebTemplate);
+            }
 
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
@@ -59,7 +71,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                     Tag = p.Tag,
                     Src = srcProp,
                     Dst = dstProp,
-                    IsValid = isValid 
+                    IsValid = isValid
                 };
             });
         }
