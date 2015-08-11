@@ -18,7 +18,8 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] [DataContract]
+    [Serializable]
+    [DataContract]
     [ExpectArrayExtensionMethod]
 
     [ExpectManyInstances]
@@ -109,6 +110,18 @@ namespace SPMeta2.Standard.Definitions.Fields
         [ExpectValidation]
         [DataMember]
         public int TermLCID { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public bool? IsSiteCollectionGroup { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string TermGroupName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public Guid? TermGroupId { get; set; }
 
         #endregion
 

@@ -154,7 +154,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
         }
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
@@ -190,7 +190,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
         }
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField")]
@@ -285,7 +285,357 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                       site.AddTaxonomyField(taxField);
                   });
 
-            TestModels(new  ModelNode[] { taxonomyModel, fieldModel });
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
+        }
+
+        #endregion
+
+        #region TermGroups
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_GroupByName()
+        {
+            var termSetName = Rnd.String();
+            var termName = Rnd.String();
+
+            var term1Id = Rnd.Guid();
+            var term2Id = Rnd.Guid();
+            var term3Id = Rnd.Guid();
+
+            // same same names
+            var termSet1 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet2 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet3 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var term1 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term1Id
+            };
+
+            var term2 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term2Id
+            };
+
+            var term3 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term3Id
+            };
+
+            var termGroup1 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            var termGroup2 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            var termGroup3 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            // binding to the 2nd one
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.TermGroupName = termGroup2.Name;
+
+                // these should be resolvbed as we are scoped to the 2nd group
+                def.TermSetId = termSet2.Id;
+                def.TermId = term2.Id;
+            });
+
+            var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(termStore =>
+                {
+                    termStore.AddTaxonomyTermGroup(termGroup1, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet1, t =>
+                        {
+                            t.AddTaxonomyTerm(term1);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup2, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet2, t =>
+                        {
+                            t.AddTaxonomyTerm(term2);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup3, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet3, t =>
+                        {
+                            t.AddTaxonomyTerm(term3);
+                        });
+                    });
+                });
+            });
+
+            var fieldModel = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_GroupById()
+        {
+            var termSetName = Rnd.String();
+            var termName = Rnd.String();
+
+            var term1Id = Rnd.Guid();
+            var term2Id = Rnd.Guid();
+            var term3Id = Rnd.Guid();
+
+            // same same names
+            var termSet1 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet2 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet3 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var term1 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term1Id
+            };
+
+            var term2 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term2Id
+            };
+
+            var term3 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term3Id
+            };
+
+            var termGroup1 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            var termGroup2 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+            });
+
+            var termGroup3 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            // binding to the 2nd one
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.TermGroupName = string.Empty;
+                def.TermGroupId = termGroup2.Id;
+
+                // these should be resolvbed as we are scoped to the 2nd group
+                def.TermSetId = termSet2.Id;
+                def.TermId = term2.Id;
+            });
+
+            var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(termStore =>
+                {
+                    termStore.AddTaxonomyTermGroup(termGroup1, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet1, t =>
+                        {
+                            t.AddTaxonomyTerm(term1);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup2, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet2, t =>
+                        {
+                            t.AddTaxonomyTerm(term2);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup3, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet3, t =>
+                        {
+                            t.AddTaxonomyTerm(term3);
+                        });
+                    });
+                });
+            });
+
+            var fieldModel = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_SiteCollectionGroup()
+        {
+            var termSetName = Rnd.String();
+            var termName = Rnd.String();
+
+            var term1Id = Rnd.Guid();
+            var term2Id = Rnd.Guid();
+            var term3Id = Rnd.Guid();
+
+            // same same names
+            var termSet1 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet2 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var termSet3 = new TaxonomyTermSetDefinition
+            {
+                Name = termSetName,
+                Description = Rnd.String(),
+            };
+
+            var term1 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term1Id
+            };
+
+            var term2 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term2Id
+            };
+
+            var term3 = new TaxonomyTermDefinition
+            {
+                Name = termName,
+                Description = Rnd.String(),
+                Id = term3Id
+            };
+
+            var termGroup1 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            var termGroup2 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+                def.IsSiteCollectionGroup = true;
+            });
+
+            var termGroup3 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+
+            });
+
+            // binding to the 2nd one
+            var taxField = ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+            {
+                def.IsSiteCollectionGroup = true;
+
+                // these should be resolvbed as we are scoped to the 2nd group within site collection group
+                def.TermSetId = termSet2.Id;
+                def.TermId = term2.Id;
+            });
+
+            var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(termStore =>
+                {
+                    termStore.AddTaxonomyTermGroup(termGroup1, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet1, t =>
+                        {
+                            t.AddTaxonomyTerm(term1);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup2, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet2, t =>
+                        {
+                            t.AddTaxonomyTerm(term2);
+                        });
+                    });
+
+                    termStore.AddTaxonomyTermGroup(termGroup3, group =>
+                    {
+                        group.AddTaxonomyTermSet(termSet3, t =>
+                        {
+                            t.AddTaxonomyTerm(term3);
+                        });
+                    });
+                });
+            });
+
+            var fieldModel = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site.AddTaxonomyField(taxField);
+                  });
+
+            TestModels(new ModelNode[] { taxonomyModel, fieldModel });
         }
 
         #endregion
