@@ -59,7 +59,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
                 taxField.SspId = tesmStore.Id;
 
                 TermSet termSet = LookupTermSet(site, tesmStore, taxFieldModel);
-                Term term = LookupTerm(tesmStore, taxFieldModel);
+                Term term = LookupTerm(site, tesmStore, taxFieldModel);
 
                 if (termSet != null)
                     taxField.TermSetId = termSet.Id;
@@ -69,13 +69,49 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             }
         }
 
-        public static Term LookupTerm(TermStore tesmStore, TaxonomyFieldDefinition taxFieldModel)
+        public static Term LookupTerm(SPSite site, TermStore tesmStore, TaxonomyFieldDefinition taxFieldModel)
         {
-            if (taxFieldModel.TermId.HasValue)
-                return tesmStore.GetTerm(taxFieldModel.TermId.Value);
+            Group currentGroup = null;
 
-            if (!string.IsNullOrEmpty(taxFieldModel.TermName))
-                return tesmStore.GetTerms(taxFieldModel.TermName, taxFieldModel.TermLCID, false).FirstOrDefault();
+            var termGroupName = taxFieldModel.TermGroupName;
+            var groupId = taxFieldModel.TermGroupId;
+            var isSiteCollectionGroup = taxFieldModel.IsSiteCollectionGroup;
+
+            if (!string.IsNullOrEmpty(termGroupName))
+            {
+                currentGroup = tesmStore.Groups.FirstOrDefault(g => g.Name.ToUpper() == termGroupName.ToUpper());
+            }
+            else if (groupId != null && groupId.HasGuidValue())
+            {
+                currentGroup = tesmStore.GetGroup(groupId.Value);
+            }
+            else if (isSiteCollectionGroup.HasValue && isSiteCollectionGroup.Value)
+            {
+                currentGroup = tesmStore.GetSiteCollectionGroup(site);
+            }
+
+            // TODO
+            // that should also check if the TermSet is there, so to scope the term 
+
+            if (currentGroup != null)
+            {
+                if (taxFieldModel.TermId.HasValue)
+                    return tesmStore.GetTerm(taxFieldModel.TermId.Value);
+
+                if (!string.IsNullOrEmpty(taxFieldModel.TermName))
+                {
+                    return tesmStore.GetTerms(taxFieldModel.TermName, taxFieldModel.TermLCID, false)
+                                    .FirstOrDefault(t => t.TermSet.Group.Name == currentGroup.Name);
+                }
+            }
+            else
+            {
+                if (taxFieldModel.TermId.HasValue)
+                    return tesmStore.GetTerm(taxFieldModel.TermId.Value);
+
+                if (!string.IsNullOrEmpty(taxFieldModel.TermName))
+                    return tesmStore.GetTerms(taxFieldModel.TermName, taxFieldModel.TermLCID, false).FirstOrDefault();
+            }
 
             return null;
         }
@@ -161,7 +197,5 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
         }
 
         #endregion
-
-
     }
 }

@@ -61,7 +61,7 @@ namespace SPMeta2.Containers.O365
             _provisionService.OnModelNodeProcessing += (sender, args) =>
             {
                 Trace.WriteLine(
-                    string.Format("Processing: [{0}/{1}] - [{2}%] - [{3}] [{4}]",
+                    string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                     new object[] {
                                   args.ProcessedModelNodeCount,
                                   args.TotalModelNodeCount,
@@ -74,7 +74,7 @@ namespace SPMeta2.Containers.O365
             _provisionService.OnModelNodeProcessed += (sender, args) =>
             {
                 Trace.WriteLine(
-                   string.Format("Processed: [{0}/{1}] - [{2}%] - [{3}] [{4}]",
+                   string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                    new object[] {
                                   args.ProcessedModelNodeCount,
                                   args.TotalModelNodeCount,

@@ -335,7 +335,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                         TrimUnavailable = false
                     });
 
-                    context.Load(terms);
+                    context.Load(terms, t => t.Include(
+                                                i => i.Id,
+                                                i => i.Name,
+                                                i => i.TermSet,
+                                                i => i.TermSet.Group,
+                                                i => i.TermSet.Group.Name
+                                                ));
                     context.ExecuteQueryWithTrace();
 
                     result = terms.FirstOrDefault(t => t.TermSet.Group.Name == currenGroup.Name);

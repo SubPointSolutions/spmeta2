@@ -123,7 +123,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(site, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -159,7 +159,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(site, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -194,7 +194,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(site, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -263,7 +263,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             if (!string.IsNullOrEmpty(definition.TermName))
             {
                 var termStore = TaxonomyFieldModelHandler.LookupTermStore(site, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(site, termStore, definition);
 
                 var isValid = spObject.AnchorId == term.Id;
 
