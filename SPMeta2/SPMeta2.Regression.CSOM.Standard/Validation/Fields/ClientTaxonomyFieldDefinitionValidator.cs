@@ -70,6 +70,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             var typedModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
 
+            var context = typedModelHost.HostClientContext;
+
             var site = typedModelHost.HostSite;
             var spObjectTmp = GetField(modelHost, definition);
             var spObject = spObjectTmp.Context.CastTo<TaxonomyField>(spObjectTmp);
@@ -134,6 +136,123 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             {
                 assert.SkipProperty(m => m.SspName, "SspName is null. Skipping property.");
             }
+
+            // is site collectiongroup
+            if (definition.IsSiteCollectionGroup.HasValue && definition.IsSiteCollectionGroup.Value)
+            {
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+
+                TermGroup group = null;
+
+                // cause binding might be only by group AND (termset || term)
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(context, context.Site, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+
+                if (termSet != null)
+                    group = termSet.Group;
+                else if (term != null)
+                    group = term.TermSet.Group;
+
+                context.Load(group);
+                context.ExecuteQuery();
+
+                var isValid = group.IsSiteCollectionGroup;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.IsSiteCollectionGroup);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsSiteCollectionGroup, "IsSiteCollectionGroup is null. Skipping property.");
+            }
+
+            // term group
+            if (definition.TermGroupId.HasValue)
+            {
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+
+                TermGroup group = null;
+
+                // cause binding might be only by group AND (termset || term)
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+
+                if (termSet != null)
+                    group = termSet.Group;
+                else if (term != null)
+                    group = term.TermSet.Group;
+
+                context.Load(group);
+                context.ExecuteQuery();
+
+                var isValid = group.Id == definition.TermGroupId;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TermGroupId);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TermGroupId, "TermGroupId is null. Skipping property.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.TermGroupName))
+            {
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+
+                TermGroup group = null;
+
+                // cause binding might be only by group AND (termset || term)
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+
+                if (termSet != null)
+                    group = termSet.Group;
+                else if (term != null)
+                    group = term.TermSet.Group;
+
+                context.Load(group);
+                context.ExecuteQuery();
+
+                var isValid = group.Name == definition.TermGroupName;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.TermGroupName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TermGroupName, "TermGroupName is null. Skipping property.");
+            }
+
 
             // term set
 

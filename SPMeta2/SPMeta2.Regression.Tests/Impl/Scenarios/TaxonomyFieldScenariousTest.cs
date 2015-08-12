@@ -294,7 +294,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
         [TestMethod]
-        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_GroupByName()
+        public void CanDeploy_TaxonomyFieldBindedToTermSet_ByName_Within_GroupByName()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupByName(true, false);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTerm_ByName_Within_GroupByName()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupByName(false, true);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermSetAndTerm_ByName_Within_GroupByName()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupByName(true, true);
+        }
+
+        private void Internal_TaxonomyFieldBinded_ByName_Within_GroupByName(bool isTermSet, bool isTerm)
         {
             var termSetName = Rnd.String();
             var termName = Rnd.String();
@@ -364,8 +383,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TermGroupName = termGroup2.Name;
 
                 // these should be resolvbed as we are scoped to the 2nd group
-                def.TermSetId = termSet2.Id;
-                def.TermId = term2.Id;
+                if (isTermSet)
+                    def.TermSetName = termSet2.Name;
+
+                if (isTerm)
+                    def.TermName = term2.Name;
             });
 
             var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
@@ -409,7 +431,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
         [TestMethod]
-        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_GroupById()
+        public void CanDeploy_TaxonomyFieldBindedToTermSet_ByName_Within_GroupById()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupById(true, false);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTerm_ByName_Within_GroupById()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupById(false, true);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermSetAndTerm_ByName_Within_GroupById()
+        {
+            Internal_TaxonomyFieldBinded_ByName_Within_GroupById(true, true);
+        }
+
+        private void Internal_TaxonomyFieldBinded_ByName_Within_GroupById(bool isTermSet, bool isTerm)
         {
             var termSetName = Rnd.String();
             var termName = Rnd.String();
@@ -480,8 +521,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TermGroupId = termGroup2.Id;
 
                 // these should be resolvbed as we are scoped to the 2nd group
-                def.TermSetId = termSet2.Id;
-                def.TermId = term2.Id;
+                if (isTermSet)
+                    def.TermSetName = termSet2.Name;
+
+                if (isTerm)
+                    def.TermName = term2.Name;
             });
 
             var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
@@ -525,10 +569,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
         [TestMethod]
-        public void CanDeploy_TaxonomyFieldBindedToTermById_Within_SiteCollectionGroup()
+        public void CanDeploy_TaxonomyFieldBindedToTermSet_ById_Within_SiteCollectionGroup()
         {
+            Internal_TaxonomyFieldBinded_ById_Within_SiteCollectionGroup(true, false);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTerm_ById_Within_SiteCollectionGroup()
+        {
+            Internal_TaxonomyFieldBinded_ById_Within_SiteCollectionGroup(false, true);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.TaxonomyGroups")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyFieldBindedToTermSetAndTerm_ById_Within_SiteCollectionGroup()
+        {
+            Internal_TaxonomyFieldBinded_ById_Within_SiteCollectionGroup(true, true);
+        }
+
+        private void Internal_TaxonomyFieldBinded_ById_Within_SiteCollectionGroup(bool isTermSet, bool isTerm)
+        {
+
             var termSetName = Rnd.String();
             var termName = Rnd.String();
+
+            var termSet1Id = Rnd.Guid();
+            var termSet2Id = Rnd.Guid();
+            var termSet3Id = Rnd.Guid();
 
             var term1Id = Rnd.Guid();
             var term2Id = Rnd.Guid();
@@ -544,6 +612,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var termSet2 = new TaxonomyTermSetDefinition
             {
                 Name = termSetName,
+                Id = termSet2Id,
                 Description = Rnd.String(),
             };
 
@@ -564,7 +633,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 Name = termName,
                 Description = Rnd.String(),
-                Id = term2Id
+                Id = term2Id,
             };
 
             var term3 = new TaxonomyTermDefinition
@@ -595,8 +664,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.IsSiteCollectionGroup = true;
 
                 // these should be resolvbed as we are scoped to the 2nd group within site collection group
-                def.TermSetId = termSet2.Id;
-                def.TermId = term2.Id;
+
+                if (isTermSet)
+                    def.TermSetId = termSet2.Id;
+
+                if (isTerm)
+                    def.TermId = term2.Id;
             });
 
             var taxonomyModel = SPMeta2Model.NewSiteModel(site =>

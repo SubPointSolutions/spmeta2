@@ -119,57 +119,149 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
         {
             var storeContext = currentSiteModelHost.HostClientContext;
 
-            return LookupTermSet(storeContext, termStore, taxFieldModel);
+            return LookupTermSet(storeContext, currentSiteModelHost.HostSite, termStore, taxFieldModel);
         }
 
-        public static TermSet LookupTermSet(ClientRuntimeContext context, TermStore termStore, TaxonomyFieldDefinition taxFieldModel)
+        public static TermSet LookupTermSet(ClientRuntimeContext context, Site site,
+            TermStore termStore, TaxonomyFieldDefinition taxFieldModel)
         {
-            return LookupTermSet(context, termStore,
+            return LookupTermSet(context, termStore, site,
+                taxFieldModel.TermGroupName, taxFieldModel.TermGroupId, taxFieldModel.IsSiteCollectionGroup,
                 taxFieldModel.TermSetName, taxFieldModel.TermSetId, taxFieldModel.TermSetLCID);
         }
 
         public static TermSet LookupTermSet(ClientRuntimeContext context, TermStore termStore,
+            Site site,
+            string termGroupName, Guid? termGroupId, bool? isSiteCollectionGroup,
             string termSetName, Guid? termSetId, int termSetLCID)
         {
             var storeContext = context;
 
+            TermGroup currenGroup = null;
+
+            if (!string.IsNullOrEmpty(termGroupName))
+            {
+                currenGroup = termStore.Groups.GetByName(termGroupName);
+
+                storeContext.Load(currenGroup);
+                storeContext.ExecuteQueryWithTrace();
+            }
+            else if (termGroupId != null && termGroupId.HasGuidValue())
+            {
+                currenGroup = termStore.Groups.GetById(termGroupId.Value);
+
+                storeContext.Load(currenGroup);
+                storeContext.ExecuteQueryWithTrace();
+            }
+            else if (isSiteCollectionGroup == true)
+            {
+                currenGroup = termStore.GetSiteCollectionGroup(site, false);
+
+                storeContext.Load(currenGroup);
+                storeContext.ExecuteQueryWithTrace();
+            }
+
             if (!string.IsNullOrEmpty(termSetName))
             {
-                var termSets = termStore.GetTermSetsByName(termSetName, termSetLCID);
+                if (currenGroup != null && (currenGroup.ServerObjectIsNull == false))
+                {
+                    TermSet termSet = null;
 
-                storeContext.Load(termSets);
-                storeContext.ExecuteQueryWithTrace();
+                    var scope = new ExceptionHandlingScope(storeContext);
+                    using (scope.StartScope())
+                    {
+                        using (scope.StartTry())
+                        {
+                            termSet = currenGroup.TermSets.GetByName(termSetName);
+                            storeContext.Load(termSet);
+                        }
 
-                return termSets.FirstOrDefault();
+                        using (scope.StartCatch())
+                        {
+
+                        }
+                    }
+
+                    storeContext.ExecuteQueryWithTrace();
+
+                    if (termSet != null && termSet.ServerObjectIsNull == false)
+                    {
+                        storeContext.Load(termSet, g => g.Id);
+                        storeContext.ExecuteQueryWithTrace();
+
+                        return termSet;
+                    }
+                }
+                else
+                {
+                    var termSets = termStore.GetTermSetsByName(termSetName, termSetLCID);
+
+                    storeContext.Load(termSets);
+                    storeContext.ExecuteQueryWithTrace();
+
+                    return termSets.FirstOrDefault();
+                }
             }
 
             if (termSetId.HasGuidValue())
             {
-                TermSet termSet = null;
-
-                var scope = new ExceptionHandlingScope(storeContext);
-                using (scope.StartScope())
+                if (currenGroup != null && (currenGroup.ServerObjectIsNull == false))
                 {
-                    using (scope.StartTry())
+                    TermSet termSet = null;
+
+                    var scope = new ExceptionHandlingScope(storeContext);
+                    using (scope.StartScope())
                     {
-                        termSet = termStore.GetTermSet(termSetId.Value);
-                        storeContext.Load(termSet);
+                        using (scope.StartTry())
+                        {
+                            termSet = currenGroup.TermSets.GetById(termSetId.Value);
+                            storeContext.Load(termSet);
+                        }
+
+                        using (scope.StartCatch())
+                        {
+
+                        }
                     }
 
-                    using (scope.StartCatch())
-                    {
-
-                    }
-                }
-
-                storeContext.ExecuteQueryWithTrace();
-
-                if (termSet != null && termSet.ServerObjectIsNull == false)
-                {
-                    storeContext.Load(termSet, g => g.Id);
                     storeContext.ExecuteQueryWithTrace();
 
-                    return termSet;
+                    if (termSet != null && termSet.ServerObjectIsNull == false)
+                    {
+                        storeContext.Load(termSet, g => g.Id);
+                        storeContext.ExecuteQueryWithTrace();
+
+                        return termSet;
+                    }
+                }
+                else
+                {
+                    TermSet termSet = null;
+
+                    var scope = new ExceptionHandlingScope(storeContext);
+                    using (scope.StartScope())
+                    {
+                        using (scope.StartTry())
+                        {
+                            termSet = termStore.GetTermSet(termSetId.Value);
+                            storeContext.Load(termSet);
+                        }
+
+                        using (scope.StartCatch())
+                        {
+
+                        }
+                    }
+
+                    storeContext.ExecuteQueryWithTrace();
+
+                    if (termSet != null && termSet.ServerObjectIsNull == false)
+                    {
+                        storeContext.Load(termSet, g => g.Id);
+                        storeContext.ExecuteQueryWithTrace();
+
+                        return termSet;
+                    }
                 }
             }
 
@@ -179,40 +271,113 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
         public static Term LookupTerm(SiteModelHost currentSiteModelHost, TermStore termStore, TaxonomyFieldDefinition termModel)
         {
             var context = currentSiteModelHost.HostClientContext;
+            var site = currentSiteModelHost.HostSite;
+
             Term result = null;
 
-            if (termModel.TermId.HasValue)
+            TermGroup currenGroup = null;
+
+            var termGroupName = termModel.TermGroupName;
+            var termGroupId = termModel.TermGroupId;
+            var isSiteCollectionGroup = termModel.IsSiteCollectionGroup;
+
+            if (!string.IsNullOrEmpty(termGroupName))
             {
-                var scope = new ExceptionHandlingScope(context);
-                using (scope.StartScope())
-                {
-                    using (scope.StartTry())
-                    {
-                        result = termStore.GetTerm(termModel.TermId.Value);
-                        context.Load(result);
-                    }
+                currenGroup = termStore.Groups.GetByName(termGroupName);
 
-                    using (scope.StartCatch())
-                    {
-
-                    }
-                }
-
+                context.Load(currenGroup);
                 context.ExecuteQueryWithTrace();
             }
-            else if (!string.IsNullOrEmpty(termModel.TermName))
+            else if (termGroupId != null && termGroupId.HasGuidValue())
             {
-                var terms = termStore.GetTerms(new LabelMatchInformation(context)
-                {
-                    Lcid = termModel.TermLCID,
-                    TermLabel = termModel.TermName,
-                    TrimUnavailable = false
-                });
+                currenGroup = termStore.Groups.GetById(termGroupId.Value);
 
-                context.Load(terms);
+                context.Load(currenGroup);
                 context.ExecuteQueryWithTrace();
+            }
+            else if (isSiteCollectionGroup == true)
+            {
+                currenGroup = termStore.GetSiteCollectionGroup(site, false);
 
-                result = terms.FirstOrDefault();
+                context.Load(currenGroup);
+                context.ExecuteQueryWithTrace();
+            }
+
+            if (currenGroup != null)
+            {
+                if (termModel.TermId.HasValue)
+                {
+                    // by ID, the only one match
+
+                    var scope = new ExceptionHandlingScope(context);
+                    using (scope.StartScope())
+                    {
+                        using (scope.StartTry())
+                        {
+                            result = termStore.GetTerm(termModel.TermId.Value);
+                            context.Load(result);
+                        }
+
+                        using (scope.StartCatch())
+                        {
+
+                        }
+                    }
+
+                    context.ExecuteQueryWithTrace();
+                }
+                else if (!string.IsNullOrEmpty(termModel.TermName))
+                {
+                    var terms = termStore.GetTerms(new LabelMatchInformation(context)
+                    {
+                        Lcid = termModel.TermLCID,
+                        TermLabel = termModel.TermName,
+                        TrimUnavailable = false
+                    });
+
+                    context.Load(terms);
+                    context.ExecuteQueryWithTrace();
+
+                    result = terms.FirstOrDefault(t => t.TermSet.Group.Name == currenGroup.Name);
+                }
+            }
+
+            else
+            {
+
+                if (termModel.TermId.HasValue)
+                {
+                    var scope = new ExceptionHandlingScope(context);
+                    using (scope.StartScope())
+                    {
+                        using (scope.StartTry())
+                        {
+                            result = termStore.GetTerm(termModel.TermId.Value);
+                            context.Load(result);
+                        }
+
+                        using (scope.StartCatch())
+                        {
+
+                        }
+                    }
+
+                    context.ExecuteQueryWithTrace();
+                }
+                else if (!string.IsNullOrEmpty(termModel.TermName))
+                {
+                    var terms = termStore.GetTerms(new LabelMatchInformation(context)
+                    {
+                        Lcid = termModel.TermLCID,
+                        TermLabel = termModel.TermName,
+                        TrimUnavailable = false
+                    });
+
+                    context.Load(terms);
+                    context.ExecuteQueryWithTrace();
+
+                    result = terms.FirstOrDefault();
+                }
             }
 
             if (result != null && result.ServerObjectIsNull == false)
