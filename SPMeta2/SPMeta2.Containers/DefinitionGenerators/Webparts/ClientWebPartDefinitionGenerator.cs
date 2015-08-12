@@ -22,9 +22,10 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 // app needs to be deployed along with test process
 
                 def.WebPartName = "NewTeamSiteForm";
-                def.ProductId = new Guid("6d97b0a9-84a5-4bf6-a831-99c5f83f9686");
-                def.FeatureId = new Guid("6d97b0a9-84a5-4bf6-a831-99c5f83f9687");
-                //def.ProductWebId = new Guid("fae61eea-5448-4428-94b9-baf82ac3e818");
+               
+                def.ProductId = new Guid("1633e035-551d-48ab-96ed-3e0f3aa1bd3b");
+                def.FeatureId = new Guid("1633e035-551d-48ab-96ed-3e0f3aa1bd3c");
+                //def.ProductWebId = new Guid("55649e29-8e7e-47db-85ce-b6ed42f3327d");
             });
         }
     }

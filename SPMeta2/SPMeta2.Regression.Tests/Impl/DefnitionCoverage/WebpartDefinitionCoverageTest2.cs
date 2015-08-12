@@ -23,6 +23,8 @@ using SPMeta2.Standard.Services.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Enumerations;
+using SPMeta2.Standard.Definitions;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
 {
@@ -205,6 +207,9 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                             list
                                 .AddRandomPublishingPage(page =>
                                 {
+                                    (page.Value as PublishingPageDefinition).PageLayoutFileName =
+                                        BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+
                                     page.AddDefinitionNode(publishingPageWebPartDef);
                                 });
                         })

@@ -43,14 +43,19 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var typedWebpart = webpartInstance.WithAssertAndCast<ClientWebPart>("webpartInstance", value => value.RequireNotNull());
             var typedModel = webpartModel.WithAssertAndCast<ClientWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
+            // Enhance 'ClientWebPart' provision - ProductWebId should be current web by default #623
+            // https://github.com/SubPointSolutions/spmeta2/issues/623
+            var productId = typedModel.ProductId;
+
+            if (!productId.HasGuidValue())
+                productId = _host.SPLimitedWebPartManager.Web.ID;
+
             typedWebpart.FeatureId = typedModel.FeatureId;
-            typedWebpart.ProductId = typedModel.ProductId;
+            typedWebpart.ProductId = productId.Value;
             typedWebpart.WebPartName = typedModel.WebPartName;
             typedWebpart.ProductWebId = _host.SPLimitedWebPartManager.Web.ID;
         }
 
         #endregion
-
-
     }
 }

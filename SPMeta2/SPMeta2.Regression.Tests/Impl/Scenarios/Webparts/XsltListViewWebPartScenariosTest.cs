@@ -463,7 +463,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         #endregion
+
+        #region fixes
+
+
+
+        #endregion
     }
-
-
 }

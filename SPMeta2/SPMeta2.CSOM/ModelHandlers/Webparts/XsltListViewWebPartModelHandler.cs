@@ -102,7 +102,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             {
                 list = web.Lists.GetByTitle(wpModel.ListTitle);
             }
-            else if (wpModel.ListId != default(Guid))
+            else if (wpModel.ListId.HasGuidValue())
             {
                 list = web.Lists.GetById(wpModel.ListId.Value);
             }

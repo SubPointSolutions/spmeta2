@@ -428,7 +428,7 @@ namespace SPMeta2.Utils
 
             var propNodePath = "{" + propXlmns + "}property";
             return propsNode.Descendants(propNodePath)
-                                            .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == propName);
+                                            .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value.ToUpper() == propName.ToUpper());
         }
 
         internal static XDocument SetOrUpdateV3MetadataProperty(this XDocument webpartXmlDocument, string propName,
@@ -501,6 +501,20 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
+        internal static XDocument RemoveV3Property(this XDocument webpartXmlDocument, string propName,
+            string propXlmns)
+        {
+            var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
+            var propNode = GetV3Node(webpartXmlDocument, propName, propXlmns);
+
+            if (propNode != null)
+                propNode.Remove();
+
+            return webpartXmlDocument;
+        }
+
+
+
         internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
@@ -556,6 +570,20 @@ namespace SPMeta2.Utils
             return webPartNode.Descendants(propNodePath).FirstOrDefault();
         }
 
+        internal static XDocument RemoveV2Property(this XDocument webpartXmlDocument, string propName,
+           string propXlmns)
+        {
+            var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
+            if (webPartNode == null) throw new ArgumentException("Web part xml template is very wrong");
+
+            var propNodePath = "{" + propXlmns + "}" + propName;
+            var propNode = webPartNode.Descendants(propNodePath).FirstOrDefault();
+
+            if (propNode != null)
+                propNode.Remove();
+
+            return webpartXmlDocument;
+        }
 
         internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
         {
@@ -626,6 +654,17 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
+        public static XDocument RemoveProperty(this XDocument webpartXmlDocument, string propName)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return RemoveV3Property(webpartXmlDocument, propName, WebPartNamespaceV3);
+            else if (IsV2version(webpartXmlDocument))
+                return RemoveV2Property(webpartXmlDocument, propName, WebPartNamespaceV2);
+
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
         public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
             bool isCData)
         {
@@ -648,6 +687,8 @@ namespace SPMeta2.Utils
 
             return webpartXmlDocument;
         }
+
+
 
         public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue)
         {

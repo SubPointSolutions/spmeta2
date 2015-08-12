@@ -228,7 +228,7 @@ namespace SPMeta2.Definitions
         [WebTokenCapability]
         
         [ExpectNullable]
-        [ExpectUpdateAsServerRelativeUrl]
+        //[ExpectUpdateAsServerRelativeUrl]
         public string DocumentTemplateUrl { get; set; }
 
         #endregion
