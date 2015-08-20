@@ -80,7 +80,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Apps.ClientWebPart")]
-        public void CanDeploy_AppClientWebPart_ToPages()
+        public void CanDeploy_AppClientWebPart_ToWebAndSubWebPages()
         {
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
@@ -98,30 +98,54 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 }));
 
                 web.AddRandomApp();
+                FillClientWebPartPages(web);
 
-                web.AddList(BuiltInListDefinitions.Pages, list =>
+                // subwebs
+
+                web.AddRandomWeb(subWeb1 =>
                 {
-                    list.AddRandomPublishingPage(page =>
-                    {
-                        page.AddRandomWebpart();
-                    });
-                });
+                    subWeb1.AddRandomApp();
+                    FillClientWebPartPages(subWeb1);
 
-                web.AddList(BuiltInListDefinitions.SitePages, list =>
-                {
-                    list.AddRandomWikiPage(page =>
+                    subWeb1.AddRandomWeb(subWeb12 =>
                     {
-                        page.AddRandomWebpart();
-                    });
+                        subWeb12.AddRandomApp();
+                        FillClientWebPartPages(subWeb12);
 
-                    list.AddRandomWebPartPage(page =>
-                    {
-                        page.AddRandomWebpart();
+                        subWeb12.AddRandomWeb(subWeb123 =>
+                        {
+                            subWeb123.AddRandomApp();
+                            FillClientWebPartPages(subWeb123);
+                        });
                     });
                 });
             });
 
             TestModel(siteModel, webModel);
+        }
+
+        protected void FillClientWebPartPages(WebModelNode web)
+        {
+            web.AddList(BuiltInListDefinitions.Pages, list =>
+            {
+                list.AddRandomPublishingPage(page =>
+                {
+                    page.AddRandomWebpart();
+                });
+            });
+
+            web.AddList(BuiltInListDefinitions.SitePages, list =>
+            {
+                list.AddRandomWikiPage(page =>
+                {
+                    page.AddRandomWebpart();
+                });
+
+                list.AddRandomWebPartPage(page =>
+                {
+                    page.AddRandomWebpart();
+                });
+            });
         }
 
 
