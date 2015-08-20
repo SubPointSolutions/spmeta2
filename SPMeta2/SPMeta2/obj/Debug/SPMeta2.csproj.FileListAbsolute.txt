@@ -27,12 +27,6 @@ c:\_spmeta_builds\40\SPMeta2.XML
 c:\_spmeta_builds\45\SPMeta2.dll
 c:\_spmeta_builds\45\SPMeta2.pdb
 c:\_spmeta_builds\45\SPMeta2.XML
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.XML
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.csprojResolveAssemblyReference.cache
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.dll
-C:\Users\administrator.DEV\Source\Repos\spmeta2\SPMeta2\SPMeta2\obj\Debug\SPMeta2.pdb
 Z:\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.XML
 Z:\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.dll
 Z:\spmeta2\SPMeta2\SPMeta2\bin\Debug\SPMeta2.pdb

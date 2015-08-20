@@ -120,6 +120,10 @@ namespace SPMeta2.Common
                 typeof(WebDefinition),
                 new[]
                 {
+                    // AppDefinition should be deployed before pages #628
+                    // https://github.com/SubPointSolutions/spmeta2/issues/628
+                    typeof (AppDefinition),
+
                     typeof (FeatureDefinition),
 
                     typeof (SecurityGroupDefinition),
