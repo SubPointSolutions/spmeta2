@@ -123,7 +123,6 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             return site.RootWeb;
         }
 
-
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
             base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
