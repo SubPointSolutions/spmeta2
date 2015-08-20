@@ -120,7 +120,6 @@
     <Compile Include="BuiltInDefinitions\BuiltInMasterPageDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
-    <Compile Include="Common\FieldValue.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
