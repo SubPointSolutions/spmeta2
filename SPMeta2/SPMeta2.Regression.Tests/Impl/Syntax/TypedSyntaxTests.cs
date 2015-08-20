@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers;
 using SPMeta2.Definitions;
 using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Taxonomy;
@@ -7,6 +9,7 @@ using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Syntax
 {
@@ -235,6 +238,25 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     {
                         page.AddDeleteWebParts(new DeleteWebPartsDefinition());
                         page.AddWebPart(new WebPartDefinition());
+                    });
+                });
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Syntax.Extensions")]
+        public void CanPassTypedSyntax_Extensions()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, Directory.GetCurrentDirectory());
+
+                    list.AddRandomFolder(folder =>
+                    {
+                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, Directory.GetCurrentDirectory());
                     });
                 });
             });

@@ -42,14 +42,24 @@ namespace SPMeta2.Syntax.Default.Utils
             }
         }
 
-        public static void LoadModuleFilesFromLocalFolder(ListModelNode hostNode, string folderPath)
+        //public static void LoadModuleFilesFromLocalFolder(ListModelNode hostNode, string folderPath)
+        //{
+        //    LoadModuleFilesFromLocalFolder((ModelNode) hostNode, folderPath);
+        //}
+
+        //public static void LoadModuleFilesFromLocalFolder(FolderModelNode hostNode, string folderPath)
+        //{
+        //    LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath);
+        //}
+
+        public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath)
         {
-            LoadModuleFilesFromLocalFolder((ModelNode) hostNode, folderPath);
+            LoadModuleFilesFromLocalFolder(hostNode, folderPath, null);
         }
 
-        public static void LoadModuleFilesFromLocalFolder(FolderModelNode hostNode, string folderPath)
+        public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath, Func<string, bool> shouldIncludeFolderOrFile)
         {
-            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath);
+            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath, shouldIncludeFolderOrFile);
         }
 
         /// <summary>
@@ -57,13 +67,20 @@ namespace SPMeta2.Syntax.Default.Utils
         /// </summary>
         /// <param name="hostNode"></param>
         /// <param name="folderPath"></param>
-        internal static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath)
+        internal static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath,
+            Func<string, bool> shouldIncludeFolderOrFile)
         {
             var files = Directory.GetFiles(folderPath);
             var folders = Directory.GetDirectories(folderPath);
 
             foreach (var file in files)
             {
+                if (shouldIncludeFolderOrFile != null)
+                {
+                    if (!shouldIncludeFolderOrFile(file))
+                        continue;
+                }
+
                 hostNode.AddDefinitionNode(new ModuleFileDefinition
                 {
                     Content = File.ReadAllBytes(file),
@@ -76,13 +93,18 @@ namespace SPMeta2.Syntax.Default.Utils
             {
                 var subFolderPath = subFolder;
 
+                if (shouldIncludeFolderOrFile != null)
+                {
+                    if (!shouldIncludeFolderOrFile(subFolderPath))
+                        continue;
+                }
+
                 var folderDef = new FolderDefinition
                 {
                     Name = Path.GetFileName(subFolderPath)
                 };
 
-
-                hostNode.AddDefinitionNode(folderDef, folderNode => LoadModuleFilesFromLocalFolder(folderNode, subFolderPath));
+                hostNode.AddDefinitionNode(folderDef, folderNode => LoadModuleFilesFromLocalFolder(folderNode, subFolderPath, shouldIncludeFolderOrFile));
             }
         }
 
