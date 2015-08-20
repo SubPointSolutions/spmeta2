@@ -2,6 +2,7 @@
 using SPMeta2.Containers.Services;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Definitions.Webparts;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Taxonomy;
@@ -29,6 +30,20 @@ namespace SPMeta2.Containers
         #endregion
 
         #region syntax
+
+        #region apps
+
+        public static WebModelNode AddRandomApp(this WebModelNode model)
+        {
+            return AddRandomApp(model, null);
+        }
+
+        public static WebModelNode AddRandomApp(this WebModelNode model, Action<WebModelNode> action)
+        {
+            return model.AddRandomTypedDefinition<AppDefinition, WebModelNode, WebModelNode>(action);
+        }
+
+        #endregion
 
         #region webs
 
@@ -111,6 +126,19 @@ namespace SPMeta2.Containers
         #endregion
 
         #region wiki pages
+
+        //public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model)
+        //     where TModelNode : TypedModelNode, IListItemHostModelNode, new()
+        //{
+        //    return AddRandomWebPartPage(model, null);
+        //}
+
+        //public static TModelNode AddRandomWebPartPage<TModelNode>(this TModelNode model,
+        //    Action<WikiPageModelNode> action)
+        //       where TModelNode : TypedModelNode, IListItemHostModelNode, new()
+        //{
+        //    return model.AddRandomTypedDefinition<WebPartPageDefinition, TModelNode, WikiPageModelNode>(action);
+        //}
 
         public static TModelNode AddRandomWikiPage<TModelNode>(this TModelNode model)
                where TModelNode : TypedModelNode, IListItemHostModelNode, new()
@@ -258,6 +286,16 @@ namespace SPMeta2.Containers
         public static ModelNode AddRandomWebpart(this ModelNode model, Action<ModelNode> action)
         {
             return model.AddRandomDefinition<WebPartDefinition>(action);
+        }
+
+        public static ModelNode AddRandomClientWebpart(this ModelNode model)
+        {
+            return AddRandomClientWebpart(model, null);
+        }
+
+        public static ModelNode AddRandomClientWebpart(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<ClientWebPartDefinition>(action);
         }
 
         #endregion

@@ -104,6 +104,7 @@
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />
     <Compile Include="Impl\RegressionAPI\RegressionAPITests.cs" />
     <Compile Include="Impl\Reports\DefinitionReportTests.cs" />
+    <Compile Include="Impl\Scenarios\AppScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Base\SPMeta2RegresionScenarioTestBase.cs" />
     <Compile Include="Impl\Scenarios\Fields\DependentLookupFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\CalculatedFieldScenariousTest.cs" />
