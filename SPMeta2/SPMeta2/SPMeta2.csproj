@@ -119,6 +119,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInListDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInMasterPageDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
+    <Compile Include="BuiltInDefinitions\BuiltInWikiPages.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />

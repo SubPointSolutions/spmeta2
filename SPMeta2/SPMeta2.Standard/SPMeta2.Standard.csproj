@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
+    <Compile Include="BuiltInDefinitions\BuiltInPublishingPages.cs" />
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
     <Compile Include="Definitions\DisplayTemplates\FilterDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\ManagedPropertyDefinition.cs" />

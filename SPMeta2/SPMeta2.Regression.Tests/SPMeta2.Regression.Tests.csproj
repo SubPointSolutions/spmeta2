@@ -110,6 +110,7 @@
     <Compile Include="Impl\Scenarios\Fields\CalculatedFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\UserFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListViewWebPartScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\OOTBPageScenarios.cs" />
     <Compile Include="Impl\Scenarios\ResetRoleInheritanceScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeFieldLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ContentTypeLinkScenariousTest.cs" />
