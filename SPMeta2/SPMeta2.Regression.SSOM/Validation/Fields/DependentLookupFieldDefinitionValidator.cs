@@ -5,6 +5,7 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.SSOM.Validation.Fields
 {
@@ -53,6 +54,19 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             assert.SkipProperty(m => m.ValidationFormula, "DependentLookupFieldDefinition");
             assert.SkipProperty(m => m.ValidationMessage, "DependentLookupFieldDefinition");
+
+            assert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior");
+
+            // web url
+            if (!string.IsNullOrEmpty(definition.LookupWebUrl))
+            {
+                // TODO
+                throw new SPMeta2NotImplementedException("definition.LookupWebUrl");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.LookupWebUrl, "LookupWebUrl");
+            }
 
             if (!string.IsNullOrEmpty(definition.Group))
                 assert.ShouldBeEqual(m => m.Group, o => o.Group);

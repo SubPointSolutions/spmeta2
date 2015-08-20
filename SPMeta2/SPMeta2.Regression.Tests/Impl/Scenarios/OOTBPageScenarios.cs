@@ -56,20 +56,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(sitePublishingFeature));
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddWebFeature(webPublishingFeature);
-
                 web.AddRandomWeb(subWeb =>
                 {
+                    var webDef = subWeb.Value as WebDefinition;
+                    webDef.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+
                     subWeb.AddWebFeature(webPublishingFeature);
 
-                    subWeb.AddHostList(BuiltInListDefinitions.Pages, list =>
+                    subWeb.AddHostList(BuiltInListDefinitions.Pages.Inherit(), list =>
                     {
                         list.AddHostPublishingPage(BuiltInPublishingPages.Default, page =>
-                        {
-                            page.AddRandomWebpart();
-                        });
-
-                        list.AddHostPublishingPage(BuiltInPublishingPages.PageNotFoundError, page =>
                         {
                             page.AddRandomWebpart();
                         });
@@ -83,7 +79,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.OOTBPages")]
-        public void CanDeploy_WebParts_OOTB_WikiPages()
+        public void CanDeploy_WebParts_To_OOTB_WikiPages()
         {
             var sitePublishingFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
 
@@ -93,8 +89,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(sitePublishingFeature));
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddWebFeature(webPublishingFeature);
-
                 web.AddRandomWeb(subWeb =>
                 {
                     subWeb.AddWebFeature(webPublishingFeature);
