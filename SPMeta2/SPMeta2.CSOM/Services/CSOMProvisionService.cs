@@ -92,12 +92,17 @@ namespace SPMeta2.CSOM.Services
             if (!clientContext.Site.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 clientContext.Load(clientContext.Site, s => s.ServerRelativeUrl);
-                clientContext.ExecuteQueryWithTrace();
+                needQuery = true;
             }
 
             if (!clientContext.Web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 clientContext.Load(clientContext.Web, w => w.ServerRelativeUrl);
+                needQuery = true;
+            }
+
+            if (needQuery)
+            {
                 clientContext.ExecuteQueryWithTrace();
             }
         }

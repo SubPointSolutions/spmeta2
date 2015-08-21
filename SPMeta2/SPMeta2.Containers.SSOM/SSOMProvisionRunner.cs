@@ -232,21 +232,21 @@ namespace SPMeta2.Containers.SSOM
 
         #region utils
 
-        private void WithSSOMWebApplicationContext(string webAppUrl, Action<SPWebApplication> action)
+        public void WithSSOMWebApplicationContext(string webAppUrl, Action<SPWebApplication> action)
         {
             var webApp = SPWebApplication.Lookup(new Uri(webAppUrl));
 
             action(webApp);
         }
 
-        private void WithSSOMFarmContext(Action<SPFarm> action)
+        public void WithSSOMFarmContext(Action<SPFarm> action)
         {
             var farm = SPFarm.Local;
 
             action(farm);
         }
 
-        private void WithSSOMSiteAndWebContext(string siteUrl, Action<SPSite, SPWeb> action)
+        public void WithSSOMSiteAndWebContext(string siteUrl, Action<SPSite, SPWeb> action)
         {
             using (var site = new SPSite(siteUrl))
             {
