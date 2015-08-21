@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.Common
@@ -94,6 +95,12 @@ namespace SPMeta2.Common
                     typeof (ContentTypeDefinition),
                     typeof (ContentTypeLinkDefinition),
                     
+                    // Content type related provision should be done before list items provision #636
+                    // https://github.com/SubPointSolutions/spmeta2/issues/636
+                    typeof (RemoveContentTypeLinksDefinition),
+                    typeof (HideContentTypeLinksDefinition),
+                    typeof (UniqueContentTypeOrderDefinition),
+
                     // field and field links could be added with 'AddToAllContentTypes' options
                     // we need content types deployed first
                     typeof (FieldDefinition),
