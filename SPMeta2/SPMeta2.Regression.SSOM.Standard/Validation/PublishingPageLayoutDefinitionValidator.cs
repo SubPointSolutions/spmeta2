@@ -46,6 +46,44 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             else
                 assert.SkipProperty(m => m.AssociatedContentTypeId);
 
+            if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
+            {
+                var urlValue = new SPFieldUrlValue(spObject["PublishingPreviewImage"].ToString());
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageUrl);
+                    var isValid = (urlValue != null) && (urlValue.Url == s.PreviewImageUrl);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageDescription);
+                    var isValid = (urlValue != null) && (urlValue.Description == s.PreviewImageDescription);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.PreviewImageUrl, "MasterPageUrl is NULL");
+                assert.SkipProperty(m => m.PreviewImageDescription, "MasterPageDescription is NULL");
+            }
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(m => m.Content);

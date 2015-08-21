@@ -73,6 +73,21 @@ namespace SPMeta2.Standard.Definitions
         [ExpectNullable]
         public string AssociatedContentTypeId { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsUrl(Extension = ".png")]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+        public string PreviewImageUrl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string PreviewImageDescription { get; set; }
+
         #endregion
 
         #region methods

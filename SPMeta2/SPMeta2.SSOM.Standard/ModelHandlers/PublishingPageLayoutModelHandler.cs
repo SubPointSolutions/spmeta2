@@ -13,6 +13,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Services;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers
 {
@@ -86,6 +87,22 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                         pageItem["MasterPageDescription"] = definition.Description;
 
                     pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+
+                    if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
+                    {
+                        var urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                        {
+                            Value = definition.PreviewImageUrl,
+                            Context = web
+                        }).Value;
+
+                        var urlFieldValue = new SPFieldUrlValue { Url = urlValue };
+
+                        if (!string.IsNullOrEmpty(definition.PreviewImageDescription))
+                            urlFieldValue.Description = definition.PreviewImageDescription;
+
+                        pageItem["PublishingPreviewImage"] = urlFieldValue.ToString();
+                    }
 
                     if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
                     {
