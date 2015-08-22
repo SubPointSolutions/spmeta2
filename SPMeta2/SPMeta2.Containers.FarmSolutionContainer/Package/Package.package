@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a4a2146d-57d1-48bd-a02e-ba97b371903d" solutionId="a4a2146d-57d1-48bd-a02e-ba97b371903d" resetWebServer="false" sharePointProductVersion="15.0" name="SPMeta2.Containers.FarmSolutionContainer" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="f89cc946-d4bf-4142-9e0c-dce53f633e36" />
+    <featureReference itemId="23b8d0ab-7ae9-4b58-b13d-8b64ad580d43" />
+    <featureReference itemId="c0953dae-c1d9-4da2-ab9d-caa1e711efd0" />
+    <featureReference itemId="df540769-dab9-423e-894e-349b826c39bb" />
+  </features>
+</package>

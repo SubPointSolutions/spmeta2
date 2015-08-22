@@ -205,6 +205,7 @@
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsLCIDService.cs" />
     <Compile Include="Services\ExpectUpdateValueServiceBase.cs" />
     <Compile Include="Services\VSAssertService.cs" />
+    <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
     <Compile Include="XsltStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -367,6 +368,7 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
     <None Include="Resources\XsltListViewWebPart_TestXsl.txt" />
     <None Include="Resources\CustomAllItemsPage.txt" />
   </ItemGroup>
@@ -387,7 +389,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PSScripts\100 - Ensure M2 Web Application.ps1" />
-    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
     <None Include="PSScripts\_config.ps1" />
     <None Include="PSScripts\_sys.common.ps1" />
     <None Include="SPMeta2.Regression.Tests.dll.config">

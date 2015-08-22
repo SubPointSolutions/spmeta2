@@ -3,6 +3,8 @@ using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Containers.Consts;
+using System.Collections.Generic;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 {
@@ -18,15 +20,17 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
-                // hardcoded yet
-                // app needs to be deployed along with test process
+                def.WebPartName = DefaultContainers.Apps.M2ClientWebPart1Name;
 
-                def.WebPartName = "NewTeamSiteForm";
-               
-                def.ProductId = new Guid("1633e035-551d-48ab-96ed-3e0f3aa1bd3b");
-                def.FeatureId = new Guid("1633e035-551d-48ab-96ed-3e0f3aa1bd3c");
-                //def.ProductWebId = new Guid("55649e29-8e7e-47db-85ce-b6ed42f3327d");
+                def.ProductId = DefaultContainers.Apps.ProductId;
+                def.FeatureId = DefaultContainers.Apps.FeatureId;
             });
+        }
+
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            // return defaul app
+            return new[] { new AppDefinitionGenerator().GenerateRandomDefinition() };
         }
     }
 }

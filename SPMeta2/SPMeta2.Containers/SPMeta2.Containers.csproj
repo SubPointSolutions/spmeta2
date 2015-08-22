@@ -61,6 +61,7 @@
     <Compile Include="Assertion\OnPropertyValidatedEventArgs.cs" />
     <Compile Include="Assertion\PropertyValidationResult.cs" />
     <Compile Include="Common\EventHits.cs" />
+    <Compile Include="Consts\DefaultContainers.cs" />
     <Compile Include="Consts\EnvironmentConsts.cs" />
     <Compile Include="DefaultDwpWebpartTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -238,6 +239,24 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Containers\Apps\1.0.0.2\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.1\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.0\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\SPMeta2-MSWord-Template.dotx" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +268,7 @@
   <ItemGroup>
     <None Include="Resources\Seattle.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

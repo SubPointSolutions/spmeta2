@@ -10,6 +10,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Regression.Tests.Utils;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 

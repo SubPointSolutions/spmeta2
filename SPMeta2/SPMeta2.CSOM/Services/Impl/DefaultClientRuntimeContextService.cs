@@ -18,7 +18,9 @@ namespace SPMeta2.CSOM.Services.Impl
         public DefaultClientRuntimeContextService()
         {
             ExecuteQueryDelayInMilliseconds = 1000;
+
             ExecuteQueryRetryAttempts = 10;
+            ExecuteQueryRetryDelayMultiplier = 1.5;
 
             InitAllowedStatusCodes();
             InitAllowedIISResetSocketStatusCodes();
@@ -41,6 +43,7 @@ namespace SPMeta2.CSOM.Services.Impl
 
         public int ExecuteQueryDelayInMilliseconds { get; set; }
         public int ExecuteQueryRetryAttempts { get; set; }
+        public double ExecuteQueryRetryDelayMultiplier { get; set; }
 
         private readonly List<int> _allowedStatusCodes = new List<int>();
 
@@ -79,6 +82,8 @@ namespace SPMeta2.CSOM.Services.Impl
             var currentRetryCount = 0;
             var currentRetryDelayInMilliseconds = ExecuteQueryDelayInMilliseconds;
 
+            Exception lastException = null;
+
             while (currentRetryCount < ExecuteQueryRetryAttempts)
             {
                 try
@@ -88,6 +93,8 @@ namespace SPMeta2.CSOM.Services.Impl
                 }
                 catch (Exception ex)
                 {
+                    lastException = ex;
+
                     if (ShouldRetryExecuteQuery(ex))
                     {
                         currentRetryCount++;
@@ -102,12 +109,13 @@ namespace SPMeta2.CSOM.Services.Impl
                 }
             }
 
-            throw new SPMeta2Exception(string.Format("ClientRuntimeContext.ExecuteQuery() exceeded [{0}] retry attempts.", ExecuteQueryRetryAttempts));
+            var message = string.Format("ClientRuntimeContext.ExecuteQuery() exceeded [{0}] retry attempts. Check InnerException for the last returned exception.", ExecuteQueryRetryAttempts);
+            throw new SPMeta2Exception(message, lastException);
         }
 
         protected virtual int GetNextExecuteQueryDelayInMilliseconds(int currentDelay)
         {
-            return (int)(currentDelay * 1.5);
+            return (int)(currentDelay * ExecuteQueryRetryDelayMultiplier);
         }
 
         protected virtual bool ShouldRetryExecuteQuery(Exception ex)
