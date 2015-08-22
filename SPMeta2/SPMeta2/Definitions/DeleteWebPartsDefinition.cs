@@ -55,6 +55,7 @@ namespace SPMeta2.Definitions
     }
 
     [DataContract]
+    [Serializable]
     public class WebPartMatch
     {
         #region properties

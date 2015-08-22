@@ -75,9 +75,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                // clean up
-                foreach (var wp in webPartDefenitions)
-                    wp.DeleteWebPart();
+                ProcessWebPartDeletes(webPartDefenitions, webPartModel);
 
                 context.ExecuteQueryWithTrace();
 
@@ -94,6 +92,50 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 return pageFile;
             });
+        }
+
+        protected virtual Microsoft.SharePoint.Client.WebParts.WebPartDefinition FindWebPartMatch(
+            IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> spWebPartDefenitions,
+            WebPartMatch wpMatch)
+        {
+            // by title?
+            if (!string.IsNullOrEmpty(wpMatch.Title))
+            {
+                return spWebPartDefenitions.FirstOrDefault(w => w.WebPart.Title.ToUpper() == wpMatch.Title.ToUpper());
+            }
+            else
+            {
+                // TODO, more support by ID/Type later
+                // https://github.com/SubPointSolutions/spmeta2/issues/432
+            }
+
+            return null;
+        }
+
+        protected virtual void ProcessWebPartDeletes(
+            IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> spWebPartDefenitions,
+            DeleteWebPartsDefinition definition)
+        {
+            var webParts2Delete = new List<Microsoft.SharePoint.Client.WebParts.WebPartDefinition>();
+
+            if (definition.WebParts.Any())
+            {
+                foreach (var webPartMatch in definition.WebParts)
+                {
+                    var currentWebPartMatch = FindWebPartMatch(spWebPartDefenitions, webPartMatch);
+
+                    if (currentWebPartMatch != null && !webParts2Delete.Contains(currentWebPartMatch))
+                        webParts2Delete.Add(currentWebPartMatch);
+                }
+            }
+            else
+            {
+                webParts2Delete.AddRange(spWebPartDefenitions);
+            }
+
+            // clean up
+            foreach (var wp in webParts2Delete)
+                wp.DeleteWebPart();
         }
 
         #endregion

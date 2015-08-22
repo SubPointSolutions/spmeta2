@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Containers;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -146,15 +147,37 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
-        //[TestMethod]
-        //[TestCategory("Regression.Scenarios.Webs")]
-        //public void CanDeploy_PublishingSite_Intranet()
-        //{
-        //    TestRandomDefinition<WebDefinition>(def =>
-        //    {
-        //        def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
-        //    });
-        //}
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_PublishingSite_Intranet()
+        {
+            //TestRandomDefinition<WebDefinition>(def =>
+            //{
+            //    def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+            //});
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(w1 =>
+                {
+                    (w1.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+
+                    w1.AddRandomWeb(w2 =>
+                    {
+                        (w2.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+
+                        w2.AddRandomWeb(w3 =>
+                        {
+                            (w3.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
+
+
+                        });
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
 
         //[TestMethod]
         //[TestCategory("Regression.Scenarios.Webs")]

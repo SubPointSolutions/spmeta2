@@ -780,6 +780,66 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model, deleteModel);
         }
         #endregion
+
+        #region removing by title
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Deletion")]
+        public void CanDeploy_DeleteWebpart_ByTitle()
+        {
+            var wpPage = ModelGeneratorService.GetRandomDefinition<WikiPageDefinition>();
+
+            var title1 = "title1_" + Rnd.String();
+            var title2 = "title2_" + Rnd.String();
+
+            var wp1 = ModelGeneratorService.GetRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.Title = title1;
+            });
+
+            var wp2 = ModelGeneratorService.GetRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.Title = title2;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddWikiPage(wpPage, page =>
+                    {
+                        page.AddWebParts(new[] { wp1, wp2 });
+                    });
+                });
+
+            });
+
+            var wpDeletionDef = new DeleteWebPartsDefinition
+            {
+
+            };
+
+            wpDeletionDef.WebParts.Add(new WebPartMatch
+            {
+                Title = title1
+            });
+
+            var deleteModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddHostWikiPage(wpPage, page =>
+                    {
+                        page.AddDeleteWebParts(wpDeletionDef);
+                    });
+                });
+
+            });
+
+            TestModel(model, deleteModel);
+        }
+
+        #endregion
     }
 
 }
