@@ -151,43 +151,21 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webs")]
         public void CanDeploy_PublishingSite_Intranet()
         {
-            //TestRandomDefinition<WebDefinition>(def =>
-            //{
-            //    def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
-            //});
-
-            var model = SPMeta2Model.NewWebModel(web =>
+            TestRandomDefinition<WebDefinition>(def =>
             {
-                web.AddRandomWeb(w1 =>
-                {
-                    (w1.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
-
-                    w1.AddRandomWeb(w2 =>
-                    {
-                        (w2.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
-
-                        w2.AddRandomWeb(w3 =>
-                        {
-                            (w3.Value as WebDefinition).WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
-
-
-                        });
-                    });
-                });
+                def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_Intranet;
             });
-
-            TestModel(model);
         }
 
-        //[TestMethod]
-        //[TestCategory("Regression.Scenarios.Webs")]
-        //public void CanDeploy_PublishingSite_CMS()
-        //{
-        //    TestRandomDefinition<WebDefinition>(def =>
-        //    {
-        //        def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
-        //    });
-        //}
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_PublishingSite_CMS()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webs")]

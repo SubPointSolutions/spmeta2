@@ -466,6 +466,7 @@
     <Compile Include="Syntax\Default\WelcomePageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WikiPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\XsltListViewWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Extended\ListDefinitionSyntax.cs" />
     <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
