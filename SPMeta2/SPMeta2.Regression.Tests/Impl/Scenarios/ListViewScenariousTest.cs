@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Exceptions;
 using SPMeta2.Syntax.Default;
 
 
@@ -175,6 +176,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
         public void CanDeploy_ListView_AsRecurrence()
         {
+            throw new SPMeta2NotImplementedException();
+
             TestRandomDefinition<ListViewDefinition>(def =>
             {
                 def.Hidden = false;

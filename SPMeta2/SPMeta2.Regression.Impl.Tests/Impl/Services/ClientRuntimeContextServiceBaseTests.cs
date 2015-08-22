@@ -61,7 +61,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [ExpectedException(typeof(Exception))]
         public void ClientRuntimeContextService_Should_Survive_IISReset()
         {
-            throw new NotImplementedException();
+            throw new SPMeta2NotImplementedException();
         }
 
         [TestMethod]
