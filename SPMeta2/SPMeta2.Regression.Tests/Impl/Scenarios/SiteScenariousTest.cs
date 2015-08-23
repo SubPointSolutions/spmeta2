@@ -42,16 +42,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Sites")]
         public void CanDeploy_Simple_Site()
         {
-            var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>();
-
-            site.PrefixName = string.Empty;
-
-            var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                webApplication.AddSite(site);
-            });
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>();
 
-            TestModel(model);
+                site.PrefixName = string.Empty;
+
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddSite(site);
+                });
+
+                TestModel(model);
+            });
         }
 
 
@@ -59,17 +62,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Sites")]
         public void CanDeploy_Simple_Site_UnderSitesManagedPath()
         {
-            var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                def.PrefixName = "sites";
-            });
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
+                {
+                    def.PrefixName = "sites";
+                });
 
-            var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
-            {
-                webApplication.AddSite(site);
-            });
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddSite(site);
+                });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
 
@@ -77,23 +83,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Sites")]
         public void CanDeploy_Simple_Site_UnderRandomManagedPath()
         {
-            var managedPath = ModelGeneratorService.GetRandomDefinition<PrefixDefinition>(def =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                def.PrefixType = "WildcardInclusion";
-            });
+                var managedPath = ModelGeneratorService.GetRandomDefinition<PrefixDefinition>(def =>
+                {
+                    def.PrefixType = "WildcardInclusion";
+                });
 
-            var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
-            {
-                def.PrefixName = managedPath.Path;
-            });
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
+                {
+                    def.PrefixName = managedPath.Path;
+                });
 
-            var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
-            {
-                webApplication.AddPrefix(managedPath);
-                webApplication.AddSite(site);
-            });
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddPrefix(managedPath);
+                    webApplication.AddSite(site);
+                });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         #endregion
