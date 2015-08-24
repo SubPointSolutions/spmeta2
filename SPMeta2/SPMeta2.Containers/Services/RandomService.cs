@@ -163,6 +163,11 @@ namespace SPMeta2.Containers.Services
             return string.Format("{0}.docx", service.String());
         }
 
+        public static string WspFileName(this RandomService service)
+        {
+            return string.Format("{0}.wsp", service.String());
+        }
+
         public static string AspxFileName(this RandomService service)
         {
             return string.Format("{0}.aspx", service.String());

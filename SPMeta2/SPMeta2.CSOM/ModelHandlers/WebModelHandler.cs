@@ -276,7 +276,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var customWebTemplateName = webModel.CustomWebTemplate;
 
                     // by internal name
-                    var templateCollection = parentWeb.GetAvailableWebTemplates(webModel.LCID, false);
+                    var templateCollection = parentWeb.GetAvailableWebTemplates(webModel.LCID, true);
                     var templateResult = context.LoadQuery(templateCollection
                                                                     .Include(tmp => tmp.Name, tmp => tmp.Title)
                                                                     .Where(tmp => tmp.Name == customWebTemplateName));

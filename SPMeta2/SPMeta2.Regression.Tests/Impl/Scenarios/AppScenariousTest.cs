@@ -49,21 +49,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Apps")]
         public void CanDeploy_App_ToWeb()
         {
-            var model = SPMeta2Model.NewWebModel(web =>
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
-                web.AddRandomApp();
+                site.AddSiteFeature(BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
+                {
+                    def.Enable();
+                }));
             });
 
-            TestModel(model);
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(subWeb =>
+                {
+                    web.AddRandomApp();
+                });
+            });
+
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Apps")]
         public void CanDeploy_App_ToWebHierarchy()
         {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
+                {
+                    def.Enable();
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddRandomApp();
+                //web.AddRandomApp();
 
                 web.AddRandomWeb(subWeb1 =>
                 {
@@ -81,7 +100,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -90,6 +109,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddSiteFeature(BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
+                {
+                    def.Enable();
+                }));
+
                 site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
                 {
                     def.Enable = true;
@@ -147,6 +171,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Apps.Upgradability")]
         public void CanDeploy_App_ToWeb_Upgrade_0123_Versions()
         {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
+                {
+                    def.Enable();
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddRandomWeb(appWeb =>
@@ -167,7 +199,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         private void AddAndCheckRandomAppWithVersion(WebModelNode web, Version version)

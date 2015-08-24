@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Services;
+using System.IO;
+using SPMeta2.Containers.Consts;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -56,16 +59,50 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webs.Templates")]
         public void CanDeploy_Custom_WebTemplate_As_SaveAsTemplate()
         {
+            // TODO
+            // should be uploaded manually yet
+            //var solution = new SandboxSolutionDefinition
+            //{
+            //    FileName = Rnd.WspFileName(),
+            //    Content = File.ReadAllBytes(DefaultContainers.WebTemplates.M2CustomTeamSite.FilePath),
+            //    Activate = true,
+            //    SolutionId = DefaultContainers.WebTemplates.M2CustomTeamSite.SolutionId
+            //};
+
             var mainWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
             {
                 def.WebTemplate = string.Empty;
-                def.CustomWebTemplate = "{D270F1BE-1943-4064-9509-DA4F14B32228}#M2CustomWebAsTemplate";
+                def.CustomWebTemplate = DefaultContainers.WebTemplates.M2CustomTeamSite.WebTemplateName;
             });
 
             var subWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
             {
                 def.WebTemplate = string.Empty;
-                def.CustomWebTemplate = "{D270F1BE-1943-4064-9509-DA4F14B32228}#M2CustomWebAsTemplate";
+                def.CustomWebTemplate = DefaultContainers.WebTemplates.M2CustomTeamSite.WebTemplateName;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                // required by the team site template
+                // might not be eabled due to publishing site collection
+                var targetSiteFeatureIds = new[]
+                {
+                    new Guid("14aafd3a-fcb9-4bb7-9ad7-d8e36b663bbd"),
+                    new Guid("b21b090c-c796-4b0f-ac0f-7ef1659c20ae"), 
+                    new Guid("{5f3b0127-2f1d-4cfd-8dd2-85ad1fb00bfc}"),
+                    new Guid("{2ed1c45e-a73b-4779-ae81-1524e4de467a}"),
+                    new Guid("{39d18bbf-6e0f-4321-8f16-4e3b51212393}"),
+                };
+
+                foreach (var featureId in targetSiteFeatureIds)
+                {
+                    site.AddSiteFeature(new FeatureDefinition
+                    {
+                        Id = featureId,
+                        Enable = true,
+                        Scope = FeatureDefinitionScope.Site
+                    });
+                }
             });
 
             var model = SPMeta2Model.NewWebModel(rootWeb =>
@@ -76,7 +113,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         #endregion

@@ -257,6 +257,9 @@
     <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\SPMeta2-MSWord-Template.dotx" />
   </ItemGroup>
   <ItemGroup>
