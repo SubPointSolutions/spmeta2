@@ -10,6 +10,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Reflection;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -232,12 +233,35 @@ namespace SPMeta2.CSOM.ModelHandlers
         /// <returns></returns>
         protected virtual bool IsAppUpgradeException(Exception upgradeException)
         {
+            if (upgradeException == null)
+                return false;
+
             // Microsoft.SharePoint.Client.ServerException]	
             // {"An App Instance can only be upgraded to a newer version of the same product. The upgrade request was for product 1.0.0.3 version e81b6820-5d57-4d17-a098-5f4317f6c400 to product 1.0.0.0 version e81b6820-5d57-4d17-a098-5f4317f6c400."}
 
-            return upgradeException != null
-                   && upgradeException is ServerException
-                   && upgradeException.HResult == -2146233088;
+
+            if (upgradeException is ServerException)
+            {
+                // .net 4 hack to get HResult
+                var hResultProp = upgradeException.GetType()
+                                              .GetProperty("HResult",
+                                                BindingFlags.NonPublic
+                                                | BindingFlags.Public
+                                                | BindingFlags.Instance
+                                                | BindingFlags.Static);
+
+
+                if (hResultProp != null)
+                {
+                    var hResultValue = hResultProp.GetValue(upgradeException, null);
+                    if (hResultValue is int)
+                    {
+                        return (int)hResultValue == -2146233088;
+                    }
+                }
+            }
+
+            return false;
         }
 
         #endregion
