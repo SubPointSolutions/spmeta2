@@ -102,6 +102,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Containers.FarmSolutionContainer", "SPMeta2\SPMeta2.Containers.FarmSolutionContainer\SPMeta2.Containers.FarmSolutionContainer.csproj", "{2A290D6E-6AF3-4D17-975D-3C393700A0B1}"
 EndProject
 Global
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = False
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1212|Any CPU = 1212|Any CPU
 		Debug|Any CPU = Debug|Any CPU

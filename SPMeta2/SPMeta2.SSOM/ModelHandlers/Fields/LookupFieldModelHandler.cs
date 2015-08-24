@@ -112,8 +112,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                     Context = site
                 }).Value;
 
-                // site relative URL
+                // server relative URl, always
                 targetWebUrl = UrlUtility.RemoveStartingSlash(targetWebUrl);
+                targetWebUrl = "/" + targetWebUrl;
+
                 var targetWeb = site.OpenWeb(targetWebUrl);
 
                 return targetWeb;

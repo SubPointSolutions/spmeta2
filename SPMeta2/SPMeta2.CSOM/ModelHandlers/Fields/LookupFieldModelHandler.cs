@@ -133,8 +133,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                     Context = context
                 }).Value;
 
-                // site relative URL
+                // server relative url, ensure / in the beginning
                 targetWebUrl = UrlUtility.RemoveStartingSlash(targetWebUrl);
+                targetWebUrl = "/" + targetWebUrl;
+
                 var targetWeb = site.OpenWeb(targetWebUrl);
 
 
