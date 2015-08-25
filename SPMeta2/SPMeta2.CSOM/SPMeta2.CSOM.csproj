@@ -227,6 +227,7 @@
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="Services\CSOMTokenReplacementService.cs" />
     <Compile Include="Services\Impl\DefaultClientRuntimeContextService.cs" />
+    <Compile Include="Services\Impl\RequireCSOMRuntimeVersionDeploymentService.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
