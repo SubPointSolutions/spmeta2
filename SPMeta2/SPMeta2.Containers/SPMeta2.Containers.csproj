@@ -178,6 +178,7 @@
     <Compile Include="DefinitionGenerators\WebConfigModificationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
+    <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomContainersSyntax.cs" />
     <Compile Include="Services\AssertService.cs" />

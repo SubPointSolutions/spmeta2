@@ -24,8 +24,6 @@ namespace SPMeta2.CSOM.Services.Impl
 
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
-            base.DeployModel(modelHost, model);
-
             CheckCSOMRuntimeVersion();
         }
 
@@ -62,8 +60,8 @@ namespace SPMeta2.CSOM.Services.Impl
 
                 throw new SPMeta2NotSupportedException(exceptionMessage);
             }
-        } 
-      
+        }
+
         #endregion
     }
 }

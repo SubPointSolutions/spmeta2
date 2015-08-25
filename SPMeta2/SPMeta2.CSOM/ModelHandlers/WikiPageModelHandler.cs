@@ -82,7 +82,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
         {
-            var pageName = wikiPageModel.FileName;
+            return GetSafeWikiPageFileName(wikiPageModel.FileName);
+        }
+
+        protected string GetSafeWikiPageFileName(string fileName)
+        {
+            var pageName = fileName;
             if (!pageName.EndsWith(".aspx")) pageName += ".aspx";
 
             return pageName;

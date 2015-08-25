@@ -24,6 +24,9 @@ using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
 using System.Text;
+using SPMeta2.Regression.ModelHandlers;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -33,6 +36,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
+            ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
+
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.ProvisionGenerationCount = 2;
 
@@ -168,12 +173,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new  ModelNode[] { model });
+            TestModels(new ModelNode[] { model });
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
         {
-            TestModels(new  ModelNode[] { firstModel, secondModel });
+            TestModels(new ModelNode[] { firstModel, secondModel });
         }
 
 
@@ -211,8 +216,6 @@ namespace SPMeta2.Regression.Tests.Base
             }
         }
 
-
-
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
@@ -230,7 +233,6 @@ namespace SPMeta2.Regression.Tests.Base
                 });
             }
         }
-
 
         private void ProcessDefinitionsPropertyNulableValidation(DefinitionBase def)
         {

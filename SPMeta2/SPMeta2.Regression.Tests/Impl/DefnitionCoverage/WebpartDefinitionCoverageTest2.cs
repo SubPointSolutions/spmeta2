@@ -23,8 +23,10 @@ using SPMeta2.Standard.Services.Webparts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Enumerations;
+using SPMeta2.Regression.Definitions;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
+using SPMeta2.Containers.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
 {
@@ -53,126 +55,183 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_WebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<WebPartDefinition>();
+			var currenType = typeof(WebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<WebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_PageViewerWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<PageViewerWebPartDefinition>();
+			var currenType = typeof(PageViewerWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<PageViewerWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SilverlightWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<SilverlightWebPartDefinition>();
+			var currenType = typeof(SilverlightWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<SilverlightWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_UserCodeWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<UserCodeWebPartDefinition>();
+			var currenType = typeof(UserCodeWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<UserCodeWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ClientWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ClientWebPartDefinition>();
+			var currenType = typeof(ClientWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ClientWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ScriptEditorWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ScriptEditorWebPartDefinition>();
+			var currenType = typeof(ScriptEditorWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ScriptEditorWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentEditorWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ContentEditorWebPartDefinition>();
+			var currenType = typeof(ContentEditorWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ContentEditorWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ListViewWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ListViewWebPartDefinition>();
+			var currenType = typeof(ListViewWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ListViewWebPartDefinition>(false);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_XsltListViewWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<XsltListViewWebPartDefinition>();
+			var currenType = typeof(XsltListViewWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<XsltListViewWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ProjectSummaryWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ProjectSummaryWebPartDefinition>();
+			var currenType = typeof(ProjectSummaryWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ProjectSummaryWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_RefinementScriptWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<RefinementScriptWebPartDefinition>();
+			var currenType = typeof(RefinementScriptWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<RefinementScriptWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContactFieldControlDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ContactFieldControlDefinition>();
+			var currenType = typeof(ContactFieldControlDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ContactFieldControlDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentBySearchWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ContentBySearchWebPartDefinition>();
+			var currenType = typeof(ContentBySearchWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ContentBySearchWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentByQueryWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ContentByQueryWebPartDefinition>();
+			var currenType = typeof(ContentByQueryWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ContentByQueryWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ResultScriptWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<ResultScriptWebPartDefinition>();
+			var currenType = typeof(ResultScriptWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<ResultScriptWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SiteFeedWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<SiteFeedWebPartDefinition>();
+			var currenType = typeof(SiteFeedWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<SiteFeedWebPartDefinition>(useSubweb);
         }
 		
 		[TestMethod]
         [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SummaryLinkWebPartDefinition_To_AllPageTypes() 
         {
-            DeployWebpartOnSupportedHosts<SummaryLinkWebPartDefinition>();
+			var currenType = typeof(SummaryLinkWebPartDefinition);
+			var useSubweb = !(currenType is ClientWebPartDefinition);
+
+            DeployWebpartOnSupportedHosts<SummaryLinkWebPartDefinition>(useSubweb);
         }
 		       
 	    #endregion
 
-        #region utils
+       #region utils
 
-		private void DeployWebpartOnSupportedHosts<TWebpartType>()
+        private void DeployWebpartOnSupportedHosts<TWebpartType>()
+            where TWebpartType : WebPartDefinitionBase
+        {
+            DeployWebpartOnSupportedHosts<TWebpartType>(false);
+        }
+
+        private void DeployWebpartOnSupportedHosts<TWebpartType>(bool useSubweb)
             where TWebpartType : WebPartDefinitionBase
         {
             var initialDef = ModelGeneratorService.GetRandomDefinition(typeof(TWebpartType)) as TWebpartType;
@@ -184,69 +243,137 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
             var listFormWebPartDef = initialDef.Clone<TWebpartType>();
             var documentLibraryFormWebPartDef = initialDef.Clone<TWebpartType>();
 
-            var model = SPMeta2Model
-                .NewWebModel(web =>
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
                 {
-                    web
-                        // to web part and wiki pages
-                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    def.Enable = true;
+                }));
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                var currentWeb = web;
+
+                if (useSubweb)
+                {
+                    web.AddRandomWeb(subWeb =>
+                    {
+                        currentWeb = subWeb;
+                    });
+                }
+
+				// ensure for the client web part
+                currentWeb.AddRandomApp();
+
+                currentWeb
+                    .AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }))
+                    // to web part and wiki pages
+                   .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                   {
+                       var webpartPageName = string.Empty;
+                       var wikiPageName = string.Empty;
+
+                       list
+                           .AddRandomWebPartPage(page =>
+                           {
+                               webpartPageName = (page.Value as WebPartPageDefinition).FileName;
+                               page.AddDefinitionNode(webpartPageWebPartDef);
+                           })
+                           .AddRandomWikiPage(page =>
+                           {
+                               wikiPageName = (page.Value as WikiPageDefinition).FileName;
+                               page.AddDefinitionNode(wikiWebPartDef);
+                           });
+
+                       list.AddDefinitionNode(new WebpartPresenceOnPageDefinition
+                       {
+                           PageFileName = webpartPageName,
+                           WebPartDefinitions = new List<WebPartDefinitionBase>(new WebPartDefinitionBase[]
+                                    {
+                                            webpartPageWebPartDef,
+                                    })
+                       }, def =>
+                       {
+                           def.RegExcludeFromEventsValidation();
+                       });
+
+                       list.AddDefinitionNode(new WebpartPresenceOnPageDefinition
+                       {
+                           PageFileName = wikiPageName,
+                           WebPartDefinitions = new List<WebPartDefinitionBase>(new WebPartDefinitionBase[]
+                                    {
+                                            wikiWebPartDef,
+                                    })
+                       }, def =>
+                       {
+                           def.RegExcludeFromEventsValidation();
+                       });
+                   })
+                    // to publishing pages
+                   .AddHostList(BuiltInListDefinitions.Pages, list =>
+                   {
+                       var publishingPageName = string.Empty;
+
+                       list
+                           .AddRandomPublishingPage(page =>
+                           {
+                               (page.Value as PublishingPageDefinition).PageLayoutFileName =
+                                   BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+
+                               publishingPageName = (page.Value as PublishingPageDefinition).FileName;
+
+                               page.AddDefinitionNode(publishingPageWebPartDef);
+                           });
+
+                       list.AddDefinitionNode(new WebpartPresenceOnPageDefinition
+                       {
+                           PageFileName = publishingPageName,
+                           WebPartDefinitions = new List<WebPartDefinitionBase>(new WebPartDefinitionBase[]
+                                    {
+                                            publishingPageWebPartDef,
+                                    })
+                       }, def =>
+                       {
+                           def.RegExcludeFromEventsValidation();
+                       });
+                   })
+                    // to list form
+                    .AddRandomList(list =>
+                    {
+                        list.AddHostWebPartPage(new WebPartPageDefinition
                         {
-                            list
-                                .AddRandomWebPartPage(page =>
-                                {
-                                    page.AddDefinitionNode(webpartPageWebPartDef);
-                                })
-                                .AddRandomWikiPage(page =>
-                                {
-                                    page.AddDefinitionNode(wikiWebPartDef);
-                                });
-                        })
-                        // to publishing pages
-                        .AddHostList(BuiltInListDefinitions.Pages, list =>
+                            FileName = "AllItems.aspx",
+                            PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                            NeedOverride = false
+                        }, page =>
                         {
-                            list
-                                .AddRandomPublishingPage(page =>
-                                {
-                                    (page.Value as PublishingPageDefinition).PageLayoutFileName =
-                                        BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+                            page.AddDefinitionNode(listFormWebPartDef);
+                        });
+                    })
 
-                                    page.AddDefinitionNode(publishingPageWebPartDef);
-                                });
-                        })
-                        // to list form
-                         .AddRandomList(list =>
-                         {
-                             list.AddHostWebPartPage(new WebPartPageDefinition
-                             {
-                                 FileName = "AllItems.aspx",
-                                 PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
-                                 NeedOverride = false
-                             }, page =>
-                             {
-                                 page.AddDefinitionNode(listFormWebPartDef);
-                             });
-                         })
+                    // to document form
+                    .AddRandomDocumentLibrary(list =>
+                    {
+                        list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                        {
+                            folder.AddHostWebPartPage(new WebPartPageDefinition
+                            {
+                                FileName = "AllItems.aspx",
+                                PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                                NeedOverride = false
+                            }, page =>
+                            {
+                                page.AddDefinitionNode(documentLibraryFormWebPartDef);
+                            });
+                        });
+                    });
+            });
 
-                         // to document form
-                         .AddRandomDocumentLibrary(list =>
-                         {
-                             list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
-                             {
-                                 folder.AddHostWebPartPage(new WebPartPageDefinition
-                                 {
-                                     FileName = "AllItems.aspx",
-                                     PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
-                                     NeedOverride = false
-                                 }, page =>
-                                 {
-                                     page.AddDefinitionNode(documentLibraryFormWebPartDef);
-                                 });
-                             });
-                         });
-                    ;
-                });
-
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         #endregion

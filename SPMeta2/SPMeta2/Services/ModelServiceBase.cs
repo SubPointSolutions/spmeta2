@@ -273,6 +273,8 @@ namespace SPMeta2.Services
             }
         }
 
+        public static Func<ModelNode, ModelHandlerBase> OnResolveNullModelHandler;
+
         protected virtual ModelHandlerBase ResolveModelHandlerForNode(ModelNode modelNode)
         {
             var modelDefinition = modelNode.Value as DefinitionBase;
@@ -280,6 +282,9 @@ namespace SPMeta2.Services
 
             if (modelHandler == null)
             {
+                if (OnResolveNullModelHandler != null)
+                    return OnResolveNullModelHandler(modelNode);
+
                 TraceService.Error((int)LogEventId.ModelProcessingNullModelHandler, string.Format("Model handler instance is NULL. Throwing ArgumentNullException exception."));
 
                 throw new ArgumentNullException(

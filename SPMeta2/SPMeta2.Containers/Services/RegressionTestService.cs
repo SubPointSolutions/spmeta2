@@ -8,6 +8,7 @@ using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Common;
 using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Exceptions;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
@@ -575,7 +576,9 @@ namespace SPMeta2.Containers.Services
         public bool EnablePropertyValidation { get; set; }
         public bool EnableEventValidation { get; set; }
 
+
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
+            
         {
             // should be re-written with ModelTreeTraverseService
 
@@ -589,132 +592,149 @@ namespace SPMeta2.Containers.Services
             //if (model.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
             if (modelNode.Options.RequireSelfProcessing)
             {
-                var modelValidationResult = ModelValidations.FirstOrDefault(r => r.Model == model);
+                var shouldProcessFlag = !modelNode.RegIsExcludedFromValidation();
 
-                var shouldBeValidatedProperties = model.GetType()
-                                                       .GetProperties()
-                                                       .Where(p => p.GetCustomAttributes<SPMeta2.Attributes.Regression.ExpectValidationAttribute>().Count() > 0)
-                                                       .ToList();
-
-
-                if (modelValidationResult == null)
+                if (shouldProcessFlag)
                 {
-                    Trace.WriteLine(string.Format("[ERR]{2} Missing validation for model [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
 
-                    hasMissedOrInvalidProps = true;
-                    return hasMissedOrInvalidProps;
-                }
+                    var modelValidationResult = ModelValidations.FirstOrDefault(r => r.Model == model);
 
-                foreach (var property in modelValidationResult.Properties.OrderBy(p => p.Src != null ? p.Src.Name : p.ToString()))
-                {
-                    if ((!property.IsValid) ||
-                         (property.IsValid && !ShowOnlyFalseResults))
+                    var shouldBeValidatedProperties = model.GetType()
+                        .GetProperties()
+                        .Where(
+                            p =>
+                                p.GetCustomAttributes<SPMeta2.Attributes.Regression.ExpectValidationAttribute>().Count() >
+                                0)
+                        .ToList();
+
+
+                    if (modelValidationResult == null)
                     {
-                        Trace.WriteLine(
-                            string.Format(
-                                "[INF]{6} [{4}] - Src prop: [{0}] Src value: [{1}] Dst prop: [{2}] Dst value: [{3}] Message:[{5}]",
-                                new object[]
-                                {
-                                    property.Src != null ? property.Src.Name : string.Empty,
-                                    property.Src != null ? property.Src.Value : string.Empty,
+                        Trace.WriteLine(string.Format("[ERR]{2} Missing validation for model [{0}] - ( {1} )",
+                            model.GetType(), model.ToString(), start));
 
-                                    property.Dst != null ? property.Dst.Name : string.Empty,
-                                    property.Dst != null ? property.Dst.Value : string.Empty,
-
-                                    property.IsValid,
-                                    property.Message,
-                                    start
-                                }));
+                        hasMissedOrInvalidProps = true;
+                        return hasMissedOrInvalidProps;
                     }
 
-                    if (!property.IsValid)
-                        hasMissedOrInvalidProps = true;
-
-                }
-
-                Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
-
-                if (EnablePropertyValidation)
-                {
-                    Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == true. Checking...", start));
-
-                    foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
+                    foreach (
+                        var property in
+                            modelValidationResult.Properties.OrderBy(p => p.Src != null ? p.Src.Name : p.ToString()))
                     {
-                        var hasValidation = false;
-                        var validationResult =
-                            modelValidationResult.Properties.FirstOrDefault(
-                                r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
-
-                        // convert stuff
-                        if (validationResult == null)
+                        if ((!property.IsValid) ||
+                            (property.IsValid && !ShowOnlyFalseResults))
                         {
-                            validationResult = modelValidationResult.Properties.FirstOrDefault(
-                                  r => r.Src != null && r.Src.Name.Contains("." + shouldBeValidatedProp.Name + ")"));
+                            Trace.WriteLine(
+                                string.Format(
+                                    "[INF]{6} [{4}] - Src prop: [{0}] Src value: [{1}] Dst prop: [{2}] Dst value: [{3}] Message:[{5}]",
+                                    new object[]
+                                    {
+                                        property.Src != null ? property.Src.Name : string.Empty,
+                                        property.Src != null ? property.Src.Value : string.Empty,
+
+                                        property.Dst != null ? property.Dst.Name : string.Empty,
+                                        property.Dst != null ? property.Dst.Value : string.Empty,
+
+                                        property.IsValid,
+                                        property.Message,
+                                        start
+                                    }));
                         }
 
-                        // nullables
-                        if (validationResult == null)
-                        {
-                            validationResult = modelValidationResult.Properties.FirstOrDefault(
-                                  r => r.Src != null &&
-                                      (r.Src.Name.Contains("System.Nullable`1") && r.Src.Name.Contains(shouldBeValidatedProp.Name)));
-                        }
-
-                        if (validationResult != null)
-                        {
-                            hasValidation = true;
-                        }
-                        else
-                        {
+                        if (!property.IsValid)
                             hasMissedOrInvalidProps = true;
-                            hasValidation = false;
-                        }
 
-                        if (hasValidation)
+                    }
+
+                    Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
+
+                    if (EnablePropertyValidation)
+                    {
+                        Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == true. Checking...", start));
+
+                        foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
                         {
-                            if (!ShowOnlyFalseResults)
+                            var hasValidation = false;
+                            var validationResult =
+                                modelValidationResult.Properties.FirstOrDefault(
+                                    r => r.Src != null && r.Src.Name == shouldBeValidatedProp.Name);
+
+                            // convert stuff
+                            if (validationResult == null)
                             {
-                                Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
-                                    "VALIDATED",
+                                validationResult = modelValidationResult.Properties.FirstOrDefault(
+                                    r => r.Src != null && r.Src.Name.Contains("." + shouldBeValidatedProp.Name + ")"));
+                            }
+
+                            // nullables
+                            if (validationResult == null)
+                            {
+                                validationResult = modelValidationResult.Properties.FirstOrDefault(
+                                    r => r.Src != null &&
+                                         (r.Src.Name.Contains("System.Nullable`1") &&
+                                          r.Src.Name.Contains(shouldBeValidatedProp.Name)));
+                            }
+
+                            if (validationResult != null)
+                            {
+                                hasValidation = true;
+                            }
+                            else
+                            {
+                                hasMissedOrInvalidProps = true;
+                                hasValidation = false;
+                            }
+
+                            if (hasValidation)
+                            {
+                                if (!ShowOnlyFalseResults)
+                                {
+                                    Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
+                                        "VALIDATED",
+                                        shouldBeValidatedProp.Name,
+                                        start));
+                                }
+                            }
+                            else
+                            {
+                                Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
+                                    "MISSED",
                                     shouldBeValidatedProp.Name,
                                     start));
                             }
                         }
-                        else
-                        {
-                            Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
-                                "MISSED",
-                                shouldBeValidatedProp.Name,
-                                start));
-                        }
-                    }
-                }
-                else
-                {
-                    Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == false. Skipping...", start));
-                }
-
-                Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
-
-                if (EnableEventValidation)
-                {
-                    Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == true. Checking...", start));
-
-                    var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
-
-                    if (hook != null)
-                    {
-                        ResolveHook(hook, start);
                     }
                     else
                     {
-                        Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )",
-                            model.GetType(), model.ToString(), start));
+                        Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == false. Skipping...", start));
+                    }
+
+                    Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
+
+                    if (EnableEventValidation && !modelNode.RegIsExcludeFromEventsValidation())
+                    {
+                        Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == true. Checking...", start));
+
+                        var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
+
+                        if (hook != null)
+                        {
+                            ResolveHook(hook, start);
+                        }
+                        else
+                        {
+                            Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )",
+                                model.GetType(), model.ToString(), start));
+                        }
+                    }
+                    else
+                    {
+                        Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == false. Skipping...", start));
                     }
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == false. Skipping...", start));
+                    Trace.WriteLine(string.Format("[INF]{0} Skipping due .RegIsExcludedFromValidation ==  TRUE", start));
                 }
             }
             else
