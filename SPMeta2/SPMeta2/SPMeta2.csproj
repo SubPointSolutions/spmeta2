@@ -96,6 +96,7 @@
     <Compile Include="Attributes\Capabilities\ParentHostCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\SiteCollectionTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\VersionPropertyCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\WebTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\CamlPropertyCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\XsltPropertyCapabilityAttribute.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
+    <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
@@ -314,6 +316,7 @@
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultVersionBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultXmlBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\ServiceModelHandlerBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />

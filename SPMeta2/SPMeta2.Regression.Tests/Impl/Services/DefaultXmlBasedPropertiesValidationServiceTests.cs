@@ -32,7 +32,6 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         public DefaultXmlBasedPropertiesValidationService Service { get; set; }
 
-
         #endregion
 
         #region caml
@@ -220,6 +219,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
             Assert.IsTrue(isValid);
         }
+
 
         #endregion
     }

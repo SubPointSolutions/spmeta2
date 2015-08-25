@@ -24,6 +24,7 @@ namespace SPMeta2.Services
 
             PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
             PreDeploymentServices.Add(new DefaultXmlBasedPropertiesValidationService());
+            PreDeploymentServices.Add(new DefaultVersionBasedPropertiesValidationService());
         }
 
         private void InitDefaultPreDeploymentServices()

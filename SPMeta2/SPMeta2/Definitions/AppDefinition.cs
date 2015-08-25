@@ -58,6 +58,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [DataMember]
         [IdentityKey]
+        [VersionPropertyCapabilityAttribute]
         public string Version { get; set; }
 
         #endregion

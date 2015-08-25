@@ -40,6 +40,11 @@ namespace SPMeta2.Containers.Services
     {
         #region methods
 
+        public static string VersionString(this RandomService service)
+        {
+            return new Version(service.Int(10), service.Int(10), service.Int(10), service.Int(10)).ToString();
+        }
+
         public static bool? NullableBool(this RandomService service)
         {
             if (service.Bool())
