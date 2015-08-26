@@ -27,25 +27,53 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var folderModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            Folder targetFolder = null;
+            Web web = null;
+
+            if (modelHost is ListModelHost)
+            {
+                targetFolder = (modelHost as ListModelHost).HostList.RootFolder;
+                web = (modelHost as ListModelHost).HostWeb;
+            }
+            if (modelHost is FolderModelHost)
+            {
+                targetFolder = (modelHost as FolderModelHost).CurrentListFolder;
+                web = (modelHost as FolderModelHost).HostWeb;
+            }
+
             var definition = model.WithAssertAndCast<WebpartPresenceOnPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.HostList.RootFolder;
+            var folder = targetFolder;
+            var allItem = folder.ListItemAllFields;
+
             var context = folder.Context;
 
-            var pageName = GetSafeWikiPageFileName(definition.PageFileName);
-            var file = GetPageFile(folderModelHost.HostWeb, folder, pageName);
-            var spObject = file.ListItemAllFields;
+            context.Load(folder, f => f.ServerRelativeUrl);
+            context.Load(allItem);
 
-            context.Load(spObject, item => item["EncodedAbsUrl"], item => item["FileLeafRef"]);
+            context.ExecuteQuery();
+
+            var pageName = GetSafeWikiPageFileName(definition.PageFileName);
+            var file = web.GetFileByServerRelativeUrl(UrlUtility.CombineUrl(folder.ServerRelativeUrl, pageName));
+
+            context.Load(file);
             context.ExecuteQueryWithTrace();
 
-            var pageUrl = spObject["EncodedAbsUrl"].ToString();
+            var serverUrl = web.Url;
+
+            if (web.ServerRelativeUrl != "/")
+                serverUrl = serverUrl.Replace(web.ServerRelativeUrl, string.Empty);
 
             var assert = ServiceFactory.AssertService
-                .NewAssert(definition, spObject)
-                .ShouldBeEqual(m => m.PageFileName, o => o.GetName())
-                .ShouldNotBeNull(spObject);
+                .NewAssert(definition, file)
+                // dont' need to check that, not the pupose of the test
+                //.ShouldBeEqual(m => m.PageFileName, o => o.GetName())
+                .ShouldNotBeNull(file);
+
+            var pageUrl = UrlUtility.CombineUrl(new[]{
+                serverUrl, 
+                folder.ServerRelativeUrl,
+                pageName});
 
             if (definition.WebPartDefinitions.Any())
             {
@@ -53,6 +81,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     var client = new WebClient();
                     client.UseDefaultCredentials = true;
+
+                    if (context.Credentials != null)
+                    {
+                        client.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
+                        client.Credentials = context.Credentials;
+                    }
 
                     var pageContent = client.DownloadString(new Uri(pageUrl));
                     var srcProp = s.GetExpressionValue(m => m.WebPartDefinitions);

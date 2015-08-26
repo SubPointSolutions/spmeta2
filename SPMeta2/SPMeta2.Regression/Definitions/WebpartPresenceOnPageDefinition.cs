@@ -36,7 +36,8 @@ namespace SPMeta2.Regression.Definitions
             WebPartDefinitions = new List<WebPartDefinitionBase>();
         }
 
-        [ExpectValidation]
+        //[ExpectValidation]
+        // don't need that
         public string PageFileName { get; set; }
 
         [ExpectValidation]
