@@ -88,11 +88,11 @@
     <Compile Include="Impl\Definitions\ScriptEditorWebPartDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\DefinitionTests.cs" />
-    <None Include="Impl\DefnitionCoverage\WebpartDefinitionCoverageTest.tt">
+    <None Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WebpartDefinitionCoverageTest2.cs</LastGenOutput>
     </None>
-    <Compile Include="Impl\DefnitionCoverage\WebpartDefinitionCoverageTest2.cs">
+    <Compile Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WebpartDefinitionCoverageTest.tt</DependentUpon>

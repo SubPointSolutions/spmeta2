@@ -28,7 +28,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             Folder targetFolder = null;
-            Web web = null;
+            Web web = null; 
 
             if (modelHost is ListModelHost)
             {

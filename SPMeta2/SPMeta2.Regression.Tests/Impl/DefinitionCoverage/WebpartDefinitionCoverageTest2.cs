@@ -31,7 +31,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
 
-namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
+namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 {
     [TestClass]
     public class WebpartDefinitionCoverageTest : SPMeta2RegresionScenarioTestBase
@@ -55,119 +55,119 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
         #region pre-generated tests
  
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_WebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<WebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_PageViewerWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<PageViewerWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SilverlightWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SilverlightWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_UserCodeWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<UserCodeWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ClientWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ClientWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ScriptEditorWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ScriptEditorWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentEditorWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentEditorWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ListViewWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ListViewWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_XsltListViewWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<XsltListViewWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ProjectSummaryWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ProjectSummaryWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_RefinementScriptWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<RefinementScriptWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContactFieldControlDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContactFieldControlDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentBySearchWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentBySearchWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ContentByQueryWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentByQueryWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_ResultScriptWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ResultScriptWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SiteFeedWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SiteFeedWebPartDefinition>();
         }
 		
 		[TestMethod]
-        [TestCategory("Regression.DefnitionCoverage.WebpartDefinitions")]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_SummaryLinkWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SummaryLinkWebPartDefinition>();
@@ -175,7 +175,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
 		       
 	    #endregion
 
-     #region utils
+    #region utils
 
         private void DeployWebpartOnSupportedHosts<TWebpartType>()
             where TWebpartType : WebPartDefinitionBase, new()
@@ -209,6 +209,34 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
             {
                 TestModel(siteModel, model);
             });
+        }
+
+        protected bool ShoudValidatePresenceOnListViews(WebPartDefinitionBase webPartDefinition)
+        {
+            var result = true;
+
+            // Investigate 'ListViewWebPartDefinition' provision specifics on list views #646
+            // https://github.com/SubPointSolutions/spmeta2/issues/646
+            if (webPartDefinition is ListViewWebPartDefinition)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+        protected bool ShoudValidatePresenceOnLibraryViews(WebPartDefinitionBase webPartDefinition)
+        {
+            var result = true;
+
+            // Investigate 'ListViewWebPartDefinition' provision specifics on list views #646
+            // https://github.com/SubPointSolutions/spmeta2/issues/646
+            if (webPartDefinition is ListViewWebPartDefinition)
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         protected virtual void FillWebWithTheTestwebPartSuite<TWebpartType>(WebModelNode currentWeb)
@@ -282,7 +310,8 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                         listView.AddDefinitionNode(listWebPartDef.Inherit());
                     });
 
-                    ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.AllItems.Url, listWebPartDef);
+                    if (ShoudValidatePresenceOnListViews(initialDef))
+                        ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.AllItems.Url, listWebPartDef);
 
                     // custom view
                     var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
@@ -295,7 +324,8 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                         listView.AddDefinitionNode(listWebPartDef.Inherit());
                     });
 
-                    ValidateWebPartPresenceForPage(list, customView.Url, listWebPartDef);
+                    if (ShoudValidatePresenceOnListViews(initialDef))
+                        ValidateWebPartPresenceForPage(list, customView.Url, listWebPartDef);
 
                     // OOTB forms, new - edit - view
                     list.AddHostListView(BuiltInListViewDefinitions.Lists.NewForm, listView =>
@@ -310,12 +340,14 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                         listView.AddDefinitionNode(listWebPartDef.Inherit());
                     });
 
+
                     ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.EditForm.Url, listWebPartDef);
 
                     list.AddHostListView(BuiltInListViewDefinitions.Lists.DispForm, listView =>
                     {
                         listView.AddDefinitionNode(listWebPartDef.Inherit());
                     });
+
 
                     ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.DispForm.Url, listWebPartDef);
                 })
@@ -324,12 +356,14 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                 .AddRandomDocumentLibrary(list =>
                 {
                     // OOTB view
+
                     list.AddHostListView(BuiltInListViewDefinitions.Libraries.AllItems, listView =>
                     {
                         listView.AddDefinitionNode(docWebPartDef.Inherit());
                     });
 
-                    ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.AllItems.Url, docWebPartDef);
+                    if (ShoudValidatePresenceOnLibraryViews(initialDef))
+                        ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.AllItems.Url, docWebPartDef);
 
                     // custom view
                     var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
@@ -342,7 +376,8 @@ namespace SPMeta2.Regression.Tests.Impl.DefnitionCoverage
                         listView.AddDefinitionNode(docWebPartDef.Inherit());
                     });
 
-                    ValidateWebPartPresenceForPage(list, "Forms/" + customView.Url, docWebPartDef);
+                    if (ShoudValidatePresenceOnLibraryViews(initialDef))
+                        ValidateWebPartPresenceForPage(list, "Forms/" + customView.Url, docWebPartDef);
 
                     // OOTB new - edit - view forms
                     // upload, NOPE!

@@ -303,7 +303,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected ClientContext CurrentClientContext { get; set; }
 
-
+        protected virtual void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
+        {
+            
+        }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
@@ -311,6 +314,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var webPartModel = model.WithAssertAndCast<WebPartDefinitionBase>("model", value => value.RequireNotNull());
+
+            OnBeforeDeploy(listItemModelHost, webPartModel);
 
             CurrentClientContext = listItemModelHost.HostClientContext;
 
