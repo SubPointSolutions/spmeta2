@@ -25,6 +25,7 @@ using SPMeta2.Regression.Definitions;
 using SPMeta2.Services;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.Definitions.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 {

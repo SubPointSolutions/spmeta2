@@ -101,6 +101,7 @@
     <Compile Include="SSOMValidationService.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Validation\AuditSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Extended\WebpartPresenceOnPageDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\DependentLookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\OutcomeChoiceFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\GeolocationFieldDefinitionValidator.cs" />
@@ -194,6 +195,10 @@
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
       <Project>{091C48FB-27E3-4F84-897C-5DE7BB55A2D3}</Project>
       <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
+      <Project>{0DE538C9-1723-46B1-90F8-5DC67C56D7DD}</Project>
+      <Name>SPMeta2.Regression</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
       <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>

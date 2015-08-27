@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Utils;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.Definitions;
+using SPMeta2.Regression.Definitions.Extended;
 using SPMeta2.Utils;
-using SPMeta2.Syntax.Default.Utils;
-using SPMeta2.Containers.Utils;
 
-namespace SPMeta2.Regression.CSOM.Validation
+namespace SPMeta2.Regression.CSOM.Validation.Extended
 {
     public class ClientWebpartPresenceOnPageDefinitionValidator : WikiPageModelHandler
     {
