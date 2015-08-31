@@ -104,6 +104,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Regression", "SPMeta2\SPMeta2.Regression\SPMeta2.Regression.csproj", "{0DE538C9-1723-46B1-90F8-5DC67C56D7DD}"
 EndProject
 Global
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = False
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = False
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1212|Any CPU = 1212|Any CPU
 		Debug|Any CPU = Debug|Any CPU
