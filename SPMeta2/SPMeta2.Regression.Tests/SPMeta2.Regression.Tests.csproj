@@ -94,6 +94,7 @@
     </None>
     <None Include="..\SPMeta2.Containers\Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
       <Link>Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
