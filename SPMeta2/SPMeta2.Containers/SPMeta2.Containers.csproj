@@ -86,6 +86,7 @@
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SupportedUICultureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\DependentLookupFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\GeolocationFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\OutcomeChoiceFieldDefinitionGenerator.cs" />

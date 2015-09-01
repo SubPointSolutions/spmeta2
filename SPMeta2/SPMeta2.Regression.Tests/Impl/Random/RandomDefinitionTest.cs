@@ -663,6 +663,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_SupportedUICultureDefinition()
+        {
+            TestRandomDefinition<SupportedUICultureDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_PageLayoutAndSiteTemplateSettingsDefinition()
         {
             TestRandomDefinition<PageLayoutAndSiteTemplateSettingsDefinition>();

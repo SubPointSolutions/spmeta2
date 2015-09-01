@@ -92,6 +92,7 @@
     <Compile Include="Validation\ClientListItemFieldValueDefinitionValidator.cs" />
     <Compile Include="Validation\ClientModuleFileDefinitionaValidator.cs" />
     <Compile Include="Validation\ClientPropertyDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientSupportedUICultureDefinitionValidator.cs" />
     <Compile Include="Validation\ClientTopNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientQuickLaunchNavigationNodeDefinitionValidator.cs" />
     <Compile Include="Validation\ClientContentTypeDefinitionValidator.cs" />
