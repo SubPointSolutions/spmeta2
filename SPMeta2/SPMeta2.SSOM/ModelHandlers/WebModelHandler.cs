@@ -49,7 +49,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 web.Title = webModel.Title;
                 web.Description = webModel.Description;
 
-                web.Locale = new CultureInfo((int)webModel.LCID);
+                if (webModel.LCID > 0)
+                    web.Locale = new CultureInfo((int)webModel.LCID);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

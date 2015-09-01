@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -38,6 +39,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
+        [IdentityKey]
         public int LCID { get; set; }
 
 

@@ -380,6 +380,7 @@
     <Compile Include="Syntax\Default\Interfaces\IContentTypeHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFieldHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
+    <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\ClientWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ComposedLookItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ComposedLookItemLinkDefinitionSyntax.cs" />
