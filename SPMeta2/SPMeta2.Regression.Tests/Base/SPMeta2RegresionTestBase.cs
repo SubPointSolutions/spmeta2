@@ -36,6 +36,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
+            
+
             ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
 
             RegressionService.EnableDefinitionProvision = true;
@@ -77,6 +79,14 @@ namespace SPMeta2.Regression.Tests.Base
 
         static SPMeta2RegresionTestBase()
         {
+            // ensure we aren't in GAC
+            var location = typeof(FieldDefinition).Assembly.Location;
+
+            if (location.ToUpper().Contains("GAC_"))
+            {
+                throw new SPMeta2Exception(string.Format("M2 assemblies are beinfg loaded from the GAC: [{0}].", location));
+            }
+
             RegressionService = new RegressionTestService();
 
             RegressionService.AssertService = new VSAssertService();

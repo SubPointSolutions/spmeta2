@@ -50,6 +50,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var listId = default(Guid);
 
+            // create with the random title to avoid issue with 2 lists + diff URL and same Title
+            // list Title will be renamed later on
+            var listTitle = Guid.NewGuid().ToString("N");
+
             // "SPBug", there are two ways to create lists 
             // (1) by TemplateName (2) by TemplateType 
             if (listModel.TemplateType > 0)
@@ -58,7 +62,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
                 listId = web.Lists.Add(
-                                listModel.Title,
+                                listTitle,
                                 listModel.Description ?? string.Empty,
                                 listModel.GetListUrl(),
                                 string.Empty,
@@ -73,7 +77,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var listTemplate = ResolveListTemplate(web, listModel);
 
                 listId = web.Lists.Add(
-                               listModel.Title,
+                               listTitle,
                                listModel.Description ?? string.Empty,
                                listModel.GetListUrl(),
                                listTemplate.FeatureId.ToString(),
