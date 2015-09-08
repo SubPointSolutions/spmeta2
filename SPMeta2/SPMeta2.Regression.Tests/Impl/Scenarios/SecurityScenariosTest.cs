@@ -377,11 +377,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            TurnOffValidation(rndWeb);
                        });
 
-                       rndWeb.AddSecurityGroupLink(securityGroup);
+                       AddSecurityGroupLinkWithRoleLinks(rndWeb, securityGroup);
                    });
                });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -408,12 +408,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                TurnOffValidation(rndList);
                            });
 
-                           rndList.AddSecurityGroupLink(securityGroup);
+                           AddSecurityGroupLinkWithRoleLinks(rndList, securityGroup);
                        });
                    });
                });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -447,13 +447,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     TurnOffValidation(rndFolder);
                                 });
 
-                                rndFolder.AddSecurityGroupLink(securityGroup);
+                                AddSecurityGroupLinkWithRoleLinks(rndFolder, securityGroup);
                             });
                         });
                     });
                 });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -487,16 +487,31 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                     TurnOffValidation(rndFolder);
                                 });
 
-                                rndFolder.AddSecurityGroupLink(securityGroup);
+                                AddSecurityGroupLinkWithRoleLinks(rndFolder, securityGroup);
                             });
                         });
                     });
                 });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
 
         }
 
+        protected void AddSecurityGroupLinkWithRoleLinks<TModelNode>(TModelNode node,
+            SecurityGroupDefinition securityGroup)
+              where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()
+        {
+            // we need to ensire that role links can be aded as well
+            // SSOM provision gives WebpartPageModelHost not supported error #654
+            // https://github.com/SubPointSolutions/spmeta2/issues/654
+            node.AddSecurityGroupLink(securityGroup, group =>
+            {
+                group
+                    .AddSecurityRoleLink(BuiltInSecurityRoleNames.Edit)
+                    .AddSecurityRoleLink(BuiltInSecurityRoleNames.Design)
+                    .AddSecurityRoleLink(BuiltInSecurityRoleNames.Approve);
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
@@ -524,14 +539,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                      TurnOffValidation(rndListItem);
                                  });
 
-                                 rndListItem.AddSecurityGroupLink(securityGroup);
+                                 AddSecurityGroupLinkWithRoleLinks(rndListItem, securityGroup);
                              });
                          });
                      });
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
 
@@ -561,14 +576,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                      TurnOffValidation(page);
                                  });
 
-                                 page.AddSecurityGroupLink(securityGroup);
+                                 AddSecurityGroupLinkWithRoleLinks(page, securityGroup);
                              });
                          });
                      });
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -597,14 +612,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                      TurnOffValidation(page);
                                  });
 
-                                 page.AddSecurityGroupLink(securityGroup);
+                                 AddSecurityGroupLinkWithRoleLinks(page, securityGroup);
                              });
                          });
                      });
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -642,14 +657,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                      TurnOffValidation(page);
                                  });
 
-                                 page.AddSecurityGroupLink(securityGroup);
+                                 AddSecurityGroupLinkWithRoleLinks(page, securityGroup);
                              });
                          });
                      });
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         #endregion
@@ -700,7 +715,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -738,7 +753,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -778,7 +793,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
 
@@ -817,7 +832,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -845,7 +860,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new  ModelNode[] { webModel });
+            TestModels(new ModelNode[] { webModel });
         }
 
         [TestMethod]
@@ -870,7 +885,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      });
                  });
 
-            TestModels(new  ModelNode[] { webModel });
+            TestModels(new ModelNode[] { webModel });
         }
 
         [TestMethod]
@@ -895,7 +910,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                      });
                  });
 
-            TestModels(new  ModelNode[] { webModel });
+            TestModels(new ModelNode[] { webModel });
         }
 
         #endregion
