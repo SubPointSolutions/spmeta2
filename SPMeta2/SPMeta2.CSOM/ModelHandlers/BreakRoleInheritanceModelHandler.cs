@@ -31,6 +31,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
 
+            if (modelHost is File)
+                return (modelHost as File).ListItemAllFields;
+
             if (modelHost is FolderModelHost)
             {
                 var folderModelHost = modelHost as FolderModelHost;

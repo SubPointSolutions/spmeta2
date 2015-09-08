@@ -10,6 +10,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Syntax
 {
@@ -179,7 +180,16 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
                     list.AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition());
 
-                    list.AddModuleFile(new ModuleFileDefinition());
+                    list.AddModuleFile(new ModuleFileDefinition(), moduleFile =>
+                    {
+                        moduleFile.AddSecurityGroupLink(new SecurityGroupDefinition(), group =>
+                       {
+                           group
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Edit)
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Design)
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Approve);
+                       });
+                    });
 
                     list.AddUserCustomAction(new UserCustomActionDefinition());
 

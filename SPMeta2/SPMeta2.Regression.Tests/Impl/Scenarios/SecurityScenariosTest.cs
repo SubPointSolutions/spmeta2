@@ -497,6 +497,47 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security")]
+        public void CanDeploy_SecurityGroupLink_OnModuleFile()
+        {
+            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model
+                                .NewSiteModel(site =>
+                                {
+                                    site.AddSecurityGroup(securityGroup);
+                                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomWeb(rndWeb =>
+                    {
+                        rndWeb.AddList(listDef, rndList =>
+                        {
+                            rndList.AddRandomModuleFile(rndModuleFile =>
+                            {
+                                rndModuleFile.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(rndModuleFile);
+                                });
+
+                                AddSecurityGroupLinkWithRoleLinks(rndModuleFile, securityGroup);
+                            });
+                        });
+                    });
+                });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
+
+        }
+
         protected void AddSecurityGroupLinkWithRoleLinks<TModelNode>(TModelNode node,
             SecurityGroupDefinition securityGroup)
               where TModelNode : ModelNode, ISecurableObjectHostModelNode, new()

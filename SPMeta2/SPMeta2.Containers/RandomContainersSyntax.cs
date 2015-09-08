@@ -241,14 +241,17 @@ namespace SPMeta2.Containers
         #endregion
 
 
-        public static ModelNode AddRandomModuleFile(this ModelNode model)
+        public static TModelNode AddRandomModuleFile<TModelNode>(this TModelNode model)
+            where TModelNode : TypedModelNode, IModuleFileHostModelNode, new()
         {
             return AddRandomModuleFile(model, null);
         }
 
-        public static ModelNode AddRandomModuleFile(this ModelNode model, Action<ModelNode> action)
+        public static TModelNode AddRandomModuleFile<TModelNode>(this TModelNode model, Action<ModuleFileModelNode> action)
+           where TModelNode : TypedModelNode, IModuleFileHostModelNode, new()
         {
-            return model.AddRandomDefinition<ModuleFileDefinition>(action);
+            //return model.AddRandomDefinition<ModuleFileDefinition>(action);
+            return model.AddRandomTypedDefinition<ModuleFileDefinition, TModelNode, ModuleFileModelNode>(action);
         }
 
         #region fodlers

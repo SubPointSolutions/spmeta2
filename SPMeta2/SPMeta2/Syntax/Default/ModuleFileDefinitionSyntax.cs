@@ -13,7 +13,8 @@ namespace SPMeta2.Syntax.Default
 {
     [Serializable]
     [DataContract]
-    public class ModuleFileModelNode : TypedModelNode
+    public class ModuleFileModelNode : TypedModelNode,
+        ISecurableObjectHostModelNode
     {
 
     }

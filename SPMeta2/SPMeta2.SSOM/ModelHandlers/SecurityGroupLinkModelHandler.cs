@@ -238,6 +238,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     return folderHost.CurrentListItem.ParentList.ParentWeb;
             }
 
+            if (modelHost is SPFile)
+                return (modelHost as SPFile).Web;
+
             if (modelHost is WebpartPageModelHost)
                 return (modelHost as WebpartPageModelHost).PageListItem.ParentList.ParentWeb;
 
@@ -257,6 +260,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
+
+            if (modelHost is SPFile)
+                return (modelHost as SPFile).ListItemAllFields;
 
             if (modelHost is FolderModelHost)
             {
