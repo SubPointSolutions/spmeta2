@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,6 +75,72 @@ namespace SPMeta2.Regression.SSOM.Validation
                     IsValid = isValid
                 };
             });
+
+
+            /// localization
+            if (definition.TitleResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.TitleResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultireInfo(userResource);
+                        var value = d.TitleResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.DescriptionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultireInfo(userResource);
+                        var value = d.DescriptionResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+            }
         }
     }
 

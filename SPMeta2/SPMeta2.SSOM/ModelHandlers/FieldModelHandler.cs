@@ -10,6 +10,8 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using System.Globalization;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -106,6 +108,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             ProcessFieldProperties(field, fieldModel);
+            ProcessFieldLocalization(field, fieldModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -420,6 +423,24 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.ShowInVersionHistory.HasValue)
                 field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
+
+
+            // process localiation
+        }
+
+        protected virtual void ProcessFieldLocalization(SPField field, FieldDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessFieldUserResource(field.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessFieldUserResource(field.DescriptionResource, locValue);
+            }
         }
 
         #endregion

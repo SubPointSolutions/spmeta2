@@ -201,7 +201,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                         customWebTemplate,
                         webModel.UseUniquePermission,
                         webModel.ConvertIfThere);
+
+                    
                 }
+
+                ProcessLocalization(currentWeb, webModel);
             }
             else
             {
@@ -212,6 +216,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     currentWeb.Title = webModel.Title;
                     currentWeb.Description = webModel.Description ?? string.Empty;
+
+                    ProcessLocalization(currentWeb, webModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -230,6 +236,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             return currentWeb;
+        }
+
+        protected virtual void ProcessLocalization(SPWeb web, WebDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessFieldUserResource(web.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessFieldUserResource(web.DescriptionResource, locValue);
+            }
         }
 
         #endregion

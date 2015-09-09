@@ -8,6 +8,36 @@ namespace SPMeta2.Containers.Services
 {
     public abstract class RandomService
     {
+        static RandomService()
+        {
+            var _localeIds = new List<int>();
+
+            //- German
+            //- French
+            //- Dutch
+            //- Italian
+            //- Russian
+            //- Spanish 
+            //- Swedish 
+
+            var languages = new int[]
+                {
+                    1031,
+                    1036,
+                    1043,
+                    1040,
+                    1049,
+                    1034,
+                    1053
+                };
+
+            _localeIds.AddRange(languages);
+
+            DefaultLocaleIds = _localeIds;
+        }
+
+        public static IEnumerable<int> DefaultLocaleIds { get; set; }
+
         public abstract Guid Guid();
 
         public abstract byte[] Content();
@@ -38,6 +68,25 @@ namespace SPMeta2.Containers.Services
 
     public static class RandomServiceExtensions
     {
+        #region localization
+
+        public static IEnumerable<int> LocaleIds(this RandomService service)
+        {
+            return RandomService.DefaultLocaleIds;
+        }
+
+        public static int LocaleId(this RandomService service)
+        {
+            return LocaleId(service, RandomService.DefaultLocaleIds);
+        }
+
+        public static int LocaleId(this RandomService service, IEnumerable<int> localeIds)
+        {
+            return service.RandomFromArray(localeIds);
+        }
+
+        #endregion
+
         #region methods
 
         public static string VersionString(this RandomService service)

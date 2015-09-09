@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -407,6 +407,85 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region fields localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_Site_Field()
+        {
+            var field = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_Web_Field()
+        {
+            var rootWeb = GetLocalizedFieldDefinition();
+            var subWebField = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(rootWeb);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    web.AddField(subWebField);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_List_Field()
+        {
+            var field = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(field);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected FieldDefinition GetLocalizedFieldDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+
+                definition.DescriptionResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

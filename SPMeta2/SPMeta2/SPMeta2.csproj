@@ -306,6 +306,7 @@
     <Compile Include="Services\Impl\DefaultJSONSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
+    <Compile Include="Services\LocalizationServiceBase.cs" />
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />

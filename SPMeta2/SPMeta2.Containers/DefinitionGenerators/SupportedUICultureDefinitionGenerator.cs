@@ -13,25 +13,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                //- German
-                //- French
-                //- Dutch
-                //- Italian
-                //- Russian
-                //- Spanish 
-                //- Swedish 
-                var languages = new int[]
-                {
-                    1031,
-                    1036,
-                    1043,
-                    1040,
-                    1049,
-                    1034,
-                    1053
-                };
-
-                def.LCID = Rnd.RandomFromArray(languages);
+                def.LCID = Rnd.LocaleId();
             });
         }
     }

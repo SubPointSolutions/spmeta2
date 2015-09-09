@@ -6,6 +6,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
+using System.Collections.Generic;
 
 namespace SPMeta2.Definitions
 {
@@ -39,6 +40,9 @@ namespace SPMeta2.Definitions
         {
             Url = "/";
             LCID = 1033;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -56,6 +60,14 @@ namespace SPMeta2.Definitions
         public string Title { get; set; }
 
         /// <summary>
+        /// Corresponds to TitleResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
+
+        /// <summary>
         /// Description of the target web.
         /// </summary>
         /// 
@@ -64,6 +76,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// LCID of the target web.

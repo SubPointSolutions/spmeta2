@@ -19,6 +19,7 @@ namespace SPMeta2.SSOM.Services
         public SSOMProvisionService()
         {
             ServiceContainer.Instance.RegisterService(typeof(SSOMTokenReplacementService), new SSOMTokenReplacementService());
+            ServiceContainer.Instance.RegisterService(typeof(SSOMLocalizationService), new SSOMLocalizationService());
 
             RegisterModelHandlers();
 
