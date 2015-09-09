@@ -26,7 +26,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewFarmModel(farm =>
             {
-                farm.AddProperty(new PropertyDefinition());
+                farm
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 farm.AddFeature(new FeatureDefinition());
                 farm.AddFarmFeature(new FeatureDefinition());
@@ -44,7 +46,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
             {
-                webApplication.AddProperty(new PropertyDefinition());
+                webApplication
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 webApplication.AddFeature(new FeatureDefinition());
                 webApplication.AddWebApplicationFeature(new FeatureDefinition());
@@ -72,7 +76,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 site.AddEventReceiver(new EventReceiverDefinition());
 
-                site.AddProperty(new PropertyDefinition());
+                site
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 site.AddFeature(new FeatureDefinition());
                 site.AddSiteFeature(new FeatureDefinition());
@@ -157,7 +163,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddEventReceiver(new EventReceiverDefinition());
 
-                web.AddProperty(new PropertyDefinition());
+                web
+                  .AddProperty(new PropertyDefinition())
+                  .AddProperty(new PropertyDefinition());
 
                 web.AddFeature(new FeatureDefinition());
                 web.AddWebFeature(new FeatureDefinition());
@@ -175,6 +183,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 web.AddList(new ListDefinition(), list =>
                 {
                     list.AddAuditSettings(new AuditSettingsDefinition());
+
+                    list
+                      .AddProperty(new PropertyDefinition())
+                      .AddProperty(new PropertyDefinition());
+
 
                     list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition());
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
