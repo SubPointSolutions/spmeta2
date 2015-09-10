@@ -457,6 +457,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 list.DocumentTemplateUrl = urlValue;
             }
+
+            ProcessLocalization(list, definition);
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
@@ -476,6 +478,15 @@ namespace SPMeta2.CSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(ListDefinition); }
+        }
+
+        protected virtual void ProcessLocalization(List obj, ListDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
         }
     }
 }

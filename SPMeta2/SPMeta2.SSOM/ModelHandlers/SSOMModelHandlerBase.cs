@@ -25,7 +25,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         #region properties
 
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
-        public SSOMLocalizationService LocalizationService { get; set; }
+        public LocalizationServiceBase LocalizationService { get; set; }
 
         #endregion
     }

@@ -124,12 +124,17 @@ namespace SPMeta2.CSOM.Services.Impl
             if (IsAllowedHttpWebResponseStatusCode(ex))
                 return true;
 
+            if (IsAllowedConnectionResponseStatuses(ex))
+                return true;
+
             // local IISReset or something else?
             if (IsAllowedWebException(ex))
                 return true;
 
             return false;
         }
+
+
 
         protected virtual bool IsAllowedWebException(Exception ex)
         {
@@ -169,7 +174,6 @@ namespace SPMeta2.CSOM.Services.Impl
         protected virtual bool IsAllowedHttpWebResponseStatusCode(Exception ex)
         {
             // handles allowed http responce statuses with AllowedStatusCodes collection
-
             var webEx = ex as WebException;
 
             if (webEx != null && webEx.Response != null)
@@ -179,6 +183,23 @@ namespace SPMeta2.CSOM.Services.Impl
                 if (webHttpResponce != null)
                 {
                     return AllowedStatusCodes.Contains((int)webHttpResponce.StatusCode);
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsAllowedConnectionResponseStatuses(Exception ex)
+        {
+            // droped network, wi-fi or proxy
+            // comes with 'System.Net.WebException: The underlying connection was closed: The connection was closed unexpectedly.'
+            var webEx = ex as WebException;
+
+            if (webEx != null)
+            {
+                if (webEx.Status == WebExceptionStatus.ConnectionClosed || webEx.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    return true;
                 }
             }
 

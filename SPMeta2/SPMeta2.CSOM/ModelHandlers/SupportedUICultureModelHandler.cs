@@ -55,8 +55,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!currentLanguages.Contains(webModel.LCID))
             {
                 // if running nice CSOM, so that method is there and a few web's props
-                var supportedRuntime = web.IsPropertyAvailable("IsMultilingual")
-                                       && web.GetType().GetMethods().Any(m => m.Name == "AddSupportedUILanguage");
+                var supportedRuntime = ReflectionUtils.HasProperty(web, "IsMultilingual")
+                                       && ReflectionUtils.HasMethod(web, "AddSupportedUILanguage");
+
 
                 if (supportedRuntime)
                 {
@@ -78,10 +79,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     }
 
                     // adding languages 
-                    ClientAction query = new ClientActionInvokeMethod(web, "AddSupportedUILanguage", new object[]
+                    var query = new ClientActionInvokeMethod(web, "AddSupportedUILanguage", new object[]
                     {
                         webModel.LCID
                     });
+
                     context.AddQuery(query);
 
                     // upating the web
@@ -113,18 +115,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private object GetPropertyValue(object obj, string propName)
-        {
-            var prop = obj.GetType().GetProperties(BindingFlags.Instance |
-                                                   BindingFlags.NonPublic |
-                                                   BindingFlags.Public)
-                                    .FirstOrDefault(p => p.Name.ToUpper() == propName.ToUpper());
 
-            if (prop == null)
-                throw new SPMeta2Exception(string.Format("Can'tfind prop: [{0}] in obj:[{1}]", propName, obj));
-
-            return prop.GetValue(obj, null);
-        }
 
         #endregion
 

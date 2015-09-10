@@ -156,6 +156,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             existringAction.Rights = permissions;
+
+
+            ProcessLocalization(existringAction, customAction);
         }
 
         protected bool IsValidHostModelHost(object modelHost)
@@ -164,6 +167,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 modelHost is SiteModelHost ||
                 modelHost is WebModelHost ||
                 modelHost is ListModelHost;
+        }
+
+        protected virtual void ProcessLocalization(UserCustomAction obj, UserCustomActionDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource },
+                { "DescriptionResource", definition.DescriptionResource },
+                { "CommandUIExtensionResource", definition.CommandUIExtensionResource },
+            });
         }
 
         #endregion

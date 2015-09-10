@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
@@ -211,6 +212,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             InvokeOnModelEvent<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
 
+            ProcessLocalization(currentContentType, contentTypeModel);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -254,6 +257,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType.DeleteObject();
                 context.ExecuteQueryWithTrace();
             }
+        }
+
+        protected virtual void ProcessLocalization(ContentType obj, ContentTypeDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "NameResource", definition.NameResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
         }
     }
 

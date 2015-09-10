@@ -254,6 +254,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentView.Title = listViewModel.Title;
             }
 
+            ProcessLocalization(currentView, listViewModel);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -330,6 +332,13 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
+        protected virtual void ProcessLocalization(View obj, ListViewDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource }
+            });
+        }
 
         public override Type TargetType
         {

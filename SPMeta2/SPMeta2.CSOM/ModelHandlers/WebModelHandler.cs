@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Runtime.Remoting.Contexts;
@@ -318,6 +319,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQueryWithTrace();
 
+                ProcessLocalization(newWeb, webModel);
+
                 context.Load(newWeb);
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
@@ -345,6 +348,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 //  locale is not available with CSOM yet
 
+                ProcessLocalization(currentWeb, webModel);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -355,6 +360,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
+
                 InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdated);
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "currentWeb.Update()");
@@ -399,6 +405,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 // TODO, chekc is web exists
             }
+        }
+
+        protected virtual void ProcessLocalization(Web obj, WebDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
         }
 
         #endregion

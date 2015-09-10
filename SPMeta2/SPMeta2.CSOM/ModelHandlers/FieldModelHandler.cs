@@ -12,6 +12,7 @@ using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Collections.Generic;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -224,6 +225,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 typedField = generic.Invoke(context, new object[] { currentField });
             }
+
+
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -457,6 +460,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             //if (definition.ShowInVersionHistory.HasValue)
             //    field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
+
+            ProcessLocalization(field, definition);
         }
 
         private Field EnsureField(ClientRuntimeContext context, Field currentField, FieldCollection fieldCollection,
@@ -639,7 +644,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             return fieldTemplate.ToString();
         }
 
-        #endregion
+        protected virtual void ProcessLocalization(Field obj, FieldDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
+        }
 
+        #endregion
     }
 }

@@ -22,6 +22,7 @@ namespace SPMeta2.CSOM.Services
         public CSOMProvisionService()
         {
             ServiceContainer.Instance.RegisterService(typeof(CSOMTokenReplacementService), new CSOMTokenReplacementService());
+            ServiceContainer.Instance.RegisterService(typeof(CSOMLocalizationService), new CSOMLocalizationService());
 
             PreDeploymentServices.Add(new RequireCSOMRuntimeVersionDeploymentService());
             
