@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default.Modern;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -198,6 +198,60 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode.Localization")]
+        public void CanDeploy_Localized_TopNavigationNode()
+        {
+            var definition = GetLocalizedDefinition();
+            var subWebDefinition = GetLocalizedDefinition();
+
+            var definitionSecondLevel = GetLocalizedDefinition();
+            var subWebDefinitionSecondLevel = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddTopNavigationNode(definition, def =>
+                {
+                    def.AddTopNavigationNode(definitionSecondLevel);
+                });
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddTopNavigationNode(subWebDefinition, def =>
+                    {
+                        def.AddTopNavigationNode(subWebDefinitionSecondLevel);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected TopNavigationNodeDefinition GetLocalizedDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<TopNavigationNodeDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

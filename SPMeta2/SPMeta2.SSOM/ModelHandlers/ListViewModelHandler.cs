@@ -206,6 +206,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
 
+            ProcessLocalization(currentView, listViewModel);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -237,6 +239,15 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected SPContentTypeId LookupListContentTypeById(SPList targetList, string contentTypeId)
         {
             return new SPContentTypeId(contentTypeId);
+        }
+
+        protected virtual void ProcessLocalization(SPView obj, ListViewDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+            }
         }
 
         #endregion

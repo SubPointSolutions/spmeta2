@@ -280,7 +280,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                      foreach (var userResource in s.TitleResource)
                      {
-                         var culture = LocalizationService.GetUserResourceCultireInfo(userResource);
+                         var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
                          var value = d.TitleResource.GetValueForUICulture(culture);
 
                          isValid = userResource.Value == value;
@@ -312,7 +312,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                      foreach (var userResource in s.DescriptionResource)
                      {
-                         var culture = LocalizationService.GetUserResourceCultireInfo(userResource);
+                         var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
                          var value = d.DescriptionResource.GetValueForUICulture(culture);
 
                          isValid = userResource.Value == value;

@@ -10,8 +10,8 @@ namespace SPMeta2.Services
 {
     public abstract class LocalizationServiceBase
     {
-        public abstract CultureInfo GetUserResourceCultireInfo(ValueForUICulture locValue);
+        public abstract CultureInfo GetUserResourceCultureInfo(ValueForUICulture locValue);
 
-        public abstract void ProcessFieldUserResource(object userResource, ValueForUICulture locValue);
+        public abstract void ProcessUserResource(object parentObject, object userResource, ValueForUICulture locValue);
     }
 }

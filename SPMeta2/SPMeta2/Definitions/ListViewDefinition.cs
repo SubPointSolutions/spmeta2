@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -47,6 +48,8 @@ namespace SPMeta2.Definitions
             Query = string.Empty;
 
             Type = BuiltInViewType.Html;
+
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -64,6 +67,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string Title { get; set; }
+
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         /// <summary>
         /// Allows to define URL of the target view.

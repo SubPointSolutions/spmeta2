@@ -177,6 +177,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     docLibrary.DocumentTemplateUrl = urlValue;
                 }
             }
+
+
+            ProcessLocalization(list, definition);
         }
 
         #region utils
@@ -301,6 +304,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                 action(modelHost);
             }
         }
+
+        protected virtual void ProcessLocalization(SPList obj, ListDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
+            }
+        }
+
     }
 
     //public class ListModelHandler : SSOMModelHandlerBase

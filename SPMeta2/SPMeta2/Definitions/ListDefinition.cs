@@ -35,6 +35,9 @@ namespace SPMeta2.Definitions
         {
             Description = string.Empty;
             Hidden = false;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
         }
 
         #region properties
@@ -49,6 +52,14 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -75,6 +86,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// URL of the target list.
@@ -226,7 +245,7 @@ namespace SPMeta2.Definitions
 
         [SiteCollectionTokenCapability]
         [WebTokenCapability]
-        
+
         [ExpectNullable]
         //[ExpectUpdateAsServerRelativeUrl]
         public string DocumentTemplateUrl { get; set; }

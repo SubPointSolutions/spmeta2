@@ -837,5 +837,56 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Localization")]
+        public void CanDeploy_Localized_List()
+        {
+            var definition = GetLocalizedDefinition();
+            var subWebDefinition = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(definition);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddList(subWebDefinition);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected ListDefinition GetLocalizedDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+
+                definition.DescriptionResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
+                });
+            }
+
+            return definition;
+        }
+
+        #endregion
     }
 }

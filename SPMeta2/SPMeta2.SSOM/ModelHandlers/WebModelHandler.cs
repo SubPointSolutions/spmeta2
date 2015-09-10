@@ -47,7 +47,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             using (var web = GetOrCreateWeb(parentWeb, webModel, true))
             {
                 web.Title = webModel.Title;
-                web.Description = webModel.Description;
+                web.Description = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
 
                 if (webModel.LCID > 0)
                     web.Locale = new CultureInfo((int)webModel.LCID);
@@ -202,7 +202,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         webModel.UseUniquePermission,
                         webModel.ConvertIfThere);
 
-                    
+
                 }
 
                 ProcessLocalization(currentWeb, webModel);
@@ -238,18 +238,18 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentWeb;
         }
 
-        protected virtual void ProcessLocalization(SPWeb web, WebDefinition definition)
+        protected virtual void ProcessLocalization(SPWeb obj, WebDefinition definition)
         {
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessFieldUserResource(web.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessFieldUserResource(web.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
             }
         }
 

@@ -14,7 +14,7 @@ namespace SPMeta2.SSOM.Services
 {
     public class SSOMLocalizationService : LocalizationServiceBase
     {
-        public override CultureInfo GetUserResourceCultireInfo(ValueForUICulture locValue)
+        public override CultureInfo GetUserResourceCultureInfo(ValueForUICulture locValue)
         {
             CultureInfo cultureInfo = null;
 
@@ -28,11 +28,11 @@ namespace SPMeta2.SSOM.Services
             return cultureInfo;
         }
 
-        public override void ProcessFieldUserResource(object userResource, ValueForUICulture locValue)
+        public override void ProcessUserResource(object parentObject, object userResource, ValueForUICulture locValue)
         {
             var typedResource = userResource.WithAssertAndCast<SPUserResource>("userResource", value => value.RequireNotNull());
 
-            var cultureInfo = GetUserResourceCultireInfo(locValue);
+            var cultureInfo = GetUserResourceCultureInfo(locValue);
 
             typedResource.SetValueForUICulture(cultureInfo, locValue.Value);
             typedResource.Update();

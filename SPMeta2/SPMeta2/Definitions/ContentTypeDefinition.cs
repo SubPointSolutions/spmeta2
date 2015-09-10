@@ -2,6 +2,7 @@
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
+using System.Collections.Generic;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
@@ -30,6 +31,16 @@ namespace SPMeta2.Definitions
     [ExpectManyInstances]
     public class ContentTypeDefinition : DefinitionBase
     {
+        #region constructors
+
+        public ContentTypeDefinition()
+        {
+            NameResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -67,6 +78,15 @@ namespace SPMeta2.Definitions
         [IdentityKey]
         public string Name { get; set; }
 
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> NameResource { get; set; }
+
         /// <summary>
         /// Description if the target content type.
         /// </summary>
@@ -77,6 +97,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// Group of the target content type.

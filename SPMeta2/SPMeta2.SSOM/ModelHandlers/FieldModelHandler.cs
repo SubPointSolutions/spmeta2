@@ -428,18 +428,18 @@ namespace SPMeta2.SSOM.ModelHandlers
             // process localiation
         }
 
-        protected virtual void ProcessFieldLocalization(SPField field, FieldDefinition definition)
+        protected virtual void ProcessFieldLocalization(SPField obj, FieldDefinition definition)
         {
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessFieldUserResource(field.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessFieldUserResource(field.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
             }
         }
 

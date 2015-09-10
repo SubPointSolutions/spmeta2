@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Services;
 using SPMeta2.Exceptions;
 using SPMeta2.Syntax.Default;
 
@@ -254,6 +255,57 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.Title = Rnd.String();
                 def.Url = string.Format("{0}.aspx", Rnd.String());
             });
+        }
+
+        #endregion
+
+        #region localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Localization")]
+        public void CanDeploy_Localized_ListView()
+        {
+            var definition = GetLocalizedDefinition();
+            var subWebDefinition = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddListView(definition);
+                });
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddRandomList(list =>
+                    {
+                        list.AddListView(subWebDefinition);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected ListViewDefinition GetLocalizedDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

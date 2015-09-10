@@ -83,6 +83,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Url = ResolveTokenizedUrl(CurrentWebModelHost, quickLaunchNode);
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
+            ProcessLocalization(existingNode, quickLaunchNode);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -202,6 +204,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Url = ResolveTokenizedUrl(webModelHost, rootNode);
             existingNode.IsVisible = rootNode.IsVisible;
 
+            ProcessLocalization(existingNode, rootNode);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -216,6 +220,16 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Update();
 
             return existingNode;
+        }
+
+
+        protected virtual void ProcessLocalization(SPNavigationNode obj, NavigationNodeDefinitionBase definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+            }
         }
 
         #endregion

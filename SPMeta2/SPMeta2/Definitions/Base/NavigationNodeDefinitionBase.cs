@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions.Base
         public NavigationNodeDefinitionBase()
         {
             IsVisible = true;
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -39,6 +40,14 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         [IdentityKey]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         /// <summary>
         /// URL of the target navigation node.
