@@ -1,78 +1,126 @@
-## SPMeta2 is now part of <a href="http://subpointsolutions.com">SubPoint Solutions</a>
+# SPMeta2
 
-<a href="http://subpointsolutions.com">SubPoint Solutions</a> is an inovative company that helps SharePoint professionals and consultancy companies be efficient. 
+The most comprehensive, enterprise-ready framework for provisioning SharePoint artifacts on SharePoint 2010, 2013 and O365. SPMeta2 is a code-first provision library supporting the provision of more than 120 artifacts in robust, highly repeatable and testable way while leveraging either one of the CSOM or SSOM SharePoint runtimes. Here is a few facts about it:
 
-We look after <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, <a href="http://subpointsolutions.com/spcafcontrib/about">SPCAFContrib</a> and a few more projects aim to provide a powerful foundation and experience for SharePoint professionals. 
+* Broad support of SharePoint 2010, 2013, O365, CSOM/SSOM
+* No vendor lock-in: open source at GitHub
+* Developer-friendly: fluent API, DSL and extensibility
+* Visual Studio integration: project and item templates
+* Documented: API samples, guidances and documentation
+* Enterprise ready: regression tests, localization, SLA
 
-With growing demaind of effective SharePoint artifact provision for SP2013 and O365, we are taking <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a> to the next level, offering <a href='http://subpointsolutions.com/spmeta2/sdk'>SPMeta2 SDK</a> and <a hre='http://subpointsolutions.com/services/support'>additional support</a> for our clients.
-
-Learn more about <a href="http://subpointsolutions.com/spmeta2/about">SPMeta2 library</a>, stay tuned with <a href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a> and <a href='https://subpointsolutions.uservoice.com/'>let us know how it works for you</a>.
-
-## Build status with appveyor
+## Build status
 [![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2)
 
-## What is SPMeta2?
-SPMeta2 is a fluent API for code-based SharePoint artifact provisioning.
+## SPMeta2 in details
 
-Struggling with SharePoint's API inconsistency, bugs, "by-design" behaviour, unaffordable amount of time to write, support and upgrade WSP packages and XML, a team of passionate SharePoint professionals decided to come up with robust, testable and repeatable way to deploy such artifacts like fields, content types, libraries, pages and many more.
+### Broad and unified provision API implemented for SharePoint 2013/SharePoint Online
+SPMeta2 helps to deploy more that 120 SharePoint artifacts - fields, content types, lists, list views, webs, security groups, permission levels and the rest of the artifacts in testable, repeatable and upgradable manner. 
 
-As an outcome, we created SPMeta2 - a .NET 4.5 library to provide fluent API for SharePoint 2013 artifact with SSOM/CSOM or JSOM for both on premise and O365 instances. Have a look around, check out get started links and more details about SPMeta. 
+It supports both SSOM or CSOM API handling various provision scenarios with a consistent, unified, well-designer API. Built as .NET4/4.5 assemblies, packaged via NuGet, supports SP2013 Foundation, SP2013 Standard+, SharePoint Online and even SharePoint 2010.
 
-## Get started!
-<table style="color: #222222; height: 125px;" width="483">
-<tbody>
-<tr>
-<td valign="top" width="50%">
-<ul>
-<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2">About</a></li>
-<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/features">Features</a></li>
-<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/releases">Releases and roadmap</a></li>
-<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/provision">How-to artefact provision</a></li>
-<li><a style="color: #006adf;" href="https://www.nuget.org/profiles/SubPointSupport">SPMeta2 @ Nuget</a></li>
-<li><a style="color: #006adf;" href="https://github.com/SubPointSolutions/spmeta2.contoso">SPMeta2.Contoso - sample projects</li>
-</ul>
-</td>
-<td valign="top" width="50%">
-<ul>
+### Consistent fluent API, POCOs, DSL and extensibility
+SPMeta2 provides POCO objects to define SharePoint artifacts and then a consistent fluent API and domain-specific language (DSL) helps to express your data model. It's like Entity Framework Code First, but for SharePoint. 
 
-<li><a style="color: #006adf;" href="http://docs.subpointsolutions.com/spmeta2/license">License</a></li>
-<li><a style="color: #006adf;" href="http://subpointsolutions.com/services/support">Support</a></li>
-<li><a style="color: #006adf;" href="https://subpointsolutions.uservoice.com/">Feature requests</a></li>
-<li><a style="color: #006adf;" href='https://www.yammer.com/spmeta2feedback/'>SPMeta2 Yammer Group</a></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+Extensible API helps to address specific project needs. You can write custom DSL syntax just with a few C# extension methods. As easy as that.
 
-## SPMeta2 philosophy and mission
-### Fluent API and syntax extensions
-SPMeta2 API allows you to define SharePoint artifacts such as field, content type, list (and many more), define relationships between them and, finally, deploy them via SSOM/CSOM. You work with c# POCO objects defining your data model, we take care about the rest. 
+### Built BY developers and FOR developers: supports wide set of development scenarios
+SPMeta2 is an open source project under the MS-PL license hosted at GitHub. Like us there, pull something or just star and watch the show.
 
-SPMeta2 might be extended with custom syntax implementation to meet your project needs. Extension methods are used to adjust a specific behavior or property of SharePoint artifacts. Custom syntax or DSL can easily be created to address specific project needs.
+Compiled for .NET 4/4.5 and delivered by NuGet packages, SPMeta2 suits most of the custom development scenario.
 
-Learn more here - <a href="http://docs.subpointsolutions.com/spmeta2/how-it-works/">How SPMeta2 Works</a>.
+The dark side of SharePoint's API is also handled by SPMeta2: inconsistency, bugs, "by design" behaviour. SPMeta2 fully replaces XML allowing you to focus on writing clean, unified, reliable and reusable codebase. 
 
-### Model tree build-in validation
-The model tree might be optionally validated with build in rules. It guarantees nobody adds a field to the web or list to the site collection. Custom validators can be implemented to address your project needs as well. 
+Don't wait! Write amazing console applications, desktop application, full-trust *.wsp packages, implement remote provision via CSOM or modern SharePoint "apps" and "add-ons" - that's up to you.
 
-Builtin validators ensure SharePoint limitations and boundaries. SPMeta2 checks that internal names of all your fields don not exceed 32 chars. There is more magic than you can imagine.
+### Enterprise-ready: 600+ regression and unit tests, localization, Visual Studio integration
+The outstanding quality of SPMeta2 is a result of 600+ regression tests being repeatedly run against a real SharePoint 2013 farm via SSOM, then via CSOM, and then it is also run against real O365 tenants via CSOM. Testing is done against REAL SharePoint 2013 SP1 instancies and O365 tenants - zero fakes or stubs are used.
 
-### SharePoint 2013 Foundation, Standard, Enterprise and O365 are supported
-SPMeta2 supports all SharePoint editions. It is splitted up into several packages to reflect SharePoint editions: Foundation, Standart and Enterprise. O365 support is implemented with CSOM.
+SPMeta2 supports localization scenarios and has its Visual Studio project and items templates, snippets and debugger visualizer. Everything is covered to boost up SharePoint development process.
 
-### SSOM and CSOM are supported. JSOM is coming up.
-SPMeta2 supports SSOM and CSOM. We are working on JSOM support implemeted with TypeScript and SPTypeScript.
+### Production-ready: SLA and premium support
+Hundreds of companies trust SPMeta2 to boost up they daily SharePoint related routines. Premium support and consulting is available to get the best value from SPMeta2, support production and mission critical applications offering in-depth, first-hand experience and SLA. 
 
-### No XML inside - only code
-SPMeta2 is code based provision library for SharePoint 2013.
-* You DO NOT write XML
-* You DO NOT write WSP
-* You DO write code instead
+## Resources
 
-Learn more here - <a href="http://docs.subpointsolutions.com/spmeta2/how-it-works/">How SPMeta2 Works</a>.
+#### Documentation
+* [Welcome to SPMeta2](http://docs.subpointsolutions.com/spmeta2/)
+* [How it works](http://docs.subpointsolutions.com/spmeta2/basics/getting-started/) 
+* [Getting started](http://docs.subpointsolutions.com/spmeta2/basics/getting-started/)
+* [100+ samples & scenarios](http://docs.subpointsolutions.com/spmeta2/scenarios/)
+* [Useful utilities](http://docs.subpointsolutions.com/spmeta2/utils/)
+* [Extensibility](http://docs.subpointsolutions.com/spmeta2/extensibility/)
 
-### Regression and testing are implemented and supported
-Having code based provision allows us to have full control over the provision and update flow. As there is no WSP or XML, not features need to be deployed or activated. 
+#### Social
+* [SPMeta2 @ Twitter](http://twitter.com/spmeta2)
+* ['SPMeta2' tag @ stackoverflow](http://stackoverflow.com/search?q=spmeta2)
 
-This allows us to write integration tests within minutes, make sure deployment and upgrade work as expected. Most of the provision cases are covered with integration tests. We create a new site or web, deploy everything we need and check if everything has been deployed correctly.
+#### Yammer
+* [Yammer Network](http://docs.subpointsolutions.com/spmeta2/)
+* ['Tip of the day' Yammer group](https://www.yammer.com/spmeta2feedback/#/threads/inGroup?type=in_group&feedId=5963084)
+* ['VS Extensions' Yammer group](https://www.yammer.com/spmeta2feedback/#/threads/inGroup?type=in_group&feedId=6192273)
+* ['Ideas & Feedback' Yammer group](https://www.yammer.com/spmeta2feedback/#/threads/inGroup?type=in_group&feedId=4881224)
+
+#### Support
+* [Report bug](https://subpointsolutions.myjetbrains.com/youtrack/issues)
+* [Feature request](https://subpointsolutions.myjetbrains.com/youtrack/issues) 
+* [Premium support & SLA](http://localhost:48435/services)
+
+#### Visual Studio integration
+
+* [M2 Extensions @ VS Gallery]()
+* [About extenstions, the experience](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki)
+* [General concepts](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/General-concepts)
+* [M2 Intranet Model template](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/M2-Intranet-Model-project)
+* [M2 Console provision template](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/M2-Console-Provision-project)
+* [SPMeta2 snippets](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/M2-Snippets)
+* [Download VSIX package](https://github.com/SubPointSolutions/spmeta2-vsixextensions/tree/master/Releases)
+
+#### SPMeta2 @ NuGet
+SPMeta2 core runtime
+* [SPMeta2.Core](https://www.nuget.org/packages/SPMeta2.Core/)
+* [SPMeta2.Core.Standard](https://www.nuget.org/packages/SPMeta2.Core.Standard/)
+
+SharePoint Online
+* [SPMeta2.CSOM.Foundation-v16](https://www.nuget.org/packages/SPMeta2.CSOM.Foundation-v16/)
+* [SPMeta2.CSOM.Standard-v16](https://www.nuget.org/packages/SPMeta2.CSOM.Standard-v16/)
+
+SharePoint 2013 CSOM
+* [SPMeta2.CSOM.Foundation](https://www.nuget.org/packages/SPMeta2.CSOM.Foundation/)
+* [SPMeta2.CSOM.Standard](https://www.nuget.org/packages/SPMeta2.CSOM.Standard/)
+
+SharePoint 2013 SSOM
+* [SPMeta2.SSOM.Foundation](https://www.nuget.org/packages/SPMeta2.SSOM.Foundation/)
+* [SPMeta2.SSOM.Standard](https://www.nuget.org/packages/SPMeta2.SSOM.Standard/)
+
+SharePoint 2010 SSOM
+* [SPMeta2.SSOM.Foundation-v14](https://www.nuget.org/packages/SPMeta2.SSOM.Foundation-v14/)
+* [SPMeta2.SSOM.Standard-v14](https://www.nuget.org/packages/SPMeta2.SSOM.Standard-v14/)
+
+#### Blogposts
+* [Provisioning: spmeta2 vs O365 PnP provisioning](http://blog.repsaj.nl/index.php/2015/05/o365-provisioning-spmeta2-vs-o365-pnp-provisioning/)
+* [SharePoint Site Provisioning Engine](http://wp.sjkp.dk/sharepoint-site-provisioning-engine/)
+* [Kom igång med SPMeta2](http://chuvash.eu/2015/09/17/kom-igang-med-spmeta2/)
+* [Getting started with SPMeta2 by David Liong](https://davidliong.wordpress.com/2015/09/03/spmeta2/)
+* [SPMeta2 - создание артeфактов SharePoint 2013](http://blog.cibpoint.ru/post/spmeta2-sharepoint2013-codebase-artifacts-provision/)
+
+#### Presentations
+* [Slidedeck SharePoint Artifact Provisioning - VX Company](http://www.werkenbijvxcompany.nl/wp-content/uploads/2015/05/Provisioning-SharePoint-Artifacts-Blog.pdf)
+* [SharePointCommunity.ch SharePoint Lösungen für die Zukunft](http://www.slideshare.net/fiddich1/sharepointcommunitych-sharepoint-lsungen-fr-die-zukunft)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
