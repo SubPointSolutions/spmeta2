@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services;
+using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
@@ -100,9 +103,22 @@ namespace SPMeta2.Regression.Tests.Services.ExpectUpdateServices
             {
                 newValue = (double)RndService.Int();
             }
+            else if (prop.PropertyType == typeof(List<ValueForUICulture>))
+            {
+                var newLocaleIdValues = RndService.RandomArrayFromArray(RndService.LocaleIds())
+                    .Select(i => new ValueForUICulture
+                    {
+                        CultureId = i,
+                        Value = string.Format("LocalizedValue_{0}", i)
+                    })
+                    .ToList();
+
+                newValue = newLocaleIdValues;
+            }
             else
             {
-                throw new SPMeta2NotImplementedException(string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
+                throw new SPMeta2NotImplementedException(
+                    string.Format("Update validation for type: [{0}] is not supported yet", prop.PropertyType));
             }
 
             return newValue;

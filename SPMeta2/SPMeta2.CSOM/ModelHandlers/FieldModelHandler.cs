@@ -18,7 +18,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 {
     public class FieldModelHandler : CSOMModelHandlerBase
     {
+        #region construactors
+
+        static FieldModelHandler()
+        {
+            ShouldHandleIncorectlyDeletedTaxonomyField = true;
+        }
+
+        #endregion
+
         #region properties
+
+        public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         public override Type TargetType
         {
@@ -479,7 +490,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // incorectly removed tax field leaves its indexed field
                 // https://github.com/SubPointSolutions/spmeta2/issues/521
 
-                HandleIncorectlyDeletedTaxonomyField(fieldModel, fieldCollection);
+                if (ShouldHandleIncorectlyDeletedTaxonomyField)
+                    HandleIncorectlyDeletedTaxonomyField(fieldModel, fieldCollection);
 
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
                 var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
@@ -498,7 +510,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel, FieldCollection fields)
+        protected virtual void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel, FieldCollection fields)
         {
             var context = fields.Context;
 
@@ -523,8 +535,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var existingIndexedField = result.FirstOrDefault();
                 if (existingIndexedField != null && existingIndexedField.FieldTypeKind == FieldType.Note)
                 {
-                    existingIndexedField.DeleteObject();
-                    context.ExecuteQueryWithTrace();
+                    // tmp fix
+                    // https://github.com/SubPointSolutions/spmeta2/issues/521
+                    try
+                    {
+                        existingIndexedField.DeleteObject();
+                        context.ExecuteQueryWithTrace();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
             }
         }

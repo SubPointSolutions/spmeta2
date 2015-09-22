@@ -271,15 +271,17 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition Design = new ListDefinition
             {
                 Title = "Composed Looks",
-                TemplateType = BuiltInListTemplateTypeId.GenericList,
+                TemplateType = BuiltInListTemplateTypeId.DesignCatalog,
                 Url = "_catalogs/design",
                 CustomUrl = "_catalogs/design",
+                ContentTypesEnabled = false,
+                Hidden = false
             };
 
             public static ListDefinition Users = new ListDefinition
             {
                 Title = "User Information List",
-                TemplateType = BuiltInListTemplateTypeId.GenericList,
+                TemplateType = BuiltInListTemplateTypeId.UserInformation,
                 Url = "_catalogs/users",
                 CustomUrl = "_catalogs/users",
             };
@@ -287,7 +289,7 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition ListTemplates = new ListDefinition
             {
                 Title = "List Template Gallery",
-                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                TemplateType = BuiltInListTemplateTypeId.ListTemplateCatalog,
                 Url = "_catalogs/lt",
                 CustomUrl = "_catalogs/lt",
             };
@@ -295,7 +297,7 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition MasterPage = new ListDefinition
             {
                 Title = "Master Page Gallery",
-                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                TemplateType = BuiltInListTemplateTypeId.MasterPageCatalog,
                 Url = "_catalogs/masterpage",
                 CustomUrl = "_catalogs/masterpage",
             };
@@ -303,7 +305,7 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition Solutions = new ListDefinition
             {
                 Title = "Solution Gallery",
-                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                TemplateType = BuiltInListTemplateTypeId.SolutionCatalog,
                 Url = "_catalogs/solutions",
                 CustomUrl = "_catalogs/solutions"
             };
@@ -311,7 +313,7 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition Theme = new ListDefinition
             {
                 Title = "Theme Gallery",
-                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                TemplateType = BuiltInListTemplateTypeId.ThemeCatalog,
                 Url = "_catalogs/theme",
                 CustomUrl = "_catalogs/theme"
             };
@@ -326,7 +328,7 @@ namespace SPMeta2.BuiltInDefinitions
             public static ListDefinition Wp = new ListDefinition
             {
                 Title = "Web Part Gallery",
-                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                TemplateType = BuiltInListTemplateTypeId.WebPartCatalog,
                 Url = "_catalogs/wp",
                 CustomUrl = "_catalogs/wp"
             };

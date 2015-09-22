@@ -24,11 +24,11 @@ namespace SPMeta2.Containers.Services
                 {
                     1031,
                     1036,
-                    1043,
-                    1040,
+                   // 1043,
+                    //1040,
                     1049,
-                    1034,
-                    1053
+                   // 1034,
+                    //1053
                 };
 
             _localeIds.AddRange(languages);

@@ -17,7 +17,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 {
     public class FieldModelHandler : SSOMModelHandlerBase
     {
+        #region construactors
+
+        static FieldModelHandler()
+        {
+            ShouldHandleIncorectlyDeletedTaxonomyField = true;
+        }
+
+        #endregion
+
         #region properties
+
+        public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         protected static XElement GetNewMinimalSPFieldTemplate()
         {
@@ -327,7 +338,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // incorectly removed tax field leaves its indexed field
                 // https://github.com/SubPointSolutions/spmeta2/issues/521
 
-                HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
+                if (ShouldHandleIncorectlyDeletedTaxonomyField)
+                    HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
 
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
@@ -355,7 +367,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentField;
         }
 
-        private void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel,
+        protected virtual void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel,
             SPFieldCollection fields)
         {
             var isTaxField =
@@ -370,7 +382,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 .FirstOrDefault(f => f.Title.ToUpper().StartsWith(existingIndexedFieldName));
 
             if (existingIndexedField != null && existingIndexedField.Type == SPFieldType.Note)
-                existingIndexedField.Delete();
+            {
+                // tmp fix
+                // https://github.com/SubPointSolutions/spmeta2/issues/521
+                try
+                {
+                    existingIndexedField.Delete();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         protected virtual void ProcessFieldProperties(SPField field, FieldDefinition definition)
@@ -433,13 +456,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
             }
         }
 
