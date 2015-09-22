@@ -243,11 +243,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual void ProcessLocalization(SPView obj, ListViewDefinition definition)
         {
+
             if (definition.TitleResource.Any())
             {
+#if !NET35
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+#endif
             }
+
         }
 
         #endregion
