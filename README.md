@@ -9,22 +9,22 @@ The most comprehensive, enterprise-ready framework for provisioning SharePoint a
 * Documented: API samples, guidances and documentation
 * Enterprise ready: regression tests, localization, SLA
 
-## Build status
+### Build status
 [![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2)
 
-## SPMeta2 in details
+### SPMeta2 in details
 
-### Broad and unified provision API implemented for SharePoint 2013/SharePoint Online
+#### Broad and unified provision API implemented for SharePoint 2013/SharePoint Online
 SPMeta2 helps to deploy more that 120 SharePoint artifacts - fields, content types, lists, list views, webs, security groups, permission levels and the rest of the artifacts in testable, repeatable and upgradable manner. 
 
 It supports both SSOM or CSOM API handling various provision scenarios with a consistent, unified, well-designer API. Built as .NET4/4.5 assemblies, packaged via NuGet, supports SP2013 Foundation, SP2013 Standard+, SharePoint Online and even SharePoint 2010.
 
-### Consistent fluent API, POCOs, DSL and extensibility
+#### Consistent fluent API, POCOs, DSL and extensibility
 SPMeta2 provides POCO objects to define SharePoint artifacts and then a consistent fluent API and domain-specific language (DSL) helps to express your data model. It's like Entity Framework Code First, but for SharePoint. 
 
 Extensible API helps to address specific project needs. You can write custom DSL syntax just with a few C# extension methods. As easy as that.
 
-### Built BY developers and FOR developers: supports wide set of development scenarios
+#### Built BY developers and FOR developers: supports wide set of development scenarios
 SPMeta2 is an open source project under the MS-PL license hosted at GitHub. Like us there, pull something or just star and watch the show.
 
 Compiled for .NET 4/4.5 and delivered by NuGet packages, SPMeta2 suits most of the custom development scenario.
@@ -33,15 +33,15 @@ The dark side of SharePoint's API is also handled by SPMeta2: inconsistency, bug
 
 Don't wait! Write amazing console applications, desktop application, full-trust *.wsp packages, implement remote provision via CSOM or modern SharePoint "apps" and "add-ons" - that's up to you.
 
-### Enterprise-ready: 600+ regression and unit tests, localization, Visual Studio integration
+#### Enterprise-ready: 600+ regression and unit tests, localization, Visual Studio integration
 The outstanding quality of SPMeta2 is a result of 600+ regression tests being repeatedly run against a real SharePoint 2013 farm via SSOM, then via CSOM, and then it is also run against real O365 tenants via CSOM. Testing is done against REAL SharePoint 2013 SP1 instancies and O365 tenants - zero fakes or stubs are used.
 
 SPMeta2 supports localization scenarios and has its Visual Studio project and items templates, snippets and debugger visualizer. Everything is covered to boost up SharePoint development process.
 
-### Production-ready: SLA and premium support
+#### Production-ready: SLA and premium support
 Hundreds of companies trust SPMeta2 to boost up they daily SharePoint related routines. Premium support and consulting is available to get the best value from SPMeta2, support production and mission critical applications offering in-depth, first-hand experience and SLA. 
 
-## Resources
+### Resources
 
 #### Documentation
 * [Welcome to SPMeta2](http://docs.subpointsolutions.com/spmeta2/)
