@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
@@ -585,6 +586,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            list
                                .AddRandomWikiPage(page =>
                                {
+                                   page.RegExcludeFromValidation();
+
                                    var id_1 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
                                    var id_2 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
 

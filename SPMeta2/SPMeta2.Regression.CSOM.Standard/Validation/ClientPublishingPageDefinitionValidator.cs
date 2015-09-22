@@ -35,9 +35,19 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                                      .NewAssert(definition, spObject)
                                            .ShouldNotBeNull(spObject)
                                            .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
-                                           .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
+                                           //.ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
                                            .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
                                            .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+
+            if (!string.IsNullOrEmpty(definition.Description))
+            {
+                assert.ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Description, "Description is NULL. Skipping.");
+            }
+
 
             if (!string.IsNullOrEmpty(definition.ContentTypeName))
             {

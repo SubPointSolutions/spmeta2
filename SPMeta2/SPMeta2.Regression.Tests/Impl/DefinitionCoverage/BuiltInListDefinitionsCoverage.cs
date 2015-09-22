@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
 using SPMeta2.Regression.Tests.Base;
@@ -44,7 +45,9 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                     clonedDefs.Remove(def);
 
                 web.ChildModels.Clear();
-                web.AddLists(clonedDefs);
+
+                foreach (var list in clonedDefs)
+                    web.AddList(list, l => { l.RegExcludeFromValidation(); });
             });
 
             WithDisabledPropertyUpdateValidation(() =>
