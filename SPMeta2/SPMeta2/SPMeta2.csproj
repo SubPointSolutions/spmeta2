@@ -125,6 +125,7 @@
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
+    <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="Syntax\Default\AlternateUrlDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\AnonymousAccessDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />

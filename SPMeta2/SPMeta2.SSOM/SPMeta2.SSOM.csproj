@@ -164,6 +164,7 @@
     <Compile Include="Extensions\SPContextExtensions.cs" />
     <Compile Include="Extensions\SPViewCollectionExtensions.cs" />
     <Compile Include="Extensions\WebPartExtensions.cs" />
+    <Compile Include="ModelHandlers\AnonymousAccessSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\SingleHostTypedSSOMModelHandlerBase.cs" />

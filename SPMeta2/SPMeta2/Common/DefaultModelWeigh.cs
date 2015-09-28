@@ -139,7 +139,8 @@ namespace SPMeta2.Common
                     typeof (ResetRoleInheritanceDefinition),
 
                     typeof (SecurityRoleLinkDefinition),
-
+                    typeof (AnonymousAccessSettingsDefinition),
+                    
                     typeof (PropertyDefinition),
                     
                     typeof (FieldDefinition),

@@ -142,6 +142,10 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web
+                    .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition())
+                    .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition());
+
                 web.AddAuditSettings(new AuditSettingsDefinition());
                 web.AddWebNavigationSettings(new WebNavigationSettingsDefinition());
                 web.AddPageLayoutAndSiteTemplateSettings(new PageLayoutAndSiteTemplateSettingsDefinition());
