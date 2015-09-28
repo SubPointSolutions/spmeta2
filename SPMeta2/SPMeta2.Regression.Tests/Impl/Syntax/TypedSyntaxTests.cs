@@ -240,6 +240,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     list.AddFolder(new FolderDefinition(), folder =>
                     {
                         folder
+                            .AddProperty(new PropertyDefinition())
+                            .AddProperty(new PropertyDefinition())
+
                             .AddWelcomePage(new WelcomePageDefinition())
                             .AddFolder(new FolderDefinition())
                             .AddListItem(new ListItemDefinition());

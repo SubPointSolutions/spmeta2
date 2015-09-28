@@ -16,7 +16,8 @@ namespace SPMeta2.Syntax.Default
         IListItemHostModelNode,
         IFolderHostModelNode,
         IWelcomePageHostModelNode,
-        IModuleFileHostModelNode
+        IModuleFileHostModelNode,
+        IPropertyHostModelNode
     {
 
     }
