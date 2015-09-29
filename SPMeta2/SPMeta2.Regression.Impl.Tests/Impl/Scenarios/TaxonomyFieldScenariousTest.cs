@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
@@ -48,12 +49,29 @@ namespace SPMeta2.Regression.Impl.Tests.Scenarios
                 def.AllowDeletion = true;
             });
 
+            // that's a glitch, could be another field with the same title
+            // one the first field is deleted, the second provision for the first field will crash
+
+            var additionalFields = new List<TaxonomyFieldDefinition>();
+
+            for (var i = 0; i < 10; i++)
+            {
+                additionalFields.Add(ModelGeneratorService.GetRandomDefinition<TaxonomyFieldDefinition>(def =>
+                {
+                    def.Title = taxField.Title;
+                    def.Hidden = false;
+                    def.AllowDeletion = false;
+                }));
+            }
+
             var fieldModel = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddTaxonomyFields(additionalFields);
                 site.AddTaxonomyField(taxField);
             });
 
             // deploying field 
+            TestModel(fieldModel);
             TestModel(fieldModel);
 
             // deleting field
@@ -71,6 +89,7 @@ namespace SPMeta2.Regression.Impl.Tests.Scenarios
             TestModel(deleteFieldModel);
 
             // deplying again
+            TestModel(fieldModel);
             TestModel(fieldModel);
         }
 

@@ -29,6 +29,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region properties
 
+        [Obsolete("Is not used anymore. Special handling for taxonomy fields exlcuded due to potential data corruption - ")]
         public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         public override Type TargetType
@@ -512,42 +513,47 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected virtual void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel, FieldCollection fields)
         {
-            var context = fields.Context;
+            return;
 
-            var isTaxField =
-                  fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
-                  || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
+            // excluded due ot potential data corruption
+            // such issues shoud be handled by end user manually
 
-            if (!isTaxField)
-                return;
+            //var context = fields.Context;
 
-            var existingIndexedFieldName = fieldModel.Title + "_0";
-            var query = from field in fields
-                        where field.Title == existingIndexedFieldName
-                        select field;
+            //var isTaxField =
+            //      fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
+            //      || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
+
+            //if (!isTaxField)
+            //    return;
+
+            //var existingIndexedFieldName = fieldModel.Title + "_0";
+            //var query = from field in fields
+            //            where field.Title == existingIndexedFieldName
+            //            select field;
 
 
-            var result = context.LoadQuery(query);
-            context.ExecuteQueryWithTrace();
+            //var result = context.LoadQuery(query);
+            //context.ExecuteQueryWithTrace();
 
-            if (result.Count() > 0)
-            {
-                var existingIndexedField = result.FirstOrDefault();
-                if (existingIndexedField != null && existingIndexedField.FieldTypeKind == FieldType.Note)
-                {
-                    // tmp fix
-                    // https://github.com/SubPointSolutions/spmeta2/issues/521
-                    try
-                    {
-                        existingIndexedField.DeleteObject();
-                        context.ExecuteQueryWithTrace();
-                    }
-                    catch (Exception e)
-                    {
+            //if (result.Count() > 0)
+            //{
+            //    var existingIndexedField = result.FirstOrDefault();
+            //    if (existingIndexedField != null && existingIndexedField.FieldTypeKind == FieldType.Note)
+            //    {
+            //        // tmp fix
+            //        // https://github.com/SubPointSolutions/spmeta2/issues/521
+            //        try
+            //        {
+            //            existingIndexedField.DeleteObject();
+            //            context.ExecuteQueryWithTrace();
+            //        }
+            //        catch (Exception e)
+            //        {
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
         }
 
 

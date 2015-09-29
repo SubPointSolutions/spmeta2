@@ -370,30 +370,35 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected virtual void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel,
             SPFieldCollection fields)
         {
-            var isTaxField =
-                fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
-                || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
+            return;
 
-            if (!isTaxField)
-                return;
+            // excluded due ot potential data corruption
+            // such issues shoud be handled by end user manually
 
-            var existingIndexedFieldName = fieldModel.Title.ToUpper() + "_";
-            var existingIndexedField = fields.OfType<SPField>()
-                .FirstOrDefault(f => f.Title.ToUpper().StartsWith(existingIndexedFieldName));
+            //var isTaxField =
+            //    fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
+            //    || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
 
-            if (existingIndexedField != null && existingIndexedField.Type == SPFieldType.Note)
-            {
-                // tmp fix
-                // https://github.com/SubPointSolutions/spmeta2/issues/521
-                try
-                {
-                    existingIndexedField.Delete();
-                }
-                catch (Exception ex)
-                {
+            //if (!isTaxField)
+            //    return;
 
-                }
-            }
+            //var existingIndexedFieldName = fieldModel.Title.ToUpper() + "_";
+            //var existingIndexedField = fields.OfType<SPField>()
+            //    .FirstOrDefault(f => f.Title.ToUpper().StartsWith(existingIndexedFieldName));
+
+            //if (existingIndexedField != null && existingIndexedField.Type == SPFieldType.Note)
+            //{
+            //    // tmp fix
+            //    // https://github.com/SubPointSolutions/spmeta2/issues/521
+            //    try
+            //    {
+            //        existingIndexedField.Delete();
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //    }
+            //}
         }
 
         protected virtual void ProcessFieldProperties(SPField field, FieldDefinition definition)
