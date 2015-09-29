@@ -88,6 +88,11 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         [DataMember]
         public List<TaxonomyTermCustomProperty> CustomProperties { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public bool? IsAvailableForTagging { get; set; }
+
         #endregion
 
         #region methods

@@ -165,7 +165,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         protected void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel)
         {
-            currentTerm.SetDescription(termModel.Description, termModel.LCID);
+            if (!string.IsNullOrEmpty(termModel.Description))
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
+            if (termModel.IsAvailableForTagging.HasValue)
+                currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
 
             foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
             {

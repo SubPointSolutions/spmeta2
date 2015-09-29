@@ -42,6 +42,15 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
                 assert.SkipProperty(m => m.Id, "Id is null. Skipping property.");
             }
 
+            if (definition.IsAvailableForTagging.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.IsAvailableForTagging, o => o.IsAvailableForTagging);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsAvailableForTagging, "IsAvailableForTagging is null. Skipping property.");
+            }
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(m => m.CustomProperties);
