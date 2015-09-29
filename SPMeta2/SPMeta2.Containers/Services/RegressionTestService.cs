@@ -39,6 +39,8 @@ namespace SPMeta2.Containers.Services
 
         public RegressionTestService()
         {
+             RegExcludedDefinitionTypes = new List<Type>();
+
             ModelGeneratorService = new ModelGeneratorService();
             //Assert = new AssertService();
 
@@ -576,9 +578,9 @@ namespace SPMeta2.Containers.Services
         public bool EnablePropertyValidation { get; set; }
         public bool EnableEventValidation { get; set; }
 
+        public List<Type> RegExcludedDefinitionTypes { get; set; }
 
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
-            
         {
             // should be re-written with ModelTreeTraverseService
 
@@ -593,6 +595,9 @@ namespace SPMeta2.Containers.Services
             if (modelNode.Options.RequireSelfProcessing)
             {
                 var shouldProcessFlag = !modelNode.RegIsExcludedFromValidation();
+
+                if (RegExcludedDefinitionTypes.Contains(modelNode.Value.GetType()))
+                    shouldProcessFlag = false;
 
                 if (shouldProcessFlag)
                 {

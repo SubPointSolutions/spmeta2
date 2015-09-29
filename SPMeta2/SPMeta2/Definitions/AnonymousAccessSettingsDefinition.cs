@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -27,6 +28,7 @@ namespace SPMeta2.Definitions
     //[ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+    [SelfHostCapabilityAttribute]
     public class AnonymousAccessSettingsDefinition : DefinitionBase
     {
         public AnonymousAccessSettingsDefinition()
@@ -42,8 +44,12 @@ namespace SPMeta2.Definitions
         /// - Enabled
         /// - On
         /// </summary>
+        [DataMember]
+        [IdentityKey]
         public string AnonymousState { get; set; }
 
+        [DataMember]
+        [IdentityKey]
         public Collection<string> AnonymousPermMask64 { get; set; }
 
         #endregion

@@ -121,6 +121,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [NotAbsoluteUrlCapabilityAttribute]
         public string ScriptSrc { get; set; }
 
         /// <summary>

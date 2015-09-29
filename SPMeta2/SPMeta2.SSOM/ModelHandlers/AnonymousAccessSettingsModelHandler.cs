@@ -38,20 +38,25 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            var anonState = (SPWeb.WebAnonymousState)Enum.Parse(typeof(SPWeb.WebAnonymousState), definition.AnonymousState);
-            var permissions = SPBasePermissions.EmptyMask;
-
-            foreach (var permissionString in definition.AnonymousPermMask64)
-                permissions = permissions | (SPBasePermissions)Enum.Parse(typeof(SPBasePermissions), permissionString);
-
             if (!web.HasUniqueRoleAssignments)
             {
-                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "web.HasUniqueRoleAssignments = false. Breaking with false-false options.");
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall,
+                    "web.HasUniqueRoleAssignments = false. Breaking with false-false options.");
                 web.BreakRoleInheritance(false, false);
             }
 
+            var anonState = (SPWeb.WebAnonymousState)Enum.Parse(typeof(SPWeb.WebAnonymousState), definition.AnonymousState);
             web.AnonymousState = anonState;
-            web.AnonymousPermMask64 = permissions;
+
+            if (definition.AnonymousPermMask64.Any())
+            {
+                var permissions = SPBasePermissions.EmptyMask;
+
+                foreach (var permissionString in definition.AnonymousPermMask64)
+                    permissions = permissions | (SPBasePermissions)Enum.Parse(typeof(SPBasePermissions), permissionString);
+
+                web.AnonymousPermMask64 = permissions;
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

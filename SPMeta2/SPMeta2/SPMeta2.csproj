@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Attributes\Capabilities\CapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\HashCodePartCapabilityAttribute.cs" />
+    <Compile Include="Attributes\Capabilities\NotAbsoluteUrlCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\ParentHostCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\SiteCollectionTokenCapabilityAttribute.cs" />
     <Compile Include="Attributes\Capabilities\TokenCapabilityAttribute.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInUrlZone.cs" />
     <Compile Include="Enumerations\BuiltInViewType.cs" />
+    <Compile Include="Enumerations\BuiltInWebAnonymousState.cs" />
     <Compile Include="Enumerations\BuiltInWebConfigModificationType.cs" />
     <Compile Include="Enumerations\ListTemplate.cs" />
     <Compile Include="Common\DefaultModelWeigh.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
+    <Compile Include="Services\Impl\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
@@ -319,6 +322,7 @@
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultNotAbsoluteUrlPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultVersionBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultXmlBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\ServiceModelHandlerBase.cs" />

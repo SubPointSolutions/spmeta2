@@ -109,6 +109,8 @@ namespace SPMeta2.Containers.Assertion
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
         }
 
+        #region string
+
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
         {
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
@@ -118,6 +120,8 @@ namespace SPMeta2.Containers.Assertion
         {
             return InternalShouldBeEqual<string>(srcExp, srcAlias, dstExp, dstAlias);
         }
+
+        #endregion
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, uint>> srcExp, Expression<Func<TDst, uint>> dstExp)
         {

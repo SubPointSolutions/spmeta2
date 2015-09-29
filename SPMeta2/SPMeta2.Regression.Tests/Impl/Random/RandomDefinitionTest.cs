@@ -791,7 +791,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
-
         #region wb part gallery
 
         [TestMethod]
@@ -901,6 +900,20 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region security scope
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Security")]
+        public void CanDeployRandom_AnonymousAccessSettingsDefinition()
+        {
+            // need to disable validation on web node
+            // it would trigger 'UseUniquePermission' mismatch die to anon settings applied
+            WithDisabledValidationOnTypes(typeof(WebDefinition), () =>
+            {
+                TestRandomDefinition<AnonymousAccessSettingsDefinition>();
+            });
+        }
+
+       
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Security")]
@@ -1197,5 +1210,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
+
     }
 }

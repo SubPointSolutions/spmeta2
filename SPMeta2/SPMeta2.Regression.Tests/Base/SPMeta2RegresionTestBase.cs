@@ -54,6 +54,7 @@ namespace SPMeta2.Regression.Tests.Base
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
 
+           
         }
 
         #endregion
@@ -124,6 +125,24 @@ namespace SPMeta2.Regression.Tests.Base
         #endregion
 
         #region testing API
+
+        protected virtual void WithDisabledValidationOnTypes(Type type, Action action)
+        {
+            WithDisabledValidationOnTypes(new[] { type }, action);
+        }
+
+        protected virtual void WithDisabledValidationOnTypes(IEnumerable<Type> types, Action action)
+        {
+            try
+            {
+                RegressionService.RegExcludedDefinitionTypes.Add(typeof(WebDefinition));
+                action();
+            }
+            finally
+            {
+                RegressionService.RegExcludedDefinitionTypes.Clear();
+            }
+        }
 
         protected void WithDisabledPropertyUpdateValidation(Action action)
         {
