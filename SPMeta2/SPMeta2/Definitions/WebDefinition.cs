@@ -140,6 +140,18 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public string CustomWebTemplate { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdateAsUrl(Extension = ".png")]
+        [ExpectNullable]
+        public string SiteLogoUrl { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdateAsUrl(Extension = ".css")]
+        [ExpectNullable]
+        public string AlternateCssUrl { get; set; }
+
         #endregion
 
         #region methods

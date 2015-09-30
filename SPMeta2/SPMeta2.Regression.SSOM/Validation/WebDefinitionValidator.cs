@@ -49,6 +49,17 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.CustomWebTemplate);
             }
 
+            if (!string.IsNullOrEmpty(definition.AlternateCssUrl))
+                assert.ShouldBeEndOf(m => m.AlternateCssUrl, o => o.AlternateCssUrl);
+            else
+                assert.SkipProperty(m => m.AlternateCssUrl);
+
+            if (!string.IsNullOrEmpty(definition.SiteLogoUrl))
+                assert.ShouldBeEndOf(m => m.SiteLogoUrl, o => o.SiteLogoUrl);
+            else
+                assert.SkipProperty(m => m.SiteLogoUrl);
+
+
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
             else

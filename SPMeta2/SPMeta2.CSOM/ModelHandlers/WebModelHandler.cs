@@ -319,6 +319,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQueryWithTrace();
 
+                MapProperties(newWeb, webModel);
                 ProcessLocalization(newWeb, webModel);
 
                 context.Load(newWeb);
@@ -343,8 +344,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Current web is not null. Updating Title/Description.");
 
-                currentWeb.Title = webModel.Title;
-                currentWeb.Description = webModel.Description ?? string.Empty;
+                MapProperties(currentWeb, webModel);
 
                 //  locale is not available with CSOM yet
 
@@ -367,6 +367,42 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentWeb.Update();
 
                 context.ExecuteQueryWithTrace();
+            }
+        }
+
+        private static void MapProperties(Web web, WebDefinition webModel)
+        {
+            web.Title = webModel.Title;
+            web.Description = webModel.Description ?? string.Empty;
+
+            var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl")
+                                 && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
+
+
+            if (supportedRuntime)
+            {
+                var context = web.Context;
+
+                if (!string.IsNullOrEmpty(webModel.AlternateCssUrl))
+                {
+                    context.AddQuery(new ClientActionInvokeMethod(web, "AlternateCssUrl", new object[]
+                    {
+                        webModel.AlternateCssUrl
+                    }));
+                }
+
+                if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
+                {
+                    context.AddQuery(new ClientActionInvokeMethod(web, "SiteLogoUrl", new object[]
+                    {
+                        webModel.SiteLogoUrl
+                    }));
+                }
+            }
+            else
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                    "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
             }
         }
 

@@ -46,11 +46,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             using (var web = GetOrCreateWeb(parentWeb, webModel, true))
             {
-                web.Title = webModel.Title;
-                web.Description = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
-
-                if (webModel.LCID > 0)
-                    web.Locale = new CultureInfo((int)webModel.LCID);
+                MapProperties(web, webModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -65,6 +61,21 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 web.Update();
             }
+        }
+
+        private static void MapProperties(SPWeb web, WebDefinition webModel)
+        {
+            web.Title = webModel.Title;
+            web.Description = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
+
+            if (webModel.LCID > 0)
+                web.Locale = new CultureInfo((int)webModel.LCID);
+
+            if (!string.IsNullOrEmpty(webModel.AlternateCssUrl))
+                web.AlternateCssUrl = webModel.AlternateCssUrl;
+
+            if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
+                web.SiteLogoUrl = webModel.SiteLogoUrl;
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
@@ -205,6 +216,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 }
 
+                MapProperties(currentWeb, webModel);
                 ProcessLocalization(currentWeb, webModel);
             }
             else
@@ -214,8 +226,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
                         "Current web is not null. Updating Title/Description.");
 
-                    currentWeb.Title = webModel.Title;
-                    currentWeb.Description = webModel.Description ?? string.Empty;
+                    MapProperties(currentWeb, webModel);
 
                     ProcessLocalization(currentWeb, webModel);
 
@@ -243,13 +254,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
             }
         }
 

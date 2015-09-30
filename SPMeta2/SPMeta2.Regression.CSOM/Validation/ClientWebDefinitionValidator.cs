@@ -94,6 +94,75 @@ namespace SPMeta2.Regression.CSOM.Validation
                 };
             });
 
+            var supportsAlternateCssAndSiteImageUrl = ReflectionUtils.HasProperties(spObject, new[]
+            {
+                "AlternateCssUrl", 
+                "SiteLogoUrl"
+            });
+
+            if (supportsAlternateCssAndSiteImageUrl)
+            {
+                if (!string.IsNullOrEmpty(definition.AlternateCssUrl))
+                {
+                    var alternateCssUrl = ReflectionUtils.GetPropertyValue(spObject, "AlternateCssUrl");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                   {
+                       var srcProp = s.GetExpressionValue(def => def.AlternateCssUrl);
+                       var isValid = true;
+
+                       isValid = s.AlternateCssUrl.ToUpper().EndsWith(alternateCssUrl.ToString().ToUpper());
+
+                       return new PropertyValidationResult
+                       {
+                           Tag = p.Tag,
+                           Src = srcProp,
+                           Dst = null,
+                           IsValid = isValid
+                       };
+                   });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.AlternateCssUrl);
+                }
+
+                if (!string.IsNullOrEmpty(definition.SiteLogoUrl))
+                {
+                    var siteLogoUrl = ReflectionUtils.GetPropertyValue(spObject, "SiteLogoUrl");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.SiteLogoUrl);
+                        var isValid = true;
+
+                        isValid = s.SiteLogoUrl.ToUpper().EndsWith(siteLogoUrl.ToString().ToUpper());
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.SiteLogoUrl);
+                }
+            }
+
+            else
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                      "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Skipping validation.");
+
+                assert.SkipProperty(m => m.AlternateCssUrl, "AlternateCssUrl is null or empty. Skipping.");
+                assert.SkipProperty(m => m.SiteLogoUrl, "SiteLogoUrl is null or empty. Skipping.");
+            }
+
+
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
                 "TitleResource", "DescriptionResource"
@@ -187,7 +256,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         }
     }
 
-    
+
 
     internal static class WebExtensions
     {
