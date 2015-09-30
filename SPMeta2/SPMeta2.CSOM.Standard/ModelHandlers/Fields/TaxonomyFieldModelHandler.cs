@@ -35,19 +35,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
-            var context = CurrentSiteModelHost.HostClientContext;
+            var context = CurrentHostClientContext;
 
             var taxFieldModel = fieldModel.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
 
-            var termStore = LookupTermStore(CurrentSiteModelHost, taxFieldModel, false);
+            var termStore = LookupTermStore(CurrentHostClientContext, taxFieldModel, false);
 
             TermSet termSet = null;
             Term term = null;
 
             if (termStore != null)
             {
-                termSet = LookupTermSet(CurrentSiteModelHost, termStore, taxFieldModel);
-                term = LookupTerm(CurrentSiteModelHost, termStore, taxFieldModel);
+                termSet = LookupTermSet(CurrentHostClientContext, termStore, taxFieldModel);
+                term = LookupTerm(CurrentHostClientContext, termStore, taxFieldModel);
             }
 
             var taxField = context.CastTo<TaxonomyField>(field);
@@ -82,10 +82,38 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                 taxField.AnchorId = term.Id;
         }
 
+        public static TermStore LookupTermStore(ClientContext clientContext,
+            TaxonomyFieldDefinition taxFieldModel)
+        {
+            return LookupTermStore(clientContext, taxFieldModel, false); 
+        }
+
         public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost,
             TaxonomyFieldDefinition taxFieldModel)
         {
             return LookupTermStore(currentSiteModelHost, taxFieldModel, false);
+        }
+
+        public static TermStore LookupTermStore(ClientContext clientContext,
+            TaxonomyFieldDefinition taxFieldModel, bool raiseNullRefException)
+        {
+            var termStore = TaxonomyTermStoreModelHandler.FindTermStore(clientContext.Site,
+                                  taxFieldModel.SspName,
+                                  taxFieldModel.SspId,
+                                  taxFieldModel.UseDefaultSiteCollectionTermStore);
+
+            if (termStore == null && raiseNullRefException)
+                throw new ArgumentNullException("termStore is NULL. Please define SspName, SspId or ensure there is a default term store for the giving site.");
+
+            if (termStore != null)
+            {
+                var storeContext = clientContext;
+
+                storeContext.Load(termStore, s => s.Id);
+                storeContext.ExecuteQueryWithTrace();
+            }
+
+            return termStore;
         }
 
         public static TermStore LookupTermStore(SiteModelHost currentSiteModelHost,
@@ -111,6 +139,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
         }
 
         #endregion
+
+        public static TermSet LookupTermSet(
+          ClientContext clientContext,
+          TermStore termStore,
+          TaxonomyFieldDefinition taxFieldModel)
+        {
+
+            return LookupTermSet(clientContext, clientContext.Site, termStore, taxFieldModel);
+        }
 
         public static TermSet LookupTermSet(
             SiteModelHost currentSiteModelHost,
@@ -268,10 +305,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             return null;
         }
 
-        public static Term LookupTerm(SiteModelHost currentSiteModelHost, TermStore termStore, TaxonomyFieldDefinition termModel)
+        public static Term LookupTerm(SiteModelHost currentSiteModelHost, TermStore termStore,
+            TaxonomyFieldDefinition termModel)
         {
-            var context = currentSiteModelHost.HostClientContext;
-            var site = currentSiteModelHost.HostSite;
+            return LookupTerm(currentSiteModelHost.HostClientContext, termStore, termModel);
+        }
+
+        public static Term LookupTerm(ClientContext clientContext, TermStore termStore,
+            TaxonomyFieldDefinition termModel)
+        {
+            var context = clientContext;
+            var site = clientContext.Site;
 
             Term result = null;
 

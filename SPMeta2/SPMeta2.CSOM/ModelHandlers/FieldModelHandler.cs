@@ -13,6 +13,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -37,7 +38,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(FieldDefinition); }
         }
 
-        protected SiteModelHost CurrentSiteModelHost { get; set; }
+        protected ClientContext CurrentHostClientContext { get; set; }
 
         #endregion
 
@@ -178,7 +179,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 || modelHost is ListModelHost))
                 throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost instance.");
 
-            CurrentSiteModelHost = modelHost as SiteModelHost;
+            CurrentHostClientContext = (modelHost as CSOMModelHostBase).HostClientContext;
 
             HostSite = ExtractSiteFromHost(modelHost);
             HostWeb = ExtractWebFromHost(modelHost);
@@ -257,6 +258,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
             context.ExecuteQueryWithTrace();
+
+            CurrentHostClientContext = null;
         }
 
         private Field DeployWebField(WebModelHost webModelHost, FieldDefinition fieldDefinition)
@@ -486,6 +489,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionProcessingNewObject, "Current field is NULL. Creating new");
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
+
+                Trace.WriteLine(fieldDef);
 
                 // special handle for taxonomy field
                 // incorectly removed tax field leaves its indexed field

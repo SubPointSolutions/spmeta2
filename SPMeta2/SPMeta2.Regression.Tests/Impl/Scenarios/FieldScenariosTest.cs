@@ -10,7 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Containers.Services;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Tests.Impl.Definitions;
+using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -384,6 +388,85 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+
+        #endregion
+
+        #region full scope regression
+
+        protected List<FieldDefinition> GetAllRandomFields()
+        {
+            var spMetaAssembly = typeof(FieldDefinition).Assembly;
+            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
+
+            var types = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+             spMetaAssembly,
+             spMetaStandardAssembly
+            });
+
+            var result = new List<FieldDefinition>();
+            var allFieldDefinitiontypesDefinitions = types.Where(t =>
+                t.IsSubclassOf(typeof(FieldDefinition))
+                && !(t == typeof(DependentLookupFieldDefinition)));
+
+            foreach (var type in allFieldDefinitiontypesDefinitions)
+                result.Add(ModelGeneratorService.GetRandomDefinition(type) as FieldDefinition);
+            //ModelGeneratorService.GetRandomDefinition()
+
+            return result;
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderSite()
+        {
+            var fields = GetAllRandomFields();
+            //ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var model = SPMeta2Model
+                   .NewSiteModel(site =>
+                   {
+                       site.AddFields(fields);
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderWeb()
+        {
+            var fields = GetAllRandomFields();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomWeb(subWeb =>
+                       {
+                           subWeb.AddFields(fields);
+                       });
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderList()
+        {
+            var fields = GetAllRandomFields();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomList(list =>
+                       {
+                           list.AddFields(fields);
+                       });
+                   });
+
+            TestModel(model);
+        }
 
         #endregion
 

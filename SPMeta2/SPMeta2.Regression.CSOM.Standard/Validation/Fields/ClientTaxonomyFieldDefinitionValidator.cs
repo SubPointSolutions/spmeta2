@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
         {
             base.DeployModel(modelHost, model);
 
-            var typedModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
 
             var context = typedModelHost.HostClientContext;
@@ -106,7 +106,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             if (definition.UseDefaultSiteCollectionTermStore.HasValue &&
                 definition.UseDefaultSiteCollectionTermStore.Value)
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
 
                 var isValid = termStore.Id == spObject.SspId;
 
@@ -140,13 +140,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             // is site collectiongroup
             if (definition.IsSiteCollectionGroup.HasValue && definition.IsSiteCollectionGroup.Value)
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
 
                 TermGroup group = null;
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context, context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -179,13 +179,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             // term group
             if (definition.TermGroupId.HasValue)
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
 
                 TermGroup group = null;
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -217,13 +217,13 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
             if (!string.IsNullOrEmpty(definition.TermGroupName))
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
 
                 TermGroup group = null;
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -263,8 +263,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
             if (!string.IsNullOrEmpty(definition.TermSetName))
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
-                var termSet = TaxonomyFieldModelHandler.LookupTermSet(typedModelHost, termStore, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(context, termStore, definition);
 
                 var isValid = spObject.TermSetId == termSet.Id;
 
@@ -293,8 +293,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
             if (!string.IsNullOrEmpty(definition.TermName))
             {
-                var termStore = TaxonomyFieldModelHandler.LookupTermStore(typedModelHost, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(typedModelHost, termStore, definition);
+                var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
 
                 var isValid = spObject.AnchorId == term.Id;
 
