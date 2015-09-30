@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.SharePoint.Taxonomy;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Fields;
@@ -56,6 +57,62 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             {
                 assert.SkipProperty(m => m.Id, "Id is null. Skipping property.");
             }
+
+            if (!string.IsNullOrEmpty(definition.CustomSortOrder))
+            {
+                assert.ShouldBeEqual(m => m.CustomSortOrder, o => o.CustomSortOrder);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CustomSortOrder, "CustomSortOrder is null. Skipping property.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.Contact))
+            {
+                assert.ShouldBeEqual(m => m.Contact, o => o.Contact);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Contact, "Contact is null. Skipping property.");
+            }
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.CustomProperties);
+
+                var isValid = true;
+
+                // missed props, or too much
+                // should be equal on the first provision
+                if (s.CustomProperties.Count != d.CustomProperties.Count)
+                {
+                    isValid = false;
+                }
+
+                // per prop
+                foreach (var customProp in s.CustomProperties)
+                {
+                    if (!d.CustomProperties.ContainsKey(customProp.Name))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (d.CustomProperties[customProp.Name] != customProp.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
         }
     }
 }

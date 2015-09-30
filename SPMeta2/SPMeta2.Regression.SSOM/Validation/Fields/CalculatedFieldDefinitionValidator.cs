@@ -45,8 +45,10 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             else
                 typedFieldAssert.SkipProperty(m => m.ShowAsPercentage, "ShowAsPercentage is NULL. Skipping.");
 
-            // formula
-            typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);
+            if (!string.IsNullOrEmpty(typedDefinition.Formula))
+                typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);
+            else
+                typedFieldAssert.SkipProperty(m => m.Formula);
 
             TraceUtils.WithScope(s =>
             {
