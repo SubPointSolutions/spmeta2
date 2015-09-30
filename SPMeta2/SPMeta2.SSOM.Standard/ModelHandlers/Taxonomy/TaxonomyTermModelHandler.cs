@@ -168,12 +168,20 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (!string.IsNullOrEmpty(termModel.Description))
                 currentTerm.SetDescription(termModel.Description, termModel.LCID);
 
+            if (!string.IsNullOrEmpty(termModel.CustomSortOrder))
+                currentTerm.CustomSortOrder = termModel.CustomSortOrder;
+
             if (termModel.IsAvailableForTagging.HasValue)
                 currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
 
             foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
             {
                 currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
+            }
+
+            foreach (var customProp in termModel.LocalCustomProperties.Where(p => p.Override))
+            {
+                currentTerm.SetLocalCustomProperty(customProp.Name, customProp.Value);
             }
         }
 

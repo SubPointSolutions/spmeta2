@@ -58,7 +58,9 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public TaxonomyTermDefinition()
         {
             LCID = 1033;
+
             CustomProperties = new List<TaxonomyTermCustomProperty>();
+            LocalCustomProperties = new List<TaxonomyTermCustomProperty>();
         }
 
         #endregion
@@ -87,6 +89,15 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         [ExpectValidation]
         [DataMember]
         public List<TaxonomyTermCustomProperty> CustomProperties { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<TaxonomyTermCustomProperty> LocalCustomProperties { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public string CustomSortOrder { get; set; }
 
         [ExpectValidation]
         [DataMember]

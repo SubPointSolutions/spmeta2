@@ -76,6 +76,7 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         [ExpectUpdateAsCalculatedFieldFormula]
         [DataMember]
+        [ExpectNullable]
         public string Formula { get; set; }
 
         [ExpectValidation]

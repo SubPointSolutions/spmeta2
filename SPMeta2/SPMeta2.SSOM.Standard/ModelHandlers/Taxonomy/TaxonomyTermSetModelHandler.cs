@@ -121,13 +121,26 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
         private static void MapTermSet(TermSet currentTermSet, TaxonomyTermSetDefinition termSetModel)
         {
-            currentTermSet.Description = termSetModel.Description;
+            if (!string.IsNullOrEmpty(termSetModel.Description))
+                currentTermSet.Description = termSetModel.Description;
+
+            if (!string.IsNullOrEmpty(termSetModel.Contact))
+                currentTermSet.Description = termSetModel.Contact;
+
+            if (!string.IsNullOrEmpty(termSetModel.CustomSortOrder))
+                currentTermSet.CustomSortOrder = termSetModel.CustomSortOrder;
 
             if (termSetModel.IsOpenForTermCreation.HasValue)
                 currentTermSet.IsOpenForTermCreation = termSetModel.IsOpenForTermCreation.Value;
 
             if (termSetModel.IsAvailableForTagging.HasValue)
                 currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging.Value;
+
+
+            foreach (var customProp in termSetModel.CustomProperties.Where(p => p.Override))
+            {
+                currentTermSet.SetCustomProperty(customProp.Name, customProp.Value);
+            }
         }
 
         protected TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)

@@ -43,16 +43,29 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             });
         }
 
+        protected SPSite ExtractSite(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.Site;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.ParentWeb.Site;
+
+            throw new ArgumentException("modelHost");
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             base.DeployModel(modelHost, model);
 
-            var typedModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<SSOMModelHostBase>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyFieldDefinition>("model", value => value.RequireNotNull());
 
-            var site = typedModelHost.HostSite;
+            var site = ExtractSite(typedModelHost);
             var spObject = GetField(modelHost, definition) as TaxonomyField;
-
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)

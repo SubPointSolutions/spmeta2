@@ -12,6 +12,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System.Globalization;
 using SPMeta2.Exceptions;
+using System.Diagnostics;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -28,6 +29,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #region properties
 
+        [Obsolete("Is not used anymore. Special handling for taxonomy fields exlcuded due to potential data corruption - ")]
         public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         protected static XElement GetNewMinimalSPFieldTemplate()
@@ -340,6 +342,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 if (ShouldHandleIncorectlyDeletedTaxonomyField)
                     HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
+
+                Trace.WriteLine(fieldDef);
 
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);

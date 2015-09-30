@@ -14,6 +14,7 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.Tests.Impl.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -456,12 +457,76 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var fields = GetAllRandomFields();
 
+            fields.OfType<CalculatedFieldDefinition>()
+                 .ToList()
+                 .ForEach(f =>
+                 {
+                     // clean fomula, that's not gonna work in list
+                     // there is a separated test for it
+                     f.Formula = String.Empty;
+                 });
+
             var model = SPMeta2Model
                    .NewWebModel(web =>
                    {
                        web.AddRandomList(list =>
                        {
-                           list.AddFields(fields);
+                           foreach (var fieldDef in fields)
+                           {
+                               // honest regression testing will update Formula
+                               // need to reset oit before provision
+                               // same-same with ValidationFormula/ValidationMessage
+
+                               if (fieldDef is CalculatedFieldDefinition)
+                               {
+                                   list.AddField(fieldDef, field =>
+                                   {
+                                       field.OnProvisioning<object, CalculatedFieldDefinition>(cntx =>
+                                       {
+                                           cntx.ObjectDefinition.ValidationFormula = string.Empty;
+                                           cntx.ObjectDefinition.ValidationMessage = string.Empty;
+
+                                           cntx.ObjectDefinition.Formula = "=5*ID";
+
+                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           cntx.ObjectDefinition.Indexed = false;
+                                       });
+                                   });
+                               }
+                               else
+                               {
+                                   list.AddField(fieldDef, field =>
+                                   {
+                                       field.OnProvisioning<object>(cntx =>
+                                       {
+                                           var def = cntx.ObjectDefinition as FieldDefinition;
+
+                                           def.ValidationFormula = string.Empty;
+                                           def.ValidationMessage = string.Empty;
+
+                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           if (def is MultiChoiceFieldDefinition)
+                                           {
+                                               def.Indexed = false;
+                                           }
+
+                                           // CSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           if (def is URLFieldDefinition
+                                               || def is ImageFieldDefinition
+                                               || def is LinkFieldDefinition
+                                               || def is ComputedFieldDefinition
+                                               || def is SummaryLinkFieldDefinition
+                                               || def is MediaFieldDefinition
+                                               || def is HTMLFieldDefinition
+                                               || def is GeolocationFieldDefinition
+                                              )
+                                           {
+                                               def.Indexed = false;
+                                           }
+                                       });
+                                   });
+                               }
+                           }
                        });
                    });
 

@@ -39,6 +39,7 @@ namespace SPMeta2.Regression.Impl.Tests.Scenarios
 
         #region deleted taxonomy field
 
+        [Obsolete]
         [TestCategory("Regression.Scenarios.Taxonomy.TaxonomyField.DeletedField")]
         [TestMethod]
         public void CanDeploy_TaxonomyField_AfterDeleting()

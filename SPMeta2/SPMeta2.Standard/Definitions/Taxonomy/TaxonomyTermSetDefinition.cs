@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
@@ -20,7 +21,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -35,6 +36,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         public TaxonomyTermSetDefinition()
         {
             LCID = 1033;
+
+            CustomProperties = new List<TaxonomyTermCustomProperty>();
         }
 
         #endregion
@@ -71,6 +74,25 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         [ExpectUpdate]
         [DataMember]
         public bool? IsOpenForTermCreation { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        [ExpectNullable]
+        public string CustomSortOrder { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [ExpectNullable]
+        [DataMember]
+        public string Contact { get; set; }
+
+
+
+        [ExpectValidation]
+        [DataMember]
+        public List<TaxonomyTermCustomProperty> CustomProperties { get; set; }
+
 
         #endregion
 
