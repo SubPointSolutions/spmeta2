@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Microsoft.Office.Server.Search.Administration;
-using Microsoft.Office.Server.Search.Query;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
@@ -145,23 +144,22 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             //{
             var mappings = existingProperty.GetMappings();
 
-
-
             foreach (var managedPropertyMappping in definition.Mappings)
             {
                 var crawledProp = crawledProps
                     .FirstOrDefault(p => p.Name.ToUpper() == managedPropertyMappping.CrawledPropertyName.ToUpper());
 
-                var mapping = new Mapping
-                {
-                    CrawledPropertyName = crawledProp.Name,
-                    ManagedPid = existingProperty.PID,
-                };
-
                 if (crawledProp != null)
-                    mapping.CrawledPropset = crawledProp.Propset;
+                {
+                    var mapping = new Mapping
+                    {
+                        CrawledPropertyName = crawledProp.Name,
+                        ManagedPid = existingProperty.PID,
+                        CrawledPropset = crawledProp.Propset,
+                    };
 
-                mappings.Add(mapping);
+                    mappings.Add(mapping);
+                }
             }
 
             existingProperty.SetMappings(mappings);
@@ -181,8 +179,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             // Write the changes back
             existingProperty.Update();
         }
-
-
         #endregion
     }
 }
