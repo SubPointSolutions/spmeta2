@@ -191,6 +191,7 @@
     <Compile Include="Enumerations\BuiltInPartChromeType.cs" />
     <Compile Include="Enumerations\BuiltInRelationshipDeleteBehavior.cs" />
     <Compile Include="Enumerations\BuiltInSecureStoreCredentialType.cs" />
+    <Compile Include="Enumerations\BuiltInSP2013WorkflowPropertyNames.cs" />
     <Compile Include="Enumerations\BuiltInTargetApplicationType.cs" />
     <Compile Include="Enumerations\BuiltInUrlFieldFormatType.cs" />
     <Compile Include="Enumerations\BuiltInUrlZone.cs" />
