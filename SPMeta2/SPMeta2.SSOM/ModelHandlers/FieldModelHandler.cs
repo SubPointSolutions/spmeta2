@@ -343,8 +343,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (ShouldHandleIncorectlyDeletedTaxonomyField)
                     HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
 
-                Trace.WriteLine(fieldDef);
-
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 

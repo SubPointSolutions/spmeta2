@@ -14,6 +14,10 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsRichTextMode : ExpectUpdate
+    {
+
+    }
 
     public class ExpectUpdateAsStandalone : ExpectUpdate
     {

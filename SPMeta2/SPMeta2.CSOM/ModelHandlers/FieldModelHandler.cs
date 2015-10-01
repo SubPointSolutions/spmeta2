@@ -61,6 +61,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
+        protected virtual bool PreloadProperties(Field field)
+        {
+            return false;
+        }
 
         protected List ExtractListFromHost(object modelHost)
         {
@@ -239,8 +243,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 typedField = generic.Invoke(context, new object[] { currentField });
             }
 
-
-
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -294,6 +296,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 field = web.Fields.GetById(id);
                 context.Load(field);
+                PreloadProperties(field);
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field with Id: [{0}]", id);
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
@@ -490,8 +493,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
 
-                Trace.WriteLine(fieldDef);
-
                 // special handle for taxonomy field
                 // incorectly removed tax field leaves its indexed field
                 // https://github.com/SubPointSolutions/spmeta2/issues/521
@@ -501,6 +502,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
                 var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
+
+                if (PreloadProperties(resultField))
+                {
+                    context.ExecuteQueryWithTrace();
+                }
 
                 ProcessFieldProperties(resultField, fieldModel);
 
