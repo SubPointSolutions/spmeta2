@@ -109,6 +109,7 @@
     <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
+    <Compile Include="Enumerations\BuiltInManagedDataType.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
