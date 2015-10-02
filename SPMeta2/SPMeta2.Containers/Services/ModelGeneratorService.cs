@@ -6,6 +6,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
+using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
@@ -24,7 +25,6 @@ namespace SPMeta2.Containers.Services
             DefinitionGenerators = new Dictionary<Type, DefinitionGeneratorServiceBase>();
 
             RegisterDefinitionGenerators(Assembly.GetExecutingAssembly());
-            RegisterDefinitionGenerators(typeof(ListViewDefinitionGenerator).Assembly);
         }
 
         public Dictionary<Type, DefinitionGeneratorServiceBase> DefinitionGenerators { get; set; }
@@ -47,9 +47,9 @@ namespace SPMeta2.Containers.Services
             }
         }
 
-        private class GeneratedArtifact
+        private class GeneratedNodes
         {
-            public DefinitionBase Definition { get; set; }
+            public ModelNode ModelNode { get; set; }
             public IEnumerable<string> AdditionalDefinitions { get; set; }
 
         }
@@ -59,7 +59,9 @@ namespace SPMeta2.Containers.Services
             return GetAdditionalDefinitions(typeof(TDefinition));
         }
 
-        public DefinitionBase CurrentDefinition { get; set; }
+        public List<DefinitionBase> CurrentDefinitions = new List<DefinitionBase>();
+
+        RandomService Rnd = new DefaultRandomService();
 
         public ModelNode GenerateModelTreeForDefinition<TDefinition>(SPObjectModelType objectModelType)
              where TDefinition : DefinitionBase, new()
@@ -70,10 +72,28 @@ namespace SPMeta2.Containers.Services
             var parentHostType = GetParentHostType<TDefinition>(objectModelType);
 
             var currentDefinition = GetRandomDefinition<TDefinition>();
+            var expectManyInstancesAttr = typeof(TDefinition).GetCustomAttribute<ExpectManyInstances>(false);
 
-            CurrentDefinition = currentDefinition;
+            var manyInstances = new List<TDefinition>();
 
-            var defs = new List<GeneratedArtifact>();
+            if (expectManyInstancesAttr != null)
+            {
+                var maxCount = expectManyInstancesAttr.MinInstancesCount +
+                               Rnd.Int(expectManyInstancesAttr.MaxInstancesCount -
+                                       expectManyInstancesAttr.MinInstancesCount);
+
+                for (int i = 0; i < maxCount; i++)
+                    manyInstances.Add(GetRandomDefinition<TDefinition>());
+            }
+
+            CurrentDefinitions.Clear();
+
+            CurrentDefinitions.Add(currentDefinition);
+            CurrentDefinitions.AddRange(manyInstances);
+
+            //CurrentDefinition = currentDefinition;
+
+            var defs = new List<GeneratedNodes>();
 
             LookupModelTree<TDefinition>(rootHostType, defs, objectModelType);
 
@@ -81,8 +101,8 @@ namespace SPMeta2.Containers.Services
             {
                 defs.Reverse();
 
-                var rootHost = defs[0].Definition;
-                parentHostType = rootHost.GetType();
+                var rootHost = defs[0].ModelNode;
+                parentHostType = rootHost.Value.GetType();
 
                 defs.RemoveAt(0);
 
@@ -104,17 +124,14 @@ namespace SPMeta2.Containers.Services
 
                 foreach (var def in defs)
                 {
-                    _m
-                       .AddDefinitionNode(def.Definition, currentDef =>
-                       {
-                           currentDef.Options.RequireSelfProcessing = def.Definition.RequireSelfProcessing;
-
-                           _m = currentDef;
-                       });
+                    _m.ChildModels.Add(def.ModelNode);
+                    _m = def.ModelNode;
                 }
 
                 _m.AddDefinitionNode(currentDefinition);
 
+                foreach (var manyDef in manyInstances)
+                    _m.AddDefinitionNode(manyDef);
 
                 result = model;
             }
@@ -148,7 +165,7 @@ namespace SPMeta2.Containers.Services
             return result;
         }
 
-        private void ProcessAdditionalArtifacts(ModelNode model, List<GeneratedArtifact> defs)
+        private void ProcessAdditionalArtifacts(ModelNode model, List<GeneratedNodes> defs)
         {
             foreach (var gen in defs)
             {
@@ -162,7 +179,7 @@ namespace SPMeta2.Containers.Services
             }
         }
 
-        private void LookupModelTree<TDefinition>(Type rootHostType, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
+        private void LookupModelTree<TDefinition>(Type rootHostType, List<GeneratedNodes> defs, SPObjectModelType objectModelType)
         {
             LookupModelTree(rootHostType, typeof(TDefinition), defs, objectModelType);
         }
@@ -209,7 +226,7 @@ namespace SPMeta2.Containers.Services
             return null;
         }
 
-        private void LookupModelTree(Type rootHostType, Type type, List<GeneratedArtifact> defs, SPObjectModelType objectModelType)
+        private void LookupModelTree(Type rootHostType, Type type, List<GeneratedNodes> defs, SPObjectModelType objectModelType)
         {
             if (rootHostType == null)
                 return;
@@ -224,10 +241,14 @@ namespace SPMeta2.Containers.Services
             {
                 var upParentHostType = GetParentHostType(parentHostType, objectModelType);
 
-                var definition = GetRandomDefinition(upParentHostType);
-                defs.Add(new GeneratedArtifact
+                var definition = new ModelNode
                 {
-                    Definition = definition
+                    Value = GetRandomDefinition(upParentHostType)
+                };
+
+                defs.Add(new GeneratedNodes
+                {
+                    ModelNode = definition
                 });
 
                 var additionalParentHostTypes = GetParentHostAdditionalTypes(type, objectModelType);
@@ -237,9 +258,18 @@ namespace SPMeta2.Containers.Services
                 foreach (var additionalParentHostType in additionalParentHostTypes)
                 {
                     var def = GetRandomDefinition(additionalParentHostType);
-                    defs.Add(new GeneratedArtifact
+                    var node = new ModelNode { Value = def };
+
+                    // in paraller tests these should not be processed
+                    // we need RootWebDefinition as a parent onmly to llokup the wroot web
+                    if (def is RootWebDefinition)
                     {
-                        Definition = def
+                        node.Options.RequireSelfProcessing = false;
+                    }
+
+                    defs.Add(new GeneratedNodes
+                    {
+                        ModelNode = node
                     });
 
                     lastHostType = additionalParentHostType;
@@ -252,9 +282,9 @@ namespace SPMeta2.Containers.Services
             }
             else
             {
-                defs.Add(new GeneratedArtifact
+                defs.Add(new GeneratedNodes
                 {
-                    Definition = customParentHost
+                    ModelNode = customParentHost
                 });
 
                 var additionalParentHostTypes = GetParentHostAdditionalTypes(type, objectModelType);
@@ -264,9 +294,18 @@ namespace SPMeta2.Containers.Services
                 foreach (var additionalParentHostType in additionalParentHostTypes)
                 {
                     var def = GetRandomDefinition(additionalParentHostType);
-                    defs.Add(new GeneratedArtifact
+                    var node = new ModelNode { Value = def };
+
+                    // in paraller tests these should not be processed
+                    // we need RootWebDefinition as a parent onmly to llokup the wroot web
+                    if (def is RootWebDefinition)
                     {
-                        Definition = def
+                        node.Options.RequireSelfProcessing = false;
+                    }
+
+                    defs.Add(new GeneratedNodes
+                    {
+                        ModelNode = node
                     });
 
                     lastHostType = additionalParentHostType;
@@ -275,13 +314,13 @@ namespace SPMeta2.Containers.Services
                 if (lastHostType != null)
                     LookupModelTree(rootHostType, lastHostType, defs, objectModelType);
                 else
-                    LookupModelTree(rootHostType, customParentHost.GetType(), defs, objectModelType);
+                    LookupModelTree(rootHostType, customParentHost.Value.GetType(), defs, objectModelType);
             }
         }
 
 
 
-        private DefinitionBase GetDefinitionParentHost(Type type)
+        private ModelNode GetDefinitionParentHost(Type type)
         {
             if (!DefinitionGenerators.ContainsKey(type))
                 throw new SPMeta2NotImplementedException(string.Format("Cannot find definition generator for type:[{0}]", type.AssemblyQualifiedName));

@@ -35,8 +35,9 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<RefinementScriptWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var item = host.PageListItem;
-            WebPartExtensions.WithExistingWebPart(item, definition, (spWebPartManager, spObject) =>
+            //var item = host.PageListItem;
+
+            WebPartExtensions.WithExistingWebPart(host.HostFile, definition, (spWebPartManager, spObject) =>
             {
                 var typedWebPart = spObject as RefinementScriptWebPart;
 

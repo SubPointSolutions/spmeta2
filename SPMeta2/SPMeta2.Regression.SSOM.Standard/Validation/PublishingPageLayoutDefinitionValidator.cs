@@ -29,15 +29,60 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
                                              .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.FileName, o => o.Name)
-                                             .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageDescription())
+                                             .ShouldBeEqual(m => m.FileName, o => o.Name);
 
-                                             .ShouldBeEqual(m => m.Title, o => o.Title);
+            if (!string.IsNullOrEmpty(definition.Title))
+                assert.ShouldBeEndOf(m => m.Title, o => o.Title);
+            else
+                assert.SkipProperty(m => m.Title);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEndOf(m => m.Description, o => o.GetPublishingPageDescription());
+            else
+                assert.SkipProperty(m => m.Description);
 
             if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
                 assert.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId());
             else
                 assert.SkipProperty(m => m.AssociatedContentTypeId);
+
+            if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
+            {
+                var urlValue = new SPFieldUrlValue(spObject["PublishingPreviewImage"].ToString());
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageUrl);
+                    var isValid = (urlValue != null) && (urlValue.Url == s.PreviewImageUrl);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageDescription);
+                    var isValid = (urlValue != null) && (urlValue.Description == s.PreviewImageDescription);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.PreviewImageUrl, "MasterPageUrl is NULL");
+                assert.SkipProperty(m => m.PreviewImageDescription, "MasterPageDescription is NULL");
+            }
 
             assert.ShouldBeEqual((p, s, d) =>
             {

@@ -34,9 +34,10 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+    [ExpectManyInstances]
 
     public class NoteFieldDefinition : FieldDefinition
     {
@@ -59,7 +60,7 @@ namespace SPMeta2.Definitions.Fields
         /// Always returns false.
         /// http://docs.subpointsolutions.com/spcafcontrib/csc515112/
         /// </summary>
-         [DataMember]
+        [DataMember]
         public override bool Indexed
         {
             get
@@ -68,7 +69,7 @@ namespace SPMeta2.Definitions.Fields
             }
             set
             {
-                
+
             }
         }
 
@@ -105,6 +106,7 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         [DataMember]
         [ExpectNullable]
+        [ExpectUpdateAsRichTextMode]
         public string RichTextMode { get; set; }
 
         [ExpectValidation]

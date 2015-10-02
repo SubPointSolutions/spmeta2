@@ -45,16 +45,31 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         #region methods
 
+        protected override void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
+        {
+            base.OnBeforeDeploy(host, webpart);
+
+            // pre-load web id
+            if (!host.HostWeb.IsPropertyAvailable("Id"))
+            {
+                host.HostWeb.Context.Load(host.HostWeb, w => w.Id);
+                host.HostWeb.Context.ExecuteQueryWithTrace();
+            }
+        }
+
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var wpModel = webPartModel.WithAssertAndCast<ListViewWebPartDefinition>("model", value => value.RequireNotNull());
 
             var bindContext = LookupBindContext(listItemModelHost, wpModel);
 
+            var webId = listItemModelHost.HostWeb.Id;
+
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.ListViewWebPart)
                                          .SetOrUpdateListVieweWebPartProperty("ListName", bindContext.ListId.ToString("B"))
                                          .SetOrUpdateListVieweWebPartProperty("ListId", bindContext.ListId.ToString("D").ToLower())
-                                         //.SetOrUpdateListVieweWebPartProperty("ViewGuid", bindContext.ViewId.ToString("D").ToLower())
+                                         .SetOrUpdateListVieweWebPartProperty("WebId", webId.ToString("D").ToLower())
+                //.SetOrUpdateListVieweWebPartProperty("ViewGuid", bindContext.ViewId.ToString("D").ToLower())
                                          .SetTitleUrl(bindContext.TitleUrl)
                                          .ToString();
 
@@ -96,7 +111,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 context.Load(hiddenView);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 hiddenView.ViewFields.RemoveAll();
 
@@ -112,7 +127,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 hiddenView.Scope = srcView.Scope;
 
                 hiddenView.Update();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
         }
 

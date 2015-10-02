@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using System.Linq;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -22,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
                 stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
-            var folder = folderHost.CurrentLibraryFolder;
+            var folder = folderHost.CurrentListFolder;
             var spObject = GetFile(folderHost, definition);
 
             if (folderHost.CurrentList != null)
@@ -38,7 +39,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 spObject.Context.Load(spObject, o => o.ServerRelativeUrl);
 
 
-            spObject.Context.ExecuteQuery();
+            spObject.Context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                .NewAssert(definition, spObject)
@@ -47,7 +48,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {
-
+                // TODO
             }
             else
             {

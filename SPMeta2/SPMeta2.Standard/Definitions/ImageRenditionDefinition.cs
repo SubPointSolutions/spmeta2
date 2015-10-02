@@ -9,6 +9,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -25,6 +26,10 @@ namespace SPMeta2.Standard.Definitions
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
 
     public class ImageRenditionDefinition : DefinitionBase
     {

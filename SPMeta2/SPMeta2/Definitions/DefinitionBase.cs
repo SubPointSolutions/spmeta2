@@ -32,7 +32,7 @@ namespace SPMeta2.Definitions
 
         protected DefinitionBase()
         {
-            RequireSelfProcessing = true;
+            //RequireSelfProcessing = true;
             PropertyBag = new List<PropertyBagValue>();
         }
 
@@ -40,12 +40,12 @@ namespace SPMeta2.Definitions
 
         #region properties
 
-        [IgnoreDataMember]
+        //[IgnoreDataMember]
         /// <summary>
         /// Internal usage only. Will be removed in future versions of SPMeta2 library.
         /// </summary>
-        [Obsolete("Please use AddHostXXX syntax to setup RequireSelfProcessing on the particular model node. RequireSelfProcessing property will be removed from the future releases of SPMeta2 library.")]
-        public virtual bool RequireSelfProcessing { get; set; }
+        //[Obsolete("Please use AddHostXXX syntax to setup RequireSelfProcessing on the particular model node. RequireSelfProcessing property will be removed from the future releases of SPMeta2 library.")]
+        //public virtual bool RequireSelfProcessing { get; set; }
 
         [DataMember]
         /// <summary>
@@ -71,8 +71,8 @@ namespace SPMeta2.Definitions
         {
             var targetType = typeof(TDefinition);
 
-            if (GetType() != targetType ||
-                !GetType().IsSubclassOf(targetType))
+            if (GetType() != targetType 
+                && !GetType().IsSubclassOf(targetType))
             {
                 throw new InvalidCastException("TDefinition should be either current class or one of the parants.");
             }
@@ -81,4 +81,6 @@ namespace SPMeta2.Definitions
 
         #endregion
     }
+
+    
 }

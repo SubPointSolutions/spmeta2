@@ -3,30 +3,42 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ListItemFieldValuesModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ListItemFieldValuesDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, ListItemFieldValuesDefinition definition)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, ListItemFieldValuesDefinition definition)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValues(model, definition, null);
         }
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, ListItemFieldValuesDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, ListItemFieldValuesDefinition definition,
+            Action<ListItemFieldValuesModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, IEnumerable<ListItemFieldValuesDefinition> definitions)
+           where TModelNode : ModelNode, IListItemModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -35,6 +47,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-      
+
     }
 }

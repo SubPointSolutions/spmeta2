@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Utilities;
 using SPMeta2.Common;
@@ -10,6 +11,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
+using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 
@@ -28,8 +30,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost as ModelHostBase;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
             var web = webModelHost.HostSite.RootWeb;
@@ -44,12 +51,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var currentGroup = FindSecurityGroupByTitle(web.SiteGroups, securityGroupModel.Name);
 
-                //action(new ModelHostContext
-                action(new SecurityGroupModelHost
+                var host = ModelHostBase.Inherit<SecurityGroupModelHost>(modelHost, h =>
                 {
-                    SecurableObject = web,
-                    SecurityGroup = currentGroup
+                    h.SecurableObject = web;
+                    h.SecurityGroup = currentGroup;
                 });
+
+                //action(new ModelHostContext
+                action(host);
 
                 currentGroup.Update();
                 context.ExecuteQueryWithTrace();
@@ -61,6 +70,82 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var siteModelHost = modelHost as SiteModelHost;
+
+            if (modelHost is SiteModelHost)
+            {
+                DeploySiteGroup(modelHost, modelHost as SiteModelHost, model);
+            }
+            else if (modelHost is SecurityGroupModelHost)
+            {
+                DeploySiteGroupUnderSiteGroup(modelHost, modelHost as SecurityGroupModelHost, model);
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException("modelHost");
+            }
+
+
+        }
+
+        private void DeploySiteGroupUnderSiteGroup(object modelHost, SecurityGroupModelHost securityGroupModelHost, DefinitionBase model)
+        {
+            var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model",
+              value => value.RequireNotNull());
+
+            var context = securityGroupModelHost.HostClientContext;
+
+            var currentGroup = securityGroupModelHost.SecurityGroup;
+            var subGroup = securityGroupModelHost.HostWeb.EnsureUser(securityGroupModel.Name);
+
+            context.Load(subGroup);
+            context.Load(currentGroup, g => g.Users);
+
+            context.ExecuteQueryWithTrace();
+
+            var existingGroup = currentGroup.Users.FirstOrDefault(u => u.Id == subGroup.Id);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentGroup,
+                ObjectType = typeof(Principal),
+                ObjectDefinition = securityGroupModel,
+                ModelHost = modelHost
+            });
+
+            if (existingGroup == null)
+            {
+                existingGroup = currentGroup.Users.Add(new UserCreationInformation
+                {
+                    Title = subGroup.Title,
+                    LoginName = subGroup.LoginName,
+                    Email = subGroup.Email
+                });
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentGroup,
+                ObjectType = typeof(Principal),
+                ObjectDefinition = securityGroupModel,
+                ModelHost = modelHost
+            });
+
+            if (existingGroup == null)
+            {
+                currentGroup.Update();
+                context.ExecuteQueryWithTrace();
+            }
+        }
+
+        private void DeploySiteGroup(object modelHost, SiteModelHost siteModelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
 
@@ -92,7 +177,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = currentGroup,
-                ObjectType = typeof(Group),
+                ObjectType = typeof(Principal),
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
@@ -153,7 +238,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = currentGroup,
-                ObjectType = typeof(Group),
+                ObjectType = typeof(Principal),
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
@@ -179,7 +264,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 //var principalInfos = Utility.ResolvePrincipal(context, web, owner, targetSource, PrincipalSource.All, null, false);
                 var principalInfos = Utility.SearchPrincipals(context, web, owner, targetSource, PrincipalSource.All, null, 2);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 if (principalInfos.Count > 0)
                 //if (principalInfos.Value != null)
@@ -196,7 +281,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         result = web.SiteGroups.GetById(info.PrincipalId);
 
                     context.Load(result);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     // nic, found, break, profit!
                     break;

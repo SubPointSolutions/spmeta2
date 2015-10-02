@@ -3,6 +3,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -10,18 +11,28 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class AuditSettingsModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AuditSettingsSyntax
     {
         #region methods
 
-        public static ModelNode AddAuditSettings(this ModelNode model, AuditSettingsDefinition definition)
+        public static TModelNode AddAuditSettings<TModelNode>(this TModelNode model, AuditSettingsDefinition definition)
+            where TModelNode : ModelNode, IAuditSettingsHostModelNode, new()
         {
             return AddAuditSettings(model, definition, null);
         }
 
-        public static ModelNode AddAuditSettings(this ModelNode model, AuditSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddAuditSettings<TModelNode>(this TModelNode model, AuditSettingsDefinition definition,
+            Action<AuditSettingsModelNode> action)
+            where TModelNode : ModelNode, IAuditSettingsHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

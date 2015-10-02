@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
+using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Syntax.Default;
@@ -84,13 +86,18 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             return new[] { sitePublishing, webPublishing };
         }
 
-        public override DefinitionBase GetCustomParenHost()
+        public override ModelNode GetCustomParenHost()
         {
-            var def = new WebDefinitionGenerator().GenerateRandomDefinition() as WebDefinition;
+            var definition = new WebDefinitionGenerator().GenerateRandomDefinition() as WebDefinition;
 
-            def.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
+            definition.WebTemplate = BuiltInWebTemplates.Publishing.PublishingSite_CMS;
 
-            return def;
+            var node = new ListModelNode
+            {
+                Value = definition,
+            };
+
+            return node;
         }
     }
 }

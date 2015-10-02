@@ -54,7 +54,8 @@ namespace SPMeta2.Services.Impl
                 if (OnModelProcessing != null)
                     OnModelProcessing(modelNode);
 
-                var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
+                //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
+                var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
 
                 TraceService.InformationFormat((int)LogEventId.ModelProcessing, "Deploying model [{0}] RSP: [{1}] : [{2}].",
                     new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });

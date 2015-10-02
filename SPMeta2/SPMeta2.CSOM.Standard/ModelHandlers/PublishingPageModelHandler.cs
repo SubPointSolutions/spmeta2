@@ -29,28 +29,30 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var folderModelHost = modelHost as FolderModelHost;
             var pageDefinition = model as PublishingPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            Folder folder = folderModelHost.CurrentListFolder;
 
             if (folder != null && pageDefinition != null)
             {
                 var context = folder.Context;
                 var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(pageDefinition));
 
-                var currentListItem = currentPage.ListItemAllFields;
-                context.Load(currentListItem);
-                context.ExecuteQueryWithTrace();
-
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
-                        itemHost.HostListItem = currentListItem;
+                        itemHost.HostFile = currentPage;
+                        itemHost.HostList = folderModelHost.CurrentList;
                     });
 
                     action(listItemHost);
@@ -60,8 +62,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 else if (typeof(BreakRoleInheritanceDefinition).IsAssignableFrom(childModelType)
                         || typeof(SecurityGroupLinkDefinition).IsAssignableFrom(childModelType))
                 {
+                    var currentListItem = currentPage.ListItemAllFields;
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
+
                         itemHost.HostListItem = currentListItem;
                     });
 
@@ -150,7 +157,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var list = folderModelHost.CurrentList;
 
             var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
@@ -229,8 +236,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 // settig up dfault values if there is PublishingPageLayout setup
                 EnsureDefaultValues(newFileItem, publishingPageModel);
 
-                newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
-                newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
+                if (!string.IsNullOrEmpty(publishingPageModel.Title))
+                    newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
+
+                if (!string.IsNullOrEmpty(publishingPageModel.Description))
+                    newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
 
                 newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
 

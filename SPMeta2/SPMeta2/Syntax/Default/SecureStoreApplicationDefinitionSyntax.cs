@@ -3,6 +3,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -10,32 +11,45 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class SecureStoreApplicationModelNode : TypedModelNode,
+        ITargetApplicationHostModelNode
+    {
+
+    }
+
     public static class SecureStoreApplicationDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition)
+        public static TModelNode AddSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
             return AddSecureStoreApplication(model, definition, null);
         }
 
-        public static ModelNode AddSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition,
+            Action<SecureStoreApplicationModelNode> action)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region add host
 
-        public static ModelNode AddHostSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition)
+        public static TModelNode AddHostSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition)
+             where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
             return AddHostSecureStoreApplication(model, definition, null);
         }
-
-        public static ModelNode AddHostSecureStoreApplication(this ModelNode model, SecureStoreApplicationDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostSecureStoreApplication<TModelNode>(this TModelNode model, SecureStoreApplicationDefinition definition,
+            Action<SecureStoreApplicationModelNode> action)
+            where TModelNode : ModelNode, ISecureStoreApplicationHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
 
         #endregion

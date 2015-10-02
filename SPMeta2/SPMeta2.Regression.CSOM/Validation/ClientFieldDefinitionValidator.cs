@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -11,6 +12,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.CSOM.Utils;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 
@@ -100,6 +102,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                 //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
                     //.ShouldBeEqual(m => m.Group, o => o.Group);
 
+            var context = spObject.Context;
+
             if (!string.IsNullOrEmpty(definition.Group))
                 assert.ShouldBeEqual(m => m.Group, o => o.Group);
             else
@@ -129,8 +133,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                     {
                         var srcProp = s.GetExpressionValue(m => m.AddToDefaultView);
 
-                        var context = HostList.Context;
-
                         var field = HostList.Fields.GetById(definition.Id);
                         var defaultView = HostList.DefaultView;
 
@@ -138,7 +140,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         context.Load(defaultView, v => v.ViewFields);
                         context.Load(field);
 
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         var isValid = HostList.DefaultView
                             .ViewFields
@@ -330,6 +332,100 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual(m => m.AllowDeletion, o => o.GetAllowDeletion());
             else
                 assert.SkipProperty(m => m.AllowDeletion, "AllowDeletion is NULL");
+
+
+            var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
+            {
+                "TitleResource", "DescriptionResource"
+            });
+
+            if (supportsLocalization)
+            {
+                if (definition.TitleResource.Any())
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                        var isValid = true;
+
+                        foreach (var userResource in s.TitleResource)
+                        {
+                            var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                            var resourceObject = ReflectionUtils.GetPropertyValue(spObject, "TitleResource");
+
+                            var value = ReflectionUtils.GetMethod(resourceObject, "GetValueForUICulture")
+                                                    .Invoke(resourceObject, new[] { culture.Name }) as ClientResult<string>;
+
+                            context.ExecuteQuery();
+
+                            isValid = userResource.Value == value.Value;
+
+                            if (!isValid)
+                                break;
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+                }
+
+                if (definition.DescriptionResource.Any())
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                        var isValid = true;
+
+                        foreach (var userResource in s.DescriptionResource)
+                        {
+                            var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                            var resourceObject = ReflectionUtils.GetPropertyValue(spObject, "DescriptionResource");
+
+                            var value = ReflectionUtils.GetMethod(resourceObject, "GetValueForUICulture")
+                                                       .Invoke(resourceObject, new[] { culture.Name }) as ClientResult<string>;
+
+                            context.ExecuteQuery();
+
+                            isValid = userResource.Value == value.Value;
+
+                            if (!isValid)
+                                break;
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+                }
+
+            }
+            else
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                      "CSOM runtime doesn't have Web.TitleResource and Web.DescriptionResource() methods support. Skipping validation.");
+
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
+            }
+
+
         }
     }
 

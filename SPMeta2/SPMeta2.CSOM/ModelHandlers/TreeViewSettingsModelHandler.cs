@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -55,7 +56,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.QuickLaunchEnabled.HasValue || definition.TreeViewEnabled.HasValue)
             {
                 web.Update();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
         }
 

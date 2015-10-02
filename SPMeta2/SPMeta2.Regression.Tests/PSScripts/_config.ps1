@@ -51,7 +51,7 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     # CSOM, SSOM or O365
     EnvironmentType = "SSOM"
 
-    #O365 specific settings
+  #O365 specific settings
     O365UserName = ""
     O365UserPassword = ""
 
@@ -62,10 +62,18 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     O365WebUrls = @(
         ""
     )
+   
+   RandomBalancedUrls = @( 
+
+	 )
+
+	O365DefaultTestUserLogins = @(
+		""
+	)
 
     # CSOM specific settings
     CSOMWebApplicationUrls = @(
-        "http://$(Environment]::MachineName):$($g_M2WebAppSettings.WebApplicationPort)"
+        "http://$([Environment]::MachineName):$($g_M2WebAppSettings.WebApplicationPort)"
         #"http://$([Environment]::MachineName)"
         #"http://portal"
     )
@@ -95,6 +103,10 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
         "http://$([Environment]::MachineName):$($g_M2WebAppSettings.WebApplicationPort)"
     )
 
+    OO365TestLogins = @(
+        ""
+    )
+
     OnPremTestActiveDirectoryLogins = @( 
         "$([Environment]::UserDomainName)\administrator",
         "$([Environment]::UserDomainName)\sp_admin",
@@ -102,6 +114,6 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     )
 
     OnPremTestActiveDirectoryGroups = @(
-        "$([Environment]::UserDomainName)\Domain Admins"
+        "$([Environment]::UserDomainName)\test-g1"
     )
 }

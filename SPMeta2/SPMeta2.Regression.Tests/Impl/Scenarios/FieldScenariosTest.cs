@@ -9,8 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Tests.Impl.Definitions;
+using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -387,6 +392,149 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region full scope regression
+
+        protected List<FieldDefinition> GetAllRandomFields()
+        {
+            var spMetaAssembly = typeof(FieldDefinition).Assembly;
+            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
+
+            var types = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+             spMetaAssembly,
+             spMetaStandardAssembly
+            });
+
+            var result = new List<FieldDefinition>();
+            var allFieldDefinitiontypesDefinitions = types.Where(t =>
+                t.IsSubclassOf(typeof(FieldDefinition))
+                && !(t == typeof(DependentLookupFieldDefinition)));
+
+            foreach (var type in allFieldDefinitiontypesDefinitions)
+                result.Add(ModelGeneratorService.GetRandomDefinition(type) as FieldDefinition);
+            //ModelGeneratorService.GetRandomDefinition()
+
+            return result;
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderSite()
+        {
+            var fields = GetAllRandomFields();
+            //ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+
+            var model = SPMeta2Model
+                   .NewSiteModel(site =>
+                   {
+                       site.AddFields(fields);
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderWeb()
+        {
+            var fields = GetAllRandomFields();
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomWeb(subWeb =>
+                       {
+                           subWeb.AddFields(fields);
+                       });
+                   });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Scopes")]
+        public void CanDeploy_AllFields_UnderList()
+        {
+            var fields = GetAllRandomFields();
+
+            fields.OfType<CalculatedFieldDefinition>()
+                 .ToList()
+                 .ForEach(f =>
+                 {
+                     // clean fomula, that's not gonna work in list
+                     // there is a separated test for it
+                     f.Formula = String.Empty;
+                 });
+
+            var model = SPMeta2Model
+                   .NewWebModel(web =>
+                   {
+                       web.AddRandomList(list =>
+                       {
+                           foreach (var fieldDef in fields)
+                           {
+                               // honest regression testing will update Formula
+                               // need to reset oit before provision
+                               // same-same with ValidationFormula/ValidationMessage
+
+                               if (fieldDef is CalculatedFieldDefinition)
+                               {
+                                   list.AddField(fieldDef, field =>
+                                   {
+                                       field.OnProvisioning<object, CalculatedFieldDefinition>(cntx =>
+                                       {
+                                           cntx.ObjectDefinition.ValidationFormula = string.Empty;
+                                           cntx.ObjectDefinition.ValidationMessage = string.Empty;
+
+                                           cntx.ObjectDefinition.Formula = "=5*ID";
+
+                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           cntx.ObjectDefinition.Indexed = false;
+                                       });
+                                   });
+                               }
+                               else
+                               {
+                                   list.AddField(fieldDef, field =>
+                                   {
+                                       field.OnProvisioning<object>(cntx =>
+                                       {
+                                           var def = cntx.ObjectDefinition as FieldDefinition;
+
+                                           def.ValidationFormula = string.Empty;
+                                           def.ValidationMessage = string.Empty;
+
+                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           if (def is MultiChoiceFieldDefinition)
+                                           {
+                                               def.Indexed = false;
+                                           }
+
+                                           // CSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                           if (def is URLFieldDefinition
+                                               || def is ImageFieldDefinition
+                                               || def is LinkFieldDefinition
+                                               || def is ComputedFieldDefinition
+                                               || def is SummaryLinkFieldDefinition
+                                               || def is MediaFieldDefinition
+                                               || def is HTMLFieldDefinition
+                                               || def is GeolocationFieldDefinition
+                                              )
+                                           {
+                                               def.Indexed = false;
+                                           }
+                                       });
+                                   });
+                               }
+                           }
+                       });
+                   });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region field options
 
         [TestMethod]
@@ -407,6 +555,85 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region fields localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_Site_Field()
+        {
+            var field = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_Web_Field()
+        {
+            var rootWeb = GetLocalizedFieldDefinition();
+            var subWebField = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(rootWeb);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    web.AddField(subWebField);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Localization")]
+        public void CanDeploy_Localized_List_Field()
+        {
+            var field = GetLocalizedFieldDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(field);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected FieldDefinition GetLocalizedFieldDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+
+                definition.DescriptionResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

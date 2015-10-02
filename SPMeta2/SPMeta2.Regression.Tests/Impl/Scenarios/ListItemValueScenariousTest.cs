@@ -54,9 +54,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     }
                 });
             }
-            catch (SPMeta2NotSupportedException ex)
+            catch (Exception ex)
             {
-                Assert.IsTrue(ex.Message.Contains("ListItemFieldValueDefinition.FieldId"));
+                Assert.IsTrue(ex is SPMeta2Exception);
+                Assert.IsTrue(ex.InnerException is SPMeta2NotSupportedException);
             }
         }
 
@@ -81,7 +82,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region utils
 
-        private void WithListItemValue(Action<ModelNode, List<FieldDefinition>> setup)
+        private void WithListItemValue(Action<ListItemModelNode, List<FieldDefinition>> setup)
         {
             var fieldDefs = new List<FieldDefinition>();
 

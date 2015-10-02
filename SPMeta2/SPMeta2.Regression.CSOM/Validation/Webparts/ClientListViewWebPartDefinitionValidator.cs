@@ -55,11 +55,9 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListViewWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var pageItem = listItemModelHost.HostListItem;
-            var context = pageItem.Context;
+            var context = listItemModelHost.HostClientContext;
 
-
-            WithWithExistingWebPart(pageItem, definition, spObject =>
+            WithExistingWebPart(listItemModelHost.HostFile, definition, spObject =>
             {
                 var assert = ServiceFactory.AssertService
                                            .NewAssert(model, definition, spObject)
@@ -152,7 +150,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
                     context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var isValid = false;
 
@@ -193,7 +191,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
                     context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
 
-                    context.ExecuteQuery();
+                    context.ExecuteQueryWithTrace();
 
                     var isValid = false;
 

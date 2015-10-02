@@ -29,6 +29,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             var spObject = host.HostFile;
             var webpartOnPage = host.SPLimitedWebPartManager.WebParts;
+            var webPartDefenitions = webpartOnPage.OfType<WebPart>();
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
@@ -38,7 +39,21 @@ namespace SPMeta2.Regression.SSOM.Validation
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(m => m.WebParts);
-                var isValid = webpartOnPage.Count == 0;
+                var webPartMatches = s.WebParts;
+
+                var isValid = true;
+
+                if (webPartMatches.Count == 0)
+                {
+                    isValid = webPartDefenitions.Count() == 0;
+                }
+                else
+                {
+                    // title only yet
+                    // should not be any by mentioned title
+                    var wpTitles = webPartMatches.Select(wpMatch => wpMatch.Title);
+                    isValid = webPartDefenitions.Count(w => wpTitles.Contains(w.Title)) == 0;
+                }
 
                 return new PropertyValidationResult
                 {

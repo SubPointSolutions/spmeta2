@@ -10,6 +10,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -24,10 +25,15 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(WebDefinition))]
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
 
     public class SP2013WorkflowSubscriptionDefinition : DefinitionBase
     {
@@ -36,6 +42,7 @@ namespace SPMeta2.Definitions
         public SP2013WorkflowSubscriptionDefinition()
         {
             EventTypes = new Collection<string> { BuiltInSP2013WorkflowEventTypes.WorkflowStart };
+            Properties = new List<SP2013WorkflowProperty>();
         }
 
         #endregion
@@ -93,6 +100,10 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public Collection<string> EventTypes { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<SP2013WorkflowProperty> Properties { get; set; }
 
         #endregion
 

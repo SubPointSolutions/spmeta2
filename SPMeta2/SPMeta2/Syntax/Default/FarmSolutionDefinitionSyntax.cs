@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Definitions;
@@ -9,32 +10,41 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class FarmSolutionModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class FarmSolutionDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
+        public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return AddFarmSolution(model, definition, null);
         }
 
-        public static ModelNode AddFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition,
+            Action<FarmSolutionModelNode> action)
+            where TModelNode : ModelNode, IFarmModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
-        #region methods
+        #region array overload
 
-        public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition)
+        public static TModelNode AddFarmSolutions<TModelNode>(this TModelNode model, IEnumerable<FarmSolutionDefinition> definitions)
+           where TModelNode : ModelNode, IFarmModelNode, new()
         {
-            return AddHostFarmSolution(model, definition, null);
-        }
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
 
-        public static ModelNode AddHostFarmSolution(this ModelNode model, FarmSolutionDefinition definition, Action<ModelNode> action)
-        {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model;
         }
 
         #endregion

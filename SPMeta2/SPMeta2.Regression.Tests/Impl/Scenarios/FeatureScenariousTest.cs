@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Syntax.Default.Utils;
+using SPMeta2.Containers.Consts;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -39,14 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Features.Sandbox")]
         public void CanDeploy_SandboxSiteFeature()
         {
-            var sandboxSolution = new SandboxSolutionDefinition()
-            {
-                FileName = string.Format("{0}.wsp", Rnd.String()),
-                Activate = true,
-
-                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
-            };
+            var sandboxSolution = new SandboxSolutionDefinitionGenerator().GenerateRandomDefinition() as SandboxSolutionDefinition;
 
             var model = SPMeta2Model
                 .NewSiteModel(site =>
@@ -57,7 +52,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         Enable = true,
                         ForceActivate = true,
-                        Id = new Guid("32dc6bed-0298-4fca-a72f-e9b9c0d6f09a"),
+                        Id = DefaultContainers.Sandbox.SiteFeatureId,
                         Scope = FeatureDefinitionScope.Site
                     });
                 });
@@ -70,14 +65,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Features.Sandbox")]
         public void CanDeploy_SandboxWebFeature()
         {
-            var sandboxSolution = new SandboxSolutionDefinition()
-            {
-                FileName = string.Format("{0}.wsp", Rnd.String()),
-                Activate = true,
-
-                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Regression.Tests.Templates.SandboxSolutions.SPMeta2.Containers.SandboxSolutionContainer.wsp")
-            };
+            var sandboxSolution = new SandboxSolutionDefinitionGenerator().GenerateRandomDefinition() as SandboxSolutionDefinition;
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
@@ -91,7 +79,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         Enable = true,
                         ForceActivate = true,
-                        Id = new Guid("b997a462-8efb-44cf-92c0-457e75c81798"),
+                        Id = DefaultContainers.Sandbox.WebFeatureId,
                         Scope = FeatureDefinitionScope.Web
                     });
                 });

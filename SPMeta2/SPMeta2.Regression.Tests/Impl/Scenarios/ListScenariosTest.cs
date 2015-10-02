@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.BuiltInDefinitions;
+using SPMeta2.Containers.Services;
+using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Syntax.Default.Utils;
@@ -48,14 +50,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             public ModelNode SecondLink { get; set; }
             public ModelNode ThirdLink { get; set; }
 
-            public ModelNode SiteModel { get; set; }
-            public ModelNode WebModel { get; set; }
+            public SiteModelNode SiteModel { get; set; }
+            public WebModelNode WebModel { get; set; }
         }
 
         private ContentTypeEnvironment GetContentTypeLinksSandbox(
-            Action<ModelNode, ContentTypeEnvironment> siteModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> webModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> listModelConfig)
+            Action<SiteModelNode, ContentTypeEnvironment> siteModelConfig,
+            Action<WebModelNode, ContentTypeEnvironment> webModelConfig,
+            Action<ListModelNode, ContentTypeEnvironment> listModelConfig)
         {
             var result = new ContentTypeEnvironment();
 
@@ -98,17 +100,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                  .AddContentTypeLink(ctFirst, link =>
                                  {
                                      result.FirstLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeLink(ctSecond, link =>
                                  {
                                      result.SecondLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeLink(ctThird, link =>
                                  {
                                      result.ThirdLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  });
 
                              result.List = list.Value as ListDefinition;
@@ -162,9 +167,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            {
                                // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
 
-                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
-                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
-                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
                            });
                        });
                 });
@@ -209,9 +218,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            {
                                // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
 
-                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
-                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
-                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
                            });
                        });
                 });
@@ -599,6 +612,121 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region custom template URLs
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.DocumentTemplateUrl")]
+        public void CanDeploy_DocumentLibrary_With_Custom_DocumentTemplateUrl()
+        {
+            var templateFileName = Rnd.TxtFileName();
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    var randomList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+                    {
+                        def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    });
+
+                    // add first to provision, add a module
+                    web.AddList(randomList, list =>
+                    {
+                        list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                        {
+                            folder.AddModuleFile(new ModuleFileDefinition
+                            {
+                                FileName = templateFileName,
+                                Content = Encoding.UTF8.GetBytes(Rnd.String())
+                            });
+                        });
+                    });
+
+                    // add a clone second time with the template
+                    var listWithDocumentTemplate = randomList.Inherit();
+                    listWithDocumentTemplate.DocumentTemplateUrl = string.Format("/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+
+                    web.AddList(listWithDocumentTemplate);
+                });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.DocumentTemplateUrl")]
+        public void CanDeploy_DocumentLibrary_With_SiteCollectionToken_DocumentTemplateUrl()
+        {
+            var templateFileName = Rnd.TxtFileName();
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    var randomList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+                    {
+                        def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    });
+
+                    // add first to provision, add a module
+                    web.AddList(randomList, list =>
+                    {
+                        list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                        {
+                            folder.AddModuleFile(new ModuleFileDefinition
+                            {
+                                FileName = templateFileName,
+                                Content = Encoding.UTF8.GetBytes(Rnd.String())
+                            });
+                        });
+                    });
+
+                    // add a clone second time with the template
+                    var listWithDocumentTemplate = randomList.Inherit();
+                    listWithDocumentTemplate.DocumentTemplateUrl = string.Format("~sitecollection/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+
+                    web.AddList(listWithDocumentTemplate);
+                });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.DocumentTemplateUrl")]
+        public void CanDeploy_DocumentLibrary_With_WebCollectionToken_DocumentTemplateUrl()
+        {
+            var templateFileName = Rnd.TxtFileName();
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    var randomList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+                    {
+                        def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    });
+
+                    // add first to provision, add a module
+                    web.AddList(randomList, list =>
+                    {
+                        list.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
+                        {
+                            folder.AddModuleFile(new ModuleFileDefinition
+                            {
+                                FileName = templateFileName,
+                                Content = Encoding.UTF8.GetBytes(Rnd.String())
+                            });
+                        });
+                    });
+
+                    // add a clone second time with the template
+                    var listWithDocumentTemplate = randomList.Inherit();
+                    listWithDocumentTemplate.DocumentTemplateUrl = string.Format("~site/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+
+                    web.AddList(listWithDocumentTemplate);
+                });
+
+            TestModel(webModel);
+        }
+
+        #endregion
+
         #region custom templates
 
         [TestMethod]
@@ -706,6 +834,57 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
 
             TestModel(siteModel, webModel);
+        }
+
+        #endregion
+
+        #region localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.Localization")]
+        public void CanDeploy_Localized_List()
+        {
+            var definition = GetLocalizedDefinition();
+            var subWebDefinition = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(definition);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddList(subWebDefinition);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected ListDefinition GetLocalizedDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.TitleResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedTitle_{0}", localeId)
+                });
+
+                definition.DescriptionResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

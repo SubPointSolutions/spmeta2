@@ -5,6 +5,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions.Webparts
 {
@@ -20,6 +21,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
 
     public class ContentByQueryWebPartDefinition : WebPartDefinition
     {
@@ -99,10 +102,16 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string MainXslLink { get; set; }
 
         [DataMember]
         [ExpectValidation]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string ItemXslLink { get; set; }
 
         [DataMember]
@@ -156,6 +165,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
 
         [DataMember]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string HeaderXslLink { get; set; }
 
         [DataMember]

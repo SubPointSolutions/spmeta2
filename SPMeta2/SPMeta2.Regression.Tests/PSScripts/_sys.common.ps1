@@ -311,7 +311,8 @@ function EnsureAssociatedGroups($web) {
 # test environment settings
 
 $envType = $g_M2TestEnvironment.EnvironmentType
-$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM"
+#$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204"
+$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.0.2617.1200"
 
 $o365_UserName = $g_M2TestEnvironment.O365UserName
 $o365_UserPassword = $g_M2TestEnvironment.O365UserPassword
@@ -332,6 +333,15 @@ function SetTestOnPremTestLogins()
     $loginsString = [string]::Join(",", $logins);
 
     SetEnvironmentVar "SPMeta2_DefaultTestUserLogins" $loginsString
+}
+
+function SetTestO365Logins() {
+
+    $logins = $g_M2TestEnvironment.O365DefaultTestUserLogins
+    $loginsString = [string]::Join(",", $logins);
+
+    SetEnvironmentVar "SPMeta2_DefaultTestUserLogins" $loginsString
+
 }
 
 function SetTestOnPremTestADGroups()
@@ -444,6 +454,12 @@ function SetO365MManagedMetadataApplicationParams($siteUrl) {
     SetEnvironmentVar "SPMeta2_DefaultTaxonomyStoreName"  $store.Name    
 }
 
+function SetO365RandomBalancedUrls() {
+    $urls =   $g_M2TestEnvironment.RandomBalancedUrls  -join ','
+
+	SetEnvironmentVar "SPMeta2_O365_RandomBalancedUrls" $urls
+}
+
 function SetupO365v16Environment() {
 
     Write-Host "Setting up O365 environment" -fore Yellow
@@ -468,6 +484,9 @@ function SetupO365v16Environment() {
 function SetupO365Environment() {
 
     Write-Host "Setting up O365 environment" -fore Yellow
+
+    SetTestO365Logins
+	SetO365RandomBalancedUrls 
 
     SetEnvironmentVar "SPMeta2_RunnerLibraries" "SPMeta2.Containers.O365.dll"
 

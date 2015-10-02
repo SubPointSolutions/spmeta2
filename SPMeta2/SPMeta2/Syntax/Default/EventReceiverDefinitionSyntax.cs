@@ -1,30 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class EventReceiverModelNode : TypedModelNode
+    {
+
+    }
+
     public static class EventReceiverDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddEventReceiver(this ModelNode model, EventReceiverDefinition definition)
+        public static TModelNode AddEventReceiver<TModelNode>(this TModelNode model, EventReceiverDefinition definition)
+            where TModelNode : ModelNode, IEventReceiverHostModelNode, new()
         {
             return AddEventReceiver(model, definition, null);
         }
 
-        public static ModelNode AddEventReceiver(this ModelNode model, EventReceiverDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddEventReceiver<TModelNode>(this TModelNode model, EventReceiverDefinition definition,
+            Action<EventReceiverModelNode> action)
+            where TModelNode : ModelNode, IEventReceiverHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddEventReceivers(this ModelNode model, IEnumerable<EventReceiverDefinition> definitions)
+        public static TModelNode AddEventReceivers<TModelNode>(this TModelNode model, IEnumerable<EventReceiverDefinition> definitions)
+           where TModelNode : ModelNode, IEventReceiverHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
@@ -21,8 +22,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(SecurityGroupDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var web = ExtractWeb(modelHost);
 
             if (web != null)
@@ -56,6 +63,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private SPWeb ExtractWeb(object modelHost)
         {
+            if (modelHost is SecurityGroupModelHost)
+                return (modelHost as SecurityGroupModelHost).SecurityGroup.ParentWeb;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
             if (modelHost is WebModelHost)
                 return (modelHost as WebModelHost).HostWeb;
 
@@ -73,10 +86,70 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var siteModelHost = modelHost as SiteModelHost;
+
+            if (modelHost is SiteModelHost)
+            {
+                DeploySiteGroup(modelHost, modelHost as SiteModelHost, model);
+            }
+            else if (modelHost is SecurityGroupModelHost)
+            {
+                DeploySiteGroupUnderSiteGroup(modelHost, modelHost as SecurityGroupModelHost, model);
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException("modelHost");
+            }
+        }
+
+        private void DeploySiteGroupUnderSiteGroup(object modelHost, SecurityGroupModelHost securityGroupModelHost, DefinitionBase model)
+        {
+            var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model",
+                value => value.RequireNotNull());
+
+            var currentGroup = securityGroupModelHost.SecurityGroup;
+            var subGroup = securityGroupModelHost.SecurityGroup.ParentWeb.EnsureUser(securityGroupModel.Name);
+
+            var existingGroup = currentGroup.Users.OfType<SPPrincipal>()
+                               .FirstOrDefault(u => u.ID == subGroup.ID);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentGroup,
+                ObjectType = typeof(SPPrincipal),
+                ObjectDefinition = securityGroupModel,
+                ModelHost = modelHost
+            });
+
+            if (existingGroup == null)
+            {
+                currentGroup.Users.Add(subGroup.LoginName, subGroup.Email, subGroup.Name, subGroup.Notes);
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentGroup,
+                ObjectType = typeof(SPPrincipal),
+                ObjectDefinition = securityGroupModel,
+                ModelHost = modelHost
+            });
+
+            if (existingGroup == null)
+                currentGroup.Update();
+        }
+
+        private void DeploySiteGroup(object modelHost, SiteModelHost siteModelHost, DefinitionBase model)
+        {
             var site = siteModelHost.HostSite;
 
-            var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model", value => value.RequireNotNull());
+            var securityGroupModel = model.WithAssertAndCast<SecurityGroupDefinition>("model",
+                value => value.RequireNotNull());
 
             var web = site.RootWeb;
 
@@ -89,17 +162,19 @@ namespace SPMeta2.SSOM.ModelHandlers
                 currentGroup = site.RootWeb.SiteGroups[securityGroupModel.Name];
                 hasInitialGroup = true;
 
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing security group");
-
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
+                    "Processing existing security group");
             }
             catch (SPException)
             {
                 var defaultUser = EnsureDefaultUser(web, securityGroupModel);
 
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new security group");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject,
+                    "Processing new security group");
 
                 // owner would be defaut site owner
-                web.SiteGroups.Add(securityGroupModel.Name, web.Site.Owner, defaultUser, securityGroupModel.Description ?? string.Empty);
+                web.SiteGroups.Add(securityGroupModel.Name, web.Site.Owner, defaultUser,
+                    securityGroupModel.Description ?? string.Empty);
                 currentGroup = web.SiteGroups[securityGroupModel.Name];
 
                 // updating the owner or leave as default
@@ -119,7 +194,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = currentGroup,
-                    ObjectType = typeof(SPGroup),
+                    ObjectType = typeof(SPPrincipal),
                     ObjectDefinition = securityGroupModel,
                     ModelHost = modelHost
                 });
@@ -132,7 +207,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     Model = null,
                     EventType = ModelEventType.OnProvisioning,
                     Object = null,
-                    ObjectType = typeof(SPGroup),
+                    ObjectType = typeof(SPPrincipal),
                     ObjectDefinition = securityGroupModel,
                     ModelHost = modelHost
                 });
@@ -160,7 +235,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = currentGroup,
-                ObjectType = typeof(SPGroup),
+                ObjectType = typeof(SPPrincipal),
                 ObjectDefinition = securityGroupModel,
                 ModelHost = modelHost
             });

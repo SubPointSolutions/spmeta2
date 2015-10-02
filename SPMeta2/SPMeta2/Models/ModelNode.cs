@@ -97,6 +97,8 @@ namespace SPMeta2.Models
 
             ModelEvents = new Dictionary<ModelEventType, List<object>>();
             ModelContextEvents = new Dictionary<ModelEventType, List<object>>();
+
+            PropertyBag = new List<PropertyBagValue>();
         }
 
         #endregion
@@ -123,6 +125,12 @@ namespace SPMeta2.Models
         /// </summary>
         [DataMember]
         public ModelNodeOptions Options { get; set; }
+
+        [DataMember]
+        /// <summary>
+        /// A property bag to be used for any 'custom' properties attached to ModelNode.
+        /// </summary>
+        public List<PropertyBagValue> PropertyBag { get; set; }
 
         [DataMember]
         public DefinitionBase Value { get; set; }

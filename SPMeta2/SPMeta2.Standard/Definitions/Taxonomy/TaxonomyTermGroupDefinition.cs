@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions.Taxonomy
 {
@@ -22,6 +23,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [Serializable] 
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(TaxonomyTermStoreDefinition))]
+
+    [ExpectManyInstances]
 
     public class TaxonomyTermGroupDefinition : DefinitionBase
     {

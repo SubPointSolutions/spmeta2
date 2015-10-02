@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -24,6 +25,7 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
     public class ContentEditorWebPartDefinition : WebPartDefinition
     {
         #region properties
@@ -36,6 +38,10 @@ namespace SPMeta2.Definitions.Webparts
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+
         public string ContentLink { get; set; }
 
         #endregion

@@ -8,6 +8,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -20,6 +21,8 @@ namespace SPMeta2.Standard.Definitions
     [Serializable]
     [DataContract]
     [SingletonIdentity]
+
+    [ParentHostCapability(typeof(WebDefinition))]
     public class WebNavigationSettingsDefinition : DefinitionBase
     {
         #region constructors
@@ -131,6 +134,7 @@ namespace SPMeta2.Standard.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         public bool? CurrentNavigationShowPages { get; set; }
+
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]

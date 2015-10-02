@@ -18,15 +18,18 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
+
     public class ProjectSummaryWebPartDefinition : WebPartDefinition
     {
         #region properties
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public string PrimaryTaskListUrl { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public Guid? ListId { get; set; }
 

@@ -8,6 +8,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using SPMeta2.Definitions;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -35,7 +36,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!secObject.IsPropertyAvailable("RoleAssignments"))
             {
                 secObject.Context.Load(secObject, s => s.RoleAssignments);
-                secObject.Context.ExecuteQuery();
+                secObject.Context.ExecuteQueryWithTrace();
             }
 
             return secObject.RoleAssignments.Count == 0;
@@ -46,7 +47,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!secObject.IsPropertyAvailable("FirstUniqueAncestorSecurableObject"))
             {
                 secObject.Context.Load(secObject, s => s.FirstUniqueAncestorSecurableObject);
-                secObject.Context.ExecuteQuery();
+                secObject.Context.ExecuteQueryWithTrace();
             }
 
             var parent = secObject.FirstUniqueAncestorSecurableObject;

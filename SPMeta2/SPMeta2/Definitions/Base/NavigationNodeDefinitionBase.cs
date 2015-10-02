@@ -7,6 +7,7 @@ using System.Text;
 
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -23,6 +24,7 @@ namespace SPMeta2.Definitions.Base
         public NavigationNodeDefinitionBase()
         {
             IsVisible = true;
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -40,12 +42,23 @@ namespace SPMeta2.Definitions.Base
         public string Title { get; set; }
 
         /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
+
+        /// <summary>
         /// URL of the target navigation node.
         /// </summary>
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
         [IdentityKey]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string Url { get; set; }
 
         /// <summary>

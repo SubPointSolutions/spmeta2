@@ -160,6 +160,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts")]
+        public void CanDeploy_ModuleFile_ToList()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddList(list, rndList =>
+                    {
+                        rndList.AddRandomModuleFile();
+                    });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.ModuleFiles.Hosts.Lists")]
         public void CanDeploy_ModuleFile_ToGenericList()
         {
@@ -202,7 +224,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-            TestModels(new  ModelNode[] { model });
+            TestModels(new ModelNode[] { model });
         }
 
         [TestMethod]
@@ -275,8 +297,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
             {
-                
-
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
@@ -286,6 +306,31 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     web.AddList(list, rndList =>
                     {
                         rndList.AddRandomFolder(folder =>
+                        {
+                            folder.AddRandomModuleFile();
+                        });
+                    });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Hosts")]
+        public void CanDeploy_ModuleFile_ToLibrary_FormsFolder()
+        {
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddList(list, rndList =>
+                    {
+                        rndList.AddHostFolder(BuiltInFolderDefinitions.Forms, folder =>
                         {
                             folder.AddRandomModuleFile();
                         });

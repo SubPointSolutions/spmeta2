@@ -8,6 +8,7 @@ using System.Text;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -27,6 +28,9 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
     public class ListItemDefinition : DefinitionBase
     {
         #region constructors

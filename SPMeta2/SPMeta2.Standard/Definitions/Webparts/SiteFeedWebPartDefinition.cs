@@ -20,6 +20,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class SiteFeedWebPartDefinition : WebPartDefinition
     {
         #region properties

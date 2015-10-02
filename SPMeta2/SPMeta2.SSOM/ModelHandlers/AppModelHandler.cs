@@ -69,7 +69,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                if (currentApplications == null || currentApplications.Count == 0)
+                if (currentApplications.Count == 0)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Cannot find application by productId. Loading and installing new instance.");
 
@@ -78,6 +78,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     if (newAppInstance != null && newAppInstance.Status == SPAppInstanceStatus.Initialized)
                     {
+
+
                         appId = newAppInstance.Id;
 
                         var count = 0;
@@ -115,17 +117,60 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
                 else
                 {
-                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing application");
+                    //we had check early
+                    var currentApp = currentApplications.FirstOrDefault();
+
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
+                        string.Format("Processing existing application. Upgrading from [{0}] to [{1}]", currentApp.App.VersionString, appModel.Version));
+
+                    var hasUpdate = false;
 
                     for (int i = 0; i < currentApplications.Count; i++)
                     {
-                        var upApp = currentApplications[i];
-                        var upVersion = new Version(upApp.App.VersionString);
+                        var spApp = currentApplications[i];
+                        var spAppVersion = new Version(spApp.App.VersionString);
 
-                        var targetVersion = new Version(appModel.Version);
+                        var definitionVersion = new Version(appModel.Version);
 
-                        if (upVersion < targetVersion)
-                            currentApplications[i].Upgrade(appPackage);
+                        if (definitionVersion > spAppVersion)
+                        {
+                            TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Performing upgrade");
+
+                            var updateAppInstance = currentApplications[i];
+                            var updateAppId = updateAppInstance.Id;
+
+                            var count = 0;
+                            SPAppInstance localUpdateAppInstance = null;
+
+                            updateAppInstance.Upgrade(appPackage);
+
+                            do
+                            {
+                                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
+                                    "Waiting while app is being installed for [{0}] milliseconds.",
+                                    WaitTimeInMillliseconds);
+
+                                Thread.Sleep(WaitTimeInMillliseconds);
+                                localUpdateAppInstance = web.GetAppInstanceById(updateAppId);
+
+                                count++;
+                            } while (localUpdateAppInstance != null &&
+                                     localUpdateAppInstance.Status != SPAppInstanceStatus.Installed &&
+                                     count < MaxInstallAttempCount);
+
+                            hasUpdate = true;
+                        }
+                        else
+                        {
+                            TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Skipping upgrade due to the lower version");
+                        }
+                    }
+
+                    if (hasUpdate)
+                    {
+                        // refreshing the app collection after update
+                        // the .App.VersionString property will be refreshed
+                        currentApplications = FindExistingApps(webHost, appModel);
                     }
 
                     InvokeOnModelEvent(this, new ModelEventArgs

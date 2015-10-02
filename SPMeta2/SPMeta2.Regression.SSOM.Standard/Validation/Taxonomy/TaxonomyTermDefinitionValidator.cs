@@ -12,6 +12,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.SSOM.Standard.ModelHosts;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
 {
@@ -32,6 +33,15 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
 
             assert.SkipProperty(m => m.LCID, "Can't get LCID withon OM. Should be set while provision.");
 
+            if (!string.IsNullOrEmpty(definition.CustomSortOrder))
+            {
+                assert.ShouldBeEqual(m => m.CustomSortOrder, o => o.CustomSortOrder);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CustomSortOrder, "CustomSortOrder is null. CustomSortOrder property.");
+            }
+
             if (definition.Id.HasValue)
             {
                 assert.ShouldBeEqual(m => m.Id, o => o.Id);
@@ -40,6 +50,92 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             {
                 assert.SkipProperty(m => m.Id, "Id is null. Skipping property.");
             }
+
+            if (definition.IsAvailableForTagging.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.IsAvailableForTagging, o => o.IsAvailableForTagging);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.IsAvailableForTagging, "IsAvailableForTagging is null. Skipping property.");
+            }
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.CustomProperties);
+
+                var isValid = true;
+
+                // missed props, or too much
+                // should be equal on the first provision
+                if (s.CustomProperties.Count != d.CustomProperties.Count)
+                {
+                    isValid = false;
+                }
+
+                // per prop
+                foreach (var customProp in s.CustomProperties)
+                {
+                    if (!d.CustomProperties.ContainsKey(customProp.Name))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (d.CustomProperties[customProp.Name] != customProp.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.LocalCustomProperties);
+
+                var isValid = true;
+
+                // missed props, or too much
+                // should be equal on the first provision
+                if (s.LocalCustomProperties.Count != d.LocalCustomProperties.Count)
+                {
+                    isValid = false;
+                }
+
+                // per prop
+                foreach (var customProp in s.LocalCustomProperties)
+                {
+                    if (!d.LocalCustomProperties.ContainsKey(customProp.Name))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (d.LocalCustomProperties[customProp.Name] != customProp.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    // Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
         }
     }
 }

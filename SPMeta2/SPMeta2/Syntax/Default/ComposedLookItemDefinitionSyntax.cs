@@ -3,24 +3,40 @@ using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ComposedLookItemModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ComposedLookItemDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddComposedLookItem(this ModelNode model, ComposedLookItemDefinition definition)
+        public static TModelNode AddComposedLookItem<TModelNode>(this TModelNode model, ComposedLookItemDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddComposedLookItem(model, definition, null);
         }
 
-        public static ModelNode AddComposedLookItem(this ModelNode model, ComposedLookItemDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddComposedLookItem<TModelNode>(this TModelNode model, ComposedLookItemDefinition definition,
+            Action<ComposedLookItemModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddComposedLookItems(this ModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddComposedLookItems<TModelNode>(this TModelNode model, IEnumerable<ComposedLookItemDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

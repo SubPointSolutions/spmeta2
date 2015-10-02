@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="e9a61998-07f2-45e9-ae43-9e93fa6b11bb" solutionId="e9a61998-07f2-45e9-ae43-9e93fa6b11bb" resetWebServer="true" sharePointProductVersion="15.0" name="SPMeta2.Containers.SandboxSolutionContainer" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="e9a61998-07f2-45e9-ae43-9e93fa6b11bb" solutionId="e9a61998-07f2-45e9-ae43-9e93fa6b11bb" sharePointProductVersion="15.0" name="SPMeta2.Containers.SandboxSolutionContainer" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <features>
     <featureReference itemId="93eaa573-0f37-4985-a830-19ac49befaf0" />
     <featureReference itemId="3dfe0423-987b-4b08-888c-0bfb3e25ae4d" />

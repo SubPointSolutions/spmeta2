@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -21,6 +22,13 @@ namespace SPMeta2.Definitions
 
     [Serializable]
     [DataContract]
+
+    [ParentHostCapability(typeof(WebDefinition))]
+    [ParentHostCapability(typeof(ListDefinition))]
+    [ParentHostCapability(typeof(FolderDefinition))]
+    [ParentHostCapability(typeof(ListItemDefinition))]
+
+    [ExpectManyInstances]
 
     public class SecurityGroupLinkDefinition : DefinitionBase
     {

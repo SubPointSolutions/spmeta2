@@ -1,4 +1,5 @@
 ﻿using System;
+using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -21,11 +22,27 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
 
             for (var index = 0; index < choiceCount; index++)
             {
-                def.Choices.Add(Rnd.String(8));
-                def.Mappings.Add(Rnd.String(8));
+                var choiceValue = Rnd.String(8);
+
+                def.Choices.Add(choiceValue);
+                def.Mappings.Add(choiceValue);
             }
 
+            defaultValue = Rnd.RandomFromArray(def.Choices);
+
+            def.DefaultValue = defaultValue;
+
             return def;
+        }
+
+        private string defaultValue = string.Empty;
+
+        protected override void PostProcessDefinitionTemplate(FieldDefinition def)
+        {
+            base.PostProcessDefinitionTemplate(def);
+
+            def.Indexed = true;
+            def.DefaultValue = defaultValue;
         }
     }
 }

@@ -11,6 +11,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -66,7 +67,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             //spObjectContext.Load(spObject, o => o.EventSourceId);
             //spObjectContext.Load(spObject, o => o.EventTypes);
 
-            //spObjectContext.ExecuteQuery();
+            //spObjectContext.ExecuteQueryWithTrace();
 
             #region list accos
 
@@ -132,7 +133,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var historyListId = new Guid(spObject.PropertyDefinitions["HistoryListId"]);
 
             var lists = webContext.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl, l => l.Id));
-            webContext.ExecuteQuery();
+            webContext.ExecuteQueryWithTrace();
 
             var srcTaskList = lists.FirstOrDefault(l => l.Id == taskListId);
             var srcHistoryList = lists.FirstOrDefault(l => l.Id == historyListId);

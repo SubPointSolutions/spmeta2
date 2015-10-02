@@ -6,6 +6,7 @@ using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions.DisplayTemplates
 {
@@ -24,6 +25,11 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class FilterDisplayTemplateDefinition : ControlDisplayTemplateDefinition
     {
         #region constructors

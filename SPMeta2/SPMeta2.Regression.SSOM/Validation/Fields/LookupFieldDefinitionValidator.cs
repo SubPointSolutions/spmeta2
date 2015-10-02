@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Utilities;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 
 namespace SPMeta2.Regression.SSOM.Validation.Fields
 {
@@ -71,15 +72,48 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
                 typedFieldAssert.SkipProperty(m => m.LookupWebId, "LookupWebId is NULL. Skipping.");
             }
 
+            if (!string.IsNullOrEmpty(typedDefinition.RelationshipDeleteBehavior))
+            {
+                typedFieldAssert.ShouldBeEqual(m => m.RelationshipDeleteBehavior, o => o.GetRelationshipDeleteBehavior());
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior is NULL. Skipping.");
+            }
+
+            // web url
+            if (!string.IsNullOrEmpty(typedDefinition.LookupWebUrl))
+            {
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
+                var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
+
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.LookupWebUrl);
+
+                    var isValid = d.LookupWebId == targetWeb.ID;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupWebUrl, "LookupWebUrl is NULL. Skipping.");
+            }
+
 
             if (!string.IsNullOrEmpty(typedDefinition.LookupListTitle))
             {
-                var site = this.GetCurrentSite();
-                var web = typedDefinition.LookupWebId.HasValue
-                    ? site.OpenWeb(typedDefinition.LookupWebId.Value)
-                    : site.RootWeb;
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
 
-                var list = web.Lists[typedDefinition.LookupListTitle];
+                var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
+                var list = targetWeb.Lists[typedDefinition.LookupListTitle];
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -103,12 +137,10 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             if (!string.IsNullOrEmpty(typedDefinition.LookupListUrl))
             {
-                var site = this.GetCurrentSite();
-                var web = typedDefinition.LookupWebId.HasValue
-                    ? site.OpenWeb(typedDefinition.LookupWebId.Value)
-                    : site.RootWeb;
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
 
-                var list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedDefinition.LookupListUrl));
+                var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
+                var list = targetWeb.GetList(SPUrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, typedDefinition.LookupListUrl));
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -168,6 +200,14 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             {
                 typedFieldAssert.SkipProperty(m => m.LookupField, "LookupField is NULL. Skipping.");
             }
+        }
+    }
+
+    internal static class SPFieldLookupExtensions
+    {
+        public static string GetRelationshipDeleteBehavior(this SPFieldLookup field)
+        {
+            return field.RelationshipDeleteBehavior.ToString();
         }
     }
 }

@@ -1,40 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class FieldModelNode : TypedModelNode
+    {
+
+    }
+
     public static class FieldDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddField(this ModelNode siteModel, FieldDefinition definition)
+        public static TModelNode AddField<TModelNode>(this TModelNode model, FieldDefinition definition)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return AddFields(siteModel, new[] { definition });
+            return AddField(model, definition, null);
         }
 
-        public static ModelNode AddField(this ModelNode model, FieldDefinition fielDefinition, Action<ModelNode> action)
+        public static TModelNode AddField<TModelNode>(this TModelNode model, FieldDefinition definition,
+            Action<FieldModelNode> action)
+            where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            return model.AddDefinitionNode(fielDefinition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddFields(this ModelNode siteModel, FieldDefinition[] fielDefinition)
-        {
-            return AddFields(siteModel, (IEnumerable<FieldDefinition>)fielDefinition);
-        }
+        #endregion
 
-        public static ModelNode AddFields(this ModelNode model, IEnumerable<FieldDefinition> fieldDefinitions)
+        #region array overload
+
+        public static TModelNode AddFields<TModelNode>(this TModelNode model, IEnumerable<FieldDefinition> definitions)
+           where TModelNode : ModelNode, IFieldHostModelNode, new()
         {
-            foreach (var fieldDefinition in fieldDefinitions)
-                model.AddDefinitionNode(fieldDefinition);
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
 
             return model;
         }
 
         #endregion
-
-
     }
 }

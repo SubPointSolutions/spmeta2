@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -20,7 +22,8 @@ namespace SPMeta2.Syntax.Default
 
         static SPMeta2Model()
         {
-            RegisterKnownDefinition(typeof(FieldDefinition).Assembly);
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[] { typeof(FieldDefinition).Assembly }));
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<ModelNode>(new[] { typeof(FieldDefinition).Assembly }));
         }
 
         #endregion
@@ -46,7 +49,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewFarmModel(Action<FarmModelNode> action)
         {
-            return NewFarmModel(new FarmDefinition { RequireSelfProcessing = false }, action);
+            var node = NewFarmModel(new FarmDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
 
@@ -99,7 +109,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static WebApplicationModelNode NewWebApplicationModel(Action<WebApplicationModelNode> action)
         {
-            return NewWebApplicationModel(new WebApplicationDefinition { RequireSelfProcessing = false }, action);
+            var node = NewWebApplicationModel(new WebApplicationDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -152,7 +169,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static SiteModelNode NewSiteModel(Action<SiteModelNode> action)
         {
-            return NewSiteModel(new SiteDefinition { RequireSelfProcessing = false }, action);
+            var node = NewSiteModel(new SiteDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -213,7 +237,14 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static WebModelNode NewWebModel(Action<WebModelNode> action)
         {
-            return NewWebModel(new WebDefinition { RequireSelfProcessing = false }, action);
+            var node = NewWebModel(new WebDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -261,9 +292,16 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(Action<ModelNode> action)
+        public static ModelNode NewListModel(Action<ListModelNode> action)
         {
-            return NewListModel(new ListDefinition { RequireSelfProcessing = false }, action);
+            var node = NewListModel(new ListDefinition
+            {
+                //RequireSelfProcessing = false
+            }, action);
+
+            node.Options.RequireSelfProcessing = false;
+
+            return node;
         }
 
         /// <summary>
@@ -274,7 +312,7 @@ namespace SPMeta2.Syntax.Default
         /// <param name="listDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ModelNode> action)
+        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ListModelNode> action)
         {
             return NewModelNode<ListDefinition, ListModelNode>(listDefinition, action);
         }
@@ -287,10 +325,20 @@ namespace SPMeta2.Syntax.Default
             where TModelDefinition : DefinitionBase, new()
             where TNodeType : TypedModelNode, new()
         {
-            var newModelNode = new TNodeType { Value = model ?? new TModelDefinition { RequireSelfProcessing = false } };
+            var newModelNode = new TNodeType
+            {
+                Value = model ?? new TModelDefinition
+                    {
+                        //RequireSelfProcessing = false
+                    }
+            };
 
+            if (model == null)
+            {
+                newModelNode.Options.RequireSelfProcessing = false;
+            }
             // levacy
-            newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
+            ///newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
 
             if (action != null)
                 action(newModelNode);
@@ -302,27 +350,58 @@ namespace SPMeta2.Syntax.Default
 
         #region serialization
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(Type type)
         {
             RegisterKnownDefinition(new[] { type });
         }
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(Assembly assembly)
         {
             RegisterKnownDefinition(new[] { assembly });
         }
 
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(IEnumerable<Assembly> assemblies)
         {
             RegisterKnownDefinition(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(assemblies));
         }
 
+
+        [Obsolete("Use RegisterKnownType instead")]
         public static void RegisterKnownDefinition(IEnumerable<Type> types)
+        {
+            RegisterKnownType(types);
+        }
+
+        #region type registration
+
+        public static void RegisterKnownType(Type type)
+        {
+            RegisterKnownType(new[] { type });
+        }
+
+        public static void RegisterKnownType(Assembly assembly)
+        {
+            RegisterKnownType(new[] { assembly });
+        }
+
+        public static void RegisterKnownType(IEnumerable<Assembly> assemblies)
+        {
+            RegisterKnownType(ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(assemblies));
+        }
+
+
+        public static void RegisterKnownType(IEnumerable<Type> types)
         {
             foreach (var type in types)
                 if (!KnownTypes.Contains(type))
                     KnownTypes.Add(type);
         }
+
+        #endregion
+
 
         public static List<Type> KnownTypes = new List<Type>();
 
@@ -336,26 +415,64 @@ namespace SPMeta2.Syntax.Default
 
         public static string ToJSON(ModelNode model)
         {
+            EnureKnownTypes(model);
+
             var serializer = ServiceContainer.Instance.GetService<DefaultJSONSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
             return serializer.Serialize(model);
         }
 
-        public static ModelNode FromXML(string jsonString)
+        public static ModelNode FromXML(string xmlString)
+        {
+            return FromXML<ModelNode>(xmlString);
+        }
+
+        public static TModelNode FromXML<TModelNode>(string xmlString)
+            where TModelNode : ModelNode
+        {
+            // corrrect type convertion for the typed root models
+            if (typeof(TModelNode) == typeof(ModelNode))
+            {
+                var xmlRootDoc = XDocument.Parse(xmlString);
+
+                var rootModelNodeTypeUpperName = xmlRootDoc.Root.Name.LocalName.ToUpper();
+                var rootModelNodeType = KnownTypes.FirstOrDefault(t => t.Name.ToUpper() == rootModelNodeTypeUpperName);
+
+                return FromXML(rootModelNodeType, xmlString) as TModelNode;
+            }
+
+            return FromXML(typeof(TModelNode), xmlString) as TModelNode;
+        }
+
+        public static ModelNode FromXML(Type modelNodetype, string xmlString)
         {
             var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
-            return serializer.Deserialize(typeof(ModelNode), jsonString) as ModelNode;
+            return serializer.Deserialize(modelNodetype, xmlString) as ModelNode;
         }
+
 
         public static string ToXML(ModelNode model)
         {
+            EnureKnownTypes(model);
+
             var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
             serializer.RegisterKnownTypes(KnownTypes);
 
             return serializer.Serialize(model);
+        }
+
+        private static void EnureKnownTypes(ModelNode model)
+        {
+            var allModelNodes = model.FindNodes(n => true);
+
+            foreach (var node in allModelNodes)
+            {
+                RegisterKnownType(node.GetType());
+                RegisterKnownType(node.Value.GetType());
+            }
         }
 
         #endregion

@@ -39,7 +39,7 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
                 .ShouldBeEqual(m => m.Description, o => o.GetSiteDescription())
                 .ShouldBeEqual(m => m.SiteTemplate, o => o.GetSiteTemplate())
                 .ShouldBeEndOf(m => m.Url, o => o.Url)
-                .ShouldBePartOf(m => m.PrefixName, o => o.Url)
+                //.ShouldBePartOf(m => m.PrefixName, o => o.Url)
 
                 .ShouldBePartOf(m => m.OwnerLogin, o => o.GetOwnerLogin())
                 .ShouldBePartOf(m => m.OwnerName, o => o.GetOwnerName())
@@ -50,6 +50,15 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
                 .SkipProperty(m => m.SecondaryContactEmail, "Skipping SecondaryContactEmail validation.")
 
                 .ShouldBeEqual(m => m.LCID, o => o.GetSiteLCID());
+
+            if (!string.IsNullOrEmpty(definition.PrefixName))
+            {
+                assert.ShouldBePartOf(m => m.PrefixName, o => o.Url);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.PrefixName, "PrefixName is null or empty. Skipping.");
+            }
 
             if (!string.IsNullOrEmpty(definition.DatabaseName))
             {

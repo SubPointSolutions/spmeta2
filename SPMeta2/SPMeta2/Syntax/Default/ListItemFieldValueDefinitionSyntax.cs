@@ -3,21 +3,31 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ListItemFieldValueModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ListItemFieldValueDefinitionSyntax
     {
-        #region methods
-
-        public static ModelNode AddListItemFieldValue(this ModelNode model, Guid fieldId, object fieldValue)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            Guid fieldId, object fieldValue)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, fieldId, fieldValue, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, Guid fieldId, object fieldValue, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            Guid fieldId, object fieldValue, Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -26,12 +36,16 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, string fieldName, object fieldValue)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            string fieldName, object fieldValue)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, fieldName, fieldValue, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, string fieldName, object fieldValue, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model,
+            string fieldName, object fieldValue, Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, new ListItemFieldValueDefinition
             {
@@ -40,23 +54,27 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition)
+        #region methods
+
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model, ListItemFieldValueDefinition definition)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
             return AddListItemFieldValue(model, definition, null);
         }
 
-        public static ModelNode AddListItemFieldValue(this ModelNode model, ListItemFieldValueDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListItemFieldValue<TModelNode>(this TModelNode model, ListItemFieldValueDefinition definition,
+            Action<ListItemFieldValueModelNode> action)
+            where TModelNode : ModelNode, IListItemModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
-
-
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddListItemFieldValues(this ModelNode model, IEnumerable<ListItemFieldValueDefinition> definitions)
+        public static TModelNode AddListItemFieldValues<TModelNode>(this TModelNode model, IEnumerable<ListItemFieldValueDefinition> definitions)
+           where TModelNode : ModelNode, IListItemModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -65,6 +83,6 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-      
+
     }
 }

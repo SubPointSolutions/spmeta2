@@ -1,4 +1,10 @@
-﻿clscd "$PSScriptRoot"$PSScriptRoot. "$PSScriptRoot\_config.ps1"
+﻿cls
+
+cd "$PSScriptRoot"
+
+$PSScriptRoot
+
+. "$PSScriptRoot\_config.ps1"
 . "$PSScriptRoot\_sys.common.ps1"
 
 Write-Host "Configuring M2 test environment with the following settings:" -fore Green

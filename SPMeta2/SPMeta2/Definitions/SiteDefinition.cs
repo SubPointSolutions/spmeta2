@@ -5,6 +5,7 @@ using System;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -22,8 +23,14 @@ namespace SPMeta2.Definitions
     [CSOMParentHostAttribute(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [ExpectArrayExtensionMethod]
+    [Serializable]
     [DataContract]
+
+    [ParentHostCapability(typeof(WebApplicationDefinition))]
+
+    [ExpectManyInstances]
+
     public class SiteDefinition : DefinitionBase
     {
         #region constructors
@@ -43,6 +50,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>
@@ -63,6 +71,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public string Url { get; set; }
 
         /// <summary>
@@ -82,6 +91,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string SiteTemplate { get; set; }
 
         /// <summary>
@@ -98,6 +108,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string OwnerLogin { get; set; }
 
         /// <summary>

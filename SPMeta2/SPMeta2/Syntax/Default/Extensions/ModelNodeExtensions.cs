@@ -7,7 +7,14 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 
+// legacy one
 namespace SPMeta2.Syntax.Default.Extensions
+{
+    internal class TMP { }
+}
+
+// moved
+namespace SPMeta2.Syntax.Default
 {
     public static class ModelNodeExtensions
     {
@@ -35,7 +42,7 @@ namespace SPMeta2.Syntax.Default.Extensions
             {
                 modelNode.Options = options;
 
-                definition.RequireSelfProcessing = options.RequireSelfProcessing;
+                //definition.RequireSelfProcessing = options.RequireSelfProcessing;
             }
 
             node.ChildModels.Add(modelNode);

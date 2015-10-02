@@ -23,8 +23,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(ContentTypeDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var web = ExtractWeb(modelHost);
 
             var site = web.Site;
@@ -149,6 +155,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     targetContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
+                ProcessLocalization(targetContentType, contentTypeModel);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -164,6 +172,21 @@ namespace SPMeta2.SSOM.ModelHandlers
                 targetContentType.UpdateIncludingSealedAndReadOnly(true);
 
                 tmpWeb.Update();
+            }
+        }
+
+        protected virtual void ProcessLocalization(SPContentType obj, ContentTypeDefinition definition)
+        {
+            if (definition.NameResource.Any())
+            {
+                foreach (var locValue in definition.NameResource)
+                    LocalizationService.ProcessUserResource(obj, obj.NameResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
             }
         }
 

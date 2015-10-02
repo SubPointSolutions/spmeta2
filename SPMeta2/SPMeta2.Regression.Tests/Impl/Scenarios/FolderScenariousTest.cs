@@ -35,7 +35,44 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        protected void AttachFolderHierarchy(ModelNode node)
+        protected void AttachFolderHierarchyToFolder(FolderModelNode node)
+        {
+            node
+                .AddRandomFolder(rootFolder =>
+                {
+                    rootFolder
+                         .AddRandomFolder(subFolder =>
+                         {
+                             subFolder
+                                 .AddRandomFolder()
+                                 .AddRandomFolder();
+                         })
+                        .AddRandomFolder(subFolder =>
+                        {
+                            subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                        });
+                })
+                .AddRandomFolder(rootFolder =>
+                {
+                    rootFolder
+                        .AddRandomFolder(subFolder =>
+                        {
+                            subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                        })
+                       .AddRandomFolder(subFolder =>
+                       {
+                           subFolder
+                                .AddRandomFolder()
+                                .AddRandomFolder();
+                       });
+                });
+        }
+
+        protected void AttachFolderHierarchyToList(ListModelNode node)
         {
             node
                 .AddRandomFolder(rootFolder =>
@@ -86,7 +123,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     web.AddRandomWeb(rndWeb =>
                     {
-                        rndWeb.AddList(listDef, list => AttachFolderHierarchy(list));
+                        rndWeb.AddList(listDef, list => AttachFolderHierarchyToList(list));
                     });
                 });
 
@@ -107,7 +144,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     web.AddRandomWeb(rndWeb =>
                     {
-                        rndWeb.AddList(listDef, list => AttachFolderHierarchy(list));
+                        rndWeb.AddList(listDef, list => AttachFolderHierarchyToList(list));
                     });
                 });
 

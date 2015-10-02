@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
@@ -8,10 +9,25 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public class WebModelNode : TypedModelNode
+    [Serializable]
+    [DataContract]
+    public class WebModelNode : TypedModelNode, IWebModelNode,
+        IFieldHostModelNode,
+        IContentTypeHostModelNode,
+        ISecurableObjectHostModelNode,
+        IPropertyHostModelNode,
+        IEventReceiverHostModelNode,
+        IWebHostModelNode,
+        IWelcomePageHostModelNode,
+        IModuleFileHostModelNode,
+        IAuditSettingsHostModelNode,
+        IFeatureHostModelNode,
+        IUserCustomActionHostModelNode,
+        ITopNavigationNodeHostModelNode,
+        IQuickLaunchNavigationNodeHostModelNode,
+        ISP2013WorkflowSubscriptionHostModelNode,
+        ISearchSettingsHostModelNode
     {
-
-
 
     }
 
@@ -19,22 +35,15 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition)
+        public static TModelNode AddWeb<TModelNode>(this TModelNode model, WebDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddWeb(model, definition, null);
         }
 
-        public static SiteModelNode AddWeb(this SiteModelNode model, WebDefinition definition, Action<WebModelNode> action)
-        {
-            return model.AddTypedDefinitionNode(definition, action);
-        }
-
-        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition)
-        {
-            return AddWeb(model, definition, null);
-        }
-
-        public static WebModelNode AddWeb(this WebModelNode model, WebDefinition definition, Action<WebModelNode> action)
+        public static TModelNode AddWeb<TModelNode>(this TModelNode model, WebDefinition definition,
+            Action<WebModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -43,15 +52,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static WebModelNode AddWebs(this WebModelNode model, IEnumerable<WebDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
-
-            return model;
-        }
-
-        public static SiteModelNode AddWebs(this SiteModelNode model, IEnumerable<WebDefinition> definitions)
+        public static TModelNode AddWebs<TModelNode>(this TModelNode model, IEnumerable<WebDefinition> definitions)
+           where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -63,22 +65,14 @@ namespace SPMeta2.Syntax.Default
 
         #region host override
 
-        public static SiteModelNode AddHostWeb(this SiteModelNode model, WebDefinition definition)
+        public static TModelNode AddHostWeb<TModelNode>(this TModelNode model, WebDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddHostWeb(model, definition, null);
         }
-
-        public static SiteModelNode AddHostWeb(this SiteModelNode model, WebDefinition definition, Action<WebModelNode> action)
-        {
-            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
-        }
-
-        public static WebModelNode AddHostWeb(this WebModelNode model, WebDefinition definition)
-        {
-            return AddHostWeb(model, definition, null);
-        }
-
-        public static WebModelNode AddHostWeb(this WebModelNode model, WebDefinition definition, Action<WebModelNode> action)
+        public static TModelNode AddHostWeb<TModelNode>(this TModelNode model, WebDefinition definition,
+            Action<WebModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }

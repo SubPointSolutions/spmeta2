@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Syntax.Default.Utils;
 using System.Text;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<MasterPageDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindPage(folderModelHost.CurrentList, folder, definition);
@@ -35,7 +36,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spFile);
             context.Load(spFile, o => o.ServerRelativeUrl);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)

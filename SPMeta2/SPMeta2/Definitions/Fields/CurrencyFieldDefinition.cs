@@ -25,6 +25,8 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class CurrencyFieldDefinition : FieldDefinition
     {
         #region constructors

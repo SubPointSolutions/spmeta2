@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions.Webparts
 
     [Serializable] 
     [DataContract]
+
+    [ExpectManyInstances]
     public class UserCodeWebPartDefinition : WebPartDefinition
     {
         #region constructors

@@ -23,9 +23,9 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ClientWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var pageItem = listItemModelHost.HostListItem;
+            //var pageItem = listItemModelHost.HostListItem;
 
-            WithWithExistingWebPart(pageItem, definition, spObject =>
+            WithExistingWebPart(listItemModelHost.HostFile, definition, spObject =>
             {
                 var assert = ServiceFactory.AssertService
                                            .NewAssert(model, definition, spObject)

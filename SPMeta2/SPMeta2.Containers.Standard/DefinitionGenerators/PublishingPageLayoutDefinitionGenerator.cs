@@ -7,6 +7,7 @@ using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Syntax.Default;
@@ -60,12 +61,20 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
             return new DefinitionBase[] { sitePublishing, webPublishing, PublishingPageContentType };
         }
 
-        public override DefinitionBase GetCustomParenHost()
+        public override ModelNode GetCustomParenHost()
         {
-            return BuiltInListDefinitions.Catalogs.MasterPage.Inherit<ListDefinition>(def =>
+            var definition = BuiltInListDefinitions.Catalogs.MasterPage.Inherit<ListDefinition>(def =>
             {
-                def.RequireSelfProcessing = false;
+
             });
+
+            var node = new ListModelNode
+            {
+                Value = definition,
+                Options = { RequireSelfProcessing = false }
+            };
+
+            return node;
         }
     }
 }

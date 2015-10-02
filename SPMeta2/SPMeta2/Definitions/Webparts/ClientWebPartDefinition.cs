@@ -22,6 +22,8 @@ namespace SPMeta2.Definitions.Webparts
 
     [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
     public class ClientWebPartDefinition : WebPartDefinition
     {
         #region properties
@@ -32,9 +34,13 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectRequired]
         [DataMember]
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
 
-        //[ExpectRequired]
+        // Remoed ExpectRequired
+        // Enhance 'ClientWebPart' provision - ProductWebId should be current web by default #623
+        // https://github.com/SubPointSolutions/spmeta2/issues/623
+        // [ExpectRequired]
+
         [DataMember]
         public Guid ProductWebId { get; set; }
 

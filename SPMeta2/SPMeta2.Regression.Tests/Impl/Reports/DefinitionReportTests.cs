@@ -34,7 +34,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
             var result = new StringBuilder();
 
 
-            foreach (var definitionType in DefinitionTypes.OrderBy(d => d.Name))
+            foreach (var definitionType in AllDefinitionTypes.OrderBy(d => d.Name))
             {
                 var allProps = definitionType.GetProperties().OrderBy(p => p.Name);
                 var validatedProps = allProps.Where(p => p.GetCustomAttributes(typeof(ExpectValidationAttribute)).Any());

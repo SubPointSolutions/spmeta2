@@ -20,8 +20,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(SecurityGroupLinkDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var securableObject = ExtractSecurableObject(modelHost);
 
             if (securableObject is SPSecurableObject)
@@ -46,31 +51,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private SPWeb ExtractWeb(object modelHost)
-        {
-            if (modelHost is SPWeb)
-                return modelHost as SPWeb;
 
-            if (modelHost is SPList)
-                return (modelHost as SPList).ParentWeb;
 
-            if (modelHost is SPListItem)
-                return (modelHost as SPListItem).ParentList.ParentWeb;
 
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite.RootWeb;
-
-            if (modelHost is WebModelHost)
-                return (modelHost as WebModelHost).HostWeb;
-
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostList.ParentWeb;
-
-            if (modelHost is FolderModelHost)
-                return (modelHost as FolderModelHost).CurrentLibraryFolder.ParentWeb;
-
-            throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
-        }
 
         protected SPGroup ResolveSecurityGroup(SPWeb web, SecurityGroupLinkDefinition securityGroupLinkModel)
         {
@@ -172,7 +155,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
         }
 
-        protected SPSecurableObject ExtractSecurableObject(object modelHost)
+        protected virtual SPWeb ExtractWeb(object modelHost)
+        {
+            return SecurableHelper.ExtractWeb(modelHost);
+        }
+
+        protected virtual SPSecurableObject ExtractSecurableObject(object modelHost)
         {
             return SecurableHelper.ExtractSecurableObject(modelHost);
         }
@@ -220,6 +208,45 @@ namespace SPMeta2.SSOM.ModelHandlers
 
     internal static class SecurableHelper
     {
+        public static SPWeb ExtractWeb(object modelHost)
+        {
+            if (modelHost is SPWeb)
+                return modelHost as SPWeb;
+
+            if (modelHost is SPList)
+                return (modelHost as SPList).ParentWeb;
+
+            if (modelHost is SPListItem)
+                return (modelHost as SPListItem).ParentList.ParentWeb;
+
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
+
+            if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb;
+
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.ParentWeb;
+
+            if (modelHost is FolderModelHost)
+            {
+                var folderHost = (modelHost as FolderModelHost);
+
+                if (folderHost.CurrentLibraryFolder != null)
+                    return folderHost.CurrentLibraryFolder.ParentWeb;
+                else
+                    return folderHost.CurrentListItem.ParentList.ParentWeb;
+            }
+
+            if (modelHost is SPFile)
+                return (modelHost as SPFile).Web;
+
+            if (modelHost is WebpartPageModelHost)
+                return (modelHost as WebpartPageModelHost).PageListItem.ParentList.ParentWeb;
+
+            throw new Exception(string.Format("modelHost with type [{0}] is not supported.", modelHost.GetType()));
+        }
+
         public static SPSecurableObject ExtractSecurableObject(object modelHost)
         {
             if (modelHost is SPSecurableObject)
@@ -233,6 +260,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
+
+            if (modelHost is SPFile)
+                return (modelHost as SPFile).ListItemAllFields;
 
             if (modelHost is FolderModelHost)
             {

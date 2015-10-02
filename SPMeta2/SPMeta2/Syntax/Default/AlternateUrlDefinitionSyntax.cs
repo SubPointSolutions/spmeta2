@@ -3,6 +3,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -10,25 +11,37 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+
+    [Serializable]
+    [DataContract]
+    public class AlternateUrlModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AlternateUrlDefinitionSyntax
     {
-        #region base
+        #region methods
 
-        public static ModelNode AddAlternateUrl(this ModelNode model, AlternateUrlDefinition definition)
+        public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition)
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return AddAlternateUrl(model, definition, null);
         }
 
-        public static ModelNode AddAlternateUrl(this ModelNode model, AlternateUrlDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddAlternateUrl<TModelNode>(this TModelNode model, AlternateUrlDefinition definition,
+            Action<AlternateUrlModelNode> action)
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddAlternateUrls(this ModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+        public static TModelNode AddAlternateUrls<TModelNode>(this TModelNode model, IEnumerable<AlternateUrlDefinition> definitions)
+           where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

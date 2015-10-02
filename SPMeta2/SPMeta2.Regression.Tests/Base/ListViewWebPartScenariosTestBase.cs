@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Tests.Impl.Scenarios;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Regression.Tests.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {

@@ -34,8 +34,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<CalculatedFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field.Context.CastTo<FieldCalculated>(field);
 
-            typedField.Formula = typedFieldModel.Formula ?? string.Empty;
-            typedField.OutputType = typedField.OutputType = (FieldType)Enum.Parse(typeof(FieldType), typedFieldModel.OutputType);
+            if (!string.IsNullOrEmpty(typedFieldModel.Formula))
+                typedField.Formula = typedFieldModel.Formula;
+
+            if (!string.IsNullOrEmpty(typedFieldModel.OutputType))
+                typedField.OutputType = (FieldType)Enum.Parse(typeof(FieldType), typedFieldModel.OutputType);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

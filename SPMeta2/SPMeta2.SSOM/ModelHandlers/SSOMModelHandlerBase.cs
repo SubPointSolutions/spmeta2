@@ -17,6 +17,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         public SSOMModelHandlerBase()
         {
             TokenReplacementService = ServiceContainer.Instance.GetService<SSOMTokenReplacementService>();
+            LocalizationService = ServiceContainer.Instance.GetService<SSOMLocalizationService>();
         }
 
         #endregion
@@ -24,6 +25,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         #region properties
 
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
+        public LocalizationServiceBase LocalizationService { get; set; }
 
         #endregion
     }

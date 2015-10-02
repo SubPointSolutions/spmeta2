@@ -42,15 +42,7 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
 
         public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
         {
-            var sandboxSolution = new SandboxSolutionDefinition
-            {
-                FileName = string.Format("{0}.wsp", Rnd.String()),
-                Activate = true,
-
-                SolutionId = new Guid("e9a61998-07f2-45e9-ae43-9e93fa6b11bb"),
-                Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Containers.SandboxSolutionContainer.wsp")
-            };
-
+            var sandboxSolution = new SandboxSolutionDefinitionGenerator().GenerateRandomDefinition();
             var webpartFeature = new FeatureDefinition
             {
                 Scope = FeatureDefinitionScope.Site,

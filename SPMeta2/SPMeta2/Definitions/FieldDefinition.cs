@@ -9,10 +9,12 @@ using SPMeta2.Common;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
     [DataContract]
+    [Serializable]
     public class FieldAttributeValue : KeyNameValue
     {
         public FieldAttributeValue()
@@ -25,6 +27,29 @@ namespace SPMeta2.Definitions
             Name = name;
             Value = value;
         }
+    }
+
+    /// <summary>
+    /// Corresponds to USerResource.SetValueForUICulture() methods and Title/Description resources.
+    /// </summary>
+    [DataContract]
+    [Serializable]
+
+    public class ValueForUICulture
+    {
+        #region properties
+
+        [DataMember]
+        public int? CultureId { get; set; }
+
+
+        [DataMember]
+        public string CultureName { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+
+        #endregion
     }
 
 
@@ -42,6 +67,11 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(SiteDefinition))]
+    [ParentHostCapability(typeof(WebDefinition))]
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
     public class FieldDefinition : DefinitionBase
     {
         #region constructors
@@ -56,12 +86,14 @@ namespace SPMeta2.Definitions
 
             AdditionalAttributes = new List<FieldAttributeValue>();
             AddFieldOptions = BuiltInAddFieldOptions.DefaultValue;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
         }
 
         #endregion
 
         #region properties
-
 
         /// <summary>
         /// Reflects AddToDefaultView option while adding field to the list
@@ -83,6 +115,8 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [DataMember]
+
+        [XmlPropertyCapability]
         public string RawXml { get; set; }
 
         /// <summary>
@@ -113,6 +147,14 @@ namespace SPMeta2.Definitions
         public string Title { get; set; }
 
         /// <summary>
+        /// Corresponds to TitleResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
+
+        /// <summary>
         /// Description of the target field.
         /// </summary>
         /// 
@@ -121,6 +163,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// Group of the target field.

@@ -26,6 +26,8 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class GeolocationFieldDefinition : FieldDefinition
     {
         #region constructors

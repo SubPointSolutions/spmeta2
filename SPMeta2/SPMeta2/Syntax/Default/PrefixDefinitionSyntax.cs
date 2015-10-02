@@ -4,6 +4,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -11,18 +12,41 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class PrefixModelNode : TypedModelNode
+    {
+
+    }
+
     public static class PrefixDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddPrefix(this ModelNode model, PrefixDefinition definition)
+        public static TModelNode AddPrefix<TModelNode>(this TModelNode model, PrefixDefinition definition)
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return AddPrefix(model, definition, null);
         }
 
-        public static ModelNode AddPrefix(this ModelNode model, PrefixDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddPrefix<TModelNode>(this TModelNode model, PrefixDefinition definition,
+            Action<PrefixModelNode> action)
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
+        }
+
+        #endregion
+
+        #region array overload
+
+        public static TModelNode AddPrefixs<TModelNode>(this TModelNode model, IEnumerable<PrefixDefinition> definitions)
+           where TModelNode : ModelNode, IWebApplicationModelNode, new()
+        {
+            foreach (var definition in definitions)
+                model.AddDefinitionNode(definition);
+
+            return model;
         }
 
         #endregion

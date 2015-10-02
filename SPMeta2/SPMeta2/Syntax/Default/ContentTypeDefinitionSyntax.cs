@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ContentTypeModelNode : TypedModelNode, IContentTypeModelNode,
+        IEventReceiverHostModelNode,
+        IModuleFileHostModelNode,
+        IContentTypeFieldLinkHostModelNode
+    {
+
+    }
+
     public static class ContentTypeDefinitionSyntax
     {
         #region consts
@@ -16,28 +27,35 @@ namespace SPMeta2.Syntax.Default
 
         #region methods
 
-        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition)
+        public static TModelNode AddContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             return AddContentType(model, definition, null);
         }
 
-        public static ModelNode AddContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition,
+            Action<ContentTypeModelNode> action)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, params ContentTypeDefinition[] definitions)
-        {
-            return AddContentTypes(siteModel, (IEnumerable<ContentTypeDefinition>)definitions);
-        }
+        #endregion
 
-        public static ModelNode AddContentTypes(this ModelNode siteModel, IEnumerable<ContentTypeDefinition> definitions)
+        #region array overload
+
+        public static TModelNode AddContentTypes<TModelNode>(this TModelNode model, IEnumerable<ContentTypeDefinition> definitions)
+           where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             foreach (var definition in definitions)
-                AddContentType(siteModel, definition);
+                model.AddDefinitionNode(definition);
 
-            return siteModel;
+            return model;
         }
+
+        #endregion
+
+        #region utils
 
         public static bool IsChildOf(this ContentTypeDefinition childContentTypeDefinition,
             ContentTypeDefinition parentContentTypeDefinition)
@@ -93,16 +111,17 @@ namespace SPMeta2.Syntax.Default
 
         #region add host
 
-        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition)
+        public static TModelNode AddHostContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition)
+             where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
             return AddHostContentType(model, definition, null);
         }
-
-        public static ModelNode AddHostContentType(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddHostContentType<TModelNode>(this TModelNode model, ContentTypeDefinition definition,
+            Action<ContentTypeModelNode> action)
+            where TModelNode : ModelNode, IContentTypeHostModelNode, new()
         {
-            return model.AddDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
+            return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
-
 
         #endregion
     }

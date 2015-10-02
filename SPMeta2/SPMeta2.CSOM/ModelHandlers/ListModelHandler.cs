@@ -16,6 +16,7 @@ using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
+
     public class ListModelHandler : CSOMModelHandlerBase
     {
         #region properties
@@ -68,7 +69,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load<List>(list, l => l.Views);
                     context.ExecuteQueryWithTrace();
 
-                    action(list);
+                    action(listModelHost);
                 }
                 else if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -85,11 +86,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                         folderModelHost.CurrentListItem = null;
                     }
 
@@ -110,10 +111,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                         folderModelHost.CurrentListItem = null;
                     }
 
@@ -145,11 +147,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (list.BaseType == BaseType.DocumentLibrary)
                     {
-                        folderModelHost.CurrentLibraryFolder = list.RootFolder;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
                     else
                     {
-                        folderModelHost.CurrentListItem = null;
+                        folderModelHost.CurrentListFolder = list.RootFolder;
                     }
 
                     action(folderModelHost);
@@ -366,7 +368,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return listTemplate;
         }
 
-        private static void MapListProperties(List list, ListDefinition definition)
+        private void MapListProperties(List list, ListDefinition definition)
         {
             list.Title = definition.Title;
             list.Description = definition.Description ?? string.Empty;
@@ -435,6 +437,28 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 //list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
             }
+
+            if (!string.IsNullOrEmpty(definition.DocumentTemplateUrl))
+            {
+                var urlValue = definition.DocumentTemplateUrl;
+
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = urlValue,
+                    Context = list.Context,
+                }).Value;
+
+                if (!urlValue.StartsWith("/")
+                    && !urlValue.StartsWith("http:")
+                    && !urlValue.StartsWith("https:"))
+                {
+                    urlValue = "/" + urlValue;
+                }
+
+                list.DocumentTemplateUrl = urlValue;
+            }
+
+            ProcessLocalization(list, definition);
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
@@ -454,6 +478,15 @@ namespace SPMeta2.CSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(ListDefinition); }
+        }
+
+        protected virtual void ProcessLocalization(List obj, ListDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "TitleResource", definition.TitleResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
         }
     }
 }

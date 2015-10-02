@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions.DisplayTemplates
 {
@@ -23,6 +24,11 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class JavaScriptDisplayTemplateDefinition : TemplateDefinitionBase
     {
         #region constructors

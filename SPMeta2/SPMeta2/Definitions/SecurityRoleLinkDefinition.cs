@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -20,6 +21,12 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class SecurityRoleLinkDefinition : DefinitionBase
     {
         #region constructors

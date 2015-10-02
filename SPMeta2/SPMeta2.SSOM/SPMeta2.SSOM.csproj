@@ -164,8 +164,10 @@
     <Compile Include="Extensions\SPContextExtensions.cs" />
     <Compile Include="Extensions\SPViewCollectionExtensions.cs" />
     <Compile Include="Extensions\WebPartExtensions.cs" />
+    <Compile Include="ModelHandlers\AnonymousAccessSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\Base\SingleHostTypedSSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SupportedUICultureModelHandler.cs" />
     <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
@@ -279,6 +282,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\SSOMLocalizationService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />
     <Compile Include="Services\SSOMTokenReplacementService.cs" />
     <Compile Include="WebPartPageTemplates.Designer.cs">

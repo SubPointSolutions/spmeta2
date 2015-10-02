@@ -41,22 +41,28 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WebPartPageDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
             //var list = listModelHost.HostList;
             var folder = folderModelHost.CurrentLibraryFolder;
 
-            var targetPage = GetOrCreateNewWebPartPage(modelHost, folder, webpartPageModel);
+            var targetFile = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
 
-            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            using (var webPartManager = targetFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
             {
                 var webpartPageHost = new WebpartPageModelHost
                 {
-                    HostFile =  targetPage.File,
-                    PageListItem =  targetPage,
+                    HostFile = targetFile,
+                    PageListItem = targetFile.Item,
                     SPLimitedWebPartManager = webPartManager
                 };
 
@@ -71,7 +77,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             //var list = folderModelHost.HostList;
             var folder = folderModelHost.CurrentLibraryFolder;
-            var targetPage = GetOrCreateNewWebPartPage(modelHost, folder, webpartPageModel);
+            var targetPage = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
 
             // gosh, it really does not have a title
             //targetPage[SPBuiltInFieldId.Title] = webpartPageModel.Title;
@@ -81,7 +87,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             //targetPage.Update();
         }
 
-        protected SPListItem FindWebPartPage(SPFolder folder, WebPartPageDefinition webpartPageModel)
+        protected SPFile FindWebPartPage(SPFolder folder, WebPartPageDefinition webpartPageModel)
         {
             var webPartPageName = GetSafeWebPartPageFileName(webpartPageModel);
 
@@ -90,7 +96,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             foreach (SPFile file in folder.Files)
                 if (file.Name.ToUpper() == webPartPageName.ToUpper())
-                    return file.Item;
+                    return file;
 
             return null;
         }
@@ -105,23 +111,23 @@ namespace SPMeta2.SSOM.ModelHandlers
             return webPartPageName;
         }
 
-        private SPListItem GetOrCreateNewWebPartPage(object modelHost, SPFolder folder,
+        private SPFile GetOrCreateNewWebPartFile(object modelHost, SPFolder folder,
             WebPartPageDefinition webpartPageModel)
         {
-            var targetPage = FindWebPartPage(folder, webpartPageModel);
+            var targetFile = FindWebPartPage(folder, webpartPageModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
-                Object = targetPage == null ? null : targetPage.File,
+                Object = targetFile,
                 ObjectType = typeof(SPFile),
                 ObjectDefinition = webpartPageModel,
                 ModelHost = modelHost
             });
 
-            if (targetPage == null || webpartPageModel.NeedOverride)
+            if (targetFile == null || webpartPageModel.NeedOverride)
             {
                 if (webpartPageModel.NeedOverride)
                 {
@@ -166,7 +172,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     },
                   null);
 
-                targetPage = FindWebPartPage(folder, webpartPageModel);
+                targetFile = FindWebPartPage(folder, webpartPageModel);
             }
             else
             {
@@ -178,16 +184,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                     CurrentModelNode = null,
                     Model = null,
                     EventType = ModelEventType.OnProvisioned,
-                    Object = targetPage == null ? null : targetPage.File,
+                    Object = targetFile,
                     ObjectType = typeof(SPFile),
                     ObjectDefinition = webpartPageModel,
                     ModelHost = modelHost
                 });
 
-                targetPage.Update();
+                targetFile.Update();
             }
 
-            return targetPage;
+            return targetFile;
         }
 
         protected virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)

@@ -31,12 +31,17 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
 
+            if (modelHost is File)
+                return (modelHost as File).ListItemAllFields;
+
             if (modelHost is FolderModelHost)
             {
                 var folderModelHost = modelHost as FolderModelHost;
 
-                if (folderModelHost.CurrentLibraryFolder != null)
-                    return folderModelHost.CurrentLibraryFolder.ListItemAllFields;
+                // //if (folderModelHost.CurrentListFolder != null)
+
+                if (folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
+                    return folderModelHost.CurrentListFolder.ListItemAllFields;
                 else
                     return folderModelHost.CurrentListItem;
             }
@@ -92,7 +97,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if (!securableObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))
+            //context.Load(securableObject);
+            //context.ExecuteQueryWithTrace();
+
+            if (!securableObject.IsPropertyAvailable("HasUniqueRoleAssignments"))
             {
                 context.Load(securableObject, s => s.HasUniqueRoleAssignments);
                 context.ExecuteQueryWithTrace();

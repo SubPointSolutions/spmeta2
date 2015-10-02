@@ -4,6 +4,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -11,25 +12,36 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class MasterPageModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class MasterPageDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddMasterPage(this ModelNode model, MasterPageDefinition definition)
+        public static TModelNode AddMasterPage<TModelNode>(this TModelNode model, MasterPageDefinition definition)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             return AddMasterPage(model, definition, null);
         }
 
-        public static ModelNode AddMasterPage(this ModelNode model, MasterPageDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddMasterPage<TModelNode>(this TModelNode model, MasterPageDefinition definition,
+            Action<MasterPageModelNode> action)
+            where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddMasterPages(this ModelNode model, IEnumerable<MasterPageDefinition> definitions)
+        public static TModelNode AddMasterPages<TModelNode>(this TModelNode model, IEnumerable<MasterPageDefinition> definitions)
+           where TModelNode : ModelNode, IListItemHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

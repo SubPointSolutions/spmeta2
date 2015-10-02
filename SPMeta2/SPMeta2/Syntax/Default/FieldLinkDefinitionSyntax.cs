@@ -10,7 +10,8 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<Guid> fieldIds)
+        public static TModelNode AddContentTypeFieldLinks<TModelNode>(this TModelNode model, IEnumerable<Guid> fieldIds)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             foreach (var fieldId in fieldIds)
                 AddContentTypeFieldLink(model, fieldId);
@@ -18,14 +19,15 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-
-
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId)
+        public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, Guid fieldId)
+             where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             return AddContentTypeFieldLink(model, fieldId, null);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, Guid fieldId, Action<ModelNode> action)
+        public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, Guid fieldId,
+            Action<ContentTypeFieldLinkModelNode> action)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             return model.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
             {
@@ -33,7 +35,8 @@ namespace SPMeta2.Syntax.Default
             }, action);
         }
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
+        public static TModelNode AddContentTypeFieldLinks<TModelNode>(this TModelNode model, IEnumerable<FieldDefinition> definitions)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             foreach (var definition in definitions)
                 AddContentTypeFieldLink(model, definition);
@@ -41,12 +44,15 @@ namespace SPMeta2.Syntax.Default
             return model;
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition)
+        public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, FieldDefinition definition)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             return AddContentTypeFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, FieldDefinition definition,
+            Action<ContentTypeFieldLinkModelNode> action)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             if (definition.Id != default(Guid))
             {
@@ -76,7 +82,8 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddContentTypeFieldLinks(this ModelNode model, IEnumerable<ContentTypeFieldLinkDefinition> definitions)
+        public static TModelNode AddContentTypeFieldLink<TModelNode>(this TModelNode model, IEnumerable<ContentTypeFieldLinkDefinition> definitions)
+            where TModelNode : ModelNode, IContentTypeFieldLinkHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

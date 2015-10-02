@@ -1,31 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class WebPartModelNode : TypedModelNode
+    {
+
+    }
+
     public static class WebPartDefinitionSyntax
     {
         #region methods
 
-
-        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition definition)
+        public static TModelNode AddWebPart<TModelNode>(this TModelNode model, WebPartDefinition definition)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             return AddWebPart(model, definition, null);
         }
 
-        public static ModelNode AddWebPart(this ModelNode model, WebPartDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddWebPart<TModelNode>(this TModelNode model, WebPartDefinition definition,
+            Action<WebPartModelNode> action)
+            where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddWebParts(this ModelNode model, IEnumerable<WebPartDefinition> definitions)
+        public static TModelNode AddWebParts<TModelNode>(this TModelNode model, IEnumerable<WebPartDefinition> definitions)
+           where TModelNode : ModelNode, IWebpartHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

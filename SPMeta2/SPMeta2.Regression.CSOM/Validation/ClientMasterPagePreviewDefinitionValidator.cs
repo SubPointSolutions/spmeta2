@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Syntax.Default.Utils;
 using System.Text;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers.Base;
 using SPMeta2.Standard.Definitions.Base;
 
@@ -24,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost",
                 value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<MasterPagePreviewDefinition>("model", value => value.RequireNotNull());
 
             var spFile = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
@@ -34,7 +35,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(spObject);
             context.Load(spFile, f => f.ServerRelativeUrl);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)

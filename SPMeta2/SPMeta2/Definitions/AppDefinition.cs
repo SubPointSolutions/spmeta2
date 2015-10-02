@@ -9,6 +9,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -27,6 +28,10 @@ namespace SPMeta2.Definitions
 
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
+
+    [ParentHostCapability(typeof(WebDefinition))]
     public class AppDefinition : DefinitionBase
     {
         #region properties
@@ -53,6 +58,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [DataMember]
         [IdentityKey]
+        [VersionPropertyCapabilityAttribute]
         public string Version { get; set; }
 
         #endregion

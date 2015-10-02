@@ -3,6 +3,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -10,25 +11,37 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+
+    [Serializable]
+    [DataContract]
+    public class AppModelNode : TypedModelNode
+    {
+
+    }
+
     public static class AppDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddApp(this ModelNode model, AppDefinition definition)
+        public static TModelNode AddApp<TModelNode>(this TModelNode model, AppDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddApp(model, definition, null);
         }
 
-        public static ModelNode AddApp(this ModelNode model, AppDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddApp<TModelNode>(this TModelNode model, AppDefinition definition,
+            Action<AppModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddApps(this ModelNode model, IEnumerable<AppDefinition> definitions)
+        public static TModelNode AddApps<TModelNode>(this TModelNode model, IEnumerable<AppDefinition> definitions)
+           where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

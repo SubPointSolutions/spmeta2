@@ -23,6 +23,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
+
     public class ResultScriptWebPartDefinition : WebPartDefinition
     {
         #region properties

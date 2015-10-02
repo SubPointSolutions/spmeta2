@@ -27,6 +27,9 @@ namespace SPMeta2.Standard.Definitions.Fields
    // [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+
     public class MediaFieldDefinition : FieldDefinition
     {
         #region constructors

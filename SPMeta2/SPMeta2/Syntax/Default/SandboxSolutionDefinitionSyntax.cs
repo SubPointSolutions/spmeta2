@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Definitions;
@@ -9,25 +10,36 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class SandboxSolutionModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SandboxSolutionDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddSandboxSolution(this ModelNode model, SandboxSolutionDefinition definition)
+        public static TModelNode AddSandboxSolution<TModelNode>(this TModelNode model, SandboxSolutionDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSandboxSolution(model, definition, null);
         }
 
-        public static ModelNode AddSandboxSolution(this ModelNode model, SandboxSolutionDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSandboxSolution<TModelNode>(this TModelNode model, SandboxSolutionDefinition definition,
+            Action<SandboxSolutionModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSandboxSolutions(this ModelNode model, IEnumerable<SandboxSolutionDefinition> definitions)
+        public static TModelNode AddSandboxSolutions<TModelNode>(this TModelNode model, IEnumerable<SandboxSolutionDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

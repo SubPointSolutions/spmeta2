@@ -93,7 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageLayoutTemplates.resx</DependentUpon>
     </Compile>
-    <Compile Include="RandomContainersSyntax.cs" />
+    <Compile Include="RandomStandardContainersSyntax.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyGroupDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyStoreDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermDefinitionGenerator.cs" />

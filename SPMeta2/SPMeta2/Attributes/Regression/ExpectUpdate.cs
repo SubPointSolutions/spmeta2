@@ -14,6 +14,10 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsRichTextMode : ExpectUpdate
+    {
+
+    }
 
     public class ExpectUpdateAsStandalone : ExpectUpdate
     {
@@ -99,6 +103,12 @@ namespace SPMeta2.Attributes.Regression
         }
 
         public string Extension { get; set; }
+    }
+
+
+    public class ExpectUpdateAsServerRelativeUrl : ExpectUpdateAsUrl
+    {
+
     }
 
     public class ExpectUpdateAsCalculatedFieldFormula : ExpectUpdate

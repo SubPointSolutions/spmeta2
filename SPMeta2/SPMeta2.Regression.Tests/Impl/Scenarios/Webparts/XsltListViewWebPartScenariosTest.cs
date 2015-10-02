@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.CSOM;
@@ -17,6 +18,14 @@ using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Exceptions;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Regression.Tests.Extensions;
+using System.Collections.Generic;
+using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Definitions;
+using SPMeta2.Services;
+using SPMeta2.ModelHandlers;
+using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.Definitions.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 {
@@ -463,7 +472,102 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         #endregion
+
+        #region wiki page cases
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.WikiPage")]
+        public void CanDeploy_XsltListViewWebPart_On_WikiPage()
+        {
+            var library = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var wikiPage = ModelGeneratorService.GetRandomDefinition<WikiPageDefinition>(def =>
+            {
+                def.NeedOverride = true;
+            });
+
+            var ceWebPart = ModelGeneratorService.GetRandomDefinition<ContentEditorWebPartDefinition>(def =>
+            {
+                def.ChromeType = BuiltInPartChromeType.TitleOnly;
+
+                def.ZoneId = "wpz";
+                def.ZoneIndex = 1;
+            });
+
+            var xsltWebPart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ChromeType = BuiltInPartChromeType.TitleOnly;
+
+                def.ZoneId = "wpz";
+                def.ZoneIndex = 1;
+
+                def.ListTitle = library.Title;
+                def.AddToPageContent = true;
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(library)
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        var id_1 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+                        var id_2 = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+
+                        ceWebPart.Id = id_1;
+                        xsltWebPart.Id = id_2;
+
+                        list.AddWikiPage(wikiPage, page =>
+                        {
+                            // content is changed for CSOM
+                            // validation won't pass it, so turn off
+                            page.RegExcludeFromValidation();
+
+                            var wpId11 = id_1.Replace("g_", string.Empty).Replace("_", "-");
+                            var wpId22 = id_2.Replace("g_", string.Empty).Replace("_", "-");
+
+                            var pageTemplate = new StringBuilder();
+
+                            pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                            pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId11);
+                            pageTemplate.AppendFormat("     </div>");
+                            pageTemplate.AppendFormat("</div>");
+
+                            pageTemplate.AppendFormat("<div>");
+                            pageTemplate.AppendFormat(" SPMeta2 wiki page.");
+                            pageTemplate.AppendFormat("</div>");
+
+                            pageTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
+                            pageTemplate.AppendFormat("     <div class='ms-rtestate-read {0}' id='div_{0}'>", wpId22);
+                            pageTemplate.AppendFormat("     </div>");
+                            pageTemplate.AppendFormat("</div>");
+
+                            (page.Value as WikiPageDefinition).Content = pageTemplate.ToString();
+
+
+                            page
+                                .AddWebPart(ceWebPart)
+                                .AddXsltListViewWebPart(xsltWebPart);
+                        })
+                            // we need to ensure that mentioned web part are on the target page, literally
+                        .AddDefinitionNode(new WebpartPresenceOnPageDefinition
+                        {
+                            PageFileName = wikiPage.FileName,
+                            WebPartDefinitions = new List<WebPartDefinitionBase>(new WebPartDefinition[]
+                            {
+                                    ceWebPart,
+                                    xsltWebPart
+                            })
+                        }, def =>
+                        {
+                            def.RegExcludeFromEventsValidation();
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
-
-
 }

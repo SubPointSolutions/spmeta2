@@ -102,7 +102,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             {
                 list = web.Lists.GetByTitle(wpModel.ListTitle);
             }
-            else if (wpModel.ListId != default(Guid))
+            else if (wpModel.ListId.HasGuidValue())
             {
                 list = web.Lists.GetById(wpModel.ListId.Value);
             }
@@ -149,7 +149,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 context.Load(hiddenView);
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 hiddenView.ViewFields.RemoveAll();
 
@@ -165,7 +165,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 hiddenView.Scope = srcView.Scope;
 
                 hiddenView.Update();
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
         }
 

@@ -1,30 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public static class SecurityRoleLinkDefinitionSyntax
+    [Serializable]
+    [DataContract]
+    public class SecurityRoleModelNode : TypedModelNode
+    {
+
+    }
+
+    public static class SecurityRoleDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition)
+        public static TModelNode AddSecurityRole<TModelNode>(this TModelNode model, SecurityRoleDefinition definition)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
             return AddSecurityRole(model, definition, null);
         }
 
-        public static ModelNode AddSecurityRole(this ModelNode model, SecurityRoleDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSecurityRole<TModelNode>(this TModelNode model, SecurityRoleDefinition definition,
+            Action<SecurityRoleModelNode> action)
+            where TModelNode : ModelNode, ISiteModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddSecurityRoles(this ModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
+        public static TModelNode AddSecurityRoles<TModelNode>(this TModelNode model, IEnumerable<SecurityRoleDefinition> definitions)
+           where TModelNode : ModelNode, ISiteModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

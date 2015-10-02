@@ -5,8 +5,10 @@ using System.Text;
 
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.Utils;
 using EventReceiverDefinition = SPMeta2.Definitions.EventReceiverDefinition;
@@ -68,7 +70,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var receiverName = definition.Name.ToUpper();
 
             receivers.Context.Load(receivers);
-            receivers.Context.ExecuteQuery();
+            receivers.Context.ExecuteQueryWithTrace();
 
             return receivers.OfType<Microsoft.SharePoint.Client.EventReceiverDefinition>()
                             .FirstOrDefault(r =>
@@ -125,7 +127,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             existingReceiver.Update();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         private static void MapEventReceiverProperties(EventReceiverDefinition definition,

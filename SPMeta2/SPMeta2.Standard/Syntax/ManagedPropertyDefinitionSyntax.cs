@@ -1,38 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    [Serializable]
+    [DataContract]
+    public class ManagedPropertyModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ManagedPropertyDefinitionSyntax
     {
         #region publishing page
 
-        public static ModelNode AddManagedProperty(this ModelNode model, ManagedPropertyDefinition definition)
+        #region methods
+
+        public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition)
+            where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             return AddManagedProperty(model, definition, null);
         }
 
-        public static ModelNode AddManagedProperty(this ModelNode model, ManagedPropertyDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddManagedProperty<TModelNode>(this TModelNode model, ManagedPropertyDefinition definition,
+            Action<ManagedPropertyModelNode> action)
+            where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddManagedProperties(this ModelNode model, IEnumerable<ManagedPropertyDefinition> definitions)
+        public static TModelNode AddManagedProperties<TModelNode>(this TModelNode model, IEnumerable<ManagedPropertyDefinition> definitions)
+           where TModelNode : ModelNode, IManagedPropertyHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
 
             return model;
         }
+
+        #endregion
 
         #endregion
     }

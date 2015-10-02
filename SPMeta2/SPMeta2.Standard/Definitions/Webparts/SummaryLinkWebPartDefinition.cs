@@ -24,6 +24,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+
     public class SummaryLinkWebPartDefinition : WebPartDefinition
     {
         public override string ToString()

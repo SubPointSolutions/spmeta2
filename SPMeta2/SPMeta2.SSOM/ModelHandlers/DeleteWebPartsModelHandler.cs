@@ -35,13 +35,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            var webParts = host.SPLimitedWebPartManager
-                               .WebParts
-                               .OfType<WebPart>()
-                               .ToList();
+            var wpManager = host.SPLimitedWebPartManager;
+            var webParts = wpManager.WebParts.OfType<WebPart>().ToList();
 
-            for (var index = 0; index < webParts.Count; index++)
-                host.SPLimitedWebPartManager.DeleteWebPart(webParts[index]);
+            ProcessWebPartDeletes(wpManager, webParts, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -53,6 +50,51 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
+        }
+
+        protected virtual WebPart FindWebPartMatch(
+           IEnumerable<WebPart> spWebPartDefenitions,
+           WebPartMatch wpMatch)
+        {
+            // by title?
+            if (!string.IsNullOrEmpty(wpMatch.Title))
+            {
+                return spWebPartDefenitions.FirstOrDefault(w => w.Title.ToUpper() == wpMatch.Title.ToUpper());
+            }
+            else
+            {
+                // TODO, more support by ID/Type later
+                // https://github.com/SubPointSolutions/spmeta2/issues/432
+            }
+
+            return null;
+        }
+
+        protected virtual void ProcessWebPartDeletes(
+            Microsoft.SharePoint.WebPartPages.SPLimitedWebPartManager wpManager,
+            IEnumerable<WebPart> spWebPartDefenitions,
+            DeleteWebPartsDefinition definition)
+        {
+            var webParts2Delete = new List<WebPart>();
+
+            if (definition.WebParts.Any())
+            {
+                foreach (var webPartMatch in definition.WebParts)
+                {
+                    var currentWebPartMatch = FindWebPartMatch(spWebPartDefenitions, webPartMatch);
+
+                    if (currentWebPartMatch != null && !webParts2Delete.Contains(currentWebPartMatch))
+                        webParts2Delete.Add(currentWebPartMatch);
+                }
+            }
+            else
+            {
+                webParts2Delete.AddRange(spWebPartDefenitions);
+            }
+
+            // clean up
+            for (var index = 0; index < webParts2Delete.Count; index++)
+                wpManager.DeleteWebPart(webParts2Delete[index]);
         }
     }
 }

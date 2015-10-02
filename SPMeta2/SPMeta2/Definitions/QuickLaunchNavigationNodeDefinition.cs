@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -25,6 +26,10 @@ namespace SPMeta2.Definitions
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
 
     public class QuickLaunchNavigationNodeDefinition : NavigationNodeDefinitionBase
     {

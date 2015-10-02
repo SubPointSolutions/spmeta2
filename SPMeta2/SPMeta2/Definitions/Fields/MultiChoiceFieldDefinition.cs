@@ -32,6 +32,7 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
     public class MultiChoiceFieldDefinition : FieldDefinition
     {
         #region constructors

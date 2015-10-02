@@ -58,7 +58,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             currentObject.Update();
-            currentObject.Context.ExecuteQuery();
+            currentObject.Context.ExecuteQueryWithTrace();
         }
 
         protected Web GetCurrentObject(object modelHost, RootWebDefinition definition)
@@ -71,7 +71,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = site.Context;
 
                 context.Load(site, s => s.RootWeb);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return site.RootWeb;
             }
@@ -83,7 +83,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = site.Context;
 
                 context.Load(site, s => s.RootWeb);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 return site.RootWeb;
             }
@@ -91,8 +91,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             throw new SPMeta2UnsupportedModelHostException("ModelHost should be SiteModelHost/WebModelHost");
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<RootWebDefinition>("model", value => value.RequireNotNull());
 
@@ -106,7 +112,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             action(rootModelHost);
 
             currentObject.Update();
-            currentObject.Context.ExecuteQuery();
+            currentObject.Context.ExecuteQueryWithTrace();
         }
 
         #endregion

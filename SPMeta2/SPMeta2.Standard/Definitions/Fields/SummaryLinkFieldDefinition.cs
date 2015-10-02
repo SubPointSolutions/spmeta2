@@ -27,6 +27,9 @@ namespace SPMeta2.Standard.Definitions.Fields
     //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+
     public class SummaryLinkFieldDefinition : FieldDefinition
     {
         #region constructors

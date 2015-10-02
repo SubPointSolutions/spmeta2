@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
@@ -180,12 +180,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             public ContentTypeDefinition ContentType { get; set; }
 
-            public ModelNode SiteModel { get; set; }
+            public SiteModelNode SiteModel { get; set; }
         }
 
         private ContentTypeEnvironment GetContentTypeSandbox(
-            Action<ModelNode, ContentTypeEnvironment> siteModelConfig,
-            Action<ModelNode, ContentTypeEnvironment> contentTypeModelConfig)
+            Action<SiteModelNode, ContentTypeEnvironment> siteModelConfig,
+            Action<ContentTypeModelNode, ContentTypeEnvironment> contentTypeModelConfig)
         {
             var result = new ContentTypeEnvironment();
 
@@ -218,17 +218,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                  .AddContentTypeFieldLink(fldFirst, link =>
                                  {
                                      result.FirstLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeFieldLink(fldSecond, link =>
                                  {
                                      result.SecondLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  })
                                  .AddContentTypeFieldLink(fldThird, link =>
                                  {
                                      result.ThirdLink = link;
-                                     link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     //link.Options.RequireSelfProcessing = link.Value.RequireSelfProcessing = true;
+                                     link.Options.RequireSelfProcessing = true;
                                  });
 
                              if (contentTypeModelConfig != null)
@@ -298,9 +301,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                            {
                                // disable validation on content type field links as they would be deleted by 'RemoveContentTypeFieldLinksDefinition'
 
-                               e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
-                               e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
-                               e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
                            });
                        });
                 });
@@ -372,7 +379,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { siteModel, contentModel });
+            TestModels(new ModelNode[] { siteModel, contentModel });
         }
 
 
@@ -420,7 +427,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { webModel, siteModel, contentModel });
+            TestModels(new ModelNode[] { webModel, siteModel, contentModel });
         }
 
         [TestMethod]
@@ -475,7 +482,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { webModel, siteModel, contentModel });
+            TestModels(new ModelNode[] { webModel, siteModel, contentModel });
+        }
+
+        #endregion
+
+        #region localization
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Localization")]
+        public void CanDeploy_Localized_Site_ContentType()
+        {
+            var definition = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(definition);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Localization")]
+        public void CanDeploy_Localized_Web_ContentType()
+        {
+            var contentType = GetLocalizedDefinition();
+            var subWebContentType = GetLocalizedDefinition();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddContentType(contentType);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddContentType(subWebContentType);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region utils
+
+        protected ContentTypeDefinition GetLocalizedDefinition()
+        {
+            var definition = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
+            var localeIds = Rnd.LocaleIds();
+
+            foreach (var localeId in localeIds)
+            {
+                definition.NameResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedName_{0}", localeId)
+                });
+
+                definition.DescriptionResource.Add(new ValueForUICulture
+                {
+                    CultureId = localeId,
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
+                });
+            }
+
+            return definition;
         }
 
         #endregion

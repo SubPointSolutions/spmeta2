@@ -1,23 +1,35 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using SPMeta2.Models;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Standard.Syntax
 {
+    [Serializable]
+    [DataContract]
+    public class SearchSettingsModelNode : TypedModelNode
+    {
+
+    }
+
     public static class SearchSettingsDefinitionSyntax
     {
-        #region publishing page
+        #region methods
 
-        public static ModelNode AddSearchSettings(this ModelNode model, SearchSettingsDefinition definition)
+        public static TModelNode AddSearchSettings<TModelNode>(this TModelNode model, SearchSettingsDefinition definition)
+            where TModelNode : ModelNode, ISearchSettingsHostModelNode, new()
         {
             return AddSearchSettings(model, definition, null);
         }
 
-        public static ModelNode AddSearchSettings(this ModelNode model, SearchSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddSearchSettings<TModelNode>(this TModelNode model, SearchSettingsDefinition definition,
+            Action<SearchSettingsModelNode> action)
+            where TModelNode : ModelNode, ISearchSettingsHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion

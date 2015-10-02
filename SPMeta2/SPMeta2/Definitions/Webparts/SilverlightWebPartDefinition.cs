@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -22,16 +23,23 @@ namespace SPMeta2.Definitions.Webparts
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
     public class SilverlightWebPartDefinition : WebPartDefinition
     {
         #region properties
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdateAsUrl(Extension = "xap")]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+
         public string Url { get; set; }
 
         [DataMember]
         [ExpectValidation]
+        [ExpectUpdate]
         public string CustomInitParameters { get; set; }
 
         #endregion

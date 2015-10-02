@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Regression;
 using System;
 using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -11,8 +12,8 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint security group.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPGroup", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Group", "Microsoft.SharePoint.Client")]
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPPrincipal", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Principal", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
     [DefaultParentHostAttribute(typeof(SiteDefinition))]
@@ -21,6 +22,10 @@ namespace SPMeta2.Definitions
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
 
     public class SecurityGroupDefinition : DefinitionBase
     {

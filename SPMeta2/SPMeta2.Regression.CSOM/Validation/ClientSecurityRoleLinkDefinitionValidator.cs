@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var securityRoleContext = securityRole.Context;
             securityRoleContext.Load(securityRole);
-            securityRoleContext.ExecuteQuery();
+            securityRoleContext.ExecuteQueryWithTrace();
 
             var spObject = securableObject.RoleAssignments
                                           .OfType<RoleAssignment>()
@@ -29,7 +30,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = spObject.Context;
             context.Load(spObject, o => o.RoleDefinitionBindings);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 

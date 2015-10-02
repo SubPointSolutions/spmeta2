@@ -21,6 +21,7 @@ using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Tests.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {

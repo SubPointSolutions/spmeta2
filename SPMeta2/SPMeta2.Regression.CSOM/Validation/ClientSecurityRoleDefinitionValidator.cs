@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             // well, this should be pulled up to the site handler and init Load/Exec query
             context.Load(web, tmpWeb => tmpWeb.SiteGroups);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = FindRoleDefinition(web.RoleDefinitions, definition.Name);
 

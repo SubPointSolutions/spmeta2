@@ -57,10 +57,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var folderModelHost = modelHost as FolderModelHost;
 
-                if (folderModelHost.CurrentLibraryFolder != null)
+                if (folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
+                //if (folderModelHost.CurrentListFolder != null)
                 {
-                    result = folderModelHost.CurrentLibraryFolder.Properties;
-                    context = folderModelHost.CurrentLibraryFolder.Context;
+                    result = folderModelHost.CurrentListFolder.Properties;
+                    context = folderModelHost.CurrentListFolder.Context;
                 }
                 else
                 {

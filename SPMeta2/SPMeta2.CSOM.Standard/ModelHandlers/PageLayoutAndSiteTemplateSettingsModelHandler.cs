@@ -75,7 +75,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             });
 
             web.Update();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         private void ProcessConverBlankSpacesIntoHyphenSetting(
@@ -102,7 +102,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             {
                 context.Load(web);
                 context.Load(web, w => w.AllProperties);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             // weird, this is incorrect
@@ -115,7 +115,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             web.AllProperties[key] = value;
 
             web.Update();
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
         }
 
         public static object GetPropertyBagValue(Web web, string key)
@@ -126,7 +126,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             {
                 context.Load(web);
                 context.Load(web, w => w.AllProperties);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
 
             if (!web.AllProperties.FieldValues.ContainsKey(key))
@@ -171,7 +171,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             var pageLayouts = masterPageList.GetItems(CamlQueryTemplates.ItemsByFieldValueBeginsWithQuery("ContentTypeId", BuiltInPublishingContentTypeId.PageLayout));
             context.Load(pageLayouts);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             return pageLayouts.ToList();
         }

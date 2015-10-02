@@ -24,6 +24,9 @@ using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
 using System.Text;
+using SPMeta2.Regression.ModelHandlers;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -33,6 +36,10 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
+            
+
+            ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
+
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.ProvisionGenerationCount = 2;
 
@@ -47,6 +54,7 @@ namespace SPMeta2.Regression.Tests.Base
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
 
+           
         }
 
         #endregion
@@ -72,6 +80,14 @@ namespace SPMeta2.Regression.Tests.Base
 
         static SPMeta2RegresionTestBase()
         {
+            // ensure we aren't in GAC
+            var location = typeof(FieldDefinition).Assembly.Location;
+
+            if (location.ToUpper().Contains("GAC_"))
+            {
+                throw new SPMeta2Exception(string.Format("M2 assemblies are beinfg loaded from the GAC: [{0}].", location));
+            }
+
             RegressionService = new RegressionTestService();
 
             RegressionService.AssertService = new VSAssertService();
@@ -109,6 +125,24 @@ namespace SPMeta2.Regression.Tests.Base
         #endregion
 
         #region testing API
+
+        protected virtual void WithDisabledValidationOnTypes(Type type, Action action)
+        {
+            WithDisabledValidationOnTypes(new[] { type }, action);
+        }
+
+        protected virtual void WithDisabledValidationOnTypes(IEnumerable<Type> types, Action action)
+        {
+            try
+            {
+                RegressionService.RegExcludedDefinitionTypes.Add(typeof(WebDefinition));
+                action();
+            }
+            finally
+            {
+                RegressionService.RegExcludedDefinitionTypes.Clear();
+            }
+        }
 
         protected void WithDisabledPropertyUpdateValidation(Action action)
         {
@@ -168,12 +202,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new  ModelNode[] { model });
+            TestModels(new ModelNode[] { model });
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
         {
-            TestModels(new  ModelNode[] { firstModel, secondModel });
+            TestModels(new ModelNode[] { firstModel, secondModel });
         }
 
 
@@ -211,8 +245,6 @@ namespace SPMeta2.Regression.Tests.Base
             }
         }
 
-
-
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
@@ -230,7 +262,6 @@ namespace SPMeta2.Regression.Tests.Base
                 });
             }
         }
-
 
         private void ProcessDefinitionsPropertyNulableValidation(DefinitionBase def)
         {

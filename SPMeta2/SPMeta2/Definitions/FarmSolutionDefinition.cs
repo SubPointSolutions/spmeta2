@@ -9,6 +9,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -25,6 +26,9 @@ namespace SPMeta2.Definitions
     [Serializable] 
     [DataContract]
     [ExpectWithExtensionMethod]
+
+    [ParentHostCapability(typeof(FarmDefinition))]
+    [ExpectManyInstances]
     public class FarmSolutionDefinition : SolutionDefinitionBase
     {
         #region constructors

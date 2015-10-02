@@ -26,6 +26,8 @@ namespace SPMeta2.Definitions.Fields
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
     public class CalculatedFieldDefinition : FieldDefinition
     {
         #region constructors
@@ -74,6 +76,7 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         [ExpectUpdateAsCalculatedFieldFormula]
         [DataMember]
+        [ExpectNullable]
         public string Formula { get; set; }
 
         [ExpectValidation]

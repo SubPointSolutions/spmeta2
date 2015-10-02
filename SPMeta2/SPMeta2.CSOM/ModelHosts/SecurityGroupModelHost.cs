@@ -2,7 +2,7 @@
 
 namespace SPMeta2.CSOM.ModelHosts
 {
-    public class SecurityGroupModelHost
+    public class SecurityGroupModelHost : CSOMModelHostBase
     {
         #region properties
 

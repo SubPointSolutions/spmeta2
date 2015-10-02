@@ -37,6 +37,13 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             typedField.NumberOfLines = typedFieldModel.NumberOfLines;
             typedField.AppendOnly = typedFieldModel.AppendOnly;
             typedField.RichText = typedFieldModel.RichText;
+
+            // RichTextMode  update
+            // https://github.com/SubPointSolutions/spmeta2/issues/673
+            if (!string.IsNullOrEmpty(typedFieldModel.RichTextMode))
+            {
+                typedField.RichTextMode = (SPRichTextMode)Enum.Parse(typeof(SPRichTextMode), typedFieldModel.RichTextMode);
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

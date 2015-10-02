@@ -79,6 +79,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (folderModelHost.CurrentLibraryFolder != null)
                     return folderModelHost.CurrentLibraryFolder;
 
+                folderModelHost.ShouldUpdateHost = false;
+
                 return folderModelHost.CurrentListItem.Folder;
             }
 

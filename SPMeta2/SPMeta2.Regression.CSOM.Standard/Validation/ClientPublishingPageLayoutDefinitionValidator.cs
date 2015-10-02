@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
@@ -22,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<PublishingPageLayoutDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindPublishingPage(folderModelHost.CurrentList, folder, definition);
@@ -35,20 +36,66 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             context.Load(spFile, f => f.ServerRelativeUrl);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
                                              .ShouldNotBeNull(spObject)
-                                             .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetPublishingPageLayoutDescription())
-                //.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId())
-                                             .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+                                             .ShouldBeEqual(m => m.FileName, o => o.GetFileName());
+
+
+            if (!string.IsNullOrEmpty(definition.Title))
+                assert.ShouldBeEqual(m => m.Title, o => o.GetTitle());
+            else
+                assert.SkipProperty(m => m.Title);
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.GetPublishingPageLayoutDescription());
+            else
+                assert.SkipProperty(m => m.Description);
 
             if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
                 assert.ShouldBeEndOf(m => m.AssociatedContentTypeId, o => o.GetPublishingPageLayoutAssociatedContentTypeId());
             else
                 assert.SkipProperty(m => m.AssociatedContentTypeId, "AssociatedContentTypeId is null or empty.");
+
+            if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
+            {
+                var urlValue = spObject.FieldValues["PublishingPreviewImage"] as FieldUrlValue;
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageUrl);
+                    var isValid = (urlValue != null) && (urlValue.Url == s.PreviewImageUrl);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.PreviewImageDescription);
+                    var isValid = (urlValue != null) && (urlValue.Description == s.PreviewImageDescription);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.PreviewImageUrl, "MasterPageUrl is NULL");
+                assert.SkipProperty(m => m.PreviewImageDescription, "MasterPageDescription is NULL");
+            }
 
             assert.ShouldBeEqual((p, s, d) =>
             {

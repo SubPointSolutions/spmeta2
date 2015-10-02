@@ -6,8 +6,13 @@
 
         public const string O365_SiteUrls = "SPMeta2_O365_SiteUrls";
         public const string O365_WebUrls = "SPMeta2_O365_WebUrls";
+        public const string O365_RandomBalancedUrls = "SPMeta2_O365_RandomBalancedUrls";
+
         public const string O365_UserName = "SPMeta2_O365_UserName";
         public const string O365_Password = "SPMeta2_O365_Password";
+
+        public const string O365_DefaultTestUserLogins = "SPMeta2_O365_DefaultTestUserLogins";
+
 
         public const string SSOM_WebApplicationUrls = "SPMeta2_SSOM_WebApplicationUrls";
         public const string SSOM_SiteUrls = "SPMeta2_SSOM_SiteUrls";

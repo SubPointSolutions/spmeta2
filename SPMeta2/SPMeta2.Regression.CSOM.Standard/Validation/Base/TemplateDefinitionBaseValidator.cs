@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Definitions;
@@ -19,7 +20,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<TemplateDefinitionBase>("model", value => value.RequireNotNull());
 
             var spFile = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
@@ -29,7 +30,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
 
             context.Load(spObject);
             context.Load(spFile, f => f.ServerRelativeUrl);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)

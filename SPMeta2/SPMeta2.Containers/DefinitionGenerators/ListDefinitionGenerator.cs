@@ -72,6 +72,10 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 //{
                 //    def.OnQuickLaunch = false;
                 //}
+
+                if (action != null)
+                    action(def);
+
             });
         }
     }

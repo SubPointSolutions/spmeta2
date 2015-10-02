@@ -34,6 +34,9 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var siteCollectionUrl = SPUrlUtility.CombineUrl(definition.PrefixName, definition.Url);
 
+            if (siteCollectionUrl.StartsWith("/"))
+                siteCollectionUrl = siteCollectionUrl.Substring(1, siteCollectionUrl.Length - 1);
+
             if (webApp.Sites.Names.Contains(siteCollectionUrl))
                 return webApp.Sites[siteCollectionUrl];
 

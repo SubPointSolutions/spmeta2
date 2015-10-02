@@ -3,6 +3,7 @@ using SPMeta2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Models;
@@ -10,20 +11,26 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class InformationRightsManagementSettingsModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class InformationRightsManagementSettingsDefinitionSyntax
     {
-        #region methods
-
-        public static ModelNode AddInformationRightsManagementSettings(this ModelNode model, InformationRightsManagementSettingsDefinition definition)
+        public static TModelNode AddInformationRightsManagementSettings<TModelNode>(this TModelNode model, InformationRightsManagementSettingsDefinition definition)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
             return AddInformationRightsManagementSettings(model, definition, null);
         }
 
-        public static ModelNode AddInformationRightsManagementSettings(this ModelNode model, InformationRightsManagementSettingsDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddInformationRightsManagementSettings<TModelNode>(this TModelNode model, InformationRightsManagementSettingsDefinition definition,
+            Action<InformationRightsManagementSettingsModelNode> action)
+            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
-
-        #endregion
     }
 }

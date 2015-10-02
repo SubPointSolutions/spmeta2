@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
@@ -18,7 +19,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var context = folder.Context;
 
             var pageName = GetSafeWikiPageFileName(definition);
@@ -26,7 +27,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = file.ListItemAllFields;
 
             context.Load(spObject);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
@@ -7,26 +8,9 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
-    public static class DefinitionExtensions
-    {
-        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition)
-            where TDefinition : DefinitionBase, new()
-        {
-            return Inherit<TDefinition>(definition, null);
-        }
 
-        public static TDefinition Inherit<TDefinition>(this DefinitionBase definition, Action<TDefinition> config)
-            where TDefinition : DefinitionBase, new()
-        {
-            var model = definition.Clone() as TDefinition;
-
-            if (config != null)
-                config(model);
-
-            return model;
-        }
-    }
-
+    [Serializable]
+    [DataContract]
     public class FeatureModelNode : TypedModelNode
     {
 
@@ -36,19 +20,27 @@ namespace SPMeta2.Syntax.Default
     {
         #region methods
 
-        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition)
+        #region methods
+
+        public static TModelNode AddFeature<TModelNode>(this TModelNode model, FeatureDefinition definition)
+            where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             return AddFeature(model, definition, null);
         }
 
-        public static ModelNode AddFeature(this ModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
+        public static TModelNode AddFeature<TModelNode>(this TModelNode model, FeatureDefinition definition,
+            Action<FeatureModelNode> action)
+            where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
+        #endregion
+
         #region array overload
 
-        public static ModelNode AddFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        public static TModelNode AddFeatures<TModelNode>(this TModelNode model, IEnumerable<FeatureDefinition> definitions)
+           where TModelNode : ModelNode, IFeatureHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -139,30 +131,30 @@ namespace SPMeta2.Syntax.Default
 
         #region array overload
 
-        public static ModelNode AddFarmFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
+        //public static ModelNode AddFarmFeatures(this ModelNode model, IEnumerable<FeatureDefinition> definitions)
+        //{
+        //    foreach (var definition in definitions)
+        //        model.AddDefinitionNode(definition);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         #endregion
 
-        public static FeatureDefinition Inherit(this FeatureDefinition definition)
-        {
-            return Inherit(definition, null);
-        }
+        //public static FeatureDefinition Inherit(this FeatureDefinition definition)
+        //{
+        //    return Inherit(definition, null);
+        //}
 
-        public static FeatureDefinition Inherit(this FeatureDefinition definition, Action<FeatureDefinition> config)
-        {
-            var model = definition.Clone() as FeatureDefinition;
+        //public static FeatureDefinition Inherit(this FeatureDefinition definition, Action<FeatureDefinition> config)
+        //{
+        //    var model = definition.Clone() as FeatureDefinition;
 
-            if (config != null)
-                config(model);
+        //    if (config != null)
+        //        config(model);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         public static FeatureDefinition Enable(this FeatureDefinition definition)
         {

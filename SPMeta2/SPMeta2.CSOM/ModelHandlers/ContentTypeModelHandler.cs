@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
@@ -46,8 +47,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             throw new SPMeta2Exception("modelHost should be SiteModelHost/WebModelHost");
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var site = ExtractSite(modelHost);
             var web = ExtractWeb(modelHost);
 
@@ -109,7 +116,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 context.Load(web, w => w.ServerRelativeUrl);
                 currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
-                currentContentType.Context.ExecuteQuery();
+                currentContentType.Context.ExecuteQueryWithTrace();
             }
 
             var ctDocument = XDocument.Parse(currentContentType.SchemaXml);
@@ -135,7 +142,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
             var tmpContentType = context.LoadQuery(web.ContentTypes.Where(ct => ct.StringId == contentTypeId));
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var tmp = tmpContentType.FirstOrDefault();
 
@@ -205,6 +212,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             InvokeOnModelEvent<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
 
+            ProcessLocalization(currentContentType, contentTypeModel);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -248,6 +257,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType.DeleteObject();
                 context.ExecuteQueryWithTrace();
             }
+        }
+
+        protected virtual void ProcessLocalization(ContentType obj, ContentTypeDefinition definition)
+        {
+            ProcessGenericLocalization(obj, new Dictionary<string, List<ValueForUICulture>>
+            {
+                { "NameResource", definition.NameResource },
+                { "DescriptionResource", definition.DescriptionResource },
+            });
         }
     }
 

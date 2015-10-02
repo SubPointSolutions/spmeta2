@@ -47,8 +47,11 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
 
             // formula
-            typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);
-    
+            if (!string.IsNullOrEmpty(typedDefinition.Formula))
+                typedFieldAssert.ShouldBeEqual(m => m.Formula, o => o.Formula);
+            else
+                typedFieldAssert.SkipProperty(m => m.Formula);
+
             // field refs
             if (typedDefinition.FieldReferences.Count > 0)
             {
@@ -82,5 +85,5 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
         }
     }
 
-    
+
 }

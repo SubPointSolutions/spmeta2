@@ -663,6 +663,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_SupportedUICultureDefinition()
+        {
+            TestRandomDefinition<SupportedUICultureDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_PageLayoutAndSiteTemplateSettingsDefinition()
         {
             TestRandomDefinition<PageLayoutAndSiteTemplateSettingsDefinition>();
@@ -704,7 +711,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ContentTypeLinkDefinition()
         {
-            TestRandomDefinition<ContentTypeLinkDefinition>();
+            // preserver list 'EnableContentTypes' from changes
+            WithDisabledPropertyUpdateValidation(() =>
+            {
+                TestRandomDefinition<ContentTypeLinkDefinition>();
+            });
+
+
         }
 
         [TestMethod]
@@ -777,7 +790,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
 
         #endregion
-
 
         #region wb part gallery
 
@@ -891,6 +903,20 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Security")]
+        public void CanDeployRandom_AnonymousAccessSettingsDefinition()
+        {
+            // need to disable validation on web node
+            // it would trigger 'UseUniquePermission' mismatch die to anon settings applied
+            WithDisabledValidationOnTypes(typeof(WebDefinition), () =>
+            {
+                TestRandomDefinition<AnonymousAccessSettingsDefinition>();
+            });
+        }
+
+       
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Security")]
         public void CanDeployRandom_SecurityGroupDefinition()
         {
             TestRandomDefinition<SecurityGroupDefinition>();
@@ -941,7 +967,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Search")]
         public void CanDeployRandom_ManagedPropertyDefinition()
         {
-            TestRandomDefinition<ManagedPropertyDefinition>();
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ManagedPropertyDefinition>();
+            });
         }
 
         #endregion
@@ -1154,7 +1183,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ComposedLookItemDefinition>();
         }
 
-
         [TestMethod]
         [TestCategory("Regression.Rnd.ComposedLooks")]
         public void CanDeployRandom_ComposedLookItemLinkDefinition()
@@ -1182,5 +1210,6 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         }
 
         #endregion
+
     }
 }

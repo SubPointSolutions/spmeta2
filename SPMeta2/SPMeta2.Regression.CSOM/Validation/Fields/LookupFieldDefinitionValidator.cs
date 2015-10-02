@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers.Fields;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -73,23 +74,78 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 typedFieldAssert.SkipProperty(m => m.LookupWebId, "LookupWebId is NULL. Skipping.");
             }
 
+            if (!string.IsNullOrEmpty(typedDefinition.LookupWebUrl))
+            {
+
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupWebUrl, "LookupWebUrl is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.RelationshipDeleteBehavior))
+            {
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.RelationshipDeleteBehavior);
+                    var isValid = s.RelationshipDeleteBehavior == d.RelationshipDeleteBehavior.ToString();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior is NULL. Skipping.");
+            }
+
+            // web url
+            if (!string.IsNullOrEmpty(typedDefinition.LookupWebUrl))
+            {
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
+                var targetWeb = lookupFieldModelHandler.GetTargetWeb(HostSite, typedDefinition);
+
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.LookupWebUrl);
+
+                    var isValid = d.LookupWebId == targetWeb.Id;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupWebUrl, "LookupWebUrl is NULL. Skipping.");
+            }
 
             if (!string.IsNullOrEmpty(typedDefinition.LookupListTitle))
             {
                 var site = HostSite;
                 var context = site.Context;
 
-                var web = typedDefinition.LookupWebId.HasValue
-                    ? site.OpenWebById(typedDefinition.LookupWebId.Value)
-                    : site.RootWeb;
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
+                var web = lookupFieldModelHandler.GetTargetWeb(site, typedDefinition);
+
 
                 context.Load(web);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var list = web.Lists.GetByTitle(typedDefinition.LookupListTitle);
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -116,17 +172,18 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 var site = HostSite;
                 var context = site.Context;
 
-                var web = typedDefinition.LookupWebId.HasValue
-                    ? site.OpenWebById(typedDefinition.LookupWebId.Value)
-                    : site.RootWeb;
+
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
+                var web = lookupFieldModelHandler.GetTargetWeb(site, typedDefinition);
+
 
                 context.Load(web);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedDefinition.LookupListUrl));
 
                 context.Load(list);
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
                 {
@@ -161,7 +218,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
                         var userInfoList = site.RootWeb.SiteUserInfoList;
                         context.Load(userInfoList);
-                        context.ExecuteQuery();
+                        context.ExecuteQueryWithTrace();
 
                         var isValid = userInfoList.Id == new Guid(typedField.LookupList);
 

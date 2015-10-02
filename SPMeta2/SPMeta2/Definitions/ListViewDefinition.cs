@@ -2,10 +2,13 @@
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Definitions
 {
@@ -20,10 +23,16 @@ namespace SPMeta2.Definitions
     [DefaultRootHostAttribute(typeof(WebDefinition))]
     [DefaultParentHostAttribute(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+    [ExpectAddHostExtensionMethod]
+
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    // this not going to work due to IsDefault prop on view
+    //[ExpectManyInstances]
 
     public class ListViewDefinition : DefinitionBase
     {
@@ -37,6 +46,10 @@ namespace SPMeta2.Definitions
 
             Url = string.Empty;
             Query = string.Empty;
+
+            Type = BuiltInViewType.Html;
+
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -54,6 +67,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string Title { get; set; }
+
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         /// <summary>
         /// Allows to define URL of the target view.
@@ -83,7 +105,17 @@ namespace SPMeta2.Definitions
         [ExpectUpdateAsCamlQuery]
         [DataMember]
         [ExpectNullable]
+
+        [CamlPropertyCapabilityAttribute]
         public string Query { get; set; }
+
+        /// <summary>
+        /// IsPaged flag of the target list view.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [DataMember]
+        public string ViewData { get; set; }
 
         /// <summary>
         /// IsPaged flag of the target list view.
@@ -135,6 +167,11 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public string Type { get; set; }
 
         #endregion
 

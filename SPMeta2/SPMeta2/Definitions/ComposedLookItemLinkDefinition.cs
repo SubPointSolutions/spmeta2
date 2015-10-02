@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
@@ -27,6 +28,8 @@ namespace SPMeta2.Definitions
     [DataContract]
     //[ExpectWithExtensionMethod]
     //[ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(WebDefinition))]
     public class ComposedLookItemLinkDefinition : DefinitionBase
     {
         #region properties

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using SPMeta2.Definitions;
@@ -9,57 +10,67 @@ using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ListFieldLinkModelNode : ListItemModelNode
+    {
+
+    }
+
     public static class ListFieldLinkDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddListFieldLink(this ModelNode model, FieldDefinition definition)
+        public static TModelNode AddListFieldLink<TModelNode>(this TModelNode model, FieldDefinition definition)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return AddListFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, FieldDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListFieldLink<TModelNode>(this TModelNode model, FieldDefinition definition,
+            Action<ListFieldLinkModelNode> action)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             if (definition.Id != default(Guid))
             {
-                return model.AddDefinitionNode(new ListFieldLinkDefinition
+                return model.AddListFieldLink(new ListFieldLinkDefinition
                 {
                     FieldId = definition.Id
                 }, action);
             }
 
-            return model.AddDefinitionNode(new ListFieldLinkDefinition
+            return model.AddListFieldLink(new ListFieldLinkDefinition
             {
                 FieldInternalName = definition.InternalName
             }, action);
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition)
+        #endregion
+
+        #region methods
+
+        public static TModelNode AddListFieldLink<TModelNode>(this TModelNode model, ListFieldLinkDefinition definition)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
             return AddListFieldLink(model, definition, null);
         }
 
-        public static ModelNode AddListFieldLink(this ModelNode model, ListFieldLinkDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddListFieldLink<TModelNode>(this TModelNode model, ListFieldLinkDefinition definition,
+            Action<ListFieldLinkModelNode> action)
+            where TModelNode : ModelNode, IListModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
 
         #region array overload
 
-        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<ListFieldLinkDefinition> definitions)
+        public static TModelNode AddListFieldLinks<TModelNode>(this TModelNode model, IEnumerable<ListFieldLinkDefinition> definitions)
+           where TModelNode : ModelNode, IListModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
-
-            return model;
-        }
-
-        public static ModelNode AddListFieldLinks(this ModelNode model, IEnumerable<FieldDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddListFieldLink(definition);
 
             return model;
         }

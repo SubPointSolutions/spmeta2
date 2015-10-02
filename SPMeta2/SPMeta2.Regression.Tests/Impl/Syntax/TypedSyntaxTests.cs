@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers;
 using SPMeta2.Definitions;
 using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Taxonomy;
@@ -7,6 +9,8 @@ using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Standard.Definitions;
+using SPMeta2.Syntax.Default.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Syntax
 {
@@ -22,7 +26,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewFarmModel(farm =>
             {
-                farm.AddProperty(new PropertyDefinition());
+                farm
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 farm.AddFeature(new FeatureDefinition());
                 farm.AddFarmFeature(new FeatureDefinition());
@@ -40,7 +46,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
             {
-                webApplication.AddProperty(new PropertyDefinition());
+                webApplication
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 webApplication.AddFeature(new FeatureDefinition());
                 webApplication.AddWebApplicationFeature(new FeatureDefinition());
@@ -61,18 +69,30 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddAuditSettings(new AuditSettingsDefinition());
                 site.AddImageRendition(new ImageRenditionDefinition());
 
                 site.AddRootWeb(new RootWebDefinition());
 
                 site.AddEventReceiver(new EventReceiverDefinition());
 
-                site.AddProperty(new PropertyDefinition());
+                site
+                    .AddProperty(new PropertyDefinition())
+                    .AddProperty(new PropertyDefinition());
 
                 site.AddFeature(new FeatureDefinition());
                 site.AddSiteFeature(new FeatureDefinition());
 
-                site.AddSecurityGroup(new SecurityGroupDefinition());
+                site.AddSecurityGroup(new SecurityGroupDefinition(), group =>
+                {
+                    // TODO
+
+                    // .AddSecurityRoleLink() is missed on SecurityGroup #601
+                    // https://github.com/SubPointSolutions/spmeta2/issues/601 
+                    group.AddSecurityRoleLink(new SecurityRoleLinkDefinition());
+                    group.AddSecurityRoleLink(new SecurityRoleLinkDefinition());
+                });
+
                 site.AddSecurityRole(new SecurityRoleDefinition());
 
                 site.AddWeb(new WebDefinition());
@@ -100,6 +120,10 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                             termSet.AddTaxonomyTerm(new TaxonomyTermDefinition(), term =>
                             {
                                 term.AddTaxonomyTerm(new TaxonomyTermDefinition());
+
+                                // .AddTaxonomyTermLabel() is missed on TaxonomyTermDefinition #602
+                                // https://github.com/SubPointSolutions/spmeta2/issues/602
+                                term.AddTaxonomyTermLabel(new TaxonomyTermLabelDefinition());
                             });
                         });
                     });
@@ -118,6 +142,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web
+                    .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition())
+                    .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition());
+
+                web.AddAuditSettings(new AuditSettingsDefinition());
                 web.AddWebNavigationSettings(new WebNavigationSettingsDefinition());
                 web.AddPageLayoutAndSiteTemplateSettings(new PageLayoutAndSiteTemplateSettingsDefinition());
 
@@ -138,13 +167,15 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddEventReceiver(new EventReceiverDefinition());
 
-                web.AddProperty(new PropertyDefinition());
+                web
+                  .AddProperty(new PropertyDefinition())
+                  .AddProperty(new PropertyDefinition());
 
                 web.AddFeature(new FeatureDefinition());
                 web.AddWebFeature(new FeatureDefinition());
 
-                web.AddSecurityGroup(new SecurityGroupDefinition());
-                web.AddSecurityRole(new SecurityRoleDefinition());
+                //web.AddSecurityGroup(new SecurityGroupDefinition());
+                //web.AddSecurityRole(new SecurityRoleDefinition());
 
                 web.AddWeb(new WebDefinition());
 
@@ -155,11 +186,27 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddAuditSettings(new AuditSettingsDefinition());
+
+                    list
+                      .AddProperty(new PropertyDefinition())
+                      .AddProperty(new PropertyDefinition());
+
+
                     list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition());
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
                     list.AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition());
 
-                    list.AddModuleFile(new ModuleFileDefinition());
+                    list.AddModuleFile(new ModuleFileDefinition(), moduleFile =>
+                    {
+                        moduleFile.AddSecurityGroupLink(new SecurityGroupDefinition(), group =>
+                       {
+                           group
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Edit)
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Design)
+                               .AddSecurityRoleLink(BuiltInSecurityRoleNames.Approve);
+                       });
+                    });
 
                     list.AddUserCustomAction(new UserCustomActionDefinition());
 
@@ -178,7 +225,14 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     list.AddField(new FieldDefinition());
                     list.AddContentTypeLink(new ContentTypeLinkDefinition());
 
-                    list.AddListView(new ListViewDefinition());
+                    list.AddListView(new ListViewDefinition(), listView =>
+                    {
+                        // Enhance 'WebPartDefinition' provision - enabne privision under list views #590
+                        // https://github.com/SubPointSolutions/spmeta2/issues/590
+
+                        listView.AddDeleteWebParts(new DeleteWebPartsDefinition());
+                        listView.AddWebPart(new WebPartDefinition());
+                    });
 
                     list.AddListItem(new ListItemDefinition(), listItem =>
                     {
@@ -190,6 +244,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     list.AddFolder(new FolderDefinition(), folder =>
                     {
                         folder
+                            .AddProperty(new PropertyDefinition())
+                            .AddProperty(new PropertyDefinition())
+
                             .AddWelcomePage(new WelcomePageDefinition())
                             .AddFolder(new FolderDefinition())
                             .AddListItem(new ListItemDefinition());
@@ -211,6 +268,25 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     {
                         page.AddDeleteWebParts(new DeleteWebPartsDefinition());
                         page.AddWebPart(new WebPartDefinition());
+                    });
+                });
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Syntax.Extensions")]
+        public void CanPassTypedSyntax_Extensions()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, Directory.GetCurrentDirectory());
+
+                    list.AddRandomFolder(folder =>
+                    {
+                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, Directory.GetCurrentDirectory());
                     });
                 });
             });

@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions.Fields
     [Serializable] 
     [DataContract]
     [ExpectArrayExtensionMethod]
+    [ExpectManyInstances]
 
     public class TextFieldDefinition : FieldDefinition
     {

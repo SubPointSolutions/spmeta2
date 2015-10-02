@@ -4,6 +4,7 @@ using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -24,9 +25,25 @@ namespace SPMeta2.Standard.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class PublishingPageLayoutDefinition : PageDefinitionBase
     {
         #region properties
+
+        /// <summary>
+        /// Title of the target page.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectUpdate]
+        // That is not required for PublishingPageLayoutDefinition
+        // https://github.com/SubPointSolutions/spmeta2/issues/607
+        //[ExpectRequired]
+        [DataMember]
+        public override string Title { get; set; }
 
         /// <summary>
         /// Description of the target publishing page.
@@ -55,6 +72,21 @@ namespace SPMeta2.Standard.Definitions
         [DataMember]
         [ExpectNullable]
         public string AssociatedContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsUrl(Extension = ".png")]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+        public string PreviewImageUrl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string PreviewImageDescription { get; set; }
 
         #endregion
 

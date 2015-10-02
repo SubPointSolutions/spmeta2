@@ -33,9 +33,75 @@ namespace SPMeta2.Regression.SSOM.Validation
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
             if (!string.IsNullOrEmpty(definition.Query))
-                assert.ShouldBeEqual(m => m.Query, o => o.Query);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Query);
+                    var dstProp = d.GetExpressionValue(o => o.Query);
+
+                    var srcViewDate = assert.Src.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                    var dstViewDate = assert.Dst.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
             else
                 assert.SkipProperty(m => m.Query);
+
+
+            if (!string.IsNullOrEmpty(definition.ViewData))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ViewData);
+                    var dstProp = d.GetExpressionValue(o => o.ViewData);
+
+                    var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                    var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.ViewData);
+
+            if (!string.IsNullOrEmpty(definition.Type))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Type);
+                    var dstProp = d.GetExpressionValue(o => o.Type);
+
+                    var isValid = srcProp.Value.ToString().ToUpper() ==
+                        dstProp.Value.ToString().ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.Type);
 
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
@@ -126,11 +192,55 @@ namespace SPMeta2.Regression.SSOM.Validation
                     IsValid = hasAllFields
                 };
             });
+
+            /// localization
+            if (definition.TitleResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.TitleResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.TitleResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+            }
+
         }
     }
 
     internal static class ViewDefault
     {
+        public static string GetType(this ListViewDefinition def)
+        {
+            return def.Type.ToUpper();
+        }
+
+        public static string GetType(this SPView view)
+        {
+            return view.Type.ToUpper();
+        }
+
         public static bool IsDefaul(this SPView view)
         {
             return view.ParentList.DefaultView.ID == view.ID;

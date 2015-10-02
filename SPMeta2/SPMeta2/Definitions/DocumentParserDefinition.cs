@@ -8,6 +8,7 @@ using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -23,6 +24,9 @@ namespace SPMeta2.Definitions
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
+    [ExpectArrayExtensionMethod]
+
+    [ParentHostCapability(typeof(FarmDefinition))]
     public class DocumentParserDefinition : DefinitionBase
     {
         #region properties

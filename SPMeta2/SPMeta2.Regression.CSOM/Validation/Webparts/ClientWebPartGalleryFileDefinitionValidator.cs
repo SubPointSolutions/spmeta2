@@ -11,6 +11,7 @@ using SPMeta2.Definitions.Webparts;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<WebPartGalleryFileDefinition>("model", value => value.RequireNotNull());
 
             var file = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);
@@ -31,7 +32,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
             context.Load(file, f => f.ServerRelativeUrl);
             context.Load(spObject);
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
                                          .NewAssert(definition, spObject)

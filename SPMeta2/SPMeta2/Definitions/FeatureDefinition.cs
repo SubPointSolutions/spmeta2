@@ -8,15 +8,21 @@ using System.Text;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
     [DataContract]
+    [Serializable]
     public enum FeatureDefinitionScope
     {
+        [EnumMember]
         Farm,
+        [EnumMember]
         WebApplication,
+        [EnumMember]
         Site,
+        [EnumMember]
         Web
     }
 
@@ -36,6 +42,11 @@ namespace SPMeta2.Definitions
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+
+    [ParentHostCapability(typeof(SiteDefinition))]
+    [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
     public class FeatureDefinition : DefinitionBase
     {
         #region properties

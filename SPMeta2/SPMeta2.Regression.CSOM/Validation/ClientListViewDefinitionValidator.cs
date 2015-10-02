@@ -7,6 +7,9 @@ using SPMeta2.Definitions.Base;
 
 using SPMeta2.Utils;
 using System.Linq;
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -14,8 +17,10 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var list = modelHost.WithAssertAndCast<List>("modelHost", value => value.RequireNotNull());
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
 
             var context = list.Context;
 
@@ -32,8 +37,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                 o => o.ServerRelativeUrl,
                 o => o.DefaultViewForContentType,
                 o => o.ContentTypeId,
+                o => o.ViewType,
+                o => o.ViewData,
                 v => v.Title));
-            context.ExecuteQuery();
+            context.ExecuteQueryWithTrace();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
             var assert = ServiceFactory.AssertService
@@ -42,9 +49,55 @@ namespace SPMeta2.Regression.CSOM.Validation
                                           .ShouldBeEqual(m => m.Title, o => o.Title)
                                           .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
                                           .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                                          //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
                                           .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                           .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+            if (!string.IsNullOrEmpty(definition.ViewData))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+               {
+                   var srcProp = s.GetExpressionValue(def => def.ViewData);
+                   var dstProp = d.GetExpressionValue(o => o.ViewData);
+
+                   var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                   var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                   var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                   return new PropertyValidationResult
+                   {
+                       Tag = p.Tag,
+                       Src = srcProp,
+                       Dst = dstProp,
+                       IsValid = isValid
+                   };
+               });
+            }
+            else
+                assert.SkipProperty(m => m.ViewData);
+
+            if (!string.IsNullOrEmpty(definition.Type))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Type);
+                    var dstProp = d.GetExpressionValue(o => o.ViewType);
+
+                    var isValid = srcProp.Value.ToString().ToUpper() ==
+                        dstProp.Value.ToString().ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.Type);
 
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
@@ -52,7 +105,26 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Query))
-                assert.ShouldBeEqual(m => m.Query, o => o.ViewQuery);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Query);
+                    var dstProp = d.GetExpressionValue(o => o.ViewQuery);
+
+                    var srcViewDate = assert.Src.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                    var dstViewDate = assert.Dst.ViewQuery.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
             else
                 assert.SkipProperty(m => m.Query, "Query is null or empty. Skipping.");
 
@@ -140,6 +212,58 @@ namespace SPMeta2.Regression.CSOM.Validation
                     IsValid = hasAllFields
                 };
             });
+
+            var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
+            {
+                "TitleResource"
+            });
+
+            if (supportsLocalization)
+            {
+                if (definition.TitleResource.Any())
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                        var isValid = true;
+
+                        foreach (var userResource in s.TitleResource)
+                        {
+                            var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                            var resourceObject = ReflectionUtils.GetPropertyValue(spObject, "TitleResource");
+
+                            var value = ReflectionUtils.GetMethod(resourceObject, "GetValueForUICulture")
+                                                    .Invoke(resourceObject, new[] { culture.Name }) as ClientResult<string>;
+
+                            context.ExecuteQuery();
+
+                            isValid = userResource.Value == value.Value;
+
+                            if (!isValid)
+                                break;
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+                }
+            }
+            else
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                      "CSOM runtime doesn't have Web.TitleResource and Web.DescriptionResource() methods support. Skipping validation.");
+
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
+            }
         }
 
         protected bool DoesFieldExist(ViewFieldCollection viewFields, string fieldName)

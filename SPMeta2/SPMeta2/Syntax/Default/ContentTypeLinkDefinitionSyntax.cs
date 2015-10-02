@@ -3,26 +3,40 @@ using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ContentTypeLinkModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ContentTypeLinkDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition)
+        public static TModelNode AddContentTypeLink<TModelNode>(this TModelNode model, ContentTypeLinkDefinition definition)
+            where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
             return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeLinkDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentTypeLink<TModelNode>(this TModelNode model, ContentTypeLinkDefinition definition,
+            Action<ContentTypeLinkModelNode> action)
+            where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
+            return model.AddTypedDefinitionNode(definition, action);
         }
+
+        #endregion
 
         #region array overload
 
-        public static ModelNode AddContentTypeLinks(this ModelNode model, IEnumerable<ContentTypeLinkDefinition> definitions)
+        public static TModelNode AddContentTypeLinks<TModelNode>(this TModelNode model, IEnumerable<ContentTypeLinkDefinition> definitions)
+           where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);
@@ -32,7 +46,10 @@ namespace SPMeta2.Syntax.Default
 
         #endregion
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, string contentTypdId)
+        #region additions
+
+        public static TModelNode AddContentTypeLink<TModelNode>(this TModelNode model, string contentTypdId)
+           where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {
@@ -41,12 +58,15 @@ namespace SPMeta2.Syntax.Default
             });
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition)
+        public static TModelNode AddContentTypeLink<TModelNode>(this TModelNode model, ContentTypeDefinition definition)
+           where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
             return AddContentTypeLink(model, definition, null);
         }
 
-        public static ModelNode AddContentTypeLink(this ModelNode model, ContentTypeDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddContentTypeLink<TModelNode>(this TModelNode model, ContentTypeDefinition definition,
+          Action<ContentTypeLinkModelNode> action)
+          where TModelNode : ModelNode, IContentTypeLinkHostModelNode, new()
         {
             return AddContentTypeLink(model, new ContentTypeLinkDefinition
             {
@@ -56,7 +76,5 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
-
-       
     }
 }

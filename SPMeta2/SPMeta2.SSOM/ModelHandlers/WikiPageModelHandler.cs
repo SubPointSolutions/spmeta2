@@ -21,8 +21,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WikiPageDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
@@ -146,8 +152,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
         {
-            var wikiPageName = wikiPageModel.FileName;
+            return GetSafeWikiPageFileName(wikiPageModel.FileName);
+        }
 
+        protected string GetSafeWikiPageFileName(string wikiPageName)
+        {
             if (!wikiPageName.EndsWith(".aspx"))
                 wikiPageName += ".aspx";
 

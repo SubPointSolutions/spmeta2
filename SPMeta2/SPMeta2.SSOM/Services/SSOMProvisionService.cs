@@ -12,13 +12,14 @@ using System.Reflection;
 
 namespace SPMeta2.SSOM.Services
 {
-    public class SSOMProvisionService : ModelServiceBase
+    public class SSOMProvisionService : ProvisionServiceBase
     {
         #region constructors
 
         public SSOMProvisionService()
         {
             ServiceContainer.Instance.RegisterService(typeof(SSOMTokenReplacementService), new SSOMTokenReplacementService());
+            ServiceContainer.Instance.RegisterService(typeof(SSOMLocalizationService), new SSOMLocalizationService());
 
             RegisterModelHandlers();
 

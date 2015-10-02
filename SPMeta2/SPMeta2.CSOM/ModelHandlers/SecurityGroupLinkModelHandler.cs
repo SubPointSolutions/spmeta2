@@ -20,8 +20,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var securableObject = ExtractSecurableObject(modelHost);
 
             if (securableObject is SecurableObject)
@@ -118,7 +124,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                context.ExecuteQuery();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
@@ -187,9 +193,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected RoleAssignment FindRoleRoleAssignment(RoleAssignmentCollection roleAssignments, Group securityGroup)
         {
+            TraceService.Verbose((int)LogEventId.CoreCalls, "FindRoleRoleAssignment call");
+
+            if (roleAssignments == null || roleAssignments.ServerObjectIsNull == true)
+            {
+                TraceService.Verbose((int)LogEventId.CoreCalls,
+                    "roleAssignments arg is null or ServerObjectIsNull. Returning NULL.");
+
+                return null;
+            }
+
+            TraceService.Verbose((int)LogEventId.CoreCalls,
+                string.Format("roleAssignments.Count: [{0}]", roleAssignments.Count));
+
             foreach (var ra in roleAssignments)
+            {
+                TraceService.Verbose((int)LogEventId.CoreCalls, string.Format("Current RoleAssignments:[{0}] Member:[{1}]", ra, ra.Member));
+
                 if (ra.Member.Id == securityGroup.Id)
                     return ra;
+            }
 
             return null;
         }

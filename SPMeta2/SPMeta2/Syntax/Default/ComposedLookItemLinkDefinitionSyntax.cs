@@ -3,29 +3,32 @@ using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Extensions;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SPMeta2.Syntax.Default
 {
+    [Serializable]
+    [DataContract]
+    public class ComposedLookItemLinkModelNode : TypedModelNode
+    {
+
+    }
+
     public static class ComposedLookItemLinkDefinitionSyntax
     {
         #region methods
 
-        public static ModelNode AddComposedLookItemLink(this ModelNode model, ComposedLookItemLinkDefinition definition)
+        public static TModelNode AddComposedLookItemLink<TModelNode>(this TModelNode model, ComposedLookItemLinkDefinition definition)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
             return AddComposedLookItemLink(model, definition, null);
         }
 
-        public static ModelNode AddComposedLookItemLink(this ModelNode model, ComposedLookItemLinkDefinition definition, Action<ModelNode> action)
+        public static TModelNode AddComposedLookItemLink<TModelNode>(this TModelNode model, ComposedLookItemLinkDefinition definition,
+            Action<ComposedLookItemLinkModelNode> action)
+            where TModelNode : ModelNode, IWebHostModelNode, new()
         {
-            return model.AddDefinitionNode(definition, action);
-        }
-
-        public static ModelNode AddComposedLookItemLinks(this ModelNode model, IEnumerable<ComposedLookItemLinkDefinition> definitions)
-        {
-            foreach (var definition in definitions)
-                model.AddDefinitionNode(definition);
-
-            return model;
+            return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
