@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
-using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 
-namespace SPMeta2.SSOM.ModelHandlers
+namespace SPMeta2.CSOM.ModelHandlers
 {
     public class RegionalSettingsModelHandler : CSOMModelHandlerBase
     {
@@ -36,6 +33,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void DeployRegionalSettings(object modelHost, Web web, RegionalSettingsDefinition definition)
         {
+            var context = web.Context;
+
             var settings = GetCurrentRegionalSettings(web);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -49,9 +48,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            MapRegionalSettings(settings, definition);
-
-            //web.RegionalSettings = settings;
+            bool shouldUpdate;
+            MapRegionalSettings(context, settings, definition, out shouldUpdate);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -63,6 +61,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+
+            if (shouldUpdate)
+            {
+                context.AddQuery(new ClientActionInvokeMethod(settings, "Update", null));
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         protected RegionalSettings GetCurrentRegionalSettings(Web web)
@@ -70,23 +74,84 @@ namespace SPMeta2.SSOM.ModelHandlers
             return web.RegionalSettings;
         }
 
-        private void MapRegionalSettings(RegionalSettings settings, RegionalSettingsDefinition definition)
+        private static void MapRegionalSettings(ClientRuntimeContext context, RegionalSettings settings, RegionalSettingsDefinition definition, out bool shouldUpdate)
         {
-            // TODO, CSOM does not support any operation for RegionalSetting yet
+            shouldUpdate = false;
 
-            //settings.AdjustHijriDays = definition.AdjustHijriDays;
-            //settings.AlternateCalendarType = definition.AlternateCalendarType;
-            //settings.CalendarType = definition.CalendarType;
-            //settings.Collation = definition.Collation;
-            //settings.FirstDayOfWeek = definition.FirstDayOfWeek;
-            //settings.FirstWeekOfYear = definition.FirstWeekOfYear;
-            //settings.LocaleId = definition.LocaleId;
-            //settings.WorkDayStartHour = definition.WorkDayStartHour;
-            //settings.WorkDayEndHour = definition.WorkDayEndHour;
-            //settings.WorkDays = definition.WorkDays;
-            //settings.ShowWeeks = definition.ShowWeeks;
-            //settings.Time24 = definition.Time24;
-            //settings.LocaleId = definition.LocaleId;
+            if (!ReflectionUtils.HasMethod(settings, "Update"))
+                return;
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "AdjustHijriDays", definition.AdjustHijriDays));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AlternateCalendarType"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "AlternateCalendarType", definition.AlternateCalendarType));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "CalendarType"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "CalendarType", definition.CalendarType));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Collation"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "Collation", definition.Collation));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstDayOfWeek"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "FirstDayOfWeek", definition.FirstDayOfWeek));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstWeekOfYear"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "FirstWeekOfYear", definition.FirstWeekOfYear));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "LocaleId"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "LocaleId", definition.LocaleId));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayStartHour"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayStartHour", definition.WorkDayStartHour));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayEndHour"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayEndHour", definition.WorkDayEndHour));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDays"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDays", definition.WorkDays));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "ShowWeeks"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "ShowWeeks", definition.ShowWeeks));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Time24"))
+            {
+                context.AddQuery(new ClientActionSetProperty(settings, "Time24", definition.Time24));
+                shouldUpdate = true;
+            }
         }
 
         #endregion
