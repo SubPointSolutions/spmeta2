@@ -333,8 +333,8 @@
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\AnonymousAccessSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AlternateUrlDefinitionSyntax.cs" />
-    <Compile Include="Syntax\Default\AnonymousAccessDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />

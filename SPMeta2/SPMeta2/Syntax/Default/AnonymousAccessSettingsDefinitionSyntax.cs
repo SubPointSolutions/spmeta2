@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SPMeta2.Definitions;
+using SPMeta2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
-using SPMeta2.Definitions;
+
 using SPMeta2.Models;
+using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -29,14 +31,12 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddAnonymousAccessSettings<TModelNode>(this TModelNode model, AnonymousAccessSettingsDefinition definition,
-            Action<AnonymousAccessSettingsModelNode> action)
+            Action<TModelNode> action)
             where TModelNode : ModelNode, IWebModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
 
         #endregion
-
-
     }
 }

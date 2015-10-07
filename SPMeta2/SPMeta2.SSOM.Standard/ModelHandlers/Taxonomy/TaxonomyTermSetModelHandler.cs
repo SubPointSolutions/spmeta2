@@ -125,7 +125,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 currentTermSet.Description = termSetModel.Description;
 
             if (!string.IsNullOrEmpty(termSetModel.Contact))
-                currentTermSet.Description = termSetModel.Contact;
+                currentTermSet.Contact = termSetModel.Contact;
 
             if (!string.IsNullOrEmpty(termSetModel.CustomSortOrder))
                 currentTermSet.CustomSortOrder = termSetModel.CustomSortOrder;
