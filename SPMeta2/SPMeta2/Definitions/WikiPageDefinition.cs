@@ -32,6 +32,20 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
+        /// <summary>
+        /// Title of the target page.
+        /// Is not used by the SharePoint for wiki pages.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectUpdate]
+        // Title is not used by the wiki pages and SharePoint
+        // Should not be required
+        // https://github.com/SubPointSolutions/spmeta2/issues/684
+        //[ExpectRequired]
+        [DataMember]
+        public override string Title { get; set; }
+
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
