@@ -57,6 +57,7 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
                 if (!string.IsNullOrEmpty(propValue))
                 {
+                    // ReSharper disable once ObjectCreationAsStatement
                     new Version(propValue);
                 }
             }

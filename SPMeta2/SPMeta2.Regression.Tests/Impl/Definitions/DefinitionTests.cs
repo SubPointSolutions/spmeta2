@@ -134,7 +134,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldBeMarkedAsSerializable()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -155,7 +154,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldBeMarkedAsDataContract()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -180,7 +178,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void ModelNodesShouldBeMarkedAsDataContract_v12()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var modelNodeType in AllModelNodeTypes)
@@ -205,7 +202,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions.Identity")]
         public void DefinitionsShouldHasIdentityOrIdentityKey()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -245,7 +241,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void ModelNodeTypesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
-            var showOnlyFails = true;
             var result = true;
             var errors = 0;
 
@@ -284,7 +279,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
-            var showOnlyFails = true;
             var result = true;
             var errors = 0;
 
@@ -327,8 +321,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         {
             if (!M2RegressionRuntime.IsV11)
                 return;
-
-            var showTrace = false;
 
             var methods = GetModelNodeExtensionMethods(new[]
             {

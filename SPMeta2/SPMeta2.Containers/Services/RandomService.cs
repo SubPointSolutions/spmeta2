@@ -182,7 +182,6 @@ namespace SPMeta2.Containers.Services
         public static byte[] ByteArray(this RandomService service)
         {
             return ByteArray(service, 64);
-            return ByteArray(service, 64);
         }
 
         public static byte[] ByteArray(this RandomService service, int length)

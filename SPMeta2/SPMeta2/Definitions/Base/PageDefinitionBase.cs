@@ -26,7 +26,7 @@ namespace SPMeta2.Definitions
     {
         #region constructors
 
-        public PageDefinitionBase()
+        protected PageDefinitionBase()
         {
             NeedOverride = true;
             DefaultValues = new List<FieldValue>();

@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             get { return HostList != null; }
         }
         protected List HostList { get; set; }
-        protected Site HostSite { get; set; }
+       // protected Site HostSite { get; set; }
 
         protected Field GetField(object modelHost, FieldDefinition definition)
         {

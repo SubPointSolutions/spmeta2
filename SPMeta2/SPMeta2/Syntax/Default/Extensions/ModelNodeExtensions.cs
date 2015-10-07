@@ -5,7 +5,7 @@ using SPMeta2.Models;
 // legacy one
 namespace SPMeta2.Syntax.Default.Extensions
 {
-    internal class TMP { }
+    internal class Tmp { }
 }
 
 // moved

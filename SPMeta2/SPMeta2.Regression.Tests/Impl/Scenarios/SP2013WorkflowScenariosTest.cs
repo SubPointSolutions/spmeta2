@@ -154,7 +154,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 Title = Rnd.String(),
                 TemplateType = BuiltInListTemplateTypeId.Tasks,
+#pragma warning disable 618
                 Url = Rnd.String()
+#pragma warning restore 618
             };
         }
 
@@ -164,7 +166,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 Title = Rnd.String(),
                 TemplateType = BuiltInListTemplateTypeId.WorkflowHistory,
+#pragma warning disable 618
                 Url = Rnd.String()
+#pragma warning restore 618
             };
         }
 
@@ -183,8 +187,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     Name = Rnd.String(),
                     WorkflowDisplayName = workflow.DisplayName,
+#pragma warning disable 618
                     HistoryListUrl = historyList.GetListUrl(),
                     TaskListUrl = taskList.GetListUrl()
+#pragma warning restore 618
                 });
         }
 
@@ -197,7 +203,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var taskList = GetTaskList();
 
             web
-                        
+
                         .AddList(historyList)
                         .AddList(taskList)
                         .AddList(workflowEnableList, list =>
@@ -206,8 +212,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             {
                                 Name = Rnd.String(),
                                 WorkflowDisplayName = workflow.DisplayName,
+#pragma warning disable 618
                                 HistoryListUrl = historyList.GetListUrl(),
                                 TaskListUrl = taskList.GetListUrl()
+#pragma warning restore 618
                             });
                         })
                         .AddSP2013Workflow(workflow);

@@ -1,6 +1,7 @@
 ﻿using System;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
+// ReSharper disable InconsistentNaming
 
 namespace SPMeta2.BuiltInDefinitions
 {

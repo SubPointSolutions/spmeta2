@@ -19,7 +19,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
 
+#pragma warning disable 618
                 def.ListUrl = BuiltInListDefinitions.SitePages.Url;
+#pragma warning restore 618
             });
         }
     }

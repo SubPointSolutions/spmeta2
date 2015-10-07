@@ -1,4 +1,5 @@
-﻿namespace SPMeta2.Enumerations
+﻿// ReSharper disable InconsistentNaming
+namespace SPMeta2.Enumerations
 {
     /// <summary>
     /// Out of the bix SharePoint site content types.

@@ -1,4 +1,5 @@
-﻿namespace SPMeta2.Enumerations
+﻿// ReSharper disable InconsistentNaming
+namespace SPMeta2.Enumerations
 {
     /// <summary>
     /// Content type names generated on top of Microsoft.SharePoint.SPBuiltInContentTypeId class.

@@ -123,7 +123,7 @@ namespace SPMeta2.Services
 
         // public ModelWeighServiceBase ModelWeighService { get; set; }
 
-        private readonly List<ModelHandlerBase> ModelHandlerEvents = new List<ModelHandlerBase>();
+        private readonly List<ModelHandlerBase> _modelHandlerEvents = new List<ModelHandlerBase>();
         private ModelNode _activeModelNode = null;
 
         public ModelTreeTraverseServiceBase ModelTraverseService { get; set; }
@@ -249,7 +249,7 @@ namespace SPMeta2.Services
             using (new TraceMethodActivityScope(TraceService, (int)LogEventId.CoreCalls))
             {
                 foreach (var modelHandler in ModelHandlers.Values
-                    .Where(modelHandler => !ModelHandlerEvents.Contains(modelHandler)))
+                    .Where(modelHandler => !_modelHandlerEvents.Contains(modelHandler)))
                 {
                     modelHandler.OnModelEvent += (s, e) =>
                     {
@@ -265,7 +265,7 @@ namespace SPMeta2.Services
                         }
                     };
 
-                    ModelHandlerEvents.Add(modelHandler);
+                    _modelHandlerEvents.Add(modelHandler);
                 }
             }
         }

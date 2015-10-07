@@ -179,11 +179,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             throw new SPMeta2NotImplementedException();
 
-            TestRandomDefinition<ListViewDefinition>(def =>
-            {
-                def.Hidden = false;
-                def.Type = BuiltInViewType.Recurrence;
-            });
+            //TestRandomDefinition<ListViewDefinition>(def =>
+            //{
+            //    def.Hidden = false;
+            //    def.Type = BuiltInViewType.Recurrence;
+            //});
         }
 
         #endregion

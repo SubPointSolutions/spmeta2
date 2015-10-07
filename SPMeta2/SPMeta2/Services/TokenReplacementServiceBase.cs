@@ -40,8 +40,8 @@ namespace SPMeta2.Services
 
         #region properties
 
-        protected List<TokenInfo> _supportedTokens = new List<TokenInfo>();
-        public IEnumerable<TokenInfo> SupportedTokens { get { return _supportedTokens; } }
+        protected readonly List<TokenInfo> SupportedTokensInternal = new List<TokenInfo>();
+        public IEnumerable<TokenInfo> SupportedTokens { get { return SupportedTokensInternal; } }
 
 
         #endregion

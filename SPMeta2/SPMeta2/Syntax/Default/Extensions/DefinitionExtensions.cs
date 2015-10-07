@@ -8,7 +8,7 @@ namespace SPMeta2.Syntax.Default
         public static TDefinition Inherit<TDefinition>(this TDefinition definition)
             where TDefinition : DefinitionBase, new()
         {
-            return Inherit<TDefinition>(definition, null);
+            return Inherit(definition, null);
         }
 
         public static TDefinition Inherit<TDefinition>(this TDefinition definition, Action<TDefinition> config)

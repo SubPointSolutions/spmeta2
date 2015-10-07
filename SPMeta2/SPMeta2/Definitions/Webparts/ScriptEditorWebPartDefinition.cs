@@ -26,12 +26,12 @@ namespace SPMeta2.Definitions.Webparts
     {
         #region properties
 
-        private string id;
+        private string _id;
 
         [DataMember]
         public override string Id
         {
-            get { return id; }
+            get { return _id; }
             set
             {
                 // https://github.com/SubPointSolutions/spmeta2/issues/450
@@ -41,7 +41,7 @@ namespace SPMeta2.Definitions.Webparts
                         "Id property for ScriptEditorWebPartDefinition must be more than 32 symbols - https://github.com/SubPointSolutions/spmeta2/issues/450");
                 }
 
-                id = value;
+                _id = value;
             }
         }
 

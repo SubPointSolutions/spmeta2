@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Microsoft.Online.SharePoint.TenantAdministration;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
-using SPMeta2.O365.ModelHosts;
-using SPMeta2.Utils;
+using System.Threading;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
+using SPMeta2.Definitions;
 using SPMeta2.O365.Definitions;
 using SPMeta2.O365.ModelHandlers.Base;
-using SPMeta2.Common;
-using System.Threading;
+using SPMeta2.O365.ModelHosts;
+using SPMeta2.Utils;
 
 namespace SPMeta2.O365.ModelHandlers
 {
@@ -45,7 +38,6 @@ namespace SPMeta2.O365.ModelHandlers
         private void DeployO365SiteCollection(object modelHost, ClientContext context, O365SiteDefinition o365SiteModel)
         {
             var doesSiteExist = false;
-            var currentSiteCollection = (Site)null;
 
             WithExistingSiteAndWeb(context, o365SiteModel.Url, (site, web) =>
             {
@@ -183,7 +175,7 @@ namespace SPMeta2.O365.ModelHandlers
                     action(tmp.Site, tmp.Web);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 action(null, null);
             }

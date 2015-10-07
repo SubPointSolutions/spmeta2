@@ -402,7 +402,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             siteContentType.DocumentTemplate = UrlUtility.CombineUrl(new[]{
                "~sitecollection", 
+#pragma warning disable 618
                documentTemplateLibrary.Url,
+#pragma warning restore 618
                documentTemplate.FileName 
             });
 
@@ -452,7 +454,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             siteContentType.DocumentTemplate = UrlUtility.CombineUrl(new[]{
                "~sitecollection", 
                subWebDef.Url,
+#pragma warning disable 618
                documentTemplateLibrary.Url,
+#pragma warning restore 618
                documentTemplate.FileName 
             });
 

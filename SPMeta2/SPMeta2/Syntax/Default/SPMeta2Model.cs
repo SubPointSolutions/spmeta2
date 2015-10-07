@@ -47,10 +47,7 @@ namespace SPMeta2.Syntax.Default
         /// <returns></returns>
         public static ModelNode NewFarmModel(Action<FarmModelNode> action)
         {
-            var node = NewFarmModel(new FarmDefinition
-            {
-                //RequireSelfProcessing = false
-            }, action);
+            var node = NewFarmModel(new FarmDefinition(), action);
 
             node.Options.RequireSelfProcessing = false;
 

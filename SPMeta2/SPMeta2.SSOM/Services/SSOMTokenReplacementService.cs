@@ -16,7 +16,7 @@ namespace SPMeta2.SSOM.Services
 
         public SSOMTokenReplacementService()
         {
-            _supportedTokens.Clear();
+            SupportedTokensInternal.Clear();
 
             TokenProcessInfos.Add(new TokenProcessInfo
             {
@@ -30,7 +30,7 @@ namespace SPMeta2.SSOM.Services
                 RegEx = new Regex("~site", RegexOptions.IgnoreCase)
             });
 
-            _supportedTokens.AddRange(TokenProcessInfos.Select(i => new TokenInfo { Name = i.Name }));
+            SupportedTokensInternal.AddRange(TokenProcessInfos.Select(i => new TokenInfo { Name = i.Name }));
         }
 
         #endregion

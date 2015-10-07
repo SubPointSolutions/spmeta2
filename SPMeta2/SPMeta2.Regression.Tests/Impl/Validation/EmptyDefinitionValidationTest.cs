@@ -64,8 +64,10 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
 
                 .AssertProperty(ValidationResultType.NotEmptyString, d => d.Description)
 
+#pragma warning disable 618
                 .AssertProperty(ValidationResultType.NotNullString, d => d.Url)
                 .AssertProperty(ValidationResultType.NotEmptyString, d => d.Url)
+#pragma warning restore 618
 
                 .AssertProperty(ValidationResultType.NotEqual, d => d.TemplateType)
 

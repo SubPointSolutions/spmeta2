@@ -28,7 +28,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             var lists = context.LoadQuery<List>(web.Lists.Include(l => l.DefaultViewUrl));
             context.ExecuteQueryWithTrace();
 
+#pragma warning disable 618
             var spObject = FindListByUrl(lists, definition.GetListUrl());
+#pragma warning restore 618
 
             context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
@@ -92,10 +94,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Hidden, "Skipping from validation. Url IS NULL");
 
+#pragma warning disable 618
             if (!string.IsNullOrEmpty(definition.Url))
                 assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
             else
                 assert.SkipProperty(m => m.Url, "Skipping from validation. Url IS NULL");
+#pragma warning restore 618
 
             if (!string.IsNullOrEmpty(definition.CustomUrl))
                 assert.ShouldBeEndOf(m => m.CustomUrl, o => o.GetServerRelativeUrl());
@@ -368,7 +372,9 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public static string GetServerRelativeUrl(this ListDefinition listDef, Web web)
         {
+#pragma warning disable 618
             return UrlUtility.CombineUrl(web.ServerRelativeUrl, listDef.GetListUrl());
+#pragma warning restore 618
         }
 
         public static string GetServerRelativeUrl(this List list)

@@ -6,8 +6,7 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Syntax.Default
 {
-
-
+    
     [Serializable]
     [DataContract]
     public class GuidFieldModelNode : FieldModelNode

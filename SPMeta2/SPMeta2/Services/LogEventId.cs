@@ -6,7 +6,7 @@
     /// Range 0-9999 is reserved for SPMeta.
     /// Please use LogEventId.Custom + XXX to log your own events.
     /// </summary>
-    public enum LogEventId : int
+    public enum LogEventId
     {
         Unknown = 0,
 

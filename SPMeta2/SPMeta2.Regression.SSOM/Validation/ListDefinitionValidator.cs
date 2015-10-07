@@ -23,7 +23,9 @@ namespace SPMeta2.Regression.SSOM.Validation
             var web = webModelHost.HostWeb;
 
             var definition = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+#pragma warning disable 618
             var spObject = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, definition.GetListUrl()));
+#pragma warning restore 618
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
@@ -66,10 +68,13 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
             }
 
+#pragma warning disable 618
             if (!string.IsNullOrEmpty(definition.Url))
+
                 assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
             else
                 assert.SkipProperty(m => m.Url, "Skipping from validation. Url IS NULL");
+#pragma warning restore 618
 
             if (!string.IsNullOrEmpty(definition.CustomUrl))
                 assert.ShouldBeEndOf(m => m.CustomUrl, o => o.GetServerRelativeUrl());

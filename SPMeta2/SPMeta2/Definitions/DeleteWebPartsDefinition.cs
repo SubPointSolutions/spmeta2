@@ -43,6 +43,7 @@ namespace SPMeta2.Definitions
 
         #region methods
 
+        // ReSharper disable once RedundantOverridenMember
         public override string ToString()
         {
             return base.ToString();

@@ -78,7 +78,7 @@ namespace SPMeta2.Syntax.Default
 
         public static WebModelNode AddWebFeature(this WebModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
         {
-            return AddFeature(model, definition, action) as WebModelNode;
+            return AddFeature(model, definition, action);
         }
 
         #region array overload

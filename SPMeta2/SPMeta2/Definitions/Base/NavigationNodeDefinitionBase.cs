@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions.Base
     {
         #region constructors
 
-        public NavigationNodeDefinitionBase()
+        protected NavigationNodeDefinitionBase()
         {
             IsVisible = true;
             TitleResource = new List<ValueForUICulture>();

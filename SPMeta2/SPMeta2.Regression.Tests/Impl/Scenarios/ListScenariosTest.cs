@@ -516,7 +516,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.TemplateType = 0;
                 def.TemplateName = BuiltInListTemplates.AssetLibrary.InternalName;
+#pragma warning disable 618
                 def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+#pragma warning restore 618
             });
         }
 
@@ -564,7 +566,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestRandomDefinition<ListDefinition>(def =>
             {
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+#pragma warning disable 618
                 def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+#pragma warning restore 618
             });
         }
 
@@ -578,7 +582,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 def.ForceCheckout = false;
 
+#pragma warning disable 618
                 def.Url = string.Format("{0}.{1}.{2}", Rnd.String(5), Rnd.String(5), Rnd.String(5));
+#pragma warning restore 618
             });
         }
 
@@ -591,7 +597,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
                 def.ForceCheckout = false;
 
+#pragma warning disable 618
                 def.Url = string.Empty;
+#pragma warning restore 618
                 def.CustomUrl = string.Format("Lists/{0}", Rnd.String());
             });
         }
@@ -605,7 +613,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
                 def.ForceCheckout = false;
 
+#pragma warning disable 618
                 def.Url = string.Empty;
+#pragma warning restore 618
                 def.CustomUrl = string.Format("{0}", Rnd.String());
             });
         }
@@ -643,7 +653,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                     // add a clone second time with the template
                     var listWithDocumentTemplate = randomList.Inherit();
+#pragma warning disable 618
                     listWithDocumentTemplate.DocumentTemplateUrl = string.Format("/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+#pragma warning restore 618
 
                     web.AddList(listWithDocumentTemplate);
                 });
@@ -680,7 +692,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                     // add a clone second time with the template
                     var listWithDocumentTemplate = randomList.Inherit();
+#pragma warning disable 618
                     listWithDocumentTemplate.DocumentTemplateUrl = string.Format("~sitecollection/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+#pragma warning restore 618
 
                     web.AddList(listWithDocumentTemplate);
                 });
@@ -717,7 +731,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                     // add a clone second time with the template
                     var listWithDocumentTemplate = randomList.Inherit();
+#pragma warning disable 618
                     listWithDocumentTemplate.DocumentTemplateUrl = string.Format("~site/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+#pragma warning restore 618
 
                     web.AddList(listWithDocumentTemplate);
                 });
@@ -758,7 +774,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
                 def.ForceCheckout = false;
 
+#pragma warning disable 618
                 def.Url = Rnd.String();
+#pragma warning restore 618
                 def.CustomUrl = string.Empty;
 
                 def.TemplateType = 0;
@@ -797,7 +815,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
                 def.ForceCheckout = false;
 
+#pragma warning disable 618
                 def.Url = Rnd.String();
+#pragma warning restore 618
                 def.CustomUrl = string.Empty;
 
                 // would give invalid list template exception

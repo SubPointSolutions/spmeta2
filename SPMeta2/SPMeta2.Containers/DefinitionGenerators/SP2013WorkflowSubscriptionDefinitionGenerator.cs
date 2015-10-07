@@ -20,14 +20,18 @@ namespace SPMeta2.Containers.DefinitionGenerators
             {
                 Title = Rnd.String(),
                 TemplateType = BuiltInListTemplateTypeId.WorkflowHistory,
+#pragma warning disable 618
                 Url = Rnd.String()
+#pragma warning restore 618
             };
 
             TaskList = new ListDefinition
             {
                 Title = Rnd.String(),
                 TemplateType = BuiltInListTemplateTypeId.Tasks,
+#pragma warning disable 618
                 Url = Rnd.String()
+#pragma warning restore 618
             };
         }
 
@@ -59,8 +63,12 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 // a big TODO as these list don't exist yet
 
 
+#pragma warning disable 618
                 def.HistoryListUrl = "/lists/" + HistoryList.Url;
+#pragma warning restore 618
+#pragma warning disable 618
                 def.TaskListUrl = "/lists/" + TaskList.Url;
+#pragma warning restore 618
             });
         }
 

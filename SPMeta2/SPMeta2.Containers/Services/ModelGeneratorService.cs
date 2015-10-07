@@ -403,14 +403,13 @@ namespace SPMeta2.Containers.Services
                         var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMRootHostAttribute));
                         return csomHost.HostType;
 
-                    }; break;
-
+                    }
                 case SPObjectModelType.SSOM:
                     {
                         var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultRootHostAttribute));
                         return defaultHost.HostType;
 
-                    }; break;
+                    }
             }
 
 
@@ -442,15 +441,12 @@ namespace SPMeta2.Containers.Services
                     {
                         var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMParentHostAttribute));
                         return csomHost.HostType;
-
-                    }; break;
-
+                    }
                 case SPObjectModelType.SSOM:
                     {
                         var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultParentHostAttribute));
                         return defaultHost.HostType;
-
-                    }; break;
+                    }
             }
 
 
@@ -477,15 +473,12 @@ namespace SPMeta2.Containers.Services
                     {
                         var csomHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(CSOMParentHostAttribute));
                         return csomHost.AdditionalHostTypes;
-
-                    }; break;
-
+                    }
                 case SPObjectModelType.SSOM:
                     {
                         var defaultHost = hostAtrrs.FirstOrDefault(a => a.GetType() == typeof(DefaultParentHostAttribute));
                         return defaultHost.AdditionalHostTypes;
-
-                    }; break;
+                    }
             }
 
 

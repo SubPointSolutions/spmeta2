@@ -33,11 +33,6 @@ namespace SPMeta2.Definitions
     {
         #region constructors
 
-        public EventReceiverDefinition()
-        {
-
-        }
-
         #endregion
 
         #region properties

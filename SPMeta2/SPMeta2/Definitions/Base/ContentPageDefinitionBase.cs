@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Regression;
 
+// ReSharper disable once CheckNamespace
 namespace SPMeta2.Definitions
 {
     [Serializable]
@@ -10,7 +11,7 @@ namespace SPMeta2.Definitions
     {
         #region constructors
 
-        public ContentPageDefinitionBase()
+        protected ContentPageDefinitionBase()
         {
             Content = new byte[0];
         }

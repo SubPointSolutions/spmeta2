@@ -52,8 +52,6 @@ namespace SPMeta2.Containers.Services.Rnd
             return _rnd.NextDouble() * maxValue;
         }
 
-        private bool _boolFlag = false;
-
         public override bool Bool()
         {
 

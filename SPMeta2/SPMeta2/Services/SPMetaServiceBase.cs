@@ -4,10 +4,6 @@
     {
         #region constructors
 
-        public SPMetaServiceBase()
-        {
-        }
-
         #endregion
 
         #region properties

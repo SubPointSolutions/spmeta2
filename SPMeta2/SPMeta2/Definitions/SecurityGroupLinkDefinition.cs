@@ -31,11 +31,6 @@ namespace SPMeta2.Definitions
 
     public class SecurityGroupLinkDefinition : DefinitionBase
     {
-        public SecurityGroupLinkDefinition()
-        {
-
-        }
-
         #region properties
 
         /// <summary>

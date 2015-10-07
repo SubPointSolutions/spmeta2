@@ -12,8 +12,6 @@ namespace SPMeta2.Regression.Tests.Services.ExpectUpdateServices
     {
         public override object GetNewPropValue(ExpectUpdate attr, object obj, PropertyInfo prop)
         {
-            object newValue = null;
-
             var curentValue = prop.GetValue(obj) as string;
 
             var values = new List<string>();

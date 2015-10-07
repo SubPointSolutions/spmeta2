@@ -256,7 +256,7 @@ namespace SPMeta2.Models
 
             // yeap, shity yet
             foreach (MulticastDelegate action in targetEvents)
-                action.DynamicInvoke(this.Value, rawObject);
+                action.DynamicInvoke(Value, rawObject);
         }
 
         public virtual void RegisterModelUpdateEvents<TModelDefinition, TSPObject>(

@@ -303,7 +303,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         {
             var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
+#pragma warning disable 618
                 env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
+#pragma warning restore 618
             });
 
             TestModels(new ModelNode[]
@@ -548,7 +550,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
                 env.LookupField.AllowMultipleValues = true;
+#pragma warning disable 618
                 env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
+#pragma warning restore 618
             });
 
             TestModels(new ModelNode[]
@@ -619,7 +623,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             });
 
             // binding
+#pragma warning disable 618
             lookupEnvironment.LookupField.LookupListUrl = lookupEnvironment.ChildList.GetListUrl();
+#pragma warning restore 618
 
             TestModels(new ModelNode[]
             {
@@ -750,7 +756,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             var lookupEnvironment = GetLookupFieldEnvironment(env =>
             {
+#pragma warning disable 618
                 env.LookupField.LookupListUrl = env.ChildList.GetListUrl();
+#pragma warning restore 618
                 env.LookupField.LookupWebUrl = UrlUtility.CombineUrl("~sitecollection", subWeb.Url);
 
             }, subWeb);

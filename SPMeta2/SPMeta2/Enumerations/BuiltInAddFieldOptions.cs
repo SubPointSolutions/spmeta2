@@ -3,7 +3,7 @@
     /// <summary>
     /// Reflects built-in SharePoint AddFieldOptions class.
     /// </summary>
-    public enum BuiltInAddFieldOptions : int
+    public enum BuiltInAddFieldOptions
     {
         DefaultValue = 0,
         AddToDefaultContentType = 1,

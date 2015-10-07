@@ -100,7 +100,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
-                def.ListUrl = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.GetListUrl();
+#pragma warning disable 618
+                def.ListUrl = BuiltInListDefinitions.StyleLibrary.GetListUrl();
+#pragma warning restore 618
 
                 def.ViewName = string.Empty;
                 def.ViewId = null;
@@ -191,7 +193,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
+#pragma warning disable 618
                 def.ListUrl = sourceList.GetListUrl();
+#pragma warning restore 618
 
                 def.ViewName = string.Empty;
                 def.ViewId = null;
@@ -246,7 +250,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             {
                 def.ListId = Guid.Empty;
                 def.ListTitle = string.Empty;
+#pragma warning disable 618
                 def.ListUrl = sourceList.GetListUrl();
+#pragma warning restore 618
 
                 def.ViewName = sourceView.Title;
                 def.ViewId = null;
