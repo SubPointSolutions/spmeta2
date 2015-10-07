@@ -132,9 +132,12 @@
     <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Impl\DefinitionCoverage\BuiltInListDefinitionsCoverage.cs" />
     <Compile Include="Impl\DefinitionCoverage\ListDefinitoin.cs" />
+    <Compile Include="Impl\Definitions\LookupFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ImageFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\FieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ChoiceFieldDefinitionTests.cs" />
+    <Compile Include="Impl\Definitions\TaxonomyFieldDefinitionTests.cs" />
+    <Compile Include="Impl\Definitions\UserFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\WebPartDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ScriptEditorWebPartDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\TaxonomyTermSetDefinitionTests.cs" />

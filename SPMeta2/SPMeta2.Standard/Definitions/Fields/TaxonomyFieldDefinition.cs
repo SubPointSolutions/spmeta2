@@ -41,6 +41,24 @@ namespace SPMeta2.Standard.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override string FieldType
+        {
+            get
+            {
+                if (IsMulti)
+                    return BuiltInFieldTypes.TaxonomyFieldTypeMulti;
+
+                return BuiltInFieldTypes.TaxonomyFieldType;
+            }
+            set
+            {
+
+            }
+        }
+
+        [ExpectValidation]
         [DataMember]
         public override string ValidationMessage
         {

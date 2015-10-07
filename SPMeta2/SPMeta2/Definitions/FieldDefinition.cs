@@ -201,7 +201,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
-        public string FieldType { get; set; }
+        public virtual string FieldType { get; set; }
 
         /// <summary>
         /// Required flag for the target field.

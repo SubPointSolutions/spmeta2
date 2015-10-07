@@ -67,7 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 // dep lookiup
                 if (indexedSiteField is DependentLookupFieldDefinition)
                 {
-                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as FieldDefinition;
 
                     (indexedSiteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
                     indexedSiteModel.AddField(primaryLookupField);
@@ -86,7 +86,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 // dep lookiup
                 if (indexedSiteField is DependentLookupFieldDefinition)
                 {
-                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as FieldDefinition;
 
                     (nonIndexedSiteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
                     nonIdexedSiteModel.AddField(primaryLookupField);
@@ -117,7 +117,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 // dep lookiup
                 if (siteField is DependentLookupFieldDefinition)
                 {
-                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as LookupFieldDefinition;
+                    var primaryLookupField = new LookupFieldDefinitionGenerator().GenerateRandomDefinition() as FieldDefinition;
 
                     (siteField as DependentLookupFieldDefinition).PrimaryLookupFieldId = primaryLookupField.Id;
                     siteModel.AddField(primaryLookupField);

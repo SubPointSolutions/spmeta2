@@ -60,6 +60,24 @@ namespace SPMeta2.Definitions.Fields
             set { }
         }
 
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override string FieldType
+        {
+            get
+            {
+                if (AllowMultipleValues)
+                    return BuiltInFieldTypes.LookupMulti;
+
+                return BuiltInFieldTypes.Lookup;
+            }
+            set
+            {
+
+            }
+        }
+
         /// <summary>
         /// Returns false if AllowMultipleValues = true.
         /// Multi lookup field does not support Indexed = trur flag and would give an exception.
