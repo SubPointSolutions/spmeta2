@@ -136,11 +136,12 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (termSetModel.IsAvailableForTagging.HasValue)
                 currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging.Value;
 
-
+#if !NET35
             foreach (var customProp in termSetModel.CustomProperties.Where(p => p.Override))
             {
                 currentTermSet.SetCustomProperty(customProp.Name, customProp.Value);
             }
+#endif
         }
 
         protected TermSet FindTermSet(Microsoft.SharePoint.Taxonomy.Group termGroup, TaxonomyTermSetDefinition termSetModel)

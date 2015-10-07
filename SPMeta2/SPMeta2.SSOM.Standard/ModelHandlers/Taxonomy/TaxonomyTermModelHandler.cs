@@ -174,15 +174,20 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (termModel.IsAvailableForTagging.HasValue)
                 currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
 
+#if !NET35
             foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
             {
                 currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
             }
+#endif
 
+#if !NET35
             foreach (var customProp in termModel.LocalCustomProperties.Where(p => p.Override))
             {
                 currentTerm.SetLocalCustomProperty(customProp.Name, customProp.Value);
             }
+#endif
+
         }
 
         private void DeployTermUnderTermSet(object modelHost, TermSetModelHost groupModelHost, TaxonomyTermDefinition termModel)
