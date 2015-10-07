@@ -169,6 +169,29 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);
 
+            MapProperties(targetList, currentView, listViewModel);
+
+            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
+
+            ProcessLocalization(currentView, listViewModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentView,
+                ObjectType = typeof(SPView),
+                ObjectDefinition = listViewModel,
+                ModelHost = modelHost
+            });
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
+            currentView.Update();
+        }
+
+        private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
+        {
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
@@ -204,23 +227,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
                 currentView.ContentTypeId = LookupListContentTypeById(targetList, listViewModel.ContentTypeId);
 
-            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
-
-            ProcessLocalization(currentView, listViewModel);
-
-            InvokeOnModelEvent(this, new ModelEventArgs
+            if (listViewModel.ViewStyleId.HasValue)
             {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = currentView,
-                ObjectType = typeof(SPView),
-                ObjectDefinition = listViewModel,
-                ModelHost = modelHost
-            });
-
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
-            currentView.Update();
+                var viewStyle = targetList.ParentWeb.ViewStyles.StyleByID(listViewModel.ViewStyleId.Value);
+                currentView.ApplyStyle(viewStyle);
+            }
         }
 
         protected SPContentTypeId LookupListContentTypeByName(SPList targetList, string name)

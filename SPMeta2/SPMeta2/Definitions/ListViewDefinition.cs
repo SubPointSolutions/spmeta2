@@ -169,6 +169,12 @@ namespace SPMeta2.Definitions
         public string ContentTypeId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsIntRange(MinValue = 12, MaxValue = 20)]
+        public int? ViewStyleId { get; set; }
+
+        [ExpectValidation]
         [ExpectRequired]
         [DataMember]
         public string Type { get; set; }

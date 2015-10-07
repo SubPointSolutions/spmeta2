@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
@@ -102,6 +103,37 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
                 assert.SkipProperty(m => m.Type);
+
+            if (definition.ViewStyleId.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ViewStyleId);
+
+                    var isValid = false;
+
+                    var srcViewId = s.ViewStyleId;
+                    var destViewId = 0;
+
+                    var doc = XDocument.Parse(d.SchemaXml);
+                    destViewId = ConvertUtils.ToInt(doc.Descendants("ViewStyle")
+                        .First()
+                        .GetAttributeValue("ID")
+                        ).Value;
+
+                    isValid = srcViewId == destViewId;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId is null");
 
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);

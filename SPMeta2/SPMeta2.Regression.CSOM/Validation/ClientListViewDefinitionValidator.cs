@@ -99,6 +99,8 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Type);
 
+            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM  API yet. Skipping.");
+
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
             else
