@@ -11,7 +11,7 @@ namespace SPMeta2.CSOM.DefaultSyntax
     {
         #region utils
 
-        [Obsolete("Obsolete. Will be removed from the SPMeta2 API. Use ListDefinition.CustomUrl property instead.")]
+        [Obsolete("Obsolete, left due to backward compatibility. Use ListDefinition.CustomUrl prop setting web-related list URL instead - http://docs.subpointsolutions.com/spmeta2/kb/m2-methods-GetListUrl")]
         public static string GetListUrl(this ListDefinition listDefinition)
         {
             if (!string.IsNullOrEmpty(listDefinition.CustomUrl))
