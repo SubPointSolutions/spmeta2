@@ -23,15 +23,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         static FieldModelHandler()
         {
-            ShouldHandleIncorectlyDeletedTaxonomyField = true;
+        
         }
 
         #endregion
 
         #region properties
-
-        [Obsolete("Is not used anymore. Special handling for taxonomy fields exlcuded due to potential data corruption - ")]
-        public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         public override Type TargetType
         {
@@ -204,7 +201,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvent<FieldDefinition, Field>(currentField, ModelEventType.OnUpdating);
 
             if (modelHost is SiteModelHost)
             {
@@ -253,7 +249,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvent<FieldDefinition, Field>(currentField, ModelEventType.OnUpdated);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "UpdateAndPushChanges(true)");
             currentField.UpdateAndPushChanges(true);
@@ -492,13 +487,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionProcessingNewObject, "Current field is NULL. Creating new");
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
-
-                // special handle for taxonomy field
-                // incorectly removed tax field leaves its indexed field
-                // https://github.com/SubPointSolutions/spmeta2/issues/521
-
-                if (ShouldHandleIncorectlyDeletedTaxonomyField)
-                    HandleIncorectlyDeletedTaxonomyField(fieldModel, fieldCollection);
 
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
                 var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);

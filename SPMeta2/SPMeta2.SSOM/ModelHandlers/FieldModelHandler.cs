@@ -22,15 +22,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         static FieldModelHandler()
         {
-            ShouldHandleIncorectlyDeletedTaxonomyField = true;
         }
 
         #endregion
 
         #region properties
-
-        [Obsolete("Is not used anymore. Special handling for taxonomy fields exlcuded due to potential data corruption - ")]
-        public static bool ShouldHandleIncorectlyDeletedTaxonomyField { get; set; }
 
         protected static XElement GetNewMinimalSPFieldTemplate()
         {
@@ -96,9 +92,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             SPField field = null;
 
-            // TODO, needs to be changed to using pattern and adjust all model handlers
-            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
-
             var isListField = false;
 
             if (modelHost is SiteModelHost)
@@ -133,8 +126,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
-
-            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
 
             // no promotion for the list field, and force push for the site fields
             if (isListField)
@@ -335,15 +326,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
-
-                // special handle for taxonomy field
-                // incorectly removed tax field leaves its indexed field
-                // https://github.com/SubPointSolutions/spmeta2/issues/521
-
-                if (ShouldHandleIncorectlyDeletedTaxonomyField)
-                    HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
-
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
+
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 currentField = fields[fieldModel.Id];

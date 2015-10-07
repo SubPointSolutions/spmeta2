@@ -1,8 +1,5 @@
-﻿using SPMeta2.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Fields;
 

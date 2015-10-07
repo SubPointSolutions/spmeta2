@@ -43,7 +43,7 @@ namespace SPMeta2.Standard.Definitions.Fields
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
-        public override string FieldType
+        public override sealed string FieldType
         {
             get
             {

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
-using SPMeta2.Syntax.Default.Extensions;
-
 
 namespace SPMeta2.Syntax.Default.Utils
 {
@@ -33,12 +28,22 @@ namespace SPMeta2.Syntax.Default.Utils
 
         public static byte[] FromResource(Assembly assembly, string resourceName)
         {
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            Stream stream = null;
+            StreamReader reader = null;
+
+            try
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    return ReadFully(reader.BaseStream);
-                }
+                stream = assembly.GetManifestResourceStream(resourceName);
+                reader = new StreamReader(stream);
+
+                return ReadFully(reader.BaseStream);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Dispose();
+                else if (stream != null)
+                    stream.Dispose();
             }
         }
 
@@ -67,6 +72,7 @@ namespace SPMeta2.Syntax.Default.Utils
         /// </summary>
         /// <param name="hostNode"></param>
         /// <param name="folderPath"></param>
+        /// <param name="shouldIncludeFolderOrFile"></param>
         internal static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath,
             Func<string, bool> shouldIncludeFolderOrFile)
         {

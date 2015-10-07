@@ -1,11 +1,10 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using SPMeta2.Definitions.Base;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -14,11 +13,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(WebDefinition))]
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
@@ -259,7 +258,9 @@ namespace SPMeta2.Definitions
             return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
                             new[] {
                                 Title,
-                                Url,
+#pragma warning disable 618
+                              string.IsNullOrEmpty(Url) ? CustomUrl : Url,
+#pragma warning restore 618
                                 TemplateType.ToString(),
                                 TemplateName,
                                 ContentTypesEnabled.ToString()

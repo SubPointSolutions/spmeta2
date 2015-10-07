@@ -157,8 +157,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            InvokeOnModelEvent<ContentTypeDefinition, ContentType>(null, ModelEventType.OnUpdating);
-
             ContentType currentContentType = null;
 
             if (tmp == null || tmp.ServerObjectIsNull == null || tmp.ServerObjectIsNull.Value)
@@ -209,8 +207,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
             }
-
-            InvokeOnModelEvent<ContentTypeDefinition, ContentType>(currentContentType, ModelEventType.OnUpdated);
 
             ProcessLocalization(currentContentType, contentTypeModel);
 

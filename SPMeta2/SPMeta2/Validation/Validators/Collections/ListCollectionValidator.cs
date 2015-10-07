@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Validation.Common;
 
 namespace SPMeta2.Validation.Validators.Collections
@@ -16,7 +11,9 @@ namespace SPMeta2.Validation.Validators.Collections
             Validate<ListDefinition>(models, model =>
             {
                 CheckIfUnique(model, m => m.Title, result);
+#pragma warning disable 618
                 CheckIfUnique(model, m => m.Url, result);
+#pragma warning restore 618
             });
         }
     }

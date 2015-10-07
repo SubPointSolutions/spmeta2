@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Definitions;
 using SPMeta2.Services;

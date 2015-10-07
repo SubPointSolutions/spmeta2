@@ -11,7 +11,6 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.ModelHosts;
 using SPMeta2.Standard.Definitions;
-using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers

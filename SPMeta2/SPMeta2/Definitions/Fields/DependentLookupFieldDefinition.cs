@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
-using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 

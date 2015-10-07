@@ -132,8 +132,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
                 );
         }
 
-        // TermSets.FirstOrDefault(
-
         [Obsolete("Use LookupTermSet(TermStore tesmStore,  string termGroupName, bool? isSiteCollectionGroup, Guid? groupid,string termSetName, Guid? termSetId, int termSetLCID) passing term group name / id as nulls")]
         public static TermSet LookupTermSet(TermStore tesmStore,
            string termSetName, Guid? termSetId, int termSetLCID)

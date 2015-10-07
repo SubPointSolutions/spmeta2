@@ -1,16 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -18,10 +13,10 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint timer job.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPJobDefinition", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPJobDefinition", "Microsoft.SharePoint")]
 
-    [DefaultRootHostAttribute(typeof(WebApplicationDefinition))]
-    [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultRootHost(typeof(WebApplicationDefinition))]
+    [DefaultParentHost(typeof(WebApplicationDefinition))]
 
     [Serializable]
     [DataContract]

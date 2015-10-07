@@ -1,6 +1,5 @@
 ﻿using System;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Events
 {

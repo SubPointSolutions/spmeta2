@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -17,12 +12,12 @@ namespace SPMeta2.Definitions.Fields
     /// </summary>
     /// 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldUser", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldUser", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldUser", "Microsoft.SharePoint.Client")]
 
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
@@ -34,7 +29,6 @@ namespace SPMeta2.Definitions.Fields
         public UserFieldDefinition()
         {
             AllowDisplay = true;
-            FieldType = BuiltInFieldTypes.User;
             SelectionMode = BuiltInFieldUserSelectionMode.PeopleAndGroups;
         }
 
@@ -100,6 +94,7 @@ namespace SPMeta2.Definitions.Fields
 
         /// <summary>
         /// Name of the target security group.
+        /// </summary>
         [ExpectValidation]
         [DataMember]
         [ExpectNullable]

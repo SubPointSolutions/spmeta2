@@ -46,7 +46,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 currentAccount = accounts[loginName];
             }
-            catch (Exception ex)
+            catch (Exception)
             { }
 
             return currentAccount;

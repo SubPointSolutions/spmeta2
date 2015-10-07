@@ -1,15 +1,13 @@
-﻿using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Models;
-using SPMeta2.Services.Impl;
-using SPMeta2.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Xml.Linq;
+using SPMeta2.Definitions;
 using SPMeta2.Extensions;
+using SPMeta2.Models;
+using SPMeta2.Services.Impl;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -338,7 +336,7 @@ namespace SPMeta2.Syntax.Default
                 newModelNode.Options.RequireSelfProcessing = false;
             }
             // levacy
-            ///newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
+            // newModelNode.Options.RequireSelfProcessing = newModelNode.Value.RequireSelfProcessing;
 
             if (action != null)
                 action(newModelNode);

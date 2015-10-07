@@ -178,8 +178,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             hostclientContext.Load(subscriptions);
             hostclientContext.ExecuteQueryWithTrace();
 
-            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
-
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -218,9 +216,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 MapProperties(currentSubscription, workflowSubscriptionModel);
 
-                // to be able to change HistoryListId, TaskListId, ListId
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
-
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -242,8 +237,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
                 MapProperties(currentSubscription, workflowSubscriptionModel);
-
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -313,8 +306,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             hostclientContext.Load(subscriptions);
             hostclientContext.ExecuteQueryWithTrace();
 
-            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
-
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -353,9 +344,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 MapProperties(currentSubscription, workflowSubscriptionModel);
 
-                // to be able to change HistoryListId, TaskListId, ListId
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
-
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -378,8 +366,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
 
                 MapProperties(currentSubscription, workflowSubscriptionModel);
-
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

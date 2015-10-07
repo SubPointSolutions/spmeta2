@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
-using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
 {

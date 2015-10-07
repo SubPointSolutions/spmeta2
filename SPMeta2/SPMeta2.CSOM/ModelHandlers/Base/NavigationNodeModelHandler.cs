@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
+using Microsoft.SharePoint.Client;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.ModelHandlers;
+using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHosts;
-using SPMeta2.Common;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-using SPMeta2.Definitions.Base;
-using Microsoft.SharePoint.Client;
 
 namespace SPMeta2.CSOM.ModelHandlers.Base
 {
@@ -29,18 +26,12 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             var quickLaunchNode = model.WithAssertAndCast<NavigationNodeDefinitionBase>("model", value => value.RequireNotNull());
 
-            NavigationNode node = null;
-
-            InvokeOnModelEvent<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdating);
-
             if (ShouldDeployRootNavigationNode(modelHost))
-                node = EnsureRootNavigationNode(modelHost as WebModelHost, quickLaunchNode);
+                EnsureRootNavigationNode(modelHost as WebModelHost, quickLaunchNode);
             else if (ShouldDeployNavigationNode(modelHost))
-                node = EnsureNavigationNode(modelHost as NavigationNodeModelHost, quickLaunchNode);
+                EnsureNavigationNode(modelHost as NavigationNodeModelHost, quickLaunchNode);
             else
                 throw new ArgumentException("modelHost needs to be WebModelHost or NavigationNodeModelHost");
-
-            InvokeOnModelEvent<QuickLaunchNavigationNodeDefinition, NavigationNode>(node, ModelEventType.OnUpdated);
         }
 
         protected bool ShouldDeployRootNavigationNode(object modelHost)

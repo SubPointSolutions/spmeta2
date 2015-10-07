@@ -20,7 +20,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
         protected override Audience GetCurrentObject(SiteModelHost typedModelHost, AudienceDefinition definition)
         {
             var site = typedModelHost.HostSite;
-            var serverContext = ServerContext.GetContext(site);
+            var serverContext = SPServiceContext.GetContext(site);
 
             var audienceManager = new AudienceManager(serverContext);
             var audiencies = audienceManager.Audiences;
@@ -43,7 +43,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
         protected override Audience CreateObject(SiteModelHost typedModelHost, AudienceDefinition definition)
         {
             var site = typedModelHost.HostSite;
-            var serverContext = ServerContext.GetContext(site);
+            var serverContext = SPServiceContext.GetContext(site);
 
             var audienceManager = new AudienceManager(serverContext);
             var audiencies = audienceManager.Audiences;

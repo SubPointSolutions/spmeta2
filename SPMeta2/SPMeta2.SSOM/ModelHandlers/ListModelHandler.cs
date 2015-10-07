@@ -25,7 +25,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var web = typedModelHost.HostWeb;
 
+#pragma warning disable 618
                 var targetListUrl = SPUrlUtility.CombineUrl(web.Url, definition.GetListUrl());
+#pragma warning restore 618
                 result = web.GetList(targetListUrl);
             }
             catch
@@ -64,7 +66,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 listId = web.Lists.Add(
                                 listTitle,
                                 listModel.Description ?? string.Empty,
+#pragma warning disable 618
                                 listModel.GetListUrl(),
+#pragma warning restore 618
                                 string.Empty,
                                 (int)listModel.TemplateType,
                                 string.Empty);
@@ -79,7 +83,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 listId = web.Lists.Add(
                                listTitle,
                                listModel.Description ?? string.Empty,
+#pragma warning disable 618
                                listModel.GetListUrl(),
+#pragma warning restore 618
                                listTemplate.FeatureId.ToString(),
                                (int)listTemplate.Type,
                                listTemplate.DocumentTemplate);
@@ -239,13 +245,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
                     var tmpList = web.Lists[tmpListId];
+
                     tmpList.Delete();
                 }
                 catch (Exception)
                 {
                 }
 
+#pragma warning disable 618
                 var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
+#pragma warning restore 618
 
                 var listModelHost = new ListModelHost
                 {

@@ -54,13 +54,13 @@ namespace SPMeta2.Standard.Definitions
         [DataMember]
         public string Description { get; set; }
 
-        [ExpectValidation]
-        [ExpectUpdate]
-        [DataMember]
         /// <summary>
         /// Content of the target publishing page layout.
         /// </summary>
         [ExpectRequired]
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
         public string Content { get; set; }
 
         /// <summary>

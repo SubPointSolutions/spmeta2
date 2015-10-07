@@ -51,6 +51,11 @@ namespace SPMeta2.Standard.Definitions.Fields
         #region properties
 
         [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override sealed string FieldType { get; set; }
+
+        [ExpectValidation]
         [DataMember]
         public override string ValidationMessage
         {

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -17,10 +14,10 @@ namespace SPMeta2.Definitions.Webparts
     /// 
 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
     [DefaultRootHost(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable] 
     [DataContract]

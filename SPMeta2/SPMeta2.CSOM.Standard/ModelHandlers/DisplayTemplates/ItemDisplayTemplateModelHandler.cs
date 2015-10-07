@@ -3,7 +3,6 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Standard.ModelHandlers.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
-using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 

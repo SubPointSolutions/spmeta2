@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Definitions;
+﻿using SPMeta2.Definitions;
 
 namespace SPMeta2.BuiltInDefinitions
 {

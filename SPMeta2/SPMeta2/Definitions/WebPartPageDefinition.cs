@@ -1,8 +1,8 @@
-﻿using SPMeta2.Attributes;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions
 {
@@ -10,11 +10,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint web part page.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [ExpectAddHostExtensionMethod]
     [Serializable] [DataContract]

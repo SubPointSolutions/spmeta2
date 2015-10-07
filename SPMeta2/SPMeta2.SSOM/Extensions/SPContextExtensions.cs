@@ -14,6 +14,7 @@ namespace SPMeta2.SSOM.Extensions
         /// http://blog.mastykarz.nl/structured-and-repeatable-deployment-of-content-query-web-part-instances/
         /// </summary>
         /// <param name="contextWeb"></param>
+        /// <param name="action"></param>
         /// <returns></returns>
         public static void WithFakeSPContextScope(SPWeb contextWeb, Action action)
         {

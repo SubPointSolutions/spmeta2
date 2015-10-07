@@ -157,7 +157,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Entering GetExistingWeb()");
 
-            var result = false;
             var srcUrl = currentWebUrl.ToLower().Trim('/').Trim('\\');
 
             // for self-hosting and '/'
@@ -247,8 +246,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdating);
-
             if (currentWeb == null)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web");
@@ -337,8 +334,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
-
-                InvokeOnModelEvent<WebDefinition, Web>(newWeb, ModelEventType.OnUpdated);
             }
             else
             {
@@ -360,8 +355,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
-
-                InvokeOnModelEvent<WebDefinition, Web>(currentWeb, ModelEventType.OnUpdated);
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "currentWeb.Update()");
                 currentWeb.Update();

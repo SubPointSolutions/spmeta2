@@ -1,15 +1,11 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -29,11 +25,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint 2013 workflow.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.WorkflowServicesBase")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.Client.WorkflowServices")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.WorkflowServicesBase")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.Client.WorkflowServices")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(WebDefinition))]
 
     [Serializable]
     [DataContract]

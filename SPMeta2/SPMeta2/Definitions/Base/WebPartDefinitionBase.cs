@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System.Runtime.Serialization;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions.Base
 {
-    [DataContract]
+
     /// <summary>
     /// Base definitino for web part definitions - generic web part and all other 'typed' web parts.
     /// </summary>
+    [DataContract]
     public abstract class WebPartDefinitionBase : DefinitionBase
     {
         #region constructors

@@ -1,15 +1,10 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -18,11 +13,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPListItem", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ListItem", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPListItem", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ListItem", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListItemDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListItemDefinition))]
 
     [Serializable] 
     [DataContract]

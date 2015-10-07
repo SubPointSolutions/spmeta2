@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
-using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {

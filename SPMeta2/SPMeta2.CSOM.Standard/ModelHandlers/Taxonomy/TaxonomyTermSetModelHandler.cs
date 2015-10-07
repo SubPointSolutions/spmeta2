@@ -7,7 +7,6 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;

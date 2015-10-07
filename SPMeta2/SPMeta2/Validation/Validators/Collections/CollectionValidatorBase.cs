@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
-using System.Text;
-
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 using SPMeta2.Validation.Common;
-using SPMeta2.Validation.Extensions;
 
 namespace SPMeta2.Validation.Validators.Collections
 {

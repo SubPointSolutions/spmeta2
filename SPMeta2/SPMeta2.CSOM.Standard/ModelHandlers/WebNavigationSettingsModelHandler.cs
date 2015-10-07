@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing.Navigation;
+using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
+using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
-using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
-using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
 {

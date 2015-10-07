@@ -1,9 +1,8 @@
-﻿using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions
 {

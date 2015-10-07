@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.CSOM.Extensions;
@@ -8,8 +7,6 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Fields;
-using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 

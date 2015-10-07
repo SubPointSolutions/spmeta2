@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Validation.Common;

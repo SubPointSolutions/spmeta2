@@ -40,8 +40,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         #region methods
 
-        private Guid? _originalViewId;
-
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
 
 namespace SPMeta2.Services
 {
@@ -234,10 +229,18 @@ namespace SPMeta2.Services
 
         public void Dispose()
         {
-            TraceService.TraceActivityStop(EventId, EndMessage);
-            TraceService.TraceActivityTransfer(EventId, EndMessage, OldActivityId);
-            TraceService.CurrentActivityId = OldActivityId;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                TraceService.TraceActivityStop(EventId, EndMessage);
+                TraceService.TraceActivityTransfer(EventId, EndMessage, OldActivityId);
+                TraceService.CurrentActivityId = OldActivityId;
+            }
         }
 
         #endregion

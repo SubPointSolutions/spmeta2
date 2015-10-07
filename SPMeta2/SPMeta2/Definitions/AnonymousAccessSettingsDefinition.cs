@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -28,7 +24,7 @@ namespace SPMeta2.Definitions
     //[ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
-    [SelfHostCapabilityAttribute]
+    [SelfHostCapability]
     public class AnonymousAccessSettingsDefinition : DefinitionBase
     {
         public AnonymousAccessSettingsDefinition()

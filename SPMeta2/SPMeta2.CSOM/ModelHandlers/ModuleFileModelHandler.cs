@@ -314,8 +314,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
-            var shouldRefreshLoad = false;
-
             // are we inside ocument libary, so that check in stuff is needed?
             var isDocumentLibrary = list != null && list.BaseType == BaseType.DocumentLibrary;
 
@@ -495,8 +493,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(file, f => f.Exists);
             context.ExecuteQueryWithTrace();
 
-            InvokeOnModelEvent<ModuleFileDefinition, File>(file, ModelEventType.OnUpdating);
-
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -567,8 +563,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = moduleFile,
                 ModelHost = folderHost
             });
-
-            InvokeOnModelEvent<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
 
             return resultFile;
         }

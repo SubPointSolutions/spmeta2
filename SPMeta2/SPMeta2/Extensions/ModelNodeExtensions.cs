@@ -1,11 +1,9 @@
-﻿using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+using SPMeta2.Definitions;
+using SPMeta2.Models;
 
 namespace SPMeta2.Extensions
 {
@@ -118,7 +116,6 @@ namespace SPMeta2.Extensions
         /// Imports all definitions from the static class fields / props.
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="classType"></param>
         public static ModelNode AddDefinitionsFromStaticClassType<TType>(this ModelNode node)
         {
             return AddDefinitionsFromStaticClassType(node, typeof(TType));

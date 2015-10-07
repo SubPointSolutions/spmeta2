@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -18,9 +13,9 @@ namespace SPMeta2.Definitions
     /// Allows to install SharePoint application to the target web.
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPAppInstance", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.AppInstance", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.AppInstance", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
     [Serializable]
@@ -44,21 +39,23 @@ namespace SPMeta2.Definitions
         [IdentityKey]
         public Guid ProductId { get; set; }
 
-        [ExpectRequired]
+
         /// <summary>
         /// Target application content.
         /// </summary>
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public byte[] Content { get; set; }
 
-        [ExpectRequired]
+
         /// <summary>
         /// A valid Version string of the target application.
         /// </summary>
         [DataMember]
         [IdentityKey]
-        [VersionPropertyCapabilityAttribute]
+        [ExpectRequired]
+        [VersionPropertyCapability]
         public string Version { get; set; }
 
         #endregion

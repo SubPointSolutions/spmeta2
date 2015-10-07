@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Common;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -56,11 +54,11 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Allows to define and deploy SharePoint field.
     /// </summary>
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPField", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPField", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
 
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]

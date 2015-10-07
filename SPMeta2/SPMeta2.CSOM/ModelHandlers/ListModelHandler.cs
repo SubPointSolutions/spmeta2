@@ -187,7 +187,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             List currentList = null;
 
+#pragma warning disable 618
             var listUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, listModel.GetListUrl());
+#pragma warning restore 618
 
             Folder folder = null;
 
@@ -256,7 +258,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ObjectDefinition = model,
                 ModelHost = modelHost
             });
-            InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdating);
 
             // gosh!
             //currentList = FindListByUrl(lists, listModel.GetListUrl());
@@ -270,7 +271,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     Title = listModel.Title,
                     Description = listModel.Description ?? string.Empty,
+#pragma warning disable 618
                     Url = listModel.GetListUrl()
+#pragma warning restore 618
                 };
 
                 if (listModel.TemplateType > 0)
@@ -322,9 +325,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            InvokeOnModelEvent<ListDefinition, List>(currentList, ModelEventType.OnUpdated);
-
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentList.Update()");
+           
             currentList.Update();
             context.ExecuteQueryWithTrace();
         }
@@ -423,16 +425,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (definition.MajorVersionLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                // CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                // https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
 
                 //list.MajorVersionLimit = definition.MajorVersionLimit.Value;
             }
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                // CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+                // https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
 
 
                 //list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;

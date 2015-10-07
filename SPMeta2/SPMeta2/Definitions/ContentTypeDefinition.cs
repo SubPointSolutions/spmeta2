@@ -1,11 +1,10 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using SPMeta2.Definitions.Base;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -13,11 +12,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint content type.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
 
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]

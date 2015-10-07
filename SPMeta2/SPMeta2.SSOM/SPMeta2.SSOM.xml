@@ -12,6 +12,7 @@
             http://blog.mastykarz.nl/structured-and-repeatable-deployment-of-content-query-web-part-instances/
             </summary>
             <param name="contextWeb"></param>
+            <param name="action"></param>
             <returns></returns>
         </member>
         <member name="M:SPMeta2.SSOM.Extensions.SPViewCollectionExtensions.FindByName(Microsoft.SharePoint.SPViewCollection,System.String)">

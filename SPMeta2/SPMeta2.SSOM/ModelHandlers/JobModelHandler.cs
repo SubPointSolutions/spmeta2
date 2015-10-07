@@ -120,7 +120,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                                 break;
 
                             default:
-                                throw new SPMeta2NotImplementedException(string.Format("Job cstr parameter [{0}] is not supported yet."));
+                                throw new SPMeta2NotImplementedException(string.Format("Job cstr parameter [{0}] is not supported yet.", param));
                         }
                     }
 

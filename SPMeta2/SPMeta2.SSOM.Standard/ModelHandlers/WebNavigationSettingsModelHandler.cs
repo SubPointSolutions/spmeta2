@@ -78,6 +78,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                            navigationModel.GlobalNavigationUseDefaultSiteCollectionTermStore);
 
                         var globalTermSet = TaxonomyFieldModelHandler.LookupTermSet(globalTermStore,
+                          null, null, null, null,
                           navigationModel.GlobalNavigationTermSetName,
                           navigationModel.GlobalNavigationTermSetId,
                           navigationModel.GlobalNavigationTermSetLCID);
@@ -117,6 +118,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                           navigationModel.CurrentNavigationUseDefaultSiteCollectionTermStore);
 
                         var currentTermSet = TaxonomyFieldModelHandler.LookupTermSet(currentTermStore,
+                          null, null, null, null, 
                           navigationModel.CurrentNavigationTermSetName,
                           navigationModel.CurrentNavigationTermSetId,
                           navigationModel.CurrentNavigationTermSetLCID);

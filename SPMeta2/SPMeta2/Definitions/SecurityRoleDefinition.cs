@@ -1,11 +1,10 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.ObjectModel;
-using SPMeta2.Definitions.Base;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -13,11 +12,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint security role.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRoleDefinition", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RoleDefinition", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPRoleDefinition", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.RoleDefinition", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]

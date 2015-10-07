@@ -131,7 +131,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             OnBeforeDeployModel(host, webpartModel);
 
-            InvokeOnModelEvent<FieldDefinition, SPField>(null, ModelEventType.OnUpdating);
             WebPartExtensions.DeployWebPartToPage(host.SPLimitedWebPartManager, webpartModel,
                 onUpdatingWebpartInstnce =>
                 {
@@ -151,8 +150,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
-
                 },
                 onUpdatedWebpartInstnce =>
                 {
@@ -168,8 +165,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ObjectDefinition = model,
                         ModelHost = modelHost
                     });
-
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
                 },
                 ProcessWebpartProperties);
         }

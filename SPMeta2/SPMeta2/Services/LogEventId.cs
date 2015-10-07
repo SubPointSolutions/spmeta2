@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
-namespace SPMeta2.Services
+﻿namespace SPMeta2.Services
 {
     /// <summary>
     /// Log events provided by SPMeta2 implementation and related components.

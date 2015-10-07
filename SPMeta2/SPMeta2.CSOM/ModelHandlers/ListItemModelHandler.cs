@@ -78,11 +78,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 throw new SPMeta2NotImplementedException("Please use ModuleFileDefinition to deploy files to the document libraries");
             }
 
-            ListItem currentItem = null;
-
-            InvokeOnModelEvent<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdating);
-            currentItem = EnsureListItem(list, folder, listItemModel);
-            InvokeOnModelEvent<ListItemDefinition, ListItem>(currentItem, ModelEventType.OnUpdated);
+            EnsureListItem(list, folder, listItemModel);
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)

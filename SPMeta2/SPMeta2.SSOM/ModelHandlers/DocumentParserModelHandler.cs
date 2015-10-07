@@ -40,8 +40,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var service = SPWebService.ContentService;
             var parsers = service.PluggableParsers;
 
-            SPDocumentParser currentParser = null;
-
             if (parsers.ContainsKey(currentExtension))
                 return parsers[currentExtension];
 

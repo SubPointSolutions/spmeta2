@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Base
 {
-    [DataContract]
+
     /// <summary>
     /// Base definition for farm and sandbox solution definitions.
     /// </summary>
+    [DataContract]
     public abstract class SolutionDefinitionBase : DefinitionBase
     {
         #region properties

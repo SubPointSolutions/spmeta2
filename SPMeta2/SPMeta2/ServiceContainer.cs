@@ -1,10 +1,7 @@
-﻿using SPMeta2.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-
+using SPMeta2.Services;
 using SPMeta2.Services.Impl;
 
 namespace SPMeta2

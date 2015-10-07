@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Services.Impl;
+﻿using SPMeta2.Services.Impl;
 
 namespace SPMeta2.Services
 {

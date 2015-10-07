@@ -1,16 +1,13 @@
-﻿using SPMeta2.Attributes;
-using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -18,11 +15,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint custom user action.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserCustomAction", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.UserCustomAction", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserCustomAction", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.UserCustomAction", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]
@@ -121,7 +118,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
-        [NotAbsoluteUrlCapabilityAttribute]
+        [NotAbsoluteUrlCapability]
         public string ScriptSrc { get; set; }
 
         /// <summary>

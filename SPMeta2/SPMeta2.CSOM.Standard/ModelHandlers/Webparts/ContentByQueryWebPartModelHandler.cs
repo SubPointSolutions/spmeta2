@@ -2,7 +2,6 @@
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions.Base;
-using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Webparts;

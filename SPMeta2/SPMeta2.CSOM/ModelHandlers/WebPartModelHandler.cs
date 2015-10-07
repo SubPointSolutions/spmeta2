@@ -171,8 +171,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                         var rootWeb = listItemModelHost.HostSite.RootWeb;
                         var rootWebContext = rootWeb.Context;
 
-                        var webPartCatalog =
-                            rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Catalogs.Wp.GetListUrl());
+#pragma warning disable 618
+                        var webPartCatalog = rootWeb.QueryAndGetListByUrl(BuiltInListDefinitions.Catalogs.Wp.GetListUrl());
+#pragma warning restore 618
                         //var webParts = webPartCatalog.GetItems(CamlQuery.CreateAllItemsQuery());
 
                         //rootWebContext.Load(webParts);
@@ -305,7 +306,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected virtual void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
         {
-            
+
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -448,8 +449,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                         HandleWikiPageProvision(fileListItem, webPartModel, webPartStoreKey, OldWebParKey);
                     }
 
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdating);
-
                     existingWebPart = webPartDefinition.WebPart;
 
                     InvokeOnModelEvent(this, new ModelEventArgs
@@ -462,8 +461,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                         ObjectDefinition = webPartModel,
                         ModelHost = modelHost
                     });
-
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(null, ModelEventType.OnUpdated);
                 }
                 else
                 {
@@ -556,8 +553,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var upcomingWebPartId = definitionWebPartId;
 
-            /// aa....
-            /// extremely unfortunate 
+            // aa....
+            // extremely unfortunate 
             if (webpartModel is XsltListViewWebPartDefinition)
             {
                 upcomingWebPartId = webPartStoreKey.ToString()

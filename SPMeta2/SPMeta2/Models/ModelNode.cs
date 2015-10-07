@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.Remoting;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Models
 {
@@ -126,10 +124,11 @@ namespace SPMeta2.Models
         [DataMember]
         public ModelNodeOptions Options { get; set; }
 
-        [DataMember]
         /// <summary>
         /// A property bag to be used for any 'custom' properties attached to ModelNode.
         /// </summary>
+        [DataMember]
+
         public List<PropertyBagValue> PropertyBag { get; set; }
 
         [DataMember]
