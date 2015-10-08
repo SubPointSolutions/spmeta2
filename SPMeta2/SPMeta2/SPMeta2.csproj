@@ -309,6 +309,7 @@
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
     <Compile Include="Services\Impl\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
+    <Compile Include="Services\Impl\DefaultContentTypeIdPropertyValidationService.cs" />
     <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultNotAbsoluteUrlPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultVersionBasedPropertiesModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultXmlBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\ServiceModelHandlerBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />

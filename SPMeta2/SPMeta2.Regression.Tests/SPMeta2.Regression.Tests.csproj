@@ -227,6 +227,7 @@
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
     <Compile Include="Impl\Services\DefaultNotAbsoluteUrlPropertiesValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultVersionBasedPropertiesValidationServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultContentTypeIdPropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultXmlBasedPropertiesValidationServiceTests.cs" />
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
     <Compile Include="Impl\Syntax\TypedSyntaxTests.cs" />
