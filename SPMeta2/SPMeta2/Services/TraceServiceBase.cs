@@ -64,7 +64,7 @@ namespace SPMeta2.Services
             InformationFormat(traceService, id, message, new object[] { parameter });
         }
 
-        public static void InformationFormat(this TraceServiceBase traceService, int id, object message, string[] parameters)
+        public static void InformationFormat(this TraceServiceBase traceService, int id, object message, object[] parameters)
         {
             InformationFormat(traceService, id, message, parameters, null);
         }

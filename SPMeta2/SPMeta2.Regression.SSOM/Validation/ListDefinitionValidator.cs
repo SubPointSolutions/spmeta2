@@ -201,6 +201,12 @@ namespace SPMeta2.Regression.SSOM.Validation
                     if (!dstUrl.StartsWith("/"))
                         dstUrl = "/" + dstUrl;
 
+                    if (!srcUrl.StartsWith("/"))
+                        srcUrl = "/" + srcUrl;
+
+                    srcUrl = srcUrl.ToLower();
+                    dstUrl = dstUrl.ToLower();
+
                     var isValid = false;
 
                     if (s.DocumentTemplateUrl.Contains("~sitecollection"))

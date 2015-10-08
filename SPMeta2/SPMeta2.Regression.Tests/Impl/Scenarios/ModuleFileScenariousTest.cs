@@ -11,6 +11,7 @@ using System.Text;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Data;
+using SPMeta2.Syntax.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -172,6 +173,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 .NewWebModel(web =>
                 {
                     web.AddList(list, rndList =>
+                    {
+                        rndList.AddRandomModuleFile();
+                    });
+
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.OOTBLists")]
+        public void CanDeploy_ModuleFile_ToStyleLibrary()
+        {
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddHostStyleLibraryList(rndList =>
                     {
                         rndList.AddRandomModuleFile();
                     });
