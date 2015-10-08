@@ -785,7 +785,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             {
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
 
+#pragma warning disable 618
                 def.Url = string.Empty;
+#pragma warning restore 618
                 def.CustomUrl = string.Format("Lists/{0}", Rnd.String());
             });
 
@@ -836,7 +838,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 def.ContentTypesEnabled = true;
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
 
+#pragma warning disable 618
                 def.Url = string.Empty;
+#pragma warning restore 618
                 def.CustomUrl = string.Format("{0}", Rnd.String());
 
                 // just don't want to go site content -> find a list..

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using SPMeta2.Definitions;
+using SPMeta2.Services.Impl;
 
 // ReSharper disable InconsistentNaming
 
@@ -513,8 +514,14 @@ namespace SPMeta2.Utils
         }
 
 
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData)
+        {
+            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, "string", propXlmns, isCData);
+        }
 
-        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue,
+            string propType, string propXlmns, bool isCData)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
             var propNode = GetV3Node(webpartXmlDocument, propName, propXlmns);
@@ -524,7 +531,7 @@ namespace SPMeta2.Utils
                 var newNode = (new XElement("{" + WebPartNamespaceV3 + "}property"));
 
                 newNode.SetAttributeValue("name", propName);
-                newNode.SetAttributeValue("type", "string");
+                newNode.SetAttributeValue("type", propType);
 
                 if (isCData)
                 {
@@ -584,7 +591,14 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData)
+        {
+            return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, "string", propXlmns, isCData);
+        }
+
+        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue,
+            string propType, string propXlmns, bool isCData)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
 
@@ -667,15 +681,22 @@ namespace SPMeta2.Utils
         public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
             bool isCData)
         {
+            return SetOrUpdateProperty(webpartXmlDocument, propName, propValue, "string", isCData);
+        }
+
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
+          string propType, bool isCData)
+        {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV3, isCData);
+                return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propType, WebPartNamespaceV3, isCData);
             if (IsV2version(webpartXmlDocument))
-                return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV2, isCData);
+                return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, propType, WebPartNamespaceV2, isCData);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
-        internal static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        internal static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, string propType,
+            string propXlmns, bool isCData)
         {
             if (IsV3version(webpartXmlDocument))
                 SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propXlmns, isCData);
@@ -866,7 +887,7 @@ namespace SPMeta2.Utils
             if (toType.IsGenericType &&
                 toType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                toType = Nullable.GetUnderlyingType(toType); 
+                toType = Nullable.GetUnderlyingType(toType);
             }
 
             bool canConvert = toType is IConvertible || (toType.IsValueType && !toType.IsEnum);

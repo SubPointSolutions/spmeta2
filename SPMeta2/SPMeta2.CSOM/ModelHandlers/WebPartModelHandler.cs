@@ -288,6 +288,30 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);
 
+            // bindings
+            ProcessParameterBindings(definition, xml);
+
+            // properties
+            ProcessWebpartProperties(definition, xml);
+
+
+            return xml.ToString();
+        }
+
+        private void ProcessWebpartProperties(WebPartDefinitionBase definition, XDocument xml)
+        {
+            if (definition.Properties != null && definition.Properties.Count > 0)
+            {
+                foreach (var prop in definition.Properties)
+                {
+                    var isCdata = prop.IsCData.HasValue && prop.IsCData.Value;
+                    xml.SetOrUpdateProperty(prop.Name, prop.Value, prop.Type, isCdata);
+                }
+            }
+        }
+
+        private static void ProcessParameterBindings(WebPartDefinitionBase definition, XDocument xml)
+        {
             if (definition.ParameterBindings != null && definition.ParameterBindings.Count > 0)
             {
                 var parameterBinder = new WebPartParameterBindingsOptions();
@@ -298,9 +322,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var parameterBindingValue = SecurityElement.Escape(parameterBinder.ParameterBinding);
                 xml.SetOrUpdateProperty("ParameterBindings", parameterBindingValue);
             }
-
-            return xml.ToString();
         }
+
 
         protected ClientContext CurrentClientContext { get; set; }
 

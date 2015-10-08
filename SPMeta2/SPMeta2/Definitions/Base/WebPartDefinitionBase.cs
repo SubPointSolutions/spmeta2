@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions.Base
             ChromeType = BuiltInPartChromeType.Default;
 
             ParameterBindings = new List<ParameterBindingValue>();
+            Properties = new List<WebPartProperty>();
         }
 
         #endregion
@@ -186,6 +187,10 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         public bool AddToPageContent { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        public List<WebPartProperty> Properties { get; set; }
+
         #endregion
 
         #region methods
@@ -199,6 +204,32 @@ namespace SPMeta2.Definitions.Base
         #endregion
     }
 
+    [Serializable]
+    [DataContract]
+    public class WebPartProperty
+    {
+        public WebPartProperty()
+        {
+            Type = "string";
+        }
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+
+        [DataMember]
+        public bool? IsTokenisable { get; set; }
+
+        [DataMember]
+        public bool? IsCData { get; set; }
+
+        [DataMember]
+        public string Type { get; set; }
+    }
+
+    [Serializable]
     [DataContract]
     public class ParameterBindingValue
     {

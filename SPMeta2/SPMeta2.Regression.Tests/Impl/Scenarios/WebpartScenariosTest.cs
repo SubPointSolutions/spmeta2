@@ -10,6 +10,7 @@ using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Definitions;
@@ -19,6 +20,7 @@ using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
 using SPMeta2.Models;
+using SPMeta2.Syntax.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -385,7 +387,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
-
 
         #region webpart
 
@@ -841,6 +842,87 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(model, deleteModel);
         }
+
+        #endregion
+
+        #region properties
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Properties")]
+        public void CanDeploy_V2_Webpart_With_Properties()
+        {
+            var webpart = ModelGeneratorService.GetRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.WebpartFileName = string.Empty;
+                def.WebpartType = string.Empty;
+                def.WebpartXmlTemplate = BuiltInWebPartTemplates.ContentEditorWebPart;
+            });
+
+            webpart.Properties.Add(new WebPartProperty
+            {
+                Name = "AllowEdit",
+                Value = Rnd.Bool().ToString().ToLower()
+            });
+
+            webpart.Properties.Add(new WebPartProperty
+            {
+                Name = "Description",
+                Value = Rnd.Bool().ToString().ToLower()
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddHostSitePagesList(list =>
+                    {
+                        list.AddRandomWebPartPage(page =>
+                        {
+                            page.AddWebPart(webpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Properties")]
+        public void CanDeploy_V3_Webpart_With_Properties()
+        {
+            var webpart = ModelGeneratorService.GetRandomDefinition<WebPartDefinition>(def =>
+            {
+                def.WebpartFileName = string.Empty;
+                def.WebpartType = string.Empty;
+                def.WebpartXmlTemplate = BuiltInWebPartTemplates.ScriptEditorWebPart;
+            });
+
+            webpart.Properties.Add(new WebPartProperty
+            {
+                Name = "AllowEdit",
+                Value = Rnd.Bool().ToString().ToLower()
+            });
+
+            webpart.Properties.Add(new WebPartProperty
+            {
+                Name = "Description",
+                Value = Rnd.Bool().ToString().ToLower()
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddHostSitePagesList(list =>
+                    {
+                        list.AddRandomWebPartPage(page =>
+                        {
+                            page.AddWebPart(webpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
 
         #endregion
     }

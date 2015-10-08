@@ -8,6 +8,9 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
+
+   
+
     /// <summary>
     /// Allows to define and deploy SharePoint web part.
     /// </summary>
