@@ -161,7 +161,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                 mappings.Add(mapping);
             }
-            }
 
             existingProperty.SetMappings(mappings);
             //}
