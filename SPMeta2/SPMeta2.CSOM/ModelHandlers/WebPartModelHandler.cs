@@ -298,7 +298,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return xml.ToString();
         }
 
-        private void ProcessWebpartProperties(WebPartDefinitionBase definition, XDocument xml)
+        protected virtual void ProcessWebpartProperties(WebPartDefinitionBase definition, XDocument xml)
         {
             if (definition.Properties != null && definition.Properties.Count > 0)
             {
@@ -310,7 +310,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private static void ProcessParameterBindings(WebPartDefinitionBase definition, XDocument xml)
+        protected virtual void ProcessParameterBindings(WebPartDefinitionBase definition, XDocument xml)
         {
             if (definition.ParameterBindings != null && definition.ParameterBindings.Count > 0)
             {

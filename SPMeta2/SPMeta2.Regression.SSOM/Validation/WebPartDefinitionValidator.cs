@@ -45,6 +45,41 @@ namespace SPMeta2.Regression.SSOM.Validation
                                   .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
+                // props
+
+                if (definition.Properties.Count > 0)
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var isValid = true;
+
+                        foreach (var prop in definition.Properties)
+                        {
+                            // returns correct one depending on the V2/V3
+                            var value = ReflectionUtils.GetPropertyValue(d, prop.Name);
+
+                            // that True / true issue give a pain
+                            // toLower for the time being
+                            isValid = value.ToString().ToLower() == prop.Value.ToLower();
+
+                            if (!isValid)
+                                break;
+                        }
+
+                        var srcProp = s.GetExpressionValue(m => m.Properties);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Properties, "Properties are empty. Skipping.");
+
                 if (!string.IsNullOrEmpty(definition.ChromeState))
                 {
                     assert.ShouldBeEqual((p, s, d) =>
