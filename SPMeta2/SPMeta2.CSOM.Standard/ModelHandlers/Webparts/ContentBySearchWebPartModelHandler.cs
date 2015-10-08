@@ -24,7 +24,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
             var definition = webPartModel.WithAssertAndCast<ContentBySearchWebPartDefinition>("model", value => value.RequireNotNull());
-            var xml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentByQueryWebPart);
+            var xml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.ContentBySearchWebPart);
 
             // JSON
             if (!string.IsNullOrEmpty(definition.DataProviderJSON))
