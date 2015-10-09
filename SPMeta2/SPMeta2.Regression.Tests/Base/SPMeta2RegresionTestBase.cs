@@ -36,7 +36,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
-            
+
 
             ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
 
@@ -54,7 +54,7 @@ namespace SPMeta2.Regression.Tests.Base
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
 
-           
+
         }
 
         #endregion
@@ -172,6 +172,7 @@ namespace SPMeta2.Regression.Tests.Base
             var model = RegressionService.TestRandomDefinition(definitionSetup);
 
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(new[] { model });
+            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(new[] { model });
         }
 
         protected void WithSPMeta2NotSupportedExceptions(Action action)
@@ -248,7 +249,21 @@ namespace SPMeta2.Regression.Tests.Base
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
+
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
+            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+
+        }
+
+        private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)
+        {
+            TraceUtils.WithScope(trace =>
+            {
+                trace.WriteLine("Saving-restoring XML/JSON models. Deployng..");
+                var serializedModels = RegressionService.GetSerializedAndRestoredModels(models);
+
+                RegressionService.TestModels(serializedModels);
+            });
         }
 
         private void ProcessPropertyUpdateValidation(IEnumerable<ModelNode> models)

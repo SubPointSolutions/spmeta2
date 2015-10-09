@@ -88,15 +88,21 @@ namespace SPMeta2.Models
 
         public ModelNode()
         {
-            TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
 
             ChildModels = new Collection<ModelNode>();
             Options = new ModelNodeOptions();
 
+            PropertyBag = new List<PropertyBagValue>();
+
+            InitDataMemberIgnorableProperties();
+        }
+
+        private void InitDataMemberIgnorableProperties()
+        {
+            TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+
             ModelEvents = new Dictionary<ModelEventType, List<object>>();
             ModelContextEvents = new Dictionary<ModelEventType, List<object>>();
-
-            PropertyBag = new List<PropertyBagValue>();
         }
 
         #endregion
@@ -152,9 +158,19 @@ namespace SPMeta2.Models
         [XmlIgnore]
         [NonSerialized]
         [IgnoreDataMember]
-        private readonly TraceServiceBase TraceService;
+        protected TraceServiceBase TraceService;
 
         #endregion
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+            // https://github.com/SubPointSolutions/spmeta2/issues/697
+            // serialization would set all [IgnoreDataMember] as nulls
+            // so we need to sestore them to normal state as we would go in constructor
+
+            InitDataMemberIgnorableProperties();
+        }
 
         #region events support
 

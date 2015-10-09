@@ -35,6 +35,10 @@ namespace SPMeta2.Definitions.Fields
 
         #region properties
 
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
         public override string FieldType
         {
             get

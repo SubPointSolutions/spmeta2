@@ -11,19 +11,9 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Services.ServiceModelHandlers
 {
-    public class DefaultContentTypeIdPropertyModelHandler : ServiceModelHandlerBase
+    public class DefaultContentTypeIdPropertyModelHandler : TypedDefinitionModelHandlerBase<ContentTypeDefinition>
     {
-        #region methods
-
-        public override void DeployModel(object modelHost, DefinitionBase model)
-        {
-            if (!(model is ContentTypeDefinition))
-                return;
-
-            ValidateContentTypeIdProperty(model as ContentTypeDefinition);
-        }
-
-        protected virtual void ValidateContentTypeIdProperty(ContentTypeDefinition model)
+        protected override void ProcessDefinition(object modelHost, ContentTypeDefinition model)
         {
             // https://github.com/SubPointSolutions/spmeta2/issues/689
 
@@ -45,8 +35,5 @@ namespace SPMeta2.Services.ServiceModelHandlers
                     string.Format("contentTypeId is invalid:[{1}]. Definition:[{0}]", model, contentTypeId));
             }
         }
-
-
-        #endregion
     }
 }

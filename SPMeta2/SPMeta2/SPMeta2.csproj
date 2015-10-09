@@ -306,6 +306,7 @@
     <Compile Include="Services\DefaultPreDeploymentTreeTraverseServiceBase.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultFieldInternalNamePropertyValidationService.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
     <Compile Include="Services\Impl\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
@@ -328,12 +329,14 @@
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultNotAbsoluteUrlPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultVersionBasedPropertiesModelHandler.cs" />
-    <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DefaultFieldInternalNamePropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultXmlBasedPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\ServiceModelHandlerBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\TypedDefinitionModelHandlerBase.cs" />
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />

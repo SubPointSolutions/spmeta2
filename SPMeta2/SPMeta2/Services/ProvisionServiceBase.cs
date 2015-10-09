@@ -23,6 +23,7 @@ namespace SPMeta2.Services
             PreDeploymentServices.Add(new DefaultVersionBasedPropertiesValidationService());
             PreDeploymentServices.Add(new DefaultNotAbsoluteUrlPropertiesValidationService());
 
+            PreDeploymentServices.Add(new DefaultFieldInternalNamePropertyValidationService());
             PreDeploymentServices.Add(new DefaultContentTypeIdPropertyValidationService());
         }
 
