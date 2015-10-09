@@ -51,25 +51,31 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     # CSOM, SSOM or O365
     EnvironmentType = "SSOM"
 
-  #O365 specific settings
-    O365UserName = ""
-    O365UserPassword = ""
+   #O365 specific settings
+    O365UserName = "support@subpointsolutions.com"
+    O365UserPassword = "sbhsbhu8wxvKQsu"
 
     O365SiteUrls = @(
-        ""
+        "https://subpointsolutions.sharepoint.com/sites/ci-10"
     )
 
     O365WebUrls = @(
-        ""
+        "https://subpointsolutions.sharepoint.com/sites/ci-10"
     )
    
    RandomBalancedUrls = @( 
-
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-10"
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-11"
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-12"
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-13"
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-14"
+	#	"https://subpointsolutions.sharepoint.com/sites/ci-15"
 	 )
 
 	O365DefaultTestUserLogins = @(
-		""
+		"ci@subpointsolutions.com"
 	)
+
 
     # CSOM specific settings
     CSOMWebApplicationUrls = @(
