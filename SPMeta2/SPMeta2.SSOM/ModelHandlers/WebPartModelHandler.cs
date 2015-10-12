@@ -125,7 +125,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                         var targetValue = Convert.ChangeType(prop.Value, wpPropType);
 
-                        wpProp.SetValue(instance, targetValue);
+                        wpProp.SetValue(instance, targetValue, null);
                     }
                 }
             }

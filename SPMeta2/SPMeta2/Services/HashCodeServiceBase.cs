@@ -13,11 +13,12 @@ namespace SPMeta2.Services
 
         public void Dispose()
         {
-            Dispose(true);
+            // differnet method name due to .NET35 
+            InternalDispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void InternalDispose(bool disposing)
         {
             if (disposing)
             {
@@ -53,15 +54,19 @@ namespace SPMeta2.Services
             }
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void InternalDispose(bool disposing)
         {
-            base.Dispose(disposing);
+            base.InternalDispose(disposing);
 
             if (disposing)
             {
                 if (_cryptoServiceProvider != null)
+          
                 {
+#if !NET35
+                    // OMG
                     _cryptoServiceProvider.Dispose();
+#endif
                 }
             }
         }

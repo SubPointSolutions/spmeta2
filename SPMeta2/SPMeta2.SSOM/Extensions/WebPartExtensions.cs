@@ -58,7 +58,11 @@ namespace SPMeta2.SSOM.Extensions
                 finally
                 {
                     if (xmlReader != null)
+                    {
+#if !NET35
                         xmlReader.Dispose();
+#endif
+                    }
                     else if (streamReader != null)
                         streamReader.Dispose();
                 }
@@ -87,7 +91,11 @@ namespace SPMeta2.SSOM.Extensions
                 finally
                 {
                     if (xmlReader != null)
+                    {
+#if !NET35
                         xmlReader.Dispose();
+#endif
+                    }
                     else if (streamReader != null)
                         streamReader.Dispose();
                 }
