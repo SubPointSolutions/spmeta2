@@ -67,8 +67,8 @@ if($includeV16Build -eq $true) {
 }
 
 # SSOM
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"
+& $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:DefineConstants=NET40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"
 & $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"
 
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"
+& $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:DefineConstants=NET40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"
 & $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0"

@@ -106,8 +106,9 @@ EndProject
 Global
 	GlobalSection(AutomaticVersions) = postSolution
 		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = False
+		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = False
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1212|Any CPU = 1212|Any CPU
