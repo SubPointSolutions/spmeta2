@@ -52,6 +52,8 @@ namespace SPMeta2.Models
         /// <summary>
         /// Indicates of model node needs to be processed by model handler.
         /// </summary>
+
+        [DataMember]
         public bool RequireSelfProcessing { get; set; }
 
         #endregion
