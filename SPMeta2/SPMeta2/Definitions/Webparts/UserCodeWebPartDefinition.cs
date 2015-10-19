@@ -16,10 +16,13 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.SPUserCodeWebPart , Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class UserCodeWebPartDefinition : WebPartDefinition
     {
         #region constructors

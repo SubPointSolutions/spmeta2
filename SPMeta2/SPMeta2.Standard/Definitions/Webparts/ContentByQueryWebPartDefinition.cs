@@ -24,6 +24,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     [ExpectManyInstances]
 
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.Publishing.WebControls.ContentByQueryWebPart, Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class ContentByQueryWebPartDefinition : WebPartDefinition
     {
         #region properties

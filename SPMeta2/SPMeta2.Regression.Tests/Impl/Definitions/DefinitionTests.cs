@@ -287,6 +287,35 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             Assert.IsTrue(errors == 0);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void TypedWebPartDefinitions_Should_Have_ExpectWebpartType_Attr()
+        {
+            var typedWebPartTypes = AllDefinitionTypes.Where(t => t.IsSubclassOf(typeof(WebPartDefinition)));
+
+            var errors = 0;
+
+            foreach (var definitionType in typedWebPartTypes)
+            {
+                var hasAttr = definitionType.GetCustomAttributes(typeof(ExpectWebpartType), true).Any();
+
+                if (!hasAttr)
+                {
+                    Trace.WriteLine(string.Format(" - Checking type:[{0}]. Has:[{1}] Attr:[ExpectWebpartType]",
+                        definitionType.Name, hasAttr));
+                }
+
+                if (!hasAttr)
+                {
+                    errors++;
+                }
+            }
+
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(errors == 0);
+        }
+
         private static int CheckDataMemberOrIgnoreDataMemberAttr(List<Type> types)
         {
             var errors = 0;

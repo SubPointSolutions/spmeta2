@@ -22,6 +22,9 @@ namespace SPMeta2.Definitions.Webparts
 
     [ExpectManyInstances]
 
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
+
     public class ScriptEditorWebPartDefinition : WebPartDefinition
     {
         #region properties

@@ -21,6 +21,9 @@ namespace SPMeta2.Definitions.Webparts
     [ExpectArrayExtensionMethod]
 
     [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.ContentEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class ContentEditorWebPartDefinition : WebPartDefinition
     {
         #region properties

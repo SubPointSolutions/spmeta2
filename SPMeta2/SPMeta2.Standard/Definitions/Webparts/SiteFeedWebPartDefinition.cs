@@ -16,11 +16,13 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
     [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.Publishing.WebControls.SiteFeedWebPart, Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
 
     public class SiteFeedWebPartDefinition : WebPartDefinition
     {

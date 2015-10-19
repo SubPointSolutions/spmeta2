@@ -20,6 +20,9 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.XsltListViewWebPart , Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class XsltListViewWebPartDefinition : WebPartDefinition
     {
         #region constructors

@@ -110,6 +110,7 @@
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectManyInstances.cs" />
+    <Compile Include="Attributes\Regression\ExpectWebpartType.cs" />
     <Compile Include="Attributes\Regression\ExpectNullable.cs" />
     <Compile Include="Attributes\Regression\ExpectRequired.cs" />
     <Compile Include="Attributes\Regression\ExpectWithExtensionMethod.cs" />
