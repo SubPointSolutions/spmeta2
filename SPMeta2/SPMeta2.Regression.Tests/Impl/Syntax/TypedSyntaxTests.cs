@@ -142,6 +142,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web.AddClearRecycleBin(new ClearRecycleBinDefinition());
+
                 web
                     .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition())
                     .AddAnonymousAccessSettings(new AnonymousAccessSettingsDefinition());

@@ -913,7 +913,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
-       
+
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Security")]
@@ -1211,5 +1211,11 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_ClearRecycleBinDefinition()
+        {
+            TestRandomDefinition<ClearRecycleBinDefinition>();
+        }
     }
 }

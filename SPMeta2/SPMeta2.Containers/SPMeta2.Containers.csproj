@@ -84,6 +84,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\ClearRecycleBinDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />

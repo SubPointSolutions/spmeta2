@@ -134,6 +134,7 @@
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
+    <Compile Include="Definitions\ClearRecycleBinDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemLinkDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
@@ -343,6 +344,7 @@
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\ClearRecycleBinDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AnonymousAccessSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AlternateUrlDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
