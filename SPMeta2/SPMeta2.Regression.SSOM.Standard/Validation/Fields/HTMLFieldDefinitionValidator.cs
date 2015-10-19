@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.SSOM.Validation;
+using SPMeta2.Regression.SSOM.Validation.Fields;
 using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers.Fields;
@@ -15,7 +16,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
 {
-    public class HTMLFieldDefinitionValidator : FieldDefinitionValidator
+    public class HTMLFieldDefinitionValidator : NoteFieldDefinitionValidator
     {
         public override Type TargetType
         {

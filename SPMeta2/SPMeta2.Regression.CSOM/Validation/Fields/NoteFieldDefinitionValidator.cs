@@ -13,6 +13,7 @@ using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Exceptions;
 using System.Xml.Linq;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
@@ -34,11 +35,15 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
             ValidateField(assert, spObject, definition);
+            ValidateNoteField(assert, spObject, definition);
+        }
 
+        protected void ValidateNoteField(AssertPair<FieldDefinition, Field> assert, Field spObject, FieldDefinition definition)
+        {
             var textField = spObject.Context.CastTo<FieldMultiLineText>(spObject);
-            var textDefinition = model.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
+            var textDefinition = definition.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
 
-            var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
+            var textFieldAssert = ServiceFactory.AssertService.NewAssert(definition, textDefinition, textField);
 
             textFieldAssert.ShouldBeEqual(m => m.NumberOfLines, o => o.NumberOfLines);
             textFieldAssert.ShouldBeEqual(m => m.RichText, o => o.RichText);
