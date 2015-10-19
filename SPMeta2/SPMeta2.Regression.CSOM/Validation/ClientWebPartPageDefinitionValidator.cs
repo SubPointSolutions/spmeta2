@@ -114,7 +114,7 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public static byte[] GetWebPartPageTemplateContent(this WebPartPageDefinition definition)
         {
-            return Encoding.UTF8.GetBytes(WebPartPageModelHandler.GetWebPartTemplateContent(definition));
+            return Encoding.UTF8.GetBytes(new WebPartPageModelHandler().GetWebPartTemplateContent(definition));
         }
 
         public static byte[] GetCustomnPageContent(this WebPartPageDefinition definition)

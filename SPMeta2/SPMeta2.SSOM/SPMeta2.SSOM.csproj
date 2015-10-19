@@ -288,11 +288,6 @@
     <Compile Include="Services\SSOMLocalizationService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />
     <Compile Include="Services\SSOMTokenReplacementService.cs" />
-    <Compile Include="WebPartPageTemplates.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebPartPageTemplates.resx</DependentUpon>
-    </Compile>
     <Compile Include="WebPartTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -317,10 +312,6 @@
     <EmbeddedResource Include="PublishingPageTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PublishingPageTemplates.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WebPartPageTemplates.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>WebPartPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="WebPartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>

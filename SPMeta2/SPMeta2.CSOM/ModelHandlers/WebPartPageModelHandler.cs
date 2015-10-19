@@ -11,6 +11,7 @@ using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.ModelHosts;
+using SPMeta2.Templates;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -110,7 +111,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
-           
+
 
             // one more time..
             var dQuery = new CamlQuery();
@@ -296,27 +297,31 @@ namespace SPMeta2.CSOM.ModelHandlers
             return fileName;
         }
 
-        public static string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
+        public virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
         {
             // gosh! would u like to offer a better way?
+            // always SP2013 for CSOM yet
+            // Built-in web part page templates should be correctly resolved for SP2010/2013 #683
+
+            // TODO, sp2016 support, if any
             switch (webPartPageModel.PageLayoutTemplate)
             {
                 case 1:
-                    return WebPartPageTemplates.spstd1;
+                    return SP2013WebPartPageTemplates.spstd1;
                 case 2:
-                    return WebPartPageTemplates.spstd2;
+                    return SP2013WebPartPageTemplates.spstd2;
                 case 3:
-                    return WebPartPageTemplates.spstd3;
+                    return SP2013WebPartPageTemplates.spstd3;
                 case 4:
-                    return WebPartPageTemplates.spstd4;
+                    return SP2013WebPartPageTemplates.spstd4;
                 case 5:
-                    return WebPartPageTemplates.spstd5;
+                    return SP2013WebPartPageTemplates.spstd5;
                 case 6:
-                    return WebPartPageTemplates.spstd6;
+                    return SP2013WebPartPageTemplates.spstd6;
                 case 7:
-                    return WebPartPageTemplates.spstd7;
+                    return SP2013WebPartPageTemplates.spstd7;
                 case 8:
-                    return WebPartPageTemplates.spstd8;
+                    return SP2013WebPartPageTemplates.spstd8;
             }
 
             throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));

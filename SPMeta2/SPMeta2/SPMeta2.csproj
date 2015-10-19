@@ -490,6 +490,16 @@
     <Compile Include="Syntax\Default\WikiPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\XsltListViewWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Extended\ListDefinitionSyntax.cs" />
+    <Compile Include="Templates\SP2010WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SP2010WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\SP2013WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SP2013WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
@@ -545,6 +555,14 @@
   <ItemGroup>
     <None Include="Properties\SPMeta2.pfx" />
     <None Include="SPMeta2.snk" />
+    <EmbeddedResource Include="Templates\SP2010WebPartPageTemplates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SP2010WebPartPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SP2013WebPartPageTemplates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SP2013WebPartPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templates\Webparts\ContentEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\XsltListViewWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ScriptEditorWebPart.webpart" />
