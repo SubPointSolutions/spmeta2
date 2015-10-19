@@ -17,7 +17,9 @@ using SPMeta2.Exceptions;
 
 using Microsoft.SharePoint;
 using System.IO;
+using System.Reflection;
 using System.Xml;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -44,6 +46,30 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var assert = ServiceFactory.AssertService
                                   .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
+
+                var currentType = spObject.GetType().AssemblyQualifiedName;
+                var currentClassName = currentType.Split(',').First().Trim();
+
+                var expectedType = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
+                                                        .FirstOrDefault() as ExpectWebpartType)
+                                                        .WebPartType;
+
+                var expectedClassName = expectedType.Split(',').First().Trim();
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = null,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
 
                 // props
 

@@ -53,6 +53,7 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions = new RunOptions();
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
+            TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
 
         }
@@ -102,7 +103,10 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected class RunOptions
         {
+
+
             public bool EnableWebApplicationDefinitionTest { get; set; }
+            public bool EnableSerializeDeserializeAndStillDeployTests { get; set; }
         }
 
         #endregion
@@ -172,6 +176,8 @@ namespace SPMeta2.Regression.Tests.Base
             var model = RegressionService.TestRandomDefinition(definitionSetup);
 
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(new[] { model });
+
+
             PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(new[] { model });
         }
 
@@ -257,6 +263,9 @@ namespace SPMeta2.Regression.Tests.Base
 
         private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)
         {
+            if (!TestOptions.EnableSerializeDeserializeAndStillDeployTests)
+                return;
+
             TraceUtils.WithScope(trace =>
             {
                 trace.WriteLine("Saving-restoring XML/JSON models. Deployng..");

@@ -195,6 +195,23 @@ namespace SPMeta2.Utils
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
+        public static string GetWebPartAssemblyQualifiedName(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+            {
+                return GetV3MetadataNode(webpartXmlDocument, "type", WebPartNamespaceV3).Value;
+            }
+            if (IsV2version(webpartXmlDocument))
+            {
+                var classPart = GetProperty(webpartXmlDocument, "TypeName", WebPartNamespaceV2);
+                var assemblyPart = GetProperty(webpartXmlDocument, "Assembly", WebPartNamespaceV2);
+
+                return classPart + ", " + assemblyPart;
+            }
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
         public static XDocument SetChromeState(this XDocument webpartXmlDocument, string value)
         {
             if (IsV3version(webpartXmlDocument))

@@ -7,8 +7,10 @@ using SPMeta2.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
@@ -68,6 +70,33 @@ namespace SPMeta2.Regression.CSOM.Validation
 
 
                 assert.ShouldBeEqual(m => m.Title, o => o.Title);
+
+                // checking the web part type, shoul be as expected
+                // Add regression on 'expected' web part type #690
+
+                var currentType = CurrentWebPartXml.GetWebPartAssemblyQualifiedName();
+                var currentClassName = currentType.Split(',').First().Trim();
+
+                var expectedType = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
+                                                        .FirstOrDefault() as ExpectWebpartType)
+                                                        .WebPartType;
+
+                var expectedClassName = expectedType.Split(',').First().Trim();
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = null,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
 
                 // props
 
@@ -178,7 +207,21 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 if (!string.IsNullOrEmpty(definition.Description))
                 {
+                    var value = CurrentWebPartXml.GetProperty("Description");
 
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.Description);
+                        var isValid = (srcProp.Value as string) == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                 {
