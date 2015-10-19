@@ -10,9 +10,13 @@ namespace SPMeta2.Definitions
     [DataContract]
     public class FieldValue
     {
+        [DataMember]
         public string FieldName { get; set; }
+
+        [DataMember]
         public Guid? FieldId { get; set; }
 
+        [DataMember]
         public object Value { get; set; }
     }
 

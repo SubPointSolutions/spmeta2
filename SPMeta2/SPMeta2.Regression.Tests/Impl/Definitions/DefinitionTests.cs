@@ -279,36 +279,62 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
-            var result = true;
+            var targetTypes = AllDefinitionTypes;
+            var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
+
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(errors == 0);
+        }
+
+        private static int CheckDataMemberOrIgnoreDataMemberAttr(List<Type> types)
+        {
             var errors = 0;
 
-            foreach (var definitionType in AllDefinitionTypes)
+            foreach (var definitionType in types)
             {
-
                 var props = definitionType.GetProperties();
 
                 foreach (var prop in props)
                 {
                     var hasAttr = prop.GetCustomAttributes(typeof(DataMemberAttribute)).Any()
-                        || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
+                                  || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
 
                     if (!hasAttr)
                     {
-                        Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
+                        Trace.WriteLine(string.Format("[{2}] - Checking type:[{0}]. Prop:[{1}]",
                             definitionType.Name, prop.Name, hasAttr));
                     }
 
                     if (!hasAttr)
                     {
                         errors++;
-                        result = false;
                     }
                 }
             }
+            return errors;
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void AllSerializablesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
+        {
+            var targetTypes = new List<Type>();
+
+            var assemblies = new[]
+            {
+                typeof(FieldDefinition).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly,
+            };
+
+            targetTypes.AddRange(assemblies.SelectMany(a => a.GetTypes())
+                                 .Where(t => t.GetCustomAttributes(typeof(DataContractAttribute)).Any()));
+
+            var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
 
             Trace.WriteLine(string.Format("Errors: [{0}]", errors));
 
-            Assert.IsTrue(result);
+            Assert.IsTrue(errors == 0);
         }
 
         #endregion
