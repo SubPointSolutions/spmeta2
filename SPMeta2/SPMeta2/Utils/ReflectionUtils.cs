@@ -223,7 +223,16 @@ namespace SPMeta2.Utils
             return true;
         }
 
+        public static bool HasPropertyPublicSetter(object obj, string propName)
+        {
+            var prop = obj.GetType().GetProperty(propName);
+            if (prop != null)
+            {
+                return prop.GetSetMethod(false) != null;
+            }
 
+            return false;
+        }
         #endregion
     }
 }

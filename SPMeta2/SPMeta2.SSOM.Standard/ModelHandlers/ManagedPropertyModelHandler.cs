@@ -149,17 +149,17 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 var crawledProp = crawledProps
                     .FirstOrDefault(p => p.Name.ToUpper() == managedPropertyMappping.CrawledPropertyName.ToUpper());
 
-                if (crawledProp != null)
-                {
-                    var mapping = new Mapping
-                    {
-                        CrawledPropertyName = crawledProp.Name,
-                        ManagedPid = existingProperty.PID,
-                        CrawledPropset = crawledProp.Propset,
-                    };
+                if (crawledProp == null)
+                    continue;
 
-                    mappings.Add(mapping);
-                }
+                var mapping = new Mapping
+                {
+                    CrawledPropertyName = crawledProp.Name,
+                    ManagedPid = existingProperty.PID,
+                    CrawledPropset = crawledProp.Propset,
+                };
+
+                mappings.Add(mapping);
             }
 
             existingProperty.SetMappings(mappings);
