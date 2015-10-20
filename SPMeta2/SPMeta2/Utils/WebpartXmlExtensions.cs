@@ -199,7 +199,9 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
             {
-                return GetV3MetadataNode(webpartXmlDocument, "type", WebPartNamespaceV3).Value;
+                var typeNode = GetV3MetadataNode(webpartXmlDocument, "type", WebPartNamespaceV3);
+
+                return typeNode.Attribute("name").Value;
             }
             if (IsV2version(webpartXmlDocument))
             {

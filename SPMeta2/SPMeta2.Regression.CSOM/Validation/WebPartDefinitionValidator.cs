@@ -77,26 +77,32 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var currentType = CurrentWebPartXml.GetWebPartAssemblyQualifiedName();
                 var currentClassName = currentType.Split(',').First().Trim();
 
-                var expectedType = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
-                                                        .FirstOrDefault() as ExpectWebpartType)
-                                                        .WebPartType;
+                var expectedTypeAttr = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
+                                                        .FirstOrDefault() as ExpectWebpartType);
 
-                var expectedClassName = expectedType.Split(',').First().Trim();
-
-                assert.ShouldBeEqual((p, s, d) =>
+                // NULL can be on generic web part
+                // test should not care about that case, there other tests to enfore that attr usage
+                if (expectedTypeAttr != null)
                 {
-                    var isValid = true;
+                    var expectedType = expectedTypeAttr.WebPartType;
 
-                    isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+                    var expectedClassName = expectedType.Split(',').First().Trim();
 
-                    return new PropertyValidationResult
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = null,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
+                        var isValid = true;
+
+                        isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = null,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
 
                 // props
 

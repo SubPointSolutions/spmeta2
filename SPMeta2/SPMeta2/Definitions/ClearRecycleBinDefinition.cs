@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -26,6 +28,7 @@ namespace SPMeta2.Definitions
     //[ExpectWithExtensionMethod]
     //[ExpectArrayExtensionMethod]
 
+    [SingletonIdentity]
     [ExpectManyInstances]
 
     [ParentHostCapability(typeof(WebDefinition))]
@@ -54,6 +57,20 @@ namespace SPMeta2.Definitions
 
         [DataMember]
         public bool DeleteAllInSecondStage { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<ClearRecycleBinDefinition>(this)
+                          .AddPropertyValue(p => p.RestoreAll)
+                          .AddPropertyValue(p => p.DeleteAll)
+                          .AddPropertyValue(p => p.MoveAllToSecondStage)
+                          .AddPropertyValue(p => p.DeleteAllInSecondStage)
+                          .ToString();
+        }
 
         #endregion
     }
