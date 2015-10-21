@@ -47,7 +47,7 @@ Hundreds of companies trust SPMeta2 to boost up they daily SharePoint related ro
 * [Welcome to SPMeta2](http://docs.subpointsolutions.com/spmeta2/)
 * [How it works](http://docs.subpointsolutions.com/spmeta2/basics/getting-started/) 
 * [Getting started](http://docs.subpointsolutions.com/spmeta2/basics/getting-started/)
-* [100+ samples & scenarios](http://docs.subpointsolutions.com/spmeta2/scenarios/)
+* [100+ samples & scenarios - NEW!](http://docs.subpointsolutions.com/spmeta2/scenarios/)
 * [Useful utilities](http://docs.subpointsolutions.com/spmeta2/utils/)
 * [Extensibility](http://docs.subpointsolutions.com/spmeta2/extensibility/)
 
@@ -68,7 +68,7 @@ Hundreds of companies trust SPMeta2 to boost up they daily SharePoint related ro
 
 #### Visual Studio integration
 
-* [M2 Extensions @ VS Gallery]()
+* [M2 Extensions @ VS Gallery - NEW!](https://visualstudiogallery.msdn.microsoft.com/364a867c-5b39-447b-88b8-afb093b75b93)
 * [About extenstions, the experience](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki)
 * [General concepts](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/General-concepts)
 * [M2 Intranet Model template](https://github.com/SubPointSolutions/spmeta2-vsixextensions/wiki/M2-Intranet-Model-project)
@@ -103,7 +103,9 @@ SharePoint 2010 SSOM
 * [Kom igång med SPMeta2](http://chuvash.eu/2015/09/17/kom-igang-med-spmeta2/)
 * [Getting started with SPMeta2 by David Liong](https://davidliong.wordpress.com/2015/09/03/spmeta2/)
 * [SPMeta2 - создание артeфактов SharePoint 2013](http://blog.cibpoint.ru/post/spmeta2-sharepoint2013-codebase-artifacts-provision/)
+* [What is a SharePoint Application](http://chuvash.eu/2015/10/14/what-is-a-sharepoint-application/)
 
 #### Presentations
+* [SharePoint Saturday Oslo 2015 - NEW!](http://yuriburger.net/2015/10/17/slidedeck-sharepoint-saturday-oslo-2015-now-available/)
 * [Slidedeck SharePoint Artifact Provisioning - VX Company](http://www.werkenbijvxcompany.nl/wp-content/uploads/2015/05/Provisioning-SharePoint-Artifacts-Blog.pdf)
 * [SharePointCommunity.ch SharePoint Lösungen für die Zukunft](http://www.slideshare.net/fiddich1/sharepointcommunitych-sharepoint-lsungen-fr-die-zukunft)

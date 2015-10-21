@@ -10,7 +10,6 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Services;
 

@@ -74,82 +74,106 @@ namespace SPMeta2.CSOM.ModelHandlers
             return web.RegionalSettings;
         }
 
-        private static void MapRegionalSettings(ClientRuntimeContext context, RegionalSettings settings, RegionalSettingsDefinition definition, out bool shouldUpdate)
+        protected virtual bool SupportSetters(RegionalSettings settings)
+        {
+            // should have at least one setter
+            // Update() is there, but setters aren't
+
+            var supportedRuntime = ReflectionUtils.HasMethod(settings, "Update")
+                && ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays");
+
+            return supportedRuntime;
+        }
+
+        protected virtual void MapRegionalSettings(ClientRuntimeContext context, RegionalSettings settings, RegionalSettingsDefinition definition,
+            out bool shouldUpdate)
         {
             shouldUpdate = false;
 
-            if (!ReflectionUtils.HasMethod(settings, "Update"))
+            if (!SupportSetters(settings))
                 return;
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays")
+                && definition.AdjustHijriDays.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "AdjustHijriDays", definition.AdjustHijriDays));
+                context.AddQuery(new ClientActionSetProperty(settings, "AdjustHijriDays", definition.AdjustHijriDays.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AlternateCalendarType"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "AlternateCalendarType")
+                && definition.AlternateCalendarType.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "AlternateCalendarType", definition.AlternateCalendarType));
+                context.AddQuery(new ClientActionSetProperty(settings, "AlternateCalendarType", definition.AlternateCalendarType.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "CalendarType"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "CalendarType")
+                && definition.CalendarType.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "CalendarType", definition.CalendarType));
+                context.AddQuery(new ClientActionSetProperty(settings, "CalendarType", definition.CalendarType.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Collation"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Collation")
+                && definition.Collation.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "Collation", definition.Collation));
+                context.AddQuery(new ClientActionSetProperty(settings, "Collation", definition.Collation.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstDayOfWeek"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstDayOfWeek")
+                && definition.FirstDayOfWeek.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "FirstDayOfWeek", definition.FirstDayOfWeek));
+                context.AddQuery(new ClientActionSetProperty(settings, "FirstDayOfWeek", definition.FirstDayOfWeek.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstWeekOfYear"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstWeekOfYear")
+                && definition.FirstWeekOfYear.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "FirstWeekOfYear", definition.FirstWeekOfYear));
+                context.AddQuery(new ClientActionSetProperty(settings, "FirstWeekOfYear", definition.FirstWeekOfYear.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "LocaleId"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "LocaleId")
+                && definition.LocaleId.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "LocaleId", definition.LocaleId));
+                context.AddQuery(new ClientActionSetProperty(settings, "LocaleId", definition.LocaleId.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayStartHour"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayStartHour")
+                && definition.WorkDayStartHour.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayStartHour", definition.WorkDayStartHour));
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayStartHour", definition.WorkDayStartHour.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayEndHour"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayEndHour")
+                && definition.WorkDayEndHour.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayEndHour", definition.WorkDayEndHour));
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayEndHour", definition.WorkDayEndHour.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDays"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDays")
+                && definition.WorkDays.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDays", definition.WorkDays));
+                context.AddQuery(new ClientActionSetProperty(settings, "WorkDays", definition.WorkDays.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "ShowWeeks"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "ShowWeeks")
+                && definition.ShowWeeks.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "ShowWeeks", definition.ShowWeeks));
+                context.AddQuery(new ClientActionSetProperty(settings, "ShowWeeks", definition.ShowWeeks.Value));
                 shouldUpdate = true;
             }
 
-            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Time24"))
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "Time24")
+                && definition.Time24.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "Time24", definition.Time24));
+                context.AddQuery(new ClientActionSetProperty(settings, "Time24", definition.Time24.Value));
                 shouldUpdate = true;
             }
         }
