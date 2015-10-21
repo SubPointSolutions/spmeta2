@@ -213,13 +213,17 @@ namespace SPMeta2.Regression.SSOM.Validation
                     {
                         var siteCollectionUrl = web.Site.ServerRelativeUrl == "/" ? string.Empty : web.Site.ServerRelativeUrl;
 
-                        isValid = srcUrl.Replace("~sitecollection", siteCollectionUrl) == dstUrl;
+                        isValid = srcUrl
+                                    .Replace("~sitecollection", siteCollectionUrl)
+                                    .Replace("//", "/") == dstUrl;
                     }
                     else if (s.DocumentTemplateUrl.Contains("~site"))
                     {
                         var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
 
-                        isValid = srcUrl.Replace("~site", siteCollectionUrl) == dstUrl;
+                        isValid = srcUrl
+                                    .Replace("~site", siteCollectionUrl)
+                                    .Replace("//", "/") == dstUrl;
                     }
                     else
                     {

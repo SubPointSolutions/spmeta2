@@ -50,27 +50,32 @@ namespace SPMeta2.Regression.SSOM.Validation
                 var currentType = spObject.GetType().AssemblyQualifiedName;
                 var currentClassName = currentType.Split(',').First().Trim();
 
-                var expectedType = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
-                                                        .FirstOrDefault() as ExpectWebpartType)
-                                                        .WebPartType;
+                var expectedTypeAttr = (definition.GetType().GetCustomAttributes(typeof(ExpectWebpartType))
+                    .FirstOrDefault() as ExpectWebpartType);
 
-                var expectedClassName = expectedType.Split(',').First().Trim();
-
-                assert.ShouldBeEqual((p, s, d) =>
+                // NULL for the generic web part
+                // should not be tested here
+                if (expectedTypeAttr != null)
                 {
-                    var isValid = true;
+                    var expectedType = expectedTypeAttr.WebPartType;
 
-                    isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+                    var expectedClassName = expectedType.Split(',').First().Trim();
 
-                    return new PropertyValidationResult
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = null,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
+                        var isValid = true;
 
+                        isValid = currentClassName.ToUpper() == expectedClassName.ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = null,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 // props
 
                 if (definition.Properties.Count > 0)
