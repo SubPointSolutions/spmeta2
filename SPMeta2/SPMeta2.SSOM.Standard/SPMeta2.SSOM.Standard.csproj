@@ -231,12 +231,19 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\DocumentSetContentsWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\DocumentSetPropertiesWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\RSSAggregatorWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SiteDocumentsModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SummaryLinkWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentByQueryWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\TableOfContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHosts\TermModelHost.cs" />
     <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />

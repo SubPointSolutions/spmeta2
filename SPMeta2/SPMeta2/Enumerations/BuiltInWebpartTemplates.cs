@@ -60,6 +60,38 @@ namespace SPMeta2.Enumerations
         public static string RefinementScriptWebPart { get; set; }
 
         #endregion
+
+        public static string BlogAdminWebPart { get; set; }
+
+        public static string BlogLinksWebPart { get; set; }
+
+        public static string DataFormWebPart { get; set; }
+
+        public static string GettingStartedWebPart { get; set; }
+
+        public static string ImageWebPart { get; set; }
+
+        public static string SimpleFormWebPart { get; set; }
+
+        public static string SPTimelineWebPart { get; set; }
+
+        public static string UserTasksWebPart { get; set; }
+
+        public static string XmlWebPart { get; set; }
+
+        public static string DocumentSetContentsWebPart { get; set; }
+
+        public static string DocumentSetPropertiesWebPart { get; set; }
+
+        public static string RSSAggregatorWebPart { get; set; }
+
+        public static string SearchBoxScriptWebPart { get; set; }
+
+        public static string SearchNavigationWebPart { get; set; }
+
+        public static string TableOfContentsWebPart { get; set; }
+
+        public static string SiteDocuments { get; set; }
     }
 }
 

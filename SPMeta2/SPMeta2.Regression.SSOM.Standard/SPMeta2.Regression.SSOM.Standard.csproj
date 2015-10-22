@@ -66,6 +66,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Server, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll</HintPath>
@@ -150,14 +151,21 @@
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\DocumentSetContentsWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\DocumentSetPropertiesWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\RefinementScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentBySearchWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ProjectSummaryWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\RSSAggregatorWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SearchBoxScriptWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SearchNavigationWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SiteDocumentsValidator.cs" />
     <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\TableOfContentsWebPartValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">

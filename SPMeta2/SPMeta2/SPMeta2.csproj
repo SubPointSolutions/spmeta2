@@ -197,10 +197,19 @@
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
+    <Compile Include="Definitions\Webparts\BlogAdminWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\BlogLinksWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\DataFormWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\GettingStartedWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\ImageWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\PageViewerWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SilverlightWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SimpleFormWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SPTimelineWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\UserCodeWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\UserTasksWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
+    <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
@@ -426,6 +435,8 @@
     <Compile Include="Syntax\Default\Interfaces\IFieldHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\BlogLinksWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\ClientWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ComposedLookItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ComposedLookItemLinkDefinitionSyntax.cs" />
@@ -462,6 +473,9 @@
     <Compile Include="Syntax\Default\ListItemFieldValueDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ListItemFieldValuesDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ListViewDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\DataFormWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\GettingStartedWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\ImageWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\ListViewWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\LookupFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ManagedAccountDefinitionSyntax.cs" />
@@ -503,6 +517,8 @@
     <Compile Include="Syntax\Default\ContentTypes\UniqueContentTypeFieldsOrderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ContentTypes\UniqueContentTypeOrderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\URLFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\SimpleFormWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\SPTimelineWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\UserCodeWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\UserCustomActionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\UserFieldDefinitionSyntax.cs" />
@@ -513,6 +529,8 @@
     <Compile Include="Syntax\Default\WebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WebPartGalleryFileDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WebPartPageDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\UserTasksWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\XmlWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WelcomePageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WikiPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\XsltListViewWebPartDefinitionSyntax.cs" />

@@ -70,12 +70,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-     <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-	
-   <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>False</Private>
@@ -97,8 +96,6 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
     </Reference>
- 
-	
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -184,16 +181,25 @@
     <Compile Include="Validation\ClientRootWebDefinitionValidator.cs" />
     <Compile Include="Validation\ClientTreeViewSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\WebApplicationModelHost.cs" />
+    <Compile Include="Validation\Webparts\BlogAdminWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\BlogLinksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartGalleryFileDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientListViewWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\DataFormWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\GettingStartedWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\ImageWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\PageViewerWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SilverlightWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\SimpleFormWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ScriptEditorWebParttDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientXsltListViewWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientContentEditorWebpartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\SPTimelineWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\UserTasksWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\XmlWebPartValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">

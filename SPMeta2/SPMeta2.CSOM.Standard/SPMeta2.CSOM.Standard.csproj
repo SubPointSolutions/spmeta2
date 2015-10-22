@@ -154,16 +154,15 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-	 <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-	 <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-	
     <Reference Include="System" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -200,13 +199,20 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\DocumentSetContentsWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\DocumentSetPropertiesWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\RSSAggregatorWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SiteDocumentsModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SummaryLinkWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentByQueryWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\TableOfContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />
     <Compile Include="ModelHosts\TermModelHost.cs" />
     <Compile Include="ModelHosts\TermSetModelHost.cs" />

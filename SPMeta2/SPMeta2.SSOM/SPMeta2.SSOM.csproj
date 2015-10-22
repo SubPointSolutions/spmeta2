@@ -281,12 +281,21 @@
     <Compile Include="ModelHandlers\SiteModelHandler.cs" />
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\BlogAdminWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\BlogLinksWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ClientWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\DataFormWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\GettingStartedWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\ImageWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\PageViewerWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SilverlightWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SimpleFormWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SPTimelineWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserCodePartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\UserTasksWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\WebPartGalleryFileModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\XmlWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />

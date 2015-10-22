@@ -66,7 +66,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-   <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>False</Private>
@@ -115,12 +115,12 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-	 <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-	 <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16' Or '$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
@@ -161,12 +161,19 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\DocumentSetContentsWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\DocumentSetPropertiesWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\RefinementScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentBySearchWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ProjectSummaryWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\RSSAggregatorWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SearchBoxScriptWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SearchNavigationWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\SiteDocumentsValidator.cs" />
     <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\TableOfContentsWebPartValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">
