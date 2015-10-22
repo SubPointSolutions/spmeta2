@@ -202,11 +202,14 @@
     <Compile Include="Definitions\Webparts\DataFormWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\GettingStartedWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ImageWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\MembersWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\PageViewerWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\PictureLibrarySlideshowWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SilverlightWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SimpleFormWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\SPTimelineWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\UserCodeWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\UserDocsWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\UserTasksWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
@@ -498,6 +501,8 @@
     <Compile Include="Syntax\Default\ResetRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\RootWebDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SandboxSolutionDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\MembersWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\PictureLibrarySlideshowWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\ScriptEditorWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SecureStoreApplicationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SecurityGroupDefinitionSyntax.cs" />
@@ -529,6 +534,7 @@
     <Compile Include="Syntax\Default\WebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WebPartGalleryFileDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WebPartPageDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Webparts\UserDocsWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\UserTasksWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\XmlWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WelcomePageDefinitionSyntax.cs" />
@@ -642,6 +648,15 @@
     <EmbeddedResource Include="Templates\Webparts\SiteDocuments.webpart">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Webparts\PictureLibrarySlideshowWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\CommunityJoinWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\CommunityAdminWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\MembersWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\CategoryWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\UserDocsWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\TagCloudWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SocialCommentWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\MyMembershipWebPart.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\Impl\" />

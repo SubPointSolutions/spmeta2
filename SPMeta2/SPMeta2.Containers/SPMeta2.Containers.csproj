@@ -187,11 +187,14 @@
     <Compile Include="DefinitionGenerators\Webparts\DataFormWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\GettingStartedWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ImageWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\MembersWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\PictureLibrarySlideshowWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\SilverlightWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\PageViewerWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\SimpleFormWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\SPTimelineWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\UserCodeWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\UserDocsWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\UserTasksWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\WebPartGalleryFileDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\XmlWebPartDefinitionGenerator.cs" />

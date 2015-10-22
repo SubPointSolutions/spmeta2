@@ -58,6 +58,16 @@ namespace SPMeta2.Enumerations
 
             DataFormWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.DataFormWebPart.webpart");
             SiteDocuments = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SiteDocuments.webpart");
+
+            CategoryWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.CategoryWebPart.webpart");
+            CommunityAdminWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.CommunityAdminWebPart.webpart");
+            CommunityJoinWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.CommunityJoinWebPart.webpart");
+            MembersWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.MembersWebPart.webpart");
+            MyMembershipWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.MyMembershipWebPart.webpart");
+            PictureLibrarySlideshowWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.PictureLibrarySlideshowWebPart.webpart");
+            SocialCommentWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SocialCommentWebPart.webpart");
+            TagCloudWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.TagCloudWebPart.webpart");
+            UserDocsWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.UserDocsWebPart.webpart");
         }
 
         #endregion
@@ -119,6 +129,24 @@ namespace SPMeta2.Enumerations
         #endregion
 
 
+
+        public static string UserDocsWebPart { get; set; }
+
+        public static string PictureLibrarySlideshowWebPart { get; set; }
+
+        public static string MembersWebPart { get; set; }
+
+        public static string TagCloudWebPart { get; set; }
+
+        public static string SocialCommentWebPart { get; set; }
+
+        public static string MyMembershipWebPart { get; set; }
+
+        public static string CommunityJoinWebPart { get; set; }
+
+        public static string CommunityAdminWebPart { get; set; }
+
+        public static string CategoryWebPart { get; set; }
     }
 }
 

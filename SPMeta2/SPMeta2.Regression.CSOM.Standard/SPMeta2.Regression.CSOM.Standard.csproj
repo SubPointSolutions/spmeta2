@@ -161,8 +161,12 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\CategoryWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\CommunityAdminWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\CommunityJoinWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\DocumentSetContentsWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\DocumentSetPropertiesWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\MyMembershipWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\RefinementScriptWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentBySearchWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ResultScriptWebPartDefinitionValidator.cs" />
@@ -171,9 +175,11 @@
     <Compile Include="Validation\Webparts\SearchBoxScriptWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SearchNavigationWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SiteDocumentsValidator.cs" />
+    <Compile Include="Validation\Webparts\SocialCommentWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SummaryLinkWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentByQueryWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\TableOfContentsWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\TagCloudWebPartValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers.Standard\SPMeta2.Containers.Standard.csproj">

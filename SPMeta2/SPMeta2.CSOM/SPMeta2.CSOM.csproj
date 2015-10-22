@@ -228,7 +228,9 @@
     <Compile Include="ModelHandlers\Webparts\DataFormWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\GettingStartedWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ImageWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\MembersWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\PageViewerWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\PictureLibrarySlideshowWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SilverlightWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SimpleFormWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SPTimelineWebPartModelHandler.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\UserDocsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserTasksWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XmlWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WelcomePageModelHandler.cs" />

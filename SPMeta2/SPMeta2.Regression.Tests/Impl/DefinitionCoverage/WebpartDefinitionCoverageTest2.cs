@@ -99,9 +99,23 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_MembersWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<MembersWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_PageViewerWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<PageViewerWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_PictureLibrarySlideshowWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<PictureLibrarySlideshowWebPartDefinition>();
         }
 		
 		[TestMethod]
@@ -130,6 +144,13 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
         public void CanDeploy_UserCodeWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<UserCodeWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_UserDocsWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<UserDocsWebPartDefinition>();
         }
 		
 		[TestMethod]
@@ -183,6 +204,27 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_CategoryWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<CategoryWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_CommunityAdminWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<CommunityAdminWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_CommunityJoinWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<CommunityJoinWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_DocumentSetContentsWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DocumentSetContentsWebPartDefinition>();
@@ -193,6 +235,13 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
         public void CanDeploy_DocumentSetPropertiesWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DocumentSetPropertiesWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_MyMembershipWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<MyMembershipWebPartDefinition>();
         }
 		
 		[TestMethod]
@@ -239,9 +288,23 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_SocialCommentWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<SocialCommentWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_TableOfContentsWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<TableOfContentsWebPartDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_TagCloudWebPartDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<TagCloudWebPartDefinition>();
         }
 		
 		[TestMethod]

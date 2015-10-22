@@ -190,7 +190,9 @@
     <Compile Include="Validation\Webparts\DataFormWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\GettingStartedWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\ImageWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\MembersWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\PageViewerWebPartDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\PictureLibrarySlideshowWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SilverlightWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SimpleFormWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\SiteFeedWebPartDefinitionValidator.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Validation\Webparts\ClientXsltListViewWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientContentEditorWebpartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\SPTimelineWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\UserDocsWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\UserTasksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\XmlWebPartValidator.cs" />
   </ItemGroup>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Title>$Resources:spscore,TagCloudWebPart_Title;</Title>
+  <Description>$Resources:spscore,TagCloudWebPart_Description;</Description>
+  <FrameType>TitleBarOnly</FrameType>
+  <AllowRemove>true</AllowRemove>
+  <AllowMinimize>true</AllowMinimize>
+  <Assembly>Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.SharePoint.Portal.WebControls.TagCloudWebPart</TypeName>
+</WebPart>
