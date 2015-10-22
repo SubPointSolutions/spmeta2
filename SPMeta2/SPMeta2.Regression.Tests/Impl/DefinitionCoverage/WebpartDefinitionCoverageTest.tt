@@ -44,6 +44,7 @@ using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
+using SPMeta2.Regression.Definitions.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 {

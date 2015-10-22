@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.Portal.WebControls.RSSAggregatorWebPart, Microsoft.SharePoint.Portal,Version=15.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>$Resources:spscore,WPImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">$Resources:spscore,RSSViewer_WebPart_Title;</property>
+        <property name="Description" type="string">$Resources:spscore,RSSViewer_WebPart_Description;</property>
+        <property name="CacheXslStorage" type="bool">true</property>
+        <property name="CacheXslTimeOut" type="int">600</property>
+        <property name="PartImageLarge" type="string">/_layouts/images/rss.gif</property>
+        <property name="ParameterBindings" type="string"><![CDATA[<ParameterBinding Name="RequestUrl" Location="WPProperty[FeedUrl]"/>]]></property>
+        <property name="DataSourcesString" type="string">
+          <![CDATA[
+<%@ Register TagPrefix="WebControls" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<WebControls:XmlUrlDataSource runat="server" AuthType="None" HttpMethod="GET">
+  <DataFileParameters>
+            <WebPartPages:DataFormParameter Name="RequestUrl" ParameterKey="RequestUrl" PropertyName="ParameterValues"/>
+</DataFileParameters>
+</WebControls:XmlUrlDataSource>]]>
+        </property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

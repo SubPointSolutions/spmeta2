@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.Office.Server.Search.WebControls.SearchNavigationWebPart, Microsoft.Office.Server.Search,Version=15.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">$Resources:Microsoft.Office.Server.Search,SearchNavigation_Title;</property>
+        <property name="Description" type="string">$Resources:Microsoft.Office.Server.Search,SearchNavigation_Desc;</property>
+        <property name="ChromeType">None</property>
+        <property name="AllowMinimize" type="bool">true</property>
+        <property name="AllowClose" type="bool">true</property>
+        <property name="Hidden" type="bool">false</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

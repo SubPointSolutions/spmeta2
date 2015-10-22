@@ -1,4 +1,5 @@
-﻿using SPMeta2.Utils;
+﻿using SPMeta2.Definitions.Webparts;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Enumerations
 {
@@ -33,6 +34,30 @@ namespace SPMeta2.Enumerations
 
             SilverlightWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SilverlightWebPart.webpart");
             RefinementScriptWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.RefinementScriptWebPart.webpart");
+
+            BlogAdminWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.BlogAdminWebPart.webpart");
+            ImageWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.ImageWebPart.webpart");
+
+            DocumentSetContentsWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.DocumentSetContentsWebPart.webpart");
+            DocumentSetPropertiesWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.DocumentSetPropertiesWebPart.webpart");
+
+            XmlWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.XmlWebPart.webpart");
+            UserTasksWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.UserTasksWebPart.webpart");
+            GettingStartedWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.GettingStartedWebPart.webpart");
+
+            RSSAggregatorWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.RSSAggregatorWebPart.webpart");
+            TableOfContentsWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.TableOfContentsWebPart.webpart");
+
+            SPTimelineWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SPTimelineWebPart.webpart");
+            SearchBoxScriptWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SearchBoxScriptWebPart.webpart");
+
+            SimpleFormWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SimpleFormWebPart.webpart");
+            SearchNavigationWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SearchNavigationWebPart.webpart");
+
+            BlogLinksWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.BlogLinksWebPart.webpart");
+
+            DataFormWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.DataFormWebPart.webpart");
+            SiteDocuments = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SiteDocuments.webpart");
         }
 
         #endregion
@@ -58,8 +83,6 @@ namespace SPMeta2.Enumerations
         public static string SilverlightWebPart { get; set; }
 
         public static string RefinementScriptWebPart { get; set; }
-
-        #endregion
 
         public static string BlogAdminWebPart { get; set; }
 
@@ -92,6 +115,10 @@ namespace SPMeta2.Enumerations
         public static string TableOfContentsWebPart { get; set; }
 
         public static string SiteDocuments { get; set; }
+
+        #endregion
+
+
     }
 }
 

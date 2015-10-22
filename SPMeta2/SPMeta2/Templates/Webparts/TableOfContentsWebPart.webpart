@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.Publishing.WebControls.TableOfContentsWebPart, Microsoft.SharePoint.Publishing,Version=15.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>$Resources:cmscore,WebPartImportError</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">$Resources:cmscore,TableOfContentsWebPart_Title</property>
+        <property name="Description" type="string">$Resources:cmscore,TableOfContentsWebPart_Description</property>
+        <property name="ChromeType">TitleOnly</property>
+        <property name="ChromeState">Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

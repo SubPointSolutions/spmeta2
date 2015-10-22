@@ -1,9 +1,13 @@
 ﻿using System;
+using Microsoft.SharePoint.Portal.WebControls;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Regression.SSOM.Validation;
+using SPMeta2.SSOM.Extensions;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
 {
@@ -26,7 +30,22 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
             base.DeployModel(modelHost, model);
 
 
-            // content editor specific validation
+            var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
+            var typedModel = model.WithAssertAndCast<SiteFeedWebPartDefinition>("model", value => value.RequireNotNull());
+
+            //var item = host.PageListItem;
+
+            WebPartExtensions.WithExistingWebPart(host.HostFile, typedModel, (spWebPartManager, spObject) =>
+            {
+                var typedWebPart = spObject as SiteFeedWebPart;
+
+                var assert = ServiceFactory.AssertService
+                                           .NewAssert(typedModel, typedWebPart)
+                                           .ShouldNotBeNull(typedWebPart);
+
+
+
+            });
         }
 
         #endregion

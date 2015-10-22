@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Assembly>Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.SharePoint.WebPartPages.XmlWebPart</TypeName>
+  <Title>$Resources:core,XmlWebPartTitle;</Title>
+  <Description>$Resources:core,XmlWebPartDescription;</Description>
+  <PartImageLarge>/_layouts/15/images/msxmll.gif</PartImageLarge>
+</WebPart>

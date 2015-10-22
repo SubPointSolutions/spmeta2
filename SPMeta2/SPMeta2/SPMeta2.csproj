@@ -624,6 +624,24 @@
     <EmbeddedResource Include="Templates\Webparts\ProjectSummaryWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\SilverlightWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\RefinementScriptWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\BlogAdminWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\ImageWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\DocumentSetPropertiesWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\DocumentSetContentsWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\XmlWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\UserTasksWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\GettingStartedWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\RSSAggregatorWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\TableOfContentsWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SPTimelineWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SearchBoxScriptWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SimpleFormWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SearchNavigationWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\BlogLinksWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\DataFormWebPart.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\SiteDocuments.webpart">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\Impl\" />

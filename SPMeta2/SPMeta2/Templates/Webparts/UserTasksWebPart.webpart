@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Assembly>Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.SharePoint.WebPartPages.UserTasksWebPart</TypeName>
+  <Title>$Resources:core,UserTasksWebPartTitle;</Title>
+  <Description>$Resources:core,UserTasksWebPartDescription;</Description>
+  <PartImageLarge>/_layouts/15/images/msustask.gif</PartImageLarge>
+</WebPart>

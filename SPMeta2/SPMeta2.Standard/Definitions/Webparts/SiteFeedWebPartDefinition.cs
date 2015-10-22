@@ -22,7 +22,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     [ExpectManyInstances]
 
-    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.Publishing.WebControls.SiteFeedWebPart, Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.Portal.WebControls.SiteFeedWebPart, Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
 
     public class SiteFeedWebPartDefinition : WebPartDefinition
     {
