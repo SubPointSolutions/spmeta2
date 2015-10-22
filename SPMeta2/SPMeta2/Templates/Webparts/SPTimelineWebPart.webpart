@@ -8,11 +8,7 @@
     <data>
       <properties>
         <property name="Title" type="string">$Resources:core,TimelineWebPart_Title;</property>
-      </properties>
-      <properties>
         <property name="Description" type="string">$Resources:core,TimelineWebPart_Description;</property>
-      </properties>
-      <properties>
         <property name="RenderImage" type="string"></property>
       </properties>
     </data>

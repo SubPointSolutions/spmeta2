@@ -140,13 +140,26 @@ namespace SPMeta2.Utils
         public static XDocument SetWidth(this XDocument webpartXmlDocument, int value)
         {
             var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+       
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV3, false, "uint");
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+
         }
 
         public static XDocument SetHeight(this XDocument webpartXmlDocument, int value)
         {
             var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV3, false, "uint");
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
 
@@ -178,7 +191,7 @@ namespace SPMeta2.Utils
         public static XDocument SetChromeType(this XDocument webpartXmlDocument, string value)
         {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeType", value, WebPartNamespaceV3, false);
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeType", value, WebPartNamespaceV3, false, "chrometype");
             if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "FrameType", value, WebPartNamespaceV2, false);
 
@@ -217,7 +230,7 @@ namespace SPMeta2.Utils
         public static XDocument SetChromeState(this XDocument webpartXmlDocument, string value)
         {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeState", value, WebPartNamespaceV3, false);
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeState", value, WebPartNamespaceV3, false, "chromestate");
             if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "FrameState", value, WebPartNamespaceV2, false);
 
@@ -532,11 +545,16 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-
         internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName,
             string propValue, string propXlmns, bool isCData)
         {
-            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, "string", propXlmns, isCData);
+            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propXlmns, isCData, "string");
+        }
+
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData, string propType)
+        {
+            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propType, propXlmns, isCData);
         }
 
         internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue,
