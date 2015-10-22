@@ -225,6 +225,7 @@
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\BlogAdminWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\BlogLinksWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\BlogMonthQuickLaunchModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\DataFormWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\GettingStartedWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ImageWebPartModelHandler.cs" />

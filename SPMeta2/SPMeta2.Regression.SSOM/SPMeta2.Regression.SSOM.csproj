@@ -166,6 +166,7 @@
     <Compile Include="Validation\DeleteWebPartsDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\BlogAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\BlogLinksWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\BlogMonthQuickLaunchValidator.cs" />
     <Compile Include="Validation\Webparts\DataFormWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\GettingStartedWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\ImageWebPartValidator.cs" />

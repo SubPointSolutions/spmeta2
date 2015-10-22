@@ -1289,6 +1289,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<CategoryWebPartDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts10")]
+        public void CanDeployRandom_BlogMonthQuickLaunchDefinition()
+        {
+            TestRandomDefinition<BlogMonthQuickLaunchDefinition>();
+        }
+
         #endregion
 
         #region welcome page

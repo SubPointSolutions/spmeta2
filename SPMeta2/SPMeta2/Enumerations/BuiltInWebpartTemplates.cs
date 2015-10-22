@@ -68,6 +68,8 @@ namespace SPMeta2.Enumerations
             SocialCommentWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.SocialCommentWebPart.webpart");
             TagCloudWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.TagCloudWebPart.webpart");
             UserDocsWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.UserDocsWebPart.webpart");
+
+            BlogMonthQuickLaunch = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.BlogMonthQuickLaunch.webpart");
         }
 
         #endregion
@@ -147,6 +149,8 @@ namespace SPMeta2.Enumerations
         public static string CommunityAdminWebPart { get; set; }
 
         public static string CategoryWebPart { get; set; }
+
+        public static string BlogMonthQuickLaunch { get; set; }
     }
 }
 

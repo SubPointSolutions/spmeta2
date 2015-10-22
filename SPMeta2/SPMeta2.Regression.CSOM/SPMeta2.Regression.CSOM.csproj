@@ -183,6 +183,7 @@
     <Compile Include="Validation\WebApplicationModelHost.cs" />
     <Compile Include="Validation\Webparts\BlogAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\BlogLinksWebPartValidator.cs" />
+    <Compile Include="Validation\Webparts\BlogMonthQuickLaunchValidator.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ClientWebPartGalleryFileDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContactFieldControlDefinitionValidator.cs" />

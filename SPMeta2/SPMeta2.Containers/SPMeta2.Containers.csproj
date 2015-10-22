@@ -184,6 +184,7 @@
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\BlogAdminWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\BlogLinksWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\BlogMonthQuickLaunchDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\DataFormWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\GettingStartedWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ImageWebPartDefinitionGenerator.cs" />

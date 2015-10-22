@@ -78,6 +78,13 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+        public void CanDeploy_BlogMonthQuickLaunchDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<BlogMonthQuickLaunchDefinition>();
+        }
+		
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
         public void CanDeploy_DataFormWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DataFormWebPartDefinition>();
