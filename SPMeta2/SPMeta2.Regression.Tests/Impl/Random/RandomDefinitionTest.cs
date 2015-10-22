@@ -81,12 +81,21 @@ namespace SPMeta2.Regression.Tests.Impl.Random
                 Trace.WriteLine(def.Name);
             }
 
+            var isValid = true;
+
             foreach (var definition in allDefinitions)
             {
                 var hasTestMethod = RegressionService.HasTestMethod("CanDeployRandom_", definition, methods);
 
-                Assert.IsTrue(hasTestMethod);
+                if (!hasTestMethod)
+                {
+                    Trace.WriteLine(string.Format("[ERR]:{0}", definition.Name));
+
+                    isValid = false;
+                }
             }
+
+            Assert.IsTrue(isValid);
         }
 
         #endregion
@@ -1103,6 +1112,120 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ProjectSummaryWebPartDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_BlogAdminWebPartDefinition()
+        {
+            TestRandomDefinition<BlogAdminWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_BlogLinksWebPartDefinition()
+        {
+            TestRandomDefinition<BlogLinksWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_DataFormWebPartDefinition()
+        {
+            TestRandomDefinition<DataFormWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_GettingStartedWebPartDefinition()
+        {
+            TestRandomDefinition<GettingStartedWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_ImageWebPartDefinition()
+        {
+            TestRandomDefinition<ImageWebPartDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_SimpleFormWebPartDefinition()
+        {
+            TestRandomDefinition<SimpleFormWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_SPTimelineWebPartDefinition()
+        {
+            TestRandomDefinition<SPTimelineWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_UserTasksWebPartDefinition()
+        {
+            TestRandomDefinition<UserTasksWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_XmlWebPartDefinition()
+        {
+            TestRandomDefinition<XmlWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_DocumentSetContentsWebPartDefinition()
+        {
+            TestRandomDefinition<DocumentSetContentsWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_DocumentSetPropertiesWebPartDefinition()
+        {
+            TestRandomDefinition<DocumentSetPropertiesWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_RSSAggregatorWebPartDefinition()
+        {
+            TestRandomDefinition<RSSAggregatorWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_TableOfContentsWebPartDefinition()
+        {
+            TestRandomDefinition<TableOfContentsWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_SiteDocumentsDefinition()
+        {
+            TestRandomDefinition<SiteDocumentsDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_SearchBoxScriptWebPartDefinition()
+        {
+            TestRandomDefinition<SearchBoxScriptWebPartDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebParts")]
+        public void CanDeployRandom_SearchNavigationWebPartDefinition()
+        {
+            TestRandomDefinition<SearchNavigationWebPartDefinition>();
+        }
+
+
         #endregion
 
         #region welcome page
@@ -1217,5 +1340,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             TestRandomDefinition<ClearRecycleBinDefinition>();
         }
+
+        #region web parts
+
+        
+        #endregion
     }
 }
