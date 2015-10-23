@@ -114,22 +114,27 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         public Web GetTargetWeb(Site site, LookupFieldDefinition definition)
         {
+            return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
+        }
+
+        public Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        {
             var context = site.Context;
 
-            if (definition.LookupWebId.HasGuidValue())
+            if (webId.HasGuidValue())
             {
-                var targetWeb = site.OpenWebById(definition.LookupWebId.Value);
+                var targetWeb = site.OpenWebById(webId.Value);
 
                 context.Load(targetWeb);
                 context.ExecuteQueryWithTrace();
 
                 return targetWeb;
             }
-            else if (!string.IsNullOrEmpty(definition.LookupWebUrl))
+            else if (!string.IsNullOrEmpty(webUrl))
             {
                 var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    Value = definition.LookupWebUrl,
+                    Value = webUrl,
                     Context = context
                 }).Value;
 

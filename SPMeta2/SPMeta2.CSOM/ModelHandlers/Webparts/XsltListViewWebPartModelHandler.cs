@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers.Fields;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -85,24 +86,30 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             return wpXml.ToString();
         }
 
-        private List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
+        private static List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
-            var web = listItemModelHost.HostWeb;
-            var context = listItemModelHost.HostWeb.Context;
+            return LookupList(listItemModelHost.HostWeb,
+                        wpModel.ListUrl,
+                        wpModel.ListTitle,
+                        wpModel.ListId);
+        }
 
+        public static List LookupList(Web web,
+            string listUrl, string listTitle, Guid? listId)
+        {
             List list = null;
 
-            if (!string.IsNullOrEmpty(wpModel.ListUrl))
+            if (!string.IsNullOrEmpty(listUrl))
             {
-                list = web.QueryAndGetListByUrl(wpModel.ListUrl);
+                list = web.QueryAndGetListByUrl(listUrl);
             }
-            else if (!string.IsNullOrEmpty(wpModel.ListTitle))
+            else if (!string.IsNullOrEmpty(listTitle))
             {
-                list = web.Lists.GetByTitle(wpModel.ListTitle);
+                list = web.Lists.GetByTitle(listTitle);
             }
-            else if (wpModel.ListId.HasGuidValue())
+            else if (listId.HasGuidValue())
             {
-                list = web.Lists.GetById(wpModel.ListId.Value);
+                list = web.Lists.GetById(listId.Value);
             }
             else
             {
@@ -131,7 +138,15 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 && provisionContext.WebPartStoreKey.HasValue
                 && provisionContext.WebPartStoreKey.Value != default(Guid))
             {
-                var list = LookupList(listItemModelHost, wpModel);
+                var targetWeb = listItemModelHost.HostWeb;
+
+                if (wpModel.WebId.HasGuidValue() || !string.IsNullOrEmpty(wpModel.WebUrl))
+                {
+                    targetWeb = new LookupFieldModelHandler()
+                                    .GetTargetWeb(this.CurrentClientContext.Site, wpModel.WebUrl, wpModel.WebId);
+                }
+
+                var list = LookupList(targetWeb, wpModel.ListUrl, wpModel.ListTitle, wpModel.WebId);
 
                 var srcView = list.Views.GetById(bindContext.TargetViewId.Value);
                 var hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
@@ -153,7 +168,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 foreach (var f in srcView.ViewFields)
                     hiddenView.ViewFields.Add(f);
-
 
                 hiddenView.RowLimit = srcView.RowLimit;
                 hiddenView.ViewQuery = srcView.ViewQuery;

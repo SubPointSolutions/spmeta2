@@ -99,12 +99,12 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             }
         }
 
-        public static SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
+        public  SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
         {
             return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
         }
 
-        public static SPWeb GetTargetWeb(SPSite site, string webUrl, Guid? webId)
+        public SPWeb GetTargetWeb(SPSite site, string webUrl, Guid? webId)
         {
             if (webId.HasGuidValue())
             {
