@@ -188,6 +188,50 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region scopes
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Scope")]
+        public void CanDeploy_ListView_Scope_As_Default()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Scope = BuiltInViewScope.Default;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Scope")]
+        public void CanDeploy_ListView_Scope_As_FilesOnly()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Scope = BuiltInViewScope.FilesOnly;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Scope")]
+        public void CanDeploy_ListView_Scope_As_Recursive()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Scope = BuiltInViewScope.Recursive;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Scope")]
+        public void CanDeploy_ListView_Scope_As_RecursiveAll()
+        {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Scope = BuiltInViewScope.RecursiveAll;
+            });
+        }
+
+        #endregion
+
         #region default
 
         [TestMethod]

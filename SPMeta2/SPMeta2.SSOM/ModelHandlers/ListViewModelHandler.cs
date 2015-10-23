@@ -204,6 +204,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(listViewModel.ViewData))
                 currentView.ViewData = listViewModel.ViewData;
 
+            if (!string.IsNullOrEmpty(listViewModel.Scope))
+            {
+                currentView.Scope = (SPViewScope)Enum.Parse(
+                    typeof(SPViewScope),
+                    listViewModel.Scope);
+            }
+
             currentView.Hidden = listViewModel.Hidden;
             currentView.Title = listViewModel.Title;
             currentView.RowLimit = (uint)listViewModel.RowLimit;

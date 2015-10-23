@@ -33,6 +33,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
+            if (!string.IsNullOrEmpty(definition.Scope))
+            {
+                assert.ShouldBeEqual(m => m.Scope, o => o.GetScope());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Scope);
+            }
+
             if (!string.IsNullOrEmpty(definition.Query))
             {
                 assert.ShouldBeEqual((p, s, d) =>
@@ -276,6 +285,11 @@ namespace SPMeta2.Regression.SSOM.Validation
         public static bool IsDefaul(this SPView view)
         {
             return view.ParentList.DefaultView.ID == view.ID;
+        }
+
+        public static string GetScope(this SPView view)
+        {
+            return view.Scope.ToString();
         }
     }
 }

@@ -97,6 +97,14 @@ namespace SPMeta2.Definitions
         public int RowLimit { get; set; }
 
         /// <summary>
+        /// Corresponds to Scope property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdateAsViewScope]
+        [DataMember]
+        public string Scope { get; set; }
+
+        /// <summary>
         /// CAML Query of the target list view.
         /// </summary>
         /// 

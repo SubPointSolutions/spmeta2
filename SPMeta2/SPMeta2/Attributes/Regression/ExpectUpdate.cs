@@ -75,6 +75,12 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
+
+    public class ExpectUpdateAsViewScope : ExpectUpdate
+    {
+
+    }
+    
     public class ExpectUpdateAsChromeType : ExpectUpdate
     {
 
