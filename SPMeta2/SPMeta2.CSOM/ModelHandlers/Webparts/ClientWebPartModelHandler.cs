@@ -15,6 +15,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 {
     public class ClientWebPartModelHandler : WebPartModelHandler
     {
+        public ClientWebPartModelHandler()
+        {
+            ShouldUseWebPartStoreKeyForWikiPage = true;
+        }
+
         #region properties
 
         public override Type TargetType

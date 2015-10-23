@@ -40,6 +40,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region properties
 
+        protected bool ShouldUseWebPartStoreKeyForWikiPage { get; set; }
         protected WebPartChromeTypesConvertService WebPartChromeTypesConvertService { get; set; }
 
         public override Type TargetType
@@ -578,7 +579,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // aa....
             // extremely unfortunate 
-            if (webpartModel is XsltListViewWebPartDefinition)
+            // shoudl it alwsy be webPartStoreKey??
+            if (ShouldUseWebPartStoreKeyForWikiPage)
             {
                 upcomingWebPartId = webPartStoreKey.ToString()
                                       .Replace("g_", string.Empty)
@@ -674,7 +676,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                 existingWebPartId
                             });
 
-                        content = string.Format(wikiTemplateOutput, upcomingWebPartId);
+                        content = content + string.Format(wikiTemplateOutput, upcomingWebPartId);
 
                         listItem[targetFieldName] = content;
                         listItem.Update();
@@ -723,6 +725,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
         }
+
+
 
         protected WebPart FindExistingWebPart(
             IEnumerable<Microsoft.SharePoint.Client.WebParts.WebPartDefinition> webPartDefenitions,

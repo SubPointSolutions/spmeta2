@@ -368,22 +368,48 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                 site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
                 {
                     def.Enable = true;
+					def.ForceActivate = true;
                 }));
 
                 site.AddSiteFeature(BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
                 {
                     def.Enable = true;
+					def.ForceActivate = true;
                 }));
             });
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
+				web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+					def.ForceActivate = true;
+                }));
+
+				web.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
+                {
+                    def.Enable = true;
+					def.ForceActivate = true;
+                }));
+
                 // always deploy to root web 
                 FillWebWithTheTestwebPartSuite<TWebpartType>(web);
 
                 // and then sub web too
                 web.AddRandomWeb(subWeb =>
                 {
+					subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+					{
+						def.Enable = true;
+						def.ForceActivate = true;
+					}));
+
+					subWeb.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
+					{
+						def.Enable = true;
+						def.ForceActivate = true;
+					}));
+
                     FillWebWithTheTestwebPartSuite<TWebpartType>(subWeb);
                 });
             });
@@ -429,7 +455,23 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 
             var wikiWebPartDef = initialDef.Clone<TWebpartType>();
             var webpartPageWebPartDef = initialDef.Clone<TWebpartType>();
-            var publishingPageWebPartDef = initialDef.Clone<TWebpartType>();
+			var publishingPageWebPartDef = initialDef.Clone<TWebpartType>();
+
+			// Some web part provision on wiki page give empty markup #693
+			// https://github.com/SubPointSolutions/spmeta2/issues/693
+			var webpartPageWebPartAddToPageContentDef1 = initialDef.Clone<TWebpartType>();
+
+			webpartPageWebPartAddToPageContentDef1.Title = Rnd.String();
+			webpartPageWebPartAddToPageContentDef1.Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+			webpartPageWebPartAddToPageContentDef1.ZoneId = "wpz";
+			webpartPageWebPartAddToPageContentDef1.AddToPageContent = true;
+
+			var webpartPageWebPartAddToPageContentDef2 = initialDef.Clone<TWebpartType>();
+
+			webpartPageWebPartAddToPageContentDef2.Title = Rnd.String();
+			webpartPageWebPartAddToPageContentDef2.Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+			webpartPageWebPartAddToPageContentDef2.ZoneId = "wpz";
+			webpartPageWebPartAddToPageContentDef2.AddToPageContent = true;
 
             var listWebPartDef = initialDef.Clone<TWebpartType>();
             var docWebPartDef = initialDef.Clone<TWebpartType>();
@@ -442,12 +484,14 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                 .AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
                 {
                     def.Enable = true;
+					def.ForceActivate = true;
                 }))
 
                 .AddHostList(BuiltInListDefinitions.SitePages, list =>
                 {
                     var webpartPageName = string.Empty;
                     var wikiPageName = string.Empty;
+					var wikiPageNameAddToPageContent = string.Empty;
 
                     list
                         // 1 - wiki pages
@@ -461,14 +505,28 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                         {
                             webpartPageName = (page.Value as WebPartPageDefinition).FileName;
                             page.AddDefinitionNode(webpartPageWebPartDef);
-                        });
+                        })
+						/// 3- adding to the web part page as .AddToPageContent
+						.AddRandomWikiPage(page =>
+                        {
+							page.RegExcludeFromValidation();
+
+                            wikiPageNameAddToPageContent = (page.Value as WikiPageDefinition).FileName;
+                            
+							page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef1);
+							page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef2);
+                        })
+						;
 
                     ValidateWebPartPresenceForPage(list, wikiPageName, wikiWebPartDef);
                     ValidateWebPartPresenceForPage(list, webpartPageName, webpartPageWebPartDef);
 
-                })
-                // 3 - publishing pages
-                .AddHostList(BuiltInListDefinitions.Pages, list =>
+					ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef1);
+					ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef2);
+                });
+
+	            // 3 - publishing pages
+               currentWeb.AddHostList(BuiltInListDefinitions.Pages, list =>
                 {
                     var publishingPageName = string.Empty;
 

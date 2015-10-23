@@ -14,6 +14,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 {
     public class XsltListViewWebPartDefinitionValidator : WebPartModelHandler
     {
+        public XsltListViewWebPartDefinitionValidator()
+        {
+            ShouldUseWebPartStoreKeyForWikiPage = true;
+        }
+
         #region classes
 
         internal class ListBindContext

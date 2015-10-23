@@ -11,6 +11,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Definitions;
@@ -569,6 +570,150 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                });
                        });
 
+               });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartToWikiPageContent_AsItIs()
+        {
+            // Some web part provision on wiki page give empty markup
+            // https://github.com/SubPointSolutions/spmeta2/issues/693
+
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                       {
+                           list
+                               .AddRandomWikiPage(page =>
+                               {
+                                   page
+                                       .AddRandomWebpart()
+                                       .AddRandomWebpart()
+                                       .AddRandomWebpart();
+                               });
+                       });
+               });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_ScriptEditorToWikiPageContent_As_AddToPageContent()
+        {
+            // Some web part provision on wiki page give empty markup
+            // https://github.com/SubPointSolutions/spmeta2/issues/693
+
+            // web part ID, zone and AddToPageContent must be as such
+            // you can move these params into your web part definition
+
+            var scriptEditor1 = new ScriptEditorWebPartDefinition
+            {
+                Title = string.Format("ScriptEditorWebPartDefinition - {0}", Rnd.String()),
+                Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_'),
+                ZoneIndex = 10,
+                ZoneId = "wpz",
+                AddToPageContent = true,
+                Content = String.Format("<script> console.log('M2 loves wiki page web part provision - 1 - {0}'); </script>",
+                                        Rnd.String())
+            };
+
+            var scriptEditor2 = new ScriptEditorWebPartDefinition
+            {
+                Title = string.Format("ScriptEditorWebPartDefinition - {0}", Rnd.String()),
+                Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_'),
+                ZoneIndex = 10,
+                ZoneId = "wpz",
+                AddToPageContent = true,
+                Content = String.Format("<script> console.log('M2 loves wiki page web part provision - 2 - {0}'); </script>",
+                                        Rnd.String())
+            };
+
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                       {
+                           list
+                               .AddRandomWikiPage(page =>
+                               {
+                                   page.RegExcludeFromValidation();
+
+                                   page.AddScriptEditorWebPart(scriptEditor1);
+                                   page.AddScriptEditorWebPart(scriptEditor2);
+                               });
+                       });
+               });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartToWikiPageContent_As_AddToPageContent()
+        {
+            // Some web part provision on wiki page give empty markup
+            // https://github.com/SubPointSolutions/spmeta2/issues/693
+
+            // web part ID, zone and AddToPageContent must be as such
+            // you can move these params into your web part definition
+
+            var listViewWebPartDef = new ListViewWebPartDefinition
+            {
+                Title = String.Format("ListViewWebPartDefinition - {0}", Rnd.String()),
+                Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_'),
+                ZoneIndex = 10,
+                ZoneId = "wpz",
+                AddToPageContent = true,
+                ListUrl = BuiltInListDefinitions.SitePages.CustomUrl
+            };
+
+            var webModel = SPMeta2Model
+               .NewWebModel(web =>
+               {
+                   web
+                       .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                       {
+                           list
+                               .AddRandomWikiPage(page =>
+                               {
+                                   page.RegExcludeFromValidation();
+
+                                   page
+                                       .AddListViewWebPart(listViewWebPartDef)
+                                       .AddRandomWebpart(wpNode =>
+                                       {
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+                                           wp.ZoneId = "wpz";
+                                           wp.AddToPageContent = true;
+                                       })
+                                       .AddRandomWebpart(wpNode =>
+                                       {
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+                                           wp.ZoneId = "wpz";
+                                           wp.AddToPageContent = true;
+                                       })
+                                       .AddRandomWebpart(wpNode =>
+                                       {
+                                           var wp = wpNode.Value as WebPartDefinition;
+
+                                           wp.Id = "g_" + Guid.NewGuid().ToString("D").Replace('-', '_');
+                                           wp.ZoneId = "wpz";
+                                           wp.AddToPageContent = true;
+                                       })
+                                       ;
+                               });
+                       });
                });
 
             TestModel(webModel);

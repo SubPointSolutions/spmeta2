@@ -69,7 +69,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var web = _host.SPLimitedWebPartManager.Web;
 
             // bind list
-            var targetWeb = new LookupFieldModelHandler().GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+            var targetWeb = web;
+
+            if (!string.IsNullOrEmpty(typedModel.WebUrl) || typedModel.WebId.HasGuidValue())
+                targetWeb = new LookupFieldModelHandler().GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+
             var list = GetTargetList(targetWeb, typedModel.ListTitle, typedModel.ListUrl, typedModel.ListId);
 
             if (list != null)

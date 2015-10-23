@@ -48,7 +48,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
             var web = _host.SPLimitedWebPartManager.Web;
 
-            var targetWeb = new LookupFieldModelHandler().GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+            var targetWeb = web;
+
+            if (!string.IsNullOrEmpty(typedModel.WebUrl) || typedModel.WebId.HasGuidValue())
+                targetWeb = new LookupFieldModelHandler().GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+
             var list = XsltListViewWebPartModelHandler.GetTargetList(targetWeb, typedModel.ListTitle, typedModel.ListUrl, typedModel.ListId);
 
             typedWebpart.ListName = list.ID.ToString();
