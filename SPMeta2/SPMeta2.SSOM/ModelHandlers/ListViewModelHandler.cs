@@ -19,7 +19,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 {
     public class ListViewModelHandler : SSOMModelHandlerBase
     {
+        #region constructors
+
+        public ListViewModelHandler()
+        {
+            ListViewScopeTypesConvertService = ServiceContainer.Instance.GetService<ListViewScopeTypesConvertService>();
+        }
+
+        #endregion
+
         #region methods
+
+        public ListViewScopeTypesConvertService ListViewScopeTypesConvertService { get; set; }
 
         public override Type TargetType
         {
@@ -206,9 +217,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(listViewModel.Scope))
             {
+                var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToSSOMType(listViewModel.Scope);
+
                 currentView.Scope = (SPViewScope)Enum.Parse(
-                    typeof(SPViewScope),
-                    listViewModel.Scope);
+                    typeof(SPViewScope), scopeValue);
             }
 
             currentView.Hidden = listViewModel.Hidden;

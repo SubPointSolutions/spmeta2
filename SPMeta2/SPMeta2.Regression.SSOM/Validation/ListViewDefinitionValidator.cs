@@ -35,7 +35,23 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.Scope))
             {
-                assert.ShouldBeEqual(m => m.Scope, o => o.GetScope());
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Scope);
+                    var dstProp = d.GetExpressionValue(o => o.Scope);
+
+                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToSSOMType(definition.Scope);
+
+                    var isValid = scopeValue == d.Scope.ToString();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
             }
             else
             {

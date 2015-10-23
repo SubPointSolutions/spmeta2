@@ -351,6 +351,7 @@
     <Compile Include="Services\Impl\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultContentTypeIdPropertyValidationService.cs" />
+    <Compile Include="Services\Impl\DefaultListViewScopeTypesConvertService.cs" />
     <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
@@ -358,6 +359,7 @@
     <Compile Include="Services\Impl\DefaultJSONSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
+    <Compile Include="Services\ListViewScopeTypesConvertService.cs" />
     <Compile Include="Services\LocalizationServiceBase.cs" />
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />

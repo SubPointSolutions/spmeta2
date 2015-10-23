@@ -19,7 +19,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 {
     public class ListViewModelHandler : CSOMModelHandlerBase
     {
-        #region properties
+        #region constructors
+
+        public ListViewModelHandler()
+        {
+            ListViewScopeTypesConvertService = ServiceContainer.Instance.GetService<ListViewScopeTypesConvertService>();
+        }
+
+        #endregion
+
+        #region methods
+
+        public ListViewScopeTypesConvertService ListViewScopeTypesConvertService { get; set; }
 
         #endregion
 
@@ -202,6 +213,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentView.Hidden = listViewModel.Hidden;
 
+                if (!string.IsNullOrEmpty(listViewModel.Scope))
+                {
+                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(listViewModel.Scope);
+
+                    currentView.Scope = (ViewScope)Enum.Parse(
+                        typeof(ViewScope), scopeValue);
+                }
+
                 currentView.Title = listViewModel.Title;
                 currentView.Update();
 
@@ -250,6 +269,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (listViewModel.DefaultViewForContentType.HasValue)
                     currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
+
+                if (!string.IsNullOrEmpty(listViewModel.Scope))
+                {
+                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(listViewModel.Scope);
+
+                    currentView.Scope = (ViewScope)Enum.Parse(
+                        typeof(ViewScope), scopeValue);
+                }
 
                 currentView.Title = listViewModel.Title;
             }
