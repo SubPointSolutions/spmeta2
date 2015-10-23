@@ -35,10 +35,29 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name)
+                                 //.ShouldBeEqual(m => m.Name, o => o.Name)
                                  .ShouldBeEqual(m => m.Description, o => o.GetDefaultLCIDDescription());
 
             assert.SkipProperty(m => m.LCID, "LCID is not accessible from OM. Should be alright while provision.");
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Name);
+                var dstProp = d.GetExpressionValue(m => m.Name);
+
+                var isValid = NormalizeTermName(s.Name) == d.Name;
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+
+
+
 
             if (!string.IsNullOrEmpty(definition.CustomSortOrder))
                 assert.ShouldBeEqual(m => m.CustomSortOrder, o => o.CustomSortOrder);

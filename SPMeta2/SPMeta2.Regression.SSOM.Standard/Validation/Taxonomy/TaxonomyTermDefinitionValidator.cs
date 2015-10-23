@@ -28,7 +28,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.Name, o => o.Name)
+                //.ShouldBeEqual(m => m.Name, o => o.Name)
                                  .ShouldBeEqual(m => m.Description, o => o.GetDescription());
 
             assert.SkipProperty(m => m.LCID, "Can't get LCID withon OM. Should be set while provision.");
@@ -59,6 +59,22 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
             {
                 assert.SkipProperty(m => m.IsAvailableForTagging, "IsAvailableForTagging is null. Skipping property.");
             }
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(m => m.Name);
+                var dstProp = d.GetExpressionValue(m => m.Name);
+
+                var isValid = NormalizeTermName(s.Name) == d.Name;
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
 
             assert.ShouldBeEqual((p, s, d) =>
             {

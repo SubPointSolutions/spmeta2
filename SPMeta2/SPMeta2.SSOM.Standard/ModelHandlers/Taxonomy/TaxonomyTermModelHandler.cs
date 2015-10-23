@@ -35,12 +35,12 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         {
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
-            // TODO, move to common validator infrastructure
             if (!TaxonomyUtility.IsValidTermName(definition.Name))
             {
                 throw new SPMeta2Exception(
-                    string.Format("Term name [{0}] cannot contain any of the following characters: \" ; < > | and Tab",
-                        definition.Name));
+                    string.Format("Term name [{0}] cannot contain any of the following characters: {1}",
+                        definition.Name,
+                        string.Join(", ", TaxonomyUtility.InvalidTermNameStrings)));
             }
 
             if (modelHost is TermModelHost)
@@ -104,11 +104,19 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             termStore.CommitAll();
         }
 
+
+
+        protected virtual string NormalizeTermName(string termName)
+        {
+            return TaxonomyUtility.NormalizeName(termName);
+        }
+
         private void DeployTermUnderTerm(object modelHost, TermModelHost termModelHost, TaxonomyTermDefinition termModel)
         {
             var term = termModelHost.HostTerm;
 
             var currentTerm = FindTermInTerm(term, termModel);
+            var termName = NormalizeTermName(termModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -126,8 +134,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term");
 
                 currentTerm = termModel.Id.HasValue
-                    ? term.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
-                    : term.CreateTerm(termModel.Name, termModel.LCID);
+                    ? term.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
+                    : term.CreateTerm(termName, termModel.LCID);
 
                 MapTermProperties(currentTerm, termModel);
 
@@ -195,6 +203,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             var termSet = groupModelHost.HostTermSet;
 
             var currentTerm = FindTermInTermSet(termSet, termModel);
+            var termName = NormalizeTermName(termModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -212,8 +221,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term");
 
                 currentTerm = termModel.Id.HasValue
-                    ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
-                    : termSet.CreateTerm(termModel.Name, termModel.LCID);
+                    ? termSet.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
+                    : termSet.CreateTerm(termName, termModel.LCID);
 
                 MapTermProperties(currentTerm, termModel);
 
@@ -256,7 +265,10 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (termModel.Id.HasValue)
                 result = term.Terms.FirstOrDefault(t => t.Id == termModel.Id.Value);
             else if (!string.IsNullOrEmpty(termModel.Name))
-                result = term.Terms.FirstOrDefault(t => t.Name == termModel.Name);
+            {
+                var termName = NormalizeTermName(termModel.Name);
+                result = term.Terms.FirstOrDefault(t => t.Name == termName);
+            }
 
             return result;
         }
@@ -268,7 +280,10 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (termModel.Id.HasValue)
                 result = termSet.GetTerm(termModel.Id.Value);
             else if (!string.IsNullOrEmpty(termModel.Name))
-                result = termSet.GetTerms(termModel.Name, termModel.LCID, false).FirstOrDefault();
+            {
+                var termName = NormalizeTermName(termModel.Name);
+                result = termSet.GetTerms(termName, termModel.LCID, false).FirstOrDefault();
+            }
 
             return result;
         }
