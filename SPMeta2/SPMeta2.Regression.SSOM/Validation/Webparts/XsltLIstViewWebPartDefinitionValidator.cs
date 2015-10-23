@@ -9,6 +9,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.SSOM.Extensions;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -47,6 +48,62 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 var assert = ServiceFactory.AssertService
                     .NewAssert(definition, typedObject)
                     .ShouldNotBeNull(typedObject);
+
+                var typedDefinition = definition;
+                var targetWeb = web;
+
+                // web url
+                if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
+                {
+                    var lookupFieldModelHandler = new LookupFieldModelHandler();
+                    targetWeb = lookupFieldModelHandler.GetTargetWeb(web.Site,
+                                definition.WebUrl, definition.WebId);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebUrl);
+
+                        var isValid = d.WebId == targetWeb.ID;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebUrl, "WebUrl is NULL. Skipping.");
+                }
+
+                if (typedDefinition.WebId.HasGuidValue())
+                {
+                    var lookupFieldModelHandler = new LookupFieldModelHandler();
+                    targetWeb = lookupFieldModelHandler.GetTargetWeb(web.Site,
+                                definition.WebUrl, definition.WebId);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebId);
+
+                        var isValid = d.WebId == targetWeb.ID;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebId, "WebId is NULL. Skipping.");
+                }
 
                 var targetList = web.Lists[typedObject.ListId];
 

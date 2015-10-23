@@ -104,6 +104,27 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                                            .NewAssert(model, definition, spObject)
                                                  .ShouldNotBeNull(spObject);
 
+                var typedDefinition = definition;
+
+                if (typedDefinition.WebId.HasGuidValue())
+                {
+                    // TODO
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebId, "WebId is NULL. Skipping.");
+                }
+
+                if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
+                {
+                    // TODO
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebUrl, "WebUrl is NULL. Skipping.");
+                }
+
+
                 // list
                 if (!string.IsNullOrEmpty(definition.ListTitle))
                 {
@@ -486,7 +507,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                         var srcProp = s.GetExpressionValue(m => m.Xsl);
                         var isValid = value
                                         .Replace("\r", string.Empty)
-                                        .Replace("\n", string.Empty) == 
+                                        .Replace("\n", string.Empty) ==
                                      definition.Xsl
                                                 .Replace("\r", string.Empty)
                                                 .Replace("\n", string.Empty);

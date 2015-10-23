@@ -78,6 +78,9 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public string Value { get; set; }
 
+        [DataMember]
+        public bool? IsTokenisable { get; set; }
+
         #endregion
     }
 }
