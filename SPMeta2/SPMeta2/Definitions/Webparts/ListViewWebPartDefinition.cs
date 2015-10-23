@@ -15,7 +15,7 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -25,6 +25,14 @@ namespace SPMeta2.Definitions.Webparts
     public class ListViewWebPartDefinition : WebPartDefinition
     {
         #region properties
+
+        [ExpectValidation]
+        [DataMember]
+        public string WebUrl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public Guid? WebId { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -41,7 +49,7 @@ namespace SPMeta2.Definitions.Webparts
         [ExpectValidation]
         [DataMember]
         public string ViewName { get; set; }
-        
+
         [ExpectValidation]
         [DataMember]
         public Guid? ViewId { get; set; }

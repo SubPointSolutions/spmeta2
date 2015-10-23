@@ -9,6 +9,7 @@ using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -46,15 +47,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var typedModel = webpartModel.WithAssertAndCast<ListViewWebPartDefinition>("webpartModel", value => value.RequireNotNull());
 
             var web = _host.SPLimitedWebPartManager.Web;
-            SPList list = null;
 
-            if (typedModel.ListId.HasGuidValue())
-                list = web.Lists[typedModel.ListId.Value];
-            else if (!string.IsNullOrEmpty(typedModel.ListUrl))
-                list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedModel.ListUrl));
-            else if (!string.IsNullOrEmpty(typedModel.ListTitle))
-                list = web.Lists.TryGetList(typedModel.ListTitle);
-
+            var targetWeb = LookupFieldModelHandler.GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+            var list = XsltListViewWebPartModelHandler.GetTargetList(targetWeb, typedModel.ListTitle, typedModel.ListUrl, typedModel.ListId);
 
             typedWebpart.ListName = list.ID.ToString();
             typedWebpart.ListId = list.ID;

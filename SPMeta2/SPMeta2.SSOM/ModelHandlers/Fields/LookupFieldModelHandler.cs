@@ -98,17 +98,23 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 typedField.LookupField = typedFieldModel.LookupField;
             }
         }
-        public SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
+
+        public static SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
         {
-            if (definition.LookupWebId.HasGuidValue())
+            return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
+        }
+
+        public static SPWeb GetTargetWeb(SPSite site, string webUrl, Guid? webId)
+        {
+            if (webId.HasGuidValue())
             {
-                return site.OpenWeb(definition.LookupWebId.Value);
+                return site.OpenWeb(webId.Value);
             }
-            else if (!string.IsNullOrEmpty(definition.LookupWebUrl))
+            else if (!string.IsNullOrEmpty(webUrl))
             {
                 var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    Value = definition.LookupWebUrl,
+                    Value = webUrl,
                     Context = site
                 }).Value;
 

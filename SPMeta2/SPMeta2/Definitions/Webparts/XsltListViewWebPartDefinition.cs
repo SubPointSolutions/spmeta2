@@ -50,6 +50,17 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [DataMember]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+        public string WebUrl { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public Guid? WebId { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
         public string ViewName { get; set; }
 
         [ExpectValidation]

@@ -11,6 +11,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -40,6 +41,24 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             typedModel.WebpartType = typeof(XsltListViewWebPart).AssemblyQualifiedName;
         }
 
+        public static SPList GetTargetList(SPWeb targetWeb, string listTitle, string listUrl, Guid? listId)
+        {
+            SPList result = null;
+
+            if (listId.HasValue && listId != default(Guid))
+                result = targetWeb.Lists[listId.Value];
+            else if (!string.IsNullOrEmpty(listUrl))
+                result = targetWeb.GetList(SPUrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, listUrl));
+            else if (!string.IsNullOrEmpty(listTitle))
+                result = targetWeb.Lists.TryGetList(listTitle);
+            else
+            {
+                throw new SPMeta2Exception("ListUrl, ListTitle or ListId should be defined.");
+            }
+
+            return result;
+        }
+
         protected override void ProcessWebpartProperties(WebPart webpartInstance, WebPartDefinition webpartModel)
         {
             base.ProcessWebpartProperties(webpartInstance, webpartModel);
@@ -50,18 +69,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
             var web = _host.SPLimitedWebPartManager.Web;
 
             // bind list
-            SPList list = null;
-
-            if (typedModel.ListId.HasValue && typedModel.ListId != default(Guid))
-                list = web.Lists[typedModel.ListId.Value];
-            else if (!string.IsNullOrEmpty(typedModel.ListUrl))
-                list = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, typedModel.ListUrl));
-            else if (!string.IsNullOrEmpty(typedModel.ListTitle))
-                list = web.Lists.TryGetList(typedModel.ListTitle);
-            else
-            {
-                throw new SPMeta2Exception("ListUrl, ListTitle or ListId should be defined.");
-            }
+            var targetWeb = LookupFieldModelHandler.GetTargetWeb(web.Site, typedModel.WebUrl, typedModel.WebId);
+            var list = GetTargetList(targetWeb, typedModel.ListTitle, typedModel.ListUrl, typedModel.ListId);
 
             if (list != null)
             {
@@ -181,6 +190,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                 typedWebpart.InplaceSearchEnabled = typedModel.InplaceSearchEnabled.Value;
 #endif
         }
+
+
 
         #endregion
     }
