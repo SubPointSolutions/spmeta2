@@ -15,6 +15,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsChoiceFieldEditFormat : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsStandalone : ExpectUpdate
     {
 

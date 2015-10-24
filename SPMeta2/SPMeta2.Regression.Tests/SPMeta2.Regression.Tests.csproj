@@ -305,6 +305,7 @@
     <Compile Include="Impl\Validation\PublishingPageLayoutValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\SPMeta2RegresionTestBase.cs" />
+    <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsChoiceFieldEditFormatService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsLookupFieldService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsViewScopeService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsRichTextModeService.cs" />

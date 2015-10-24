@@ -28,7 +28,12 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             var textFieldAssert = ServiceFactory.AssertService.NewAssert(model, textDefinition, textField);
 
-            textFieldAssert.ShouldBeEqual(m => m.EditFormat, o => o.GetEditFormat());
+            if (!string.IsNullOrEmpty(textDefinition.EditFormat))
+                textFieldAssert.ShouldBeEqual(m => m.EditFormat, o => o.GetEditFormat());
+            else
+            {
+                textFieldAssert.SkipProperty(m => m.EditFormat);
+            }
         }
     }
 
