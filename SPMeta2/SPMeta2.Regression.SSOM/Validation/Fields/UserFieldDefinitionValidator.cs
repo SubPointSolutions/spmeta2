@@ -93,6 +93,15 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             {
                 typedFieldAssert.SkipProperty(m => m.SelectionGroupName, "SelectionGroupName is NULL. Skipping.");
             }
+
+            if (!string.IsNullOrEmpty(typedDefinition.LookupField))
+            {
+                typedFieldAssert.ShouldBeEqual(m => m.LookupField, o => o.LookupField);
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.LookupField, "LookupField is NULL. Skipping.");
+            }
         }
     }
 

@@ -71,6 +71,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsLookupField : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsChromeState : ExpectUpdate
     {
 
@@ -80,7 +85,7 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
-    
+
     public class ExpectUpdateAsChromeType : ExpectUpdate
     {
 

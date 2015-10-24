@@ -147,6 +147,7 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         [DataMember]
         [ExpectNullable]
+        [ExpectUpdateAsLookupField]
         public string LookupField { get; set; }
 
         /// <summary>

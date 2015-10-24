@@ -51,6 +51,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 var group = GetCurrentWeb().SiteGroups.OfType<SPGroup>().FirstOrDefault(g => g.Name.ToUpper() == typedFieldModel.SelectionGroupName.ToUpper());
                 typedField.SelectionGroup = group.ID;
             }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+                typedField.LookupField = typedFieldModel.LookupField;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -68,6 +71,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(typedFieldModel.SelectionMode))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.UserSelectionMode, typedFieldModel.SelectionMode);
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);
         }
 
         #endregion

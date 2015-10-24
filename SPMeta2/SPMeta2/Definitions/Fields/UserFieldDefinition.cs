@@ -36,6 +36,16 @@ namespace SPMeta2.Definitions.Fields
 
         #region properties
 
+        /// <summary>
+        /// References to 'ShowField' property.
+        /// Should be an internal name of the target field.
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsLookupField]
+        public string LookupField { get; set; }
+
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
