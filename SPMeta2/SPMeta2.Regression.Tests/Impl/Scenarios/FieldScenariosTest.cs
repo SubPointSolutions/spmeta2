@@ -16,6 +16,7 @@ using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -176,6 +177,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields")]
+        [SiteCollectionIsolation]
         public void CanDeploy_ChoiceField()
         {
             TestRandomDefinition<FieldDefinition>(def =>
@@ -246,6 +248,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields")]
+        [SiteCollectionIsolation]
         public void CanDeploy_MultiChoiceField()
         {
             TestRandomDefinition<FieldDefinition>(def =>
@@ -276,6 +279,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields")]
+        [SiteCollectionIsolation]
         public void CanDeploy_OutcomeChoiceField()
         {
             TestRandomDefinition<FieldDefinition>(def =>

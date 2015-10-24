@@ -31,6 +31,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
 using SPMeta2.Regression.Definitions.Extended;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 {
@@ -57,6 +58,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
  
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_WebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<WebPartDefinition>();
@@ -64,6 +66,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_BlogAdminWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<BlogAdminWebPartDefinition>();
@@ -71,6 +74,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_BlogLinksWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<BlogLinksWebPartDefinition>();
@@ -78,6 +82,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_BlogMonthQuickLaunchDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<BlogMonthQuickLaunchDefinition>();
@@ -85,6 +90,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_DataFormWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DataFormWebPartDefinition>();
@@ -92,6 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_GettingStartedWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<GettingStartedWebPartDefinition>();
@@ -99,6 +106,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ImageWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ImageWebPartDefinition>();
@@ -106,6 +114,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_MembersWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<MembersWebPartDefinition>();
@@ -113,6 +122,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_PageViewerWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<PageViewerWebPartDefinition>();
@@ -120,6 +130,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_PictureLibrarySlideshowWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<PictureLibrarySlideshowWebPartDefinition>();
@@ -127,6 +138,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SilverlightWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SilverlightWebPartDefinition>();
@@ -134,6 +146,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SimpleFormWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SimpleFormWebPartDefinition>();
@@ -141,6 +154,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SPTimelineWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SPTimelineWebPartDefinition>();
@@ -148,6 +162,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_UserCodeWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<UserCodeWebPartDefinition>();
@@ -155,6 +170,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_UserDocsWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<UserDocsWebPartDefinition>();
@@ -162,6 +178,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_UserTasksWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<UserTasksWebPartDefinition>();
@@ -169,6 +186,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_XmlWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<XmlWebPartDefinition>();
@@ -176,6 +194,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ClientWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ClientWebPartDefinition>();
@@ -183,6 +202,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ScriptEditorWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ScriptEditorWebPartDefinition>();
@@ -190,6 +210,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ContentEditorWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentEditorWebPartDefinition>();
@@ -197,6 +218,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ListViewWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ListViewWebPartDefinition>();
@@ -204,6 +226,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_XsltListViewWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<XsltListViewWebPartDefinition>();
@@ -211,6 +234,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_CategoryWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<CategoryWebPartDefinition>();
@@ -218,6 +242,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_CommunityAdminWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<CommunityAdminWebPartDefinition>();
@@ -225,6 +250,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_CommunityJoinWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<CommunityJoinWebPartDefinition>();
@@ -232,6 +258,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_DocumentSetContentsWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DocumentSetContentsWebPartDefinition>();
@@ -239,6 +266,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_DocumentSetPropertiesWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<DocumentSetPropertiesWebPartDefinition>();
@@ -246,6 +274,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_MyMembershipWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<MyMembershipWebPartDefinition>();
@@ -253,6 +282,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ProjectSummaryWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ProjectSummaryWebPartDefinition>();
@@ -260,6 +290,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_RefinementScriptWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<RefinementScriptWebPartDefinition>();
@@ -267,6 +298,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_RSSAggregatorWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<RSSAggregatorWebPartDefinition>();
@@ -274,6 +306,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SearchBoxScriptWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SearchBoxScriptWebPartDefinition>();
@@ -281,6 +314,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SearchNavigationWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SearchNavigationWebPartDefinition>();
@@ -288,6 +322,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SiteDocumentsDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SiteDocumentsDefinition>();
@@ -295,6 +330,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SocialCommentWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SocialCommentWebPartDefinition>();
@@ -302,6 +338,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_TableOfContentsWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<TableOfContentsWebPartDefinition>();
@@ -309,6 +346,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_TagCloudWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<TagCloudWebPartDefinition>();
@@ -316,6 +354,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ContactFieldControlDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContactFieldControlDefinition>();
@@ -323,6 +362,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ContentBySearchWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentBySearchWebPartDefinition>();
@@ -330,6 +370,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ContentByQueryWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ContentByQueryWebPartDefinition>();
@@ -337,6 +378,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_ResultScriptWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<ResultScriptWebPartDefinition>();
@@ -344,6 +386,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SiteFeedWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SiteFeedWebPartDefinition>();
@@ -351,6 +394,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		
 		[TestMethod]
         [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
         public void CanDeploy_SummaryLinkWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<SummaryLinkWebPartDefinition>();

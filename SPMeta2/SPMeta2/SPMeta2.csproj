@@ -141,6 +141,7 @@
     <Compile Include="Attributes\Regression\ExpectAddHostExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectUpdate.cs" />
     <Compile Include="Attributes\Regression\ExpectValidation.cs" />
+    <Compile Include="Attributes\Regression\IsolationAttribute.cs" />
     <Compile Include="Attributes\Regression\ParentHostAttribute.cs" />
     <Compile Include="Attributes\SPObjectType.cs" />
     <Compile Include="Attributes\SPObjectTypeAttribute.cs" />

@@ -103,12 +103,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Containers.FarmSolu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Regression", "SPMeta2\SPMeta2.Regression\SPMeta2.Regression.csproj", "{0DE538C9-1723-46B1-90F8-5DC67C56D7DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F17C825-5DA2-4F80-93CD-0C2A0F084F6F}"
+EndProject
 Global
-	GlobalSection(AutomaticVersions) = postSolution
-		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = False
-		UpdateAssemblyInfoVersion = False
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CI-CSOM2013|Any CPU = CI-CSOM2013|Any CPU
 		CI-O365|Any CPU = CI-O365|Any CPU
