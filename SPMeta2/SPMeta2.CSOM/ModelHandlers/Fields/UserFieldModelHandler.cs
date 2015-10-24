@@ -66,6 +66,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             {
                 typedField.SelectionGroup = groupId.Value;
             }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+            {
+                typedField.LookupField = typedFieldModel.LookupField;
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -83,6 +88,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(typedFieldModel.SelectionMode))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.UserSelectionMode, typedFieldModel.SelectionMode);
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);
         }
 
         #endregion
