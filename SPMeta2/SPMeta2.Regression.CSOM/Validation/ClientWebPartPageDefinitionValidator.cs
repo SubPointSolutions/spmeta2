@@ -31,13 +31,18 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!string.IsNullOrEmpty(definition.ContentTypeName)
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                // TODO
-                //stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                                    .Name;
+                }
             }
 
             var spObject = pageFile.ListItemAllFields;
 
             context.Load(spObject);
+            context.Load(spObject, s => s.ContentType);
             context.Load(spObject, s => s.File);
 
             context.ExecuteQueryWithTrace();
@@ -127,7 +132,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
-                    var currentContentTypeName = d["ContentTypeId"].ToString();
+                    var currentContentTypeName = d.ContentType.Name;
 
                     var isValis = stringCustomContentType == currentContentTypeName;
 

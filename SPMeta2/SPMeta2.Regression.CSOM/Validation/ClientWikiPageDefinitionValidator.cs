@@ -27,6 +27,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = file.ListItemAllFields;
 
             context.Load(spObject);
+            context.Load(spObject, o => o.ContentType);
             context.ExecuteQueryWithTrace();
 
             var stringCustomContentType = string.Empty;
@@ -34,7 +35,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!string.IsNullOrEmpty(definition.ContentTypeName)
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                //   stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                                    .Name;
+                }
             }
 
             var assert = ServiceFactory.AssertService
@@ -90,7 +96,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
-                    var currentContentTypeName = d["ContentTypeId"].ToString();
+                    var currentContentTypeName = d.ContentType.Name;
 
                     var isValis = stringCustomContentType == currentContentTypeName;
 

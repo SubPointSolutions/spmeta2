@@ -246,9 +246,20 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected virtual void MapListItemProperties(ListItem currentItem, ListItemDefinition listItemModel)
+        protected virtual void MapListItemProperties(ListItem currentItem, ListItemDefinition definition)
         {
-            currentItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                currentItem[BuiltInInternalFieldNames.ContentTypeId] = definition.ContentTypeId;
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                currentItem[BuiltInInternalFieldNames.ContentTypeId] = ContentTypeLookupService
+                                            .LookupContentTypeByName(currentItem.ParentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
+
+            currentItem[BuiltInInternalFieldNames.Title] = definition.Title;
         }
 
         private bool IsDocumentLibray(List list)

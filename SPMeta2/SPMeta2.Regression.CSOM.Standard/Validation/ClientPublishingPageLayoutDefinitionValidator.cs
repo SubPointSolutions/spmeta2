@@ -31,8 +31,12 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             if (!string.IsNullOrEmpty(definition.ContentTypeName)
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                // TODO
-                //stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                                    .Name;
+                }
             }
 
             var spObject = FindPublishingPage(folderModelHost.CurrentList, folder, definition);
@@ -42,6 +46,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             context.Load(spObject);
             context.Load(spObject, o => o.DisplayName);
+            context.Load(spObject, o => o.ContentType);
 
             context.Load(spFile, f => f.ServerRelativeUrl);
 
@@ -150,7 +155,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
-                    var currentContentTypeName = d["ContentTypeId"].ToString();
+                    var currentContentTypeName = d.ContentType.Name;
 
                     var isValis = stringCustomContentType == currentContentTypeName;
 

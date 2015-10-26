@@ -47,17 +47,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
             }
 
-            
             var spObject = FindListItem(list, rootFolder, definition);
 
-            if (!spObject.IsPropertyAvailable(BuiltInInternalFieldNames.Title))
-            {
-                var context = spObject.Context;
 
-                context.Load(spObject, o => o.DisplayName);
-                context.ExecuteQueryWithTrace();
-            }
+            var context = spObject.Context;
 
+            context.Load(spObject,
+                            o => o.DisplayName,
+                            o => o.ContentType);
+            context.ExecuteQueryWithTrace();
 
             ValidateProperties(spObject, definition);
         }
@@ -70,8 +68,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!string.IsNullOrEmpty(definition.ContentTypeName)
                 || !string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                // TODO
-                //stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(item.ParentList, definition.ContentTypeName)
+                                                    .Name;
+                }
             }
 
 
@@ -96,7 +98,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
-                    var currentContentTypeName = d["ContentTypeId"].ToString();
+                    var currentContentTypeName = d.ContentType.Name;
 
                     var isValis = stringCustomContentType == currentContentTypeName;
 

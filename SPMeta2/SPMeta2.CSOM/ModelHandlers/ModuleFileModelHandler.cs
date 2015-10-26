@@ -438,27 +438,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
             {
-                // preload custom content type
-
-                var listContentTypes = list.ContentTypes;
-                context.Load(listContentTypes);
-                context.ExecuteQueryWithTrace();
-
-                var listContentType = listContentTypes.ToList()
-                                                      .FirstOrDefault(c => c.Name.ToUpper() == moduleFile.ContentTypeName.ToUpper());
-
-                if (listContentType == null)
-                {
-                    throw new ArgumentNullException(
-                        string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
-                            new string[]
-                                    {
-                                        moduleFile.ContentTypeName,
-                                        list.Title
-                                    }));
-                }
-
-                stringCustomContentType = listContentType.Id.ToString();
+                stringCustomContentType = ContentTypeLookupService.LookupContentTypeByName(list, moduleFile.ContentTypeName).Id.ToString();
             }
 
             return stringCustomContentType;

@@ -24,12 +24,16 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TokenReplacementService = ServiceContainer.Instance.GetService<CSOMTokenReplacementService>();
             LocalizationService = ServiceContainer.Instance.GetService<CSOMLocalizationService>();
+
+            // TODO, move to ServiceContainer
+            ContentTypeLookupService = new CSOMContentTypeLookupService();
         }
 
         #endregion
 
         #region properties
 
+        public CSOMContentTypeLookupService ContentTypeLookupService { get; set; }
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
         public LocalizationServiceBase LocalizationService { get; set; }
 
@@ -108,5 +112,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
+
+
     }
 }
