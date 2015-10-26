@@ -47,6 +47,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
             }
 
+            
             var spObject = FindListItem(list, rootFolder, definition);
 
             if (!spObject.IsPropertyAvailable(BuiltInInternalFieldNames.Title))
@@ -61,14 +62,57 @@ namespace SPMeta2.Regression.CSOM.Validation
             ValidateProperties(spObject, definition);
         }
 
+
         protected virtual void ValidateProperties(ListItem item, ListItemDefinition definition)
         {
+            var stringCustomContentType = string.Empty;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName)
+                || !string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                // TODO
+                //stringCustomContentType = ResolveContentTypeId(folderHost, definition);
+            }
+
+
             var assert = ServiceFactory.AssertService
                              .NewAssert(definition, item)
                                    .ShouldNotBeNull(item);
 
             assert
                 .ShouldBeEqual(m => m.Title, o => o.DisplayName);
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                // TODO
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d["ContentTypeId"].ToString();
+
+                    var isValis = stringCustomContentType == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
         }
 
     }
