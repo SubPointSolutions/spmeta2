@@ -86,7 +86,21 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     if (!string.IsNullOrEmpty(definition.Description))
                         pageItem["MasterPageDescription"] = definition.Description;
 
+                    // ootb ?
                     pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+
+
+                    // custom?
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                       !string.IsNullOrEmpty(definition.ContentTypeName))
+                    {
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId).ToString();
+
+                        if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName).ToString();
+                    }
+
 
                     if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
                     {

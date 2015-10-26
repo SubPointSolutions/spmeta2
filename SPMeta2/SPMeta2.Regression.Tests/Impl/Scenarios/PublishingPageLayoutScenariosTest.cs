@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.Tests.Utils;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Syntax;
@@ -155,6 +156,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region field values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPageLayout.Values")]
+        public void CanDeploy_Default_PublishingPageLayout_With_FieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPageLayout.Values")]
+        public void CanDeploy_Default_PublishingPageLayout_With_RequiredFieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPageLayout.Values")]
+        public void CanDeploy_Default_PublishingPageLayout_With_ContentType_ByName()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.PageLayout;
+            });
+
+            var publishingPageLayoutContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.Name = string.Format("Required - {0}", Environment.TickCount);
+                def.Hidden = false;
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.PageLayout;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<PublishingPageLayoutDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+                def.AssociatedContentTypeId = publishingPageLayoutContentType.GetContentTypeId();
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddFeature(siteFeature);
+
+                site.AddContentType(contentTypeDef);
+                site.AddContentType(publishingPageLayoutContentType);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddFeature(webFeature);
+
+                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddPublishingPageLayout(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        #endregion
+
         #region utils
 
         private void CheckoutFile(OnCreatingContext<object, DefinitionBase> context)
@@ -204,5 +271,5 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #endregion
     }
 
-   
+
 }

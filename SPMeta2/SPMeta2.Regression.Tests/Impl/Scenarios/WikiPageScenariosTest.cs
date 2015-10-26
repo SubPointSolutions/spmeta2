@@ -62,6 +62,55 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WikiPages.Values")]
+        public void CanDeploy_Default_WikiPage_With_RequiredFieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WikiPages.Values")]
+        public void CanDeploy_Default_WikiPage_With_FieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WikiPages.Values")]
+        public void CanDeploy_Default_WikiPage_With_ContentType_ByName()
+        {
+            var webFeature = BuiltInWebFeatures.WikiPageHomePage.Inherit(f => f.Enable());
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.WikiDocument;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<WikiPageDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddFeature(webFeature);
+
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddWikiPage(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
         #endregion
 
         #region utils

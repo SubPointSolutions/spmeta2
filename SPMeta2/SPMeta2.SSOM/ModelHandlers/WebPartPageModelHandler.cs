@@ -115,6 +115,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         private SPFile GetOrCreateNewWebPartFile(object modelHost, SPFolder folder,
             WebPartPageDefinition webpartPageModel)
         {
+            var list = folder.DocumentLibrary;
             var targetFile = FindWebPartPage(folder, webpartPageModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -160,23 +161,48 @@ namespace SPMeta2.SSOM.ModelHandlers
                   true,
                     file =>
                     {
+
+                    },
+                    after =>
+                    {
+                        if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
+                           !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                        {
+                            if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, webpartPageModel.ContentTypeId);
+
+                            if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, webpartPageModel.ContentTypeName);
+
+                            after.ListItemAllFields.Update();
+                        }
+
                         InvokeOnModelEvent(this, new ModelEventArgs
                         {
                             CurrentModelNode = null,
                             Model = null,
                             EventType = ModelEventType.OnProvisioned,
-                            Object = file,
+                            Object = after,
                             ObjectType = typeof(SPFile),
                             ObjectDefinition = webpartPageModel,
                             ModelHost = modelHost
                         });
-                    },
-                  null);
+                    });
 
                 targetFile = FindWebPartPage(folder, webpartPageModel);
             }
             else
             {
+                if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
+                !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                {
+                    if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, webpartPageModel.ContentTypeId);
+
+                    if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, webpartPageModel.ContentTypeName);
+                }
+
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = false. Skipping replacing web part page.");
 

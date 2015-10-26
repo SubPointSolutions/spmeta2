@@ -40,6 +40,7 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        [ExpectValidation]
         [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
 
@@ -70,6 +71,16 @@ namespace SPMeta2.Definitions
         [DataMember]
 
         public bool NeedOverride { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
 
         #endregion
 

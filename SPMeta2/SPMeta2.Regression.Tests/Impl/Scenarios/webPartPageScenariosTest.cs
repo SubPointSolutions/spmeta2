@@ -41,7 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.WebPartPages")]
-        public void CanDeploy_WikiPage()
+        public void CanDeploy_WebPartPage()
         {
             WithSitePagesList(sitePages =>
             {
@@ -51,7 +51,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.WebPartPages")]
-        public void CanDeploy_WikiPageToFolder()
+        public void CanDeploy_WebPartPageToFolder()
         {
             WithSitePagesList(sitePages =>
             {
@@ -60,6 +60,61 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     folder.AddRandomWebPartPage();
                 });
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebPartPages.Values")]
+        public void CanDeploy_Default_WebPartPage_With_RequiredFieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebPartPages.Values")]
+        public void CanDeploy_Default_WebPartPage_With_FieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebPartPages.Values")]
+        public void CanDeploy_Default_WebPartPage_With_ContentType_ByName()
+        {
+            var webFeature = BuiltInWebFeatures.WikiPageHomePage.Inherit(f => f.Enable());
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.WebPartPage;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            //var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            //{
+            //    def.ContentTypesEnabled = true;
+            //    def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            //});
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddFeature(webFeature);
+
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddWebPartPage(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
         }
 
         #endregion

@@ -81,6 +81,16 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool UpdateOverwriteVersion { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
         // should be collection of attachments later
         //public byte[] Content { get; set; }
 

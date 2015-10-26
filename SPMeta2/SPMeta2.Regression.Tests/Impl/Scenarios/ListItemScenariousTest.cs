@@ -32,6 +32,62 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region field values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListItems.Values")]
+        public void CanDeploy_ListItem_With_FieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListItems.Values")]
+        public void CanDeploy_ListItem_With_RequiredFieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListItems.Values")]
+        public void CanDeploy_ListItem_With_ContentType_ByName()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<ListItemDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddListItem(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        #endregion
+
         #region default list
 
         [TestMethod]
@@ -104,7 +160,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                             {
                                 rndSubFolder.AddRandomListItem();
                             });
-                           
+
                         });
                     });
 

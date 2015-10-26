@@ -73,7 +73,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
+
             var folder = folderModelHost.CurrentLibraryFolder;
+            var list = folderModelHost.CurrentLibrary;
 
             //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
             //    throw new Exception("FolderUrl property is not supported yet!");
@@ -97,6 +99,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
+
+                if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
+                   !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                {
+                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId))
+                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, wikiPageModel.ContentTypeId);
+
+                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, wikiPageModel.ContentTypeName);
+                }
 
                 newpage.ListItemAllFields[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
 
@@ -122,6 +134,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
                     pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+
+                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
+                        !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                    {
+                        if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, wikiPageModel.ContentTypeId);
+
+                        if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, wikiPageModel.ContentTypeName);
+                    }
                 }
                 else
                 {

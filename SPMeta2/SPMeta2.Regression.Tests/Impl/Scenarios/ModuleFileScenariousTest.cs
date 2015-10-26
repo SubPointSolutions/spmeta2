@@ -389,5 +389,61 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region field values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Values")]
+        public void CanDeploy_ModuleFile_With_FieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Values")]
+        public void CanDeploy_ModuleFile_With_RequiredFieldValues()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Values")]
+        public void CanDeploy_ModuleFile_With_ContentType_ByName()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Document;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddModuleFile(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        #endregion
     }
 }
