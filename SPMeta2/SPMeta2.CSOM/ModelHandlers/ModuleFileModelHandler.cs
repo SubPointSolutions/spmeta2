@@ -444,7 +444,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return stringCustomContentType;
         }
 
-        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition definition)
         {
             var context = folderHost.CurrentListFolder.Context;
 
@@ -457,7 +457,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQueryWithTrace();
 
-            var stringCustomContentType = ResolveContentTypeId(folderHost, moduleFile);
+            var stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
             if (list != null)
             {
@@ -468,7 +468,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(file, f => f.Exists);
             context.ExecuteQueryWithTrace();
@@ -480,7 +480,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = file.Exists ? file : null,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
 
@@ -493,8 +493,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             WithSafeFileOperation(list, file, f =>
             {
-                var fileName = moduleFile.FileName;
-                var fileContent = moduleFile.Content;
+                var fileName = definition.FileName;
+                var fileContent = definition.Content;
 
                 var fileCreatingInfo = new FileCreationInformation
                 {
@@ -516,17 +516,22 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwriting file");
                 var updatedFile = folder.Files.Add(fileCreatingInfo);
 
+                FieldLookupService.EnsureDefaultValues(updatedFile.ListItemAllFields, definition.DefaultValues);
+
+
                 if (!string.IsNullOrEmpty(stringCustomContentType))
                     updatedFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
-                if (!string.IsNullOrEmpty(moduleFile.Title))
-                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.Title] = moduleFile.Title;
+                if (!string.IsNullOrEmpty(definition.Title))
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.Title] = definition.Title;
 
-                FieldLookupService.EnsureDefaultValues(updatedFile.ListItemAllFields, moduleFile.DefaultValues);
+
+                FieldLookupService.EnsureValues(updatedFile.ListItemAllFields, definition.Values, true);
 
                 if (!string.IsNullOrEmpty(stringCustomContentType)
-                    || moduleFile.DefaultValues.Count > 0
-                    || !string.IsNullOrEmpty(moduleFile.Title))
+                    || definition.DefaultValues.Count > 0
+                    || definition.Values.Count > 0
+                    || !string.IsNullOrEmpty(definition.Title))
                 {
                     updatedFile.ListItemAllFields.Update();
                 }
@@ -535,7 +540,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return updatedFile;
             }, doesFileHasListItem);
 
-            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(resultFile, f => f.Exists);
             context.ExecuteQueryWithTrace();
@@ -547,7 +552,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioned,
                 Object = resultFile,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
 

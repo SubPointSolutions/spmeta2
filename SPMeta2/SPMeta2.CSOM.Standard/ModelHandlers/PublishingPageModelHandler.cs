@@ -249,6 +249,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 if (!string.IsNullOrEmpty(contentTypeId))
                     newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
 
+                FieldLookupService.EnsureValues(newFileItem, definition.Values, true);
+
                 newFileItem.Update();
 
                 context.ExecuteQueryWithTrace();

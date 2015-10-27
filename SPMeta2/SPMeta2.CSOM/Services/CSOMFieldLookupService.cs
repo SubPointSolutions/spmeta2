@@ -12,14 +12,27 @@ namespace SPMeta2.CSOM.Services
     {
         public virtual void EnsureDefaultValues(ListItem item, List<FieldValue> defaultValues)
         {
+            EnsureValues(item, defaultValues, false);
+        }
+
+        public virtual void EnsureValues(ListItem item, List<FieldValue> defaultValues,
+            bool shouldOverwrite)
+        {
             foreach (var defaultValue in defaultValues)
             {
                 if (!string.IsNullOrEmpty(defaultValue.FieldName))
                 {
                     if (item.FieldValues.ContainsKey(defaultValue.FieldName))
                     {
-                        if (item[defaultValue.FieldName] == null)
+                        if (!shouldOverwrite)
+                        {
+                            if (item[defaultValue.FieldName] == null)
+                                item[defaultValue.FieldName] = defaultValue.Value;
+                        }
+                        else
+                        {
                             item[defaultValue.FieldName] = defaultValue.Value;
+                        }
                     }
                     else
                     {

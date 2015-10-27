@@ -263,6 +263,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
             currentItem[BuiltInInternalFieldNames.Title] = definition.Title;
+
+            FieldLookupService.EnsureValues(currentItem, definition.Values, true);
         }
 
         private bool IsDocumentLibray(List list)

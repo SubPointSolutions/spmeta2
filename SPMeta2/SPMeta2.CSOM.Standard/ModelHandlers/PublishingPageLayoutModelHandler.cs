@@ -206,6 +206,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     newFileItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
                 }
 
+                FieldLookupService.EnsureValues(newFileItem, definition.Values, true);
                 newFileItem.Update();
 
                 context.ExecuteQueryWithTrace();

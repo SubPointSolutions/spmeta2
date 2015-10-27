@@ -155,6 +155,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                     currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
 
                 currentListItem[BuiltInInternalFieldNames.WikiField] = definition.Content ?? String.Empty;
+
+                FieldLookupService.EnsureValues(currentListItem, definition.Values, true);
+                
                 currentListItem.Update();
 
                 context.ExecuteQueryWithTrace();
