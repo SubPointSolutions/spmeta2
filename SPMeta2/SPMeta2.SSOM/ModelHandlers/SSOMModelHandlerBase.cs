@@ -21,12 +21,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // TODO, move to the ServiceContainer
             ContentTypeLookupService = new SSOMContentTypeLookupService();
+            FieldLookupService = new SSOMFieldLookupService();
         }
 
         #endregion
 
         #region properties
 
+        protected SSOMFieldLookupService FieldLookupService { get; set; }
         protected SSOMContentTypeLookupService ContentTypeLookupService { get; set; }
 
         public TokenReplacementServiceBase TokenReplacementService { get; set; }

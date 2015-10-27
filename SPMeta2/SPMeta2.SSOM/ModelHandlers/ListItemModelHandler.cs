@@ -148,6 +148,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual void MapListItemProperties(SPListItem item, ListItemDefinition definition)
         {
+            FieldLookupService.EnsureDefaultValues(item, definition.DefaultValues);
+
             if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
                         !string.IsNullOrEmpty(definition.ContentTypeName))
             {
@@ -162,6 +164,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             item[BuiltInInternalFieldNames.Title] = definition.Title;
         }
+
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {

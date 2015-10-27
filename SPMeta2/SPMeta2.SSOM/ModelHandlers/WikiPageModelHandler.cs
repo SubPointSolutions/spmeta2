@@ -100,6 +100,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
+                FieldLookupService.EnsureDefaultValues(newpage.ListItemAllFields, wikiPageModel.DefaultValues);
+
                 if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
                    !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
                 {
@@ -133,7 +135,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 if (wikiPageModel.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
-                    pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+
+                    FieldLookupService.EnsureDefaultValues(pageItem, wikiPageModel.DefaultValues);
 
                     if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
                         !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
@@ -144,6 +147,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                         if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
                             pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, wikiPageModel.ContentTypeName);
                     }
+
+                    pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+
                 }
                 else
                 {

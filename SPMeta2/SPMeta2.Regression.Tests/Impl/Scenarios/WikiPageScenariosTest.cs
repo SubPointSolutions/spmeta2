@@ -8,6 +8,7 @@ using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Containers.Standard;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
 using SPMeta2.Regression.Tests.Definitions;
@@ -66,7 +67,65 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.WikiPages.Values")]
         public void CanDeploy_Default_WikiPage_With_RequiredFieldValues()
         {
-            Assert.IsTrue(false);
+            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
+            {
+                def.ShowInDisplayForm = true;
+                def.ShowInEditForm = true;
+                def.ShowInListSettings = true;
+                def.ShowInNewForm = true;
+                def.ShowInVersionHistory = true;
+                def.ShowInViewForms = true;
+
+                def.ValidationFormula = null;
+                def.ValidationMessage = null;
+
+                def.Hidden = false;
+
+                def.DefaultValue = string.Empty;
+                def.Required = true;
+            });
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<WikiPageDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+
+                def.DefaultValues.Add(new FieldValue()
+                {
+                    FieldName = requiredText.InternalName,
+                    Value = Rnd.String()
+                });
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(requiredText);
+                site.AddContentType(contentTypeDef, contentType =>
+                {
+                    contentType.AddContentTypeFieldLink(requiredText);
+                });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddWikiPage(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
         }
 
         [TestMethod]

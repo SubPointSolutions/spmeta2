@@ -324,6 +324,7 @@
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\SSOMContentTypeLookupService.cs" />
+    <Compile Include="Services\SSOMFieldLookupService.cs" />
     <Compile Include="Services\SSOMLocalizationService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />
     <Compile Include="Services\SSOMTokenReplacementService.cs" />

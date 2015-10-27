@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls.WebParts;
@@ -85,7 +86,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     var pageItem = afterFile.Item;
 
                     // settig up dfault values if there is PublishingPageLayout setup
-                    EnsureDefaultValues(pageItem, publishingPageModel);
+                    FieldLookupService.EnsureDefaultValues(pageItem, publishingPageModel.DefaultValues);
 
                     pageItem[BuiltInFieldId.Title] = publishingPageModel.Title;
                     pageItem[BuiltInPublishingFieldId.Description] = publishingPageModel.Description;
@@ -138,29 +139,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                     pageItem.SystemUpdate();
                 });
-        }
-
-        private void EnsureDefaultValues(SPListItem newFileItem, PublishingPageDefinition publishingPageModel)
-        {
-            foreach (var defaultValue in publishingPageModel.DefaultValues)
-            {
-                if (!string.IsNullOrEmpty(defaultValue.FieldName))
-                {
-                    if (newFileItem.Fields.ContainsFieldWithStaticName(defaultValue.FieldName))
-                    {
-                        if (newFileItem[defaultValue.FieldName] == null)
-                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                }
-                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
-                {
-                    if (newFileItem.Fields.OfType<SPField>().Any(f => f.Id == defaultValue.FieldId.Value))
-                    {
-                        if (newFileItem[defaultValue.FieldId.Value] == null)
-                            newFileItem[defaultValue.FieldId.Value] = defaultValue.Value;
-                    }
-                }
-            }
         }
 
         private SPContentType FindContentTypeByName(SPContentTypeCollection contentTypes, string contentTypeName)

@@ -170,7 +170,77 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.PublishingPageLayout.Values")]
         public void CanDeploy_Default_PublishingPageLayout_With_RequiredFieldValues()
         {
-            Assert.IsTrue(false);
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
+            {
+                def.ShowInDisplayForm = true;
+                def.ShowInEditForm = true;
+                def.ShowInListSettings = true;
+                def.ShowInNewForm = true;
+                def.ShowInVersionHistory = true;
+                def.ShowInViewForms = true;
+
+                def.ValidationFormula = null;
+                def.ValidationMessage = null;
+
+                def.Hidden = false;
+
+                def.DefaultValue = string.Empty;
+                def.Required = true;
+            });
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.PageLayout;
+            });
+
+            var publishingPageLayoutContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.Name = string.Format("Required - {0}", Environment.TickCount);
+                def.Hidden = false;
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.PageLayout;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<PublishingPageLayoutDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+                def.AssociatedContentTypeId = publishingPageLayoutContentType.GetContentTypeId();
+
+                def.DefaultValues.Add(new FieldValue()
+               {
+                   FieldName = requiredText.InternalName,
+                   Value = Rnd.String()
+               });
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddFeature(siteFeature);
+
+                site.AddField(requiredText);
+                site.AddContentType(contentTypeDef, contentType =>
+                {
+                    contentType.AddContentTypeFieldLink(requiredText);
+                });
+                site.AddContentType(publishingPageLayoutContentType);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddFeature(webFeature);
+
+                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddContentTypeLink(publishingPageLayoutContentType);
+
+                    list.AddPublishingPageLayout(itemDef);
+                });
+            });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]

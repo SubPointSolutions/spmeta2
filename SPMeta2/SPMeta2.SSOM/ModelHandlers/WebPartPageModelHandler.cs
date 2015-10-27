@@ -165,6 +165,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     },
                     after =>
                     {
+
+                        FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, webpartPageModel.DefaultValues);
+
                         if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
                            !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
                         {
@@ -193,6 +196,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
+                FieldLookupService.EnsureDefaultValues(targetFile.ListItemAllFields, webpartPageModel.DefaultValues);
+
                 if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
                 !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
                 {

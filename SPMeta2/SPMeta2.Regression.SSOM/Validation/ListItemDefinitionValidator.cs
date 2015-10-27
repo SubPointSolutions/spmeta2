@@ -77,6 +77,43 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
             }
+
+            if (definition.DefaultValues.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefaultValues);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.DefaultValues)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = item[value.FieldId.Value];
+                        else
+                            itemValue = item[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues is empty. Skipping.");
+            }
         }
     }
 }
