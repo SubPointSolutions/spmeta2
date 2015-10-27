@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Tests.Prototypes;
 using SPMeta2.Regression.Tests.Utils;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Syntax;
@@ -158,12 +159,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region field values
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.PublishingPageLayout.Values")]
-        public void CanDeploy_Default_PublishingPageLayout_With_FieldValues()
-        {
-            Assert.IsTrue(false);
-        }
 
 
         [TestMethod]
@@ -173,23 +168,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
-            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
-            {
-                def.ShowInDisplayForm = true;
-                def.ShowInEditForm = true;
-                def.ShowInListSettings = true;
-                def.ShowInNewForm = true;
-                def.ShowInVersionHistory = true;
-                def.ShowInViewForms = true;
+            var requiredText = RItemValues.GetRequiredTextField(ModelGeneratorService);
 
-                def.ValidationFormula = null;
-                def.ValidationMessage = null;
-
-                def.Hidden = false;
-
-                def.DefaultValue = string.Empty;
-                def.Required = true;
-            });
+            var text1 = RItemValues.GetRandomTextField(ModelGeneratorService);
+            var text2 = RItemValues.GetRandomTextField(ModelGeneratorService);
 
             var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
             {
@@ -209,10 +191,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.AssociatedContentTypeId = publishingPageLayoutContentType.GetContentTypeId();
 
                 def.DefaultValues.Add(new FieldValue()
-               {
-                   FieldName = requiredText.InternalName,
-                   Value = Rnd.String()
-               });
+                {
+                    FieldName = requiredText.InternalName,
+                    Value = Rnd.String()
+                });
+
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text1.InternalName,
+                    Value = Rnd.String()
+                });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text2.InternalName,
+                    Value = Rnd.String()
+                });
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -220,9 +215,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddFeature(siteFeature);
 
                 site.AddField(requiredText);
+                site.AddField(text1);
+                site.AddField(text2);
+
                 site.AddContentType(contentTypeDef, contentType =>
                 {
                     contentType.AddContentTypeFieldLink(requiredText);
+                    contentType.AddContentTypeFieldLink(text1);
+                    contentType.AddContentTypeFieldLink(text2);
                 });
                 site.AddContentType(publishingPageLayoutContentType);
             });

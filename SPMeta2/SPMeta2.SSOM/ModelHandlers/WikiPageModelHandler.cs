@@ -71,8 +71,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
-            var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
-
+            var definition = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
             var folder = folderModelHost.CurrentLibraryFolder;
             var list = folderModelHost.CurrentLibrary;
@@ -80,7 +79,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             //if (!string.IsNullOrEmpty(wikiPageModel.FolderUrl))
             //    throw new Exception("FolderUrl property is not supported yet!");
 
-            var pageItem = FindWikiPageItem(folder, wikiPageModel);
+            var pageItem = FindWikiPageItem(folder, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -97,22 +96,24 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new wiki page");
 
-                var newWikiPageUrl = GetSafeWikiPageUrl(folder, wikiPageModel);
+                var newWikiPageUrl = GetSafeWikiPageUrl(folder, definition);
                 var newpage = folder.Files.Add(newWikiPageUrl, SPTemplateFileType.WikiPage);
 
-                FieldLookupService.EnsureDefaultValues(newpage.ListItemAllFields, wikiPageModel.DefaultValues);
+                FieldLookupService.EnsureDefaultValues(newpage.ListItemAllFields, definition.DefaultValues);
 
-                if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
-                   !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                   !string.IsNullOrEmpty(definition.ContentTypeName))
                 {
-                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId))
-                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, wikiPageModel.ContentTypeId);
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
 
-                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
-                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, wikiPageModel.ContentTypeName);
+                    if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                        newpage.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
                 }
 
-                newpage.ListItemAllFields[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+                newpage.ListItemAllFields[SPBuiltInFieldId.WikiField] = definition.Content ?? string.Empty;
+
+                FieldLookupService.EnsureValues(newpage.ListItemAllFields, definition.Values, true);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -132,24 +133,25 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing wiki page");
 
-                if (wikiPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
 
-                    FieldLookupService.EnsureDefaultValues(pageItem, wikiPageModel.DefaultValues);
+                    FieldLookupService.EnsureDefaultValues(pageItem, definition.DefaultValues);
 
-                    if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId) ||
-                        !string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                        !string.IsNullOrEmpty(definition.ContentTypeName))
                     {
-                        if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeId))
-                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, wikiPageModel.ContentTypeId);
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
 
-                        if (!string.IsNullOrEmpty(wikiPageModel.ContentTypeName))
-                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, wikiPageModel.ContentTypeName);
+                        if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
                     }
 
-                    pageItem[SPBuiltInFieldId.WikiField] = wikiPageModel.Content ?? string.Empty;
+                    pageItem[SPBuiltInFieldId.WikiField] = definition.Content ?? string.Empty;
 
+                    FieldLookupService.EnsureValues(pageItem, definition.Values, true);
                 }
                 else
                 {

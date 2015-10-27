@@ -113,10 +113,10 @@ namespace SPMeta2.SSOM.ModelHandlers
         }
 
         private SPFile GetOrCreateNewWebPartFile(object modelHost, SPFolder folder,
-            WebPartPageDefinition webpartPageModel)
+            WebPartPageDefinition definition)
         {
             var list = folder.DocumentLibrary;
-            var targetFile = FindWebPartPage(folder, webpartPageModel);
+            var targetFile = FindWebPartPage(folder, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -125,13 +125,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = targetFile,
                 ObjectType = typeof(SPFile),
-                ObjectDefinition = webpartPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
-            if (targetFile == null || webpartPageModel.NeedOverride)
+            if (targetFile == null || definition.NeedOverride)
             {
-                if (webpartPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
@@ -141,17 +141,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part page");
                 }
 
-                var webPartPageName = GetSafeWebPartPageFileName(webpartPageModel);
+                var webPartPageName = GetSafeWebPartPageFileName(definition);
 
                 byte[] fileContent = null;
 
-                if (!string.IsNullOrEmpty(webpartPageModel.CustomPageLayout))
+                if (!string.IsNullOrEmpty(definition.CustomPageLayout))
                 {
-                    fileContent = Encoding.UTF8.GetBytes(webpartPageModel.CustomPageLayout);
+                    fileContent = Encoding.UTF8.GetBytes(definition.CustomPageLayout);
                 }
                 else
                 {
-                    fileContent = Encoding.UTF8.GetBytes(GetWebPartPageTemplateContent(webpartPageModel));
+                    fileContent = Encoding.UTF8.GetBytes(GetWebPartPageTemplateContent(definition));
                 }
 
                 ModuleFileModelHandler.DeployModuleFile(folder,
@@ -165,18 +165,25 @@ namespace SPMeta2.SSOM.ModelHandlers
                     },
                     after =>
                     {
+                        FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, definition.DefaultValues);
 
-                        FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, webpartPageModel.DefaultValues);
-
-                        if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
-                           !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                           !string.IsNullOrEmpty(definition.ContentTypeName))
                         {
-                            if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId))
-                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, webpartPageModel.ContentTypeId);
+                            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
 
-                            if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
-                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, webpartPageModel.ContentTypeName);
+                            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+                        }
 
+                        FieldLookupService.EnsureValues(after.ListItemAllFields, definition.Values, true);
+
+                        if (definition.DefaultValues.Any()
+                            || definition.Values.Any()
+                            || !string.IsNullOrEmpty(definition.ContentTypeId)
+                            || !string.IsNullOrEmpty(definition.ContentTypeName))
+                        {
                             after.ListItemAllFields.Update();
                         }
 
@@ -187,25 +194,25 @@ namespace SPMeta2.SSOM.ModelHandlers
                             EventType = ModelEventType.OnProvisioned,
                             Object = after,
                             ObjectType = typeof(SPFile),
-                            ObjectDefinition = webpartPageModel,
+                            ObjectDefinition = definition,
                             ModelHost = modelHost
                         });
                     });
 
-                targetFile = FindWebPartPage(folder, webpartPageModel);
+                targetFile = FindWebPartPage(folder, definition);
             }
             else
             {
-                FieldLookupService.EnsureDefaultValues(targetFile.ListItemAllFields, webpartPageModel.DefaultValues);
+                FieldLookupService.EnsureDefaultValues(targetFile.ListItemAllFields, definition.DefaultValues);
 
-                if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId) ||
-                !string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
+                if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                !string.IsNullOrEmpty(definition.ContentTypeName))
                 {
-                    if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeId))
-                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, webpartPageModel.ContentTypeId);
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
 
-                    if (!string.IsNullOrEmpty(webpartPageModel.ContentTypeName))
-                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, webpartPageModel.ContentTypeName);
+                    if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
                 }
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
@@ -218,7 +225,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = targetFile,
                     ObjectType = typeof(SPFile),
-                    ObjectDefinition = webpartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
 

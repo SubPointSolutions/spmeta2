@@ -137,6 +137,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                     pageItem.Properties["PublishingPageLayoutName"] = currentPageLayoutItem.Name;
 
+                    FieldLookupService.EnsureValues(pageItem, publishingPageModel.Values, true);
+
                     pageItem.SystemUpdate();
                 });
         }

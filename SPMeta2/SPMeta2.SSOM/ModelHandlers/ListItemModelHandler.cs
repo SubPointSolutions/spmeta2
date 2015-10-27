@@ -163,6 +163,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             item[BuiltInInternalFieldNames.Title] = definition.Title;
+
+            FieldLookupService.EnsureValues(item, definition.Values, true);
         }
 
 

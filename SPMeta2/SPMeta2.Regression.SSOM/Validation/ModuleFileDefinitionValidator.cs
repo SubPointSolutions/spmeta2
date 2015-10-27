@@ -121,6 +121,49 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
             }
+
+
+
+            if (definition.Values.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.Values)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+                        else if (srcValue.FieldId.HasValue)
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldId.Value].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.Values);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
+            }
         }
     }
 

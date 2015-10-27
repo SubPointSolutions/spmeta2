@@ -329,13 +329,21 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                         if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
                             after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, moduleFile.ContentTypeName);
-
-                        after.ListItemAllFields.Update();
                     }
 
                     if (moduleFile.DefaultValues.Count > 0)
                     {
-                        EnsureDefaultValues(after.ListItemAllFields, moduleFile);
+                        FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, moduleFile.DefaultValues);
+
+                    }
+
+                    FieldLookupService.EnsureValues(after.ListItemAllFields, moduleFile.Values, true);
+
+                    if (moduleFile.DefaultValues.Any()
+                            || moduleFile.Values.Any()
+                            || !string.IsNullOrEmpty(moduleFile.ContentTypeId)
+                            || !string.IsNullOrEmpty(moduleFile.ContentTypeName))
+                    {
                         after.ListItemAllFields.Update();
                     }
 

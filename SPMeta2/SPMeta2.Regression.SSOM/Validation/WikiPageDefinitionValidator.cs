@@ -59,14 +59,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.Content, "Content is NULL. Skiping.");
             }
 
-            if (definition.DefaultValues.Any())
-            {
-
-            }
-            else
-            {
-                assert.SkipProperty(m => m.DefaultValues, "DefaultValues is null or empty. Skipping.");
-            }
 
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {
@@ -135,6 +127,44 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
             {
                 assert.SkipProperty(m => m.DefaultValues, "DefaultValues is empty. Skipping.");
+            }
+
+
+            if (definition.Values.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Values);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.Values)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = spObject[value.FieldId.Value];
+                        else
+                            itemValue = spObject[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values is empty. Skipping.");
             }
         }
     }

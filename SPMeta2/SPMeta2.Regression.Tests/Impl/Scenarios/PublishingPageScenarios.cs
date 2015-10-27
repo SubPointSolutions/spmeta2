@@ -22,6 +22,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Regression.Tests.Utils;
+using SPMeta2.Regression.Tests.Prototypes;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -126,12 +127,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModels(new ModelNode[] { siteModel, webModel });
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.PublishingPage.Values")]
-        public void CanDeploy_Default_PublishingPage_With_FieldValues()
-        {
-            Assert.IsTrue(false);
-        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.PublishingPage.Values")]
@@ -184,23 +179,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ParentContentTypeId = BuiltInPublishingContentTypeId.ArticlePage;
             });
 
-            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
-            {
-                def.ShowInDisplayForm = true;
-                def.ShowInEditForm = true;
-                def.ShowInListSettings = true;
-                def.ShowInNewForm = true;
-                def.ShowInVersionHistory = true;
-                def.ShowInViewForms = true;
+            var requiredText = RItemValues.GetRequiredTextField(ModelGeneratorService);
 
-                def.ValidationFormula = null;
-                def.ValidationMessage = null;
-
-                def.Hidden = false;
-
-                def.DefaultValue = string.Empty;
-                def.Required = true;
-            });
+            var text1 = RItemValues.GetRandomTextField(ModelGeneratorService);
+            var text2 = RItemValues.GetRandomTextField(ModelGeneratorService);
 
             var publishingPageLayout = ModelGeneratorService.GetRandomDefinition<PublishingPageLayoutDefinition>(def =>
             {
@@ -216,6 +198,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     FieldName = requiredText.InternalName,
                     Value = Rnd.String()
                 });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text1.InternalName,
+                    Value = Rnd.String()
+                });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text2.InternalName,
+                    Value = Rnd.String()
+                });
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -223,10 +217,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddSiteFeature(siteFeature);
 
                 site.AddField(requiredText);
+                site.AddField(text1);
+                site.AddField(text2);
 
                 site.AddContentType(publishingPageLayoutContentType, contentType =>
                 {
                     contentType.AddContentTypeFieldLink(requiredText);
+
+                    contentType.AddContentTypeFieldLink(text1);
+                    contentType.AddContentTypeFieldLink(text2);
                 });
             });
 

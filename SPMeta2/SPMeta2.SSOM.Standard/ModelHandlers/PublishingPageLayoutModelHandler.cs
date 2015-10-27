@@ -137,6 +137,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                             siteContentType.Id.ToString());
                     }
 
+                    FieldLookupService.EnsureValues(pageItem, definition.Values, true);
+
+
                     pageItem.Update();
                 });
         }
