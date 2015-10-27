@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using CsQuery;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Utils;
@@ -24,7 +25,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Extended
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             Folder targetFolder = null;
-            Web web = null; 
+            Web web = null;
 
             if (modelHost is ListModelHost)
             {
@@ -121,6 +122,51 @@ namespace SPMeta2.Regression.CSOM.Validation.Extended
                                         webpart.Title,
                                         webpart
                                     }));
+                            }
+                        }
+
+                        // if the target web part is .AddToPageContent 
+                        foreach (var webpart in definition.WebPartDefinitions)
+                        {
+                            if (webpart.AddToPageContent)
+                            {
+                                // web part must be with in a wiki content zone
+                                // <div id="ctl00_PlaceHolderMain_WikiField">
+                                //   <div class="ms-wikicontent ms-rtestate-field" style="padding-right: 10px">
+                                //     <span title="3fc9a6961e5a48b9855c1ecd9afd12e5" id="WebPartTitleWPQ2" class="js-webpart-titleCell">  
+
+                                CQ j = pageContent;
+
+                                var wikiFieldCnt = j.Select("div[id$='_PlaceHolderMain_WikiField']");
+                                var wikiFieldCntText = wikiFieldCnt.Html();
+
+                                var wpTitleText = string.Format("<span>{0}</span>", webpart.Title);
+                                var hasWebPartInWikiArea = wikiFieldCntText.Contains(wpTitleText);
+
+                                if (!hasWebPartInWikiArea)
+                                {
+                                    trace.WriteLine(
+                                        string.Format("[ERR] Wiki page [{0}] misses web part within WIKI area. Wp title:[{1}] and def:[{2}]",
+                                            new object[]
+                                        {
+                                            pageUrl,
+                                            webpart.Title,
+                                            webpart
+                                        }));
+
+                                    isValid = false;
+                                }
+                                else
+                                {
+                                    trace.WriteLine(
+                                        string.Format("[True] Wiki page [{0}] has web part within WIKI area. Wp title:[{1}] and def:[{2}]",
+                                        new object[]
+                                    {
+                                        pageUrl,
+                                        webpart.Title,
+                                        webpart
+                                    }));
+                                }
                             }
                         }
                     });

@@ -68,6 +68,19 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 
         #endregion
 
+		#region internal
+
+		public static bool UseWikiPages = true;
+		public static bool UseWebPartPages = false;
+		public static bool UsePublishingPages = false;
+
+		public static bool UseListPages = false;
+		public static bool UseLibraryPages = false;
+
+		public static bool UseSubWebs = false;
+
+		#endregion
+
         #region pre-generated tests
  <#
 
@@ -131,23 +144,25 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                 // always deploy to root web 
                 FillWebWithTheTestwebPartSuite<TWebpartType>(web);
 
-                // and then sub web too
-                web.AddRandomWeb(subWeb =>
-                {
-					subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+				if(UseSubWebs) {
+					// and then sub web too
+					web.AddRandomWeb(subWeb =>
 					{
-						def.Enable = true;
-						def.ForceActivate = true;
-					}));
+						subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+						{
+							def.Enable = true;
+							def.ForceActivate = true;
+						}));
 
-					subWeb.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
-					{
-						def.Enable = true;
-						def.ForceActivate = true;
-					}));
+						subWeb.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(def =>
+						{
+							def.Enable = true;
+							def.ForceActivate = true;
+						}));
 
-                    FillWebWithTheTestwebPartSuite<TWebpartType>(subWeb);
-                });
+						FillWebWithTheTestwebPartSuite<TWebpartType>(subWeb);
+					});
+				}
             });
 
             WithDisabledPropertyUpdateValidation(() =>
@@ -229,36 +244,46 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                     var wikiPageName = string.Empty;
 					var wikiPageNameAddToPageContent = string.Empty;
 
-                    list
-                        // 1 - wiki pages
-                        .AddRandomWikiPage(page =>
-                        {
-                            wikiPageName = (page.Value as WikiPageDefinition).FileName;
-                            page.AddDefinitionNode(wikiWebPartDef);
-                        })
-                        // 2- web part pages
-                        .AddRandomWebPartPage(page =>
-                        {
-                            webpartPageName = (page.Value as WebPartPageDefinition).FileName;
-                            page.AddDefinitionNode(webpartPageWebPartDef);
-                        })
-						/// 3- adding to the web part page as .AddToPageContent
-						.AddRandomWikiPage(page =>
-                        {
-							page.RegExcludeFromValidation();
+					if(UseWikiPages) {
+						list
+							// 1 - wiki pages
+							.AddRandomWikiPage(page =>
+							{
+								wikiPageName = (page.Value as WikiPageDefinition).FileName;
+								page.AddDefinitionNode(wikiWebPartDef);
+							});
 
-                            wikiPageNameAddToPageContent = (page.Value as WikiPageDefinition).FileName;
+						ValidateWebPartPresenceForPage(list, wikiPageName, wikiWebPartDef);
+					}
+
+					if(UseWebPartPages) {
+						list
+							// 2- web part pages
+							.AddRandomWebPartPage(page =>
+							{
+								webpartPageName = (page.Value as WebPartPageDefinition).FileName;
+								page.AddDefinitionNode(webpartPageWebPartDef);
+							});
+
+						ValidateWebPartPresenceForPage(list, webpartPageName, webpartPageWebPartDef);
+					}
+
+					if(UseWikiPages) {
+						list
+							/// 3- adding to the web part page as .AddToPageContent
+							.AddRandomWikiPage(page =>
+							{
+								page.RegExcludeFromValidation();
+
+								wikiPageNameAddToPageContent = (page.Value as WikiPageDefinition).FileName;
                             
-							page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef1);
-							page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef2);
-                        })
-						;
+								page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef1);
+								page.AddDefinitionNode(webpartPageWebPartAddToPageContentDef2);
+							});
 
-                    ValidateWebPartPresenceForPage(list, wikiPageName, wikiWebPartDef);
-                    ValidateWebPartPresenceForPage(list, webpartPageName, webpartPageWebPartDef);
-
-					ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef1);
-					ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef2);
+						ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef1);
+						ValidateWebPartPresenceForPage(list, wikiPageNameAddToPageContent, webpartPageWebPartAddToPageContentDef2);
+					}
                 });
 
 	            // 3 - publishing pages
@@ -266,119 +291,127 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
                 {
                     var publishingPageName = string.Empty;
 
-                    list
-                        .AddRandomPublishingPage(page =>
-                        {
-                            (page.Value as PublishingPageDefinition).PageLayoutFileName =
-                                BuiltInPublishingPageLayoutNames.BlankWebPartPage;
-                            publishingPageName = (page.Value as PublishingPageDefinition).FileName;
+					if(UsePublishingPages) {			
+					
+						list
+							.AddRandomPublishingPage(page =>
+							{
+								(page.Value as PublishingPageDefinition).PageLayoutFileName =
+									BuiltInPublishingPageLayoutNames.BlankWebPartPage;
+								publishingPageName = (page.Value as PublishingPageDefinition).FileName;
 
-                            page.AddDefinitionNode(publishingPageWebPartDef);
-                        });
+								page.AddDefinitionNode(publishingPageWebPartDef);
+							});
 
-                    ValidateWebPartPresenceForPage(list, publishingPageName, publishingPageWebPartDef);
-                })
-                // 4 - list related routines - OOTB views, custom views & forms
-                .AddRandomList(list =>
-                {
-                    // OOTB view
-                    list.AddHostListView(BuiltInListViewDefinitions.Lists.AllItems, listView =>
-                    {
-                        listView.AddDefinitionNode(listWebPartDef.Inherit());
-                    });
-
-                    if (ShoudValidatePresenceOnListViews(initialDef))
-                        ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.AllItems.Url, listWebPartDef);
-
-                    // custom view
-                    var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
-                    {
-                        def.Url = Rnd.AspxFileName();
-                    });
-
-                    list.AddListView(customView, listView =>
-                    {
-                        listView.AddDefinitionNode(listWebPartDef.Inherit());
-                    });
-
-                    if (ShoudValidatePresenceOnListViews(initialDef))
-                        ValidateWebPartPresenceForPage(list, customView.Url, listWebPartDef);
-
-                    // OOTB forms, new - edit - view
-                    list.AddHostListView(BuiltInListViewDefinitions.Lists.NewForm, listView =>
-                    {
-                        listView.AddDefinitionNode(listWebPartDef.Inherit());
-                    });
-
-                    ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.NewForm.Url, listWebPartDef);
-
-                    list.AddHostListView(BuiltInListViewDefinitions.Lists.EditForm, listView =>
-                    {
-                        listView.AddDefinitionNode(listWebPartDef.Inherit());
-                    });
-
-
-                    ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.EditForm.Url, listWebPartDef);
-
-                    list.AddHostListView(BuiltInListViewDefinitions.Lists.DispForm, listView =>
-                    {
-                        listView.AddDefinitionNode(listWebPartDef.Inherit());
-                    });
-
-
-                    ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.DispForm.Url, listWebPartDef);
-                })
-
-                // 5 - OOTB list view form on the library
-                .AddRandomDocumentLibrary(list =>
-                {
-                    // OOTB view
-
-                    list.AddHostListView(BuiltInListViewDefinitions.Libraries.AllItems, listView =>
-                    {
-                        listView.AddDefinitionNode(docWebPartDef.Inherit());
-                    });
-
-                    if (ShoudValidatePresenceOnLibraryViews(initialDef))
-                        ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.AllItems.Url, docWebPartDef);
-
-                    // custom view
-                    var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
-                    {
-                        def.Url = Rnd.AspxFileName();
-                    });
-
-                    list.AddListView(customView, listView =>
-                    {
-                        listView.AddDefinitionNode(docWebPartDef.Inherit());
-                    });
-
-                    if (ShoudValidatePresenceOnLibraryViews(initialDef))
-                        ValidateWebPartPresenceForPage(list, "Forms/" + customView.Url, docWebPartDef);
-
-                    // OOTB new - edit - view forms
-                    // upload, NOPE!
-                    //list.AddHostListView(BuiltInListViewDefinitions.Libraries.Upload, listView =>
-                    //{
-                    //    listView.AddDefinitionNode(docWebPartDef.Inherit());
-                    //});
-
-                    //ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.Upload.Url, docWebPartDef);
-
-                    list.AddHostListView(BuiltInListViewDefinitions.Libraries.EditForm, listView =>
-                    {
-                        listView.AddDefinitionNode(docWebPartDef.Inherit());
-                    });
-
-                    ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.EditForm.Url, docWebPartDef);
-
-                    list.AddHostListView(BuiltInListViewDefinitions.Libraries.DispForm, listView =>
-                    {
-                        listView.AddDefinitionNode(docWebPartDef.Inherit());
-                    });
-
-                    ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.DispForm.Url, docWebPartDef);
+						ValidateWebPartPresenceForPage(list, publishingPageName, publishingPageWebPartDef);
+					}
                 });
+
+				if(UseListPages) {
+					// 4 - list related routines - OOTB views, custom views & forms
+					currentWeb.AddRandomList(list =>
+					{
+						// OOTB view
+						list.AddHostListView(BuiltInListViewDefinitions.Lists.AllItems, listView =>
+						{
+							listView.AddDefinitionNode(listWebPartDef.Inherit());
+						});
+
+						if (ShoudValidatePresenceOnListViews(initialDef))
+							ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.AllItems.Url, listWebPartDef);
+
+						// custom view
+						var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+						{
+							def.Url = Rnd.AspxFileName();
+						});
+
+						list.AddListView(customView, listView =>
+						{
+							listView.AddDefinitionNode(listWebPartDef.Inherit());
+						});
+
+						if (ShoudValidatePresenceOnListViews(initialDef))
+							ValidateWebPartPresenceForPage(list, customView.Url, listWebPartDef);
+
+						// OOTB forms, new - edit - view
+						list.AddHostListView(BuiltInListViewDefinitions.Lists.NewForm, listView =>
+						{
+							listView.AddDefinitionNode(listWebPartDef.Inherit());
+						});
+
+						ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.NewForm.Url, listWebPartDef);
+
+						list.AddHostListView(BuiltInListViewDefinitions.Lists.EditForm, listView =>
+						{
+							listView.AddDefinitionNode(listWebPartDef.Inherit());
+						});
+
+
+						ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.EditForm.Url, listWebPartDef);
+
+						list.AddHostListView(BuiltInListViewDefinitions.Lists.DispForm, listView =>
+						{
+							listView.AddDefinitionNode(listWebPartDef.Inherit());
+						});
+
+
+						ValidateWebPartPresenceForPage(list, BuiltInListViewDefinitions.Lists.DispForm.Url, listWebPartDef);
+					});
+				}
+
+				if(UseLibraryPages) {
+					// 5 - OOTB list view form on the library
+					currentWeb.AddRandomDocumentLibrary(list =>
+					{
+						// OOTB view
+
+						list.AddHostListView(BuiltInListViewDefinitions.Libraries.AllItems, listView =>
+						{
+							listView.AddDefinitionNode(docWebPartDef.Inherit());
+						});
+
+						if (ShoudValidatePresenceOnLibraryViews(initialDef))
+							ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.AllItems.Url, docWebPartDef);
+
+						// custom view
+						var customView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+						{
+							def.Url = Rnd.AspxFileName();
+						});
+
+						list.AddListView(customView, listView =>
+						{
+							listView.AddDefinitionNode(docWebPartDef.Inherit());
+						});
+
+						if (ShoudValidatePresenceOnLibraryViews(initialDef))
+							ValidateWebPartPresenceForPage(list, "Forms/" + customView.Url, docWebPartDef);
+
+						// OOTB new - edit - view forms
+						// upload, NOPE!
+						//list.AddHostListView(BuiltInListViewDefinitions.Libraries.Upload, listView =>
+						//{
+						//    listView.AddDefinitionNode(docWebPartDef.Inherit());
+						//});
+
+						//ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.Upload.Url, docWebPartDef);
+
+						list.AddHostListView(BuiltInListViewDefinitions.Libraries.EditForm, listView =>
+						{
+							listView.AddDefinitionNode(docWebPartDef.Inherit());
+						});
+
+						ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.EditForm.Url, docWebPartDef);
+
+						list.AddHostListView(BuiltInListViewDefinitions.Libraries.DispForm, listView =>
+						{
+							listView.AddDefinitionNode(docWebPartDef.Inherit());
+						});
+
+						ValidateWebPartPresenceForPage(list, "Forms/" + BuiltInListViewDefinitions.Libraries.DispForm.Url, docWebPartDef);
+					});
+				}
             ;
 
             // all web parts chrom

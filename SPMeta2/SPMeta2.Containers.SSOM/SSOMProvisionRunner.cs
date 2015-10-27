@@ -44,7 +44,11 @@ namespace SPMeta2.Containers.SSOM
 
             LoadEnvironmentConfig();
             InitServices();
+
+            EnableParallelMode = false;
         }
+
+        public bool EnableParallelMode { get; set; }
 
         private void InitServices()
         {
@@ -199,6 +203,11 @@ namespace SPMeta2.Containers.SSOM
 
         protected string GetTargetSiteCollectionUrl()
         {
+            if (!EnableParallelMode)
+            {
+                return SiteUrls.First();
+            }
+
             var scopeHash = GetScopeHash();
 
             if (string.IsNullOrEmpty(scopeHash))

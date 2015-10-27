@@ -381,6 +381,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll">
+      <Link>CsQuery.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
       <Link>SPMeta2.Containers.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -31,7 +31,7 @@ namespace SPMeta2.Utils
         public static XDocument SetOrUpdatePageViewerWebPartProperty(this XDocument webpartXmlDocument, string propName,
             string propValue, bool isCData)
         {
-            return webpartXmlDocument.SetOrUpdateProperty(propName, propValue, XmlNs, isCData);
+            return webpartXmlDocument.SetOrUpdateProperty(propName, propValue, "string", XmlNs, isCData);
         }
 
         #endregion

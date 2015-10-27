@@ -538,7 +538,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         private void HandleWikiPageProvision(ListItem listItem,
-            WebPartDefinitionBase webpartModel, Guid? webPartStoreKey, Guid? oldWebParKey)
+            WebPartDefinitionBase webpartModel, Guid? currentWebPartStoreKey, Guid? oldWebParStoreKey)
         {
             if (!webpartModel.AddToPageContent)
                 return;
@@ -567,37 +567,43 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return;
             }
 
-            var wikiTemplate = new StringBuilder();
-
+            // any on the page?
             var existingWebPartId = string.Empty;
 
-            var definitionWebPartId = webpartModel.Id.ToString()
-                                      .Replace("g_", string.Empty)
-                                      .Replace("_", "-"); ;
+            // current from the new provision
+            var upcomingWebPartId = string.Empty;
 
-            var upcomingWebPartId = definitionWebPartId;
+            // weird, by some web part ignor ID from the XML
+            // so webpartStoreKey from the previous CSOM adding web part to the page must be used
 
-            // aa....
-            // extremely unfortunate 
-            // shoudl it alwsy be webPartStoreKey??
+            // M2 covers that fact with the regression testing, so we know what are they
+            // and we have NOD idea why it happens 
             if (ShouldUseWebPartStoreKeyForWikiPage)
             {
-                upcomingWebPartId = webPartStoreKey.ToString()
+                upcomingWebPartId = currentWebPartStoreKey.ToString()
                                       .Replace("g_", string.Empty)
                                       .Replace("_", "-"); ;
             }
+            else
+            {
+                // get from the model
+                upcomingWebPartId = webpartModel.Id.ToString()
+                                       .Replace("g_", string.Empty)
+                                       .Replace("_", "-"); ;
+            }
 
-            if (!oldWebParKey.HasGuidValue())
+            if (!oldWebParStoreKey.HasGuidValue())
             {
                 // first provision
-                existingWebPartId = webPartStoreKey.ToString()
+                existingWebPartId = currentWebPartStoreKey.ToString()
                                       .Replace("g_", string.Empty)
                                       .Replace("_", "-");
             }
             else
             {
-                // second, so that we had web part and use that ID
-                existingWebPartId = oldWebParKey.ToString()
+                // second provision, 
+                // we had web part on the page and can reuse that ID to relink on wiki content
+                existingWebPartId = oldWebParStoreKey.ToString()
                                       .Replace("g_", string.Empty)
                                       .Replace("_", "-");
             }
@@ -605,6 +611,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             var content = listItem[targetFieldName] == null
                 ? string.Empty
                 : listItem[targetFieldName].ToString();
+
+            var wikiTemplate = new StringBuilder();
 
             // actual ID will be replaced later
             wikiTemplate.AppendFormat("​​​​​​​​​​​​​​​​​​​​​​<div class='ms-rtestate-read ms-rte-wpbox' contentEditable='false'>");
@@ -630,13 +638,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else
             {
-                // we had web part on the page
-                // so we need to change the ID
-                if (oldWebParKey.HasGuidValue())
+                // there is a content on the page
+                // there might be some web parts too
+                if (oldWebParStoreKey.HasGuidValue())
                 {
-                    // was old on the page?
+                    // there was an old web part on the page
+                    // checking if markup has the ID
+
                     if (content.ToUpper().IndexOf(existingWebPartId.ToUpper()) != -1)
                     {
+                        // was old web part on the page?
                         // yes, replacing ID
                         TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
                             string.Format("Replacing web part with ID: [{0}] to [{1}] on the page content.",
@@ -651,7 +662,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         context.ExecuteQueryWithTrace();
                     }
                     // original from the definigion?
-                    else if (content.ToUpper().IndexOf(definitionWebPartId.ToUpper()) != -1)
+                    else if (content.ToUpper().IndexOf(upcomingWebPartId.ToUpper()) != -1)
                     {
                         // yes, replacing ID
                         TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
@@ -659,7 +670,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                 existingWebPartId, upcomingWebPartId),
                             null);
 
-                        content = content.Replace(definitionWebPartId, upcomingWebPartId);
+                        // do nothing
 
                         listItem[targetFieldName] = content;
                         listItem.Update();
@@ -686,19 +697,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    // first provision, no web parts on the wiki page
-
-                    // there should be a definition based web part id in the template
-                    // updatting to a upcoming ID
-                    if (content.ToUpper().IndexOf(definitionWebPartId.ToUpper()) != -1)
+                    // first provision of the web part on the page
+                    if (content.ToUpper().IndexOf(upcomingWebPartId.ToUpper()) != -1)
                     {
-                        // yes, replacing ID
-                        TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall,
-                            string.Format("Replacing web part with ID: [{0}] to [{1}] on the page content.",
-                                definitionWebPartId, upcomingWebPartId),
-                            null);
-
-                        content = content.Replace(definitionWebPartId, upcomingWebPartId);
+                        // do nothing
 
                         listItem[targetFieldName] = content;
                         listItem.Update();
@@ -715,7 +717,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                 existingWebPartId
                             });
 
-                        content = string.Format(wikiTemplateOutput, upcomingWebPartId);
+                        content = content + string.Format(wikiTemplateOutput, upcomingWebPartId);
 
                         listItem[targetFieldName] = content;
                         listItem.Update();
