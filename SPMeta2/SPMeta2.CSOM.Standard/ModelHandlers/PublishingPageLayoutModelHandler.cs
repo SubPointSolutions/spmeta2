@@ -172,7 +172,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
-                newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+                FieldLookupService.EnsureDefaultValues(newFileItem, definition.DefaultValues);
+
+                if (!string.IsNullOrEmpty(definition.Title))
+                    newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+
                 newFileItem["MasterPageDescription"] = definition.Description;
 
                 newFileItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
