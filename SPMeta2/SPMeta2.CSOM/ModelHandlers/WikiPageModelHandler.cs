@@ -149,6 +149,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
+                FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
+
                 if (!string.IsNullOrEmpty(contentTypeId))
                     currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
 
@@ -182,6 +184,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var currentListItem = file.ListItemAllFields;
                     context.Load(currentListItem);
                     context.ExecuteQueryWithTrace();
+
+                    FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
 
                     if (!string.IsNullOrEmpty(contentTypeId))
                         currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;

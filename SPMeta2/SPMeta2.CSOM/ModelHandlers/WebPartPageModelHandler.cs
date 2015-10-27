@@ -272,6 +272,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var newFile = folder.Files.Add(file);
 
+                FieldLookupService.EnsureDefaultValues(newFile.ListItemAllFields, definition.DefaultValues);
+
+
                 if (!string.IsNullOrEmpty(contentTypeId))
                 {
                     newFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;

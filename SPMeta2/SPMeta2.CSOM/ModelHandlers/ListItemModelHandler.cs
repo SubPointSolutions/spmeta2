@@ -259,6 +259,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                                             .Id.ToString();
             }
 
+            FieldLookupService.EnsureDefaultValues(currentItem, definition.DefaultValues);
+
+
             currentItem[BuiltInInternalFieldNames.Title] = definition.Title;
         }
 

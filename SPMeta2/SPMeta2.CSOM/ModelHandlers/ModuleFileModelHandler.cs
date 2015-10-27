@@ -519,11 +519,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (!string.IsNullOrEmpty(stringCustomContentType))
                     updatedFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
-                if (moduleFile.DefaultValues.Count > 0)
-                    EnsureDefaultValues(updatedFile.ListItemAllFields, moduleFile);
+                if (!string.IsNullOrEmpty(moduleFile.Title))
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.Title] = moduleFile.Title;
 
-                if (!string.IsNullOrEmpty(stringCustomContentType) || moduleFile.DefaultValues.Count > 0)
+                FieldLookupService.EnsureDefaultValues(updatedFile.ListItemAllFields, moduleFile.DefaultValues);
+
+                if (!string.IsNullOrEmpty(stringCustomContentType)
+                    || moduleFile.DefaultValues.Count > 0
+                    || !string.IsNullOrEmpty(moduleFile.Title))
+                {
                     updatedFile.ListItemAllFields.Update();
+                }
+
 
                 return updatedFile;
             }, doesFileHasListItem);
@@ -545,29 +552,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             return resultFile;
-        }
-
-        private static void EnsureDefaultValues(ListItem newFileItem, ModuleFileDefinition publishingPageModel)
-        {
-            foreach (var defaultValue in publishingPageModel.DefaultValues)
-            {
-                if (!string.IsNullOrEmpty(defaultValue.FieldName))
-                {
-                    if (newFileItem.FieldValues.ContainsKey(defaultValue.FieldName))
-                    {
-                        if (newFileItem[defaultValue.FieldName] == null)
-                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                    else
-                    {
-                        newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                }
-                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
-                {
-                    // unsupported by CSOM API yet
-                }
-            }
         }
 
         #endregion

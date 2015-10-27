@@ -69,6 +69,12 @@ namespace SPMeta2.Definitions
         [IdentityKey]
         public string FileName { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string Title { get; set; }
+
         /// <summary>
         /// Target file content.
         /// </summary>

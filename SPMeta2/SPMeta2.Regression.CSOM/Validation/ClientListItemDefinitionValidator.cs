@@ -52,9 +52,9 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = spObject.Context;
 
-            context.Load(spObject,
-                            o => o.DisplayName,
-                            o => o.ContentType);
+            context.Load(spObject);
+            context.Load(spObject, o => o.DisplayName);
+            context.Load(spObject, o => o.ContentType);
             context.ExecuteQueryWithTrace();
 
             ValidateProperties(spObject, definition);
@@ -114,6 +114,43 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
             {
                 assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+
+            if (definition.DefaultValues.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.DefaultValues)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.DefaultValues);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
             }
         }
 

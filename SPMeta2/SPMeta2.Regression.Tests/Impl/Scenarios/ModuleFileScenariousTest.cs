@@ -430,6 +430,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var itemDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
             {
+                def.Title = Rnd.String();
                 def.ContentTypeName = contentTypeDef.Name;
 
                 def.DefaultValues.Add(new FieldValue()

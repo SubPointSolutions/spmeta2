@@ -268,6 +268,7 @@
     </Compile>
     <Compile Include="Services\ClientRuntimeContextServiceBase.cs" />
     <Compile Include="Services\CSOMContentTypeLookupService.cs" />
+    <Compile Include="Services\CSOMFieldLookupService.cs" />
     <Compile Include="Services\CSOMProvisionService.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
     <Compile Include="Services\CSOMTokenReplacementService.cs" />

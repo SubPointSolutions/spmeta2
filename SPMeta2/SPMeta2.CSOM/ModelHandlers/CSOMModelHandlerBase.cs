@@ -27,12 +27,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // TODO, move to ServiceContainer
             ContentTypeLookupService = new CSOMContentTypeLookupService();
+            FieldLookupService = new CSOMFieldLookupService();
         }
 
         #endregion
 
         #region properties
 
+        public CSOMFieldLookupService FieldLookupService { get; set; }
         public CSOMContentTypeLookupService ContentTypeLookupService { get; set; }
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
         public LocalizationServiceBase LocalizationService { get; set; }
@@ -112,6 +114,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         #endregion
+
+
 
 
     }

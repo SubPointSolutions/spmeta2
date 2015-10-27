@@ -30,6 +30,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                                      .ShouldBeEqual(m => m.FileName, o => o.Name);
             //.ShouldBeEqual(m => m.Content, o => o.GetContent());
 
+            if (!string.IsNullOrEmpty(definition.Title))
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Title is null or empty. Skipping.");
+            }
+
             // skip all templates
             if (definition.FileName.ToUpper().EndsWith("DOTX"))
             {

@@ -35,6 +35,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!spObject.IsObjectPropertyInstantiated("Name"))
                 spObject.Context.Load(spObject, o => o.Name);
 
+            if (!spObject.IsObjectPropertyInstantiated("Title"))
+                spObject.Context.Load(spObject, o => o.Title);
+
+
             if (!spObject.IsObjectPropertyInstantiated("ServerRelativeUrl"))
                 spObject.Context.Load(spObject, o => o.ServerRelativeUrl);
 
@@ -45,6 +49,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                                .NewAssert(definition, spObject)
                                      .ShouldNotBeNull(spObject)
                                      .ShouldBeEqual(m => m.FileName, o => o.Name);
+
+            if (!string.IsNullOrEmpty(definition.Title))
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Title is null or empty. Skipping.");
+            }
 
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {
@@ -145,7 +158,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 });
             }
 
-            
+
         }
     }
 }

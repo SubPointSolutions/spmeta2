@@ -321,6 +321,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     {
                         var list = folder.ParentWeb.Lists[folder.ParentListId];
 
+                        if (!string.IsNullOrEmpty(moduleFile.Title))
+                            after.ListItemAllFields["Title"] = moduleFile.Title;
+
                         if (!string.IsNullOrEmpty(moduleFile.ContentTypeId))
                             after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, moduleFile.ContentTypeId);
 
