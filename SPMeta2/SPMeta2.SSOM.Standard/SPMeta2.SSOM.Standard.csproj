@@ -231,17 +231,17 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\CategoryWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\DocumentSetContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\DocumentSetPropertiesWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\MyMembershipWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\MyMembershipWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\RSSAggregatorWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" />
+    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\SiteDocumentsModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SocialCommentWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SummaryLinkWebPartModelHandler.cs" />

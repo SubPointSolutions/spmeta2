@@ -40,7 +40,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
                 throw new SPMeta2Exception(
                     string.Format("Term name [{0}] cannot contain any of the following characters: {1}",
                         definition.Name,
-                        string.Join(", ", TaxonomyUtility.InvalidTermNameStrings)));
+                        string.Join(", ", TaxonomyUtility.InvalidTermNameStrings.ToArray())));
             }
 
             if (modelHost is TermModelHost)
