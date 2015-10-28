@@ -49,6 +49,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
             //.ShouldBeEqual(m => m.Description, o => o.Description);
 
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
+            else
+                assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);

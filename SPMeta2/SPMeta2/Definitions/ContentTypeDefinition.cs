@@ -130,10 +130,14 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
-
         [SiteCollectionTokenCapability]
         [WebTokenCapability]
         public string DocumentTemplate { get; set; }
+
+        [ExpectUpdate]
+        [DataMember]
+        [ExpectNullable]
+        public string JSLink { get; set; }
 
         #endregion
 

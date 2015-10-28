@@ -133,6 +133,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
+                targetContentType.JSLink = contentTypeModel.JSLink ?? string.Empty;
 
                 if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
                 {

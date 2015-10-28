@@ -17,6 +17,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 def.Description = Rnd.String();
                 def.Group = Rnd.String();
+                def.JSLink = Rnd.String();
 
                 def.ParentContentTypeId = BuiltInContentTypeId.Item;
             });
