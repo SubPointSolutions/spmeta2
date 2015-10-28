@@ -184,6 +184,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentContentType.Name = contentTypeModel.Name;
             currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
             currentContentType.Group = contentTypeModel.Group;
+            currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
 
             if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
             {
