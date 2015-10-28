@@ -21,6 +21,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Regression.Tests.Config;
 using SPMeta2.Services;
 using SPMeta2.Containers.Utils;
+using SPMeta2.Standard.Definitions.Webparts;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -439,6 +440,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
                     if (definitionType == typeof(PropertyDefinition))
                         addArrayDefinitionMethodName = string.Format("AddProperties");
+                    if (definitionType == typeof(SiteDocumentsDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddSiteDocuments");
                     if (definitionType == typeof(ManagedPropertyDefinition))
                         addArrayDefinitionMethodName = string.Format("AddManagedProperties");
                     if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
@@ -803,6 +806,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     addXXXArrayDefinitionMethodName += "es";
                                 } break;
                         }
+
+                        if (defType == typeof(SiteDocumentsDefinition))
+                            addXXXArrayDefinitionMethodName = string.Format("AddSiteDocuments");
 
                         // host
 
