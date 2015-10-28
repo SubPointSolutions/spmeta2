@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
@@ -35,6 +36,9 @@ namespace SPMeta2.Definitions
         {
             Overwrite = true;
             //Content = new byte[0];
+
+            DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
@@ -81,10 +85,24 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool UpdateOverwriteVersion { get; set; }
 
-        // should be collection of attachments later
-        //public byte[] Content { get; set; }
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
 
-        // TODO, serializable dictionary for propertied such as content type and so on
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> DefaultValues { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
 
         #endregion
 

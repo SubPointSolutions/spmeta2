@@ -100,15 +100,31 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var folder = folderModelHost.CurrentListFolder;
 
-            DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folder, wikiPageModel);
+            DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folderModelHost.CurrentList, folder, wikiPageModel);
         }
 
-        private void DeployWikiPage(Web web, Folder folder, WikiPageDefinition wikiPageModel)
+        private void DeployWikiPage(Web web, List list, Folder folder, WikiPageDefinition definition)
         {
             var context = folder.Context;
 
             var newWikiPageUrl = string.Empty;
-            var file = GetWikiPageFile(web, folder, wikiPageModel, out newWikiPageUrl);
+
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(list, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
+
+            var file = GetWikiPageFile(web, folder, definition, out newWikiPageUrl);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -117,7 +133,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = file,
                 ObjectType = typeof(File),
-                ObjectDefinition = wikiPageModel,
+                ObjectDefinition = definition,
                 ModelHost = folder
             });
 
@@ -133,7 +149,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
-                currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
+
+                if (!string.IsNullOrEmpty(contentTypeId))
+                    currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+
+                currentListItem[BuiltInInternalFieldNames.WikiField] = definition.Content ?? String.Empty;
+
+                FieldLookupService.EnsureValues(currentListItem, definition.Values, true);
+                
                 currentListItem.Update();
 
                 context.ExecuteQueryWithTrace();
@@ -145,7 +169,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = newPageFile,
                     ObjectType = typeof(File),
-                    ObjectDefinition = wikiPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = folder
                 });
 
@@ -156,7 +180,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // TODO,override if force
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing wiki page");
 
-                if (wikiPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
 
@@ -164,7 +188,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load(currentListItem);
                     context.ExecuteQueryWithTrace();
 
-                    currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                    FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
+
+                    if (!string.IsNullOrEmpty(contentTypeId))
+                        currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+
+                    currentListItem[BuiltInInternalFieldNames.WikiField] = definition.Content ?? String.Empty;
                     currentListItem.Update();
                 }
                 else
@@ -179,7 +208,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = file,
                     ObjectType = typeof(File),
-                    ObjectDefinition = wikiPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = folder
                 });
 

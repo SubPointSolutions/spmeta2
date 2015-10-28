@@ -36,14 +36,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var action = modelHostContext.Action;
 
             var folderModelHost = modelHost as FolderModelHost;
-            var pageDefinition = model as PublishingPageDefinition;
+            var definition = model as PublishingPageDefinition;
+
+
 
             Folder folder = folderModelHost.CurrentListFolder;
 
-            if (folder != null && pageDefinition != null)
+            if (folder != null && definition != null)
             {
                 var context = folder.Context;
-                var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(pageDefinition));
+                var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(definition));
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))
@@ -159,36 +161,26 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var folder = folderModelHost.CurrentListFolder;
             var list = folderModelHost.CurrentList;
 
-            var publishingPageModel = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<PublishingPageDefinition>("model", value => value.RequireNotNull());
+
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
 
             var context = folder.Context;
 
-            var stringCustomContentType = string.Empty;
-            // preload custm content type
-            if (!string.IsNullOrEmpty(publishingPageModel.ContentTypeName))
-            {
-                var listContentTypes = list.ContentTypes;
-                context.Load(listContentTypes);
-                context.ExecuteQueryWithTrace();
-
-                var listContentType = listContentTypes.ToList()
-                                                      .FirstOrDefault(c => c.Name.ToUpper() == publishingPageModel.ContentTypeName.ToUpper());
-
-                if (listContentType == null)
-                {
-                    throw new ArgumentNullException(
-                        string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
-                            new string[]
-                                    {
-                                        publishingPageModel.ContentTypeName,
-                                        list.Title
-                                    }));
-                }
-
-                stringCustomContentType = listContentType.Id.ToString();
-            }
-
-            var pageName = GetSafePageFileName(publishingPageModel);
+            var pageName = GetSafePageFileName(definition);
             var currentPageFile = GetCurrentPage(list, folder, pageName);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -198,7 +190,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = currentPageFile,
                 ObjectType = typeof(File),
-                ObjectDefinition = publishingPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
@@ -209,7 +201,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 file.Url = pageName;
                 file.Content = Encoding.UTF8.GetBytes(pageContent);
-                file.Overwrite = publishingPageModel.NeedOverride;
+                file.Overwrite = definition.NeedOverride;
 
                 return folder.Files.Add(file);
 
@@ -221,7 +213,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 var site = folderModelHost.HostSite;
-                var currentPageLayoutItem = FindPageLayoutItem(site, publishingPageModel.PageLayoutFileName);
+                var currentPageLayoutItem = FindPageLayoutItem(site, definition.PageLayoutFileName);
 
                 var currentPageLayoutItemContext = currentPageLayoutItem.Context;
                 var publishingFile = currentPageLayoutItem.File;
@@ -233,29 +225,31 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
                 // settig up dfault values if there is PublishingPageLayout setup
-                EnsureDefaultValues(newFileItem, publishingPageModel);
+                FieldLookupService.EnsureDefaultValues(newFileItem, definition.DefaultValues);
 
-                if (!string.IsNullOrEmpty(publishingPageModel.Title))
-                    newFileItem[BuiltInInternalFieldNames.Title] = publishingPageModel.Title;
+                if (!string.IsNullOrEmpty(definition.Title))
+                    newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
 
-                if (!string.IsNullOrEmpty(publishingPageModel.Description))
-                    newFileItem[BuiltInInternalFieldNames.Comments] = publishingPageModel.Description;
+                if (!string.IsNullOrEmpty(definition.Description))
+                    newFileItem[BuiltInInternalFieldNames.Comments] = definition.Description;
 
                 newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
 
-                var contentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInInternalFieldNames.PublishingAssociatedContentType]);
+                var associatedContentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInInternalFieldNames.PublishingAssociatedContentType]);
 
-                if (!string.IsNullOrEmpty(contentTypeStringValue))
+                if (!string.IsNullOrEmpty(associatedContentTypeStringValue))
                 {
-                    var contentTypeValues = contentTypeStringValue.Split(new string[] { ";#" }, StringSplitOptions.None);
-                    var contentTypeName = contentTypeValues[1];
-                    var contentTypeId = contentTypeValues[2];
+                    var contentTypeValues = associatedContentTypeStringValue.Split(new string[] { ";#" }, StringSplitOptions.None);
+                    var associatedContentTypeName = contentTypeValues[1];
+                    var associatedContentTypeId = contentTypeValues[2];
 
-                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = associatedContentTypeId;
                 }
 
-                if (!string.IsNullOrEmpty(stringCustomContentType))
-                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
+                if (!string.IsNullOrEmpty(contentTypeId))
+                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+
+                FieldLookupService.EnsureValues(newFileItem, definition.Values, true);
 
                 newFileItem.Update();
 
@@ -271,37 +265,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 EventType = ModelEventType.OnProvisioned,
                 Object = currentPageFile,
                 ObjectType = typeof(File),
-                ObjectDefinition = publishingPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
             context.ExecuteQueryWithTrace();
         }
-
-        private static void EnsureDefaultValues(ListItem newFileItem, PublishingPageDefinition publishingPageModel)
-        {
-            foreach (var defaultValue in publishingPageModel.DefaultValues)
-            {
-                if (!string.IsNullOrEmpty(defaultValue.FieldName))
-                {
-                    if (newFileItem.FieldValues.ContainsKey(defaultValue.FieldName))
-                    {
-                        if (newFileItem[defaultValue.FieldName] == null)
-                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                }
-                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
-                {
-                    // unsupported by CSOM API yet
-                }
-            }
-        }
-
-
-        //if (item != null)
-        //    return item.File;
-
-        //return null;
 
         private ListItem FindPageLayoutItem(Site site, string pageLayoutFileName)
         {

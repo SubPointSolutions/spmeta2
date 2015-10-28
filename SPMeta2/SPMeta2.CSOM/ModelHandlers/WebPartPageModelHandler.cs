@@ -12,6 +12,7 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.ModelHosts;
 using SPMeta2.Templates;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -199,7 +200,22 @@ namespace SPMeta2.CSOM.ModelHandlers
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost as FolderModelHost;
-            var webPartPageModel = model as WebPartPageDefinition;
+            var definition = model as WebPartPageDefinition;
+
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
 
             Folder folder = folderModelHost.CurrentListFolder;
 
@@ -214,7 +230,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
-            var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageModel));
+            var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(definition));
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -223,13 +239,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = currentPage,
                 ObjectType = typeof(File),
-                ObjectDefinition = webPartPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
-            if ((currentPage == null) || (currentPage != null && webPartPageModel.NeedOverride))
+            if ((currentPage == null) || (currentPage != null && definition.NeedOverride))
             {
-                if (webPartPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
@@ -243,18 +259,35 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var pageContent = string.Empty;
 
-                if (!string.IsNullOrEmpty(webPartPageModel.CustomPageLayout))
-                    pageContent = webPartPageModel.CustomPageLayout;
+                if (!string.IsNullOrEmpty(definition.CustomPageLayout))
+                    pageContent = definition.CustomPageLayout;
                 else
-                    pageContent = GetWebPartTemplateContent(webPartPageModel);
+                    pageContent = GetWebPartTemplateContent(definition);
 
-                var fileName = GetSafeWebPartPageFileName(webPartPageModel);
+                var fileName = GetSafeWebPartPageFileName(definition);
 
                 file.Url = fileName;
                 file.Content = Encoding.UTF8.GetBytes(pageContent);
-                file.Overwrite = webPartPageModel.NeedOverride;
+                file.Overwrite = definition.NeedOverride;
 
                 var newFile = folder.Files.Add(file);
+
+                FieldLookupService.EnsureDefaultValues(newFile.ListItemAllFields, definition.DefaultValues);
+                
+                if (!string.IsNullOrEmpty(contentTypeId))
+                {
+                    newFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                }
+
+                FieldLookupService.EnsureValues(newFile.ListItemAllFields, definition.Values, true);
+
+                if (definition.Values.Any()
+                    || definition.DefaultValues.Any()
+                    || !string.IsNullOrEmpty(contentTypeId))
+                {
+                    newFile.ListItemAllFields.Update();
+                    context.ExecuteQueryWithTrace();
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -263,7 +296,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = newFile,
                     ObjectType = typeof(File),
-                    ObjectDefinition = webPartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
 
@@ -282,7 +315,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = currentPage,
                     ObjectType = typeof(File),
-                    ObjectDefinition = webPartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
             }

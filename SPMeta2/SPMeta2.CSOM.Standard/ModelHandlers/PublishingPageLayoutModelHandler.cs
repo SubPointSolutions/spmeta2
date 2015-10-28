@@ -103,6 +103,21 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             ContentType siteContentType = null;
 
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
+
             if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
             {
                 siteContentType = folderModelHost.HostSite.RootWeb.AvailableContentTypes.GetById(definition.AssociatedContentTypeId);
@@ -157,9 +172,18 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
-                newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+                FieldLookupService.EnsureDefaultValues(newFileItem, definition.DefaultValues);
+
+                if (!string.IsNullOrEmpty(definition.Title))
+                    newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+
                 newFileItem["MasterPageDescription"] = definition.Description;
+
                 newFileItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+
+                // custom?
+                if (!string.IsNullOrEmpty(contentTypeId))
+                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
 
                 if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
                 {
@@ -182,8 +206,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     newFileItem["PublishingAssociatedContentType"] = String.Format(";#{0};#{1};#", siteContentType.Name, siteContentType.Id.ToString());
                 }
 
-
-
+                FieldLookupService.EnsureValues(newFileItem, definition.Values, true);
                 newFileItem.Update();
 
                 context.ExecuteQueryWithTrace();

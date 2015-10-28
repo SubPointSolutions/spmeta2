@@ -39,6 +39,7 @@ namespace SPMeta2.Definitions
             Overwrite = true;
 
             DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
@@ -59,6 +60,10 @@ namespace SPMeta2.Definitions
         [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
+
         /// <summary>
         /// Target file name,
         /// </summary>
@@ -68,6 +73,12 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string FileName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string Title { get; set; }
 
         /// <summary>
         /// Target file content.

@@ -438,33 +438,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
             {
-                // preload custom content type
-
-                var listContentTypes = list.ContentTypes;
-                context.Load(listContentTypes);
-                context.ExecuteQueryWithTrace();
-
-                var listContentType = listContentTypes.ToList()
-                                                      .FirstOrDefault(c => c.Name.ToUpper() == moduleFile.ContentTypeName.ToUpper());
-
-                if (listContentType == null)
-                {
-                    throw new ArgumentNullException(
-                        string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
-                            new string[]
-                                    {
-                                        moduleFile.ContentTypeName,
-                                        list.Title
-                                    }));
-                }
-
-                stringCustomContentType = listContentType.Id.ToString();
+                stringCustomContentType = ContentTypeLookupService.LookupContentTypeByName(list, moduleFile.ContentTypeName).Id.ToString();
             }
 
             return stringCustomContentType;
         }
 
-        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition definition)
         {
             var context = folderHost.CurrentListFolder.Context;
 
@@ -477,7 +457,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             context.ExecuteQueryWithTrace();
 
-            var stringCustomContentType = ResolveContentTypeId(folderHost, moduleFile);
+            var stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
             if (list != null)
             {
@@ -488,7 +468,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(file, f => f.Exists);
             context.ExecuteQueryWithTrace();
@@ -500,7 +480,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = file.Exists ? file : null,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
 
@@ -513,8 +493,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             WithSafeFileOperation(list, file, f =>
             {
-                var fileName = moduleFile.FileName;
-                var fileContent = moduleFile.Content;
+                var fileName = definition.FileName;
+                var fileContent = definition.Content;
 
                 var fileCreatingInfo = new FileCreationInformation
                 {
@@ -536,19 +516,31 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwriting file");
                 var updatedFile = folder.Files.Add(fileCreatingInfo);
 
+                FieldLookupService.EnsureDefaultValues(updatedFile.ListItemAllFields, definition.DefaultValues);
+
+
                 if (!string.IsNullOrEmpty(stringCustomContentType))
                     updatedFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
-                if (moduleFile.DefaultValues.Count > 0)
-                    EnsureDefaultValues(updatedFile.ListItemAllFields, moduleFile);
+                if (!string.IsNullOrEmpty(definition.Title))
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.Title] = definition.Title;
 
-                if (!string.IsNullOrEmpty(stringCustomContentType) || moduleFile.DefaultValues.Count > 0)
+
+                FieldLookupService.EnsureValues(updatedFile.ListItemAllFields, definition.Values, true);
+
+                if (!string.IsNullOrEmpty(stringCustomContentType)
+                    || definition.DefaultValues.Count > 0
+                    || definition.Values.Count > 0
+                    || !string.IsNullOrEmpty(definition.Title))
+                {
                     updatedFile.ListItemAllFields.Update();
+                }
+
 
                 return updatedFile;
             }, doesFileHasListItem);
 
-            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(resultFile, f => f.Exists);
             context.ExecuteQueryWithTrace();
@@ -560,34 +552,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioned,
                 Object = resultFile,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
 
             return resultFile;
-        }
-
-        private static void EnsureDefaultValues(ListItem newFileItem, ModuleFileDefinition publishingPageModel)
-        {
-            foreach (var defaultValue in publishingPageModel.DefaultValues)
-            {
-                if (!string.IsNullOrEmpty(defaultValue.FieldName))
-                {
-                    if (newFileItem.FieldValues.ContainsKey(defaultValue.FieldName))
-                    {
-                        if (newFileItem[defaultValue.FieldName] == null)
-                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                    else
-                    {
-                        newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                }
-                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
-                {
-                    // unsupported by CSOM API yet
-                }
-            }
         }
 
         #endregion

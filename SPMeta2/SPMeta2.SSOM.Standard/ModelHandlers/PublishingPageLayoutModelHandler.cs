@@ -78,15 +78,39 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 null,
                 afterFile =>
                 {
-                    var pageItem = afterFile.Properties;
+                    //var pageItem = afterFile.Properties;
+                    var pageItem = afterFile.ListItemAllFields;
+
+                    FieldLookupService.EnsureDefaultValues(pageItem, definition.DefaultValues);
 
                     if (!string.IsNullOrEmpty(definition.Title))
-                        pageItem["vti_title"] = definition.Title;
+                    {
+                        //pageItem["vti_title"] = definition.Title;
+                        pageItem["Title"] = definition.Title;
+                    }
+
+                    // ootb ?
+                    pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+
+
+                    // custom?
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                       !string.IsNullOrEmpty(definition.ContentTypeName))
+                    {
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                        if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+                    }
 
                     if (!string.IsNullOrEmpty(definition.Description))
+                    {
+                        // did not work
                         pageItem["MasterPageDescription"] = definition.Description;
+                        //pageItem.Properties["MasterPageDescription"] = definition.Description;
+                    }
 
-                    pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
 
                     if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
                     {
@@ -112,6 +136,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                             siteContentType.Name,
                             siteContentType.Id.ToString());
                     }
+
+                    FieldLookupService.EnsureValues(pageItem, definition.Values, true);
+
+
+                    pageItem.Update();
                 });
         }
 
