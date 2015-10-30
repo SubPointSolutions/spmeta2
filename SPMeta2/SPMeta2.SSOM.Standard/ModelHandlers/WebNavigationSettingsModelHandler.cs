@@ -49,6 +49,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             var thisWebNavSettings = GetWebNavigationSettings(webModelHost, navigationModel);
 
             var shouldUpdateWeb = false;
+            var allProperties = web.AllProperties;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -89,17 +90,17 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     else
                     {
                         int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(navigationModel,
-                          ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]));
+                          ConvertUtils.ToInt(allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]));
 
                         if (globalNavigationIncludeTypes != null)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes.Value;
+                            allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes.Value;
                             shouldUpdateWeb = true;
                         }
 
                         if (navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
                             shouldUpdateWeb = true;
                         }
                     }
@@ -130,17 +131,17 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     else
                     {
                         int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(navigationModel,
-                           ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]));
+                           ConvertUtils.ToInt(allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]));
 
                         if (currentNavigationIncludeTypes != null)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes.Value;
+                            allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes.Value;
                             shouldUpdateWeb = true;
                         }
 
                         if (navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
                             shouldUpdateWeb = true;
                         }
                     }
@@ -149,7 +150,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)
             {
-                web.AllProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
+                allProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
                 shouldUpdateWeb = true;
             }
 

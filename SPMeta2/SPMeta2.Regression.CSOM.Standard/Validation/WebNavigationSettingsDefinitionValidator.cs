@@ -38,20 +38,31 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject);
 
-            var globalNavIncludeTypes = GetGlobalNavigationIncludeTypes(definition);
-            var currentNavIncludeTypes = GetCurrentNavigationIncludeTypes(definition);
-
-
-
-
             // global types
             if (definition.GlobalNavigationShowSubsites.HasValue)
             {
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var globalNavIncludeTypesValue =
-                        ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]);
-                    var isGlobalNavIncludeTypesValid = globalNavIncludeTypes == globalNavIncludeTypesValue;
+
+                    var navIncludeTypesValueString = web.AllProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.GlobalNavigationIncludeTypes)
+                   ? web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]
+                   : string.Empty;
+
+                    var globalNavIncludeTypesValue = ConvertUtils.ToInt(navIncludeTypesValueString);
+
+                    var isGlobalNavIncludeTypesValid = false;
+
+                    if (definition.GlobalNavigationShowSubsites.Value)
+                    {
+                        isGlobalNavIncludeTypesValid =
+                            (globalNavIncludeTypesValue & 1) == 1;
+                    }
+                    else
+                    {
+                        isGlobalNavIncludeTypesValid =
+                            (globalNavIncludeTypesValue & 1) != 1;
+                    }
+
 
                     var srcProp = s.GetExpressionValue(m => m.GlobalNavigationShowSubsites);
 
@@ -72,9 +83,25 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             if (definition.GlobalNavigationShowPages.HasValue)
             {
+                var currentNavIncludeTypesValueString = web.AllProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.GlobalNavigationIncludeTypes)
+                    ? web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]
+                    : string.Empty;
+
                 var globalNavIncludeTypesValue =
-                       ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]);
-                var isGlobalNavIncludeTypesValid = globalNavIncludeTypes == globalNavIncludeTypesValue;
+                       ConvertUtils.ToInt(currentNavIncludeTypesValueString);
+
+                var isGlobalNavIncludeTypesValid = false;
+
+                if (definition.GlobalNavigationShowPages.Value)
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (globalNavIncludeTypesValue & 2) == 2;
+                }
+                else
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (globalNavIncludeTypesValue & 2) != 2;
+                }
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -95,12 +122,29 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                    "GlobalNavigationShowPages is null or empty");
             }
 
-            
+
 
             if (definition.CurrentNavigationShowSubsites.HasValue)
             {
-                var currentNavIncludeTypesValue = ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]);
-                var isCurrentNavIncludeTypesValid = currentNavIncludeTypes == currentNavIncludeTypesValue;
+                var currentNavIncludeTypesValueString = web.AllProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.CurrentNavigationIncludeTypes)
+                    ? web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]
+                    : string.Empty;
+
+                var currentNavIncludeTypesValue = ConvertUtils.ToInt(currentNavIncludeTypesValueString);
+
+                var isGlobalNavIncludeTypesValid = false;
+
+                if (definition.CurrentNavigationShowSubsites.Value)
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (currentNavIncludeTypesValue & 1) == 1;
+                }
+                else
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (currentNavIncludeTypesValue & 1) != 1;
+                }
+
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -111,7 +155,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                         Tag = p.Tag,
                         Src = srcProp,
                         Dst = null,
-                        IsValid = isCurrentNavIncludeTypesValid
+                        IsValid = isGlobalNavIncludeTypesValid
                     };
                 });
             }
@@ -123,9 +167,24 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
             if (definition.CurrentNavigationShowPages.HasValue)
             {
-                var currentNavIncludeTypesValue =
-                    ConvertUtils.ToInt(web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]);
-                var isCurrentNavIncludeTypesValid = currentNavIncludeTypes == currentNavIncludeTypesValue;
+                var currentNavIncludeTypesValueString = web.AllProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.CurrentNavigationIncludeTypes)
+                    ? web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]
+                    : string.Empty;
+
+                var currentNavIncludeTypesValue = ConvertUtils.ToInt(currentNavIncludeTypesValueString);
+
+                var isGlobalNavIncludeTypesValid = false;
+
+                if (definition.CurrentNavigationShowSubsites.Value)
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (currentNavIncludeTypesValue & 2) == 2;
+                }
+                else
+                {
+                    isGlobalNavIncludeTypesValid =
+                        (currentNavIncludeTypesValue & 2) != 2;
+                }
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -136,7 +195,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                         Tag = p.Tag,
                         Src = srcProp,
                         Dst = null,
-                        IsValid = isCurrentNavIncludeTypesValid
+                        IsValid = isGlobalNavIncludeTypesValid
                     };
                 });
             }

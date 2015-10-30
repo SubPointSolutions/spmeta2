@@ -133,6 +133,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(siteModel, webModel);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
         public void CanDeploy_WebNavigationSettings_As_HideCurrentNavigation()
         {
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -152,6 +154,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 CurrentNavigationShowPages = false,
             };
 
+            var sunWebNavigationDef = navigationDef.Inherit();
+
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
@@ -163,7 +167,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 web.AddRandomWeb(subWeb =>
                 {
-                    subWeb.AddWebNavigationSettings(navigationDef);
+                    subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subWeb.AddWebNavigationSettings(sunWebNavigationDef);
                 });
             });
 
