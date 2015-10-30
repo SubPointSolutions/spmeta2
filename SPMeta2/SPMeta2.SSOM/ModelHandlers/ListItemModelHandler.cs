@@ -146,10 +146,27 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        protected virtual void MapListItemProperties(SPListItem newItem, ListItemDefinition listItemModel)
+        protected virtual void MapListItemProperties(SPListItem item, ListItemDefinition definition)
         {
-            newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+            FieldLookupService.EnsureDefaultValues(item, definition.DefaultValues);
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                        !string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                var list = item.ParentList;
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+            }
+
+            item[BuiltInInternalFieldNames.Title] = definition.Title;
+
+            FieldLookupService.EnsureValues(item, definition.Values, true);
         }
+
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {

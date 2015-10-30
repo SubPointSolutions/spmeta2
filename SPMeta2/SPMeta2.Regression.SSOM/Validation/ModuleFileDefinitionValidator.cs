@@ -30,6 +30,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                                      .ShouldBeEqual(m => m.FileName, o => o.Name);
             //.ShouldBeEqual(m => m.Content, o => o.GetContent());
 
+            if (!string.IsNullOrEmpty(definition.Title))
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Title is null or empty. Skipping.");
+            }
+
             // skip all templates
             if (definition.FileName.ToUpper().EndsWith("DOTX"))
             {
@@ -111,6 +120,49 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
             {
                 assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
+            }
+
+
+
+            if (definition.Values.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.Values)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+                        else if (srcValue.FieldId.HasValue)
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldId.Value].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.Values);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
             }
         }
     }

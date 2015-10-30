@@ -49,6 +49,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             var thisWebNavSettings = GetWebNavigationSettings(webModelHost, navigationModel);
 
             var shouldUpdateWeb = false;
+            var allProperties = web.AllProperties;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -88,17 +89,18 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(navigationModel);
+                        int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(navigationModel,
+                          ConvertUtils.ToInt(allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]));
 
                         if (globalNavigationIncludeTypes != null)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes;
+                            allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes.Value;
                             shouldUpdateWeb = true;
                         }
 
                         if (navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
                             shouldUpdateWeb = true;
                         }
                     }
@@ -118,7 +120,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                           navigationModel.CurrentNavigationUseDefaultSiteCollectionTermStore);
 
                         var currentTermSet = TaxonomyFieldModelHandler.LookupTermSet(currentTermStore,
-                          null, null, null, null, 
+                          null, null, null, null,
                           navigationModel.CurrentNavigationTermSetName,
                           navigationModel.CurrentNavigationTermSetId,
                           navigationModel.CurrentNavigationTermSetLCID);
@@ -128,17 +130,18 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(navigationModel);
+                        int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(navigationModel,
+                           ConvertUtils.ToInt(allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]));
 
                         if (currentNavigationIncludeTypes != null)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes;
+                            allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes.Value;
                             shouldUpdateWeb = true;
                         }
 
                         if (navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
-                            web.AllProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
                             shouldUpdateWeb = true;
                         }
                     }
@@ -147,7 +150,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)
             {
-                web.AllProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
+                allProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
                 shouldUpdateWeb = true;
             }
 
@@ -174,40 +177,100 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
         }
 
-        protected int? GetGlobalNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        protected int? GetGlobalNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel,
+            int? navigationIncludeTypes)
         {
-            int? currentNavigationIncludeTypes = null;
+            if (navigationModel.GlobalNavigationShowPages.HasValue
+                || navigationModel.GlobalNavigationShowSubsites.HasValue)
+            {
+                if (!navigationIncludeTypes.HasValue)
+                    navigationIncludeTypes = 2;
+            }
 
-            if (navigationModel.CurrentNavigationShowPages == false
-                && navigationModel.CurrentNavigationShowSubsites == false)
-                currentNavigationIncludeTypes = 0;
-            else if (navigationModel.CurrentNavigationShowPages == true
-                && navigationModel.CurrentNavigationShowSubsites == true)
-                currentNavigationIncludeTypes = 3;
-            else if (navigationModel.CurrentNavigationShowPages == true)
-                currentNavigationIncludeTypes = 2;
-            else if (navigationModel.CurrentNavigationShowSubsites == true)
-                currentNavigationIncludeTypes = 1;
+            if (navigationModel.GlobalNavigationShowPages.HasValue)
+            {
+                if (navigationModel.GlobalNavigationShowPages.Value)
+                {
+                    navigationIncludeTypes |= 2;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~2;
+                }
+            }
 
-            return currentNavigationIncludeTypes;
+            if (navigationModel.GlobalNavigationShowSubsites.HasValue)
+            {
+                if (navigationModel.GlobalNavigationShowSubsites.Value)
+                {
+                    navigationIncludeTypes |= 1;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~1;
+                }
+            }
+
+            //if (navigationModel.CurrentNavigationShowPages == false
+            //    && navigationModel.CurrentNavigationShowSubsites == false)__GlobalNavigationIncludeTypes
+            //    currentNavigationIncludeTypes = 0;
+            //else if (navigationModel.CurrentNavigationShowPages == true
+            //    && navigationModel.CurrentNavigationShowSubsites == true)
+            //    currentNavigationIncludeTypes = 3;
+            //else if (navigationModel.CurrentNavigationShowPages == true)
+            //    currentNavigationIncludeTypes = 2;
+            //else if (navigationModel.CurrentNavigationShowSubsites == true)
+            //    currentNavigationIncludeTypes = 1;
+
+            return navigationIncludeTypes;
         }
 
-        protected int? GetCurrentNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        protected int? GetCurrentNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel,
+            int? navigationIncludeTypes)
         {
-            int? globalNavigationIncludeTypes = null;
+            if (navigationModel.CurrentNavigationShowPages.HasValue
+               || navigationModel.CurrentNavigationShowSubsites.HasValue)
+            {
+                if (!navigationIncludeTypes.HasValue)
+                    navigationIncludeTypes = 2;
+            }
 
-            if (navigationModel.GlobalNavigationShowPages == false
-                && navigationModel.GlobalNavigationShowSubsites == false)
-                globalNavigationIncludeTypes = 0;
-            else if (navigationModel.GlobalNavigationShowPages == true
-                && navigationModel.GlobalNavigationShowSubsites == true)
-                globalNavigationIncludeTypes = 3;
-            else if (navigationModel.GlobalNavigationShowPages == true)
-                globalNavigationIncludeTypes = 2;
-            else if (navigationModel.GlobalNavigationShowSubsites == true)
-                globalNavigationIncludeTypes = 1;
+            if (navigationModel.CurrentNavigationShowPages.HasValue)
+            {
+                if (navigationModel.CurrentNavigationShowPages.Value)
+                {
+                    navigationIncludeTypes |= 2;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~2;
+                }
+            }
 
-            return globalNavigationIncludeTypes;
+            if (navigationModel.CurrentNavigationShowSubsites.HasValue)
+            {
+                if (navigationModel.CurrentNavigationShowSubsites.Value)
+                {
+                    navigationIncludeTypes |= 1;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~1;
+                }
+            }
+
+            //if (navigationModel.CurrentNavigationShowPages == false
+            //    && navigationModel.CurrentNavigationShowSubsites == false)__GlobalNavigationIncludeTypes
+            //    currentNavigationIncludeTypes = 0;
+            //else if (navigationModel.CurrentNavigationShowPages == true
+            //    && navigationModel.CurrentNavigationShowSubsites == true)
+            //    currentNavigationIncludeTypes = 3;
+            //else if (navigationModel.CurrentNavigationShowPages == true)
+            //    currentNavigationIncludeTypes = 2;
+            //else if (navigationModel.CurrentNavigationShowSubsites == true)
+            //    currentNavigationIncludeTypes = 1;
+
+            return navigationIncludeTypes;
         }
 
 

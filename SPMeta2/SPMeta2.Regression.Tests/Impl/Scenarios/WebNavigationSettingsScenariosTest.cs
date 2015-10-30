@@ -39,6 +39,195 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region settings
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
+        public void CanDeploy_WebNavigationSettings_As_HideGlobalNavigation()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var navigationDef = new WebNavigationSettingsDefinition()
+            {
+                GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+
+                GlobalNavigationShowSubsites = false,
+                GlobalNavigationShowPages = false,
+            };
+
+            var sunWebNavigationDef = navigationDef.Inherit();
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(navigationDef);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subWeb.AddWebNavigationSettings(sunWebNavigationDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
+        public void CanDeploy_WebNavigationSettings_As_ShowGlobalNavigation()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var navigationDef = new WebNavigationSettingsDefinition()
+            {
+                GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+
+                GlobalNavigationShowSubsites = true,
+                GlobalNavigationShowPages = true,
+            };
+
+            var sunWebNavigationDef = navigationDef.Inherit();
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(navigationDef);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subWeb.AddWebNavigationSettings(sunWebNavigationDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
+        public void CanDeploy_WebNavigationSettings_As_HideCurrentNavigation()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var navigationDef = new WebNavigationSettingsDefinition()
+            {
+                CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+
+                CurrentNavigationShowSubsites = false,
+                CurrentNavigationShowPages = false,
+            };
+
+            var sunWebNavigationDef = navigationDef.Inherit();
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(navigationDef);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subWeb.AddWebNavigationSettings(sunWebNavigationDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings")]
+        public void CanDeploy_WebNavigationSettings_As_ShowCurrentNavigation()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var navigationDef = new WebNavigationSettingsDefinition()
+            {
+                CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+
+                CurrentNavigationShowSubsites = true,
+                CurrentNavigationShowPages = true,
+            };
+
+            var sunWebNavigationDef = navigationDef.Inherit();
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(navigationDef);
+
+                web.AddRandomWeb(subWeb =>
+                {
+                    subWeb.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                    {
+                        def.Enable = true;
+                    }));
+
+                    subWeb.AddWebNavigationSettings(sunWebNavigationDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+
+        #endregion
+
         #region default
 
         [TestMethod]
@@ -112,7 +301,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-               
+
             });
 
             TestModel(siteModel, webModel);

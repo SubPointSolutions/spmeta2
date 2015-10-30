@@ -18,11 +18,18 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             TokenReplacementService = ServiceContainer.Instance.GetService<SSOMTokenReplacementService>();
             LocalizationService = ServiceContainer.Instance.GetService<SSOMLocalizationService>();
+
+            // TODO, move to the ServiceContainer
+            ContentTypeLookupService = new SSOMContentTypeLookupService();
+            FieldLookupService = new SSOMFieldLookupService();
         }
 
         #endregion
 
         #region properties
+
+        protected SSOMFieldLookupService FieldLookupService { get; set; }
+        protected SSOMContentTypeLookupService ContentTypeLookupService { get; set; }
 
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
         public LocalizationServiceBase LocalizationService { get; set; }

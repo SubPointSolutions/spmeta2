@@ -57,7 +57,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var web = webModelHost.HostWeb;
 
             var context = web.Context;
+            var allProperties = web.AllProperties;
 
+            context.Load(allProperties);
+
+            // the GetWebNavigationSettings will call ExecuteQueryWithTrace
             var thisWebNavSettings = GetWebNavigationSettings(webModelHost, navigationModel);
 
             StandardNavigationSource? globalSource = null;
@@ -95,20 +99,20 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             if (globalSource == StandardNavigationSource.TaxonomyProvider)
             {
-                 globalTermStore = TaxonomyTermStoreModelHandler.FindTermStore(site,
-                           navigationModel.GlobalNavigationTermStoreName,
-                           navigationModel.GlobalNavigationTermStoreId,
-                           navigationModel.GlobalNavigationUseDefaultSiteCollectionTermStore);
+                globalTermStore = TaxonomyTermStoreModelHandler.FindTermStore(site,
+                          navigationModel.GlobalNavigationTermStoreName,
+                          navigationModel.GlobalNavigationTermStoreId,
+                          navigationModel.GlobalNavigationUseDefaultSiteCollectionTermStore);
 
-                 globalTermSet = TaxonomyFieldModelHandler.LookupTermSet(site.Context,
-                   globalTermStore,
-                   site,
-                   null,
-                   null,
-                   null,
-                   navigationModel.GlobalNavigationTermSetName,
-                   navigationModel.GlobalNavigationTermSetId,
-                   navigationModel.GlobalNavigationTermSetLCID);
+                globalTermSet = TaxonomyFieldModelHandler.LookupTermSet(site.Context,
+                  globalTermStore,
+                  site,
+                  null,
+                  null,
+                  null,
+                  navigationModel.GlobalNavigationTermSetName,
+                  navigationModel.GlobalNavigationTermSetId,
+                  navigationModel.GlobalNavigationTermSetLCID);
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -138,12 +142,18 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(navigationModel);
+                        var value = allProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.GlobalNavigationIncludeTypes)
+                                        ? allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes]
+                                        : string.Empty;
+
+                        int? globalNavigationIncludeTypes = GetGlobalNavigationIncludeTypes(
+                                    navigationModel,
+                                    ConvertUtils.ToInt(value));
 
                         if (globalNavigationIncludeTypes != null)
                         {
                             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting GlobalNavigationIncludeTypes to: [{0}]", globalNavigationIncludeTypes);
-                            web.AllProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes;
+                            allProperties[BuiltInWebPropertyId.GlobalNavigationIncludeTypes] = globalNavigationIncludeTypes.Value;
 
                             shouldUpdateWeb = true;
                         }
@@ -151,7 +161,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                         if (navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
                             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting GlobalDynamicChildLimit to: [{0}]", navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value);
-                            web.AllProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.GlobalDynamicChildLimit] = navigationModel.GlobalNavigationMaximumNumberOfDynamicItems.Value;
 
                             shouldUpdateWeb = true;
                         }
@@ -172,12 +182,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     }
                     else
                     {
-                        int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(navigationModel);
+                        var value = allProperties.FieldValues.ContainsKey(BuiltInWebPropertyId.CurrentNavigationIncludeTypes)
+                                        ? allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes]
+                                        : string.Empty;
+
+
+                        int? currentNavigationIncludeTypes = GetCurrentNavigationIncludeTypes(
+                            navigationModel,
+                            ConvertUtils.ToInt(value));
 
                         if (currentNavigationIncludeTypes != null)
                         {
                             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting CurrentNavigationIncludeTypes to: [{0}]", currentNavigationIncludeTypes);
-                            web.AllProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes;
+                            allProperties[BuiltInWebPropertyId.CurrentNavigationIncludeTypes] = currentNavigationIncludeTypes.Value;
 
                             shouldUpdateWeb = true;
                         }
@@ -185,7 +202,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                         if (navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.HasValue)
                         {
                             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting CurrentDynamicChildLimit to: [{0}]", navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value);
-                            web.AllProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
+                            allProperties[BuiltInWebPropertyId.CurrentDynamicChildLimit] = navigationModel.CurrentNavigationMaximumNumberOfDynamicItems.Value;
 
                             shouldUpdateWeb = true;
                         }
@@ -196,7 +213,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)
             {
-                web.AllProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
+                allProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
                 shouldUpdateWeb = true;
             }
 
@@ -216,11 +233,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             {
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating navigation settings");
 
+                web.Update();
                 thisWebNavSettings.Update(null);
-                context.ExecuteQueryWithTrace();
+                shouldUpdateWeb = true;
             }
-
-            // update include types
 
             if (shouldUpdateWeb)
             {
@@ -230,40 +246,80 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             }
         }
 
-        protected int? GetGlobalNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        protected int? GetGlobalNavigationIncludeTypes(
+            WebNavigationSettingsDefinition navigationModel,
+            int? navigationIncludeTypes)
         {
-            int? currentNavigationIncludeTypes = null;
+            if (navigationModel.GlobalNavigationShowPages.HasValue
+               || navigationModel.GlobalNavigationShowSubsites.HasValue)
+            {
+                if (!navigationIncludeTypes.HasValue)
+                    navigationIncludeTypes = 2;
+            }
 
-            if (navigationModel.CurrentNavigationShowPages == false
-                && navigationModel.CurrentNavigationShowSubsites == false)
-                currentNavigationIncludeTypes = 0;
-            else if (navigationModel.CurrentNavigationShowPages == true
-                && navigationModel.CurrentNavigationShowSubsites == true)
-                currentNavigationIncludeTypes = 3;
-            else if (navigationModel.CurrentNavigationShowPages == true)
-                currentNavigationIncludeTypes = 2;
-            else if (navigationModel.CurrentNavigationShowSubsites == true)
-                currentNavigationIncludeTypes = 1;
+            if (navigationModel.GlobalNavigationShowPages.HasValue)
+            {
+                if (navigationModel.GlobalNavigationShowPages.Value)
+                {
+                    navigationIncludeTypes |= 2;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~2;
+                }
+            }
 
-            return currentNavigationIncludeTypes;
+            if (navigationModel.GlobalNavigationShowSubsites.HasValue)
+            {
+                if (navigationModel.GlobalNavigationShowSubsites.Value)
+                {
+                    navigationIncludeTypes |= 1;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~1;
+                }
+            }
+
+            return navigationIncludeTypes;
         }
 
-        protected int? GetCurrentNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel)
+        protected int? GetCurrentNavigationIncludeTypes(
+            WebNavigationSettingsDefinition navigationModel,
+            int? navigationIncludeTypes)
         {
-            int? globalNavigationIncludeTypes = null;
+            if (navigationModel.CurrentNavigationShowPages.HasValue
+               || navigationModel.CurrentNavigationShowSubsites.HasValue)
+            {
+                if (!navigationIncludeTypes.HasValue)
+                    navigationIncludeTypes = 2;
+            }
 
-            if (navigationModel.GlobalNavigationShowPages == false
-                && navigationModel.GlobalNavigationShowSubsites == false)
-                globalNavigationIncludeTypes = 0;
-            else if (navigationModel.GlobalNavigationShowPages == true
-                && navigationModel.GlobalNavigationShowSubsites == true)
-                globalNavigationIncludeTypes = 3;
-            else if (navigationModel.GlobalNavigationShowPages == true)
-                globalNavigationIncludeTypes = 2;
-            else if (navigationModel.GlobalNavigationShowSubsites == true)
-                globalNavigationIncludeTypes = 1;
+            if (navigationModel.CurrentNavigationShowPages.HasValue)
+            {
+                if (navigationModel.CurrentNavigationShowPages.Value)
+                {
+                    navigationIncludeTypes |= 2;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~2;
+                }
+            }
 
-            return globalNavigationIncludeTypes;
+            if (navigationModel.CurrentNavigationShowSubsites.HasValue)
+            {
+                if (navigationModel.CurrentNavigationShowSubsites.Value)
+                {
+                    navigationIncludeTypes |= 1;
+                }
+                else
+                {
+                    navigationIncludeTypes &= ~1;
+                }
+            }
+
+            return navigationIncludeTypes;
         }
 
         #endregion

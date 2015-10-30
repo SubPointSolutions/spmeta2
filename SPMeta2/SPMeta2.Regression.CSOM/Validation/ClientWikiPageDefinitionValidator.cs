@@ -27,7 +27,21 @@ namespace SPMeta2.Regression.CSOM.Validation
             var spObject = file.ListItemAllFields;
 
             context.Load(spObject);
+            context.Load(spObject, o => o.ContentType);
             context.ExecuteQueryWithTrace();
+
+            var stringCustomContentType = string.Empty;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName)
+                || !string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                                    .Name;
+                }
+            }
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)
@@ -66,6 +80,110 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
             {
                 assert.SkipProperty(m => m.Content, "Content is NULL. Skiping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                // TODO
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d.ContentType.Name;
+
+                    var isValis = stringCustomContentType == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+            if (definition.DefaultValues.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.DefaultValues)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.DefaultValues);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
+            }
+
+            if (definition.Values.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.Values)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.Values);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
             }
         }
 

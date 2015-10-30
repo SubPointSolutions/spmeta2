@@ -33,15 +33,22 @@ namespace SPMeta2.Definitions
         protected PageDefinitionBase()
         {
             NeedOverride = true;
+
             DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
 
         #region properties
 
+        [ExpectValidation]
         [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
 
         /// <summary>
         /// Title of the target page.
@@ -70,6 +77,16 @@ namespace SPMeta2.Definitions
         [DataMember]
 
         public bool NeedOverride { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
 
         #endregion
 

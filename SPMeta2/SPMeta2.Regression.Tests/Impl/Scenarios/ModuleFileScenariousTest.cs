@@ -8,9 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Data;
+using SPMeta2.Regression.Tests.Prototypes;
 using SPMeta2.Syntax.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -386,6 +388,119 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region field values
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Values")]
+        public void CanDeploy_ModuleFile_With_RequiredFieldValues()
+        {
+            var requiredText = RItemValues.GetRequiredTextField(ModelGeneratorService);
+
+            var text1 = RItemValues.GetRandomTextField(ModelGeneratorService);
+            var text2 = RItemValues.GetRandomTextField(ModelGeneratorService);
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.Title = Rnd.String();
+                def.ContentTypeName = contentTypeDef.Name;
+
+                def.DefaultValues.Add(new FieldValue()
+                {
+                    FieldName = requiredText.InternalName,
+                    Value = Rnd.String()
+                });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text1.InternalName,
+                    Value = Rnd.String()
+                });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text2.InternalName,
+                    Value = Rnd.String()
+                });
+
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(requiredText);
+                site.AddField(text1);
+                site.AddField(text2);
+
+                site.AddContentType(contentTypeDef, contentType =>
+                {
+                    contentType.AddContentTypeFieldLink(requiredText);
+                    contentType.AddContentTypeFieldLink(text1);
+                    contentType.AddContentTypeFieldLink(text2);
+                });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddModuleFile(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Values")]
+        public void CanDeploy_ModuleFile_With_ContentType_ByName()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Document;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddModuleFile(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
         }
 
         #endregion

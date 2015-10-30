@@ -35,6 +35,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (!spObject.IsObjectPropertyInstantiated("Name"))
                 spObject.Context.Load(spObject, o => o.Name);
 
+            if (!spObject.IsObjectPropertyInstantiated("Title"))
+                spObject.Context.Load(spObject, o => o.Title);
+
+
             if (!spObject.IsObjectPropertyInstantiated("ServerRelativeUrl"))
                 spObject.Context.Load(spObject, o => o.ServerRelativeUrl);
 
@@ -45,6 +49,15 @@ namespace SPMeta2.Regression.CSOM.Validation
                                .NewAssert(definition, spObject)
                                      .ShouldNotBeNull(spObject)
                                      .ShouldBeEqual(m => m.FileName, o => o.Name);
+
+            if (!string.IsNullOrEmpty(definition.Title))
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Title is null or empty. Skipping.");
+            }
 
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {
@@ -114,6 +127,43 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
             }
 
+
+            if (definition.Values.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.Values)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d.ListItemAllFields[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.Values);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
+            }
+
             // skip all templates
             if (definition.FileName.ToUpper().EndsWith("DOTX"))
             {
@@ -145,7 +195,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 });
             }
 
-            
+
         }
     }
 }
