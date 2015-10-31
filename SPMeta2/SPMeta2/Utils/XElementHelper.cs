@@ -10,6 +10,11 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        public static string GetInnerXmlAsString(this XElement element)
+        {
+            return element.Nodes().Aggregate("", (b, node) => b += node.ToString());
+        }
+
         public static string GetAttributeValue(this XElement element, string attrName)
         {
             var upperName = attrName.ToUpper();

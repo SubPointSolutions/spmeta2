@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers.Fields;
@@ -9,12 +10,14 @@ using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace SPMeta2.CSOM.ModelHandlers.Webparts
 {
-    public class XsltListViewWebPartDefinitionValidator : WebPartModelHandler
+    public class XsltListViewWebPartModelHandler : WebPartModelHandler
     {
-        public XsltListViewWebPartDefinitionValidator()
+        public XsltListViewWebPartModelHandler()
         {
             ShouldUseWebPartStoreKeyForWikiPage = true;
         }
@@ -31,6 +34,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             public Guid ListId { get; set; }
             public string TitleUrl { get; set; }
+
+            public Guid DefaultViewId { get; set; }
+
+            public List List { get; set; }
         }
 
         #endregion
@@ -124,67 +131,145 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             return list;
         }
 
-        protected override void InternalOnAfterWebPartProvision(WebPartProcessingContext provisionContext)
+        protected override void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
         {
-            base.InternalOnAfterWebPartProvision(provisionContext);
+            base.OnBeforeDeploy(host, webpart);
 
-            var webPartModel = provisionContext.WebPartDefinition;
+            var context = host.HostClientContext;
+            var wpModel = webpart.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var listItemModelHost = provisionContext.ListItemModelHost;
-            var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
+            // save the old default view ID, then restore in OnAfterDeploy
+            _currentListBindContext = LookupBindContext(host, wpModel);
 
-            var webPartStoreKey = provisionContext.WebPartStoreKey;
-            var context = provisionContext.ListItemModelHost.HostWeb.Context;
-
-            var bindContext = LookupBindContext(listItemModelHost, wpModel);
-
-            if (bindContext.TargetViewId.HasValue
-                && bindContext.TargetViewId != default(Guid)
-                && provisionContext.WebPartStoreKey.HasValue
-                && provisionContext.WebPartStoreKey.Value != default(Guid))
+            if (_currentListBindContext.TargetView != null)
             {
-                var targetWeb = listItemModelHost.HostWeb;
+                _currentListBindContext.TargetView.DefaultView = true;
+                _currentListBindContext.TargetView.Update();
 
-                if (wpModel.WebId.HasGuidValue() || !string.IsNullOrEmpty(wpModel.WebUrl))
-                {
-                    targetWeb = new LookupFieldModelHandler()
-                                    .GetTargetWeb(this.CurrentClientContext.Site, wpModel.WebUrl, wpModel.WebId);
-                }
-
-                var list = LookupList(targetWeb, wpModel.ListUrl, wpModel.ListTitle, wpModel.WebId);
-
-                var srcView = list.Views.GetById(bindContext.TargetViewId.Value);
-                var hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
-
-                context.Load(srcView, s => s.ViewFields);
-
-                context.Load(srcView, s => s.RowLimit);
-                context.Load(srcView, s => s.ViewQuery);
-                context.Load(srcView, s => s.JSLink);
-
-                context.Load(srcView, s => s.IncludeRootFolder);
-                context.Load(srcView, s => s.Scope);
-
-                context.Load(hiddenView);
-
-                context.ExecuteQueryWithTrace();
-
-                hiddenView.ViewFields.RemoveAll();
-
-                foreach (var f in srcView.ViewFields)
-                    hiddenView.ViewFields.Add(f);
-
-                hiddenView.RowLimit = srcView.RowLimit;
-                hiddenView.ViewQuery = srcView.ViewQuery;
-                hiddenView.JSLink = srcView.JSLink;
-
-                hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
-                hiddenView.Scope = srcView.Scope;
-
-                hiddenView.Update();
                 context.ExecuteQueryWithTrace();
             }
         }
+
+        private ListBindContext _currentListBindContext;
+
+        protected override void OnAfterDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
+        {
+            if (_currentListBindContext != null)
+            {
+                var context = host.HostClientContext;
+                var wpModel = webpart.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
+
+
+                var bindingContext = LookupBindContext(host, wpModel);
+                var view = bindingContext.List.GetView(_currentListBindContext.DefaultViewId);
+                view.DefaultView = true;
+                view.Update();
+
+                context.ExecuteQueryWithTrace();
+            }
+        }
+
+        //protected override void InternalOnAfterWebPartProvision(WebPartProcessingContext provisionContext)
+        //{
+        //    base.InternalOnAfterWebPartProvision(provisionContext);
+
+        //    var webPartModel = provisionContext.WebPartDefinition;
+
+        //    var listItemModelHost = provisionContext.ListItemModelHost;
+        //    var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
+
+        //    var webPartStoreKey = provisionContext.WebPartStoreKey;
+        //    var context = provisionContext.ListItemModelHost.HostWeb.Context;
+
+        //    var bindContext = LookupBindContext(listItemModelHost, wpModel);
+
+        //    if (bindContext.TargetViewId.HasValue
+        //        && bindContext.TargetViewId != default(Guid)
+        //        && provisionContext.WebPartStoreKey.HasValue
+        //        && provisionContext.WebPartStoreKey.Value != default(Guid))
+        //    {
+        //        var targetWeb = listItemModelHost.HostWeb;
+
+        //        if (wpModel.WebId.HasGuidValue() || !string.IsNullOrEmpty(wpModel.WebUrl))
+        //        {
+        //            targetWeb = new LookupFieldModelHandler()
+        //                            .GetTargetWeb(this.CurrentClientContext.Site, wpModel.WebUrl, wpModel.WebId);
+        //        }
+
+        //        var list = LookupList(targetWeb, wpModel.ListUrl, wpModel.ListTitle, wpModel.WebId);
+
+        //        var srcView = list.Views.GetById(bindContext.TargetViewId.Value);
+        //        var hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
+
+        //        context.Load(srcView, s => s.ViewFields);
+        //        context.Load(srcView, s => s.HtmlSchemaXml);
+
+        //        context.Load(srcView, s => s.RowLimit);
+        //        context.Load(srcView, s => s.ViewQuery);
+        //        context.Load(srcView, s => s.JSLink);
+
+        //        context.Load(srcView, s => s.IncludeRootFolder);
+        //        context.Load(srcView, s => s.Scope);
+
+        //        context.Load(hiddenView);
+
+        //        context.ExecuteQueryWithTrace();
+
+        //        // patching schema
+        //        // first update via ListViewXml doubles the View node
+
+        //        // the name should be replaces with the hidden view name
+        //        var hiddenViewXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+        //        var srcViewXml = XDocument.Parse(srcView.HtmlSchemaXml);
+
+        //        var hiddenViewName = hiddenViewXml.Root.GetAttributeValue("Name");
+        //        srcViewXml.Root.SetAttributeValue("Name", hiddenViewName);
+
+        //        hiddenView.ListViewXml = srcViewXml.ToString();
+        //        hiddenView.Update();
+        //        context.ExecuteQueryWithTrace();
+
+        //        // getting again, patching thew view and the rest of the props
+        //        hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
+        //        context.Load(hiddenView);
+        //        context.ExecuteQueryWithTrace();
+
+        //        // patching, removing the root node
+        //        hiddenView.ListViewXml = srcViewXml.Root.GetInnerXmlAsString();
+        //        hiddenView.Update();
+        //        context.ExecuteQueryWithTrace();
+
+        //        hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
+        //        context.Load(hiddenView);
+        //        context.Load(hiddenView, v => v.ListViewXml);
+        //        context.ExecuteQueryWithTrace();
+
+
+        //        var srcType = XDocument.Parse(hiddenView.ListViewXml).Root.GetAttributeValue("Type");
+        //        if (srcType != "GRID")
+        //        {
+        //            Console.Write("");
+        //        }
+
+        //        // fixing the rest, but why?
+        //        // already pushed everything via ListViewXml
+        //        // tests are fine, so leave it as it is
+
+        //        //hiddenView.ViewFields.RemoveAll();
+        //        //foreach (var f in srcView.ViewFields)
+        //        //    hiddenView.ViewFields.Add(f);
+
+        //        //hiddenView.RowLimit = srcView.RowLimit;
+        //        //hiddenView.ViewQuery = srcView.ViewQuery;
+        //        //hiddenView.JSLink = srcView.JSLink;
+
+        //        //hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
+        //        //hiddenView.Scope = srcView.Scope;
+
+        //        //hiddenView.Update();
+        //        //context.ExecuteQueryWithTrace();
+        //    }
+        //}
 
         private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
@@ -229,12 +314,15 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             }
 
             result.ListId = list.Id;
+            result.List = list;
 
             if (wpModel.TitleUrl == null)
             {
                 if (string.IsNullOrEmpty(result.TitleUrl))
                     result.TitleUrl = list.DefaultViewUrl;
             }
+
+            result.DefaultViewId = list.DefaultView.Id;
 
             return result;
         }
