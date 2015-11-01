@@ -231,7 +231,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddFeature(webFeature);
 
-                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+                web.AddList(BuiltInListDefinitions.Catalogs.MasterPage.Inherit(d =>
+                {
+                    d.ContentTypesEnabled = true;
+                }), list =>
                 {
                     list.AddContentTypeLink(contentTypeDef);
                     list.AddContentTypeLink(publishingPageLayoutContentType);
@@ -280,7 +283,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddFeature(webFeature);
 
-                web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+                web.AddList(BuiltInListDefinitions.Catalogs.MasterPage.Inherit(d =>
+                {
+                    d.ContentTypesEnabled = true;
+                }), list =>
                 {
                     list.AddContentTypeLink(contentTypeDef);
                     list.AddPublishingPageLayout(itemDef);
