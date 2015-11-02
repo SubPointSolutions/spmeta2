@@ -40,6 +40,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             var contentTypeId = definition.GetContentTypeId();
             var spObject = contentTypes.FindByName(definition.Name);
 
+            context.Load(spObject);
+            context.Load(spObject, o => o.JSLink);
+            context.ExecuteQueryWithTrace();
+
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
