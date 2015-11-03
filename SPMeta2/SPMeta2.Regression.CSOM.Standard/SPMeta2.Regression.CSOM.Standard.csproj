@@ -156,6 +156,7 @@
     <Compile Include="Validation\ReusableHTMLItemDefinitionValidator.cs" />
     <Compile Include="Validation\ReusableTextItemDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />
+    <Compile Include="Validation\SearchSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermLabelDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />

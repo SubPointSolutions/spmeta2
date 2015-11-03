@@ -164,6 +164,7 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -190,6 +191,7 @@
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableHTMLItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableTextItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\SearchSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
