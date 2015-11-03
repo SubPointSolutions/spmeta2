@@ -141,6 +141,7 @@
     <Compile Include="Validation\PublishingPageLayoutDefinitionValidator.cs" />
     <Compile Include="Validation\ReusableHTMLItemDefinitionValidator.cs" />
     <Compile Include="Validation\ReusableTextItemDefinitionValidator.cs" />
+    <Compile Include="Validation\SearchSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\SearchResultDefinitionValidator.cs" />
     <Compile Include="Validation\SearchConfigurationDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
