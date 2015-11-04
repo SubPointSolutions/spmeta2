@@ -12,6 +12,8 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using System.Xml.Linq;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.SSOM.Validation.Webparts
 {
@@ -350,6 +352,67 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                     assert.ShouldBeEqual(m => m.Xsl, o => o.Xsl);
                 else
                     assert.SkipProperty(m => m.Xsl);
+
+                // skip it, it will be part of the .Toolbar validation
+                assert.SkipProperty(m => m.ToolbarShowAlways, "");
+
+                if (!string.IsNullOrEmpty(definition.Toolbar))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var targetView = (spObject as XsltListViewWebPart).View;
+                        var htmlSchemaXml = XDocument.Parse(targetView.HtmlSchemaXml);
+
+                        var useShowAlwaysValue =
+                                     (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
+                                     && typedDefinition.ToolbarShowAlways.HasValue
+                                     && typedDefinition.ToolbarShowAlways.Value;
+
+                        var toolbarNode = htmlSchemaXml.Root
+                            .Descendants("Toolbar")
+                            .FirstOrDefault();
+
+                        // NONE? the node might not be there
+                        if ((typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.None.ToUpper())
+                            && (toolbarNode == null))
+                        {
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = true
+                            };
+                        }
+                        else
+                        {
+                            var toolBarValue = toolbarNode.GetAttributeValue("Type");
+
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+                            var isValid = toolBarValue.ToUpper() == definition.Toolbar.ToUpper();
+
+                            if (useShowAlwaysValue)
+                            {
+                                var showAlwaysValue = toolbarNode.GetAttributeValue("ShowAlways");
+                                isValid = isValid && (showAlwaysValue.ToUpper() == "TRUE");
+                            }
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = isValid
+                            };
+                        }
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Toolbar);
+                }
 
             });
         }

@@ -196,7 +196,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                     });
                 },
                 ProcessWebpartProperties);
+
+            OnAfterDeployModel(host, webpartModel);
+
         }
+
+
 
         private static Guid PageLayout = new Guid("0f800910-b30d-4c8f-b011-8189b2297094");
         private static Guid PublishingPageContent = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8");
@@ -255,6 +260,11 @@ namespace SPMeta2.SSOM.ModelHandlers
         }
 
         protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)
+        {
+
+        }
+
+        protected virtual void OnAfterDeployModel(WebpartPageModelHost host, WebPartDefinition webpartModel)
         {
 
         }

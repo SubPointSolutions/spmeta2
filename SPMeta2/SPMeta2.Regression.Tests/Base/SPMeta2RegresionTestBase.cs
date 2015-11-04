@@ -36,8 +36,6 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
-
-
             ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
 
             RegressionService.EnableDefinitionProvision = true;

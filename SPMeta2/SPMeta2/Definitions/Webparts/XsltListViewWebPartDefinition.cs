@@ -71,6 +71,18 @@ namespace SPMeta2.Definitions.Webparts
         [DataMember]
         public string JSLink { get; set; }
 
+        [ExpectValidation]
+        [ExpectUpdatAsToolbarType]
+        [ExpectNullable]
+        [DataMember]
+        public string Toolbar { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [ExpectNullable]
+        [DataMember]
+        public bool? ToolbarShowAlways { get; set; }
+
         [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
