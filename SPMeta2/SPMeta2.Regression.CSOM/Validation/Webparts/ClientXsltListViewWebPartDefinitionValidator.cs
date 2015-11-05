@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
@@ -9,8 +10,10 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHandlers.Fields;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
 {
@@ -608,6 +611,91 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 }
                 else
                     assert.SkipProperty(m => m.XmlDefinitionLink, "XmlDefinitionLink is null or empty. Skipping.");
+
+
+
+                // skip it, it will be part of the .Toolbar validation
+                assert.SkipProperty(m => m.ToolbarShowAlways, "");
+
+                if (!string.IsNullOrEmpty(definition.Toolbar))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var targetWeb = listItemModelHost.HostWeb;
+
+                        if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
+                        {
+                            targetWeb = new LookupFieldModelHandler()
+                                            .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                        }
+
+                        var list = XsltListViewWebPartModelHandler.LookupList(targetWeb,
+                                        typedDefinition.ListUrl,
+                                        typedDefinition.ListTitle, 
+                                        typedDefinition.WebId);
+
+                        var xmlDefinition = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));
+                        var xmlDefinitionDoc = XDocument.Parse(xmlDefinition);
+
+                        var viewId = new Guid(xmlDefinitionDoc.Root.GetAttributeValue("Name"));
+
+                        var hiddenView = list.Views.GetById(viewId);
+                        context.Load(hiddenView, v => v.HtmlSchemaXml);
+                        context.ExecuteQueryWithTrace();
+
+                        var htmlSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+
+                        var useShowAlwaysValue =
+                                     (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
+                                     && typedDefinition.ToolbarShowAlways.HasValue
+                                     && typedDefinition.ToolbarShowAlways.Value;
+
+                        var toolbarNode = htmlSchemaXml.Root
+                            .Descendants("Toolbar")
+                            .FirstOrDefault();
+
+                        // NONE? the node might not be there
+                        if ((typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.None.ToUpper())
+                            && (toolbarNode == null))
+                        {
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = true
+                            };
+                        }
+                        else
+                        {
+                            var toolBarValue = toolbarNode.GetAttributeValue("Type");
+
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+                            var isValid = toolBarValue.ToUpper() == definition.Toolbar.ToUpper();
+
+                            if (useShowAlwaysValue)
+                            {
+                                var showAlwaysValue = toolbarNode.GetAttributeValue("ShowAlways");
+                                isValid = isValid && (showAlwaysValue.ToUpper() == "TRUE");
+                            }
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = isValid
+                            };
+                        }
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Toolbar);
+                }
+
 
             });
         }
