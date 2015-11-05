@@ -224,7 +224,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                                     .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
                 }
 
-                var list = XsltListViewWebPartModelHandler.LookupList(targetWeb, typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.WebId);
+                var list = XsltListViewWebPartModelHandler.LookupList(targetWeb, typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.ListId);
                 var hiddenView = list.Views.GetById(provisionContext.WebPartStoreKey.Value);
 
                 context.Load(hiddenView, s => s.HtmlSchemaXml);
