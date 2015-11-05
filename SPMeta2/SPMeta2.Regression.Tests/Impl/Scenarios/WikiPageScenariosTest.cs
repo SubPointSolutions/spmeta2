@@ -125,7 +125,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                web.AddList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                {
+                    d.ContentTypesEnabled = true;
+                }), list =>
                 {
                     list.AddContentTypeLink(contentTypeDef);
                     list.AddWikiPage(itemDef);
@@ -161,7 +164,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddFeature(webFeature);
 
-                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                web.AddList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                {
+                    d.ContentTypesEnabled = true;
+                }), list =>
                 {
                     list.AddContentTypeLink(contentTypeDef);
                     list.AddWikiPage(itemDef);

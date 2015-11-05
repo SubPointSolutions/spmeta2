@@ -155,6 +155,7 @@
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
+    <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
+    <Compile Include="Enumerations\BuiltInToolbarType.cs" />
     <Compile Include="Enumerations\BuiltInViewScope.cs" />
     <Compile Include="Enumerations\BuiltInComposedLookItemNames.cs" />
     <Compile Include="Enumerations\BuiltInContentTypeNames.cs" />

@@ -197,31 +197,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentView = list.Views.Add(newView);
 
-                if (!string.IsNullOrEmpty(listViewModel.ViewData))
-                    currentView.ViewData = listViewModel.ViewData;
+                MapListViewProperties(list, currentView, listViewModel);
 
-                if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
-                    currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
-
-                if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
-                    currentView.ContentTypeId = LookupListContentTypeById(list, listViewModel.ContentTypeId);
-
-                currentView.JSLink = listViewModel.JSLink;
-
-                if (listViewModel.DefaultViewForContentType.HasValue)
-                    currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
-
-                currentView.Hidden = listViewModel.Hidden;
-
-                if (!string.IsNullOrEmpty(listViewModel.Scope))
-                {
-                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(listViewModel.Scope);
-
-                    currentView.Scope = (ViewScope)Enum.Parse(
-                        typeof(ViewScope), scopeValue);
-                }
-
-                currentView.Title = listViewModel.Title;
                 currentView.Update();
 
                 list.Context.ExecuteQueryWithTrace();
@@ -237,48 +214,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 list.Context.ExecuteQueryWithTrace();
 
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list view");
-
-                currentView.Hidden = listViewModel.Hidden;
-
-                currentView.RowLimit = (uint)listViewModel.RowLimit;
-                currentView.DefaultView = listViewModel.IsDefault;
-                currentView.Paged = listViewModel.IsPaged;
-
-                if (!string.IsNullOrEmpty(listViewModel.Query))
-                    currentView.ViewQuery = listViewModel.Query;
-
-                if (!string.IsNullOrEmpty(listViewModel.ViewData))
-                    currentView.ViewData = listViewModel.ViewData;
-
-                if (listViewModel.Fields != null && listViewModel.Fields.Count() > 0)
-                {
-                    currentView.ViewFields.RemoveAll();
-
-                    foreach (var f in listViewModel.Fields)
-                        currentView.ViewFields.Add(f);
-                }
-
-                if (!string.IsNullOrEmpty(listViewModel.ContentTypeName))
-                    currentView.ContentTypeId = LookupListContentTypeByName(list, listViewModel.ContentTypeName);
-
-                if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
-                    currentView.ContentTypeId = LookupListContentTypeById(list, listViewModel.ContentTypeId);
-
-                if (!string.IsNullOrEmpty(listViewModel.JSLink))
-                    currentView.JSLink = listViewModel.JSLink;
-
-                if (listViewModel.DefaultViewForContentType.HasValue)
-                    currentView.DefaultViewForContentType = listViewModel.DefaultViewForContentType.Value;
-
-                if (!string.IsNullOrEmpty(listViewModel.Scope))
-                {
-                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(listViewModel.Scope);
-
-                    currentView.Scope = (ViewScope)Enum.Parse(
-                        typeof(ViewScope), scopeValue);
-                }
-
-                currentView.Title = listViewModel.Title;
+                MapListViewProperties(list, currentView, listViewModel);
             }
 
             ProcessLocalization(currentView, listViewModel);
@@ -298,6 +234,53 @@ namespace SPMeta2.CSOM.ModelHandlers
             currentView.Update();
 
             list.Context.ExecuteQueryWithTrace();
+        }
+
+        public virtual void MapListViewProperties(List list, View listView, ListViewDefinition definition)
+        {
+            if (definition.RowLimit > 0)
+                listView.RowLimit = (uint)definition.RowLimit;
+
+            listView.DefaultView = definition.IsDefault;
+            listView.Paged = definition.IsPaged;
+
+            if (!string.IsNullOrEmpty(definition.Query))
+                listView.ViewQuery = definition.Query;
+
+            if (definition.Fields != null && definition.Fields.Any())
+            {
+                listView.ViewFields.RemoveAll();
+
+                foreach (var f in definition.Fields)
+                    listView.ViewFields.Add(f);
+            }
+
+            if (!string.IsNullOrEmpty(definition.ViewData))
+                listView.ViewData = definition.ViewData;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                listView.ContentTypeId = LookupListContentTypeByName(list, definition.ContentTypeName);
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                listView.ContentTypeId = LookupListContentTypeById(list, definition.ContentTypeId);
+
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                listView.JSLink = definition.JSLink;
+
+            if (definition.DefaultViewForContentType.HasValue)
+                listView.DefaultViewForContentType = definition.DefaultViewForContentType.Value;
+
+            listView.Hidden = definition.Hidden;
+
+            if (!string.IsNullOrEmpty(definition.Scope))
+            {
+                var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(definition.Scope);
+
+                listView.Scope = (ViewScope)Enum.Parse(
+                    typeof(ViewScope), scopeValue);
+            }
+
+            listView.Title = definition.Title;
         }
 
         protected ContentTypeId LookupListContentTypeByName(List targetList, string name)

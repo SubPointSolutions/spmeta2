@@ -31,6 +31,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Base
             if (!string.IsNullOrEmpty(typedTemplateModel.Description))
                 fileProperties["MasterPageDescription"] = typedTemplateModel.Description;
 
+
+
+
         }
     }
 }

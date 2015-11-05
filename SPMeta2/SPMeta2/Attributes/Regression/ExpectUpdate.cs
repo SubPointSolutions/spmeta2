@@ -10,6 +10,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdatAsToolbarType : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsRichTextMode : ExpectUpdate
     {
 

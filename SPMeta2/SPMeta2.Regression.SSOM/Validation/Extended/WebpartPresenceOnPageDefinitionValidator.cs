@@ -13,60 +13,33 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation.Extended
 {
-    public class ClientWebpartPresenceOnPageDefinitionValidator : WikiPageModelHandler
+    public class WebpartPresenceOnPageDefinitionValidator : WikiPageModelHandler
     {
         public override Type TargetType
         {
             get { return typeof(WebpartPresenceOnPageDefinition); }
         }
 
-        public override void DeployModel(object modelHost, DefinitionBase model)
+        protected virtual void ValidateHtmlPage(
+            SPFile file,
+            string pageUrl,
+            string pageContent,
+            DefinitionBase definitionBase
+            )
         {
-            SPFolder targetFolder = null;
-            SPWeb web = null;
-
-            if (modelHost is ListModelHost)
-            {
-                targetFolder = (modelHost as ListModelHost).HostList.RootFolder;
-                web = (modelHost as ListModelHost).HostList.ParentWeb;
-            }
-            if (modelHost is FolderModelHost)
-            {
-                targetFolder = (modelHost as FolderModelHost).CurrentLibraryFolder;
-                web = (modelHost as FolderModelHost).CurrentWeb;
-            }
-
-            var definition = model.WithAssertAndCast<WebpartPresenceOnPageDefinition>("model", value => value.RequireNotNull());
-
-            var folder = targetFolder;
-
-            var pageName = GetSafeWikiPageFileName(definition.PageFileName);
-            var file = web.GetFile(UrlUtility.CombineUrl(folder.ServerRelativeUrl, pageName));
-
-            var serverUrl = web.Url;
-
-            if (web.ServerRelativeUrl != "/")
-                serverUrl = serverUrl.Replace(web.ServerRelativeUrl, string.Empty);
+            var definition = definitionBase as WebpartPresenceOnPageDefinition;
 
             var assert = ServiceFactory.AssertService
-                .NewAssert(definition, file)
+            .NewAssert(definition, file)
                 // dont' need to check that, not the pupose of the test
                 //.ShouldBeEqual(m => m.PageFileName, o => o.GetName())
-                .ShouldNotBeNull(file);
-
-            var pageUrl = UrlUtility.CombineUrl(new[]{
-                serverUrl, 
-                folder.ServerRelativeUrl,
-                pageName});
+            .ShouldNotBeNull(file);
 
             if (definition.WebPartDefinitions.Any())
             {
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var client = new WebClient();
-                    client.UseDefaultCredentials = true;
 
-                    var pageContent = client.DownloadString(new Uri(pageUrl));
                     var srcProp = s.GetExpressionValue(m => m.WebPartDefinitions);
 
                     var isValid = true;
@@ -166,9 +139,61 @@ namespace SPMeta2.Regression.SSOM.Validation.Extended
             {
                 assert.SkipProperty(m => m.WebPartDefinitions, "WebPartDefinitions.Count = 0. Skipping");
             }
-
         }
 
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            SPFolder targetFolder = null;
+            SPWeb web = null;
 
+            if (modelHost is ListModelHost)
+            {
+                targetFolder = (modelHost as ListModelHost).HostList.RootFolder;
+                web = (modelHost as ListModelHost).HostList.ParentWeb;
+            }
+            if (modelHost is FolderModelHost)
+            {
+                targetFolder = (modelHost as FolderModelHost).CurrentLibraryFolder;
+                web = (modelHost as FolderModelHost).CurrentWeb;
+            }
+
+            var definition = model.WithAssertAndCast<WebpartPresenceOnPageDefinition>("model", value => value.RequireNotNull());
+
+            var folder = targetFolder;
+
+            var pageName = GetSafeWikiPageFileName(definition.PageFileName);
+            var file = web.GetFile(UrlUtility.CombineUrl(folder.ServerRelativeUrl, pageName));
+
+            var serverUrl = web.Url;
+
+            if (web.ServerRelativeUrl != "/")
+                serverUrl = serverUrl.Replace(web.ServerRelativeUrl, string.Empty);
+
+
+
+            var pageUrl = UrlUtility.CombineUrl(new[]{
+                serverUrl, 
+                folder.ServerRelativeUrl,
+                pageName});
+
+            var client = new WebClient();
+            client.UseDefaultCredentials = true;
+
+            var userAgentString = "User-Agent";
+            var userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36";
+
+            client.Headers.Add(userAgentString, userAgent);
+
+            var pageContent = client.DownloadString(new Uri(pageUrl));
+
+
+
+            ValidateHtmlPage(
+                file,
+                pageUrl,
+                pageContent,
+                definition);
+
+        }
     }
 }

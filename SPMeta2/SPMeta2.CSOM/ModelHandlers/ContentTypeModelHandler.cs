@@ -179,13 +179,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType = tmp;
             }
 
-            currentContentType.Hidden = contentTypeModel.Hidden;
-
-            currentContentType.Name = contentTypeModel.Name;
-            currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
-            currentContentType.Group = contentTypeModel.Group;
-            currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
-
+            // doc template first, then set the other props
+            // ExtractResourceFolderServerRelativeUrl might make ExecuteQueryWithTrace() call
+            // so that might affect setting up other props
+            // all props update should go later
             if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
             {
                 var serverRelativeFolderUrl = ExtractResourceFolderServerRelativeUrl(web, context, currentContentType);
@@ -209,7 +206,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
             }
 
+            // only after DocumentTemplate processing
             ProcessLocalization(currentContentType, contentTypeModel);
+
+            currentContentType.Hidden = contentTypeModel.Hidden;
+
+            currentContentType.Name = contentTypeModel.Name;
+            currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
+            currentContentType.Group = contentTypeModel.Group;
+            currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

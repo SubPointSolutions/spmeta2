@@ -2,8 +2,8 @@
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
-using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 

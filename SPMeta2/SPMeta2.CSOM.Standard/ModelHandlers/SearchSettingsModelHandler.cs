@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.Office.Server;
-using Microsoft.Office.Server.Audience;
-using Microsoft.Office.Server.Search.Administration;
-using Microsoft.SharePoint;
-using Microsoft.SharePoint.Publishing;
+using System.Web.Script.Serialization;
+using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Search.Administration;
+using Microsoft.SharePoint.Client.Search.Portability;
 using SPMeta2.Common;
+using SPMeta2.Config;
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.SSOM.ModelHandlers;
-using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Services;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
-using System.Web.Script.Serialization;
-using SPMeta2.Config;
-using SPMeta2.Services;
 
-namespace SPMeta2.SSOM.Standard.ModelHandlers
+namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
-    public class SearchSettingsModelHandler : SSOMModelHandlerBase
+    public class SearchSettingsModelHandler : CSOMModelHandlerBase
     {
         #region properties
 
@@ -45,37 +43,40 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             }
         }
 
-        protected virtual string GetSearchCenterUrlAtWebLevel(SPWeb web)
+        protected virtual string GetSearchCenterUrlAtWebLevel(Web web)
         {
             return InternalGetSearchCenterUrl(web, true);
         }
 
-        protected virtual string GetSearchCenterUrlAtSiteLevel(SPWeb web)
+        protected virtual string GetSearchCenterUrlAtSiteLevel(Web web)
         {
             return InternalGetSearchCenterUrl(web, false);
         }
 
-        private string InternalGetSearchCenterUrl(SPWeb web, bool isWebLevel)
+        private string InternalGetSearchCenterUrl(Web web, bool isWebLevel)
         {
             var propertyBagName = "SRCH_ENH_FTR_URL_SITE";
 
             if (isWebLevel)
                 propertyBagName = "SRCH_ENH_FTR_URL_WEB";
 
+            if (!web.AllProperties.FieldValues.ContainsKey(propertyBagName))
+                return string.Empty;
+
             return ConvertUtils.ToString(web.AllProperties[propertyBagName]);
         }
 
-        protected virtual void SetSearchCenterUrlAtWebLevel(SPWeb web, string url)
+        protected virtual void SetSearchCenterUrlAtWebLevel(Web web, string url)
         {
             InternalSetSearchCenterUrl(web, url, true);
         }
 
-        protected virtual void SetSearchCenterUrlAtSiteLevel(SPWeb web, string url)
+        protected virtual void SetSearchCenterUrlAtSiteLevel(Web web, string url)
         {
             InternalSetSearchCenterUrl(web, url, false);
         }
 
-        protected void InternalSetSearchCenterUrl(SPWeb web, string url, bool isWebLevel)
+        protected void InternalSetSearchCenterUrl(Web web, string url, bool isWebLevel)
         {
             var propertyBagName = "SRCH_ENH_FTR_URL_SITE";
 
@@ -86,31 +87,34 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             {
                 url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    Context = web,
+                    Context = web.Context,
                     Value = url
                 }).Value;
 
-                web.AllProperties[propertyBagName] = url;
+                var props = web.AllProperties;
+                props[propertyBagName] = url;
             }
         }
 
-        private void DeployAtWebLevel(object modelHost, SPWeb web, SearchSettingsDefinition definition)
+        private void DeployAtWebLevel(object modelHost, Web web, SearchSettingsDefinition definition)
         {
+            var context = web.Context;
+
+            context.Load(web);
+            context.Load(web, w => w.AllProperties);
+
+            context.ExecuteQueryWithTrace();
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
-
-            if (!string.IsNullOrEmpty(definition.SearchCenterUrl))
-            {
-                SetSearchCenterUrlAtWebLevel(web, definition.SearchCenterUrl);
-            }
 
             var searchSettings = GetCurrentSearchConfigAtWebLevel(web);
 
@@ -123,7 +127,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 {
                     var url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = web,
+                        Context = context,
                         Value = definition.UseCustomResultsPageUrl
                     }).Value;
 
@@ -133,23 +137,36 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 SetCurrentSearchConfigAtWebLevel(web, searchSettings);
             }
 
+            if (!string.IsNullOrEmpty(definition.SearchCenterUrl))
+            {
+                SetSearchCenterUrlAtWebLevel(web, definition.SearchCenterUrl);
+            }
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
             web.Update();
+            context.ExecuteQueryWithTrace();
         }
 
-        private void DeployAtSiteLevel(object modelHost, SPSite site, SearchSettingsDefinition definition)
+        private void DeployAtSiteLevel(object modelHost, Site site, SearchSettingsDefinition definition)
         {
             var web = site.RootWeb;
+
+            var context = web.Context;
+
+            context.Load(web);
+            context.Load(web, w => w.AllProperties);
+
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -157,7 +174,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
@@ -178,7 +195,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 {
                     var url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = web,
+                        Context = context,
                         Value = definition.UseCustomResultsPageUrl
                     }).Value;
 
@@ -195,26 +212,26 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
             web.Update();
-
+            context.ExecuteQueryWithTrace();
         }
 
-        protected virtual void SetCurrentSearchConfigAtWebLevel(SPWeb web, SearchSettingsConfig searchSettings)
+        protected virtual void SetCurrentSearchConfigAtWebLevel(Web web, SearchSettingsConfig searchSettings)
         {
             InternalSetCurrentSearchConfig(web, searchSettings, true);
         }
 
-        protected virtual void SetCurrentSearchConfigAtSiteLevel(SPWeb web, SearchSettingsConfig searchSettings)
+        protected virtual void SetCurrentSearchConfigAtSiteLevel(Web web, SearchSettingsConfig searchSettings)
         {
             InternalSetCurrentSearchConfig(web, searchSettings, false);
         }
 
-        private void InternalSetCurrentSearchConfig(SPWeb web,
+        private void InternalSetCurrentSearchConfig(Web web,
             SearchSettingsConfig searchSettings, bool isWebLevel)
         {
             var propertyBagName = "SRCH_SB_SET_SITE";
@@ -223,20 +240,22 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 propertyBagName = "SRCH_SB_SET_WEB";
 
             var serializer = new JavaScriptSerializer();
-            web.AllProperties[propertyBagName] = serializer.Serialize(searchSettings);
+
+            var props = web.AllProperties;
+            props[propertyBagName] = serializer.Serialize(searchSettings);
         }
 
-        protected virtual SearchSettingsConfig GetCurrentSearchConfigAtWebLevel(SPWeb web)
+        protected virtual SearchSettingsConfig GetCurrentSearchConfigAtWebLevel(Web web)
         {
             return InternalGetCurrentSearchConfig(web, true);
         }
 
-        protected virtual SearchSettingsConfig GetCurrentSearchConfigAtSiteLevel(SPWeb web)
+        protected virtual SearchSettingsConfig GetCurrentSearchConfigAtSiteLevel(Web web)
         {
             return InternalGetCurrentSearchConfig(web, false);
         }
 
-        private SearchSettingsConfig InternalGetCurrentSearchConfig(SPWeb web, bool isWebLevel)
+        private SearchSettingsConfig InternalGetCurrentSearchConfig(Web web, bool isWebLevel)
         {
             SearchSettingsConfig result = null;
             var serializer = new JavaScriptSerializer();
@@ -248,7 +267,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
             try
             {
-                var rawSearchSettings = ConvertUtils.ToStringAndTrim(web.AllProperties[propertyBagName]);
+                var rawSearchSettings = string.Empty;
+
+                if (web.AllProperties.FieldValues.ContainsKey(propertyBagName))
+                    rawSearchSettings = ConvertUtils.ToStringAndTrim(web.AllProperties[propertyBagName]);
+
                 result = serializer.Deserialize<SearchSettingsConfig>(rawSearchSettings);
 
                 // no setup -> an empty string gives NULL

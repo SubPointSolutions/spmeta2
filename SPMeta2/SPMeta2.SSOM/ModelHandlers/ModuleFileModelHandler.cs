@@ -316,33 +316,37 @@ namespace SPMeta2.SSOM.ModelHandlers
                 },
                 after =>
                 {
+                    var shouldUpdateItem = false;
+
+                    if (!string.IsNullOrEmpty(moduleFile.Title))
+                    {
+                        after.ListItemAllFields["Title"] = moduleFile.Title;
+                        shouldUpdateItem = true;
+                    }
+
                     if (!string.IsNullOrEmpty(moduleFile.ContentTypeId) ||
                         !string.IsNullOrEmpty(moduleFile.ContentTypeName))
                     {
                         var list = folder.ParentWeb.Lists[folder.ParentListId];
-
-                        if (!string.IsNullOrEmpty(moduleFile.Title))
-                            after.ListItemAllFields["Title"] = moduleFile.Title;
 
                         if (!string.IsNullOrEmpty(moduleFile.ContentTypeId))
                             after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, moduleFile.ContentTypeId);
 
                         if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
                             after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, moduleFile.ContentTypeName);
+
+                        shouldUpdateItem = true;
                     }
 
                     if (moduleFile.DefaultValues.Count > 0)
                     {
                         FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, moduleFile.DefaultValues);
-
+                        shouldUpdateItem = true;
                     }
 
                     FieldLookupService.EnsureValues(after.ListItemAllFields, moduleFile.Values, true);
 
-                    if (moduleFile.DefaultValues.Any()
-                            || moduleFile.Values.Any()
-                            || !string.IsNullOrEmpty(moduleFile.ContentTypeId)
-                            || !string.IsNullOrEmpty(moduleFile.ContentTypeName))
+                    if (shouldUpdateItem)
                     {
                         after.ListItemAllFields.Update();
                     }

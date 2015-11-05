@@ -10,7 +10,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 
-namespace SPMeta2.SSOM.Standard.ModelHandlers
+namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
     public class SearchConfigurationModelHandler : CSOMModelHandlerBase
     {

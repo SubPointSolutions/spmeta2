@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Definitions\Extended\XsltListViewWebPartGridModePresenceDefinition.cs" />
     <Compile Include="Definitions\Extended\WebpartPresenceOnPageDefinition.cs" />
     <Compile Include="ModelHandlers\EmptyModelHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

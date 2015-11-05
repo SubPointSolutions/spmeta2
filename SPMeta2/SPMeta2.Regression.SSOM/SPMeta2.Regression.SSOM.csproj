@@ -126,6 +126,7 @@
     <Compile Include="Validation\AuditSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\Extended\WebpartPresenceOnPageDefinitionValidator.cs" />
     <Compile Include="Validation\AnonymousAccessSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Extended\XsltListViewWebPartGridModePresenceValidator.cs" />
     <Compile Include="Validation\SupportedUICultureDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\DependentLookupFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\OutcomeChoiceFieldDefinitionValidator.cs" />
