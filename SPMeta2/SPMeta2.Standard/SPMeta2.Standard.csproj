@@ -130,6 +130,7 @@
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
     <Compile Include="Definitions\DisplayTemplates\FilterDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\ManagedPropertyDefinition.cs" />
+    <Compile Include="Definitions\MetadataNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
     <Compile Include="Definitions\Webparts\CategoryWebPartDefinition.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
     <Compile Include="Enumerations\BuiltInManagedDataType.cs" />
+    <Compile Include="Syntax\MetadataNavigationSettingsSyntax.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CategoryWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CommunityAdminWebPartDefinitionSyntax.cs" />

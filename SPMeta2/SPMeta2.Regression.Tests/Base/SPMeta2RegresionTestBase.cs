@@ -52,8 +52,6 @@ namespace SPMeta2.Regression.Tests.Base
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
             TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
-
-
         }
 
         #endregion

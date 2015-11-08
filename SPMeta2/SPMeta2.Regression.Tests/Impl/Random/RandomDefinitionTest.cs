@@ -148,6 +148,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+
+
         #region secure store application
 
         [TestMethod]
@@ -727,6 +729,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
 
 
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_MetadataNavigationSettingsDefinition()
+        {
+            TestRandomDefinition<MetadataNavigationSettingsDefinition>();
         }
 
         [TestMethod]
@@ -1413,7 +1422,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region web parts
 
-        
+
         #endregion
     }
 }

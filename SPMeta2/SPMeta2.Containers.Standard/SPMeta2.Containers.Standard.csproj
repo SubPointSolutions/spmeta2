@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\MetadataNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\FilterDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\JavaScriptDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\ItemDisplayTemplateDefinitionGenerator.cs" />
