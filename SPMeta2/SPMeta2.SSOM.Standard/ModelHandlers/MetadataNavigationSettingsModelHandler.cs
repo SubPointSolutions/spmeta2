@@ -12,6 +12,8 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
+using MetadataNavigationHierarchy = Microsoft.Office.DocumentManagement.MetadataNavigation.MetadataNavigationHierarchy;
+using MetadataNavigationKeyFilter = Microsoft.Office.DocumentManagement.MetadataNavigation.MetadataNavigationKeyFilter;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers
 {
@@ -36,6 +38,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             DeploySettings(modelHost, listHost, typedDefinition);
         }
 
+        protected MetadataNavigationSettings GetCurrentSettings(SPList list)
+        {
+            return MetadataNavigationSettings.GetMetadataNavigationSettings(list);
+        }
+
         private void DeploySettings(object modelHost, ListModelHost listHost, MetadataNavigationSettingsDefinition definition)
         {
             var list = listHost.HostList;
@@ -54,18 +61,34 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             var needUpdate = false;
 
             // deploy
-            var settings = MetadataNavigationSettings.GetMetadataNavigationSettings(list);
+            var settings = GetCurrentSettings(list);
 
             if (definition.Hierarchies.Count() > 0)
             {
-                // TODO
+                foreach (var h in definition.Hierarchies)
+                {
+                    if (h.FieldId.HasGuidValue())
+                    {
+                        var targetField = list.Fields[h.FieldId.Value];
+
+                        settings.AddConfiguredHierarchy(new MetadataNavigationHierarchy(targetField));
+                    }
+                }
 
                 needUpdate = true;
             }
 
             if (definition.KeyFilters.Count() > 0)
             {
-                // TODO
+                foreach (var h in definition.KeyFilters)
+                {
+                    if (h.FieldId.HasGuidValue())
+                    {
+                        var targetField = list.Fields[h.FieldId.Value];
+
+                        settings.AddConfiguredKeyFilter(new MetadataNavigationKeyFilter(targetField));
+                    }
+                }
 
                 needUpdate = true;
             }

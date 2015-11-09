@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Publishing;
 using SPMeta2.Common;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
@@ -21,15 +22,43 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                  modelHost.WithAssertAndCast<ListModelHost>("model", value => value.RequireNotNull());
 
             var definition = model.WithAssertAndCast<MetadataNavigationSettingsDefinition>("model", value => value.RequireNotNull());
-            SPList spObject = typedModelHost.HostList;
+            var spObject = typedModelHost.HostList;
 
             var assert = ServiceFactory.AssertService
                             .NewAssert(definition, spObject)
                             .ShouldNotBeNull(spObject);
 
+            var settings = GetCurrentSettings(spObject);
+
             if (definition.Hierarchies.Count > 0)
             {
-                // TODO
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Hierarchies);
+                    var isValid = true;
+
+                    foreach (var h in definition.Hierarchies)
+                    {
+                        if (h.FieldId.HasGuidValue())
+                        {
+                            var targetH = settings.FindConfiguredHierarchy(h.FieldId.Value);
+
+                            isValid = targetH != null
+                                      && targetH.FieldId == h.FieldId.Value;
+
+                            if (!isValid)
+                                break;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
             }
             else
             {
@@ -38,7 +67,33 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
 
             if (definition.KeyFilters.Count > 0)
             {
-                // TODO
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.KeyFilters);
+                    var isValid = true;
+
+                    foreach (var h in definition.KeyFilters)
+                    {
+                        if (h.FieldId.HasGuidValue())
+                        {
+                            var targetH = settings.FindConfiguredKeyFilter(h.FieldId.Value);
+
+                            isValid = targetH != null
+                                      && targetH.FieldId == h.FieldId.Value;
+
+                            if (!isValid)
+                                break;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
             }
             else
             {
