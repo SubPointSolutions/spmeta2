@@ -146,7 +146,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context, context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, termSet, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -185,7 +185,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, termSet, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
@@ -223,7 +223,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
                 // cause binding might be only by group AND (termset || term)
                 var termSet = TaxonomyFieldModelHandler.LookupTermSet(context,context.Site, termStore, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, termSet, definition);
 
                 if (termSet != null)
                     group = termSet.Group;
