@@ -294,7 +294,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
             if (!string.IsNullOrEmpty(definition.TermName))
             {
                 var termStore = TaxonomyFieldModelHandler.LookupTermStore(context, definition);
-                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, definition);
+                var termSet = TaxonomyFieldModelHandler.LookupTermSet(context, termStore, definition);
+                var term = TaxonomyFieldModelHandler.LookupTerm(context, termStore, termSet, definition);
 
                 var isValid = spObject.AnchorId == term.Id;
 
