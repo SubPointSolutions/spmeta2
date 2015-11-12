@@ -35,6 +35,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #endregion
 
+
         #region caml
 
         [TestMethod]
@@ -76,6 +77,10 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
             Assert.IsTrue(isValid);
         }
+
+
+
+       
 
 
         #endregion

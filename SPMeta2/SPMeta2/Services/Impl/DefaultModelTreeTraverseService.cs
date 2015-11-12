@@ -9,6 +9,8 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Services.Impl
 {
+
+
     public class DefaultModelTreeTraverseService : ModelTreeTraverseServiceBase
     {
         #region constructors
@@ -60,7 +62,26 @@ namespace SPMeta2.Services.Impl
 
                 if (requireselfProcessing)
                 {
-                    modelHandler.DeployModel(modelHost, modelNode.Value);
+                    try
+                    {
+                        modelHandler.DeployModel(modelHost, modelNode.Value);
+                    }
+                    catch (Exception e)
+                    {
+                        var onExceptionArgs = new ModelTreeTraverseServiceExceptionEventArgs
+                        {
+                            Handled = false,
+                            Exception = e
+                        };
+
+                        if (OnException != null)
+                            OnException(this, onExceptionArgs);
+
+                        if (!onExceptionArgs.Handled)
+                        {
+                            throw;
+                        }
+                    }
                 }
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessed for model: [{0}].", modelNode);
@@ -117,13 +138,26 @@ namespace SPMeta2.Services.Impl
             }
             catch (Exception e)
             {
-                if (e is SPMeta2ModelDeploymentException)
-                    throw;
-
-                throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
+                var onExceptionArgs = new ModelTreeTraverseServiceExceptionEventArgs
                 {
-                    ModelNode = modelNode,
+                    Handled = false,
+                    Exception = e
                 };
+
+                if (OnException != null)
+                    OnException(this, onExceptionArgs);
+
+                if (!onExceptionArgs.Handled)
+                {
+                    if (e is SPMeta2ModelDeploymentException)
+                        throw;
+
+                    throw new SPMeta2ModelDeploymentException(
+                        "There was an error while provisioning definition. Check ModelNode prop.", e)
+                    {
+                        ModelNode = modelNode,
+                    };
+                }
             }
         }
 

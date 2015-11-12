@@ -3,10 +3,12 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
 using SPMeta2.Services.Impl.Validation;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Services
 {
-    public abstract class DefaultPreDeploymentTreeTraverseServiceBase<TDefinitionHandler> : PreDeploymentValidationServiceBase
+    public abstract class DefaultPreDeploymentTreeTraverseServiceBase<TDefinitionHandler>
+        : PreDeploymentValidationServiceBase
           where TDefinitionHandler : ModelHandlerBase, new()
     {
         #region constructors
@@ -28,11 +30,22 @@ namespace SPMeta2.Services
 
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
-            var defaultTraserveService = ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
+            Exceptions.Clear();
 
-            defaultTraserveService.OnModelHandlerResolve += ResolveDefaultModelHandler;
-            defaultTraserveService.Traverse(modelHost, model);
+            //var defaultTraserveService = ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
+
+            //defaultTraserveService.OnModelHandlerResolve += ResolveDefaultModelHandler;
+            //defaultTraserveService.Traverse(modelHost, model);
+
+            ModelTraverseService.OnModelHandlerResolve += ResolveDefaultModelHandler;
+            ModelTraverseService.Traverse(modelHost, model);
+
+            if (Exceptions.Count > 0)
+            {
+                throw new SPMeta2ModelDeploymentException("Errors while validating the model", new AggregateException(Exceptions));
+            }
         }
+
 
         private ModelHandlerBase ResolveDefaultModelHandler(ModelNode arg)
         {

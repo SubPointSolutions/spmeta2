@@ -5,9 +5,23 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Services
 {
+    public class ModelTreeTraverseServiceExceptionEventArgs : EventArgs
+    {
+        public ModelTreeTraverseServiceExceptionEventArgs()
+        {
+
+        }
+
+        public bool Handled { get; set; }
+
+        public Exception Exception { get; set; }
+    }
+
     public abstract class ModelTreeTraverseServiceBase : SPMetaServiceBase
     {
         #region methods
+
+        public EventHandler<ModelTreeTraverseServiceExceptionEventArgs> OnException;
 
         public abstract void Traverse(object modelHost, ModelNode modelNode);
 
