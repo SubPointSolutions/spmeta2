@@ -27,6 +27,7 @@ using SPMeta2.SSOM.Services;
 using SPMeta2.SSOM.Standard.ModelHandlers.Webparts;
 using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Containers.SSOM
 {

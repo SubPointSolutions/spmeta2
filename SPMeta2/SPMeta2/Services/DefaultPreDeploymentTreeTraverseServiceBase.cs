@@ -2,10 +2,11 @@
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Services
 {
-    public class DefaultPreDeploymentTreeTraverseServiceBase<TDefinitionHandler> : PreDeploymentServiceBase
+    public abstract class DefaultPreDeploymentTreeTraverseServiceBase<TDefinitionHandler> : PreDeploymentValidationServiceBase
           where TDefinitionHandler : ModelHandlerBase, new()
     {
         #region constructors

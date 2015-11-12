@@ -153,6 +153,7 @@
     <Compile Include="Validation\Fields\ClientHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ReusableHTMLItemDefinitionValidator.cs" />
     <Compile Include="Validation\ReusableTextItemDefinitionValidator.cs" />
     <Compile Include="Validation\SandboxSolutionDefinitionValidator.cs" />

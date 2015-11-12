@@ -21,6 +21,7 @@ using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Containers.CSOM
 {

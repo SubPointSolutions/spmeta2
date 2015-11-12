@@ -172,6 +172,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\MetadataNavigationHierarchyConfig.cs" />
+    <Compile Include="Config\MetadataNavigationKeyFilterConfig.cs" />
+    <Compile Include="Config\MetadataNavigationSettingsConfig.cs" />
     <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\ReusableTextItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
@@ -186,6 +189,7 @@
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" />
+    <Compile Include="ModelHandlers\MetadataNavigationSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
@@ -256,6 +260,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SPMeta2.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\_non-indexed.xml" />
+    <Content Include="Config\_indexed.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
