@@ -32,7 +32,7 @@ namespace SPMeta2.Standard.Syntax
 
         public static TModelNode AddMetadataNavigationSettings<TModelNode>(this TModelNode model,
             MetadataNavigationSettingsDefinition definition,
-            Action<ManagedPropertyModelNode> action)
+            Action<TModelNode> action)
             where TModelNode : ModelNode, IListModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
@@ -42,7 +42,7 @@ namespace SPMeta2.Standard.Syntax
 
         #region array overload
 
-       
+
         #endregion
 
         #endregion

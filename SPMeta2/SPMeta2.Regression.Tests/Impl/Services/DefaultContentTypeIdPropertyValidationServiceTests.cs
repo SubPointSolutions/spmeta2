@@ -71,8 +71,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                isValid = e is SPMeta2ModelDeploymentException
-                          && e.InnerException is SPMeta2ModelValidationException;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);

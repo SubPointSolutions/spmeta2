@@ -60,14 +60,12 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                Assert.IsTrue(e is SPMeta2Exception);
-                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
-
-                isValid = true;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);
         }
+
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultNotAbsoluteUrlPropertiesValidationService")]
@@ -91,10 +89,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                Assert.IsTrue(e is SPMeta2Exception);
-                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
-
-                isValid = true;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);
@@ -122,10 +117,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                Assert.IsTrue(e is SPMeta2Exception);
-                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
-
-                isValid = true;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);

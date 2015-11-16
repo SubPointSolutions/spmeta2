@@ -810,6 +810,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         if (defType == typeof(SiteDocumentsDefinition))
                             addXXXArrayDefinitionMethodName = string.Format("AddSiteDocuments");
 
+                        if (defType == typeof(MetadataNavigationSettingsDefinition))
+                            addXXXArrayDefinitionMethodName = string.Format("AddMetadataNavigationSettings");
+
                         // host
 
                         Func<MethodInfo, bool> addHostMethodPlainSpec = (m) =>

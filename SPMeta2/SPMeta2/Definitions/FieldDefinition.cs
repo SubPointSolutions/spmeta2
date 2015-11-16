@@ -189,7 +189,7 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         [IdentityKey]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
         /// Type of the target field.
