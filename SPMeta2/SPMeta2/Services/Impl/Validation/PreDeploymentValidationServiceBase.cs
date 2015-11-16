@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
@@ -26,9 +26,9 @@ namespace SPMeta2.Services.Impl.Validation
                 Exceptions.Add(e.Exception as SPMeta2ModelValidationException);
                 e.Handled = true;
             }
-            else if (e.Exception is AggregateException)
+            else if (e.Exception is SPMeta2AggregateException)
             {
-                Exceptions.AddRange((e.Exception as AggregateException).InnerExceptions
+                Exceptions.AddRange((e.Exception as SPMeta2AggregateException).InnerExceptions
                                             .OfType<SPMeta2ModelValidationException>());
                 e.Handled = true;
             }

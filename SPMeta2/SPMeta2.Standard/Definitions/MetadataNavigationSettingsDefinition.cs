@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -55,7 +55,6 @@ namespace SPMeta2.Standard.Definitions
 
         #endregion
 
-
         #region properties
 
         [ExpectValidation]
@@ -67,7 +66,6 @@ namespace SPMeta2.Standard.Definitions
         public List<MetadataNavigationKeyFilter> KeyFilters { get; set; }
 
         #endregion
-
 
         #region override
 
@@ -82,7 +80,7 @@ namespace SPMeta2.Standard.Definitions
                 result += string.Join(", ",
                                       Hierarchies.Where(h => h.FieldId.HasValue)
                                                               .Select(h => h.FieldId.Value.ToString())
-                                                              .ToList());
+                                                              .ToArray());
             }
 
             if (KeyFilters.Count > 0)
@@ -95,7 +93,7 @@ namespace SPMeta2.Standard.Definitions
                 result += string.Join(", ",
                                       KeyFilters.Where(h => h.FieldId.HasValue)
                                                              .Select(h => h.FieldId.Value.ToString())
-                                                             .ToList());
+                                                             .ToArray());
             }
 
             if (!string.IsNullOrEmpty(result))

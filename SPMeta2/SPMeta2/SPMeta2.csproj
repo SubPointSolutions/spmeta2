@@ -331,6 +331,7 @@
     <Compile Include="Events\OnModelNodeProcessedEventArgs.cs" />
     <Compile Include="Events\ModelNodeProcessingEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessingEventArgs.cs" />
+    <Compile Include="Exceptions\SPMeta2AggregateException.cs" />
     <Compile Include="Exceptions\SPMeta2Exception.cs" />
     <Compile Include="Exceptions\SPMeta2InvalidDefinitionPropertyException.cs" />
     <Compile Include="Exceptions\SPMeta2ModelDeploymentException.cs" />

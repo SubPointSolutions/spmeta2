@@ -31,7 +31,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
             var result = true;
 
             result = result & (e is SPMeta2Exception);
-            result = result & (e.InnerException is AggregateException);
+            result = result & (e.InnerException is SPMeta2AggregateException);
             result = result & ((e.InnerException as AggregateException)
                                     .InnerExceptions.All(ee => ee is SPMeta2ModelValidationException));
 

@@ -63,6 +63,13 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                     if (xsltWebPart != null)
                     {
+
+                        // big TODO for .NET 35
+                        // xsltWebPart.View does not exist for .NET 35
+                        // the implementation will be done upon the community demand
+
+#if !NET35
+
                         var targetView = xsltWebPart.View;
 
                         // fixing up the Toolbar
@@ -109,6 +116,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                         }
 
                         targetView.Update();
+
+#endif
                     }
                 }
             }

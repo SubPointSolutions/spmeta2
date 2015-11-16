@@ -71,7 +71,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             catch (Exception e)
             {
                 isValid = e is SPMeta2ModelDeploymentException
-                         && e.InnerException is AggregateException
+                         && e.InnerException is SPMeta2AggregateException
                          && (e.InnerException as AggregateException)
                                .InnerExceptions.All(ie => ie is SPMeta2ModelValidationException);
             }
@@ -101,7 +101,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             catch (Exception e)
             {
                 isValid = e is SPMeta2ModelDeploymentException
-                          && e.InnerException is AggregateException
+                          && e.InnerException is SPMeta2AggregateException
                           && (e.InnerException as AggregateException)
                               .InnerExceptions.All(ie => ie is SPMeta2ModelValidationException);
 
@@ -117,8 +117,6 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
             Assert.IsTrue(isValid);
             Assert.AreEqual(2, innerExceptionCount);
-
-            
         }
 
         [TestMethod]
@@ -141,7 +139,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             catch (Exception e)
             {
                 isValid = e is SPMeta2ModelDeploymentException
-                          && e.InnerException is AggregateException
+                          && e.InnerException is SPMeta2AggregateException
                           && (e.InnerException as AggregateException)
                                 .InnerExceptions.All(ie => ie is SPMeta2ModelValidationException);
             }

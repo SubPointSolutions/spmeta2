@@ -71,7 +71,8 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
             if (exceptions.Count > 0)
             {
-                throw new AggregateException("Required properties validation error", exceptions);
+                throw new SPMeta2AggregateException("Required properties validation error", 
+                    exceptions.OfType<Exception>());
             }
         }
 

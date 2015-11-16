@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
@@ -42,7 +43,8 @@ namespace SPMeta2.Services
 
             if (Exceptions.Count > 0)
             {
-                throw new SPMeta2ModelDeploymentException("Errors while validating the model", new AggregateException(Exceptions));
+                throw new SPMeta2ModelDeploymentException("Errors while validating the model",
+                    new SPMeta2AggregateException(Exceptions.OfType<Exception>()));
             }
         }
 
