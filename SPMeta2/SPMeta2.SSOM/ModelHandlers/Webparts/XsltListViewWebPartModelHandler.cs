@@ -111,7 +111,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                             if (field != null)
                             {
-                                field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString());
+                                field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString(), null);
                             }
                         }
 
