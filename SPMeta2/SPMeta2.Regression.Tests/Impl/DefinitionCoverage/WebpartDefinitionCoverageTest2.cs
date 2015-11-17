@@ -35,7 +35,7 @@ using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 {
-    [TestClass]
+    //[TestClass]
     public class WebpartDefinitionCoverageTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal

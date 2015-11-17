@@ -180,6 +180,9 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_AlternateUrlDefinition()
         {
+            if (!TestOptions.EnablWebConfigModificationTest)
+                return;
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<AlternateUrlDefinition>();
