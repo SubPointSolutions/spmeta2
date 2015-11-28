@@ -230,7 +230,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             // remove starting slash
             // https://github.com/SubPointSolutions/spmeta2/issues/544
 
-            var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString().Replace(serverRelativeWebUrl, "");
+            var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString()
+                                        .Replace(serverRelativeWebUrl, string.Empty);
 
             xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 
@@ -257,7 +258,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 // remove starting slash
                 // https://github.com/SubPointSolutions/spmeta2/issues/544
-                var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString().Replace(serverRelativeWebUrl, "");
+                var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString()
+                                                    .Replace(serverRelativeWebUrl, string.Empty);
 
                 xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 

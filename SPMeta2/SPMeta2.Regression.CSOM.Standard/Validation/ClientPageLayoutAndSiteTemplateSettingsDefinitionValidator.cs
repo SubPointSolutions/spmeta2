@@ -117,9 +117,14 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                     var currentTemplates = spObject.GetAvailablePageLayoutNames(pageLayouts);
                     var definedTemplates = definition.DefinedPageLayouts;
 
+                    // URL check, should be root web relative
+                    // https://github.com/SubPointSolutions/spmeta2/pull/740
+                    // quick check
+                    isValid = currentTemplates.All(t => t.Url.ToLower().StartsWith("_catalogs"));
+
                     foreach (var defTemplate in definedTemplates)
                     {
-                        if (!currentTemplates.Any(t => t.ToUpper() == defTemplate.ToUpper()))
+                        if (!currentTemplates.Any(t => t.Name.ToUpper() == defTemplate.ToUpper()))
                             isValid = false;
                     }
 
@@ -163,7 +168,15 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
                     var currentPageLayout = spObject.GetDefaultPageLayoutName(pageLayouts);
 
-                    isValid = currentPageLayout.ToUpper() == definition.DefinedDefaultPageLayout.ToUpper();
+                    // URL check, should be root web relative
+                    // https://github.com/SubPointSolutions/spmeta2/pull/740
+                    // quick check
+                    isValid = currentPageLayout.Url.ToLower().StartsWith("_catalogs");
+
+                    if (isValid)
+                    {
+                        isValid = currentPageLayout.Name.ToUpper() == definition.DefinedDefaultPageLayout.ToUpper();
+                    }
 
                     return new PropertyValidationResult
                     {
@@ -205,6 +218,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         {
             public Guid UniqueId { get; set; }
             public string Url { get; set; }
+
+            public string Name { get; set; }
         }
 
         private static PageLayoutXmlItem GetPageLyoutNameFromXml(string pageLayoutXml)
@@ -248,7 +263,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             return item;
         }
 
-        public static string GetDefaultPageLayoutName(this Web web, IEnumerable<ListItem> pageLayouts)
+        public static PageLayoutXmlItem GetDefaultPageLayoutName(this Web web, IEnumerable<ListItem> pageLayouts)
         {
             var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__DefaultPageLayout"));
             var pageNameItem = GetPageLyoutNameFromXml(value);
@@ -256,10 +271,12 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             if (pageNameItem != null)
             {
                 var pageLayoutUniqueId = pageNameItem.UniqueId;
-                return GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId);
+                pageNameItem.Name = GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId);
+
+                return pageNameItem;
             }
 
-            return string.Empty;
+            return null;
         }
 
         public static string GetLayoutFileNameByUniqueId(IEnumerable<ListItem> pageLayouts, Guid uniqueId)
@@ -272,20 +289,18 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             return string.Empty;
         }
 
-        public static List<string> GetAvailablePageLayoutNames(this Web web, IEnumerable<ListItem> pageLayouts)
+        public static List<PageLayoutXmlItem> GetAvailablePageLayoutNames(this Web web, IEnumerable<ListItem> pageLayouts)
         {
-            var result = new List<string>();
-
             var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__PageLayouts"));
             var pageNameItems = GetPageLyoutNamesFromXml(value);
 
             foreach (var pageItem in pageNameItems)
             {
                 var pageLayoutUniqueId = pageItem.UniqueId;
-                result.Add(GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId));
+                pageItem.Name = GetLayoutFileNameByUniqueId(pageLayouts, pageLayoutUniqueId);
             }
 
-            return result;
+            return pageNameItems;
         }
 
         public static bool GetIsInheritingAvailablePageLayouts(this Web web)
