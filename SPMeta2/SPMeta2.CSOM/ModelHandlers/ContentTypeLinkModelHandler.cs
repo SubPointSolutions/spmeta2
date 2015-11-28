@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -16,6 +17,35 @@ namespace SPMeta2.CSOM.ModelHandlers
         public override Type TargetType
         {
             get { return typeof(ContentTypeLinkDefinition); }
+        }
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
+            var context = list.Context;
+
+            context.Load(list, l => l.ContentTypes);
+            context.ExecuteQueryWithTrace();
+
+            var listContentType = FindListContentType(list, contentTypeLinkModel);
+
+            action(new ModelHostContext
+            {
+                Site = listModelHost.HostSite,
+                Web = listModelHost.HostWeb,
+                ContentType = listContentType
+            });
+
+            listContentType.Update(false);
+            context.ExecuteQueryWithTrace();
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
