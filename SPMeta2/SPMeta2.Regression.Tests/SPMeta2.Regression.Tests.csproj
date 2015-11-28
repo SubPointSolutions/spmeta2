@@ -199,6 +199,7 @@
     <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Impl\DefinitionCoverage\BuiltInListDefinitionsCoverage.cs" />
     <Compile Include="Impl\DefinitionCoverage\ListDefinitoin.cs" />
+    <Compile Include="Impl\Definitions\HTMLFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\LookupFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\ImageFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\FieldDefinitionTests.cs" />

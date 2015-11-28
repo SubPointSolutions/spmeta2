@@ -37,6 +37,11 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public HTMLFieldDefinition()
         {
+            // Troubleshoot 'HTMLFieldDefinition' - is should render a proper markup for layout pages #739
+            // https://github.com/SubPointSolutions/spmeta2/issues/739
+
+            RichText = true;
+            RichTextMode = BuiltInRichTextMode.FullHtml;
         }
 
         #endregion
