@@ -254,8 +254,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     var bindedView = list.Views.GetById(viewId);
                     var targetView = list.Views.GetByTitle(definition.ViewName);
 
-                    context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
-                    context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
+                    context.Load(bindedView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
+                    context.Load(targetView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
 
                     context.ExecuteQueryWithTrace();
 
@@ -264,7 +264,9 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     // these are two different views, just CAML and field count
                     isValid = (bindedView.ViewFields.Count == targetView.ViewFields.Count)
                               && (bindedView.ViewQuery == targetView.ViewQuery)
-                              && (bindedView.RowLimit == targetView.RowLimit);
+                              && (bindedView.RowLimit == targetView.RowLimit)
+                              && (bindedView.JSLink == targetView.JSLink)
+                              && (bindedView.BaseViewId == targetView.BaseViewId);
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -573,11 +575,26 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 if (!string.IsNullOrEmpty(definition.XmlDefinition))
                 {
                     var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));
+                    var destXmlAttrs = XDocument.Parse(value).Root.Attributes();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(m => m.XmlDefinition);
-                        var isValid = value.Contains("BaseViewID=\"2\"");
+                        var isValid = true;
+
+                        var srcXmlAttrs = XDocument.Parse(definition.XmlDefinition).Root.Attributes();
+
+                        foreach (var srcAttr in srcXmlAttrs)
+                        {
+                            var attrName = srcAttr.Name;
+                            var attrValue = srcAttr.Value;
+
+                            isValid = destXmlAttrs.FirstOrDefault(a => a.Name == attrName)
+                                .Value == attrValue;
+
+                            if (!isValid)
+                                break;
+                        }
 
                         return new PropertyValidationResult
                         {
@@ -631,7 +648,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                         var list = XsltListViewWebPartModelHandler.LookupList(targetWeb,
                                         typedDefinition.ListUrl,
-                                        typedDefinition.ListTitle, 
+                                        typedDefinition.ListTitle,
                                         typedDefinition.WebId);
 
                         var xmlDefinition = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));

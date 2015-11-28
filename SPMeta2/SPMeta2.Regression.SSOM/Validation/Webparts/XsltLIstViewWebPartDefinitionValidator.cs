@@ -244,7 +244,14 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 }
 
                 // JSLink
-                assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
+                if (!string.IsNullOrEmpty(definition.JSLink))
+                {
+                    assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.JSLink);
+                }
 
                 if (definition.InplaceSearchEnabled.HasValue)
                     assert.ShouldBeEqual(m => m.InplaceSearchEnabled, o => o.InplaceSearchEnabled);
@@ -334,14 +341,32 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
+                        var value = ConvertUtils.ToString(d.XmlDefinition);
+                        var destXmlAttrs = XDocument.Parse(value).Root.Attributes();
+
                         var srcProp = s.GetExpressionValue(m => m.XmlDefinition);
+                        var isValid = true;
+
+                        var srcXmlAttrs = XDocument.Parse(definition.XmlDefinition).Root.Attributes();
+
+                        foreach (var srcAttr in srcXmlAttrs)
+                        {
+                            var attrName = srcAttr.Name;
+                            var attrValue = srcAttr.Value;
+
+                            isValid = destXmlAttrs.FirstOrDefault(a => a.Name == attrName)
+                                .Value == attrValue;
+
+                            if (!isValid)
+                                break;
+                        }
 
                         return new PropertyValidationResult
                         {
                             Tag = p.Tag,
                             Src = srcProp,
                             Dst = null,
-                            IsValid = d.XmlDefinition.Contains("BaseViewID=\"2\"")
+                            IsValid = isValid
                         };
                     });
                 }

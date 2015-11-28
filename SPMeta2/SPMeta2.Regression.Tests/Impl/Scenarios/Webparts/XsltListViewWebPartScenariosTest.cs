@@ -293,12 +293,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.XmlAndXslt")]
         public void CanDeploy_XsltListViewWebPart_WithXmlDefinition()
         {
-            // this test gonna fail for CSOM due lack of API support
-            // XmlDefinition setup is not supported via CSOM
-
-            // http://officespdev.uservoice.com/forums/224641-general/suggestions/6358731-import-xsltlistviewwebpart-definition
-            // http://sharepoint.stackexchange.com/questions/90433/add-document-library-xsltlistviewwebpart-using-csom-or-web-services
-
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
@@ -308,7 +302,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 def.ViewName = string.Empty;
                 def.ViewId = null;
 
-                def.XmlDefinition = string.Format("<View BaseViewID=\"{0}\" />", 2);
+                def.XmlDefinition = string.Format("<View BaseViewID=\"{0}\" />",
+                        Rnd.RandomFromArray(new[] { 1, 2, 40 }));
             });
 
             var model = SPMeta2Model
@@ -579,6 +574,53 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
                 TestModel(model);
             });
+        }
+
+        #endregion
+
+        #region special cases
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
+        public void CanDeploy_XsltListViewWebPart_With_Thumbnails_View()
+        {
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.AssetLibrary.InternalName;
+            });
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = string.Empty;
+#pragma warning disable 618
+                def.ListUrl = sourceList.GetListUrl();
+#pragma warning restore 618
+
+                def.ViewName = "Thumbnails";
+                def.ViewId = null;
+
+                def.JSLink = string.Empty;
+
+                def.XmlDefinition = "<View BaseViewID='40'/>";
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList)
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list
+                            .AddRandomWebPartPage(page =>
+                            {
+                                page.AddXsltListViewWebPart(xsltListViewWebpart);
+                            });
+                    });
+            });
+
+            TestModel(model);
         }
 
         #endregion

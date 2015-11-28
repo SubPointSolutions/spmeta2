@@ -184,21 +184,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                         var hiddenView = list.Views[new Guid(typedWebpart.ViewGuid)];
 
-                        hiddenView.ViewFields.DeleteAll();
-
-                        foreach (string f in srcView.ViewFields)
-                            hiddenView.ViewFields.Add(f);
-
-                        hiddenView.RowLimit = srcView.RowLimit;
-                        hiddenView.Query = srcView.Query;
-#if !NET35
-                        hiddenView.JSLink = srcView.JSLink;
-#endif
-                        hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
-                        hiddenView.Scope = srcView.Scope;
-
-
-
+                        hiddenView.SetViewXml(srcView.GetViewXml());
+                     
                         hiddenView.Update();
                     }
                     else
