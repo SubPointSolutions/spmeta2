@@ -272,40 +272,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(env.WebModel);
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Scopes")]
-        public void CanDeploy_ContentTypeLinkWithSiteAndWebContentTypes()
-        {
-            var siteContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
-            var webContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>();
-
-            var webList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
-            {
-                def.ContentTypesEnabled = true;
-            });
-
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddContentType(siteContentType);
-            });
-
-            var webModel = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddRandomWeb(subWeb =>
-                {
-                    subWeb.AddContentType(webContentType);
-
-                    subWeb.AddList(webList, list =>
-                    {
-                        list.AddContentTypeLink(siteContentType);
-                        list.AddContentTypeLink(webContentType);
-                    });
-                });
-            });
-
-            TestModel(siteModel, webModel);
-        }
-
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]

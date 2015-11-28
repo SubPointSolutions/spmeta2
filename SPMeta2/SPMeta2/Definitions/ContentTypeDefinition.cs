@@ -139,6 +139,16 @@ namespace SPMeta2.Definitions
         [ExpectNullable]
         public string JSLink { get; set; }
 
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? ReadOnly { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? Sealed { get; set; }
+
         #endregion
 
         #region methods

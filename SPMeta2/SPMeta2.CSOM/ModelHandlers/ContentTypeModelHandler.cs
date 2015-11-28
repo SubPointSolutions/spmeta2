@@ -179,42 +179,61 @@ namespace SPMeta2.CSOM.ModelHandlers
                 currentContentType = tmp;
             }
 
-            // doc template first, then set the other props
-            // ExtractResourceFolderServerRelativeUrl might make ExecuteQueryWithTrace() call
-            // so that might affect setting up other props
-            // all props update should go later
-            if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
+            context.Load(currentContentType);
+            context.Load(currentContentType, c => c.Sealed);
+            context.ExecuteQueryWithTrace();
+
+            // CSOM can't update sealed content types
+            // adding if-else so that the provision would go further
+            if (!currentContentType.Sealed)
             {
-                var serverRelativeFolderUrl = ExtractResourceFolderServerRelativeUrl(web, context, currentContentType);
-
-                var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                // doc template first, then set the other props
+                // ExtractResourceFolderServerRelativeUrl might make ExecuteQueryWithTrace() call
+                // so that might affect setting up other props
+                // all props update should go later
+                if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
                 {
-                    Value = contentTypeModel.DocumentTemplate,
-                    Context = context
-                }).Value;
+                    var serverRelativeFolderUrl = ExtractResourceFolderServerRelativeUrl(web, context,
+                        currentContentType);
 
-                // resource related path
-                if (!processedDocumentTemplateUrl.Contains('/')
-                    && !processedDocumentTemplateUrl.Contains('\\'))
-                {
-                    processedDocumentTemplateUrl = UrlUtility.CombineUrl(new string[] { 
+                    var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = contentTypeModel.DocumentTemplate,
+                        Context = context
+                    }).Value;
+
+                    // resource related path
+                    if (!processedDocumentTemplateUrl.Contains('/')
+                        && !processedDocumentTemplateUrl.Contains('\\'))
+                    {
+                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new string[]
+                        {
                             serverRelativeFolderUrl,
                             processedDocumentTemplateUrl
                         });
+                    }
+
+                    currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
-                currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
+                // only after DocumentTemplate processing
+                ProcessLocalization(currentContentType, contentTypeModel);
+
+                currentContentType.Hidden = contentTypeModel.Hidden;
+
+                currentContentType.Name = contentTypeModel.Name;
+                currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description)
+                    ? string.Empty
+                    : contentTypeModel.Description;
+                currentContentType.Group = contentTypeModel.Group;
+                currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
+
+                if (contentTypeModel.ReadOnly.HasValue)
+                    currentContentType.ReadOnly = contentTypeModel.ReadOnly.Value;
+
+                if (contentTypeModel.Sealed.HasValue)
+                    currentContentType.Sealed = contentTypeModel.Sealed.Value;
             }
-
-            // only after DocumentTemplate processing
-            ProcessLocalization(currentContentType, contentTypeModel);
-
-            currentContentType.Hidden = contentTypeModel.Hidden;
-
-            currentContentType.Name = contentTypeModel.Name;
-            currentContentType.Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description;
-            currentContentType.Group = contentTypeModel.Group;
-            currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -227,10 +246,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
-            currentContentType.Update(true);
+            if (!currentContentType.Sealed)
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
+                currentContentType.Update(true);
 
-            context.ExecuteQueryWithTrace();
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)
