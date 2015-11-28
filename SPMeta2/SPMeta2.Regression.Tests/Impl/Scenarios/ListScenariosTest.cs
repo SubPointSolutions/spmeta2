@@ -882,6 +882,73 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region special props
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_List_With_MajorVersionLimit()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+#pragma warning disable 618
+                def.Url = Rnd.String();
+#pragma warning restore 618
+                def.CustomUrl = string.Empty;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.TemplateName = string.Empty;
+
+                def.EnableMinorVersions = true;
+                def.EnableVersioning = true;
+
+                def.MajorVersionLimit = Rnd.Int(50) + 1;
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef);
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_List_With_MajorWithMinorVersionsLimit()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.ForceCheckout = false;
+
+#pragma warning disable 618
+                def.Url = Rnd.String();
+#pragma warning restore 618
+                def.CustomUrl = string.Empty;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.TemplateName = string.Empty;
+
+                def.EnableMinorVersions = true;
+                def.EnableVersioning = true;
+
+                def.MajorVersionLimit = Rnd.Int(50) + 1;
+                def.MajorWithMinorVersionsLimit = Rnd.Int(50) + 1;
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef);
+            });
+
+            TestModel(webModel);
+        }
+
+        #endregion
+
         #region utils
 
         protected ListDefinition GetLocalizedDefinition()

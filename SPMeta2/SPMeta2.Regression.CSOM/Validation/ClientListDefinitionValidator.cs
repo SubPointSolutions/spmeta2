@@ -206,10 +206,28 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (definition.MajorVersionLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                if (ReflectionUtils.HasProperty(spObject, "MajorVersionLimit"))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MajorVersionLimit);
+                        var value = (int)ReflectionUtils.GetPropertyValue(spObject, "MajorVersionLimit");
 
-                //assert.ShouldBeEqual(m => m.MajorVersionLimit, o => o.MajorVersionLimit);
+                        var isValid = value == definition.MajorVersionLimit.Value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit does not exist. CSOM runtime is below required.");
+                }
             }
             else
                 assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
@@ -217,10 +235,28 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                if (ReflectionUtils.HasProperty(spObject, "MajorWithMinorVersionsLimit"))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MajorWithMinorVersionsLimit);
+                        var value = (int)ReflectionUtils.GetPropertyValue(spObject, "MajorWithMinorVersionsLimit");
 
-                // assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
+                        var isValid = value == definition.MajorWithMinorVersionsLimit.Value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MajorWithMinorVersionsLimit, "Skipping from validation. MajorWithMinorVersionsLimit does not exist. CSOM runtime is below required.");
+                }
             }
             else
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,

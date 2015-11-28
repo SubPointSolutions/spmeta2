@@ -326,7 +326,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentList.Update()");
-           
+
             currentList.Update();
             context.ExecuteQueryWithTrace();
         }
@@ -372,6 +372,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private void MapListProperties(List list, ListDefinition definition)
         {
+            var context = list.Context;
+
             list.Title = definition.Title;
             list.Description = definition.Description ?? string.Empty;
             list.ContentTypesEnabled = definition.ContentTypesEnabled;
@@ -425,19 +427,32 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (definition.MajorVersionLimit.HasValue)
             {
-                // CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                // https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
-
-                //list.MajorVersionLimit = definition.MajorVersionLimit.Value;
+                if (ReflectionUtils.HasProperty(list, "MajorVersionLimit"))
+                {
+                    context.AddQuery(new ClientActionSetProperty(list, "MajorVersionLimit", definition.MajorVersionLimit.Value));
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        string.Format(
+                            "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
+                            string.Join(", ", "MajorVersionLimit")));
+                }
             }
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
             {
-                // CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                // https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
-
-
-                //list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
+                if (ReflectionUtils.HasProperty(list, "MajorWithMinorVersionsLimit"))
+                {
+                    context.AddQuery(new ClientActionSetProperty(list, "MajorWithMinorVersionsLimit", definition.MajorWithMinorVersionsLimit.Value));
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        string.Format(
+                            "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
+                            string.Join(", ", "MajorWithMinorVersionsLimit")));
+                }
             }
 
             if (!string.IsNullOrEmpty(definition.DocumentTemplateUrl))
