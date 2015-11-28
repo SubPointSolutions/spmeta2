@@ -40,6 +40,25 @@ namespace SPMeta2.SSOM.ModelHandlers
             return result;
         }
 
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var contentTypeLinkModel = model.WithAssertAndCast<ContentTypeLinkDefinition>("model", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
+
+            var contentType = list.ContentTypes[contentTypeLinkModel.ContentTypeName];
+
+            action(contentType);
+
+            contentType.Update(false);
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
@@ -47,77 +66,77 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var list = listModelHost.HostList;
 
-            if (!list.ContentTypesEnabled)
+            if (list.ContentTypesEnabled)
             {
-                TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
-                    "List [{0}] does not allow content types. Throwing SPMeta2Exception.",
-                    list.RootFolder.ServerRelativeUrl);
+                var web = list.ParentWeb;
 
-                throw new SPMeta2Exception(string.Format("List [{0}] does not allow content types.",
-                    list.RootFolder.ServerRelativeUrl));
-            }
+                var contentTypeId = new SPContentTypeId(contentTypeLinkModel.ContentTypeId);
+                var targetContentType = web.AvailableContentTypes[contentTypeId];
 
-            var web = list.ParentWeb;
+                if (targetContentType == null)
+                {
+                    TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
+                        "Cannot find site content type by ID: [{0}]. Throwing SPMeta2Exception.",
+                        contentTypeId);
 
-            var contentTypeId = new SPContentTypeId(contentTypeLinkModel.ContentTypeId);
-            var targetContentType = web.AvailableContentTypes[contentTypeId];
+                    throw new SPMeta2Exception(string.Format("Cannot find site content type with ID [{0}].",
+                        contentTypeId));
+                }
 
-            if (targetContentType == null)
-            {
-                TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
-                    "Cannot find site content type by ID: [{0}]. Throwing SPMeta2Exception.",
-                    contentTypeId);
-
-                throw new SPMeta2Exception(string.Format("Cannot find site content type with ID [{0}].", contentTypeId));
-            }
-
-            var currentListContentType = GetListContentType(list, contentTypeLinkModel);
-
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioning,
-                Object = currentListContentType,
-                ObjectType = typeof(SPContentType),
-                ObjectDefinition = contentTypeLinkModel,
-                ModelHost = modelHost
-            });
-
-            if (currentListContentType == null)
-            {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list content type link");
-
-                var listCt = list.ContentTypes.Add(targetContentType);
+                var currentListContentType = GetListContentType(list, contentTypeLinkModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
                     Model = null,
-                    EventType = ModelEventType.OnProvisioned,
-                    Object = listCt,
-                    ObjectType = typeof(SPContentType),
-                    ObjectDefinition = contentTypeLinkModel,
-                    ModelHost = modelHost
-                });
-
-                //list.Update();
-            }
-            else
-            {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list content type link");
-
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioned,
+                    EventType = ModelEventType.OnProvisioning,
                     Object = currentListContentType,
                     ObjectType = typeof(SPContentType),
                     ObjectDefinition = contentTypeLinkModel,
                     ModelHost = modelHost
                 });
 
+                if (currentListContentType == null)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject,
+                        "Processing new list content type link");
+
+                    var listCt = list.ContentTypes.Add(targetContentType);
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = listCt,
+                        ObjectType = typeof(SPContentType),
+                        ObjectDefinition = contentTypeLinkModel,
+                        ModelHost = modelHost
+                    });
+
+                    //list.Update();
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
+                        "Processing existing list content type link");
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentListContentType,
+                        ObjectType = typeof(SPContentType),
+                        ObjectDefinition = contentTypeLinkModel,
+                        ModelHost = modelHost
+                    });
+
+                }
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "ContentTypesEnabled is FALSE. Provision might break.");
             }
         }
 
