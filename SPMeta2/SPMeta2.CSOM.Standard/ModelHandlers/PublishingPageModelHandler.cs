@@ -12,6 +12,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
@@ -196,15 +197,24 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             ModuleFileModelHandler.WithSafeFileOperation(list, currentPageFile, f =>
             {
-                var file = new FileCreationInformation();
-                var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
+                // create if only file does not exist
+                // overriting spoils the fields's content
+                // Investigate publishing page provision, Content property #744
+                // https://github.com/SubPointSolutions/spmeta2/issues/744
 
-                file.Url = pageName;
-                file.Content = Encoding.UTF8.GetBytes(pageContent);
-                file.Overwrite = definition.NeedOverride;
+                if (f == null || !f.Exists)
+                {
+                    var file = new FileCreationInformation();
+                    var pageContent = PublishingPageTemplates.RedirectionPageMarkup;
 
-                return folder.Files.Add(file);
+                    file.Url = pageName;
+                    file.Content = Encoding.UTF8.GetBytes(pageContent);
+                    file.Overwrite = definition.NeedOverride;
 
+                    return folder.Files.Add(file);
+                }
+
+                return f;
             },
             newFile =>
             {
@@ -232,6 +242,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 if (!string.IsNullOrEmpty(definition.Description))
                     newFileItem[BuiltInInternalFieldNames.Comments] = definition.Description;
+
+                if (!string.IsNullOrEmpty(definition.Content))
+                    newFileItem[BuiltInInternalPublishingFieldNames.PublishingPageContent] = definition.Content;
 
                 newFileItem[BuiltInInternalFieldNames.PublishingPageLayout] = publishingFile.ServerRelativeUrl + ", " + currentPageLayoutItem.DisplayName;
 
