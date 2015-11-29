@@ -97,7 +97,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         Description = targetContentType.Description,
                         Group = targetContentType.Group,
                         Name = targetContentType.Name,
-                        ParentContentType = targetContentType
+                        ParentContentType = targetContentType,
                     });
 
                     InvokeOnModelEvent(this, new ModelEventArgs
@@ -132,9 +132,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                     });
 
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "listContentType.Update(false)");
-                    listContentType.Update(false);
 
-                    context.ExecuteQueryWithTrace();
+                    // no update is required for content type link
+                    // besides, CTH wouldn't work
+
+                    // .AddContentTypeLink() should work well with the read-only content types (Content Type Hub)
+                    // https://github.com/SubPointSolutions/spmeta2/issues/745
+
+                    // listContentType.Update(false);
+                    // context.ExecuteQueryWithTrace();
                 }
             }
             else
