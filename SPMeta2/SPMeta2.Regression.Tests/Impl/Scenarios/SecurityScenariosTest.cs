@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Syntax.Extended;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -141,6 +142,99 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         });
                     });
                 });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_ResetRoleInheritance_On_WikiPage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web.AddHostSitePagesList(rndList =>
+                    {
+                        rndList.AddRandomWikiPage(page =>
+                        {
+                            page.OnProvisioning<object>(context =>
+                            {
+                                TurnOffValidation(page);
+                            });
+
+                            page
+                                .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                                {
+                                    breakInheritance.OnProvisioning<object>(context =>
+                                    {
+                                        TurnOffValidation(breakInheritance);
+                                    });
+                                })
+                                .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
+                        });
+                    });
+                });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_ResetRoleInheritance_On_WebPartPage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostSitePagesList(rndList =>
+                {
+                    rndList.AddRandomWebPartPage(page =>
+                    {
+                        page.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(page);
+                        });
+
+                        page
+                            .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                            {
+                                breakInheritance.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(breakInheritance);
+                                });
+                            })
+                            .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_ResetRoleInheritance_On_Publishingage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostPagesList(rndList =>
+                {
+                    rndList.AddRandomPublishingPage(page =>
+                    {
+                        page.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(page);
+                        });
+
+                        page
+                            .AddBreakRoleInheritance(GetCleanInheritance(), breakInheritance =>
+                            {
+                                breakInheritance.OnProvisioning<object>(context =>
+                                {
+                                    TurnOffValidation(breakInheritance);
+                                });
+                            })
+                            .AddResetRoleInheritance(new ResetRoleInheritanceDefinition());
+                    });
+                });
+            });
 
             TestModel(model);
         }
@@ -317,6 +411,78 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_BreakRoleInheritance_On_WikiPage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostSitePagesList(rndList =>
+                {
+                    rndList.AddRandomWikiPage(page =>
+                    {
+                        page.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(page);
+                        });
+
+                        page.AddBreakRoleInheritance(GetCleanInheritance());
+                    });
+                });
+
+            });
+
+            TestModel(model);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_BreakRoleInheritance_On_WebPartPage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostSitePagesList(rndList =>
+                {
+                    rndList.AddRandomWebPartPage(page =>
+                    {
+                        page.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(page);
+                        });
+
+                        page.AddBreakRoleInheritance(GetCleanInheritance());
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.Pages")]
+        public void CanDeploy_BreakRoleInheritance_On_PublishingPage()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostPagesList(rndList =>
+                {
+                    rndList.AddRandomPublishingPage(page =>
+                    {
+                        page.OnProvisioning<object>(context =>
+                        {
+                            TurnOffValidation(page);
+                        });
+
+                        page.AddBreakRoleInheritance(GetCleanInheritance());
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+
+        [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_ResetRoleInheritance_OnListItem()
         {
@@ -350,6 +516,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(model);
         }
+
+
+
 
         #endregion
 

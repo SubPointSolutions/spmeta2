@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         protected Group FindSiteCollectionGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = termStoreHost.HostTermStore;
-            return termStore.GetSiteCollectionGroup(termStoreHost.HostSite);
+            return termStore.GetSiteCollectionGroup(termStoreHost.HostSite, true);
         }
 
         protected Group FindSystemGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
