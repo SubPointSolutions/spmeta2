@@ -21,5 +21,4 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldNotBeNull(spObject);
         }
     }
-
 }

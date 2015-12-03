@@ -53,7 +53,7 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions.EnableWebApplicationDefinitionTest = false;
             TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
-            TestOptions.EnableContentTypeHubTests = false;
+            TestOptions.EnableContentTypeHubTests = true;
 
             TestOptions.EnablWebConfigModificationTest = false;
         }

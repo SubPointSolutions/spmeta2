@@ -21,29 +21,13 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var spObject = webModelHost.HostWeb;
 
-            var assert = ServiceFactory.AssertService
-                                      .NewAssert(model, definition, spObject)
-                                            .ShouldNotBeNull(spObject);
+            var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
+            assert
+                .ShouldNotBeNull(spObject)
 
-            if (!string.IsNullOrEmpty(definition.SiteMasterPageUrl))
-            {
-                assert.ShouldBeEndOf(m => m.SiteMasterPageUrl, o => o.CustomMasterUrl);
-            }
-            else
-            {
-                assert.SkipProperty(m => m.SiteMasterPageUrl, "SiteMasterPageUrl is NULL or empty");
-            }
-
-            if (!string.IsNullOrEmpty(definition.SystemMasterPageUrl))
-            {
-                assert.ShouldBeEndOf(m => m.SystemMasterPageUrl, o => o.MasterUrl);
-            }
-            else
-            {
-                assert.SkipProperty(m => m.SystemMasterPageUrl, "SystemMasterPageUrl is NULL or empty");
-            }
-
+                .ShouldBeEndOfIfNotNullOrEmpty(m => m.SiteMasterPageUrl, o => o.CustomMasterUrl)
+                .ShouldBeEndOfIfNotNullOrEmpty(m => m.SystemMasterPageUrl, o => o.MasterUrl);
         }
     }
 }

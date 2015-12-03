@@ -12,6 +12,7 @@ using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation.Webparts
@@ -51,7 +52,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                                          .NewAssert(definition, spObject)
                                          .ShouldNotBeNull(spObject)
                                          .ShouldBeEqual(m => m.Title, o => o.GetTitle())
-                                         .ShouldBeEqual(m => m.FileName, o => o.GetName())
+                                         .ShouldBeEqual(m => m.FileName, o => o.GetFileLeafRef())
 
                                          .ShouldBeEqual(m => m.Description, o => o.GetWebPartGalleryFileDescription())
                                          .ShouldBeEqual(m => m.Group, o => o.GetWebPartGalleryFileGroup())

@@ -26,41 +26,37 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var spObject = FindRoleDefinition(web.RoleDefinitions, definition.Name);
 
-            var assert = ServiceFactory.AssertService
-                   .NewAssert(definition, spObject)
-                         .ShouldBeEqual(m => m.Name, o => o.Name);
-
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description);
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
-               .ShouldBeEqual((p, s, d) =>
-               {
-                   var srcProp = s.GetExpressionValue(def => def.BasePermissions);
-                   var dstProp = d.GetExpressionValue(ct => ct.BasePermissions);
+                .ShouldBeEqual(m => m.Name, o => o.Name)
 
-                   var hasCorrectRights = true;
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description)
+                .ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.BasePermissions);
+                    var dstProp = d.GetExpressionValue(ct => ct.BasePermissions);
 
-                   foreach (var srcRight in s.BasePermissions)
-                   {
-                       var srcPermission = (PermissionKind)Enum.Parse(typeof(PermissionKind), srcRight);
+                    var hasCorrectRights = true;
 
-                       var tmpRight = d.BasePermissions.Has(srcPermission);
+                    foreach (var srcRight in s.BasePermissions)
+                    {
+                        var srcPermission = (PermissionKind)Enum.Parse(typeof(PermissionKind), srcRight);
 
-                       if (tmpRight == false)
-                           hasCorrectRights = false;
-                   }
+                        var tmpRight = d.BasePermissions.Has(srcPermission);
 
-                   return new PropertyValidationResult
-                   {
-                       Tag = p.Tag,
-                       Src = srcProp,
-                       Dst = dstProp,
-                       IsValid = hasCorrectRights
-                   };
-               });
+                        if (tmpRight == false)
+                            hasCorrectRights = false;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = hasCorrectRights
+                    };
+                });
         }
     }
 }

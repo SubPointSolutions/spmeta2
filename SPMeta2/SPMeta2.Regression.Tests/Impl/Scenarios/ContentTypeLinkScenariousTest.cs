@@ -104,7 +104,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     web.AddList(listDef, list =>
                     {
                         list.AddContentTypeLink(ctLinkDef1);
-                        list.AddContentTypeLink(ctLinkDef2);
+                        //list.AddContentTypeLink(ctLinkDef2);
                     });
                 });
 
@@ -145,7 +145,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     web.AddList(listDef, list =>
                     {
                         list.AddContentTypeLink(ctLinkDef1);
-                        list.AddContentTypeLink(ctLinkDef2);
+                        //list.AddContentTypeLink(ctLinkDef2);
                     });
                 });
 
