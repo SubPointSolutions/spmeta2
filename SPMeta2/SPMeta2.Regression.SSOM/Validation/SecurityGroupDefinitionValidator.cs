@@ -5,6 +5,7 @@ using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -124,26 +125,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
 
 
-        }
-    }
-
-    internal static class SPGroupExtensions
-    {
-        public static string GetOwnerLogin(this SPGroup group)
-        {
-            if (group.Owner is SPGroup)
-                return (group.Owner as SPGroup).LoginName;
-
-            if (group.Owner is SPUser)
-                return (group.Owner as SPUser).LoginName;
-
-            throw new SPMeta2Exception(string.Format("Cannot get LoginName for object:[{0}] of type:[{1}]",
-                group, group.Owner != null ? group.Owner.GetType().ToString() : "NULL"));
-        }
-
-        public static string GetDefaultUserLoginName(this SPGroup group)
-        {
-            return group.Users[0].LoginName;
         }
     }
 }

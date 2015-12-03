@@ -11,6 +11,7 @@ using SPMeta2.Utils;
 
 using System;
 using System.Linq;
+using SPMeta2.Regression.SSOM.Extensions;
 
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -209,14 +210,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
-        }
-    }
-
-    internal static class ContentTypeDefinitionValidatorUtils
-    {
-        public static string GetId(this SPContentType c)
-        {
-            return c.Id.ToString();
         }
     }
 }

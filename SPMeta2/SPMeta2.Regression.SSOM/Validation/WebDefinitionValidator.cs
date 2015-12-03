@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -155,16 +155,4 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    internal static class WebExtensions
-    {
-        public static uint GetLCID(this SPWeb web)
-        {
-            return (uint)web.Locale.LCID;
-        }
-
-        public static string GetWebTemplate(this SPWeb web)
-        {
-            return string.Format("{0}#{1}", web.WebTemplate, web.Configuration);
-        }
-    }
 }

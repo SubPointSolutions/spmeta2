@@ -5,6 +5,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -191,50 +192,5 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
 
         #endregion
-    }
-
-    internal static class ComposedLookItemDefinitionHelpers
-    {
-
-        public static string GetComposedLookName(this SPListItem item)
-        {
-            return item["Name"] as string;
-        }
-
-        public static SPFieldUrlValue GetComposedLookMasterPageUrl(this SPListItem item)
-        {
-            return ConvertToSPFieldUrlValue(item["MasterPageUrl"]);
-        }
-
-        private static SPFieldUrlValue ConvertToSPFieldUrlValue(object value)
-        {
-            var stringValue = ConvertUtils.ToString(value);
-
-            if (!string.IsNullOrEmpty(stringValue))
-                return new SPFieldUrlValue(stringValue);
-
-            return null;
-        }
-
-        public static SPFieldUrlValue GetComposedLookThemeUrl(this SPListItem item)
-        {
-            return ConvertToSPFieldUrlValue(item["ThemeUrl"]);
-        }
-
-        public static SPFieldUrlValue GetComposedLookImageUrl(this SPListItem item)
-        {
-            return ConvertToSPFieldUrlValue(item["ImageUrl"]);
-        }
-
-        public static SPFieldUrlValue GetComposedLookFontSchemeUrl(this SPListItem item)
-        {
-            return ConvertToSPFieldUrlValue(item["FontSchemeUrl"]);
-        }
-
-        public static int? GetComposedLookDisplayOrder(this SPListItem item)
-        {
-            return ConvertUtils.ToInt(item["DisplayOrder"]);
-        }
-
     }
 }

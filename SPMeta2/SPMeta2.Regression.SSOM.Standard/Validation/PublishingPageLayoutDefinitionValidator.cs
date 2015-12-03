@@ -5,6 +5,8 @@ using Microsoft.SharePoint;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.SSOM.Extensions;
+using SPMeta2.Regression.SSOM.Standard.Extensions;
 using SPMeta2.Regression.SSOM.Validation;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
@@ -218,27 +220,4 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
         }
     }
 
-    public static class PublishingPageLayoutItemHelper
-    {
-        public static string GetPublishingPageLayoutDescription(this SPListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
-
-        public static string GetPublishingPageLayoutAssociatedContentTypeId(this SPListItem item)
-        {
-            var value = item[BuiltInPublishingFieldId.AssociatedContentType].ToString();
-            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-            return values[2];
-        }
-
-        public static string GetPublishingPageLayoutAssociatedContentTypeName(this SPListItem item)
-        {
-            var value = item[BuiltInPublishingFieldId.AssociatedContentType].ToString();
-            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-            return values[1];
-        }
-    }
 }

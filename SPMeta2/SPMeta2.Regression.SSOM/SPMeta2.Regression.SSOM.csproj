@@ -116,6 +116,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ComposedLookItemExtensions.cs" />
+    <Compile Include="Extensions\MasterPageItemExtensions.cs" />
+    <Compile Include="Extensions\SPContentTypeExtensions.cs" />
+    <Compile Include="Extensions\SPEventReceiverDefinitionExtensions.cs" />
+    <Compile Include="Extensions\SPFeatureExtensions.cs" />
+    <Compile Include="Extensions\SPFileExtensions.cs" />
+    <Compile Include="Extensions\SPGroupExtensions.cs" />
+    <Compile Include="Extensions\SPList.cs" />
+    <Compile Include="Extensions\SPRoleAssignmentExtensions.cs" />
+    <Compile Include="Extensions\SPSecurableObjectExtensions.cs" />
+    <Compile Include="Extensions\SPUserCustomActionExtensions.cs" />
+    <Compile Include="Extensions\SPUserSolutionExtensions.cs" />
+    <Compile Include="Extensions\SPViewExtensions.cs" />
+    <Compile Include="Extensions\SPWebExtensions.cs" />
+    <Compile Include="Extensions\WebPartPageItemExtensions.cs" />
+    <Compile Include="Extensions\WikiPageItemExtensions.cs" />
     <Compile Include="Validation\ClearRecycleBinDefinitionValidator.cs" />
     <Compile Include="Validation\ComposedLookItemLinkDefinitionValidator.cs" />
     <Compile Include="Validation\ComposedLookItemDefinitionValidator.cs" />
