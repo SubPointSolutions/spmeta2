@@ -77,9 +77,45 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             Assert.IsTrue(isValid);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Services.DefaultContentTypeIdPropertyValidationService")]
+        public void ShouldFail_On_UpperCased_X_ContentTypeId()
+        {
+            var isValid = false;
 
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomContentType(ct =>
+                {
+                    (ct.Value as ContentTypeDefinition).ParentContentTypeId = BuiltInContentTypeId.AdminTask.ToUpper();
+                });
+            });
+            try
+            {
+                Service.DeployModel(null, model);
+            }
+            catch (Exception e)
+            {
+                isValid = IsCorrectValidationException(e);
+            }
 
-       
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.DefaultContentTypeIdPropertyValidationService")]
+        public void ShouldPass_On_LowerCased_X_ContentTypeId()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomContentType(ct =>
+                {
+                    (ct.Value as ContentTypeDefinition).ParentContentTypeId = BuiltInContentTypeId.AdminTask.ToLower();
+                });
+            });
+
+            Service.DeployModel(null, model);
+        }
 
 
         #endregion
