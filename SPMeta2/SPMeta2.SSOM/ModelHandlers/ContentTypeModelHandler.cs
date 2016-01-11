@@ -141,7 +141,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
 
 #if !NET35
-                targetContentType.JSLink = contentTypeModel.JSLink ?? string.Empty;
+                if (!string.IsNullOrEmpty(contentTypeModel.JSLink))
+                    targetContentType.JSLink = contentTypeModel.JSLink;
 #endif
 
                 if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))

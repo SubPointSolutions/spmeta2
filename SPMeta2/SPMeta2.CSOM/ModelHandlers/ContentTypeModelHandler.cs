@@ -226,7 +226,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ? string.Empty
                     : contentTypeModel.Description;
                 currentContentType.Group = contentTypeModel.Group;
-                currentContentType.JSLink = contentTypeModel.JSLink ?? String.Empty;
+
+                if (!string.IsNullOrEmpty(contentTypeModel.JSLink))
+                    currentContentType.JSLink = contentTypeModel.JSLink;
 
                 if (contentTypeModel.ReadOnly.HasValue)
                     currentContentType.ReadOnly = contentTypeModel.ReadOnly.Value;
