@@ -59,7 +59,7 @@ namespace SPMeta2.Syntax.Default.Utils
 
         public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath)
         {
-            LoadModuleFilesFromLocalFolder(hostNode, folderPath, null);
+            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath, null);
         }
 
         public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath, Func<string, bool> shouldIncludeFolderOrFile)

@@ -7,6 +7,7 @@ using SPMeta2.Definitions;
 using System.Linq;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -32,52 +33,36 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 var assert = ServiceFactory.AssertService
                     .NewAssert(definition, spObject)
+
                     .ShouldNotBeNull(spObject)
+
                     .ShouldBeEqual(m => m.Name, o => o.Title)
-                    .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership);
-                //.ShouldBeEqual(m => m.Description, o => o.Description);
+                    .ShouldBeEqual(m => m.OnlyAllowMembersViewMembership, o => o.OnlyAllowMembersViewMembership)
 
-                if (!string.IsNullOrEmpty(definition.Description))
-                    assert.ShouldBeEqual(m => m.Description, o => o.Description);
-                else
-                    assert.SkipProperty(m => m.Description, "Description is NULL. Skipping.");
+                    .ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description)
 
-                if (definition.AllowMembersEditMembership.HasValue)
-                    assert.ShouldBeEqual(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership);
-                else
-                    assert.SkipProperty(m => m.AllowMembersEditMembership,
-                        "AllowMembersEditMembership is NULL. Skipping.");
+                    .ShouldBeEqualIfHasValue(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership)
+                    .ShouldBeEqualIfHasValue(m => m.AllowRequestToJoinLeave, o => o.AllowRequestToJoinLeave)
+                    .ShouldBeEqualIfHasValue(m => m.AutoAcceptRequestToJoinLeave, o => o.AutoAcceptRequestToJoinLeave)
 
-                if (definition.AllowRequestToJoinLeave.HasValue)
-                    assert.ShouldBeEqual(m => m.AllowRequestToJoinLeave, o => o.AllowRequestToJoinLeave);
-                else
-                    assert.SkipProperty(m => m.AllowRequestToJoinLeave, "AllowRequestToJoinLeave is NULL. Skipping.");
-
-                if (definition.AutoAcceptRequestToJoinLeave.HasValue)
-                    assert.ShouldBeEqual(m => m.AutoAcceptRequestToJoinLeave, o => o.AutoAcceptRequestToJoinLeave);
-                else
-                    assert.SkipProperty(m => m.AutoAcceptRequestToJoinLeave,
-                        "AutoAcceptRequestToJoinLeave is NULL. Skipping.");
-
-
-                assert.ShouldBeEqual((p, s, d) =>
-                {
-                    var srcProp = s.GetExpressionValue(def => def.Owner);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
-
-                    var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
-                        srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
-
-                    return new PropertyValidationResult
+                    .ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = dstProp,
-                        IsValid = isValid
-                    };
-                });
+                        var srcProp = s.GetExpressionValue(def => def.Owner);
+                        var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                assert.SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
+                        var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
+                            srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    })
+
+                    .SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
             }
             else if (modelHost is SecurityGroupModelHost)
             {
@@ -96,24 +81,22 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 var spObject = currentGroup.Users.FirstOrDefault(u => u.Id == subGroup.Id);
 
+                var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
-                var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldNotBeNull(spObject);
+                assert
+                    .ShouldNotBeNull(spObject)
 
-                assert.SkipProperty(m => m.Name);
-                assert.SkipProperty(m => m.AllowMembersEditMembership, "");
-                assert.SkipProperty(m => m.AllowRequestToJoinLeave, "");
-                assert.SkipProperty(m => m.AutoAcceptRequestToJoinLeave, "");
-                assert.SkipProperty(m => m.DefaultUser, "");
-                assert.SkipProperty(m => m.Description, "");
-                assert.SkipProperty(m => m.IsAssociatedMemberGroup, "");
-                assert.SkipProperty(m => m.IsAssociatedVisitorsGroup, "");
-                assert.SkipProperty(m => m.IsAssociatedOwnerGroup, "");
-
-                assert.SkipProperty(m => m.OnlyAllowMembersViewMembership, "");
-                assert.SkipProperty(m => m.Owner, "");
-
+                    .SkipProperty(m => m.Name)
+                    .SkipProperty(m => m.AllowMembersEditMembership)
+                    .SkipProperty(m => m.AllowRequestToJoinLeave)
+                    .SkipProperty(m => m.AutoAcceptRequestToJoinLeave)
+                    .SkipProperty(m => m.DefaultUser)
+                    .SkipProperty(m => m.Description)
+                    .SkipProperty(m => m.IsAssociatedMemberGroup)
+                    .SkipProperty(m => m.IsAssociatedVisitorsGroup)
+                    .SkipProperty(m => m.IsAssociatedOwnerGroup)
+                    .SkipProperty(m => m.OnlyAllowMembersViewMembership)
+                    .SkipProperty(m => m.Owner);
             }
             else
             {
@@ -136,39 +119,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             //        IsValid = isValid
             //    };
             //});
-        }
-    }
-
-    internal static class SPGroupExtensions
-    {
-        public static string GetOwnerLogin(this Group group)
-        {
-            if (!group.IsPropertyAvailable("Owner"))
-            {
-                var owner = group.Owner;
-
-                group.Context.Load(owner, g => g.LoginName);
-                group.Context.ExecuteQueryWithTrace();
-
-                return owner.LoginName;
-            }
-
-            return group.Owner.LoginName;
-        }
-
-        public static string GetDefaultUserLoginName(this Group group)
-        {
-            if (!group.IsPropertyAvailable("Users"))
-            {
-                var users = group.Users;
-
-                group.Context.Load(users, g => g.Include(gg => gg.LoginName));
-                group.Context.ExecuteQueryWithTrace();
-
-                return users[0].LoginName;
-            }
-
-            return group.Users[0].LoginName;
         }
     }
 }

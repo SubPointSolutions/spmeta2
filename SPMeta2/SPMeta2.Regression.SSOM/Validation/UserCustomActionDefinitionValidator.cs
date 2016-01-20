@@ -7,6 +7,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using Microsoft.SharePoint;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -207,16 +208,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 .Replace(" ", "")
                 .Replace(Environment.NewLine, "")
                 .Replace("\n", "");
-        }
-    }
-
-
-
-    internal static class SPUserActionHelpers
-    {
-        public static string GetRegistrationType(this SPUserCustomAction action)
-        {
-            return action.RegistrationType.ToString();
         }
     }
 }

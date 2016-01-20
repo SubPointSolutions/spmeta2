@@ -27,7 +27,7 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var contentType = modelHost as SPContentType;
+            var contentType = modelHost.WithAssertAndCast<SPContentType>("modelHost", value => value.RequireNotNull()); ;
             var contentTypeOrderDefinition = model.WithAssertAndCast<UniqueContentTypeFieldsOrderDefinition>("model", value => value.RequireNotNull());
 
             DeployContentTypeOrder(modelHost, contentType, contentTypeOrderDefinition);

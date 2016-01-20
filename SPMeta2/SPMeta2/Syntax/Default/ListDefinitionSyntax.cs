@@ -23,6 +23,7 @@ namespace SPMeta2.Syntax.Default
         IPropertyHostModelNode
     {
 
+       
     }
 
     public static class ListDefinitionSyntax

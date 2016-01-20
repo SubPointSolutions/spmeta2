@@ -7,6 +7,8 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Standard.Extensions;
 using SPMeta2.Regression.CSOM.Validation;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
@@ -247,31 +249,5 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
         }
 
         #endregion
-    }
-
-
-
-    internal static class PublishingPageLayoutItemHelper
-    {
-        public static string GetPublishingPageLayoutDescription(this ListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
-
-        public static string GetPublishingPageLayoutAssociatedContentTypeId(this ListItem item)
-        {
-            var value = item["PublishingAssociatedContentType"].ToString();
-            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-            return values[2];
-        }
-
-        public static string GetPublishingPageLayoutAssociatedContentTypeName(this ListItem item)
-        {
-            var value = item["PublishingAssociatedContentType"].ToString();
-            var values = value.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-            return values[1];
-        }
     }
 }

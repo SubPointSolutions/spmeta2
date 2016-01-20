@@ -7,6 +7,7 @@ using SPMeta2.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -192,27 +193,4 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    public static class SPListItemHelper
-    {
-        public static List<string> GetUIVersion(this SPListItem item)
-        {
-            var v = new SPFieldMultiChoiceValue(item["UIVersion"] as string);
-            var result = new List<string>();
-
-            for (var i = 0; i < v.Count; i++)
-                result.Add(v[i]);
-
-            return result;
-        }
-
-        public static string GetMasterPageDescription(this SPListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
-
-        public static string GetDefaultCSSFile(this SPListItem item)
-        {
-            return item["DefaultCssFile"] as string;
-        }
-    }
 }

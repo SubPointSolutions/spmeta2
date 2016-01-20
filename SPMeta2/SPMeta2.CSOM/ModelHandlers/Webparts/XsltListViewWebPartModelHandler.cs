@@ -86,7 +86,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             // xml
             if (!string.IsNullOrEmpty(wpModel.XmlDefinition))
-                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.Xsl);
+                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.XmlDefinition);
 
             if (!string.IsNullOrEmpty(wpModel.XmlDefinitionLink))
                 wpXml.SetOrUpdateProperty("XmlDefinitionLink", wpModel.XmlDefinitionLink);
@@ -204,11 +204,29 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 context.Load(hiddenView);
                 context.ExecuteQueryWithTrace();
 
-                // patching the toolbar value
+                // always replace HtmlSchemaXml witjh the real view
+                // some properties aren't coming with CSOM
+
+
+                if (bindContext.OriginalView != null)
+                {
+                    var updatedSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+                    var originalSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+
+                    updatedSchemaXml.Root.ReplaceWith(originalSchemaXml.Root);
+
+                    hiddenView.ListViewXml = updatedSchemaXml.Root.GetInnerXmlAsString();
+                }
 
                 if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
                 {
+                    // work with the update schema XML
                     var htmlSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+
+                    if (bindContext.OriginalView != null)
+                    {
+                        htmlSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+                    }
 
                     var useShowAlwaysValue =
                         (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
@@ -239,10 +257,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                     }
 
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
-
-                    hiddenView.Update();
-                    context.ExecuteQueryWithTrace();
                 }
+
+                hiddenView.Update();
+                context.ExecuteQueryWithTrace();
             }
         }
 

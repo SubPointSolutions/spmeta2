@@ -10,7 +10,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Exceptions;
 using SPMeta2.SSOM.ModelHosts;
 using Microsoft.SharePoint;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -103,11 +103,5 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    internal static class SPFeatureExtensions
-    {
-        public static Guid GetFeatureId(this SPFeature feature)
-        {
-            return feature.Definition.Id;
-        }
-    }
+
 }

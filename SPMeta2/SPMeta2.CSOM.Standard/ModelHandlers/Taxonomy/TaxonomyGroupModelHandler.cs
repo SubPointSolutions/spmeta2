@@ -61,7 +61,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var context = termStore.Context;
 
-            TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, false);
+            TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, true);
 
             context.Load(currentGroup);
             context.ExecuteQueryWithTrace();

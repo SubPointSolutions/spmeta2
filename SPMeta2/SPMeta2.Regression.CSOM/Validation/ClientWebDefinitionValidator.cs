@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 
@@ -35,8 +36,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                             w => w.Url
                         );
 
-
-
             context.ExecuteQueryWithTrace();
 
             var assert = ServiceFactory.AssertService
@@ -56,16 +55,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.CustomWebTemplate);
             }
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
-
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
-
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description);
 
             assert.ShouldBeEqual((p, s, d) =>
             {
@@ -253,21 +243,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
-        }
-    }
-
-
-
-    internal static class WebExtensions
-    {
-        public static uint GetLCID(this Web web)
-        {
-            return (uint)web.Language;
-        }
-
-        public static string GetWebTemplate(this Web web)
-        {
-            return string.Format("{0}#{1}", web.WebTemplate, web.Configuration);
         }
     }
 }

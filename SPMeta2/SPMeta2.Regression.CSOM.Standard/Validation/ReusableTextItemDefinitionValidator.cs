@@ -20,14 +20,11 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
             base.ValidateProperties(item, definition);
 
             var typedDefinition = definition as ReusableTextItemDefinition;
-            var assert = ServiceFactory.AssertService
-                             .NewAssert(typedDefinition, item)
-                              .ShouldNotBeNull(item);
+            var assert = ServiceFactory.AssertService.NewAssert(typedDefinition, item);
 
-            if (!string.IsNullOrEmpty(typedDefinition.ReusableText))
-                assert.SkipProperty(m => m.ReusableText);
-            else
-                assert.ShouldBeEqual(m => m.Title, o => o.GetReusableText());
+            assert
+               .ShouldNotBeNull(item)
+               .ShouldBeEqualIfNotNullOrEmpty(m => m.ReusableText, o => o.GetReusableText());
         }
     }
 }

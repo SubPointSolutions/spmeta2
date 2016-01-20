@@ -23,15 +23,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
                                        .ShouldBeEqual(m => m.Url, o => o.IncomingUrl)
-                                       .ShouldBeEqual(m => m.UrlZone, o => o.GetUrlZone());
-        }
-    }
-
-    internal static class SPAlternateUrlExtensions
-    {
-        public static string GetUrlZone(this SPAlternateUrl alternateUrl)
-        {
-            return alternateUrl.UrlZone.ToString();
+                                       .ShouldBeEqual(m => m.UrlZone, o => o.UrlZone.ToString());
         }
     }
 }

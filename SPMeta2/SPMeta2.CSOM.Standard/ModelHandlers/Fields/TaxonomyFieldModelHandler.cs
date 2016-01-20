@@ -44,7 +44,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             if (termStore != null)
             {
                 termSet = LookupTermSet(CurrentHostClientContext, termStore, taxFieldModel);
-                term = LookupTerm(CurrentHostClientContext, termStore, taxFieldModel);
+                term = LookupTerm(CurrentHostClientContext, termStore, termSet, taxFieldModel);
             }
 
             var taxField = context.CastTo<TaxonomyField>(field);
@@ -303,12 +303,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
         }
 
         public static Term LookupTerm(SiteModelHost currentSiteModelHost, TermStore termStore,
+            TermSet termSet,
             TaxonomyFieldDefinition termModel)
         {
-            return LookupTerm(currentSiteModelHost.HostClientContext, termStore, termModel);
+            return LookupTerm(currentSiteModelHost.HostClientContext, termStore, termSet, termModel);
         }
 
         public static Term LookupTerm(ClientContext clientContext, TermStore termStore,
+            TermSet termSet,
             TaxonomyFieldDefinition termModel)
         {
             var context = clientContext;
@@ -386,6 +388,23 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                     context.ExecuteQueryWithTrace();
 
                     result = terms.FirstOrDefault(t => t.TermSet.Group.Name == currenGroup.Name);
+
+                    if ( (result == null) && (termSet != null ))
+                        // sometimes label match information does not return the term 
+                    {
+                        var allTerms = termSet.GetAllTerms();
+                        context.Load(allTerms, t => t.Include(
+                                                    i => i.Id,
+                                                    i => i.Name,
+                                                    i => i.TermSet,
+                                                    i => i.TermSet.Group,
+                                                    i => i.TermSet.Group.Name,
+                                                    i => i.Labels
+                                                    ));
+                        context.ExecuteQueryWithTrace();
+
+                        result = allTerms.FirstOrDefault(t => (t.TermSet.Group.Name == currenGroup.Name) && (t.Labels.Any(l=>l.Value == termModel.TermName && l.Language == termModel.TermLCID)));
+                    }
                 }
             }
 
@@ -424,8 +443,29 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
                     context.ExecuteQueryWithTrace();
 
                     result = terms.FirstOrDefault();
+
+                    if ((result == null) && (termSet != null))
+                        // sometimes label match information does not return the termset 
+                    {
+                        var allTerms = termSet.GetAllTerms();
+                        context.Load(allTerms, t => t.Include(
+                            i => i.Id,
+                            i => i.Name,
+                            i => i.TermSet,
+                            i => i.TermSet.Group,
+                            i => i.TermSet.Group.Name,
+                            i => i.Labels
+                            ));
+                        context.ExecuteQueryWithTrace();
+
+                        result =
+                            allTerms.FirstOrDefault(
+                                t => (t.Labels.Any(l=>l.Value == termModel.TermName && l.Language == termModel.TermLCID)));
+
+                    }
+
                 }
-            }
+                }
 
             if (result != null && result.ServerObjectIsNull == false)
             {

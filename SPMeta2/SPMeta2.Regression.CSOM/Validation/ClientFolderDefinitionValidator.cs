@@ -21,8 +21,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                 spObject = GetListFolder(folderModelHost, definition);
 
             var assert = ServiceFactory.AssertService
-                               .NewAssert(definition, spObject)
-                                     .ShouldBeEqual(m => m.Name, o => o.Name);
+                                       .NewAssert(definition, spObject);
+
+            assert.ShouldBeEqual(m => m.Name, o => o.Name);
         }
     }
 }

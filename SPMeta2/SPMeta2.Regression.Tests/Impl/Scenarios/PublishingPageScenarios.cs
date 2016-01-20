@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Standard.Syntax;
@@ -113,6 +113,32 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
 
             var page = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(webFeature);
+                web.AddHostList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddPublishingPage(page);
+                });
+            });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage")]
+        public void CanDeploy_Default_PublishingPage_With_Content()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var page = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.FileName = Rnd.AspxFileName();
+                def.Content = Rnd.String();
+            });
 
             var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
             var webModel = SPMeta2Model.NewWebModel(web =>

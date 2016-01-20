@@ -131,11 +131,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 targetContentType.Name = contentTypeModel.Name;
                 targetContentType.Group = contentTypeModel.Group;
 
+                if (contentTypeModel.Sealed.HasValue)
+                    targetContentType.Sealed = contentTypeModel.Sealed.Value;
+
+                if (contentTypeModel.ReadOnly.HasValue)
+                    targetContentType.ReadOnly = contentTypeModel.ReadOnly.Value;
+
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
-                
+
 #if !NET35
-                targetContentType.JSLink = contentTypeModel.JSLink ?? string.Empty;
+                if (!string.IsNullOrEmpty(contentTypeModel.JSLink))
+                    targetContentType.JSLink = contentTypeModel.JSLink;
 #endif
 
                 if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))

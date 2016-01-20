@@ -13,6 +13,7 @@ using SPMeta2.Utils;
 
 
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Services;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -48,21 +49,16 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             assert
                 .ShouldNotBeNull(spObject)
+
                 .ShouldBeEqual(m => m.Name, o => o.Name)
                 .ShouldBeEqual(m => m.Group, o => o.Group)
-                .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
-            //.ShouldBeEqual(m => m.Description, o => o.Description);
+                .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
 
-            if (!string.IsNullOrEmpty(definition.JSLink))
-                assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
-            else
-                assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
-
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
-
+                .ShouldBeEqualIfHasValue(m => m.Sealed, o => o.Sealed)
+                .ShouldBeEqualIfHasValue(m => m.ReadOnly, o => o.ReadOnly)
+                
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.JSLink, o => o.JSLink)
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description);
 
             if (definition.Id == default(Guid))
             {
@@ -73,10 +69,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.Id);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetId());
+                    var dstProp = d.GetExpressionValue(ct => ct.Id.ToString());
 
                     var srcCtId = s.GetContentTypeId();
-                    var dstCtId = d.GetId();
+                    var dstCtId = d.Id.ToString();
 
                     return new PropertyValidationResult
                     {
@@ -97,7 +93,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.Id);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetId());
+                    var dstProp = d.GetExpressionValue(ct => ct.Id.ToString());
 
                     return new PropertyValidationResult
                     {
@@ -242,14 +238,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.NameResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
-        }
-    }
-
-    internal static class ContentTypeDefinitionValidatorUtils
-    {
-        public static string GetId(this ContentType c)
-        {
-            return c.Id.ToString();
         }
     }
 }

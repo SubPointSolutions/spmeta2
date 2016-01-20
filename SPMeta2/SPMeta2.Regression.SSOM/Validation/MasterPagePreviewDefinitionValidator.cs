@@ -7,6 +7,7 @@ using SPMeta2.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers.Base;
 using SPMeta2.Syntax.Default.Utils;
 

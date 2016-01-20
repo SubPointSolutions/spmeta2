@@ -9,6 +9,7 @@ using SPMeta2.Utils;
 using SPMeta2.Definitions;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -19,40 +20,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             var securableObject = ExtractSecurableObject(modelHost);
             var definition = model.WithAssertAndCast<BreakRoleInheritanceDefinition>("model", value => value.RequireNotNull());
 
-            var assert = ServiceFactory.AssertService
-                                      .NewAssert(definition, securableObject)
-                                            .ShouldNotBeNull(securableObject)
-                                            .ShouldBeEqual(m => m.ClearSubscopes, o => o.HasClearSubscopes())
-                //.ShouldBeEqual(m => m.CopyRoleAssignments, o => o.HasCopyRoleAssignments())
-                                            .ShouldBeEqual(m => m.ForceClearSubscopes, o => o.HasClearSubscopes());
+            var assert = ServiceFactory.AssertService.NewAssert(definition, securableObject);
+
+            assert
+                .ShouldNotBeNull(securableObject)
+                .ShouldBeEqual(m => m.ClearSubscopes, o => o.HasClearSubscopes())
+                .ShouldBeEqual(m => m.ForceClearSubscopes, o => o.HasClearSubscopes());
         }
-
-    }
-
-    internal static class SPSecurableHelper
-    {
-        public static bool HasClearSubscopes(this SecurableObject secObject)
-        {
-            if (!secObject.IsPropertyAvailable("RoleAssignments"))
-            {
-                secObject.Context.Load(secObject, s => s.RoleAssignments);
-                secObject.Context.ExecuteQueryWithTrace();
-            }
-
-            return secObject.RoleAssignments.Count == 0;
-        }
-
-        public static bool HasCopyRoleAssignments(this SecurableObject secObject)
-        {
-            if (!secObject.IsPropertyAvailable("FirstUniqueAncestorSecurableObject"))
-            {
-                secObject.Context.Load(secObject, s => s.FirstUniqueAncestorSecurableObject);
-                secObject.Context.ExecuteQueryWithTrace();
-            }
-
-            var parent = secObject.FirstUniqueAncestorSecurableObject;
-            return secObject.RoleAssignments == parent.RoleAssignments;
-        }
-
     }
 }
