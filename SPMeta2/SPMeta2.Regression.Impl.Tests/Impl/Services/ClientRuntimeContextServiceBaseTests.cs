@@ -210,6 +210,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
             service.ExecuteQuery(default(ClientRuntimeContext));
         }
 
+
         #endregion
 
         #region utils
