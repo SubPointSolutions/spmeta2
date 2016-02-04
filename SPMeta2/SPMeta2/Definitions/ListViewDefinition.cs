@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -16,11 +17,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPView", "Microsoft.SharePoint")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.View", "Microsoft.SharePoint.Client")]
+    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPView", "Microsoft.SharePoint")]
+    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.View", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHost(typeof(WebDefinition))]
-    [DefaultParentHost(typeof(ListDefinition))]
+    [DefaultRootHostAttribute(typeof(WebDefinition))]
+    [DefaultParentHostAttribute(typeof(ListDefinition))]
 
     [Serializable]
     [DataContract]
@@ -97,14 +98,6 @@ namespace SPMeta2.Definitions
         public int RowLimit { get; set; }
 
         /// <summary>
-        /// Corresponds to Scope property
-        /// </summary>
-        [ExpectValidation]
-        [ExpectUpdateAsViewScope]
-        [DataMember]
-        public string Scope { get; set; }
-
-        /// <summary>
         /// CAML Query of the target list view.
         /// </summary>
         /// 
@@ -113,7 +106,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
 
-        [CamlPropertyCapability]
+        [CamlPropertyCapabilityAttribute]
         public string Query { get; set; }
 
         /// <summary>
@@ -176,15 +169,24 @@ namespace SPMeta2.Definitions
         public string ContentTypeId { get; set; }
 
         [ExpectValidation]
-        [DataMember]
-        [ExpectNullable]
-        [ExpectUpdateAsIntRange(MinValue = 12, MaxValue = 20)]
-        public int? ViewStyleId { get; set; }
-
-        [ExpectValidation]
         [ExpectRequired]
         [DataMember]
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets field references for one or more aggregate, or total, columns used in a view.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string Aggregations { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether aggregate, or total, columns are used in the view.
+        /// A string that specifies "On" if an aggregate column is used in the view; otherwise, an empty string.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string AggregationsStatus { get; set; }
 
         #endregion
 

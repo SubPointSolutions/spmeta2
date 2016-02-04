@@ -1,13 +1,13 @@
-﻿using Microsoft.SharePoint.Client;
-using SPMeta2.Containers.Assertion;
-using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
+﻿using System.Linq;
 
-using SPMeta2.Utils;
-using System.Linq;
+using Microsoft.SharePoint.Client;
+
+using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Definitions;
+using SPMeta2.Utils;
 using SPMeta2.Services;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -25,45 +25,45 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(list, l => l.Fields);
             context.Load(list, l => l.Views.Include(
-                o => o.ViewFields,
-                o => o.Title,
-                o => o.DefaultView,
-                o => o.ViewQuery,
-                o => o.RowLimit,
-                o => o.Paged,
-                o => o.Scope,
-                o => o.Hidden,
-                o => o.JSLink,
-                o => o.ServerRelativeUrl,
-                o => o.DefaultViewForContentType,
-                o => o.ContentTypeId,
-                o => o.ViewType,
-                o => o.ViewData,
-                v => v.Title));
+                v => v.ViewFields,
+                v => v.Title,
+                v => v.AggregationsStatus,
+                v => v.Aggregations,
+                v => v.DefaultView,
+                v => v.ViewQuery,
+                v => v.RowLimit,
+                v => v.Paged,
+                v => v.Hidden,
+                v => v.JSLink,
+                v => v.ServerRelativeUrl,
+                v => v.DefaultViewForContentType,
+                v => v.ContentTypeId,
+                v => v.ViewType,
+                v => v.ViewData));
             context.ExecuteQueryWithTrace();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
             var assert = ServiceFactory.AssertService
-                                      .NewAssert(definition, spObject);
+                                      .NewAssert(definition, spObject)
+                                          .ShouldNotBeNull(spObject)
+                                          .ShouldBeEqual(m => m.Title, o => o.Title)
+                                          .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
+                                          .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
+                                          //.ShouldBeEqual(m => m.Query, o => o.ViewQuery)
+                                          .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
+                                          .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
-            assert
-                .ShouldNotBeNull(spObject)
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                .ShouldBeEqual(m => m.IsDefault, o => o.DefaultView)
-                .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
-                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
-
-            if (!string.IsNullOrEmpty(definition.Scope))
+            if (!string.IsNullOrEmpty(definition.ViewData))
             {
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var srcProp = s.GetExpressionValue(def => def.Scope);
-                    var dstProp = d.GetExpressionValue(o => o.Scope);
+                    var srcProp = s.GetExpressionValue(def => def.ViewData);
+                    var dstProp = d.GetExpressionValue(o => o.ViewData);
 
-                    var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToCSOMType(definition.Scope);
+                    var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+                    var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
 
-                    var isValid = scopeValue == d.Scope.ToString();
+                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
                     return new PropertyValidationResult
                     {
@@ -73,32 +73,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                         IsValid = isValid
                     };
                 });
-            }
-            else
-            {
-                assert.SkipProperty(m => m.Scope);
-            }
-
-            if (!string.IsNullOrEmpty(definition.ViewData))
-            {
-                assert.ShouldBeEqual((p, s, d) =>
-               {
-                   var srcProp = s.GetExpressionValue(def => def.ViewData);
-                   var dstProp = d.GetExpressionValue(o => o.ViewData);
-
-                   var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
-                   var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
-
-                   var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
-
-                   return new PropertyValidationResult
-                   {
-                       Tag = p.Tag,
-                       Src = srcProp,
-                       Dst = dstProp,
-                       IsValid = isValid
-                   };
-               });
             }
             else
                 assert.SkipProperty(m => m.ViewData);
@@ -125,9 +99,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Type);
 
-            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM  API yet. Skipping.");
-
-            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.JSLink, o => o.JSLink);
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
+            else
+                assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Query))
             {
@@ -153,7 +128,10 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Query, "Query is null or empty. Skipping.");
 
-            assert.ShouldBeEqualIfHasValue(m => m.DefaultViewForContentType, o => o.DefaultViewForContentType);
+            if (definition.DefaultViewForContentType.HasValue)
+                assert.ShouldBeEqual(m => m.DefaultViewForContentType, o => o.DefaultViewForContentType);
+            else
+                assert.SkipProperty(m => m.DefaultViewForContentType, "DefaultViewForContentType is null or empty. Skipping.");
 
             if (string.IsNullOrEmpty(definition.ContentTypeName))
                 assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
@@ -201,7 +179,20 @@ namespace SPMeta2.Regression.CSOM.Validation
                 });
             }
 
-            assert.ShouldBePartOfIfNotNullOrEmpty(m => m.Url, o => o.ServerRelativeUrl);
+            if (string.IsNullOrEmpty(definition.AggregationsStatus))
+                assert.SkipProperty(m => m.AggregationsStatus, "Aggregationsstatus is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.AggregationsStatus, o => o.AggregationsStatus);
+
+            if (string.IsNullOrEmpty(definition.Aggregations))
+                assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
+
+            if (string.IsNullOrEmpty(definition.Url))
+                assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");
+            else
+                assert.ShouldBePartOf(m => m.Url, o => o.ServerRelativeUrl);
 
             assert.ShouldBeEqual((p, s, d) =>
             {
@@ -295,5 +286,13 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             return false;
         }
+    }
+
+    internal static class ViewDefault
+    {
+        //public static bool IsDefaul(this View view)
+        //{
+        //    return view.DefaultView.DefaultView.ID == view.Id;
+        //}
     }
 }
