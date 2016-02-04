@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -38,7 +39,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
-
             var modelHost = modelHostContext.ModelHost;
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
@@ -56,7 +56,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                 || childModelType == typeof(DeleteWebPartsDefinition))
             {
                 var targetView = FindView(list, listViewDefinition);
-                var serverRelativeFileUrl = string.Empty;
+                string serverRelativeFileUrl;
 
                 Folder targetFolder = null;
 
@@ -186,7 +186,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (!string.IsNullOrEmpty(listViewModel.Query))
                     newView.Query = listViewModel.Query;
 
-                if (listViewModel.Fields != null && listViewModel.Fields.Count() > 0)
+                if (listViewModel.Fields != null && listViewModel.Fields.Any())
                     newView.ViewFields = listViewModel.Fields.ToArray();
 
                 if (!string.IsNullOrEmpty(listViewModel.Type))
@@ -270,6 +270,15 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.DefaultViewForContentType.HasValue)
                 listView.DefaultViewForContentType = definition.DefaultViewForContentType.Value;
 
+            // There is no value in setting Aggregations if AggregationsStatus is not to "On"
+            if (!string.IsNullOrEmpty(definition.AggregationsStatus) && definition.AggregationsStatus == "On")
+            {
+                listView.AggregationsStatus = definition.AggregationsStatus;
+
+                if (!string.IsNullOrEmpty(definition.Aggregations))
+                    listView.Aggregations = definition.Aggregations;
+            }
+
             listView.Hidden = definition.Hidden;
 
             if (!string.IsNullOrEmpty(definition.Scope))
@@ -332,7 +341,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             foreach (var view in viewCollection)
             {
-                if (System.String.Compare(view.Title, listViewTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
+                if (String.Compare(view.Title, listViewTitle, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     return view;
                 }
