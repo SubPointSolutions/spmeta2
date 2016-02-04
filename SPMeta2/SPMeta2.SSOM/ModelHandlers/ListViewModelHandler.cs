@@ -2,13 +2,12 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using Microsoft.SharePoint;
-
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
+using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
@@ -20,7 +19,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 {
     public class ListViewModelHandler : SSOMModelHandlerBase
     {
+        #region constructors
+
+        public ListViewModelHandler()
+        {
+            ListViewScopeTypesConvertService = ServiceContainer.Instance.GetService<ListViewScopeTypesConvertService>();
+        }
+
+        #endregion
+
         #region methods
+
+        public ListViewScopeTypesConvertService ListViewScopeTypesConvertService { get; set; }
 
         public override Type TargetType
         {
@@ -44,7 +54,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var listViewDefinition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
                 var currentView = FindView(list, listViewDefinition);
 
-                string serverRelativeFileUrl;
+                var serverRelativeFileUrl = string.Empty;
+
                 if (currentView != null)
                     serverRelativeFileUrl = currentView.ServerRelativeUrl;
                 else
@@ -56,7 +67,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     {
                         serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
                         {
-                            list.RootFolder.ServerRelativeUrl,
+                            list.RootFolder.ServerRelativeUrl, 
                             "Forms",
                             listViewDefinition.Url
                         });
@@ -65,7 +76,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     {
                         serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
                         {
-                            list.RootFolder.ServerRelativeUrl,
+                            list.RootFolder.ServerRelativeUrl, 
                             listViewDefinition.Url
                         });
                     }
@@ -146,7 +157,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
                 var isPersonalView = false;
-                var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
+                var viewType = (Microsoft.SharePoint.SPViewCollection.SPViewType)Enum.Parse(typeof(Microsoft.SharePoint.SPViewCollection.SPViewType),
                     string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
 
                 // TODO, handle personal view creation
@@ -169,6 +180,29 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);
 
+            MapProperties(targetList, currentView, listViewModel);
+
+            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
+
+            ProcessLocalization(currentView, listViewModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentView,
+                ObjectType = typeof(SPView),
+                ObjectDefinition = listViewModel,
+                ModelHost = modelHost
+            });
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
+            currentView.Update();
+        }
+
+        private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
+        {
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
@@ -180,6 +214,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(listViewModel.ViewData))
                 currentView.ViewData = listViewModel.ViewData;
+
+            if (!string.IsNullOrEmpty(listViewModel.Scope))
+            {
+                var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToSSOMType(listViewModel.Scope);
+
+                currentView.Scope = (SPViewScope)Enum.Parse(
+                    typeof(SPViewScope), scopeValue);
+            }
 
             currentView.Hidden = listViewModel.Hidden;
             currentView.Title = listViewModel.Title;
@@ -204,32 +246,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
                 currentView.ContentTypeId = LookupListContentTypeById(targetList, listViewModel.ContentTypeId);
 
-            // There is no value in setting Aggregations if AggregationsStatus is not to "On"
-            if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
+            if (listViewModel.ViewStyleId.HasValue)
             {
-                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
-
-                if (!string.IsNullOrEmpty(listViewModel.Aggregations))
-                    currentView.Aggregations = listViewModel.Aggregations;
+                var viewStyle = targetList.ParentWeb.ViewStyles.StyleByID(listViewModel.ViewStyleId.Value);
+                currentView.ApplyStyle(viewStyle);
             }
-
-            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
-
-            ProcessLocalization(currentView, listViewModel);
-
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = currentView,
-                ObjectType = typeof(SPView),
-                ObjectDefinition = listViewModel,
-                ModelHost = modelHost
-            });
-
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
-            currentView.Update();
         }
 
         protected SPContentTypeId LookupListContentTypeByName(SPList targetList, string name)
@@ -252,6 +273,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual void ProcessLocalization(SPView obj, ListViewDefinition definition)
         {
+
             if (definition.TitleResource.Any())
             {
 #if !NET35
