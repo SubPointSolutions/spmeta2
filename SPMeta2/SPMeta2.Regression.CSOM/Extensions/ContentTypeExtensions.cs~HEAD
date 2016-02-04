@@ -1,0 +1,18 @@
+<<<<<<< HEAD:SPMeta2/SPMeta2/Attributes/Capabilities/NotAbsoluteUrlCapabilityAttribute.cs:SPMeta2/SPMeta2/Attributes/Capabilities/NotAbsoluteUrlCapabilityAttribute.cs
+﻿namespace SPMeta2.Attributes.Capabilities
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+
+namespace SPMeta2.Regression.CSOM.Extensions
+>>>>>>> 651cb780e0c7881d4f6de374ee54b3931db56573:SPMeta2/SPMeta2.Regression.CSOM/Extensions/ContentTypeExtensions.cs:SPMeta2/SPMeta2.Regression.CSOM/Extensions/ContentTypeExtensions.cs
+{
+    internal static class ContentTypeExtensions
+    {
+
+    }
+}
