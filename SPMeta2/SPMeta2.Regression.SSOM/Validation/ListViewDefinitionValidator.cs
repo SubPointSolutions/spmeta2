@@ -1,17 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
+
 using Microsoft.SharePoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -215,6 +213,16 @@ namespace SPMeta2.Regression.SSOM.Validation
                     };
                 });
             }
+
+            if (string.IsNullOrEmpty(definition.AggregationsStatus))
+                assert.SkipProperty(m => m.AggregationsStatus, "Aggregationsstatus is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.AggregationsStatus, o => o.AggregationsStatus);
+
+            if (string.IsNullOrEmpty(definition.Aggregations))
+                assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
 
             if (string.IsNullOrEmpty(definition.Url))
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");

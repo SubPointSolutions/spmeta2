@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -185,6 +186,21 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets field references for one or more aggregate, or total, columns used in a view.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string Aggregations { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether aggregate, or total, columns are used in the view.
+        /// A string that specifies "On" if an aggregate column is used in the view; otherwise, an empty string.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string AggregationsStatus { get; set; }
 
         #endregion
 

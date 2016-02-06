@@ -2,17 +2,18 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls.WebParts;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
-using System.Web.UI.WebControls.WebParts;
 using SPMeta2.Enumerations;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -54,8 +55,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var listViewDefinition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
                 var currentView = FindView(list, listViewDefinition);
 
-                var serverRelativeFileUrl = string.Empty;
-
+                string serverRelativeFileUrl;
                 if (currentView != null)
                     serverRelativeFileUrl = currentView.ServerRelativeUrl;
                 else
@@ -157,7 +157,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
                 var isPersonalView = false;
-                var viewType = (Microsoft.SharePoint.SPViewCollection.SPViewType)Enum.Parse(typeof(Microsoft.SharePoint.SPViewCollection.SPViewType),
+                var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
                     string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
 
                 // TODO, handle personal view creation
@@ -223,6 +223,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                     typeof(SPViewScope), scopeValue);
             }
 
+            // There is no value in setting Aggregations if AggregationsStatus is not to "On"
+            if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
+            {
+                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
+
+                if (!string.IsNullOrEmpty(listViewModel.Aggregations))
+                    currentView.Aggregations = listViewModel.Aggregations;
+            }
+
             currentView.Hidden = listViewModel.Hidden;
             currentView.Title = listViewModel.Title;
             currentView.RowLimit = (uint)listViewModel.RowLimit;
@@ -257,7 +266,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var targetContentType = targetList.ContentTypes
                    .OfType<SPContentType>()
-                   .FirstOrDefault(ct => ct.Name.ToUpper() == name.ToUpper());
+                   .FirstOrDefault(ct => String.Equals(ct.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (targetContentType == null)
                 throw new SPMeta2Exception(string.Format("Cannot find content type by name ['{0}'] in list: [{1}]",
