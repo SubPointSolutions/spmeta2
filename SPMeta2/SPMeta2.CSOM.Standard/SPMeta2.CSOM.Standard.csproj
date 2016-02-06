@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.CSOM.Standard.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -210,23 +210,23 @@
     <Compile Include="ModelHandlers\Fields\LinkFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\HTMLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\MetadataNavigationSettingsModelHandler.cs" />
-    <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableHTMLItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableTextItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchSettingsModelHandler.cs" />
-    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" />
+    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\SearchResultModelHandler.cs" />
-    <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
-    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermLabelModelHandler.cs" />
-    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />
-    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
-    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermLabelModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\CategoryWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" />
@@ -248,17 +248,17 @@
     <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\TableOfContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\TagCloudWebPartModelHandler.cs" />
-    <Compile Include="ModelHosts\TermGroupModelHost.cs" />
-    <Compile Include="ModelHosts\TermModelHost.cs" />
-    <Compile Include="ModelHosts\TermSetModelHost.cs" />
-    <Compile Include="ModelHosts\TermStoreModelHost.cs" />
+    <Compile Include="ModelHosts\TermGroupModelHost.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHosts\TermModelHost.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHosts\TermSetModelHost.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHosts\TermStoreModelHost.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
-    <Compile Include="ModelHandlers\SandboxSolutionModelHandler.cs" />
+    <Compile Include="ModelHandlers\SandboxSolutionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="Services\StandardCSOMProvisionService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,7 +38,7 @@ if($includeV14Build -eq $true) {
     & $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
 
     & $msbuild_path """$solutionRootPath\SPMeta2.CSOM\SPMeta2.CSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    #& $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+    & $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
 }
 
 # 15, main solution, all, 45

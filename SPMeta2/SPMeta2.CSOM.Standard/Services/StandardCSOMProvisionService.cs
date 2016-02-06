@@ -11,7 +11,7 @@ namespace SPMeta2.CSOM.Standard.Services
         public StandardCSOMProvisionService()
         {
             RegisterModelHandlers(typeof(FieldModelHandler).Assembly);
-            RegisterModelHandlers(typeof(TaxonomyFieldModelHandler).Assembly);
+            RegisterModelHandlers(typeof(ImageFieldModelHandler).Assembly);
         }
 
         #endregion

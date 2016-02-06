@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.Script.Serialization;
 using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Search.Administration;
-using Microsoft.SharePoint.Client.Search.Portability;
 using SPMeta2.Common;
 using SPMeta2.Config;
 using SPMeta2.CSOM.Extensions;
