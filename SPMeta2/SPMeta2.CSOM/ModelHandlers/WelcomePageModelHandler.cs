@@ -56,6 +56,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Changing welcome page to: [{0}]", welcomePgaeModel.Url);
 
+            // Enhance 'WelcomePageDefinition' - handle / in Url prop #431
             // https://github.com/SubPointSolutions/spmeta2/issues/431
             folder.WelcomePage = UrlUtility.RemoveStartingSlash(welcomePgaeModel.Url);
 
@@ -94,12 +95,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is FolderModelHost)
             {
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/770");
+#endif
+
+#if !NET35
                 var folderModelHost = (modelHost as FolderModelHost);
 
                 if (folderModelHost.CurrentListFolder != null)
                     return folderModelHost.CurrentListFolder;
 
                 return folderModelHost.CurrentListItem.Folder;
+#endif
             }
 
             TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall, "Unsupported model host of type: [{0}]. Throwing SPMeta2UnsupportedModelHostException",

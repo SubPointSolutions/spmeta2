@@ -61,7 +61,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                       string.Format("CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                        string.Join(", ", targetProps)));
+                        string.Join(", ", targetProps.ToArray())));
 
                 return;
             }

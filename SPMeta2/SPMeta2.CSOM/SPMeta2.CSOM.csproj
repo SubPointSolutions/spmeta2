@@ -17,6 +17,18 @@
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+    <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -108,6 +120,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+  
+	<Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+ 
+  
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
@@ -149,16 +173,16 @@
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
-    <Compile Include="ModelHandlers\AppModelHandler.cs" />
-    <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" />
+    <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\PageItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\WebPartGalleryFileModelHandler.cs" />
     <Compile Include="ModelHandlers\BreakRoleInheritanceModelHandler.cs" />
-    <Compile Include="ModelHandlers\ClearRecycleBinModelHandler.cs" />
-    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" />
+    <Compile Include="ModelHandlers\ClearRecycleBinModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ContentTypeFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypeModelHandler.cs" />
@@ -172,12 +196,12 @@
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\CSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
-    <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
+    <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\DependentLookupFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" />
+    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\NumberFieldModelHandler.cs" />
@@ -194,7 +218,7 @@
     <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\BusinessDataFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\FolderModelHandler.cs" />
-    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
@@ -206,7 +230,7 @@
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\QuickLaunchNavigationNodeModelHandler.cs" />
-    <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityGroupLinkModelHandler.cs" />
@@ -214,8 +238,8 @@
     <Compile Include="ModelHandlers\SecurityRoleLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\SecurityRoleModelHandler.cs" />
     <Compile Include="ModelHandlers\SiteModelHandler.cs" />
-    <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" />
-    <Compile Include="ModelHandlers\SupportedUICultureModelHandler.cs" />
+    <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SupportedUICultureModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\TopNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
@@ -270,7 +294,7 @@
     <Compile Include="Services\CSOMContentTypeLookupService.cs" />
     <Compile Include="Services\CSOMFieldLookupService.cs" />
     <Compile Include="Services\CSOMProvisionService.cs" />
-    <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" />
+    <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
     <Compile Include="Services\CSOMTokenReplacementService.cs" />
     <Compile Include="Services\Impl\DefaultClientRuntimeContextService.cs" />
     <Compile Include="Services\Impl\RequireCSOMRuntimeVersionDeploymentService.cs" />

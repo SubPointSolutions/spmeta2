@@ -93,6 +93,8 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 
                 if (listContentType != null)
                 {
+#if !NET35
+
                     var existingCt = newContentTypeOrder.FirstOrDefault(ct => ct.StringValue.ToUpper() == listContentType.StringId.ToUpper());
 
                     if (existingCt != null && newContentTypeOrder.Contains(existingCt))
@@ -100,6 +102,20 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                         TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, string.Format("Removing content type from the ordering"));
                         newContentTypeOrder.Remove(existingCt);
                     }
+
+#endif
+
+#if NET35
+                    // .ToString() should return .StringValue of the content type ID
+                    var existingCt = newContentTypeOrder.FirstOrDefault(ct => ct.ToString().ToUpper() == listContentType.ToString().ToUpper());
+
+                    if (existingCt != null && newContentTypeOrder.Contains(existingCt))
+                    {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, string.Format("Removing content type from the ordering"));
+                        newContentTypeOrder.Remove(existingCt);
+                    }
+#endif
+
                 }
             }
 

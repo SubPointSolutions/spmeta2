@@ -123,6 +123,8 @@
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.Taxonomy.dll" />
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.UserProfiles.dll" />
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.dll" />
+    <Content Include="SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.BusinessData.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.IdentityModel.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.DocumentManagement.dll" />

@@ -11,6 +11,7 @@ using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using UrlUtility = SPMeta2.Utils.UrlUtility;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -83,6 +84,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Overwrite = true
                 };
 
+
                 if (moduleFile.Content.Length < ContentStreamFileSize)
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.Content for small file less than: [{0}]", ContentStreamFileSize);
@@ -90,9 +92,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+#endif
                 }
+
+
 
                 var file = folder.Files.Add(fileCreatingInfo);
 
@@ -171,8 +181,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+#endif
+
                 }
 
                 var file = folder.Files.Add(fileCreatingInfo);
@@ -397,8 +414,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (list != null && spFile != null && (list.EnableMinorVersions))
                     spFile.Publish("Provision");
 
+
                 if (list != null && spFile != null && (list.EnableModeration))
+                {
+
+#if NET35
+                    // TODO, Approve() method is not exposed
+                    throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/771");
+#endif
+
+#if !NET35
                     spFile.Approve("Provision");
+#endif
+
+                }
+
             }
 
             context.ExecuteQueryWithTrace();
@@ -453,7 +483,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folder = folderHost.CurrentListFolder;
 
             context.Load(folder, f => f.ServerRelativeUrl);
+
+#if !NET35
             context.Load(folder, f => f.Properties);
+#endif
 
             context.ExecuteQueryWithTrace();
 
@@ -484,12 +517,19 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = folderHost
             });
 
+#if !NET35
             var doesFileHasListItem =
                 //Forms folders
              !(folder != null
               &&
               (folder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
                && folder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012"));
+
+#endif
+
+#if NET35
+            var doesFileHasListItem = true;
+#endif
 
             WithSafeFileOperation(list, file, f =>
             {
@@ -509,8 +549,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(fileContent);
+#endif
                 }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwriting file");

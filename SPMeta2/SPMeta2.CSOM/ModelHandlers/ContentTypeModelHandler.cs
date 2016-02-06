@@ -140,11 +140,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = web.Context;
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
+            var contentTypeName = contentTypeModel.Name;
 
+#if !NET35
             var tmpContentType = context.LoadQuery(web.ContentTypes.Where(ct => ct.StringId == contentTypeId));
             context.ExecuteQueryWithTrace();
 
             var tmp = tmpContentType.FirstOrDefault();
+#endif
+
+#if NET35
+            // SP2010 CSOM does not have an option to get the content type by ID
+            // fallback to Name, and that's a huge thing all over the M2 library and provision
+            
+            var tmpContentType = context.LoadQuery(web.ContentTypes.Where(ct => ct.Name == contentTypeName));
+            context.ExecuteQueryWithTrace();
+
+            var tmp = tmpContentType.FirstOrDefault();
+#endif
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -168,7 +181,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
                     Group = contentTypeModel.Group,
+#if !NET35
                     Id = contentTypeId,
+#endif
                     ParentContentType = null
                 });
             }
@@ -180,13 +195,19 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             context.Load(currentContentType);
+
+#if !NET35
             context.Load(currentContentType, c => c.Sealed);
+#endif
+
             context.ExecuteQueryWithTrace();
 
+#if !NET35
             // CSOM can't update sealed content types
             // adding if-else so that the provision would go further
             if (!currentContentType.Sealed)
             {
+#endif
                 // doc template first, then set the other props
                 // ExtractResourceFolderServerRelativeUrl might make ExecuteQueryWithTrace() call
                 // so that might affect setting up other props
@@ -227,15 +248,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                     : contentTypeModel.Description;
                 currentContentType.Group = contentTypeModel.Group;
 
+#if !NET35
                 if (!string.IsNullOrEmpty(contentTypeModel.JSLink))
                     currentContentType.JSLink = contentTypeModel.JSLink;
+#endif
 
                 if (contentTypeModel.ReadOnly.HasValue)
                     currentContentType.ReadOnly = contentTypeModel.ReadOnly.Value;
 
+#if !NET35
                 if (contentTypeModel.Sealed.HasValue)
                     currentContentType.Sealed = contentTypeModel.Sealed.Value;
+
             }
+
+#endif
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -248,6 +275,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+#if !NET35
             if (!currentContentType.Sealed)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
@@ -255,6 +283,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQueryWithTrace();
             }
+#endif
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)
@@ -276,7 +305,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
+#if !NET35
             var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
+#endif
+
+#if NET35
+            var currentContentType = contentTypes.FirstOrDefault(c => c.ToString().ToLower() == contentTypeId.ToLower());
+#endif
 
             if (currentContentType != null)
             {

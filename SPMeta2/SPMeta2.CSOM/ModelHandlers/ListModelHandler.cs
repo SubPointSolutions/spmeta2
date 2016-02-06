@@ -213,7 +213,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!scope.HasException && folder != null && folder.ServerObjectIsNull != true)
             {
+#if !NET35
+
                 folder = web.GetFolderByServerRelativeUrl(listUrl);
+
                 context.Load(folder.Properties);
                 context.ExecuteQueryWithTrace();
 
@@ -224,6 +227,25 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 currentList = list;
+
+#endif
+
+#if NET35
+
+                // SP2010 CSOM hack
+                // http://impl.com/questions/4284722/sharepoint-2010-client-object-model-get-a-list-item-from-a-url
+
+                var listQuery = from list in web.Lists
+                                where list.RootFolder.ServerRelativeUrl == listUrl
+                                select list;
+
+                var queryResult = context.LoadQuery(listQuery);
+                context.ExecuteQueryWithTrace();
+
+                var resultList = queryResult.FirstOrDefault();
+
+                currentList = resultList;
+#endif
             }
 
             return currentList;
@@ -387,6 +409,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 list.DraftVersionVisibility = draftOption;
             }
 
+#if !NET35
             // IRM
             if (definition.IrmEnabled.HasValue)
                 list.IrmEnabled = definition.IrmEnabled.Value;
@@ -396,6 +419,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (definition.IrmReject.HasValue)
                 list.IrmReject = definition.IrmReject.Value;
+
+#endif
 
             // the rest
             if (definition.EnableAttachments.HasValue)
@@ -436,7 +461,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                         string.Format(
                             "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                            string.Join(", ", "MajorVersionLimit")));
+                            string.Join(", ", new string[] { "MajorVersionLimit" })));
                 }
             }
 
@@ -451,7 +476,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                         string.Format(
                             "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                            string.Join(", ", "MajorWithMinorVersionsLimit")));
+                            string.Join(", ", new string[] { "MajorWithMinorVersionsLimit" })));
                 }
             }
 

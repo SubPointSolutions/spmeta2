@@ -264,8 +264,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ContentTypeId))
                 listView.ContentTypeId = LookupListContentTypeById(list, definition.ContentTypeId);
 
+#if !NET35
             if (!string.IsNullOrEmpty(definition.JSLink))
                 listView.JSLink = definition.JSLink;
+#endif
 
             if (definition.DefaultViewForContentType.HasValue)
                 listView.DefaultViewForContentType = definition.DefaultViewForContentType.Value;

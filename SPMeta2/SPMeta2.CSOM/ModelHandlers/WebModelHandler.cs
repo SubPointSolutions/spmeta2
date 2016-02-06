@@ -61,8 +61,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
-            context.Load(parentWeb, w => w.Url);
+            //context.Load(parentWeb, w => w.Url);
             //context.Load(parentWeb, w => w.RootFolder);
+
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQueryWithTrace();
 
@@ -160,7 +161,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             var srcUrl = currentWebUrl.ToLower().Trim('/').Trim('\\');
 
             // for self-hosting and '/'
-            if (parentWeb.Url.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
+            //if (parentWeb.Url.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
+            if (parentWeb.ServerRelativeUrl.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
                 return parentWeb;
 
             var context = parentWeb.Context;
@@ -219,8 +221,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Loading Url/ServerRelativeUrl");
             var context = parentWeb.Context;
 
-            context.Load(parentWeb, w => w.Url);
+            //context.Load(parentWeb, w => w.Url);
             //context.Load(parentWeb, w => w.RootFolder);
+
             context.Load(parentWeb, w => w.ServerRelativeUrl);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
