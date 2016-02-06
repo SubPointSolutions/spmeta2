@@ -217,6 +217,7 @@
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
+    <Compile Include="Enumerations\BuiltInAggregationsStatus.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInToolbarType.cs" />
