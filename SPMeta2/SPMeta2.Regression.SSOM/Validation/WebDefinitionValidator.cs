@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
+
 using Microsoft.SharePoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -87,8 +84,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 };
             });
 
-
-            /// localization
+            // localization
             if (definition.TitleResource.Any())
             {
                 assert.ShouldBeEqual((p, s, d) =>
@@ -152,7 +148,29 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
+
+            if (definition.IndexedPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
+                    
+                    // Search if any indexPropertyKey from definition is not in WebModel
+                    var differentKeys = s.IndexedPropertyKeys.Except(d.IndexedPropertyKeys);
+
+                    var isValid = !differentKeys.Any();
+                    
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
         }
     }
-
 }

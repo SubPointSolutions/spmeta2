@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -30,11 +30,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is SiteModelHost)
             {
-                CreateWeb(modelHost, (modelHost as SiteModelHost).HostSite.RootWeb, webModel);
+                CreateWeb(modelHost, ((SiteModelHost) modelHost).HostSite.RootWeb, webModel);
             }
             else if (parentHost is WebModelHost)
             {
-                CreateWeb(modelHost, (parentHost as WebModelHost).HostWeb, webModel);
+                CreateWeb(modelHost, ((WebModelHost) parentHost).HostWeb, webModel);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         private static void MapProperties(SPWeb web, WebDefinition webModel)
         {
             web.Title = webModel.Title;
-            web.Description = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
+            web.Description = string.IsNullOrEmpty(webModel.Description) ? string.Empty : webModel.Description;
 
             if (webModel.LCID > 0)
                 web.Locale = new CultureInfo((int)webModel.LCID);
@@ -76,6 +76,12 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
                 web.SiteLogoUrl = webModel.SiteLogoUrl;
+
+            if (webModel.IndexedPropertyKeys.Any())
+            {
+                foreach (var indexProperty in webModel.IndexedPropertyKeys)
+                    web.IndexedPropertyKeys.Add(indexProperty);
+            }
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
@@ -84,8 +90,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-
-
+            
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 

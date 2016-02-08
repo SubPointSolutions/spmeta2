@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -42,6 +43,7 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
+            IndexedPropertyKeys = new List<string>();
         }
 
         #endregion
@@ -150,6 +152,13 @@ namespace SPMeta2.Definitions
         //[ExpectUpdateAsUrl(Extension = ".css")]
         [ExpectNullable]
         public string AlternateCssUrl { get; set; }
+
+        /// <summary>
+        /// Gets the set of property keys for properties that need to be exposed through Site Data Web Service.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<string> IndexedPropertyKeys { get; set; }
 
         #endregion
 
