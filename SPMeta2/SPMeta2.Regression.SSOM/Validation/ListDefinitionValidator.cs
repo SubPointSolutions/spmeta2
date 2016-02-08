@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -187,12 +186,16 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
                     "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
+            if (definition.WriteSecurity.HasValue)
+                assert.ShouldBeEqual(m => m.WriteSecurity, o => o.WriteSecurity);
+            else
+                assert.SkipProperty(m => m.WriteSecurity, "Skipping from validation. WriteSecurity IS NULL");
 
             // template url
             if (string.IsNullOrEmpty(definition.DocumentTemplateUrl) || !(spObject is SPDocumentLibrary))
             {
                 assert.SkipProperty(m => m.DocumentTemplateUrl,
-                    string.Format("Skipping DocumentTemplateUrl or list is not a document library. Skipping."));
+                    "Skipping DocumentTemplateUrl or list is not a document library. Skipping.");
             }
             else
             {
@@ -213,7 +216,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                     srcUrl = srcUrl.ToLower();
                     dstUrl = dstUrl.ToLower();
 
-                    var isValid = false;
+                    bool isValid;
 
                     if (s.DocumentTemplateUrl.Contains("~sitecollection"))
                     {
@@ -248,8 +251,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 });
             }
 
-
-            /// localization
+            // localization
             if (definition.TitleResource.Any())
             {
                 assert.ShouldBeEqual((p, s, d) =>
