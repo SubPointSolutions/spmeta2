@@ -249,6 +249,13 @@ namespace SPMeta2.Definitions
         //[ExpectUpdateAsServerRelativeUrl]
         public string DocumentTemplateUrl { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public int? WriteSecurity { get; set; }
+
         #endregion
 
         #region methods

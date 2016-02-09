@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
-using System.Runtime.Remoting.Contexts;
+using System.Text;
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
@@ -121,7 +120,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
-        private Site ExtractHostSite(object modelHost)
+        private static Site ExtractHostSite(object modelHost)
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite;
@@ -145,7 +144,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static Web GetParentWeb(WebModelHost csomModelHost)
         {
-            Web parentWeb = null;
+            Web parentWeb;
 
             if (csomModelHost.HostWeb != null)
                 parentWeb = csomModelHost.HostWeb;
@@ -182,7 +181,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
-            Web web = null;
+            Web web;
 
             var scope = new ExceptionHandlingScope(context);
 
@@ -388,10 +387,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             web.Title = webModel.Title;
             web.Description = webModel.Description ?? string.Empty;
 
-            var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl")
-                                 && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
-
-
+            var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl") && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
             if (supportedRuntime)
             {
                 var context = web.Context;
@@ -416,6 +412,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                     "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
+            }
+
+            if (webModel.IndexedPropertyKeys.Any())
+            {
+                var props = web.AllProperties;
+                // TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
+                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys);
+
+                web.Update();
+                web.Context.ExecuteQueryWithTrace();
             }
         }
 
@@ -463,6 +469,23 @@ namespace SPMeta2.CSOM.ModelHandlers
                 { "TitleResource", definition.TitleResource },
                 { "DescriptionResource", definition.DescriptionResource },
             });
+        }
+
+        /// <summary>
+        /// Method to create property bag for search index properties
+        /// http://blogs.msdn.com/b/vesku/archive/2013/10/12/ftc-to-cam-setting-indexed-property-bag-keys-using-csom.aspx
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            var stringBuilder = new StringBuilder();
+            foreach (var current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
         }
 
         #endregion

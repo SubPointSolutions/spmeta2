@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers.Base;
@@ -50,7 +50,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list");
 
-            var listId = default(Guid);
+            Guid listId;
 
             // create with the random title to avoid issue with 2 lists + diff URL and same Title
             // list Title will be renamed later on
@@ -70,7 +70,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                                 listModel.GetListUrl(),
 #pragma warning restore 618
                                 string.Empty,
-                                (int)listModel.TemplateType,
+                                listModel.TemplateType,
                                 string.Empty);
             }
             else if (!string.IsNullOrEmpty(listModel.TemplateName))
@@ -159,6 +159,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
+            if (definition.WriteSecurity.HasValue)
+                list.WriteSecurity = definition.WriteSecurity.Value;
+
             var docLibrary = list as SPDocumentLibrary;
 
             if (docLibrary != null)
@@ -243,7 +246,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // Surely, we won't save this list.
                 try
                 {
-                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
+                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, SPListTemplateType.GenericList);
                     var tmpList = web.Lists[tmpListId];
 
                     tmpList.Delete();
@@ -268,7 +271,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
+                        CurrentList = list is SPDocumentLibrary ? null : list,
                         CurrentListItem = null,
                     };
 
@@ -281,7 +284,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
+                        CurrentList = list is SPDocumentLibrary ? null : list,
                         CurrentListItem = null,
                     };
 
@@ -294,7 +297,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
+                        CurrentList = list is SPDocumentLibrary ? null : list,
                         CurrentListItem = null,
                     };
 

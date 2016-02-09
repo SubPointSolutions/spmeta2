@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Services;
@@ -33,7 +35,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                             w => w.Configuration,
                             w => w.Title,
                             w => w.Id,
-                            w => w.Url
+                            w => w.AllProperties
                         );
 
             context.ExecuteQueryWithTrace();
@@ -86,7 +88,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var supportsAlternateCssAndSiteImageUrl = ReflectionUtils.HasProperties(spObject, new[]
             {
-                "AlternateCssUrl", 
+                "AlternateCssUrl",
                 "SiteLogoUrl"
             });
 
@@ -124,9 +126,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(def => def.SiteLogoUrl);
-                        var isValid = true;
 
-                        isValid = s.SiteLogoUrl.ToUpper().EndsWith(siteLogoUrl.ToString().ToUpper());
+                        var isValid = s.SiteLogoUrl.ToUpper().EndsWith(siteLogoUrl.ToString().ToUpper());
 
                         return new PropertyValidationResult
                         {
@@ -142,7 +143,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                     assert.SkipProperty(m => m.SiteLogoUrl);
                 }
             }
-
             else
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
@@ -151,7 +151,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.AlternateCssUrl, "AlternateCssUrl is null or empty. Skipping.");
                 assert.SkipProperty(m => m.SiteLogoUrl, "SiteLogoUrl is null or empty. Skipping.");
             }
-
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
@@ -233,7 +232,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
                 }
-
             }
             else
             {
@@ -243,6 +241,36 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
+
+            if (definition.IndexedPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
+
+                    var isValid = false;
+                    if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
+                    {
+                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"].ToString()
+                            .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Search if any indexPropertyKey from definition is not in WebModel
+                        var differentKeys = s.IndexedPropertyKeys.Except(indexedPropertyKeys);
+
+                        isValid = !differentKeys.Any();
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
         }
     }
 }
