@@ -384,8 +384,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static void MapProperties(Web web, WebDefinition webModel)
         {
-            web.Title = webModel.Title;
-            web.Description = webModel.Description ?? string.Empty;
+            if (!string.IsNullOrEmpty(webModel.Title))
+                web.Title = webModel.Title;
+
+            if (!string.IsNullOrEmpty(webModel.Description))
+                web.Description = webModel.Description;
 
             var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl") && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
             if (supportedRuntime)

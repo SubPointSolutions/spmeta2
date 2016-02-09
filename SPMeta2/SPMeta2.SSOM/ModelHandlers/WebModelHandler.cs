@@ -30,11 +30,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is SiteModelHost)
             {
-                CreateWeb(modelHost, ((SiteModelHost) modelHost).HostSite.RootWeb, webModel);
+                CreateWeb(modelHost, ((SiteModelHost)modelHost).HostSite.RootWeb, webModel);
             }
             else if (parentHost is WebModelHost)
             {
-                CreateWeb(modelHost, ((WebModelHost) parentHost).HostWeb, webModel);
+                CreateWeb(modelHost, ((WebModelHost)parentHost).HostWeb, webModel);
             }
             else
             {
@@ -65,8 +65,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private static void MapProperties(SPWeb web, WebDefinition webModel)
         {
-            web.Title = webModel.Title;
-            web.Description = string.IsNullOrEmpty(webModel.Description) ? string.Empty : webModel.Description;
+            if (!string.IsNullOrEmpty(webModel.Title))
+                web.Title = webModel.Title;
+
+            if (!string.IsNullOrEmpty(webModel.Description))
+                web.Description = webModel.Description;
 
             if (webModel.LCID > 0)
                 web.Locale = new CultureInfo((int)webModel.LCID);
@@ -90,7 +93,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-            
+
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
