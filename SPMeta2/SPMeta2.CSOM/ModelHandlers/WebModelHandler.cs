@@ -360,8 +360,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 MapProperties(currentWeb, webModel);
 
-                //  locale is not available with CSOM yet
-
                 ProcessLocalization(currentWeb, webModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs

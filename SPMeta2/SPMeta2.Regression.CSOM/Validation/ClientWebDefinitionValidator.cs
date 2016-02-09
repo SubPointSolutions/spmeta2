@@ -10,6 +10,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -251,8 +252,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var isValid = false;
                     if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
                     {
-                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"].ToString()
-                            .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"]
+                                                   .ToString()
+                                                   .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(es => Encoding.Unicode.GetString(System.Convert.FromBase64String(es)));
 
                         // Search if any indexPropertyKey from definition is not in WebModel
                         var differentKeys = s.IndexedPropertyKeys.Select(o => o.Name)
