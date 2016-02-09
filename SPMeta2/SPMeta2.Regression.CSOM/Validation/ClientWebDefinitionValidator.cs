@@ -255,7 +255,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                             .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
                         // Search if any indexPropertyKey from definition is not in WebModel
-                        var differentKeys = s.IndexedPropertyKeys.Except(indexedPropertyKeys);
+                        var differentKeys = s.IndexedPropertyKeys.Select(o => o.Name)
+                                                                 .Except(indexedPropertyKeys);
 
                         isValid = !differentKeys.Any();
                     }

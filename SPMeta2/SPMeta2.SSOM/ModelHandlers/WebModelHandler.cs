@@ -82,8 +82,24 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (webModel.IndexedPropertyKeys.Any())
             {
-                foreach (var indexProperty in webModel.IndexedPropertyKeys)
-                    web.IndexedPropertyKeys.Add(indexProperty);
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    if (web.AllProperties.ContainsKey(propName))
+                        web.AllProperties[propName] = propValue;
+                    else
+                        web.AllProperties.Add(propName, propValue);
+
+                    web.IndexedPropertyKeys.Add(propName);
+                }
             }
         }
 

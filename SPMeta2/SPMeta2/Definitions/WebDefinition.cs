@@ -10,6 +10,17 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
+    [Serializable]
+    [DataContract]
+    public class IndexedPropertyValue
+    {
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+    }
+
     /// <summary>
     /// Allows too define and deploy SharePoint web site.
     /// </summary>
@@ -43,7 +54,7 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
-            IndexedPropertyKeys = new List<string>();
+            IndexedPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #endregion
@@ -158,7 +169,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [DataMember]
         [ExpectValidation]
-        public List<string> IndexedPropertyKeys { get; set; }
+        public List<IndexedPropertyValue> IndexedPropertyKeys { get; set; }
 
         #endregion
 

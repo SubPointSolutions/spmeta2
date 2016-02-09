@@ -154,12 +154,13 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
-                    
+
                     // Search if any indexPropertyKey from definition is not in WebModel
-                    var differentKeys = s.IndexedPropertyKeys.Except(d.IndexedPropertyKeys);
+                    var differentKeys = s.IndexedPropertyKeys.Select(o => o.Name)
+                                                             .Except(d.IndexedPropertyKeys);
 
                     var isValid = !differentKeys.Any();
-                    
+
                     return new PropertyValidationResult
                     {
                         Tag = p.Tag,

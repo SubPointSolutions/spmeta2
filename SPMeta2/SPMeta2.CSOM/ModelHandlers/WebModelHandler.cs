@@ -421,7 +421,22 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var props = web.AllProperties;
                 // TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
-                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys);
+
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    props[propName] = propValue;
+                }
+
+                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys.Select(s => s.Name));
 
                 web.Update();
                 web.Context.ExecuteQueryWithTrace();
@@ -480,14 +495,16 @@ namespace SPMeta2.CSOM.ModelHandlers
         /// </summary>
         /// <param name="keys"></param>
         /// <returns></returns>
-        public static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
         {
             var stringBuilder = new StringBuilder();
+
             foreach (var current in keys)
             {
                 stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
                 stringBuilder.Append('|');
             }
+
             return stringBuilder.ToString();
         }
 
