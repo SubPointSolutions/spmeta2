@@ -80,6 +80,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
                 web.SiteLogoUrl = webModel.SiteLogoUrl;
 
+#if !NET35
             if (webModel.IndexedPropertyKeys.Any())
             {
                 foreach (var indexedProperty in webModel.IndexedPropertyKeys)
@@ -101,6 +102,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     web.IndexedPropertyKeys.Add(propName);
                 }
             }
+#endif
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
