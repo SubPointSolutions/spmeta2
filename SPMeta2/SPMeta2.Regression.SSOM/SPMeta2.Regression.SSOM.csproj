@@ -245,6 +245,7 @@
     <Compile Include="Validation\Webparts\ScriptEditorWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\ContentEditorWebPartDefinitionValidator.cs" />
     <Compile Include="Validation\WikiPageDefinitionValidator.cs" />
+    <Compile Include="Validation\WorkflowAssociationDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">

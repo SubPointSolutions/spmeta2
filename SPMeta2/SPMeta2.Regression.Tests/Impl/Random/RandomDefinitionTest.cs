@@ -1423,9 +1423,18 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ClearRecycleBinDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_WorkflowAssociationDefinition()
+        {
+            TestRandomDefinition<WorkflowAssociationDefinition>();
+        }
+
         #region web parts
 
 
         #endregion
+
+
     }
 }
