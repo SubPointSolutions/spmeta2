@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -16,7 +17,6 @@ using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-
     public class ListModelHandler : CSOMModelHandlerBase
     {
         #region properties
@@ -44,7 +44,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(web, w => w.ServerRelativeUrl);
             context.ExecuteQueryWithTrace();
 
-            if (web != null && listDefinition != null)
+            if (listDefinition != null)
             {
                 var list = LoadCurrentList(web, listDefinition);
 
@@ -66,15 +66,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (childModelType == typeof(ListViewDefinition))
                 {
-                    context.Load<List>(list, l => l.Views);
+                    context.Load(list, l => l.Views);
                     context.ExecuteQueryWithTrace();
 
                     action(listModelHost);
                 }
                 else if (childModelType == typeof(ModuleFileDefinition))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -98,8 +98,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else if (childModelType == typeof(FolderDefinition))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -133,8 +133,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 //}
                 else if (typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -144,15 +144,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         itemHost.CurrentList = list;
                     });
 
-
-                    if (list.BaseType == BaseType.DocumentLibrary)
-                    {
-                        folderModelHost.CurrentListFolder = list.RootFolder;
-                    }
-                    else
-                    {
-                        folderModelHost.CurrentListFolder = list.RootFolder;
-                    }
+                    folderModelHost.CurrentListFolder = list.RootFolder;
 
                     action(folderModelHost);
                 }
@@ -191,7 +183,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, listModel.GetListUrl());
 #pragma warning restore 618
 
-            Folder folder = null;
+            Folder folder;
 
             var scope = new ExceptionHandlingScope(context);
 
@@ -285,7 +277,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
-
 
                     var listTemplate = ResolveListTemplate(webModelHost, listModel);
 
@@ -476,6 +467,32 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             ProcessLocalization(list, definition);
+
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                context.Load(list, l => l.RootFolder.Properties);
+                context.ExecuteQueryWithTrace();
+
+                var props = list.RootFolder.Properties;
+
+                // If other property keys have been set before, overwriting them would be bad
+                if (props["vti_indexedpropertykeys"] == null || props["vti_indexedpropertykeys"].ToString() == string.Empty)
+                {
+                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(definition.IndexedRootFolderPropertyKeys);
+                }
+                else
+                {
+                    var indexPropertyValue = props["vti_indexedpropertykeys"].ToString();
+
+                    var indexList = GetDecodeValueForSearchIndexProperty(indexPropertyValue);
+                    indexList.AddRange(definition.IndexedRootFolderPropertyKeys);
+
+                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexList);
+                }
+
+                list.RootFolder.Update();
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)

@@ -251,11 +251,11 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var isValid = false;
                     if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
                     {
-                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"].ToString()
-                            .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"].ToString();
+                        var indexList = GetDecodeValueForSearchIndexProperty(indexedPropertyKeys);
 
                         // Search if any indexPropertyKey from definition is not in WebModel
-                        var differentKeys = s.IndexedPropertyKeys.Except(indexedPropertyKeys);
+                        var differentKeys = s.IndexedPropertyKeys.Except(indexList);
 
                         isValid = !differentKeys.Any();
                     }

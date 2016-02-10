@@ -24,7 +24,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (modelHost is WebModelHost)
                 parentWeb = (modelHost as WebModelHost).HostWeb;
 
-
             var spObject = GetWeb(parentWeb, definition);
 
             var assert = ServiceFactory.AssertService
@@ -55,7 +54,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEndOf(m => m.SiteLogoUrl, o => o.SiteLogoUrl);
             else
                 assert.SkipProperty(m => m.SiteLogoUrl);
-
 
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
