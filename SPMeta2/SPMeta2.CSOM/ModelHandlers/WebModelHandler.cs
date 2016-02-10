@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.SharePoint.Client;
 
 using SPMeta2.Common;
@@ -397,9 +398,22 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (webModel.IndexedPropertyKeys.Any())
             {
                 var props = web.AllProperties;
-                // TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
-                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys);
+               
+                // If other property keys have been set before, overwriting them would be bad
+                if (props["vti_indexedpropertykeys"] == null || props["vti_indexedpropertykeys"].ToString() == string.Empty)
+                {
+                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys);
+                }
+                else
+                {
+                    var indexPropertyValue = props["vti_indexedpropertykeys"].ToString();
 
+                    var indexList = GetDecodeValueForSearchIndexProperty(indexPropertyValue);
+                    indexList.AddRange(webModel.IndexedPropertyKeys);
+
+                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexList);
+                }
+                
                 web.Update();
                 web.Context.ExecuteQueryWithTrace();
             }
@@ -466,6 +480,19 @@ namespace SPMeta2.CSOM.ModelHandlers
                 stringBuilder.Append('|');
             }
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Decode the IndexedPropertyKeys value so it's readable
+        /// https://lixuan0125.wordpress.com/2014/07/24/make-property-bags-searchable-in-sharepoint-2013/
+        /// </summary>
+        /// <param name="encodedValue"></param>
+        /// <returns></returns>
+        public static List<string> GetDecodeValueForSearchIndexProperty(string encodedValue)
+        {
+            var keys = encodedValue.Split(new [] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            return keys.Select(current => Encoding.Unicode.GetString(Convert.FromBase64String(current))).ToList();
         }
 
         #endregion
