@@ -57,7 +57,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = settings,
-                ObjectType = typeof(SPRegionalSettings),
+                ObjectType = typeof(SPPeoplePickerSettings),
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
