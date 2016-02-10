@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
-using SPMeta2.Models;
+using SPMeta2.Exceptions;
+using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using System.Xml.Linq;
-using SPMeta2.Exceptions;
-using SPMeta2.ModelHosts;
+
 using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -54,7 +54,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var site = ExtractSite(modelHost);
             var web = ExtractWeb(modelHost);
 
@@ -65,6 +64,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (web != null && contentTypeModel != null)
             {
                 var context = web.Context;
+
+                if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
+                {
+                    var result = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeModel.ParentContentTypeName));
+                    context.ExecuteQueryWithTrace();
+
+                    var parentContentType = result.FirstOrDefault();
+                    if (parentContentType == null)
+                        throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+
+                    contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                }
 
                 var id = contentTypeModel.GetContentTypeId();
                 var currentContentType = web.ContentTypes.GetById(id);
@@ -111,8 +122,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static string ExtractResourceFolderServerRelativeUrl(Web web, ClientRuntimeContext context, ContentType currentContentType)
         {
-            if (!currentContentType.IsPropertyAvailable("SchemaXml")
-                || !web.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!currentContentType.IsPropertyAvailable("SchemaXml") || !web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 context.Load(web, w => w.ServerRelativeUrl);
                 currentContentType.Context.Load(currentContentType, c => c.SchemaXml);
@@ -129,15 +139,24 @@ namespace SPMeta2.CSOM.ModelHandlers
             return serverRelativeFolderUrl;
         }
 
-
-
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var site = ExtractSite(modelHost);
             var web = ExtractWeb(modelHost);
 
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
             var context = web.Context;
+
+            if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
+            {
+                var result = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeModel.ParentContentTypeName));
+                context.ExecuteQueryWithTrace();
+
+                var parentContentType = result.FirstOrDefault();
+                if (parentContentType == null)
+                    throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+
+                contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+            }
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
@@ -157,7 +176,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            ContentType currentContentType = null;
+            ContentType currentContentType;
 
             if (tmp == null || tmp.ServerObjectIsNull == null || tmp.ServerObjectIsNull.Value)
             {
@@ -206,7 +225,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     if (!processedDocumentTemplateUrl.Contains('/')
                         && !processedDocumentTemplateUrl.Contains('\\'))
                     {
-                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new string[]
+                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new []
                         {
                             serverRelativeFolderUrl,
                             processedDocumentTemplateUrl
@@ -272,11 +291,25 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(rootWeb);
             context.Load(contentTypes);
 
-            context.ExecuteQueryWithTrace();
+            if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
+            {
+                var result = context.LoadQuery(rootWeb.AvailableContentTypes.Where(ct => ct.Name == contentTypeModel.ParentContentTypeName));
+                context.ExecuteQueryWithTrace();
+
+                var parentContentType = result.FirstOrDefault();
+                if (parentContentType == null)
+                    throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+
+                contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+            }
+            else
+            {
+                context.ExecuteQueryWithTrace();
+            }
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
 
-            var currentContentType = contentTypes.FirstOrDefault(c => c.StringId.ToLower() == contentTypeId.ToLower());
+            var currentContentType = contentTypes.FirstOrDefault(c => String.Equals(c.StringId, contentTypeId, StringComparison.CurrentCultureIgnoreCase));
 
             if (currentContentType != null)
             {
@@ -294,5 +327,4 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
         }
     }
-
 }

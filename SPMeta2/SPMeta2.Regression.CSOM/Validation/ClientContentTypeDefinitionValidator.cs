@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
+
 using Microsoft.SharePoint.Client;
-using SPMeta2.Common;
+
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
+using SPMeta2.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-
-
-using SPMeta2.CSOM.Extensions;
-using SPMeta2.Regression.CSOM.Extensions;
-using SPMeta2.Services;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -37,8 +32,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(contentTypes);
 
             context.ExecuteQueryWithTrace();
-
-            var contentTypeId = definition.GetContentTypeId();
+            
             var spObject = contentTypes.FindByName(definition.Name);
 
             context.Load(spObject);
@@ -62,7 +56,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (definition.Id == default(Guid))
             {
-                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping Id as it is default(Guid)"));
+                assert.SkipProperty(m => m.IdNumberValue, "Skipping Id as it is default(Guid)");
             }
             else
             {
@@ -79,14 +73,14 @@ namespace SPMeta2.Regression.CSOM.Validation
                         Tag = p.Tag,
                         Src = srcProp,
                         Dst = dstProp,
-                        IsValid = dstCtId.ToString().ToUpper() == dstCtId.ToString().ToUpper()
+                        IsValid = String.Equals(srcCtId.ToString(), dstCtId.ToString(), StringComparison.CurrentCultureIgnoreCase)
                     };
                 });
             }
 
             if (string.IsNullOrEmpty(definition.IdNumberValue))
             {
-                assert.SkipProperty(m => m.IdNumberValue, string.Format("Skipping IdNumberValue as it is Empty"));
+                assert.SkipProperty(m => m.IdNumberValue, "Skipping IdNumberValue as it is Empty");
             }
             else
             {
@@ -100,14 +94,14 @@ namespace SPMeta2.Regression.CSOM.Validation
                         Tag = p.Tag,
                         Src = srcProp,
                         Dst = dstProp,
-                        IsValid = srcProp.ToString().ToUpper() == dstProp.ToString().ToUpper()
+                        IsValid = String.Equals(srcProp.ToString(), dstProp.ToString(), StringComparison.CurrentCultureIgnoreCase)
                     };
                 });
             }
 
             if (string.IsNullOrEmpty(definition.DocumentTemplate))
             {
-                assert.SkipProperty(m => m.DocumentTemplate, string.Format("Skipping DocumentTemplate as it is Empty"));
+                assert.SkipProperty(m => m.DocumentTemplate, "Skipping DocumentTemplate as it is Empty");
             }
             else
             {
@@ -119,7 +113,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var srcUrl = srcProp.Value as string;
                     var dstUrl = dstProp.Value as string;
 
-                    var isValid = false;
+                    bool isValid;
 
                     if (s.DocumentTemplate.Contains("~sitecollection"))
                     {
@@ -228,7 +222,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
                 }
-
             }
             else
             {

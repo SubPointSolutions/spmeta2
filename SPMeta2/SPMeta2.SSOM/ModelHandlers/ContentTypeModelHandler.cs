@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using System.IO;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -30,7 +29,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var web = ExtractWeb(modelHost);
 
             var site = web.Site;
@@ -38,16 +36,26 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (site != null && contentTypeDefinition != null)
             {
+                if (string.IsNullOrEmpty(contentTypeDefinition.ParentContentTypeId))
+                {
+                    var parentContentType = web.AvailableContentTypes.Cast<SPContentType>().FirstOrDefault(ct => String.Equals(ct.Name, contentTypeDefinition.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
+
+                    if (parentContentType == null)
+                        throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+
+                    contentTypeDefinition.ParentContentTypeId = parentContentType.Id.ToString();
+                }
+
                 var contentTypeId = new SPContentTypeId(contentTypeDefinition.GetContentTypeId());
 
-                // SPBug, it has to be new SPWen for every content type operation inside feature event handler
+                // SPBug, it has to be new SPWeb for every content type operation inside feature event handler
                 using (var tmpRootWeb = site.OpenWeb(web.ID))
                 {
                     var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
 
                     if (childModelType == typeof(ModuleFileDefinition))
                     {
-                        action(new FolderModelHost()
+                        action(new FolderModelHost
                         {
                             CurrentContentType = targetContentType,
                             CurrentContentTypeFolder = targetContentType.ResourceFolder
@@ -90,6 +98,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             // SPBug, it has to be new SPWen for every content type operation inside feature event handler
             using (var tmpWeb = site.OpenWeb(targetWeb.ID))
             {
+                if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
+                {
+                    var parentContentType = web.AvailableContentTypes.Cast<SPContentType>().FirstOrDefault(ct => String.Equals(ct.Name, contentTypeModel.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
+
+                    if (parentContentType == null)
+                        throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+
+                    contentTypeModel.ParentContentTypeId = parentContentType.Id.ToString();
+                }
+
                 var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
 
                 // by ID, by Name
