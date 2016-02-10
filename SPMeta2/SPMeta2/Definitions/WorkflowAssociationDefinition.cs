@@ -14,8 +14,8 @@ namespace SPMeta2.Definitions
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Workflow.SPWorkflowAssociation", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Workflow.WorkflowAssociation", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHost(typeof(WebDefinition))]
-    [DefaultParentHost(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable]
     [DataContract]
@@ -23,7 +23,8 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
 
-    [ParentHostCapability(typeof(SiteDefinition))]
+    //[ParentHostCapability(typeof(SiteDefinition))]
+    //[ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
 
     [ExpectManyInstances]

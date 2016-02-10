@@ -212,7 +212,7 @@
     <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebConfigModificationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
-    <Compile Include="DefinitionGenerators\WorkflowAssociationDefinition.cs" />
+    <Compile Include="DefinitionGenerators\WorkflowAssociationDefinitionGenerator.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

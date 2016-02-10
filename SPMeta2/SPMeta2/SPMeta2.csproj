@@ -415,6 +415,7 @@
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IQuickLaunchNavigationNodeHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IWorkflowAssociationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermGroupHostModelNode.cs" />
@@ -451,6 +452,7 @@
     <Compile Include="Syntax\Default\Interfaces\IFieldHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
+    <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogLinksWebPartDefinitionSyntax.cs" />
