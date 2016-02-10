@@ -53,7 +53,7 @@
     <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
-    <OutputPath>bin\Debug40\</OutputPath>
+    <OutputPath>bin\Debug40-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -62,10 +62,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug40\SPMeta2.SSOM.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
-    <OutputPath>bin\Debug45\</OutputPath>
+    <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -74,7 +74,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug45\SPMeta2.SSOM.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug45-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -82,86 +82,86 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1212|AnyCPU'">
-    <OutputPath>bin\1212\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
-    <OutputPath>bin\Debug40\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug45\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug45\SPMeta2.SSOM.XML</DocumentationFile>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-O365\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>SPMeta2.SSOM.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-CSOM2013\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>SPMeta2.SSOM.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.BusinessData, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.BusinessData.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 16.0.4569.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.Office.SecureStoreService, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Security, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.WorkflowServicesBase, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.BusinessData, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.BusinessData.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.Office.SecureStoreService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.WorkflowServicesBase, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4420.1017\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.BusinessData, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.BusinessData.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="System.Web.DataVisualization, System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -170,14 +170,17 @@
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.Server, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.Server.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.SecureStoreService, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.Office.SecureStoreService.Server.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.Office.SecureStoreService.Server.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
@@ -196,12 +199,12 @@
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\SingleHostTypedSSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ClearRecycleBinModelHandler.cs" />
-    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentParserModelHandler.cs" />
     <Compile Include="ModelHandlers\AlternateUrlModelHandler.cs" />
-    <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeFieldLinksModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\ContentTypes\Base\ContentTypeLinksModelHandlerBase.cs" />
@@ -214,8 +217,8 @@
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" />
     <Compile Include="ModelHandlers\FarmSolutionModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\DependentLookupFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Fields\GeolocationFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Fields\OutcomeChoiceFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\URLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\CalculatedFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ComputedFieldModelHandler.cs" />
@@ -231,12 +234,12 @@
     <Compile Include="ModelHandlers\Fields\ChoiceFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\UserFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
-    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
-    <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\SupportedUICultureModelHandler.cs" />
     <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
@@ -259,8 +262,8 @@
     <Compile Include="ModelHandlers\RegionalSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\SandboxSolutionModelHandler.cs" />
     <Compile Include="ModelHandlers\SecureStoreApplicationModelHandler.cs" />
-    <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SP2013WorkflowSubscriptionDefinitionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\SSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\TargetApplicationModelHandler.cs" />
     <Compile Include="ModelHandlers\TopNavigationNodeModelHandler.cs" />
@@ -282,11 +285,11 @@
     <Compile Include="ModelHandlers\WebModelHandler.cs" />
     <Compile Include="ModelHandlers\WebPartPageModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\BlogAdminWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\BlogLinksWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\BlogLinksWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\BlogMonthQuickLaunchModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\ClientWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\ClientWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\DataFormWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\GettingStartedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\GettingStartedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ImageWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\MembersWebPartModelHandler.cs" />
@@ -294,14 +297,14 @@
     <Compile Include="ModelHandlers\Webparts\PictureLibrarySlideshowWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SilverlightWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SimpleFormWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SPTimelineWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\SPTimelineWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\UserCodePartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserDocsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\UserTasksWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\WebPartGalleryFileModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XmlWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\ScriptEditorWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\ContentEditorWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\WelcomePageModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
