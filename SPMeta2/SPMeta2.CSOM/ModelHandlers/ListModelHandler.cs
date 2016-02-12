@@ -485,7 +485,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var indexPropertyValue = props["vti_indexedpropertykeys"].ToString();
 
                     var indexList = GetDecodeValueForSearchIndexProperty(indexPropertyValue);
-                    indexList.AddRange(definition.IndexedRootFolderPropertyKeys);
+
+                    foreach (var propKey in definition.IndexedRootFolderPropertyKeys)
+                    {
+                        if (!indexList.Contains(propKey))
+                            indexList.Add(propKey);
+                    }
 
                     props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexList);
                 }

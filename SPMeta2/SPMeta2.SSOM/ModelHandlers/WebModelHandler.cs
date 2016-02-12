@@ -79,8 +79,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (webModel.IndexedPropertyKeys.Any())
             {
-                foreach (var indexProperty in webModel.IndexedPropertyKeys)
-                    web.IndexedPropertyKeys.Add(indexProperty);
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    if (!web.IndexedPropertyKeys.Contains(indexedProperty))
+                        web.IndexedPropertyKeys.Add(indexedProperty);
+                }
             }
         }
 
@@ -217,8 +220,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         customWebTemplate,
                         webModel.UseUniquePermission,
                         webModel.ConvertIfThere);
-
-
                 }
 
                 MapProperties(currentWeb, webModel);

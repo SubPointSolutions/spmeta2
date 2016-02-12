@@ -162,7 +162,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
                 foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
-                    list.IndexedRootFolderPropertyKeys.Add(indexProperty);
+                {
+                    if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
+                        list.IndexedRootFolderPropertyKeys.Add(indexProperty);
+                }
             }
 
             var docLibrary = list as SPDocumentLibrary;

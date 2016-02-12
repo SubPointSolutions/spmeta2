@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Microsoft.SharePoint.Client;
 
@@ -406,12 +405,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    var indexPropertyValue = props["vti_indexedpropertykeys"].ToString();
+                    var indexedPropertyValue = props["vti_indexedpropertykeys"].ToString();
 
-                    var indexList = GetDecodeValueForSearchIndexProperty(indexPropertyValue);
-                    indexList.AddRange(webModel.IndexedPropertyKeys);
+                    var indexedList = GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+                    foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                    {
+                        if (!indexedList.Contains(indexedProperty))
+                            indexedList.Add(indexedProperty);
+                    }
 
-                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexList);
+                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexedList);
                 }
                 
                 web.Update();
