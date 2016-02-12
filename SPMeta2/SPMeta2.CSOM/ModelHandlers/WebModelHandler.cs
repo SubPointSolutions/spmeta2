@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.SharePoint.Client;
 
 using SPMeta2.Common;
@@ -504,6 +505,19 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Decode the IndexedPropertyKeys value so it's readable
+        /// https://lixuan0125.wordpress.com/2014/07/24/make-property-bags-searchable-in-sharepoint-2013/
+        /// </summary>
+        /// <param name="encodedValue"></param>
+        /// <returns></returns>
+        private static List<string> GetDecodeValueForSearchIndexProperty(string encodedValue)
+        {
+            var keys = encodedValue.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            return keys.Select(current => Encoding.Unicode.GetString(Convert.FromBase64String(current))).ToList();
         }
 
         #endregion
