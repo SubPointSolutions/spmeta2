@@ -66,7 +66,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         private static void MapProperties(SPWeb web, WebDefinition webModel)
         {
             if (!string.IsNullOrEmpty(webModel.Title))
-                web.Title = webModel.Title;
+            web.Title = webModel.Title;
 
             if (!string.IsNullOrEmpty(webModel.Description))
                 web.Description = webModel.Description;
@@ -111,7 +111,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-
+            
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
@@ -238,8 +238,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         customWebTemplate,
                         webModel.UseUniquePermission,
                         webModel.ConvertIfThere);
-
-
                 }
 
                 MapProperties(currentWeb, webModel);

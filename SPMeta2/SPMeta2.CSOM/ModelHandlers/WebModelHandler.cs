@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.SharePoint.Client;
 
 using SPMeta2.Common;
@@ -384,7 +383,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         private static void MapProperties(Web web, WebDefinition webModel)
         {
             if (!string.IsNullOrEmpty(webModel.Title))
-                web.Title = webModel.Title;
+            web.Title = webModel.Title;
 
             if (!string.IsNullOrEmpty(webModel.Description))
                 web.Description = webModel.Description;
@@ -418,24 +417,27 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (webModel.IndexedPropertyKeys.Any())
             {
-                var props = web.AllProperties;
-                // TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
+                // TODO, rewrite after #781 merge
 
-                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
-                {
-                    // indexed prop should exist in the prop bag
-                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
-                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+                //var props = web.AllProperties;
+                //// TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
+               
+                //foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                //{
+                //    var indexedPropertyValue = props["vti_indexedpropertykeys"].ToString();
 
-                    var propName = indexedProperty.Name;
-                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
-                                            ? string.Empty
-                                            : indexedProperty.Value;
+                //    var indexedList = GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+                    
+                //    foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                //    {
+                //        if (!indexedList.Contains(indexedProperty))
+                //            indexedList.Add(indexedProperty);
+                //    }
 
-                    props[propName] = propValue;
-                }
-
-                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys.Select(s => s.Name));
+                //    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexedList);
+                //}
+                
+                //props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys.Select(s => s.Name));
 
                 web.Update();
                 web.Context.ExecuteQueryWithTrace();
