@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 
@@ -34,6 +35,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(spObject);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
+            context.Load(spObject, list => list.RootFolder.Properties);
             context.Load(spObject, list => list.EnableAttachments);
             context.Load(spObject, list => list.EnableFolderCreation);
             context.Load(spObject, list => list.EnableMinorVersions);
@@ -167,7 +169,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (definition.TemplateType > 0)
             {
-                assert.ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate);
+                assert.ShouldBeEqual(m => m.TemplateType, o => o.BaseTemplate);
             }
             else
             {
@@ -193,7 +195,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         Dst = null,
                         IsValid =
                             (spObject.TemplateFeatureId == listTemplate.FeatureId) &&
-                            (spObject.BaseTemplate == (int)listTemplate.ListTemplateTypeKind)
+                            (spObject.BaseTemplate == listTemplate.ListTemplateTypeKind)
                     };
                 });
             }
@@ -201,8 +203,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(m => m.TemplateName, "TemplateName is null or empty. Skipping.");
             }
-
-
 
             if (definition.MajorVersionLimit.HasValue)
             {
@@ -231,7 +231,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             }
             else
                 assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
-
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
             {
@@ -262,11 +261,10 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
                     "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
-
             // template url
             if (string.IsNullOrEmpty(definition.DocumentTemplateUrl))
             {
-                assert.SkipProperty(m => m.DocumentTemplateUrl, string.Format("Skipping DocumentTemplateUrl or library. Skipping."));
+                assert.SkipProperty(m => m.DocumentTemplateUrl, "Skipping DocumentTemplateUrl or library. Skipping.");
             }
             else
             {
@@ -281,7 +279,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     if (!dstUrl.StartsWith("/"))
                         dstUrl = "/" + dstUrl;
 
-                    var isValid = false;
+                    bool isValid;
 
                     if (s.DocumentTemplateUrl.Contains("~sitecollection"))
                     {
@@ -310,6 +308,39 @@ namespace SPMeta2.Regression.CSOM.Validation
                     };
                 });
             }
+
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
+
+                    var isValid = false;
+                    if (d.RootFolder.Properties["vti_indexedpropertykeys"] != null)
+                    {
+                        var indexedPropertyKeys = d.RootFolder.Properties["vti_indexedpropertykeys"].ToString();
+
+                        // TODO, rewrite after #781 merge
+                        
+                        //var indexList = GetDecodeValueForSearchIndexProperty(indexedPropertyKeys);
+
+                        //// Search if any indexPropertyKey from definition is not in WebModel
+                        //var differentKeys = s.IndexedRootFolderPropertyKeys.Except(indexList);
+
+                        //isValid = !differentKeys.Any();
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedRootFolderPropertyKeys, "IndexedRootFolderPropertyKeys is NULL or empty. Skipping.");
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
@@ -391,7 +422,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
                 }
-
             }
             else
             {
@@ -417,6 +447,5 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             return list.RootFolder.ServerRelativeUrl;
         }
-
     }
 }

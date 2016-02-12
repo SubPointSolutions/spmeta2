@@ -159,6 +159,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
+                        list.IndexedRootFolderPropertyKeys.Add(indexProperty);
+                }
+            }
+
             if (definition.WriteSecurity.HasValue)
                 list.WriteSecurity = definition.WriteSecurity.Value;
 
@@ -186,7 +195,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                     docLibrary.DocumentTemplateUrl = urlValue;
                 }
             }
-
 
             ProcessLocalization(list, definition);
         }
@@ -271,7 +279,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = list is SPDocumentLibrary ? null : list,
+                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
                         CurrentListItem = null,
                     };
 
@@ -284,7 +292,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = list is SPDocumentLibrary ? null : list,
+                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
                         CurrentListItem = null,
                     };
 
@@ -297,7 +305,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         CurrentLibrary = list as SPDocumentLibrary,
                         CurrentLibraryFolder = list.RootFolder,
 
-                        CurrentList = list is SPDocumentLibrary ? null : list,
+                        CurrentList = (list as SPDocumentLibrary != null) ? null : list,
                         CurrentListItem = null,
                     };
 

@@ -125,7 +125,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.SkipProperty(m => m.NoCrawl, "Skipping from validation. NoCrawl IS NULL");
 
-
             if (definition.OnQuickLaunch.HasValue)
                 assert.ShouldBeEqual(m => m.OnQuickLaunch, o => o.OnQuickLaunch);
             else
@@ -186,10 +185,28 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
                     "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
-            if (definition.WriteSecurity.HasValue)
-                assert.ShouldBeEqual(m => m.WriteSecurity, o => o.WriteSecurity);
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
+
+                    // Search if any indexedRootFolderPropertyKey from definition is not in ListModel
+                    var differentKeys = s.IndexedRootFolderPropertyKeys.Except(d.IndexedRootFolderPropertyKeys);
+
+                    var isValid = !differentKeys.Any();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
             else
-                assert.SkipProperty(m => m.WriteSecurity, "Skipping from validation. WriteSecurity IS NULL");
+                assert.SkipProperty(m => m.IndexedRootFolderPropertyKeys, "IndexedRootFolderPropertyKeys is NULL or empty. Skipping.");
 
             // template url
             if (string.IsNullOrEmpty(definition.DocumentTemplateUrl) || !(spObject is SPDocumentLibrary))
@@ -317,5 +334,4 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
         }
     }
-
 }
