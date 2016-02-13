@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Json;
-using System.Text;
-
 
 namespace SPMeta2.Services.Impl
 {
@@ -14,13 +10,26 @@ namespace SPMeta2.Services.Impl
         {
             var serializer = new DataContractJsonSerializer(obj.GetType(), KnownTypes);
 
-            using (var ms = new MemoryStream())
+            Stream ms = null;
+            StreamReader sr = null;
+
+            try
             {
+                ms = new MemoryStream();
+
                 serializer.WriteObject(ms, obj);
                 ms.Position = 0;
 
-                using (var sr = new StreamReader(ms))
-                    return sr.ReadToEnd();
+                sr = new StreamReader(ms);
+
+                return sr.ReadToEnd();
+            }
+            finally
+            {
+                if (sr != null)
+                    sr.Dispose();
+                else if (ms != null)
+                    ms.Dispose();
             }
         }
 
@@ -28,17 +37,27 @@ namespace SPMeta2.Services.Impl
         {
             var serializer = new DataContractJsonSerializer(type, KnownTypes);
 
-            using (var stream = new MemoryStream())
+            Stream stream = null;
+            StreamWriter writer = null;
+
+            try
             {
-                using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(objString);
-                    writer.Flush();
+                stream = new MemoryStream();
+                writer = new StreamWriter(stream);
 
-                    stream.Position = 0;
+                writer.Write(objString);
+                writer.Flush();
 
-                    return serializer.ReadObject(stream);
-                }
+                stream.Position = 0;
+
+                return serializer.ReadObject(stream);
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Dispose();
+                else if (stream != null)
+                    stream.Dispose();
             }
         }
     }

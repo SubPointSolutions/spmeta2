@@ -1,7 +1,4 @@
 ﻿using System;
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Search.Administration;
-using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;

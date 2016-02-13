@@ -35,10 +35,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             throw new SPMeta2NotSupportedException("AppPrincipal provision via CSOM is not supported by SharePoint.");
 
-            var webHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var appPrincipalModel = model.WithAssertAndCast<AppPrincipalDefinition>("model", value => value.RequireNotNull());
+            //var webHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            //var appPrincipalModel = model.WithAssertAndCast<AppPrincipalDefinition>("model", value => value.RequireNotNull());
 
-            DeployAppPrincipal(modelHost, webHost, appPrincipalModel);
+            //DeployAppPrincipal(modelHost, webHost, appPrincipalModel);
         }
 
         protected virtual AppPrincipal FindExistingAppPrincipal(WebModelHost webHost, AppPrincipalDefinition appPrincipalModel)

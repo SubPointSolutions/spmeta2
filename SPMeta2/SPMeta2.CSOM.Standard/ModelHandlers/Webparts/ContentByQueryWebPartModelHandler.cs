@@ -2,7 +2,6 @@
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions.Base;
-using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Webparts;
@@ -12,6 +11,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
 {
     public class ContentByQueryWebPartModelHandler : WebPartModelHandler
     {
+        public ContentByQueryWebPartModelHandler()
+        {
+            ShouldUseWebPartStoreKeyForWikiPage = true;
+        }
+
         #region properties
 
         public override Type TargetType

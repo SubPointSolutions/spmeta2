@@ -150,6 +150,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             existringAction.Rights = permissions;
+
+            ProcessLocalization(existringAction, customAction);
         }
 
         private bool IsValidHostModelHost(object modelHost)
@@ -158,6 +160,27 @@ namespace SPMeta2.SSOM.ModelHandlers
                 modelHost is SiteModelHost ||
                 modelHost is WebModelHost ||
                 modelHost is ListModelHost;
+        }
+
+        protected virtual void ProcessLocalization(SPUserCustomAction obj, UserCustomActionDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
+            }
+
+            if (definition.CommandUIExtensionResource.Any())
+            {
+                foreach (var locValue in definition.CommandUIExtensionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.CommandUIExtensionResource, locValue);
+            }
         }
 
         #endregion

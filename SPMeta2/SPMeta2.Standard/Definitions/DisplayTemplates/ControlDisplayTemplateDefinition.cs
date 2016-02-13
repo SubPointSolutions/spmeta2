@@ -27,6 +27,9 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class ControlDisplayTemplateDefinition : ItemControlTemplateDefinitionBase
     {
         #region constructors

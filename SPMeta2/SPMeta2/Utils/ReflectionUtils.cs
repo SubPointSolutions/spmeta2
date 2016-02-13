@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Utils
 {
@@ -22,6 +22,51 @@ namespace SPMeta2.Utils
     public static class ReflectionUtils
     {
         #region methods
+
+        #region get prop methods
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), typeof(TType), false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), typeof(TType), inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(Type type)
+        {
+            return GetPropertiesWithCustomAttribute(type, typeof(TType), false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(Type type, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(type, typeof(TType), inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(object obj, Type attributeType)
+        {
+            return GetPropertiesWithCustomAttribute(obj, attributeType, false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(object obj, Type attributeType, bool inherit)
+        {
+            return GetPropertiesWithCustomAttribute(obj.GetType(), attributeType, inherit);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(Type type, Type attributeType)
+        {
+            return GetPropertiesWithCustomAttribute(type, attributeType, false);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute(Type type, Type attributeType, bool inherit)
+        {
+            return type
+                           .GetProperties()
+                           .Where(p => p.GetCustomAttributes(attributeType, inherit).Any());
+        }
+        #endregion
 
         public static IEnumerable<object> GetStaticFieldValues(Type staticClassType)
         {
@@ -109,8 +154,85 @@ namespace SPMeta2.Utils
             throw new NotImplementedException("GetExpressionValue");
         }
 
+
+        public static object GetPropertyValue(object obj, string propName)
+        {
+            var prop = obj.GetType().GetProperties(BindingFlags.Instance |
+                                                   BindingFlags.NonPublic |
+                                                   BindingFlags.Public)
+                                    .FirstOrDefault(p => p.Name.ToUpper() == propName.ToUpper());
+
+            if (prop == null)
+                throw new SPMeta2Exception(string.Format("Can't find prop: [{0}] in obj:[{1}]", propName, obj));
+
+            return prop.GetValue(obj, null);
+        }
+
+        // AddSupportedUILanguage
+
+        public static MethodInfo GetMethod(object obj, string methodName)
+        {
+            var methods = obj.GetType().GetMethods(BindingFlags.Instance |
+                                                      BindingFlags.NonPublic |
+                                                      BindingFlags.Public);
+
+            return methods.FirstOrDefault(p => p.Name.ToUpper() == methodName.ToUpper());
+        }
+
+        public static bool HasMethod(object obj, string methodName)
+        {
+            return HasMethods(obj, new[] { methodName });
+        }
+
+        public static bool HasMethods(object obj, IEnumerable<string> methodNames)
+        {
+            var methods = obj.GetType().GetMethods(BindingFlags.Instance |
+                                                    BindingFlags.NonPublic |
+                                                    BindingFlags.Public);
+
+            foreach (var methodName in methodNames)
+            {
+                var method = methods.FirstOrDefault(p => p.Name.ToUpper() == methodName.ToUpper());
+
+                if (method == null)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool HasProperty(object obj, string propName)
+        {
+            return HasProperties(obj, new[] { propName });
+        }
+
+        public static bool HasProperties(object obj, IEnumerable<string> propNames)
+        {
+            var props = obj.GetType().GetProperties(BindingFlags.Instance |
+                                                    BindingFlags.NonPublic |
+                                                    BindingFlags.Public);
+
+            foreach (var propName in propNames)
+            {
+                var prop = props.FirstOrDefault(p => p.Name.ToUpper() == propName.ToUpper());
+
+                if (prop == null)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool HasPropertyPublicSetter(object obj, string propName)
+        {
+            var prop = obj.GetType().GetProperty(propName);
+            if (prop != null)
+            {
+                return prop.GetSetMethod(false) != null;
+            }
+
+            return false;
+        }
         #endregion
     }
-
-
 }

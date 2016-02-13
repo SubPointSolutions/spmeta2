@@ -1,14 +1,11 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -16,11 +13,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy list item to the target list.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPListItem", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ListItem", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPListItem", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ListItem", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [ExpectAddHostExtensionMethod]
     [Serializable] 
@@ -29,6 +26,8 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
     public class ListItemDefinition : DefinitionBase
     {
         #region constructors
@@ -37,6 +36,9 @@ namespace SPMeta2.Definitions
         {
             Overwrite = true;
             //Content = new byte[0];
+
+            DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
@@ -83,10 +85,24 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool UpdateOverwriteVersion { get; set; }
 
-        // should be collection of attachments later
-        //public byte[] Content { get; set; }
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
 
-        // TODO, serializable dictionary for propertied such as content type and so on
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> DefaultValues { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
 
         #endregion
 

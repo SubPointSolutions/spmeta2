@@ -6,7 +6,6 @@
 
         public static string CatalogItemReuse = "Catalog-Item Reuse";
 
-        public static string ReferenceEquals = "Welcome Page";
         public static string ArticlePage = "Article Page";
         public static string Audio = "Audio";
         public static string DigitalAsset = "Rich Media Asset";

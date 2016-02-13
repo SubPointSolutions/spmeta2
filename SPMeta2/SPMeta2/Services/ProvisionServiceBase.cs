@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Services.Impl;
+﻿using SPMeta2.Services.Impl;
+using SPMeta2.Services.Impl.Validation;
+using SPMeta2.Utils;
+using System;
+using SPMeta2.Definitions;
 
 namespace SPMeta2.Services
 {
@@ -22,7 +21,19 @@ namespace SPMeta2.Services
             // adding default required prop validation on definitions
             // https://github.com/SubPointSolutions/spmeta2/issues/422
 
-            PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
+            var validationServiceTypes =
+                ReflectionUtils.GetTypesFromAssembly<PreDeploymentValidationServiceBase>(
+                        typeof(FieldDefinition).Assembly);
+
+            foreach (var validationServiceType in validationServiceTypes)
+            {
+                var service = Activator.CreateInstance(validationServiceType) as PreDeploymentValidationServiceBase;
+
+                if (service != null)
+                {
+                    PreDeploymentServices.Add(service);
+                }
+            }
         }
 
         private void InitDefaultPreDeploymentServices()

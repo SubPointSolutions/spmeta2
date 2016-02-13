@@ -120,17 +120,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                                 break;
 
                             default:
-                                throw new SPMeta2NotImplementedException(string.Format("Job cstr parameter [{0}] is not supported yet."));
+                                throw new SPMeta2NotImplementedException(string.Format("Job cstr parameter [{0}] is not supported yet.", param));
                         }
                     }
 
                     currentJobInstance = (SPJobDefinition)Activator.CreateInstance(jobType, parameters.ToArray());
                 }
 
-                if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
-                    currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
-
-                currentJobInstance.Title = jobDefinition.Title;
+                MapProperties(currentJobInstance, jobDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -147,10 +144,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
-                    currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
-
-                currentJobInstance.Title = jobDefinition.Title;
+                MapProperties(currentJobInstance, jobDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -164,6 +158,28 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 currentJobInstance.Update();
+            }
+        }
+
+        protected virtual void MapProperties(SPJobDefinition currentJobInstance, JobDefinition jobDefinition)
+        {
+            if (!string.IsNullOrEmpty(jobDefinition.ScheduleString))
+            {
+                currentJobInstance.Schedule = SPSchedule.FromString(jobDefinition.ScheduleString);
+            }
+
+            if (!string.IsNullOrEmpty(jobDefinition.Title))
+                currentJobInstance.Title = jobDefinition.Title;
+
+            foreach (var prop in jobDefinition.Properties)
+            {
+                var key = prop.Key;
+                var value = prop.Value;
+
+                if (currentJobInstance.Properties.ContainsKey(key))
+                    currentJobInstance.Properties[key] = value;
+                else
+                    currentJobInstance.Properties.Add(key, value);
             }
         }
 

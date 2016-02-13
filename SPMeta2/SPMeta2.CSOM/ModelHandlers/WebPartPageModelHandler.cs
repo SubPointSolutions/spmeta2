@@ -11,6 +11,8 @@ using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.ModelHosts;
+using SPMeta2.Templates;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -27,20 +29,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var folderModelHost = modelHost as FolderModelHost;
             var webPartPageDefinition = model as WebPartPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            Folder folder = folderModelHost.CurrentListFolder;
 
             if (folder != null && webPartPageDefinition != null)
             {
                 var context = folder.Context;
-                var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageDefinition));
+                var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageDefinition));
 
-                var currentListItem = currentPage.ListItemAllFields;
-                context.Load(currentListItem);
+                //var currentListItem = currentPage.ListItemAllFields;
+
+                //context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
@@ -48,7 +56,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 {
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
-                        itemHost.HostListItem = currentListItem;
+                        itemHost.HostFolder = folderModelHost.CurrentListFolder;
+                        itemHost.HostListItem = folderModelHost.CurrentListItem;
+                        itemHost.HostFile = currentPage;
+                        itemHost.HostList = folderModelHost.CurrentList;
                     });
 
                     action(listItemHost);
@@ -58,6 +69,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else if (typeof(BreakRoleInheritanceDefinition).IsAssignableFrom(childModelType)
                         || typeof(SecurityGroupLinkDefinition).IsAssignableFrom(childModelType))
                 {
+
+                    var currentListItem = currentPage.ListItemAllFields;
+
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                     {
                         itemHost.HostListItem = currentListItem;
@@ -78,27 +95,34 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        protected ListItem SearchItemByName(List list, Folder folder, string pageName)
+        protected File SearchFileByName(List list, Folder folder, string pageName)
         {
             var context = list.Context;
 
             if (folder != null)
             {
-                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl")
+                    // || !folder.IsPropertyAvailable("Properties"))
+                    )
                 {
                     folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    //folder.Context.Load(folder, f => f.Properties);
+
                     folder.Context.ExecuteQueryWithTrace();
                 }
             }
 
+
+
+            // one more time..
             var dQuery = new CamlQuery();
 
             string QueryString = "<View><Query><Where>" +
-                             "<Eq>" +
-                               "<FieldRef Name=\"FileLeafRef\"/>" +
-                                "<Value Type=\"Text\">" + pageName + "</Value>" +
-                             "</Eq>" +
-                            "</Where></Query></View>";
+                                 "<Eq>" +
+                                 "<FieldRef Name=\"FileLeafRef\"/>" +
+                                 "<Value Type=\"Text\">" + pageName + "</Value>" +
+                                 "</Eq>" +
+                                 "</Where></Query></View>";
 
             dQuery.ViewXml = QueryString;
 
@@ -110,11 +134,53 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(collListItems);
             context.ExecuteQueryWithTrace();
 
-            return collListItems.FirstOrDefault();
+            var item = collListItems.FirstOrDefault();
+            if (item != null)
+                return item.File;
+
+            //one more time
+            // by full path
+            var fileServerRelativePath = UrlUtility.CombineUrl(folder.ServerRelativeUrl, pageName);
+
+            File file = null;
+
+            var scope = new ExceptionHandlingScope(context);
+            using (scope.StartScope())
+            {
+                using (scope.StartTry())
+                {
+                    file = list.ParentWeb.GetFileByServerRelativeUrl(fileServerRelativePath);
+
+                    context.Load(file);
+
+                }
+
+                using (scope.StartCatch())
+                {
+
+                }
+            }
+
+            context.ExecuteQueryWithTrace();
+
+            // Forms folder im the libraries
+            // otherwise pure list items search
+            if (!scope.HasException && file != null && file.ServerObjectIsNull != null)
+            {
+                context.Load(file);
+                context.Load(file, f => f.Exists);
+
+                context.ExecuteQueryWithTrace();
+
+                if (file.Exists)
+                    return file;
+            }
+
+            return null;
 
         }
 
-        protected File GetCurrentWebPartPage(List list, Folder folder, string pageName)
+        protected File GetCurrentWebPartPageFile(List list, Folder folder, string pageName)
         {
             var context = folder.Context;
 
@@ -128,17 +194,30 @@ namespace SPMeta2.CSOM.ModelHandlers
             //        return file;
             //}
 
-            var item = SearchItemByName(list, folder, pageName);
-
-            return item != null ? item.File : null;
+            return SearchFileByName(list, folder, pageName);
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var folderModelHost = modelHost as FolderModelHost;
-            var webPartPageModel = model as WebPartPageDefinition;
+            var definition = model as WebPartPageDefinition;
 
-            Folder folder = folderModelHost.CurrentLibraryFolder;
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
+
+            Folder folder = folderModelHost.CurrentListFolder;
 
             //if (!string.IsNullOrEmpty(webPartPageModel.FolderUrl))
             //    throw new NotImplementedException("FolderUrl for the web part page model is not supported yet");
@@ -151,7 +230,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             // http://stackoverflow.com/questions/6199990/creating-a-sharepoint-2010-page-via-the-client-object-model
             // http://social.technet.microsoft.com/forums/en-US/sharepointgeneralprevious/thread/6565bac1-daf0-4215-96b2-c3b64270ec08
 
-            var currentPage = GetCurrentWebPartPage(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(webPartPageModel));
+            var currentPage = GetCurrentWebPartPageFile(folderModelHost.CurrentList, folder, GetSafeWebPartPageFileName(definition));
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -160,13 +239,13 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = currentPage,
                 ObjectType = typeof(File),
-                ObjectDefinition = webPartPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
-            if ((currentPage == null) || (currentPage != null && webPartPageModel.NeedOverride))
+            if ((currentPage == null) || (currentPage != null && definition.NeedOverride))
             {
-                if (webPartPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
@@ -180,18 +259,35 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var pageContent = string.Empty;
 
-                if (!string.IsNullOrEmpty(webPartPageModel.CustomPageLayout))
-                    pageContent = webPartPageModel.CustomPageLayout;
+                if (!string.IsNullOrEmpty(definition.CustomPageLayout))
+                    pageContent = definition.CustomPageLayout;
                 else
-                    pageContent = GetWebPartTemplateContent(webPartPageModel);
+                    pageContent = GetWebPartTemplateContent(definition);
 
-                var fileName = GetSafeWebPartPageFileName(webPartPageModel);
+                var fileName = GetSafeWebPartPageFileName(definition);
 
                 file.Url = fileName;
                 file.Content = Encoding.UTF8.GetBytes(pageContent);
-                file.Overwrite = webPartPageModel.NeedOverride;
+                file.Overwrite = definition.NeedOverride;
 
                 var newFile = folder.Files.Add(file);
+
+                FieldLookupService.EnsureDefaultValues(newFile.ListItemAllFields, definition.DefaultValues);
+                
+                if (!string.IsNullOrEmpty(contentTypeId))
+                {
+                    newFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+                }
+
+                FieldLookupService.EnsureValues(newFile.ListItemAllFields, definition.Values, true);
+
+                if (definition.Values.Any()
+                    || definition.DefaultValues.Any()
+                    || !string.IsNullOrEmpty(contentTypeId))
+                {
+                    newFile.ListItemAllFields.Update();
+                    context.ExecuteQueryWithTrace();
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -200,7 +296,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = newFile,
                     ObjectType = typeof(File),
-                    ObjectDefinition = webPartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
 
@@ -219,7 +315,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = currentPage,
                     ObjectType = typeof(File),
-                    ObjectDefinition = webPartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
             }
@@ -234,27 +330,31 @@ namespace SPMeta2.CSOM.ModelHandlers
             return fileName;
         }
 
-        public static string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
+        public virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
         {
             // gosh! would u like to offer a better way?
+            // always SP2013 for CSOM yet
+            // Built-in web part page templates should be correctly resolved for SP2010/2013 #683
+
+            // TODO, sp2016 support, if any
             switch (webPartPageModel.PageLayoutTemplate)
             {
                 case 1:
-                    return WebPartPageTemplates.spstd1;
+                    return SP2013WebPartPageTemplates.spstd1;
                 case 2:
-                    return WebPartPageTemplates.spstd2;
+                    return SP2013WebPartPageTemplates.spstd2;
                 case 3:
-                    return WebPartPageTemplates.spstd3;
+                    return SP2013WebPartPageTemplates.spstd3;
                 case 4:
-                    return WebPartPageTemplates.spstd4;
+                    return SP2013WebPartPageTemplates.spstd4;
                 case 5:
-                    return WebPartPageTemplates.spstd5;
+                    return SP2013WebPartPageTemplates.spstd5;
                 case 6:
-                    return WebPartPageTemplates.spstd6;
+                    return SP2013WebPartPageTemplates.spstd6;
                 case 7:
-                    return WebPartPageTemplates.spstd7;
+                    return SP2013WebPartPageTemplates.spstd7;
                 case 8:
-                    return WebPartPageTemplates.spstd8;
+                    return SP2013WebPartPageTemplates.spstd8;
             }
 
             throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));

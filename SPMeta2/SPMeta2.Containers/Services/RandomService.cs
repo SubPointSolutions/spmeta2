@@ -8,6 +8,36 @@ namespace SPMeta2.Containers.Services
 {
     public abstract class RandomService
     {
+        static RandomService()
+        {
+            var _localeIds = new List<int>();
+
+            //- German
+            //- French
+            //- Dutch
+            //- Italian
+            //- Russian
+            //- Spanish 
+            //- Swedish 
+
+            var languages = new int[]
+                {
+                    1031,
+                    1036,
+                   // 1043,
+                    //1040,
+                    1049,
+                   // 1034,
+                    //1053
+                };
+
+            _localeIds.AddRange(languages);
+
+            DefaultLocaleIds = _localeIds;
+        }
+
+        public static IEnumerable<int> DefaultLocaleIds { get; set; }
+
         public abstract Guid Guid();
 
         public abstract byte[] Content();
@@ -38,7 +68,31 @@ namespace SPMeta2.Containers.Services
 
     public static class RandomServiceExtensions
     {
+        #region localization
+
+        public static IEnumerable<int> LocaleIds(this RandomService service)
+        {
+            return RandomService.DefaultLocaleIds;
+        }
+
+        public static int LocaleId(this RandomService service)
+        {
+            return LocaleId(service, RandomService.DefaultLocaleIds);
+        }
+
+        public static int LocaleId(this RandomService service, IEnumerable<int> localeIds)
+        {
+            return service.RandomFromArray(localeIds);
+        }
+
+        #endregion
+
         #region methods
+
+        public static string VersionString(this RandomService service)
+        {
+            return new Version(service.Int(10), service.Int(10), service.Int(10), service.Int(10)).ToString();
+        }
 
         public static bool? NullableBool(this RandomService service)
         {
@@ -128,7 +182,6 @@ namespace SPMeta2.Containers.Services
         public static byte[] ByteArray(this RandomService service)
         {
             return ByteArray(service, 64);
-            return ByteArray(service, 64);
         }
 
         public static byte[] ByteArray(this RandomService service, int length)
@@ -144,6 +197,38 @@ namespace SPMeta2.Containers.Services
         public static byte Byte(this RandomService service, byte maxValue)
         {
             return (byte)service.Int(maxValue);
+        }
+
+        public static string CamlQuery(this RandomService service)
+        {
+            return string.Format(
+                        "<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
+                        service.String());
+        }
+
+        public static string TxtFileName(this RandomService service)
+        {
+            return string.Format("{0}.txt", service.String());
+        }
+
+        public static string DocxFileName(this RandomService service)
+        {
+            return string.Format("{0}.docx", service.String());
+        }
+
+        public static string WspFileName(this RandomService service)
+        {
+            return string.Format("{0}.wsp", service.String());
+        }
+
+        public static string AspxFileName(this RandomService service)
+        {
+            return string.Format("{0}.aspx", service.String());
+        }
+
+        public static string XmlFileName(this RandomService service)
+        {
+            return string.Format("{0}.xml", service.String());
         }
 
         public static uint UInt(this RandomService service)

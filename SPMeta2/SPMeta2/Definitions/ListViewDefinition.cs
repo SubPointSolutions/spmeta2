@@ -1,12 +1,14 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
+
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.ObjectModel;
-using SPMeta2.Definitions.Base;
+using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -15,18 +17,23 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPView", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.View", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPView", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.View", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+    [ExpectAddHostExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    // this not going to work due to IsDefault prop on view
+    //[ExpectManyInstances]
+
     public class ListViewDefinition : DefinitionBase
     {
         #region constructors
@@ -39,6 +46,10 @@ namespace SPMeta2.Definitions
 
             Url = string.Empty;
             Query = string.Empty;
+
+            Type = BuiltInViewType.Html;
+
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -56,6 +67,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string Title { get; set; }
+
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         /// <summary>
         /// Allows to define URL of the target view.
@@ -78,6 +98,14 @@ namespace SPMeta2.Definitions
         public int RowLimit { get; set; }
 
         /// <summary>
+        /// Corresponds to Scope property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdateAsViewScope]
+        [DataMember]
+        public string Scope { get; set; }
+
+        /// <summary>
         /// CAML Query of the target list view.
         /// </summary>
         /// 
@@ -85,7 +113,17 @@ namespace SPMeta2.Definitions
         [ExpectUpdateAsCamlQuery]
         [DataMember]
         [ExpectNullable]
+
+        [CamlPropertyCapability]
         public string Query { get; set; }
+
+        /// <summary>
+        /// IsPaged flag of the target list view.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [DataMember]
+        public string ViewData { get; set; }
 
         /// <summary>
         /// IsPaged flag of the target list view.
@@ -137,6 +175,32 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsIntRange(MinValue = 12, MaxValue = 20)]
+        public int? ViewStyleId { get; set; }
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets field references for one or more aggregate, or total, columns used in a view.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string Aggregations { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether aggregate, or total, columns are used in the view.
+        /// A string that specifies "On" if an aggregate column is used in the view; otherwise, an empty string.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string AggregationsStatus { get; set; }
 
         #endregion
 

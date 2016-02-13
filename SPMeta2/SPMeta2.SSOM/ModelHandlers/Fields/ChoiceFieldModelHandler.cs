@@ -33,12 +33,18 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
 
             var typedFieldModel = fieldModel.WithAssertAndCast<ChoiceFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field as SPFieldChoice;
-           
+
             if (!string.IsNullOrEmpty(fieldModel.ValidationMessage))
                 field.ValidationMessage = fieldModel.ValidationMessage;
 
             if (!string.IsNullOrEmpty(fieldModel.ValidationFormula))
                 field.ValidationFormula = fieldModel.ValidationFormula;
+
+            if (!string.IsNullOrEmpty(typedFieldModel.EditFormat))
+            {
+                typedField.EditFormat = (SPChoiceFormatType)Enum.Parse(
+                    typeof(SPChoiceFormatType), typedFieldModel.EditFormat);
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

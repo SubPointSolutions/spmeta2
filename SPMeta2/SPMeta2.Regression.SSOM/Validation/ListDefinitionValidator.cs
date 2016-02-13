@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -23,7 +22,9 @@ namespace SPMeta2.Regression.SSOM.Validation
             var web = webModelHost.HostWeb;
 
             var definition = model.WithAssertAndCast<ListDefinition>("model", value => value.RequireNotNull());
+#pragma warning disable 618
             var spObject = web.GetList(SPUrlUtility.CombineUrl(web.ServerRelativeUrl, definition.GetListUrl()));
+#pragma warning restore 618
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
@@ -45,7 +46,8 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
-                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+                var draftOption =
+                    (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -63,13 +65,18 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
-                assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
+                assert.SkipProperty(m => m.DraftVersionVisibility,
+                    "Skipping from validation. DraftVersionVisibility IS NULL");
             }
 
+#pragma warning disable 618
             if (!string.IsNullOrEmpty(definition.Url))
-                assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
+
+                assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(),
+                    o => o.GetServerRelativeUrl());
             else
                 assert.SkipProperty(m => m.Url, "Skipping from validation. Url IS NULL");
+#pragma warning restore 618
 
             if (!string.IsNullOrEmpty(definition.CustomUrl))
                 assert.ShouldBeEndOf(m => m.CustomUrl, o => o.GetServerRelativeUrl());
@@ -85,7 +92,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (definition.EnableFolderCreation.HasValue)
                 assert.ShouldBeEqual(m => m.EnableFolderCreation, o => o.EnableFolderCreation);
             else
-                assert.SkipProperty(m => m.EnableFolderCreation, "Skipping from validation. EnableFolderCreation IS NULL");
+                assert.SkipProperty(m => m.EnableFolderCreation,
+                    "Skipping from validation. EnableFolderCreation IS NULL");
 
             if (definition.EnableMinorVersions.HasValue)
                 assert.ShouldBeEqual(m => m.EnableMinorVersions, o => o.EnableMinorVersions);
@@ -116,7 +124,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual(m => m.NoCrawl, o => o.NoCrawl);
             else
                 assert.SkipProperty(m => m.NoCrawl, "Skipping from validation. NoCrawl IS NULL");
-
 
             if (definition.OnQuickLaunch.HasValue)
                 assert.ShouldBeEqual(m => m.OnQuickLaunch, o => o.OnQuickLaunch);
@@ -167,25 +174,164 @@ namespace SPMeta2.Regression.SSOM.Validation
                 });
             }
 
-
             if (definition.MajorVersionLimit.HasValue)
                 assert.ShouldBeEqual(m => m.MajorVersionLimit, o => o.MajorVersionLimit);
             else
                 assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
 
-
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
             else
-                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit, "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
-        }
-    }
+                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
+                    "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
-    public static class ListExtensions
-    {
-        public static string GetServerRelativeUrl(this SPList list)
-        {
-            return list.RootFolder.ServerRelativeUrl;
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
+
+                    // Search if any indexedRootFolderPropertyKey from definition is not in ListModel
+                    var differentKeys = s.IndexedRootFolderPropertyKeys.Except(d.IndexedRootFolderPropertyKeys);
+
+                    var isValid = !differentKeys.Any();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedRootFolderPropertyKeys, "IndexedRootFolderPropertyKeys is NULL or empty. Skipping.");
+
+            // template url
+            if (string.IsNullOrEmpty(definition.DocumentTemplateUrl) || !(spObject is SPDocumentLibrary))
+            {
+                assert.SkipProperty(m => m.DocumentTemplateUrl,
+                    "Skipping DocumentTemplateUrl or list is not a document library. Skipping.");
+            }
+            else
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DocumentTemplateUrl);
+                    var dstProp = (spObject as SPDocumentLibrary).DocumentTemplateUrl;
+
+                    var srcUrl = srcProp.Value as string;
+                    var dstUrl = dstProp;
+
+                    if (!dstUrl.StartsWith("/"))
+                        dstUrl = "/" + dstUrl;
+
+                    if (!srcUrl.StartsWith("/"))
+                        srcUrl = "/" + srcUrl;
+
+                    srcUrl = srcUrl.ToLower();
+                    dstUrl = dstUrl.ToLower();
+
+                    bool isValid;
+
+                    if (s.DocumentTemplateUrl.Contains("~sitecollection"))
+                    {
+                        var siteCollectionUrl = web.Site.ServerRelativeUrl == "/"
+                            ? string.Empty
+                            : web.Site.ServerRelativeUrl;
+
+                        isValid = srcUrl
+                            .Replace("~sitecollection", siteCollectionUrl)
+                            .Replace("//", "/") == dstUrl;
+                    }
+                    else if (s.DocumentTemplateUrl.Contains("~site"))
+                    {
+                        var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
+
+                        isValid = srcUrl
+                            .Replace("~site", siteCollectionUrl)
+                            .Replace("//", "/") == dstUrl;
+                    }
+                    else
+                    {
+                        isValid = dstUrl.EndsWith(srcUrl);
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+
+            // localization
+            if (definition.TitleResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.TitleResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.TitleResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.DescriptionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.DescriptionResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+            }
         }
     }
 }

@@ -31,12 +31,25 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is ListModelHost)
                 return (modelHost as ListModelHost).HostList;
 
+            if (modelHost is File)
+                return (modelHost as File).ListItemAllFields;
+
             if (modelHost is FolderModelHost)
             {
                 var folderModelHost = modelHost as FolderModelHost;
 
-                if (folderModelHost.CurrentLibraryFolder != null)
-                    return folderModelHost.CurrentLibraryFolder.ListItemAllFields;
+                if (folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
+                {
+#if !NET35
+                    return folderModelHost.CurrentListFolder.ListItemAllFields;
+#endif
+
+#if NET35
+                    // TODO, https://github.com/SubPointSolutions/spmeta2/issues/764
+                    throw new SPMeta2NotImplementedException("FolderModelHost resolve not implemented for SP2010");
+#endif
+
+                }
                 else
                     return folderModelHost.CurrentListItem;
             }
@@ -47,9 +60,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 return listItemModelHost.HostListItem;
             }
-
-            //if (modelHost is WebpartPageModelHost)
-            //    return (modelHost as WebpartPageModelHost).PageListItem;
 
             throw new SPMeta2NotImplementedException(string.Format("Model host of type:[{0}] is not supported by SecurityGroupLinkModelHandler yet.",
                 modelHost.GetType()));
@@ -92,7 +102,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if (!securableObject.IsObjectPropertyInstantiated("HasUniqueRoleAssignments"))
+            //context.Load(securableObject);
+            //context.ExecuteQueryWithTrace();
+
+            if (!securableObject.IsPropertyAvailable("HasUniqueRoleAssignments"))
             {
                 context.Load(securableObject, s => s.HasUniqueRoleAssignments);
                 context.ExecuteQueryWithTrace();

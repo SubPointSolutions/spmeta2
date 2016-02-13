@@ -27,6 +27,8 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
 
     [ParentHostCapability(typeof(TaxonomyTermDefinition))]
     public class TaxonomyTermLabelDefinition : DefinitionBase

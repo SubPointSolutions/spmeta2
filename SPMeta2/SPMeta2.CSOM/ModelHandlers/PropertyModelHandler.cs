@@ -50,22 +50,44 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is ListModelHost)
             {
+
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/768");
+#endif
+
+#if !NET35
                 result = (modelHost as ListModelHost).HostList.RootFolder.Properties;
                 context = (modelHost as ListModelHost).HostList.RootFolder.Context;
+#endif
+
             }
             else if (modelHost is FolderModelHost)
             {
                 var folderModelHost = modelHost as FolderModelHost;
 
-                if (folderModelHost.CurrentLibraryFolder != null)
+                if (folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
+                //if (folderModelHost.CurrentListFolder != null)
                 {
-                    result = folderModelHost.CurrentLibraryFolder.Properties;
-                    context = folderModelHost.CurrentLibraryFolder.Context;
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/768");
+#endif
+
+#if !NET35
+                    result = folderModelHost.CurrentListFolder.Properties;
+                    context = folderModelHost.CurrentListFolder.Context;
+#endif
                 }
                 else
                 {
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/768");
+#endif
+
+#if !NET35
                     result = folderModelHost.CurrentListItem.Folder.Properties;
                     context = folderModelHost.CurrentListItem.Context;
+
+#endif
                 }
             }
             else if (modelHost is ListItem)

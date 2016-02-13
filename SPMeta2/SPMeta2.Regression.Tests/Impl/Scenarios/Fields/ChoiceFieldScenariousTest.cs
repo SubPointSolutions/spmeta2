@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Definitions;
@@ -58,6 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.ChoiceField")]
+        [SiteCollectionIsolation]
         public void CanDeploy_ChoiceField_AsDropdown()
         {
             var field = GetChoiceFieldDefinition(def =>
@@ -75,6 +77,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.ChoiceField")]
+        [SiteCollectionIsolation]
         public void CanDeploy_ChoiceField_AsRadioButtons()
         {
             var field = GetChoiceFieldDefinition(def =>

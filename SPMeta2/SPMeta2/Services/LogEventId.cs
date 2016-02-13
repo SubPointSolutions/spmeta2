@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
-namespace SPMeta2.Services
+﻿namespace SPMeta2.Services
 {
     /// <summary>
     /// Log events provided by SPMeta2 implementation and related components.
@@ -12,7 +6,7 @@ namespace SPMeta2.Services
     /// Range 0-9999 is reserved for SPMeta.
     /// Please use LogEventId.Custom + XXX to log your own events.
     /// </summary>
-    public enum LogEventId : int
+    public enum LogEventId
     {
         Unknown = 0,
 

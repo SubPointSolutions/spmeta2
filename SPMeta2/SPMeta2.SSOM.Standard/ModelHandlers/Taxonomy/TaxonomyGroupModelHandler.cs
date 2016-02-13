@@ -39,8 +39,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             DeployTaxonomyGroup(modelHost, siteModelHost, groupModel);
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var storeModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
@@ -57,7 +63,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         protected Group FindSiteCollectionGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = termStoreHost.HostTermStore;
+
+#if NET35
             return termStore.GetSiteCollectionGroup(termStoreHost.HostSite);
+#endif
+
+#if !NET35
+            return termStore.GetSiteCollectionGroup(termStoreHost.HostSite, true);
+#endif
         }
 
         protected Group FindSystemGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)

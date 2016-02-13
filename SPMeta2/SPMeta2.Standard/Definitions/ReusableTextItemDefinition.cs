@@ -28,6 +28,9 @@ namespace SPMeta2.Standard.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class ReusableTextItemDefinition : ReusableItemDefinitionBase
     {
         #region properties

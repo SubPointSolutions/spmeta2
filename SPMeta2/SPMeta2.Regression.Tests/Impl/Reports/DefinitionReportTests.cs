@@ -17,7 +17,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
         #region common
 
         [ClassInitializeAttribute]
-        public static void Init(TestContext context)
+        public static new void Init(TestContext context)
         {
             LoadDefinitions();
         }

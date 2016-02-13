@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
@@ -37,12 +38,23 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(typedFieldModel.SelectionGroupName))
             {
+#if !NET35
+
                 var group = web.SiteGroups.GetByName(typedFieldModel.SelectionGroupName);
                 context.Load(group);
                 context.Load(group, g => g.Id);
                 context.ExecuteQueryWithTrace();
 
                 groupId = group.Id;
+
+#endif
+
+#if NET35
+
+                // TODO, https://github.com/SubPointSolutions/spmeta2/issues/762
+                throw new SPMeta2NotImplementedException("SelectionGroupName is not implemented yet for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/762");
+#endif
+
             }
 
             // lokup the group
@@ -66,6 +78,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             {
                 typedField.SelectionGroup = groupId.Value;
             }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+            {
+                typedField.LookupField = typedFieldModel.LookupField;
+            }
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -83,6 +100,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (!string.IsNullOrEmpty(typedFieldModel.SelectionMode))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.UserSelectionMode, typedFieldModel.SelectionMode);
+
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);
         }
 
         #endregion

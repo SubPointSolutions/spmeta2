@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
     /// <summary>
     /// Allows to define and deploy custom SharePoint logger inherited from SPDiagnosticsServiceBase. 
     /// </summary>
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPDiagnosticsServiceBase", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPDiagnosticsServiceBase", "Microsoft.SharePoint")]
 
-    [DefaultRootHostAttribute(typeof(FarmDefinition))]
-    [DefaultParentHostAttribute(typeof(FarmDefinition))]
+    [DefaultRootHost(typeof(FarmDefinition))]
+    [DefaultParentHost(typeof(FarmDefinition))]
 
     [Serializable]
     [DataContract]

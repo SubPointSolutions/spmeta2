@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System.Runtime.Serialization;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
 
 namespace SPMeta2.Definitions.Base
 {
-    [DataContract]
+
     /// <summary>
     /// Base definitino for web part definitions - generic web part and all other 'typed' web parts.
     /// </summary>
+    [DataContract]
     public abstract class WebPartDefinitionBase : DefinitionBase
     {
         #region constructors
@@ -24,6 +24,7 @@ namespace SPMeta2.Definitions.Base
             ChromeType = BuiltInPartChromeType.Default;
 
             ParameterBindings = new List<ParameterBindingValue>();
+            Properties = new List<WebPartProperty>();
         }
 
         #endregion
@@ -176,6 +177,8 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [ExpectRequired(GroupName = "Web part content")]
         [DataMember]
+
+        [XmlPropertyCapability]
         public string WebpartXmlTemplate { get; set; }
 
         /// <summary>
@@ -183,6 +186,10 @@ namespace SPMeta2.Definitions.Base
         /// </summary>
         [DataMember]
         public bool AddToPageContent { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public List<WebPartProperty> Properties { get; set; }
 
         #endregion
 
@@ -197,6 +204,32 @@ namespace SPMeta2.Definitions.Base
         #endregion
     }
 
+    [Serializable]
+    [DataContract]
+    public class WebPartProperty
+    {
+        public WebPartProperty()
+        {
+            Type = "string";
+        }
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+
+        [DataMember]
+        public bool? IsTokenisable { get; set; }
+
+        [DataMember]
+        public bool? IsCData { get; set; }
+
+        [DataMember]
+        public string Type { get; set; }
+    }
+
+    [Serializable]
     [DataContract]
     public class ParameterBindingValue
     {

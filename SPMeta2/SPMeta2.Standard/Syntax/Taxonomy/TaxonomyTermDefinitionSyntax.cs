@@ -11,7 +11,7 @@ namespace SPMeta2.Standard.Syntax
     [Serializable]
     [DataContract]
     public class TaxonomyTermModelNode : TypedModelNode,
-        ITaxonomyTermHostModelNode
+        ITaxonomyTermHostModelNode, ITaxonomyTermModelNode
     {
 
     }

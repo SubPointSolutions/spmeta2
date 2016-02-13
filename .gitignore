@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+# NCrunch
+*.ncrunchproject
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -26,6 +29,7 @@ bld/
 [Oo]bj/
 obj
 bin
+
 _ReSharper.*
 
 # Visual Studo 2015 cache/options directory
@@ -210,3 +214,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/SPMeta2.v2.ncrunchsolution
+/SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj.DotSettings
+/SPMeta2/SPMeta2/SPMeta2.csproj.DotSettings

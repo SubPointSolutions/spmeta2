@@ -6,6 +6,7 @@ using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers.ContentTypes.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -54,21 +55,37 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
                 SPContentType listContentType = null;
 
                 if (!string.IsNullOrEmpty(srcContentTypeDef.ContentTypeName))
-                    listContentType = listContentTypes.FirstOrDefault(c => c.Name == srcContentTypeDef.ContentTypeName);
+                {
+                    listContentType = listContentTypes.FirstOrDefault(c => c.Name.ToUpper() == srcContentTypeDef.ContentTypeName.ToUpper());
+
+                    if (listContentType != null)
+                    {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                            string.Format("Found content type by name:[{0}]", srcContentTypeDef.ContentTypeName));
+                    }
+                }
 
                 if (listContentType == null && !string.IsNullOrEmpty(srcContentTypeDef.ContentTypeId))
+                {
                     listContentType = listContentTypes.FirstOrDefault(c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
+
+                    if (listContentType != null)
+                    {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                            string.Format("Found content type by matching ID start:[{0}]", srcContentTypeDef.ContentTypeId));
+                    }
+                }
 
                 if (listContentType != null)
                 {
                     try
                     {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, string.Format("Deleting list content type"));
                         list.ContentTypes.Delete(listContentType.Id);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        // TODO
-
+                        TraceService.Error((int)LogEventId.ModelProvisionCoreCall, e);
                     }
                 }
             }

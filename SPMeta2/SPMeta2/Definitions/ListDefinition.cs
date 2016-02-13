@@ -1,11 +1,11 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using SPMeta2.Definitions.Base;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -14,11 +14,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPList", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.List", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(WebDefinition))]
 
     [ExpectAddHostExtensionMethod]
     [Serializable]
@@ -27,16 +27,21 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
     public class ListDefinition : DefinitionBase
     {
         public ListDefinition()
         {
             Description = string.Empty;
             Hidden = false;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
+            IndexedRootFolderPropertyKeys = new List<string>();
         }
 
         #region properties
-
 
         /// <summary>
         /// Title of the target list.
@@ -47,6 +52,14 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -73,6 +86,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// URL of the target list.
@@ -215,19 +236,41 @@ namespace SPMeta2.Definitions
 
         public int? MajorWithMinorVersionsLimit { get; set; }
 
+        /// <summary>
+        /// Corresponds to SPDocumentLibrary.DocumentTemplateUrl 
+        /// Should be server-relative URL of the document template for the list, but also supports tokens.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
+
+        [ExpectNullable]
+        //[ExpectUpdateAsServerRelativeUrl]
+        public string DocumentTemplateUrl { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<string> IndexedRootFolderPropertyKeys { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public int? WriteSecurity { get; set; }
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return string.Format("Title: [{0}] Url: [{1}] TemplateType:[{2}] TemplateName:[{3}]",
-                            new[] {
-                                Title,
-                                Url,
-                                TemplateType.ToString(),
-                                TemplateName                                
-                            });
+            return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
+#pragma warning disable 618
+                Title, string.IsNullOrEmpty(Url) ? CustomUrl : Url, TemplateType, TemplateName, ContentTypesEnabled);
+#pragma warning restore 618
         }
 
         #endregion

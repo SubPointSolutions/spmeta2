@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace SPMeta2.Standard.Utils
@@ -17,12 +18,21 @@ namespace SPMeta2.Standard.Utils
 
         private static void InitInvalidTermNameStrings()
         {
-            InvalidTermNameStrings = new List<string> { "&", ";", "<", ">", "|", "\"", "\t" };
+            InvalidTermNameStrings = new List<string> { ";", "<", ">", "|", "\t" };
         }
+
+        private static Regex CleanSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #endregion
 
         #region properties
+
+        public static string NormalizeName(string value)
+        {
+            return CleanSpacesRegex.Replace(value, " ")
+                                   .Replace('&', '＆')
+                                   .Replace('"', '＂');
+        }
 
         public static List<string> InvalidTermNameStrings { get; set; }
 

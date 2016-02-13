@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Enumerations;
 using SPMeta2.SSOM.Extensions;
+using SPMeta2.SSOM.ModelHandlers.Fields;
+using SPMeta2.SSOM.ModelHandlers.Webparts;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
@@ -42,9 +46,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
             var host = modelHost.WithAssertAndCast<WebpartPageModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListViewWebPartDefinition>("model", value => value.RequireNotNull());
 
-            var item = host.PageListItem;
-
-            WebPartExtensions.WithExistingWebPart(item, definition, (spWebPartManager, spObject) =>
+            WebPartExtensions.WithExistingWebPart(host.HostFile, definition, (spWebPartManager, spObject) =>
             {
                 var web = spWebPartManager.Web;
                 var typedObject = spObject as ListViewWebPart;
@@ -52,6 +54,63 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 var assert = ServiceFactory.AssertService
                     .NewAssert(definition, typedObject)
                     .ShouldNotBeNull(typedObject);
+
+                var typedDefinition = definition;
+                var targetWeb = web;
+
+                // web url
+                if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
+                {
+                    var lookupFieldModelHandler = new LookupFieldModelHandler();
+                    targetWeb = lookupFieldModelHandler.GetTargetWeb(web.Site,
+                                definition.WebUrl, definition.WebId);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebUrl);
+
+                        var isValid = d.WebId == targetWeb.ID;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebUrl, "WebUrl is NULL. Skipping.");
+                }
+
+                if (typedDefinition.WebId.HasGuidValue())
+                {
+                    var lookupFieldModelHandler = new LookupFieldModelHandler();
+                    targetWeb = lookupFieldModelHandler.GetTargetWeb(web.Site,
+                                definition.WebUrl, definition.WebId);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebId);
+
+                        var isValid = d.WebId == targetWeb.ID;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.WebId, "WebId is NULL. Skipping.");
+                }
+
 
                 var targetList = web.Lists[typedObject.ListId];
 
@@ -216,7 +275,77 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                 {
                     assert.ShouldBeEqual(m => m.TitleUrl, o => o.TitleUrl);
                 }
+
+
+                // skip it, it will be part of the .Toolbar validation
+                assert.SkipProperty(m => m.ToolbarShowAlways, "");
+
+                if (!string.IsNullOrEmpty(definition.Toolbar))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var list = XsltListViewWebPartModelHandler.GetTargetList(targetWeb,
+                                        typedDefinition.ListTitle,
+                                        typedDefinition.ListUrl,
+                                        typedDefinition.ListId);
+
+                        var targetView = list.Views[Guid.Parse((spObject as ListViewWebPart).ViewGuid)];
+                        var htmlSchemaXml = XDocument.Parse(targetView.HtmlSchemaXml);
+
+                        var useShowAlwaysValue =
+                                     (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
+                                     && typedDefinition.ToolbarShowAlways.HasValue
+                                     && typedDefinition.ToolbarShowAlways.Value;
+
+                        var toolbarNode = htmlSchemaXml.Root
+                            .Descendants("Toolbar")
+                            .FirstOrDefault();
+
+                        // NONE? the node might not be there
+                        if ((typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.None.ToUpper())
+                            && (toolbarNode == null))
+                        {
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = true
+                            };
+                        }
+                        else
+                        {
+                            var toolBarValue = toolbarNode.GetAttributeValue("Type");
+
+                            var srcProp = s.GetExpressionValue(m => m.Toolbar);
+                            var isValid = toolBarValue.ToUpper() == definition.Toolbar.ToUpper();
+
+                            if (useShowAlwaysValue)
+                            {
+                                var showAlwaysValue = toolbarNode.GetAttributeValue("ShowAlways");
+                                isValid = isValid && (showAlwaysValue.ToUpper() == "TRUE");
+                            }
+
+                            return new PropertyValidationResult
+                            {
+                                Tag = p.Tag,
+                                Src = srcProp,
+                                Dst = null,
+                                IsValid = isValid
+                            };
+                        }
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Toolbar);
+                }
             });
+
+
+
         }
 
         #endregion

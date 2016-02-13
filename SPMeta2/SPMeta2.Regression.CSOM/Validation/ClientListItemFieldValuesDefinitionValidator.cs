@@ -8,7 +8,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 {
     public class ClientListItemFieldValuesDefinitionValidator : ListItemFieldValuesModelHandler
     {
-        public override void DeployModel(object modelHost, Definitions.DefinitionBase model)
+        public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ListItemFieldValuesDefinition>("model", value => value.RequireNotNull());

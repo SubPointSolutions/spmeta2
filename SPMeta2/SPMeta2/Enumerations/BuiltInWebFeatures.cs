@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SPMeta2.Definitions;
+// ReSharper disable InconsistentNaming
 
 namespace SPMeta2.Enumerations
 {

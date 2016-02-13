@@ -1,34 +1,45 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
+
+    [Serializable]
+    [DataContract]
+    public class SP2013WorkflowProperty
+    {
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+    }
+
     /// <summary>
     /// Allows to define and deploy SharePoint 2013 workflow.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.WorkflowServicesBase")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.Client.WorkflowServices")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.WorkflowServicesBase")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.WorkflowServices.WorkflowDefinition", "Microsoft.SharePoint.Client.WorkflowServices")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(WebDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class SP2013WorkflowDefinition : DefinitionBase
     {
         #region constructors
@@ -36,6 +47,8 @@ namespace SPMeta2.Definitions
         public SP2013WorkflowDefinition()
         {
             Override = false;
+
+            Properties = new List<SP2013WorkflowProperty>();
         }
 
         #endregion
@@ -68,6 +81,18 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public bool Override { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string RestrictToType { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string RestrictToScope { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<SP2013WorkflowProperty> Properties { get; set; }
 
         #endregion
 

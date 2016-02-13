@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
@@ -34,8 +35,18 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<CalculatedFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field.Context.CastTo<FieldCalculated>(field);
 
-            typedField.Formula = typedFieldModel.Formula ?? string.Empty;
-            typedField.OutputType = typedField.OutputType = (FieldType)Enum.Parse(typeof(FieldType), typedFieldModel.OutputType);
+            if (!string.IsNullOrEmpty(typedFieldModel.Formula))
+            {
+                // can't really validate it automatically
+                // Improve CalculatedFieldDefinition with field ref check
+                // https://github.com/SubPointSolutions/spmeta2/issues/648
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating formula for a CalculatedField. Ensure FieldReferences are correct.");
+
+                typedField.Formula = typedFieldModel.Formula;
+            }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.OutputType))
+                typedField.OutputType = (FieldType)Enum.Parse(typeof(FieldType), typedFieldModel.OutputType);
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -46,6 +57,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
             if (typedFieldModel.CurrencyLocaleId.HasValue)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.LCID, typedFieldModel.CurrencyLocaleId);
+
+            // can't really validate it automatically
+            // Improve CalculatedFieldDefinition with field ref check
+            // https://github.com/SubPointSolutions/spmeta2/issues/648
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Crafting formula for a CalculatedField. Ensure FieldReferences are correct.");
 
             // should be a new XML node
             var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);

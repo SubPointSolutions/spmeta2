@@ -21,12 +21,15 @@ namespace SPMeta2.Standard.Definitions
     [DefaultParentHost(typeof(ListDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class PublishingPageDefinition : PageDefinitionBase
     {
         #region properties
@@ -50,11 +53,6 @@ namespace SPMeta2.Standard.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
-
-        [ExpectValidation]
-        [DataMember]
-        [ExpectNullable]
-        public string ContentTypeName { get; set; }
 
         /// <summary>
         /// Content of the target publishing page.

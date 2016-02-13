@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
@@ -11,6 +9,8 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Services.Impl
 {
+
+
     public class DefaultModelTreeTraverseService : ModelTreeTraverseServiceBase
     {
         #region constructors
@@ -39,8 +39,8 @@ namespace SPMeta2.Services.Impl
 
         public override void Traverse(object modelHost, ModelNode modelNode)
         {
-            //try
-            //{
+            try
+            {
                 var modelDefinition = modelNode.Value as DefinitionBase;
                 var modelHandler = OnModelHandlerResolve(modelNode);
 
@@ -54,14 +54,34 @@ namespace SPMeta2.Services.Impl
                 if (OnModelProcessing != null)
                     OnModelProcessing(modelNode);
 
-                var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
+                //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
+                var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
 
                 TraceService.InformationFormat((int)LogEventId.ModelProcessing, "Deploying model [{0}] RSP: [{1}] : [{2}].",
                     new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
 
                 if (requireselfProcessing)
                 {
-                    modelHandler.DeployModel(modelHost, modelNode.Value);
+                    try
+                    {
+                        modelHandler.DeployModel(modelHost, modelNode.Value);
+                    }
+                    catch (Exception e)
+                    {
+                        var onExceptionArgs = new ModelTreeTraverseServiceExceptionEventArgs
+                        {
+                            Handled = false,
+                            Exception = e
+                        };
+
+                        if (OnException != null)
+                            OnException(this, onExceptionArgs);
+
+                        if (!onExceptionArgs.Handled)
+                        {
+                            throw;
+                        }
+                    }
                 }
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Raising OnModelProcessed for model: [{0}].", modelNode);
@@ -115,17 +135,30 @@ namespace SPMeta2.Services.Impl
 
                 if (OnModelFullyProcessed != null)
                     OnModelFullyProcessed(modelNode);
-            //}
-            //catch (Exception e)
-            //{
-            //    if (e is SPMeta2ModelDeploymentException)
-            //        throw;
+            }
+            catch (Exception e)
+            {
+                var onExceptionArgs = new ModelTreeTraverseServiceExceptionEventArgs
+                {
+                    Handled = false,
+                    Exception = e
+                };
 
-            //    throw new SPMeta2ModelDeploymentException("There was an error while provisioning definition. Check ModelNode prop.", e)
-            //    {
-            //        ModelNode = modelNode,
-            //    };
-            //}
+                if (OnException != null)
+                    OnException(this, onExceptionArgs);
+
+                if (!onExceptionArgs.Handled)
+                {
+                    if (e is SPMeta2ModelDeploymentException)
+                        throw;
+
+                    throw new SPMeta2ModelDeploymentException(
+                        "There was an error while provisioning definition. Check ModelNode prop.", e)
+                    {
+                        ModelNode = modelNode,
+                    };
+                }
+            }
         }
 
         #endregion

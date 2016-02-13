@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Common;
-using SPMeta2.Definitions;
-using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 
 namespace SPMeta2.Services
 {
+    public class ModelTreeTraverseServiceExceptionEventArgs : EventArgs
+    {
+        public ModelTreeTraverseServiceExceptionEventArgs()
+        {
+
+        }
+
+        public bool Handled { get; set; }
+
+        public Exception Exception { get; set; }
+    }
+
     public abstract class ModelTreeTraverseServiceBase : SPMetaServiceBase
     {
         #region methods
+
+        public EventHandler<ModelTreeTraverseServiceExceptionEventArgs> OnException;
 
         public abstract void Traverse(object modelHost, ModelNode modelNode);
 

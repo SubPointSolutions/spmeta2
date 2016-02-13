@@ -21,7 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\SPMeta2.Containers.Standard.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +48,24 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\CI-O365\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\CI-CSOM2013\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\MetadataNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\FilterDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\JavaScriptDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\ItemDisplayTemplateDefinitionGenerator.cs" />
@@ -81,12 +101,25 @@
     <Compile Include="DefinitionGenerators\SearchConfigurationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermLabelDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\CategoryWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\CommunityAdminWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\CommunityJoinWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentBySearchWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ContentByQueryWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\DocumentSetContentsWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\DocumentSetPropertiesWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\MyMembershipWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\RefinementScriptWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ProjectSummaryWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\ResultScriptWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\RSSAggregatorWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SearchBoxScriptWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SearchNavigationWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SiteDocumentsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\SocialCommentWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\SummaryLinkWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\TableOfContentsWebPartDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\TagCloudWebPartDefinitionGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageLayoutTemplates.Designer.cs">
       <AutoGen>True</AutoGen>

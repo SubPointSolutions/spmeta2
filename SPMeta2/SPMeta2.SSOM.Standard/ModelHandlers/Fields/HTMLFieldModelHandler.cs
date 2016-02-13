@@ -10,10 +10,11 @@ using SPMeta2.Enumerations;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
 {
-    public class HTMLFieldModelHandler : FieldModelHandler
+    public class HTMLFieldModelHandler : NoteFieldModelHandler
     {
         #region properties
 
@@ -37,7 +38,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
             base.ProcessFieldProperties(field, fieldModel);
 
             var typedFieldModel = fieldModel.WithAssertAndCast<HTMLFieldDefinition>("model", value => value.RequireNotNull());
-            var typedField = field as LinkField;
+            var typedField = field as HtmlField;
 
             // TODO
             //typedField.NumberOfLines = typedFieldModel.NumberOfLines;

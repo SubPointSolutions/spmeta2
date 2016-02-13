@@ -19,12 +19,12 @@ namespace SPMeta2.Standard.Definitions
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Web", "Microsoft.SharePoint.Client")]
-    
+
 
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [SingletonIdentity]
 
@@ -43,22 +43,28 @@ namespace SPMeta2.Standard.Definitions
 
         #region properties
 
+        [ExpectUpdateAsUrl(Extension = ".aspx")]
         [ExpectValidation]
         [DataMember]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string SearchCenterUrl { get; set; }
 
+        [ExpectUpdate]
         [ExpectValidation]
         [DataMember]
         public bool? UseParentResultsPageUrl { get; set; }
 
+        [ExpectUpdateAsUrl(Extension = ".aspx")]
         [ExpectValidation]
         [DataMember]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string UseCustomResultsPageUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
         public bool? UseFirstSearchNavigationNode { get; set; }
-
 
         #endregion
 

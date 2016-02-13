@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -29,11 +30,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is SiteModelHost)
             {
-                CreateWeb(modelHost, (modelHost as SiteModelHost).HostSite.RootWeb, webModel);
+                CreateWeb(modelHost, ((SiteModelHost)modelHost).HostSite.RootWeb, webModel);
             }
             else if (parentHost is WebModelHost)
             {
-                CreateWeb(modelHost, (parentHost as WebModelHost).HostWeb, webModel);
+                CreateWeb(modelHost, ((WebModelHost)parentHost).HostWeb, webModel);
             }
             else
             {
@@ -43,38 +44,74 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void CreateWeb(object modelHost, SPWeb parentWeb, WebDefinition webModel)
         {
-            if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+            using (var web = GetOrCreateWeb(parentWeb, webModel, true))
             {
-                // TODO
-                using (var web = GetOrCreateWeb(parentWeb, webModel, true))
+                MapProperties(web, webModel);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
                 {
-                    web.Title = webModel.Title;
-                    web.Description = webModel.Description;
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = web,
+                    ObjectType = typeof(SPWeb),
+                    ObjectDefinition = webModel,
+                    ModelHost = modelHost
+                });
 
-                    web.Locale = new CultureInfo((int)webModel.LCID);
-
-                    InvokeOnModelEvent(this, new ModelEventArgs
-                    {
-                        CurrentModelNode = null,
-                        Model = null,
-                        EventType = ModelEventType.OnProvisioned,
-                        Object = web,
-                        ObjectType = typeof(SPWeb),
-                        ObjectDefinition = webModel,
-                        ModelHost = modelHost
-                    });
-
-                    web.Update();
-                }
-            }
-            else
-            {
-                throw new SPMeta2NotImplementedException("Custom web templates is not supported yet");
+                web.Update();
             }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        private static void MapProperties(SPWeb web, WebDefinition webModel)
         {
+            if (!string.IsNullOrEmpty(webModel.Title))
+            web.Title = webModel.Title;
+
+            if (!string.IsNullOrEmpty(webModel.Description))
+                web.Description = webModel.Description;
+
+            if (webModel.LCID > 0)
+                web.Locale = new CultureInfo((int)webModel.LCID);
+
+            if (!string.IsNullOrEmpty(webModel.AlternateCssUrl))
+                web.AlternateCssUrl = webModel.AlternateCssUrl;
+
+            if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
+                web.SiteLogoUrl = webModel.SiteLogoUrl;
+
+#if !NET35
+            if (webModel.IndexedPropertyKeys.Any())
+            {
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    if (web.AllProperties.ContainsKey(propName))
+                        web.AllProperties[propName] = propValue;
+                    else
+                        web.AllProperties.Add(propName, propValue);
+
+                    web.IndexedPropertyKeys.Add(propName);
+                }
+            }
+#endif
+        }
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+            
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
@@ -117,10 +154,46 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentWeb;
         }
 
+        protected virtual SPWebTemplate LookupCustomWebTemplateFromWeb(SPWeb web, WebDefinition definition)
+        {
+            // smain lookup by the internal name
+            var result = web.GetAvailableWebTemplates(definition.LCID)
+                            .OfType<SPWebTemplate>()
+                            .FirstOrDefault(tmpl => tmpl.IsCustomTemplate
+                                                    && !string.IsNullOrEmpty(tmpl.Name)
+                                                    && tmpl.Name.ToUpper() == definition.CustomWebTemplate.ToUpper());
+
+            if (result != null)
+                return result;
+
+            // one more try by title
+            return web.GetAvailableWebTemplates(definition.LCID)
+                      .OfType<SPWebTemplate>()
+                      .FirstOrDefault(tmpl => tmpl.IsCustomTemplate
+                                            && !string.IsNullOrEmpty(tmpl.Title)
+                                            && tmpl.Title.ToUpper() == definition.CustomWebTemplate.ToUpper());
+        }
+
+        protected virtual SPWebTemplate LookupCustomWebTemplate(SPWeb web, WebDefinition definition)
+        {
+            // lookup on the current web?
+            SPWebTemplate result = LookupCustomWebTemplateFromWeb(web, definition);
+
+            // lookup on the site?
+            if (result == null)
+                result = LookupCustomWebTemplateFromWeb(web.Site.RootWeb, definition);
+
+            return result;
+        }
+
         protected SPWeb GetOrCreateWeb(SPWeb parentWeb, WebDefinition webModel, bool updateProperties)
         {
             var webUrl = webModel.Url;
             var webDescription = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
+
+            // Enhance web provision - handle '/' slash #620
+            // https://github.com/SubPointSolutions/spmeta2/issues/620
+            webUrl = UrlUtility.RemoveStartingSlash(webUrl);
 
             var currentWeb = GetWeb(parentWeb, webModel);
 
@@ -139,13 +212,36 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = webModel
                 });
 
-                currentWeb = parentWeb.Webs.Add(webUrl,
-                    webModel.Title,
-                    webDescription,
-                    webModel.LCID,
-                    webModel.WebTemplate,
-                    webModel.UseUniquePermission,
-                    webModel.ConvertIfThere);
+                // custom web template handling
+                // based on pull request Implematation for CustomWebTemplate included #612 by @andreasblueher 
+                if (string.IsNullOrEmpty(webModel.CustomWebTemplate))
+                {
+                    currentWeb = parentWeb.Webs.Add(webUrl,
+                        webModel.Title,
+                        webDescription,
+                        webModel.LCID,
+                        webModel.WebTemplate,
+                        webModel.UseUniquePermission,
+                        webModel.ConvertIfThere);
+                }
+                else
+                {
+                    var customWebTemplate = LookupCustomWebTemplate(parentWeb, webModel);
+
+                    if (customWebTemplate == null)
+                        throw new SPMeta2ModelDeploymentException("Couldn't find custom web template: " + webModel.CustomWebTemplate);
+
+                    currentWeb = parentWeb.Webs.Add(webUrl,
+                        webModel.Title,
+                        webModel.Description,
+                        webModel.LCID,
+                        customWebTemplate,
+                        webModel.UseUniquePermission,
+                        webModel.ConvertIfThere);
+                }
+
+                MapProperties(currentWeb, webModel);
+                ProcessLocalization(currentWeb, webModel);
             }
             else
             {
@@ -154,8 +250,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
                         "Current web is not null. Updating Title/Description.");
 
-                    currentWeb.Title = webModel.Title;
-                    currentWeb.Description = webModel.Description ?? string.Empty;
+                    MapProperties(currentWeb, webModel);
+
+                    ProcessLocalization(currentWeb, webModel);
 
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
@@ -174,6 +271,21 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             return currentWeb;
+        }
+
+        protected virtual void ProcessLocalization(SPWeb obj, WebDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
+            }
         }
 
         #endregion

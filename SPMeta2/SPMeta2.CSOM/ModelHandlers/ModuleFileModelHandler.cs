@@ -11,6 +11,7 @@ using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using UrlUtility = SPMeta2.Utils.UrlUtility;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -83,6 +84,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     Overwrite = true
                 };
 
+
                 if (moduleFile.Content.Length < ContentStreamFileSize)
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.Content for small file less than: [{0}]", ContentStreamFileSize);
@@ -90,9 +92,17 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+#endif
                 }
+
+
 
                 var file = folder.Files.Add(fileCreatingInfo);
 
@@ -171,8 +181,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(moduleFile.Content);
+#endif
+
                 }
 
                 var file = folder.Files.Add(fileCreatingInfo);
@@ -213,8 +230,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             return UrlUtility.CombineUrl(folder.ServerRelativeUrl, moduleFile.FileName);
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var moduleFile = model.WithAssertAndCast<ModuleFileDefinition>("model", value => value.RequireNotNull());
 
@@ -266,10 +289,22 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public static void WithSafeFileOperation(List list, File file, Func<File, File> action)
         {
-            WithSafeFileOperation(list, file, action, null);
+            WithSafeFileOperation(list, file, action, null, true);
+        }
+
+        public static void WithSafeFileOperation(List list, File file, Func<File, File> action, bool doesFileHasListItem)
+        {
+            WithSafeFileOperation(list, file, action, null, doesFileHasListItem);
         }
 
         public static void WithSafeFileOperation(List list, File file, Func<File, File> action, Action<File> onCreated)
+        {
+            WithSafeFileOperation(list, file, action, onCreated, true);
+        }
+
+        public static void WithSafeFileOperation(List list, File file,
+            Func<File, File> action, Action<File> onCreated,
+            bool doesFileHasListItem)
         {
             var context = list.Context;
 
@@ -286,6 +321,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (file.Exists)
                 {
+                    context.Load(file);
+
                     context.Load(file, f => f.CheckOutType);
                     context.Load(file, f => f.CheckedOutByUser);
                     context.Load(file, f => f.Level);
@@ -294,12 +331,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
             }
 
-            var shouldRefreshLoad = false;
-
             // are we inside ocument libary, so that check in stuff is needed?
             var isDocumentLibrary = list != null && list.BaseType == BaseType.DocumentLibrary;
 
-            if (isDocumentLibrary)
+            if (isDocumentLibrary && doesFileHasListItem)
             {
 
                 if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
@@ -331,14 +366,26 @@ namespace SPMeta2.CSOM.ModelHandlers
             var spFile = action(file);
             context.ExecuteQueryWithTrace();
 
+            context.Load(spFile);
             context.Load(spFile, f => f.Exists);
+
             context.ExecuteQueryWithTrace();
 
             if (spFile.Exists)
             {
-                if (isDocumentLibrary)
+                // super hack with doesFileHasListItem
+                // once filed under Forms folder
+                // CanDeploy_WebpartTo_ListForm_InLibrary / CanDeploy_WebpartTo_ListForm_InLibrary
+                if (isDocumentLibrary && doesFileHasListItem)
                 {
-                    spFile.ListItemAllFields.Update();
+                    if (spFile.ListItemAllFields != null)
+                    {
+                        // weird issues while deployin in a row for wiki
+                        if (list.BaseTemplate != 119)
+                        {
+                            spFile.ListItemAllFields.Update();
+                        }
+                    }
                 }
 
                 context.ExecuteQueryWithTrace();
@@ -346,22 +393,42 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (onCreated != null)
                     onCreated(spFile);
 
+                context.Load(spFile);
+
                 context.Load(spFile, f => f.CheckOutType);
                 context.Load(spFile, f => f.Level);
 
                 context.ExecuteQueryWithTrace();
             }
 
-            if (isDocumentLibrary)
+            // super hack with doesFileHasListItem
+            // once filed under Forms folder
+            // CanDeploy_WebpartTo_ListForm_InLibrary / CanDeploy_WebpartTo_ListForm_InLibrary
+            if (isDocumentLibrary && doesFileHasListItem)
             {
                 if (list != null && spFile != null && (spFile.Exists && spFile.CheckOutType != CheckOutType.None))
+                {
                     spFile.CheckIn("Provision", CheckinType.MajorCheckIn);
+                }
 
                 if (list != null && spFile != null && (list.EnableMinorVersions))
                     spFile.Publish("Provision");
 
+
                 if (list != null && spFile != null && (list.EnableModeration))
+                {
+
+#if NET35
+                    // TODO, Approve() method is not exposed
+                    throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/771");
+#endif
+
+#if !NET35
                     spFile.Approve("Provision");
+#endif
+
+                }
+
             }
 
             context.ExecuteQueryWithTrace();
@@ -372,7 +439,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             Folder folder = null;
 
             if (folderHost.CurrentList != null)
-                folder = folderHost.CurrentLibraryFolder;
+                folder = folderHost.CurrentListFolder;
             else if (folderHost.CurrentContentType != null)
                 folder = folderHost.CurrentContentTypeFolder;
             else if (folderHost.CurrentWebFolder != null)
@@ -391,7 +458,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected string ResolveContentTypeId(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
         {
-            var context = folderHost.CurrentLibraryFolder.Context;
+            var context = folderHost.CurrentListFolder.Context;
             var list = folderHost.CurrentList;
             var stringCustomContentType = string.Empty;
 
@@ -401,44 +468,29 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (!string.IsNullOrEmpty(moduleFile.ContentTypeName))
             {
-                // preload custom content type
-
-                var listContentTypes = list.ContentTypes;
-                context.Load(listContentTypes);
-                context.ExecuteQueryWithTrace();
-
-                var listContentType = listContentTypes.ToList()
-                                                      .FirstOrDefault(c => c.Name.ToUpper() == moduleFile.ContentTypeName.ToUpper());
-
-                if (listContentType == null)
-                {
-                    throw new ArgumentNullException(
-                        string.Format("Cannot find content type with Name:[{0}] in List:[{1}]",
-                            new string[]
-                                    {
-                                        moduleFile.ContentTypeName,
-                                        list.Title
-                                    }));
-                }
-
-                stringCustomContentType = listContentType.Id.ToString();
+                stringCustomContentType = ContentTypeLookupService.LookupContentTypeByName(list, moduleFile.ContentTypeName).Id.ToString();
             }
 
             return stringCustomContentType;
         }
 
-        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition moduleFile)
+        private File ProcessFile(FolderModelHost folderHost, ModuleFileDefinition definition)
         {
-            var context = folderHost.CurrentLibraryFolder.Context;
+            var context = folderHost.CurrentListFolder.Context;
 
             var web = folderHost.CurrentWeb;
             var list = folderHost.CurrentList;
-            var folder = folderHost.CurrentLibraryFolder;
+            var folder = folderHost.CurrentListFolder;
 
             context.Load(folder, f => f.ServerRelativeUrl);
+
+#if !NET35
+            context.Load(folder, f => f.Properties);
+#endif
+
             context.ExecuteQueryWithTrace();
 
-            var stringCustomContentType = ResolveContentTypeId(folderHost, moduleFile);
+            var stringCustomContentType = ResolveContentTypeId(folderHost, definition);
 
             if (list != null)
             {
@@ -449,12 +501,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 
-            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var file = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(file, f => f.Exists);
             context.ExecuteQueryWithTrace();
-
-            InvokeOnModelEvent<ModuleFileDefinition, File>(file, ModelEventType.OnUpdating);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -463,16 +513,28 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = file.Exists ? file : null,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
 
+#if !NET35
+            var doesFileHasListItem =
+                //Forms folders
+             !(folder != null
+              &&
+              (folder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+               && folder.Properties.FieldValues["vti_winfileattribs"].ToString() == "00000012"));
+
+#endif
+
+#if NET35
+            var doesFileHasListItem = true;
+#endif
+
             WithSafeFileOperation(list, file, f =>
             {
-
-
-                var fileName = moduleFile.FileName;
-                var fileContent = moduleFile.Content;
+                var fileName = definition.FileName;
+                var fileContent = definition.Content;
 
                 var fileCreatingInfo = new FileCreationInformation
                 {
@@ -487,30 +549,44 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
+#if NET35
+                    throw new SPMeta2Exception(string.Format("SP2010 CSOM implementation does no support file more than {0}. Checkout FileCreationInformation and avialabe Content size.", ContentStreamFileSize));
+#endif
+
+#if !NET35
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Using fileCreatingInfo.ContentStream for big file more than: [{0}]", ContentStreamFileSize);
                     fileCreatingInfo.ContentStream = new System.IO.MemoryStream(fileContent);
+#endif
                 }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Overwriting file");
                 var updatedFile = folder.Files.Add(fileCreatingInfo);
 
-                var newFileItem = updatedFile.ListItemAllFields;
-                //context.Load(newFileItem);
-                //context.ExecuteQueryWithTrace();
+                FieldLookupService.EnsureDefaultValues(updatedFile.ListItemAllFields, definition.DefaultValues);
+
 
                 if (!string.IsNullOrEmpty(stringCustomContentType))
-                    newFileItem[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.ContentTypeId] = stringCustomContentType;
 
-                if (moduleFile.DefaultValues.Count > 0)
-                    EnsureDefaultValues(newFileItem, moduleFile);
+                if (!string.IsNullOrEmpty(definition.Title))
+                    updatedFile.ListItemAllFields[BuiltInInternalFieldNames.Title] = definition.Title;
 
-                if (!string.IsNullOrEmpty(stringCustomContentType) || moduleFile.DefaultValues.Count > 0)
-                    newFileItem.Update();
+
+                FieldLookupService.EnsureValues(updatedFile.ListItemAllFields, definition.Values, true);
+
+                if (!string.IsNullOrEmpty(stringCustomContentType)
+                    || definition.DefaultValues.Count > 0
+                    || definition.Values.Count > 0
+                    || !string.IsNullOrEmpty(definition.Title))
+                {
+                    updatedFile.ListItemAllFields.Update();
+                }
+
 
                 return updatedFile;
-            });
+            }, doesFileHasListItem);
 
-            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, moduleFile));
+            var resultFile = web.GetFileByServerRelativeUrl(GetSafeFileUrl(folder, definition));
 
             context.Load(resultFile, f => f.Exists);
             context.ExecuteQueryWithTrace();
@@ -522,35 +598,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioned,
                 Object = resultFile,
                 ObjectType = typeof(File),
-                ObjectDefinition = moduleFile,
+                ObjectDefinition = definition,
                 ModelHost = folderHost
             });
-            InvokeOnModelEvent<ModuleFileDefinition, File>(resultFile, ModelEventType.OnUpdated);
 
             return resultFile;
-        }
-
-        private static void EnsureDefaultValues(ListItem newFileItem, ModuleFileDefinition publishingPageModel)
-        {
-            foreach (var defaultValue in publishingPageModel.DefaultValues)
-            {
-                if (!string.IsNullOrEmpty(defaultValue.FieldName))
-                {
-                    if (newFileItem.FieldValues.ContainsKey(defaultValue.FieldName))
-                    {
-                        if (newFileItem[defaultValue.FieldName] == null)
-                            newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                    else
-                    {
-                        newFileItem[defaultValue.FieldName] = defaultValue.Value;
-                    }
-                }
-                else if (defaultValue.FieldId.HasValue && defaultValue.FieldId != default(Guid))
-                {
-                    // unsupported by CSOM API yet
-                }
-            }
         }
 
         #endregion

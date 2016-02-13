@@ -1,16 +1,13 @@
-﻿using SPMeta2.Attributes;
-using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using SPMeta2.Definitions.Base;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -18,13 +15,13 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint custom user action.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserCustomAction", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.UserCustomAction", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserCustomAction", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.UserCustomAction", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -32,6 +29,9 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(SiteDefinition))]
     [ParentHostCapability(typeof(WebDefinition))]
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class UserCustomActionDefinition : DefinitionBase
     {
         #region constructors
@@ -40,6 +40,10 @@ namespace SPMeta2.Definitions
         {
             Rights = new Collection<string>();
             RegistrationType = BuiltInRegistrationTypes.None;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
+            CommandUIExtensionResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -65,6 +69,15 @@ namespace SPMeta2.Definitions
         [ExpectNullable]
         public string Title { get; set; }
 
+
+        /// <summary>
+        /// Corresponds to TitleResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
+
         /// <summary>
         /// Description of the target user custom action.
         /// </summary>
@@ -73,6 +86,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// Group of the target user custom action.
@@ -96,6 +118,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [NotAbsoluteUrlCapability]
         public string ScriptSrc { get; set; }
 
         /// <summary>
@@ -154,6 +177,14 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public string CommandUIExtension { get; set; }
+
+        /// <summary>
+        /// Corresponds to CommandUIExtensionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> CommandUIExtensionResource { get; set; }
 
         #endregion
 

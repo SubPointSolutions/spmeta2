@@ -18,8 +18,11 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] [DataContract]
+    [Serializable]
+    [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
 
     public class TaxonomyFieldDefinition : FieldDefinition
     {
@@ -36,6 +39,24 @@ namespace SPMeta2.Standard.Definitions.Fields
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override sealed string FieldType
+        {
+            get
+            {
+                if (IsMulti)
+                    return BuiltInFieldTypes.TaxonomyFieldTypeMulti;
+
+                return BuiltInFieldTypes.TaxonomyFieldType;
+            }
+            set
+            {
+
+            }
+        }
 
         [ExpectValidation]
         [DataMember]
@@ -107,6 +128,18 @@ namespace SPMeta2.Standard.Definitions.Fields
         [ExpectValidation]
         [DataMember]
         public int TermLCID { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public bool? IsSiteCollectionGroup { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string TermGroupName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public Guid? TermGroupId { get; set; }
 
         #endregion
 

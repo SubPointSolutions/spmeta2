@@ -24,6 +24,9 @@ using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
 using System.Text;
+using SPMeta2.Regression.ModelHandlers;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
+using SPMeta2.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -33,6 +36,8 @@ namespace SPMeta2.Regression.Tests.Base
 
         public SPMeta2RegresionTestBase()
         {
+            ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
+
             RegressionService.EnableDefinitionProvision = true;
             RegressionService.ProvisionGenerationCount = 2;
 
@@ -46,7 +51,11 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions = new RunOptions();
 
             TestOptions.EnableWebApplicationDefinitionTest = false;
+            TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
+            TestOptions.EnableContentTypeHubTests = true;
+
+            TestOptions.EnablWebConfigModificationTest = false;
         }
 
         #endregion
@@ -72,6 +81,14 @@ namespace SPMeta2.Regression.Tests.Base
 
         static SPMeta2RegresionTestBase()
         {
+            // ensure we aren't in GAC
+            var location = typeof(FieldDefinition).Assembly.Location;
+
+            if (location.ToUpper().Contains("GAC_"))
+            {
+                throw new SPMeta2Exception(string.Format("M2 assemblies are beinfg loaded from the GAC: [{0}].", location));
+            }
+
             RegressionService = new RegressionTestService();
 
             RegressionService.AssertService = new VSAssertService();
@@ -87,6 +104,11 @@ namespace SPMeta2.Regression.Tests.Base
         protected class RunOptions
         {
             public bool EnableWebApplicationDefinitionTest { get; set; }
+            public bool EnableSerializeDeserializeAndStillDeployTests { get; set; }
+
+            public bool EnablWebConfigModificationTest { get; set; }
+
+            public bool EnableContentTypeHubTests { get; set; }
         }
 
         #endregion
@@ -109,6 +131,24 @@ namespace SPMeta2.Regression.Tests.Base
         #endregion
 
         #region testing API
+
+        protected virtual void WithDisabledValidationOnTypes(Type type, Action action)
+        {
+            WithDisabledValidationOnTypes(new[] { type }, action);
+        }
+
+        protected virtual void WithDisabledValidationOnTypes(IEnumerable<Type> types, Action action)
+        {
+            try
+            {
+                RegressionService.RegExcludedDefinitionTypes.Add(typeof(WebDefinition));
+                action();
+            }
+            finally
+            {
+                RegressionService.RegExcludedDefinitionTypes.Clear();
+            }
+        }
 
         protected void WithDisabledPropertyUpdateValidation(Action action)
         {
@@ -138,6 +178,9 @@ namespace SPMeta2.Regression.Tests.Base
             var model = RegressionService.TestRandomDefinition(definitionSetup);
 
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(new[] { model });
+
+
+            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(new[] { model });
         }
 
         protected void WithSPMeta2NotSupportedExceptions(Action action)
@@ -168,12 +211,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new  ModelNode[] { model });
+            TestModels(new ModelNode[] { model });
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
         {
-            TestModels(new  ModelNode[] { firstModel, secondModel });
+            TestModels(new ModelNode[] { firstModel, secondModel });
         }
 
 
@@ -211,12 +254,27 @@ namespace SPMeta2.Regression.Tests.Base
             }
         }
 
-
-
         protected void TestModels(IEnumerable<ModelNode> models)
         {
             RegressionService.TestModels(models);
+
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
+            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+
+        }
+
+        private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)
+        {
+            if (!TestOptions.EnableSerializeDeserializeAndStillDeployTests)
+                return;
+
+            TraceUtils.WithScope(trace =>
+            {
+                trace.WriteLine("Saving-restoring XML/JSON models. Deployng..");
+                var serializedModels = RegressionService.GetSerializedAndRestoredModels(models);
+
+                RegressionService.TestModels(serializedModels);
+            });
         }
 
         private void ProcessPropertyUpdateValidation(IEnumerable<ModelNode> models)
@@ -230,7 +288,6 @@ namespace SPMeta2.Regression.Tests.Base
                 });
             }
         }
-
 
         private void ProcessDefinitionsPropertyNulableValidation(DefinitionBase def)
         {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SPMeta2.Definitions;
 
 namespace SPMeta2.Enumerations
@@ -12,6 +9,19 @@ namespace SPMeta2.Enumerations
     public static class BuiltInSiteFeatures
     {
         #region custom added
+
+        /// <summary>
+        /// This Feature enables developers to deploy apps under active development to a site.
+        /// Make sure you activate this feature only under a tenant admin for O365.
+        /// </summary>
+        public static FeatureDefinition EnableAppSideLoading = new FeatureDefinition
+        {
+            Title = "EnableAppSideLoading",
+            Id = new Guid("{ae3a1339-61f5-4f8f-81a7-abd2da956a7d}"),
+            Scope = FeatureDefinitionScope.Site,
+            ForceActivate = false,
+            Enable = false
+        };
 
         /// <summary>
         /// Makes the following Web Parts available in the site collection Web Part catalog: Page Viewer, Content Editor, Image, Form, XML and Site Users list.

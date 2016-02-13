@@ -1,9 +1,8 @@
-﻿using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SPMeta2.Definitions.Base;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
 
 namespace SPMeta2.Definitions
 {
@@ -11,9 +10,13 @@ namespace SPMeta2.Definitions
     [DataContract]
     public class FieldValue
     {
+        [DataMember]
         public string FieldName { get; set; }
+
+        [DataMember]
         public Guid? FieldId { get; set; }
 
+        [DataMember]
         public object Value { get; set; }
     }
 
@@ -27,18 +30,25 @@ namespace SPMeta2.Definitions
     {
         #region constructors
 
-        public PageDefinitionBase()
+        protected PageDefinitionBase()
         {
             NeedOverride = true;
+
             DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
 
         #region properties
 
+        [ExpectValidation]
         [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
 
         /// <summary>
         /// Title of the target page.
@@ -48,7 +58,7 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [ExpectRequired]
         [DataMember]
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// File name of the target page.
@@ -67,6 +77,16 @@ namespace SPMeta2.Definitions
         [DataMember]
 
         public bool NeedOverride { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
 
         #endregion
 

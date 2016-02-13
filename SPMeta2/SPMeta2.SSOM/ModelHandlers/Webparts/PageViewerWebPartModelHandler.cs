@@ -49,7 +49,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                 contentLinkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = contentLinkValue,
-                    Context = CurrentHost.PageListItem.Web
+                    Context = CurrentHost.HostFile.Web
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced contentLinkValue: [{0}]", contentLinkValue);

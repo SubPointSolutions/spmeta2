@@ -1,11 +1,8 @@
-﻿using SPMeta2.Definitions;
-using SPMeta2.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using SPMeta2.Syntax.Default.Extensions;
+using SPMeta2.Definitions;
+using SPMeta2.Models;
 
 namespace SPMeta2.Syntax.Default
 {

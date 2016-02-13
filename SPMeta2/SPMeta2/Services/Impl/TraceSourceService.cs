@@ -22,7 +22,7 @@ namespace SPMeta2.Services.Impl
 
         #region properties
 
-        public TraceSource TraceSource = new TraceSource("SPMeta2");
+        public TraceSource TraceSource;
 
         #endregion
 

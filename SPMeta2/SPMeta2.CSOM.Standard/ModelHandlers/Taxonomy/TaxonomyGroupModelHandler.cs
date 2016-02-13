@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SPMeta2.Common;
@@ -7,7 +6,6 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
@@ -35,8 +33,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             DeployTaxonomyGroup(modelHost, siteModelHost, groupModel);
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var storeModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
@@ -57,7 +61,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var context = termStore.Context;
 
-            TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, false);
+            TermGroup currentGroup = termStore.GetSiteCollectionGroup(site, true);
 
             context.Load(currentGroup);
             context.ExecuteQueryWithTrace();

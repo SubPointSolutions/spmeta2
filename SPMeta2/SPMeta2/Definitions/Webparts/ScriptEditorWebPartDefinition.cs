@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Utils;
-using System.Runtime.Serialization;
 using SPMeta2.Exceptions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -25,16 +20,21 @@ namespace SPMeta2.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
+
     public class ScriptEditorWebPartDefinition : WebPartDefinition
     {
         #region properties
 
-        private string id;
+        private string _id;
 
         [DataMember]
         public override string Id
         {
-            get { return id; }
+            get { return _id; }
             set
             {
                 // https://github.com/SubPointSolutions/spmeta2/issues/450
@@ -44,7 +44,7 @@ namespace SPMeta2.Definitions.Webparts
                         "Id property for ScriptEditorWebPartDefinition must be more than 32 symbols - https://github.com/SubPointSolutions/spmeta2/issues/450");
                 }
 
-                id = value;
+                _id = value;
             }
         }
 

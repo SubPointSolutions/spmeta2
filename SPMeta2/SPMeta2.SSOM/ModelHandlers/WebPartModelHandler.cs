@@ -84,12 +84,55 @@ namespace SPMeta2.SSOM.ModelHandlers
                 instance.TitleIconImageUrl = definition.TitleIconImageUrl;
 
             if (!string.IsNullOrEmpty(definition.TitleUrl))
-                instance.TitleUrl = definition.TitleUrl;
+            {
+                var urlValue = definition.TitleUrl ?? string.Empty;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original value: [{0}]",
+                    urlValue);
+
+                urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = urlValue,
+                    Context = CurrentHost.HostFile.Web
+                }).Value;
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
+
+                instance.TitleUrl = urlValue;
+            }
 
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 instance.ExportMode = (WebPartExportMode)Enum.Parse(typeof(WebPartExportMode), definition.ExportMode);
 
+            ProcessWebpartCustomProperties(instance, definition);
+            ProcessParameterBindings(instance, definition);
+        }
 
+        protected virtual void ProcessWebpartCustomProperties(WebPart instance, WebPartDefinition definition)
+        {
+            if (definition.Properties != null && definition.Properties.Count > 0)
+            {
+                var wpType = instance.GetType();
+
+                foreach (var prop in definition.Properties)
+                {
+                    var isCdata = prop.IsCData.HasValue && prop.IsCData.Value;
+
+                    if (ReflectionUtils.HasProperty(instance, prop.Name))
+                    {
+                        var wpProp = wpType.GetProperty(prop.Name);
+                        var wpPropType = wpProp.PropertyType;
+
+                        var targetValue = Convert.ChangeType(prop.Value, wpPropType);
+
+                        wpProp.SetValue(instance, targetValue, null);
+                    }
+                }
+            }
+        }
+
+        protected virtual void ProcessParameterBindings(WebPart instance, WebPartDefinition definition)
+        {
             var dataFomWebPart = instance as DataFormWebPart;
 
             if (dataFomWebPart != null
@@ -117,7 +160,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             OnBeforeDeployModel(host, webpartModel);
 
-            InvokeOnModelEvent<FieldDefinition, SPField>(null, ModelEventType.OnUpdating);
             WebPartExtensions.DeployWebPartToPage(host.SPLimitedWebPartManager, webpartModel,
                 onUpdatingWebpartInstnce =>
                 {
@@ -137,8 +179,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ModelHost = modelHost
                     });
 
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatingWebpartInstnce, ModelEventType.OnUpdating);
-
                 },
                 onUpdatedWebpartInstnce =>
                 {
@@ -154,11 +194,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                         ObjectDefinition = model,
                         ModelHost = modelHost
                     });
-
-                    InvokeOnModelEvent<WebPartDefinition, WebPart>(onUpdatedWebpartInstnce, ModelEventType.OnUpdated);
                 },
                 ProcessWebpartProperties);
+
+            OnAfterDeployModel(host, webpartModel);
+
         }
+
+
 
         private static Guid PageLayout = new Guid("0f800910-b30d-4c8f-b011-8189b2297094");
         private static Guid PublishingPageContent = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8");
@@ -217,6 +260,11 @@ namespace SPMeta2.SSOM.ModelHandlers
         }
 
         protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)
+        {
+
+        }
+
+        protected virtual void OnAfterDeployModel(WebpartPageModelHost host, WebPartDefinition webpartModel)
         {
 
         }

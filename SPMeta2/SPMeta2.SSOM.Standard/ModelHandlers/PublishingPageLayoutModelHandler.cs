@@ -13,6 +13,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Services;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers
 {
@@ -77,13 +78,55 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 null,
                 afterFile =>
                 {
+                    //var pageItem = afterFile.Properties;
+                    var pageItem = afterFile.ListItemAllFields;
 
+                    FieldLookupService.EnsureDefaultValues(pageItem, definition.DefaultValues);
 
-                    var pageItem = afterFile.Properties;
+                    if (!string.IsNullOrEmpty(definition.Title))
+                    {
+                        //pageItem["vti_title"] = definition.Title;
+                        pageItem["Title"] = definition.Title;
+                    }
 
-                    pageItem["vti_title"] = definition.Title;
-                    pageItem["MasterPageDescription"] = definition.Description;
+                    // ootb ?
                     pageItem[BuiltInInternalFieldNames.ContentTypeId] = BuiltInPublishingContentTypeId.PageLayout;
+
+
+                    // custom?
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                       !string.IsNullOrEmpty(definition.ContentTypeName))
+                    {
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                        if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                            pageItem["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+                    }
+
+                    if (!string.IsNullOrEmpty(definition.Description))
+                    {
+                        // did not work
+                        pageItem["MasterPageDescription"] = definition.Description;
+                        //pageItem.Properties["MasterPageDescription"] = definition.Description;
+                    }
+
+
+                    if (!string.IsNullOrEmpty(definition.PreviewImageUrl))
+                    {
+                        var urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                        {
+                            Value = definition.PreviewImageUrl,
+                            Context = web
+                        }).Value;
+
+                        var urlFieldValue = new SPFieldUrlValue { Url = urlValue };
+
+                        if (!string.IsNullOrEmpty(definition.PreviewImageDescription))
+                            urlFieldValue.Description = definition.PreviewImageDescription;
+
+                        pageItem["PublishingPreviewImage"] = urlFieldValue.ToString();
+                    }
 
                     if (!string.IsNullOrEmpty(definition.AssociatedContentTypeId))
                     {
@@ -93,6 +136,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                             siteContentType.Name,
                             siteContentType.Id.ToString());
                     }
+
+                    FieldLookupService.EnsureValues(pageItem, definition.Values, true);
+
+
+                    pageItem.Update();
                 });
         }
 

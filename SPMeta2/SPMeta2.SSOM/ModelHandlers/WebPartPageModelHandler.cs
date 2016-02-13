@@ -13,6 +13,7 @@ using System.Web.UI.WebControls.WebParts;
 using SPMeta2.SSOM.ModelHosts;
 using Microsoft.SharePoint.Utilities;
 using System.Text;
+using SPMeta2.Templates;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -41,22 +42,28 @@ namespace SPMeta2.SSOM.ModelHandlers
             get { return typeof(WebPartPageDefinition); }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var webpartPageModel = model.WithAssertAndCast<WebPartPageDefinition>("model", value => value.RequireNotNull());
 
             //var list = listModelHost.HostList;
             var folder = folderModelHost.CurrentLibraryFolder;
 
-            var targetPage = GetOrCreateNewWebPartPage(modelHost, folder, webpartPageModel);
+            var targetFile = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
 
-            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            using (var webPartManager = targetFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
             {
                 var webpartPageHost = new WebpartPageModelHost
                 {
-                    HostFile =  targetPage.File,
-                    PageListItem =  targetPage,
+                    HostFile = targetFile,
+                    PageListItem = targetFile.Item,
                     SPLimitedWebPartManager = webPartManager
                 };
 
@@ -71,7 +78,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             //var list = folderModelHost.HostList;
             var folder = folderModelHost.CurrentLibraryFolder;
-            var targetPage = GetOrCreateNewWebPartPage(modelHost, folder, webpartPageModel);
+            var targetPage = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
 
             // gosh, it really does not have a title
             //targetPage[SPBuiltInFieldId.Title] = webpartPageModel.Title;
@@ -81,7 +88,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             //targetPage.Update();
         }
 
-        protected SPListItem FindWebPartPage(SPFolder folder, WebPartPageDefinition webpartPageModel)
+        protected SPFile FindWebPartPage(SPFolder folder, WebPartPageDefinition webpartPageModel)
         {
             var webPartPageName = GetSafeWebPartPageFileName(webpartPageModel);
 
@@ -90,7 +97,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             foreach (SPFile file in folder.Files)
                 if (file.Name.ToUpper() == webPartPageName.ToUpper())
-                    return file.Item;
+                    return file;
 
             return null;
         }
@@ -105,25 +112,26 @@ namespace SPMeta2.SSOM.ModelHandlers
             return webPartPageName;
         }
 
-        private SPListItem GetOrCreateNewWebPartPage(object modelHost, SPFolder folder,
-            WebPartPageDefinition webpartPageModel)
+        private SPFile GetOrCreateNewWebPartFile(object modelHost, SPFolder folder,
+            WebPartPageDefinition definition)
         {
-            var targetPage = FindWebPartPage(folder, webpartPageModel);
+            var list = folder.DocumentLibrary;
+            var targetFile = FindWebPartPage(folder, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
-                Object = targetPage == null ? null : targetPage.File,
+                Object = targetFile,
                 ObjectType = typeof(SPFile),
-                ObjectDefinition = webpartPageModel,
+                ObjectDefinition = definition,
                 ModelHost = modelHost
             });
 
-            if (targetPage == null || webpartPageModel.NeedOverride)
+            if (targetFile == null || definition.NeedOverride)
             {
-                if (webpartPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = true. Replacing web part page.");
@@ -133,17 +141,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new web part page");
                 }
 
-                var webPartPageName = GetSafeWebPartPageFileName(webpartPageModel);
+                var webPartPageName = GetSafeWebPartPageFileName(definition);
 
                 byte[] fileContent = null;
 
-                if (!string.IsNullOrEmpty(webpartPageModel.CustomPageLayout))
+                if (!string.IsNullOrEmpty(definition.CustomPageLayout))
                 {
-                    fileContent = Encoding.UTF8.GetBytes(webpartPageModel.CustomPageLayout);
+                    fileContent = Encoding.UTF8.GetBytes(definition.CustomPageLayout);
                 }
                 else
                 {
-                    fileContent = Encoding.UTF8.GetBytes(GetWebPartTemplateContent(webpartPageModel));
+                    fileContent = Encoding.UTF8.GetBytes(GetWebPartPageTemplateContent(definition));
                 }
 
                 ModuleFileModelHandler.DeployModuleFile(folder,
@@ -153,23 +161,60 @@ namespace SPMeta2.SSOM.ModelHandlers
                   true,
                     file =>
                     {
+
+                    },
+                    after =>
+                    {
+                        FieldLookupService.EnsureDefaultValues(after.ListItemAllFields, definition.DefaultValues);
+
+                        if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                           !string.IsNullOrEmpty(definition.ContentTypeName))
+                        {
+                            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                                after.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+                        }
+
+                        FieldLookupService.EnsureValues(after.ListItemAllFields, definition.Values, true);
+
+                        if (definition.DefaultValues.Any()
+                            || definition.Values.Any()
+                            || !string.IsNullOrEmpty(definition.ContentTypeId)
+                            || !string.IsNullOrEmpty(definition.ContentTypeName))
+                        {
+                            after.ListItemAllFields.Update();
+                        }
+
                         InvokeOnModelEvent(this, new ModelEventArgs
                         {
                             CurrentModelNode = null,
                             Model = null,
                             EventType = ModelEventType.OnProvisioned,
-                            Object = file,
+                            Object = after,
                             ObjectType = typeof(SPFile),
-                            ObjectDefinition = webpartPageModel,
+                            ObjectDefinition = definition,
                             ModelHost = modelHost
                         });
-                    },
-                  null);
+                    });
 
-                targetPage = FindWebPartPage(folder, webpartPageModel);
+                targetFile = FindWebPartPage(folder, definition);
             }
             else
             {
+                FieldLookupService.EnsureDefaultValues(targetFile.ListItemAllFields, definition.DefaultValues);
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                !string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                    if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                        targetFile.ListItemAllFields["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+                }
+
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing web part page");
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "NeedOverride = false. Skipping replacing web part page.");
 
@@ -178,44 +223,84 @@ namespace SPMeta2.SSOM.ModelHandlers
                     CurrentModelNode = null,
                     Model = null,
                     EventType = ModelEventType.OnProvisioned,
-                    Object = targetPage == null ? null : targetPage.File,
+                    Object = targetFile,
                     ObjectType = typeof(SPFile),
-                    ObjectDefinition = webpartPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = modelHost
                 });
 
-                targetPage.Update();
+                targetFile.Update();
             }
 
-            return targetPage;
+            return targetFile;
         }
 
-        protected virtual string GetWebPartTemplateContent(WebPartPageDefinition webPartPageModel)
+
+        public virtual string GetWebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
         {
-            return GetWebPartPageTemplateContent(webPartPageModel);
+            // TODO, add support for SP2016
+            // Built-in web part page templates should be correctly resolved for SP2010/2013 #683
+
+            var spRuntimeVersion = typeof(SPField).Assembly.GetName().Version;
+
+            if (spRuntimeVersion.Major == 14)
+            {
+                return GetSP2010WebPartPageTemplateContent(webPartPageModel);
+            }
+
+            if (spRuntimeVersion.Major == 15)
+            {
+                return GetSP2013WebPartPageTemplateContent(webPartPageModel);
+            }
+
+            throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));
         }
 
-        public static string GetWebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
+        protected virtual string GetSP2013WebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
         {
-            // gosh! would u like to offer a better way?
             switch (webPartPageModel.PageLayoutTemplate)
             {
                 case 1:
-                    return WebPartPageTemplates.spstd1;
+                    return SP2013WebPartPageTemplates.spstd1;
                 case 2:
-                    return WebPartPageTemplates.spstd2;
+                    return SP2013WebPartPageTemplates.spstd2;
                 case 3:
-                    return WebPartPageTemplates.spstd3;
+                    return SP2013WebPartPageTemplates.spstd3;
                 case 4:
-                    return WebPartPageTemplates.spstd4;
+                    return SP2013WebPartPageTemplates.spstd4;
                 case 5:
-                    return WebPartPageTemplates.spstd5;
+                    return SP2013WebPartPageTemplates.spstd5;
                 case 6:
-                    return WebPartPageTemplates.spstd6;
+                    return SP2013WebPartPageTemplates.spstd6;
                 case 7:
-                    return WebPartPageTemplates.spstd7;
+                    return SP2013WebPartPageTemplates.spstd7;
                 case 8:
-                    return WebPartPageTemplates.spstd8;
+                    return SP2013WebPartPageTemplates.spstd8;
+            }
+
+            throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));
+        }
+
+        protected virtual string GetSP2010WebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
+        {
+            switch (webPartPageModel.PageLayoutTemplate)
+            {
+                case 1:
+                    return SP2010WebPartPageTemplates.spstd1;
+                case 2:
+                    return SP2010WebPartPageTemplates.spstd2;
+                case 3:
+                    return SP2010WebPartPageTemplates.spstd3;
+                case 4:
+                    return SP2010WebPartPageTemplates.spstd4;
+                case 5:
+                    return SP2010WebPartPageTemplates.spstd5;
+                case 6:
+                    return SP2010WebPartPageTemplates.spstd6;
+                case 7:
+                    return SP2010WebPartPageTemplates.spstd7;
+                case 8:
+                    return SP2010WebPartPageTemplates.spstd8;
             }
 
             throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));

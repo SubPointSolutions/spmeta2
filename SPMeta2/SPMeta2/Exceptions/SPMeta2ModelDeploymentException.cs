@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SPMeta2.Models;
 
 namespace SPMeta2.Exceptions
 {
-    [Serializable] 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly"), Serializable] 
     public class SPMeta2ModelDeploymentException : SPMeta2Exception
     {
         public SPMeta2ModelDeploymentException() { }

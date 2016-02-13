@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
-using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -20,9 +19,12 @@ namespace SPMeta2.Syntax.Default
         IAuditSettingsHostModelNode,
         IContentTypeLinkHostModelNode,
         IUserCustomActionHostModelNode,
-        ISP2013WorkflowSubscriptionHostModelNode
+        ISP2013WorkflowSubscriptionHostModelNode,
+        IWorkflowAssociationHostModelNode,
+        IPropertyHostModelNode
     {
 
+       
     }
 
     public static class ListDefinitionSyntax

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers.Base;
@@ -25,7 +25,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var web = typedModelHost.HostWeb;
 
+#pragma warning disable 618
                 var targetListUrl = SPUrlUtility.CombineUrl(web.Url, definition.GetListUrl());
+#pragma warning restore 618
                 result = web.GetList(targetListUrl);
             }
             catch
@@ -48,7 +50,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list");
 
-            var listId = default(Guid);
+            Guid listId;
+
+            // create with the random title to avoid issue with 2 lists + diff URL and same Title
+            // list Title will be renamed later on
+            var listTitle = Guid.NewGuid().ToString("N");
 
             // "SPBug", there are two ways to create lists 
             // (1) by TemplateName (2) by TemplateType 
@@ -58,11 +64,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 //listId = web.Lists.Add(listModel.Url, listModel.Description ?? string.Empty, (SPListTemplateType)listModel.TemplateType);
                 listId = web.Lists.Add(
-                                listModel.Title,
+                                listTitle,
                                 listModel.Description ?? string.Empty,
-                                listModel.GetListUrl(),
-                                string.Empty,
-                                (int)listModel.TemplateType,
+#pragma warning disable 618
+ listModel.GetListUrl(),
+#pragma warning restore 618
+ string.Empty,
+                                listModel.TemplateType,
                                 string.Empty);
             }
             else if (!string.IsNullOrEmpty(listModel.TemplateName))
@@ -73,10 +81,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var listTemplate = ResolveListTemplate(web, listModel);
 
                 listId = web.Lists.Add(
-                               listModel.Title,
+                               listTitle,
                                listModel.Description ?? string.Empty,
-                               listModel.GetListUrl(),
-                               listTemplate.FeatureId.ToString(),
+#pragma warning disable 618
+ listModel.GetListUrl(),
+#pragma warning restore 618
+ listTemplate.FeatureId.ToString(),
                                (int)listTemplate.Type,
                                listTemplate.DocumentTemplate);
             }
@@ -100,7 +110,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
-                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+                var draftOption =
+                    (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
                 list.DraftVersionVisibility = draftOption;
             }
 
@@ -147,6 +158,47 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
+
+#if !NET35
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
+                        list.IndexedRootFolderPropertyKeys.Add(indexProperty);
+                }
+            }
+#endif
+
+            if (definition.WriteSecurity.HasValue)
+                list.WriteSecurity = definition.WriteSecurity.Value;
+
+            var docLibrary = list as SPDocumentLibrary;
+
+            if (docLibrary != null)
+            {
+                if (!string.IsNullOrEmpty(definition.DocumentTemplateUrl))
+                {
+                    var urlValue = definition.DocumentTemplateUrl;
+
+                    urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = urlValue,
+                        Context = list.ParentWeb
+                    }).Value;
+
+                    if (!urlValue.StartsWith("/")
+                        && !urlValue.StartsWith("http:")
+                        && !urlValue.StartsWith("https:"))
+                    {
+                        urlValue = "/" + urlValue;
+                    }
+
+                    docLibrary.DocumentTemplateUrl = urlValue;
+                }
+            }
+
+            ProcessLocalization(list, definition);
         }
 
         #region utils
@@ -181,8 +233,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         #endregion
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
             var web = webModelHost.HostWeb;
 
@@ -199,15 +256,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // Surely, we won't save this list.
                 try
                 {
-                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
+                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, SPListTemplateType.GenericList);
                     var tmpList = web.Lists[tmpListId];
+
                     tmpList.Delete();
                 }
                 catch (Exception)
                 {
                 }
 
+#pragma warning disable 618
                 var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
+#pragma warning restore 618
 
                 var listModelHost = new ListModelHost
                 {
@@ -253,7 +313,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     action(folderModelHost);
                 }
-
                 else
                 {
                     action(listModelHost);
@@ -267,6 +326,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                 action(modelHost);
             }
         }
+
+        protected virtual void ProcessLocalization(SPList obj, ListDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
+            }
+        }
+
     }
 
     //public class ListModelHandler : SSOMModelHandlerBase

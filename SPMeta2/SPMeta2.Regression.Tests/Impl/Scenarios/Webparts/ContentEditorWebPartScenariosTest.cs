@@ -62,10 +62,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                             list
                                 .AddRandomWebPartPage(page =>
                                 {
-                                    // TODO, fix up with strong typed syntax
-
-                                    //page.AddContentEditorWebPart(cewpSiteCollectionDefinition);
-                                    //page.AddContentEditorWebPart(cewpSiteDefinition);
+                                    page.AddContentEditorWebPart(cewpSiteCollectionDefinition);
+                                    page.AddContentEditorWebPart(cewpSiteDefinition);
                                 });
                         });
                 });

@@ -29,6 +29,9 @@ namespace SPMeta2.Standard.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
+
+    [ExpectManyInstances]
+
     public class SearchResultDefinition : DefinitionBase
     {
         #region constructors

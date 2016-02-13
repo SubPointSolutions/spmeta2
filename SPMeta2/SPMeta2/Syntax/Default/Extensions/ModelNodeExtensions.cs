@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
 
 // legacy one
 namespace SPMeta2.Syntax.Default.Extensions
 {
-    internal class TMP { }
+    internal class Tmp { }
 }
 
 // moved
@@ -42,7 +37,7 @@ namespace SPMeta2.Syntax.Default
             {
                 modelNode.Options = options;
 
-                definition.RequireSelfProcessing = options.RequireSelfProcessing;
+                //definition.RequireSelfProcessing = options.RequireSelfProcessing;
             }
 
             node.ChildModels.Add(modelNode);

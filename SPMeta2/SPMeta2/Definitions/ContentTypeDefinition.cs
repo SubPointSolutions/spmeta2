@@ -1,10 +1,11 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using SPMeta2.Definitions.Base;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -12,11 +13,11 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint content type.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPContentType", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.ContentType", "Microsoft.SharePoint.Client")]
 
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]
@@ -26,8 +27,20 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(SiteDefinition))]
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
     public class ContentTypeDefinition : DefinitionBase
     {
+        #region constructors
+
+        public ContentTypeDefinition()
+        {
+            NameResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -65,6 +78,15 @@ namespace SPMeta2.Definitions
         [IdentityKey]
         public string Name { get; set; }
 
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> NameResource { get; set; }
+
         /// <summary>
         /// Description if the target content type.
         /// </summary>
@@ -75,6 +97,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// Group of the target content type.
@@ -95,16 +125,37 @@ namespace SPMeta2.Definitions
         /// Parent content type id. BuiltInContentTypeId class could be used to utilize out of the box content type ids.
         /// </summary>
         /// 
-        [ExpectRequired]
+        [ExpectRequired(GroupName = "Parent ContentType Id")]
         [DataMember]
         public string ParentContentTypeId { get; set; }
 
+        /// <summary>
+        /// Optional parent content type name. Must be used carefully in multi langual environments, because ct names will be different
+        /// </summary>
+        [ExpectRequired(GroupName = "Parent ContentType Id")]
+        [DataMember]
+        public string ParentContentTypeName { get; set; }
+
         [ExpectValidation]
         [DataMember]
-
         [SiteCollectionTokenCapability]
         [WebTokenCapability]
         public string DocumentTemplate { get; set; }
+
+        [ExpectUpdate]
+        [DataMember]
+        [ExpectNullable]
+        public string JSLink { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? ReadOnly { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? Sealed { get; set; }
 
         #endregion
 

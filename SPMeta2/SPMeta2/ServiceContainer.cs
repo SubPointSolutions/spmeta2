@@ -1,10 +1,7 @@
-﻿using SPMeta2.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-
+using SPMeta2.Services;
 using SPMeta2.Services.Impl;
 
 namespace SPMeta2
@@ -36,6 +33,7 @@ namespace SPMeta2
             RegisterService(typeof(DefaultXMLSerializationService), new DefaultXMLSerializationService());
 
             RegisterService(typeof(WebPartChromeTypesConvertService), new DefaultWebPartChromeTypesConvertService());
+            RegisterService(typeof(ListViewScopeTypesConvertService), new DefaultListViewScopeTypesConvertService());
 
             RegisterService(typeof(DefinitionRelationshipServiceBase), new DefaultDefinitionRelationshipService());
         }

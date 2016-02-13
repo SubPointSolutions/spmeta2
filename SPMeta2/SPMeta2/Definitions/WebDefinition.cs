@@ -1,33 +1,48 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
+    [Serializable]
+    [DataContract]
+    public class IndexedPropertyValue
+    {
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+    }
+
     /// <summary>
     /// Allows too define and deploy SharePoint web site.
     /// </summary>
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Web", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPWeb", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Web", "Microsoft.SharePoint.Client")]
 
 
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(SiteDefinition))]
     [ParentHostCapability(typeof(WebDefinition))]
+
+    [ExpectManyInstances]
+
     public class WebDefinition : DefinitionBase
     {
         #region constructors
@@ -36,6 +51,10 @@ namespace SPMeta2.Definitions
         {
             Url = "/";
             LCID = 1033;
+
+            TitleResource = new List<ValueForUICulture>();
+            DescriptionResource = new List<ValueForUICulture>();
+            IndexedPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #endregion
@@ -53,6 +72,14 @@ namespace SPMeta2.Definitions
         public string Title { get; set; }
 
         /// <summary>
+        /// Corresponds to TitleResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
+
+        /// <summary>
         /// Description of the target web.
         /// </summary>
         /// 
@@ -61,6 +88,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Corresponds to DescriptionResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> DescriptionResource { get; set; }
 
         /// <summary>
         /// LCID of the target web.
@@ -114,7 +149,27 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectRequired(GroupName = "Web Template")]
         [DataMember]
+        [ExpectValidation]
         public string CustomWebTemplate { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        //[ExpectUpdateAsUrl(Extension = ".png")]
+        [ExpectNullable]
+        public string SiteLogoUrl { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        //[ExpectUpdateAsUrl(Extension = ".css")]
+        [ExpectNullable]
+        public string AlternateCssUrl { get; set; }
+
+        /// <summary>
+        /// Gets the set of property keys for properties that need to be exposed through Site Data Web Service.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<IndexedPropertyValue> IndexedPropertyKeys { get; set; }
 
         #endregion
 

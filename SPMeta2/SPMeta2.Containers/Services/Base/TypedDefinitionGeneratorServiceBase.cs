@@ -3,7 +3,8 @@ using SPMeta2.Containers.Services.Rnd;
 
 namespace SPMeta2.Containers.Services.Base
 {
-    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> : DefinitionGeneratorServiceBase
+    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> :
+        DefinitionGeneratorServiceBase
     {
         public TypedDefinitionGeneratorServiceBase()
         {
@@ -22,9 +23,9 @@ namespace SPMeta2.Containers.Services.Base
             return WithEmptyDefinition(null);
         }
 
-        protected virtual TModelDefinition WithEmptyDefinition<TModelDefinition>()
+        protected virtual T WithEmptyDefinition<T>()
         {
-            return (TModelDefinition)Activator.CreateInstance<TModelDefinition>();
+            return Activator.CreateInstance<T>();
         }
 
         protected virtual TModelDefinition WithEmptyDefinition(Action<TModelDefinition> action)

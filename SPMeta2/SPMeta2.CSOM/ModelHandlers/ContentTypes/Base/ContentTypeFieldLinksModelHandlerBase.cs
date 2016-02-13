@@ -20,7 +20,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes.Base
                 return (modelHost as ListModelHost).HostList.RootFolder;
 
             if (modelHost is FolderModelHost)
-                return (modelHost as FolderModelHost).CurrentLibraryFolder;
+                return (modelHost as FolderModelHost).CurrentListFolder;
 
             throw new ArgumentException("modelHost needs to be ListModelHost or FolderModelHost");
         }

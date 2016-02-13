@@ -57,7 +57,35 @@ namespace SPMeta2.Containers.O365
 
             foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(csomtandartValidationAsm))
                 _validationService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
+
+            _provisionService.OnModelNodeProcessing += (sender, args) =>
+            {
+                Trace.WriteLine(
+                    string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                    new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
+
+            _provisionService.OnModelNodeProcessed += (sender, args) =>
+            {
+                Trace.WriteLine(
+                   string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                   new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
         }
+
+        private List<string> RandomBalancedUrls = new List<string>();
 
         private void LoadEnvironmentConfig()
         {
@@ -66,6 +94,12 @@ namespace SPMeta2.Containers.O365
 
             WebUrls.Clear();
             WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
+
+            WebUrls.Clear();
+            WebUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_WebUrls));
+
+            RandomBalancedUrls.Clear();
+            RandomBalancedUrls.AddRange(RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.O365_RandomBalancedUrls));
         }
 
         #endregion
@@ -129,52 +163,82 @@ namespace SPMeta2.Containers.O365
             throw new SPMeta2UnsupportedCSOMRunnerException();
         }
 
+        private Random rnd = new Random();
+
         /// <summary>
         /// Deploys and validates target site model.
         /// </summary>
         /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
-            foreach (var siteUrl in SiteUrls)
+            if (RandomBalancedUrls.Count > 0)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
-
-                for (var provisionGeneration = 0;
-                    provisionGeneration < ProvisionGenerationCount;
-                    provisionGeneration++)
+                var url = RandomBalancedUrls[rnd.Next(0, RandomBalancedUrls.Count)];
+                SiteOnUrl(model, url);
+            }
+            else
+            {
+                foreach (var siteUrl in SiteUrls)
                 {
-                    WithO365Context(siteUrl, context =>
-                    {
-                        if (EnableDefinitionProvision)
-                            _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
-
-                        if (EnableDefinitionValidation)
-                            _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
-                    });
+                    SiteOnUrl(model, siteUrl);
                 }
+            }
+        }
+
+        private void SiteOnUrl(ModelNode model, string siteUrl)
+        {
+            Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+
+            for (var provisionGeneration = 0;
+                provisionGeneration < ProvisionGenerationCount;
+                provisionGeneration++)
+            {
+                WithO365Context(siteUrl, context =>
+                {
+                    if (EnableDefinitionProvision)
+                        _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
             }
         }
 
         public override void DeployListModel(ModelNode model)
         {
-            foreach (var webUrl in WebUrls)
+
+            if (RandomBalancedUrls.Count > 0)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
-
-                WithO365Context(webUrl, context =>
-                {
-                    for (var provisionGeneration = 0;
-                        provisionGeneration < ProvisionGenerationCount;
-                        provisionGeneration++)
-                    {
-                        if (EnableDefinitionProvision)
-                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
-
-                        if (EnableDefinitionValidation)
-                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
-                    }
-                });
+                var url = RandomBalancedUrls[rnd.Next(0, RandomBalancedUrls.Count)];
+                WebOnUrl(model, url);
             }
+            else
+            {
+
+                foreach (var webUrl in WebUrls)
+                {
+                    WebOnUrl(model, webUrl);
+                }
+            }
+        }
+
+        private void WebOnUrl(ModelNode model, string webUrl)
+        {
+            Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+            WithO365Context(webUrl, context =>
+            {
+                for (var provisionGeneration = 0;
+                    provisionGeneration < ProvisionGenerationCount;
+                    provisionGeneration++)
+                {
+                    if (EnableDefinitionProvision)
+                        _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                    if (EnableDefinitionValidation)
+                        _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                }
+            });
         }
 
 
@@ -184,28 +248,36 @@ namespace SPMeta2.Containers.O365
         /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
-            foreach (var webUrl in WebUrls)
+            if (RandomBalancedUrls.Count > 0)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
-
-
-
-                for (var provisionGeneration = 0;
-                    provisionGeneration < ProvisionGenerationCount;
-                    provisionGeneration++)
+                var url = RandomBalancedUrls[rnd.Next(0, RandomBalancedUrls.Count)];
+                WebOnUrl(model, url);
+            }
+            else
+            {
+                foreach (var webUrl in WebUrls)
                 {
-                    WithO365Context(webUrl, context =>
-            {
-                if (EnableDefinitionProvision)
-                    _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                    Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-                if (EnableDefinitionValidation)
-                    _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
 
-            });
+
+                    for (var provisionGeneration = 0;
+                        provisionGeneration < ProvisionGenerationCount;
+                        provisionGeneration++)
+                    {
+                        WithO365Context(webUrl, context =>
+                        {
+                            if (EnableDefinitionProvision)
+                                _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                            if (EnableDefinitionValidation)
+                                _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        });
+                    }
+
+
                 }
-
-
             }
         }
 

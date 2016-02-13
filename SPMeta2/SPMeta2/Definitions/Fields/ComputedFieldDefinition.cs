@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -17,7 +12,7 @@ namespace SPMeta2.Definitions.Fields
     /// </summary>
     /// 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFieldComputed", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldComputed", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.FieldComputed", "Microsoft.SharePoint.Client")]
 
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
@@ -25,6 +20,8 @@ namespace SPMeta2.Definitions.Fields
     [Serializable] 
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
 
     public class ComputedFieldDefinition : FieldDefinition
     {
@@ -38,6 +35,11 @@ namespace SPMeta2.Definitions.Fields
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override sealed string FieldType { get; set; }
 
         [ExpectValidation]
         [DataMember]

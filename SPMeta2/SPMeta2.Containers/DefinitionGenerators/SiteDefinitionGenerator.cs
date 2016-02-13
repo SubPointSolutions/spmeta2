@@ -17,11 +17,19 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Name = Rnd.String();
                 def.Description = Rnd.String();
 
-                def.OwnerLogin = Rnd.UserName();
+                //def.OwnerLogin = Rnd.UserName();
+                def.OwnerLogin = string.Format(@"{0}\{1}",
+                            Environment.UserDomainName,
+                            "administrator");
+
                 def.OwnerName = Rnd.UserName();
                 def.OwnerEmail = Rnd.UserEmail();
 
-                def.SecondaryContactLogin = Rnd.UserName();
+                //def.SecondaryContactLogin = Rnd.UserName();
+                def.SecondaryContactLogin = string.Format(@"{0}\{1}",
+                           Environment.UserDomainName,
+                           "administrator");
+
                 def.SecondaryContactName = Rnd.UserName();
                 def.SecondaryContactEmail = Rnd.UserEmail();
 

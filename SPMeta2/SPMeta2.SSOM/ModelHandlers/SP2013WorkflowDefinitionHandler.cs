@@ -75,6 +75,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     DisplayName = workflowDefinitionModel.DisplayName
                 };
 
+                MapProperties(workflowDefinition, workflowDefinitionModel);
+
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling SaveDefinition()");
                 var wfId = workflowDeploymentService.SaveDefinition(workflowDefinition);
 
@@ -102,6 +104,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                     currentWorkflowDefinition.Xaml = workflowDefinitionModel.Xaml;
 
+                    MapProperties(currentWorkflowDefinition, workflowDefinitionModel);
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
@@ -123,6 +127,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Override = false. Skipping workflow definition");
 
+                    MapProperties(currentWorkflowDefinition, workflowDefinitionModel);
+
                     InvokeOnModelEvent(this, new ModelEventArgs
                     {
                         CurrentModelNode = null,
@@ -138,6 +144,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                     workflowDeploymentService.PublishDefinition(currentWorkflowDefinition.Id);
                 }
             }
+        }
+
+        protected virtual void MapProperties(WorkflowDefinition workflow, SP2013WorkflowDefinition definition)
+        {
+            if (!string.IsNullOrEmpty(definition.RestrictToType))
+                workflow.RestrictToType = definition.RestrictToType;
+
+            if (!string.IsNullOrEmpty(definition.RestrictToScope))
+                workflow.RestrictToScope = definition.RestrictToScope;
+
+            foreach (var prop in definition.Properties)
+                workflow.SetProperty(prop.Name, prop.Value);
         }
 
         #endregion

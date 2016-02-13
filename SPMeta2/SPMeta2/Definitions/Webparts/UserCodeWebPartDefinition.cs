@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Webparts
 {
@@ -20,8 +16,13 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebPartPageDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.WebPartPages.SPUserCodeWebPart , Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class UserCodeWebPartDefinition : WebPartDefinition
     {
         #region constructors
@@ -76,6 +77,9 @@ namespace SPMeta2.Definitions.Webparts
 
         [DataMember]
         public string Value { get; set; }
+
+        [DataMember]
+        public bool? IsTokenisable { get; set; }
 
         #endregion
     }

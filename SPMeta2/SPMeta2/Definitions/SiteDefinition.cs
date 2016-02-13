@@ -1,11 +1,10 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -13,14 +12,14 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy SharePoint site collection.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPSite", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Site", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPSite", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Site", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebApplicationDefinition))]
-    [DefaultParentHostAttribute(typeof(WebApplicationDefinition))]
+    [DefaultRootHost(typeof(WebApplicationDefinition))]
+    [DefaultParentHost(typeof(WebApplicationDefinition))]
 
-    [CSOMRootHostAttribute(typeof(SiteDefinition))]
-    [CSOMParentHostAttribute(typeof(SiteDefinition))]
+    [CSOMRootHost(typeof(SiteDefinition))]
+    [CSOMParentHost(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -28,6 +27,9 @@ namespace SPMeta2.Definitions
     [DataContract]
 
     [ParentHostCapability(typeof(WebApplicationDefinition))]
+
+    [ExpectManyInstances]
+
     public class SiteDefinition : DefinitionBase
     {
         #region constructors
@@ -47,6 +49,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string Name { get; set; }
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public string Url { get; set; }
 
         /// <summary>
@@ -86,6 +90,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string SiteTemplate { get; set; }
 
         /// <summary>
@@ -102,6 +107,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string OwnerLogin { get; set; }
 
         /// <summary>

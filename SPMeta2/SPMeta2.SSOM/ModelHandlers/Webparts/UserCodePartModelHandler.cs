@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
@@ -53,13 +54,31 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                 if (currentProperty == null)
                 {
-                    currentProperty = new SPUserCodeProperty();
-                    currentProperty.Name = prop.Name;
+                    currentProperty = new SPUserCodeProperty
+                    {
+                        Name = prop.Name
+                    };
 
                     typedWebpart.Properties.Add(currentProperty);
                 }
 
-                currentProperty.Value = prop.Value;
+                if (prop.IsTokenisable.HasValue && prop.IsTokenisable.Value)
+                {
+                    // Enhance 'UserCodeWebPartDefinition' 
+                    // UserCodeProperty should support ~sitecollection/~site tokens #485
+
+                    var value = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = prop.Value,
+                        Context = CurrentHost.HostFile.Web
+                    }).Value;
+
+                    currentProperty.Value = value;
+                }
+                else
+                {
+                    currentProperty.Value = prop.Value;
+                }
             }
         }
 

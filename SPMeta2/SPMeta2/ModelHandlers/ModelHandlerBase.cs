@@ -1,9 +1,6 @@
 ﻿using System;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Events;
-using SPMeta2.Models;
 using SPMeta2.Services;
 
 namespace SPMeta2.ModelHandlers
@@ -64,29 +61,11 @@ namespace SPMeta2.ModelHandlers
         /// <summary>
         /// Resolves a new model host per particular child definition type.
         /// </summary>
-        /// <param name="modelHost"></param>
-        /// <param name="model"></param>
-        /// <param name="childModelType"></param>
-        /// <param name="action"></param>
-        [Obsolete("Use WithResolvingModelHost(ModelHostContext context) method instead.")]
-        public virtual void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
-        {
-            action(modelHost);
-        }
-
-        /// <summary>
-        /// Resolves a new model host per particular child definition type.
-        /// </summary>
         /// <param name="context"></param>
         public virtual void WithResolvingModelHost(ModelHostResolveContext context)
         {
-            WithResolvingModelHost(
-                context.ModelHost,
-                context.Model,
-                context.ChildModelType,
-                context.Action);
+            context.Action(context.ModelHost);
         }
-
 
         /// <summary>
         /// Promotes a model event outside of the model handler.

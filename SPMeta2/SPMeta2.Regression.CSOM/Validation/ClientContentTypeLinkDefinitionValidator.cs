@@ -6,7 +6,6 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 

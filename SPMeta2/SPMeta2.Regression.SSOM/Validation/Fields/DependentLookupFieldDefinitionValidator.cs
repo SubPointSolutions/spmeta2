@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.SSOM.Validation.Fields
 {
@@ -53,6 +55,19 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
             assert.SkipProperty(m => m.ValidationFormula, "DependentLookupFieldDefinition");
             assert.SkipProperty(m => m.ValidationMessage, "DependentLookupFieldDefinition");
+
+            assert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior");
+
+            // web url
+            if (!string.IsNullOrEmpty(definition.LookupWebUrl))
+            {
+                // TODO
+                throw new SPMeta2NotImplementedException("definition.LookupWebUrl");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.LookupWebUrl, "LookupWebUrl");
+            }
 
             if (!string.IsNullOrEmpty(definition.Group))
                 assert.ShouldBeEqual(m => m.Group, o => o.Group);
@@ -135,6 +150,71 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             else
                 assert.SkipProperty(m => m.PrimaryLookupFieldTitle);
 
+
+            /// localization
+            if (definition.TitleResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.TitleResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.TitleResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.DescriptionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.DescriptionResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+            }
         }
     }
 }

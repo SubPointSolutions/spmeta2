@@ -31,15 +31,15 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
         {
             throw new SPMeta2NotSupportedException("UserCode web part provision is not supported by CSOM (SP API limitations) - https://officespdev.uservoice.com/forums/224641-general/suggestions/7300326-add-support-for-spusercodewebpart-import-via-limit");
 
-            var wpModel = webPartModel.WithAssertAndCast<UserCodeWebPartDefinition>("model", value => value.RequireNotNull());
-            var wpXml = WebpartXmlExtensions
-                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.UserCodeWebPart)
-                .SetOrUpdateMetadataPropertyAttribute("type", "name", wpModel.AssemblyFullName)
-                .SetOrUpdateMetadataPropertyAttribute("Solution", "SolutionId", wpModel.SolutionId.ToString("D"))
-                //.SetOrUpdateMetadataPropertyAttribute("Solution", "xmlns", "http://schemas.microsoft.com/sharepoint/")
-                .ToString();
+            //var wpModel = webPartModel.WithAssertAndCast<UserCodeWebPartDefinition>("model", value => value.RequireNotNull());
+            //var wpXml = WebpartXmlExtensions
+            //    .LoadWebpartXmlDocument(BuiltInWebPartTemplates.UserCodeWebPart)
+            //    .SetOrUpdateMetadataPropertyAttribute("type", "name", wpModel.AssemblyFullName)
+            //    .SetOrUpdateMetadataPropertyAttribute("Solution", "SolutionId", wpModel.SolutionId.ToString("D"))
+            //    //.SetOrUpdateMetadataPropertyAttribute("Solution", "xmlns", "http://schemas.microsoft.com/sharepoint/")
+            //    .ToString();
 
-            return wpXml;
+            //return wpXml;
         }
 
         #endregion

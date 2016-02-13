@@ -21,6 +21,7 @@ using SPMeta2.Standard.Definitions;
 using SPMeta2.Regression.Tests.Config;
 using SPMeta2.Services;
 using SPMeta2.Containers.Utils;
+using SPMeta2.Standard.Definitions.Webparts;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -134,7 +135,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldBeMarkedAsSerializable()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -155,7 +155,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsShouldBeMarkedAsDataContract()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -180,7 +179,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void ModelNodesShouldBeMarkedAsDataContract_v12()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var modelNodeType in AllModelNodeTypes)
@@ -205,7 +203,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions.Identity")]
         public void DefinitionsShouldHasIdentityOrIdentityKey()
         {
-            var showOnlyFails = true;
             var result = true;
 
             foreach (var definitionType in AllDefinitionTypes)
@@ -245,7 +242,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void ModelNodeTypesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
-            var showOnlyFails = true;
             var result = true;
             var errors = 0;
 
@@ -284,37 +280,91 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("Regression.Definitions")]
         public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
-            var showOnlyFails = true;
-            var result = true;
+            var targetTypes = AllDefinitionTypes;
+            var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
+
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(errors == 0);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void TypedWebPartDefinitions_Should_Have_ExpectWebpartType_Attr()
+        {
+            var typedWebPartTypes = AllDefinitionTypes.Where(t => t.IsSubclassOf(typeof(WebPartDefinition)));
+
             var errors = 0;
 
-            foreach (var definitionType in AllDefinitionTypes)
+            foreach (var definitionType in typedWebPartTypes)
             {
+                var hasAttr = definitionType.GetCustomAttributes(typeof(ExpectWebpartType), true).Any();
 
+                if (!hasAttr)
+                {
+                    Trace.WriteLine(string.Format(" - Checking type:[{0}]. Has:[{1}] Attr:[ExpectWebpartType]",
+                        definitionType.Name, hasAttr));
+                }
+
+                if (!hasAttr)
+                {
+                    errors++;
+                }
+            }
+
+            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+
+            Assert.IsTrue(errors == 0);
+        }
+
+        private static int CheckDataMemberOrIgnoreDataMemberAttr(List<Type> types)
+        {
+            var errors = 0;
+
+            foreach (var definitionType in types)
+            {
                 var props = definitionType.GetProperties();
 
                 foreach (var prop in props)
                 {
                     var hasAttr = prop.GetCustomAttributes(typeof(DataMemberAttribute)).Any()
-                        || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
+                                  || prop.GetCustomAttributes(typeof(IgnoreDataMemberAttribute)).Any();
 
                     if (!hasAttr)
                     {
-                        Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
+                        Trace.WriteLine(string.Format("[{2}] - Checking type:[{0}]. Prop:[{1}]",
                             definitionType.Name, prop.Name, hasAttr));
                     }
 
                     if (!hasAttr)
                     {
                         errors++;
-                        result = false;
                     }
                 }
             }
+            return errors;
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        public void AllSerializablesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
+        {
+            var targetTypes = new List<Type>();
+
+            var assemblies = new[]
+            {
+                typeof(FieldDefinition).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly,
+            };
+
+            targetTypes.AddRange(assemblies.SelectMany(a => a.GetTypes())
+                                 .Where(t => t.GetCustomAttributes(typeof(DataContractAttribute)).Any()));
+
+            var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
 
             Trace.WriteLine(string.Format("Errors: [{0}]", errors));
 
-            Assert.IsTrue(result);
+            Assert.IsTrue(errors == 0);
         }
 
         #endregion
@@ -327,8 +377,6 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         {
             if (!M2RegressionRuntime.IsV11)
                 return;
-
-            var showTrace = false;
 
             var methods = GetModelNodeExtensionMethods(new[]
             {
@@ -392,6 +440,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         addArrayDefinitionMethodName = string.Format("{0}es", definitionName);
                     if (definitionType == typeof(PropertyDefinition))
                         addArrayDefinitionMethodName = string.Format("AddProperties");
+                    if (definitionType == typeof(SiteDocumentsDefinition))
+                        addArrayDefinitionMethodName = string.Format("AddSiteDocuments");
                     if (definitionType == typeof(ManagedPropertyDefinition))
                         addArrayDefinitionMethodName = string.Format("AddManagedProperties");
                     if (definitionType == typeof(DiagnosticsServiceBaseDefinition))
@@ -756,6 +806,12 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     addXXXArrayDefinitionMethodName += "es";
                                 } break;
                         }
+
+                        if (defType == typeof(SiteDocumentsDefinition))
+                            addXXXArrayDefinitionMethodName = string.Format("AddSiteDocuments");
+
+                        if (defType == typeof(MetadataNavigationSettingsDefinition))
+                            addXXXArrayDefinitionMethodName = string.Format("AddMetadataNavigationSettings");
 
                         // host
 

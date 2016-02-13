@@ -146,13 +146,36 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        protected virtual void MapListItemProperties(SPListItem newItem, ListItemDefinition listItemModel)
+        protected virtual void MapListItemProperties(SPListItem item, ListItemDefinition definition)
         {
-            newItem[BuiltInInternalFieldNames.Title] = listItemModel.Title;
+            FieldLookupService.EnsureDefaultValues(item, definition.DefaultValues);
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                        !string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                var list = item.ParentList;
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+            }
+
+            item[BuiltInInternalFieldNames.Title] = definition.Title;
+
+            FieldLookupService.EnsureValues(item, definition.Values, true);
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
             var listItemModel = model.WithAssertAndCast<ListItemDefinition>("model", value => value.RequireNotNull());
 

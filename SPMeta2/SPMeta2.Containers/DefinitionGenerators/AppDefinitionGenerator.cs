@@ -8,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Containers.Consts;
 
 namespace SPMeta2.Containers.DefinitionGenerators
 {
@@ -17,24 +18,19 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                def.ProductId = new Guid("{d3d5b953-e1a9-438c-a09b-b8cc4df35788}");
-                def.Version = "1.0.0.0";
+                def.ProductId = DefaultContainers.Apps.ProductId;
+                def.Version = new Version(1, 0, 0, 0).ToString();
 
-                def.Content = ResourceReaderUtils.ReadFromResourceName(typeof(AppDefinitionGenerator).Assembly, "SPMeta2.Containers.Templates.Apps.SPMeta2.Sandbox.TestSPHostedApp.app");
+                def.Content = File.ReadAllBytes(DefaultContainers.Apps.v0.FilePath);
             });
         }
 
         public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
         {
-            // TODO
-            // sort out sideload feature for O365
-
-            var sideLoadFearture = new FeatureDefinition
+            var sideLoadFearture = BuiltInSiteFeatures.EnableAppSideLoading.Inherit(def =>
             {
-                Scope = FeatureDefinitionScope.Site,
-                Id = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D"),
-                Enable = true
-            };
+                def.Enable();
+            });
 
             return new[] { sideLoadFearture };
         }

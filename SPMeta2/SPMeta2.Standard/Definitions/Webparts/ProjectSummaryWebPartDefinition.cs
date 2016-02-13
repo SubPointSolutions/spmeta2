@@ -18,15 +18,20 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     [Serializable]
     [DataContract]
+
+    [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.SharePoint.Portal.WebControls.ProjectSummaryWebPart, Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class ProjectSummaryWebPartDefinition : WebPartDefinition
     {
         #region properties
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public string PrimaryTaskListUrl { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public Guid? ListId { get; set; }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace SPMeta2.Utils
 {
@@ -36,7 +31,7 @@ namespace SPMeta2.Utils
         public static XDocument SetOrUpdateListVieweWebPartProperty(this XDocument webpartXmlDocument, string propName,
             string propValue, bool isCData)
         {
-            return webpartXmlDocument.SetOrUpdateProperty(propName, propValue, XmlNs, isCData);
+            return webpartXmlDocument.SetOrUpdateProperty(propName, propValue, "string", XmlNs, isCData);
         }
 
         #endregion

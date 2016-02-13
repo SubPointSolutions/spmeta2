@@ -39,35 +39,65 @@ namespace SPMeta2.SSOM.Extensions
                 if (webpartItem == null)
                     throw new ArgumentException(string.Format("webpartItem. Can't find web part file with name: {0}", webpartFileName));
 
-                using (var streamReader = new MemoryStream(webpartItem.File.OpenBinary()))
-                {
-                    using (var xmlReader = XmlReader.Create(streamReader))
-                    {
-                        var errMessage = string.Empty;
-                        webpartInstance = webPartManager.ImportWebPart(xmlReader, out errMessage);
+                MemoryStream streamReader = null;
+                XmlReader xmlReader = null;
 
-                        if (!string.IsNullOrEmpty(errMessage))
-                            throw new ArgumentException(
-                                string.Format("Can't import web part foe with name: {0}. Error: {1}", webpartFileName, errMessage));
+                try
+                {
+                    streamReader = new MemoryStream(webpartItem.File.OpenBinary());
+                    xmlReader = XmlReader.Create(streamReader);
+
+                    var errMessage = string.Empty;
+                    webpartInstance = webPartManager.ImportWebPart(xmlReader, out errMessage);
+
+                    if (!string.IsNullOrEmpty(errMessage))
+                        throw new ArgumentException(
+                            string.Format("Can't import web part foe with name: {0}. Error: {1}", webpartFileName,
+                                errMessage));
+                }
+                finally
+                {
+                    if (xmlReader != null)
+                    {
+#if !NET35 && !NET40
+                        xmlReader.Dispose();
+#endif
                     }
+                    else if (streamReader != null)
+                        streamReader.Dispose();
                 }
             }
             else if (!string.IsNullOrEmpty(webpartModel.WebpartXmlTemplate))
             {
                 var stringBytes = Encoding.UTF8.GetBytes(webpartModel.WebpartXmlTemplate);
 
-                using (var streamReader = new MemoryStream(stringBytes))
-                {
-                    using (var xmlReader = XmlReader.Create(streamReader))
-                    {
-                        var errMessage = string.Empty;
-                        webpartInstance = webPartManager.ImportWebPart(xmlReader, out errMessage);
+                MemoryStream streamReader = null;
+                XmlReader xmlReader = null;
 
-                        if (!string.IsNullOrEmpty(errMessage))
-                            throw new ArgumentException(
-                                string.Format("Can't import web part for XML template: {0}. Error: {1}",
-                                webpartModel.WebpartXmlTemplate, errMessage));
+                try
+                {
+                    streamReader = new MemoryStream(stringBytes);
+                    xmlReader = XmlReader.Create(streamReader);
+
+                    var errMessage = string.Empty;
+                    webpartInstance = webPartManager.ImportWebPart(xmlReader, out errMessage);
+
+                    if (!string.IsNullOrEmpty(errMessage))
+                        throw new ArgumentException(
+                            string.Format("Can't import web part for XML template: {0}. Error: {1}",
+                            webpartModel.WebpartXmlTemplate, errMessage));
+
+                }
+                finally
+                {
+                    if (xmlReader != null)
+                    {
+#if !NET35 && !NET40
+                        xmlReader.Dispose();
+#endif
                     }
+                    else if (streamReader != null)
+                        streamReader.Dispose();
                 }
             }
             else
@@ -88,7 +118,14 @@ namespace SPMeta2.SSOM.Extensions
             WebPartDefinition definition,
             Action<SPLimitedWebPartManager, WebPart> webpart)
         {
-            WithLimitedWebPartManager(targetPage, webPartManager =>
+            WithExistingWebPart(targetPage.File, definition, webpart);
+        }
+
+        public static void WithExistingWebPart(SPFile file,
+            WebPartDefinition definition,
+            Action<SPLimitedWebPartManager, WebPart> webpart)
+        {
+            WithLimitedWebPartManager(file, webPartManager =>
             {
                 var webParts = webPartManager.WebParts.OfType<WebPart>();
 
@@ -196,7 +233,12 @@ namespace SPMeta2.SSOM.Extensions
 
         public static void WithLimitedWebPartManager(SPListItem targetPage, Action<SPLimitedWebPartManager> action)
         {
-            using (var webPartManager = targetPage.File.GetLimitedWebPartManager(PersonalizationScope.Shared))
+            WithLimitedWebPartManager(targetPage.File, action);
+        }
+
+        public static void WithLimitedWebPartManager(SPFile file, Action<SPLimitedWebPartManager> action)
+        {
+            using (var webPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared))
             {
                 action(webPartManager);
             }

@@ -6,6 +6,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Services;
 
 namespace SPMeta2.SSOM.ModelHandlers.Fields
 {
@@ -35,7 +36,15 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             var typedFieldModel = fieldModel.WithAssertAndCast<CalculatedFieldDefinition>("model", value => value.RequireNotNull());
             var typedField = field as SPFieldCalculated;
 
-            typedField.Formula = typedFieldModel.Formula ?? string.Empty;
+            if (!string.IsNullOrEmpty(typedFieldModel.Formula))
+            {
+                // can't really validate it automatically
+                // Improve CalculatedFieldDefinition with field ref check
+                // https://github.com/SubPointSolutions/spmeta2/issues/648
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating formula for a CalculatedField. Ensure FieldReferences are correct.");
+             
+                typedField.Formula = typedFieldModel.Formula;
+            }
 
             if (typedFieldModel.ShowAsPercentage.HasValue)
                 typedField.ShowAsPercentage = typedFieldModel.ShowAsPercentage.Value;
@@ -52,11 +61,20 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             if (typedFieldModel.CurrencyLocaleId.HasValue)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.LCID, typedFieldModel.CurrencyLocaleId);
 
-            // should be a new XML node
-            var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
-            fieldTemplate.Add(formulaNode);
+            if (!string.IsNullOrEmpty(typedFieldModel.Formula))
+            {
+                // can't really validate it automatically
+                // Improve CalculatedFieldDefinition with field ref check
+                // https://github.com/SubPointSolutions/spmeta2/issues/648
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Crafting formula for a CalculatedField. Ensure FieldReferences are correct.");
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, (int)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat));
+                // should be a new XML node
+                var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
+                fieldTemplate.Add(formulaNode);
+
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format,
+                    (int)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat));
+            }
 
             if (typedFieldModel.ShowAsPercentage.HasValue)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Percentage, typedFieldModel.ShowAsPercentage.Value.ToString().ToUpper());

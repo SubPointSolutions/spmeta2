@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Linq;
 using System.Xml.Linq;
 
 namespace SPMeta2.Utils
@@ -13,6 +9,11 @@ namespace SPMeta2.Utils
     public static class XElementHelper
     {
         #region methods
+
+        public static string GetInnerXmlAsString(this XElement element)
+        {
+            return element.Nodes().Aggregate("", (b, node) => b += node.ToString());
+        }
 
         public static string GetAttributeValue(this XElement element, string attrName)
         {

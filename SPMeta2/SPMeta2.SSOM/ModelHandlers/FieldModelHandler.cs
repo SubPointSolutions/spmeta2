@@ -10,11 +10,22 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using System.Globalization;
+using SPMeta2.Exceptions;
+using System.Diagnostics;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
     public class FieldModelHandler : SSOMModelHandlerBase
     {
+        #region construactors
+
+        static FieldModelHandler()
+        {
+        }
+
+        #endregion
+
         #region properties
 
         protected static XElement GetNewMinimalSPFieldTemplate()
@@ -81,9 +92,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             SPField field = null;
 
-            // TODO, needs to be changed to using pattern and adjust all model handlers
-            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdating);
-
             var isListField = false;
 
             if (modelHost is SiteModelHost)
@@ -106,6 +114,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             ProcessFieldProperties(field, fieldModel);
+            ProcessFieldLocalization(field, fieldModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -117,8 +126,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = fieldModel,
                 ModelHost = modelHost
             });
-
-            InvokeOnModelEvent<FieldDefinition, SPField>(field, ModelEventType.OnUpdated);
 
             // no promotion for the list field, and force push for the site fields
             if (isListField)
@@ -319,14 +326,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 });
 
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
-
-                // special handle for taxonomy field
-                // incorectly removed tax field leaves its indexed field
-                // https://github.com/SubPointSolutions/spmeta2/issues/521
-
-                HandleIncorectlyDeletedTaxonomyField(fieldModel, fields);
-
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
+
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 currentField = fields[fieldModel.Id];
@@ -352,22 +353,38 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentField;
         }
 
-        private void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel,
+        protected virtual void HandleIncorectlyDeletedTaxonomyField(FieldDefinition fieldModel,
             SPFieldCollection fields)
         {
-            var isTaxField =
-                fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
-                || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
+            return;
 
-            if (!isTaxField)
-                return;
+            // excluded due ot potential data corruption
+            // such issues shoud be handled by end user manually
 
-            var existingIndexedFieldName = fieldModel.Title.ToUpper() + "_";
-            var existingIndexedField = fields.OfType<SPField>()
-                .FirstOrDefault(f => f.Title.ToUpper().StartsWith(existingIndexedFieldName));
+            //var isTaxField =
+            //    fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldType.ToUpper()
+            //    || fieldModel.FieldType.ToUpper() == BuiltInFieldTypes.TaxonomyFieldTypeMulti.ToUpper();
 
-            if (existingIndexedField != null && existingIndexedField.Type == SPFieldType.Note)
-                existingIndexedField.Delete();
+            //if (!isTaxField)
+            //    return;
+
+            //var existingIndexedFieldName = fieldModel.Title.ToUpper() + "_";
+            //var existingIndexedField = fields.OfType<SPField>()
+            //    .FirstOrDefault(f => f.Title.ToUpper().StartsWith(existingIndexedFieldName));
+
+            //if (existingIndexedField != null && existingIndexedField.Type == SPFieldType.Note)
+            //{
+            //    // tmp fix
+            //    // https://github.com/SubPointSolutions/spmeta2/issues/521
+            //    try
+            //    {
+            //        existingIndexedField.Delete();
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //    }
+            //}
         }
 
         protected virtual void ProcessFieldProperties(SPField field, FieldDefinition definition)
@@ -420,6 +437,24 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.ShowInVersionHistory.HasValue)
                 field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
+
+
+            // process localiation
+        }
+
+        protected virtual void ProcessFieldLocalization(SPField obj, FieldDefinition definition)
+        {
+            if (definition.TitleResource.Any())
+            {
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                foreach (var locValue in definition.DescriptionResource)
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
+            }
         }
 
         #endregion

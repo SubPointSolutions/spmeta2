@@ -54,9 +54,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     }
                 });
             }
-            catch (SPMeta2NotSupportedException ex)
+            catch (Exception ex)
             {
-                Assert.IsTrue(ex.Message.Contains("ListItemFieldValueDefinition.FieldId"));
+                Assert.IsTrue(ex is SPMeta2Exception);
+                Assert.IsTrue(ex.InnerException is SPMeta2NotSupportedException);
             }
         }
 

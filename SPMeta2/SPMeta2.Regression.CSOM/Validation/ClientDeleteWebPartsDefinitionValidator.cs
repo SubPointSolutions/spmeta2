@@ -22,9 +22,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             var listItemModelHost = modelHost.WithAssertAndCast<ListItemModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<DeleteWebPartsDefinition>("model", value => value.RequireNotNull());
 
-            var listItem = listItemModelHost.HostListItem;
+            //var listItem = listItemModelHost.HostListItem;
+            var list = listItemModelHost.HostList;
 
-            var context = listItem.Context;
+            var context = list.Context;
+            var currentPageFile = GetCurrentPageFile(listItemModelHost);
             var spObject = GetCurrentPageFile(listItemModelHost);
 
             var webPartManager = spObject.GetLimitedWebPartManager(PersonalizationScope.Shared);
@@ -42,8 +44,22 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(m => m.WebParts);
-                var isValid = webPartDefenitions.Count() == 0;
-            
+                var webPartMatches = s.WebParts;
+
+                var isValid = true;
+
+                if (webPartMatches.Count == 0)
+                {
+                    isValid = webPartDefenitions.Count() == 0;
+                }
+                else
+                {
+                    // title only yet
+                    // should not be any by mentioned title
+                    var wpTitles = webPartMatches.Select(wpMatch => wpMatch.Title);
+                    isValid = webPartDefenitions.Count(w => wpTitles.Contains(w.WebPart.Title)) == 0;
+                }
+
                 return new PropertyValidationResult
                 {
                     Tag = p.Tag,

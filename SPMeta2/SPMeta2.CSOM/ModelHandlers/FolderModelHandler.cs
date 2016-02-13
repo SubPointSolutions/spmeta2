@@ -15,6 +15,7 @@ using SPMeta2.Services;
 using SPMeta2.Utils;
 
 using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -31,8 +32,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
 
@@ -43,7 +50,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
                     c.CurrentList = folderModelHost.CurrentList;
-                    c.CurrentLibraryFolder = currentFolder;
+                    c.CurrentListFolder = currentFolder;
                     c.CurrentWeb = folderModelHost.CurrentWeb;
                 });
 
@@ -66,8 +73,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 action(newContext);
 
+                // should be fine for 35 too, that's a parent update
+#if !NET35
                 currentListItem.Folder.Update();
                 currentListItem.Context.ExecuteQueryWithTrace();
+#endif
+
             }
             else
             {
@@ -115,6 +126,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(list, l => l.RootFolder);
             context.Load(list, l => l.ParentWeb);
 
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/766");
+#endif
+
+#if !NET35
+
             if (folderModelHost.CurrentListItem != null)
             {
                 context.Load(folderModelHost.CurrentListItem, l => l.Folder);
@@ -153,6 +170,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (doesFolderExist)
                 return currentFolder;
+
+#endif
 
             return null;
         }
@@ -198,20 +217,39 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
+
                 context.Load(currentFolderItem.Folder);
                 context.ExecuteQueryWithTrace();
 
                 currentFolder = currentFolderItem.Folder;
+
+                context.Load(currentFolder, f => f.ListItemAllFields);
+                context.Load(currentFolder, f => f.Name);
+
+                context.ExecuteQueryWithTrace();
+
+                currentFolderItem = currentFolder.ListItemAllFields;
+#endif
+
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list folder");
+
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
 
                 context.Load(currentFolder, f => f.ListItemAllFields);
                 context.Load(currentFolder, f => f.Name);
                 context.ExecuteQueryWithTrace();
 
                 currentFolderItem = currentFolder.ListItemAllFields;
+
+#endif
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -230,7 +268,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected Folder GetLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
-            var parentFolder = folderModelHost.CurrentLibraryFolder;
+            return GetLibraryFolder(folderModelHost.CurrentListFolder, folderModel.Name);
+        }
+
+        internal static Folder GetLibraryFolder(Folder folder, string folderName)
+        {
+            var parentFolder = folder;
             var context = parentFolder.Context;
 
             context.Load(parentFolder, f => f.Folders);
@@ -240,18 +283,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             var currentFolder = parentFolder
                                    .Folders
                                    .OfType<Folder>()
-                                   .FirstOrDefault(f => f.Name == folderModel.Name);
+                                   .FirstOrDefault(f => f.Name == folderName);
 
             if (currentFolder != null)
             {
                 context.Load(currentFolder, f => f.Name);
                 context.ExecuteQueryWithTrace();
 
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does exist: [{0}]", folderModel.Name);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does exist: [{0}]", folderName);
             }
             else
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does not exist: [{0}]", folderModel.Name);
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Library folder with name does not exist: [{0}]", folderName);
             }
 
             return currentFolder;
@@ -261,7 +304,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "EnsureLibraryFolder()");
 
-            var parentFolder = folderModelHost.CurrentLibraryFolder;
+            var parentFolder = folderModelHost.CurrentListFolder;
             var context = parentFolder.Context;
 
             var currentFolder = GetLibraryFolder(folderModelHost, folderModel);

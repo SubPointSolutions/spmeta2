@@ -21,6 +21,10 @@ namespace SPMeta2.Standard.Definitions.Webparts
     [DataContract]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+    [ExpectWebpartType(WebPartType = "Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c")]
+
     public class ContentBySearchWebPartDefinition : WebPartDefinition
     {
         #region properties

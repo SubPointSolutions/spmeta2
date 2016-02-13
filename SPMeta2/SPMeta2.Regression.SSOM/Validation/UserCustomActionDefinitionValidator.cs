@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
@@ -6,6 +7,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using Microsoft.SharePoint;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -44,14 +46,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var dstProp = d.GetExpressionValue(ct => ct.CommandUIExtension);
 
                     var isValid =
-                        srcProp.Value.ToString()
-                                     .Replace(" ", "")
-                                     .Replace(Environment.NewLine, "")
-                                     .Replace("\n", "") ==
-                        dstProp.Value.ToString()
-                                     .Replace(" ", "")
-                                     .Replace(Environment.NewLine, "")
-                                     .Replace("\n", "");
+                        GetCommandUIString(srcProp.Value.ToString()) ==
+                        GetCommandUIString(dstProp.Value.ToString());
 
                     return new PropertyValidationResult
                     {
@@ -104,14 +100,114 @@ namespace SPMeta2.Regression.SSOM.Validation
                 };
             });
 
-        }
-    }
 
-    internal static class SPUserActionHelpers
-    {
-        public static string GetRegistrationType(this SPUserCustomAction action)
+            /// localization
+            if (definition.TitleResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.TitleResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.TitleResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.TitleResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.TitleResource, "TitleResource is NULL or empty. Skipping.");
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.DescriptionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.DescriptionResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+            }
+
+            /// TODO
+            if (definition.CommandUIExtensionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.CommandUIExtensionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.CommandUIExtensionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.CommandUIExtensionResource.GetValueForUICulture(culture);
+
+                        isValid = GetCommandUIString(userResource.Value) ==
+                                  GetCommandUIString(value);
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.CommandUIExtensionResource, "CommandUIExtensionResource is NULL or empty. Skipping.");
+            }
+
+        }
+
+        protected string GetCommandUIString(string value)
         {
-            return action.RegistrationType.ToString();
+            return value
+                .Replace(" ", "")
+                .Replace(Environment.NewLine, "")
+                .Replace("\n", "");
         }
     }
 }

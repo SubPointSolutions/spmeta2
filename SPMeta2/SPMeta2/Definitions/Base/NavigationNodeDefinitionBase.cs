@@ -1,13 +1,10 @@
-﻿using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SPMeta2.Utils;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
+using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Base
 {
@@ -21,9 +18,10 @@ namespace SPMeta2.Definitions.Base
     {
         #region constructors
 
-        public NavigationNodeDefinitionBase()
+        protected NavigationNodeDefinitionBase()
         {
             IsVisible = true;
+            TitleResource = new List<ValueForUICulture>();
         }
 
         #endregion
@@ -39,6 +37,14 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         [IdentityKey]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Corresponds to NameResource property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public List<ValueForUICulture> TitleResource { get; set; }
 
         /// <summary>
         /// URL of the target navigation node.

@@ -7,6 +7,7 @@ using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
+using SPMeta2.Models;
 using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Containers.DefinitionGenerators.Webparts
@@ -26,12 +27,20 @@ namespace SPMeta2.Containers.DefinitionGenerators.Webparts
             });
         }
 
-        public override DefinitionBase GetCustomParenHost()
+        public override ModelNode GetCustomParenHost()
         {
-            return BuiltInListDefinitions.Catalogs.Wp.Inherit<ListDefinition>(def =>
+            var definition = BuiltInListDefinitions.Catalogs.Wp.Inherit<ListDefinition>(def =>
             {
-                def.RequireSelfProcessing = false;
+
             });
+
+            var node = new ListModelNode
+            {
+                Value = definition,
+                Options = { RequireSelfProcessing = false }
+            };
+
+            return node;
         }
     }
 }

@@ -10,6 +10,8 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 
 using System;
+using System.Linq;
+using SPMeta2.Regression.SSOM.Extensions;
 
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -34,10 +36,27 @@ namespace SPMeta2.Regression.SSOM.Validation
                 .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
             //.ShouldBeEqual(m => m.Description, o => o.Description);
 
+
+            if (definition.Sealed.HasValue)
+                assert.ShouldBeEqual(m => m.Sealed, o => o.Sealed);
+            else
+                assert.SkipProperty(m => m.Sealed, "Sealed is null or empty. Skipping.");
+
+            if (definition.ReadOnly.HasValue)
+                assert.ShouldBeEqual(m => m.ReadOnly, o => o.ReadOnly);
+            else
+                assert.SkipProperty(m => m.ReadOnly, "ReadOnly is null or empty. Skipping.");
+
+
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
+            else
+                assert.SkipProperty(m => m.JSLink, "JSLink is null or empty. Skipping.");
+
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
             else
-                assert.SkipProperty(m => m.Description);
+                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
             if (definition.Id == default(Guid))
             {
@@ -126,14 +145,71 @@ namespace SPMeta2.Regression.SSOM.Validation
                     };
                 });
             }
-        }
-    }
 
-    internal static class ContentTypeDefinitionValidatorUtils
-    {
-        public static string GetId(this SPContentType c)
-        {
-            return c.Id.ToString();
+            /// localization
+            if (definition.NameResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.NameResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.NameResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.NameResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.NameResource, "NameResource is NULL or empty. Skipping.");
+            }
+
+            if (definition.DescriptionResource.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DescriptionResource);
+                    var isValid = true;
+
+                    foreach (var userResource in s.DescriptionResource)
+                    {
+                        var culture = LocalizationService.GetUserResourceCultureInfo(userResource);
+                        var value = d.DescriptionResource.GetValueForUICulture(culture);
+
+                        isValid = userResource.Value == value;
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
+            }
         }
     }
 }

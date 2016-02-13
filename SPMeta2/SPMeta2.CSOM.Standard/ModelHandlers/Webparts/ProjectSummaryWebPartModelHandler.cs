@@ -10,6 +10,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
 {
     public class ProjectSummaryWebPartModelHandler : WebPartModelHandler
     {
+        public ProjectSummaryWebPartModelHandler()
+        {
+            ShouldUseWebPartStoreKeyForWikiPage = true;
+        }
+
         #region properties
 
         public override Type TargetType

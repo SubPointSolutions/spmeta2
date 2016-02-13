@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿// ReSharper disable InconsistentNaming
 namespace SPMeta2.Enumerations
 {
     /// <summary>
@@ -58,7 +54,7 @@ namespace SPMeta2.Enumerations
         public static string FreeBusy = "FreeBusy";
         public static string Likes = "Likes";
         public static string RatingCount = "RatingCount";
-        public static string LookupMulti = "UserMulti";
+        public static string LookupMulti = "LookupMulti";
         public static string HTML = "HTML";
         public static string TargetTo = "TargetTo";
         public static string SummaryLinks = "SummaryLinks";

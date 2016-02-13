@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions;
-using SPMeta2.Standard.Enumerations;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers

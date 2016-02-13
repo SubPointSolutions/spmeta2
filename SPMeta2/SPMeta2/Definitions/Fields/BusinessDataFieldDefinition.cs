@@ -1,13 +1,9 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
 
 namespace SPMeta2.Definitions.Fields
 {
@@ -15,15 +11,17 @@ namespace SPMeta2.Definitions.Fields
     /// Allows to define and deploy business data field.
     /// </summary>
     /// 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPBusinessDataField", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPBusinessDataField", "Microsoft.SharePoint")]
     //[SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
 
-    [DefaultParentHostAttribute(typeof(SiteDefinition))]
-    [DefaultRootHostAttribute(typeof(SiteDefinition))]
+    [DefaultParentHost(typeof(SiteDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+
+    [ExpectManyInstances]
 
     public class BusinessDataFieldDefinition : FieldDefinition
     {
@@ -37,6 +35,11 @@ namespace SPMeta2.Definitions.Fields
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override sealed string FieldType { get; set; }
 
         [ExpectValidation]
         [DataMember]

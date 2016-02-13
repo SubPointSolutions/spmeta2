@@ -113,8 +113,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             typedModelHost.ShouldUpdateHost = false;
         }
 
-        private string GetServerRelativeUrlFromFullUrl(string siteServerRelativeUrl, string fullUrl)
+        protected virtual string GetServerRelativeUrlFromFullUrl(string siteServerRelativeUrl, string fullUrl)
         {
+            // TMP fix
+            // Improve ComposedLookItemLinkDefinition provision, upper/lower case in the URLs #652
+            // https://github.com/SubPointSolutions/spmeta2/issues/652
+
+            // upper/lower cases should will be included into the regression tests
+            siteServerRelativeUrl = siteServerRelativeUrl.ToLower();
+            fullUrl = fullUrl.ToLower();
+
             if (!fullUrl.Contains("://"))
                 return fullUrl;
 
@@ -124,18 +132,18 @@ namespace SPMeta2.CSOM.ModelHandlers
             safeFullUrl = safeFullUrl.Replace("//", "/");
 
             var fullBits = safeFullUrl.Split(new[] { siteServerRelativeUrl }, StringSplitOptions.None).ToList();
+
             if (fullBits.Any())
                 fullBits.RemoveAt(0);
 
             var resultArray = new List<string>();
+
             resultArray.Add(siteServerRelativeUrl);
             resultArray.AddRange(fullBits);
 
             var result = UrlUtility.CombineUrl(resultArray);
 
             return result;
-
-            //   "http://cloud9:31415/_catalogs/theme/15/palette002.spcolor".Split(//'")[1]
         }
 
         private string GetUrlValue(ListItem item, string filedName)

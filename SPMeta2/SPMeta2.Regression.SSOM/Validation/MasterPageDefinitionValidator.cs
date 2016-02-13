@@ -5,7 +5,9 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -81,30 +83,114 @@ namespace SPMeta2.Regression.SSOM.Validation
                     IsValid = isContentValid
                 };
             });
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d["ContentType"] as string;
+
+                    var isValis = s.ContentTypeName == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+            if (definition.DefaultValues.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefaultValues);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.DefaultValues)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = spObject[value.FieldId.Value];
+                        else
+                            itemValue = spObject[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues is empty. Skipping.");
+            }
+
+
+            if (definition.Values.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Values);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.Values)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = spObject[value.FieldId.Value];
+                        else
+                            itemValue = spObject[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values is empty. Skipping.");
+            }
         }
     }
 
-    public static class SPListItemHelper
-    {
-        public static List<string> GetUIVersion(this SPListItem item)
-        {
-            var v = new SPFieldMultiChoiceValue(item["UIVersion"] as string);
-            var result = new List<string>();
-
-            for (var i = 0; i < v.Count; i++)
-                result.Add(v[i]);
-
-            return result;
-        }
-
-        public static string GetMasterPageDescription(this SPListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
-
-        public static string GetDefaultCSSFile(this SPListItem item)
-        {
-            return item["DefaultCssFile"] as string;
-        }
-    }
 }

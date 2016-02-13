@@ -1,5 +1,4 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
+﻿using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace SPMeta2.CSOM.Standard.ModelHosts
 {

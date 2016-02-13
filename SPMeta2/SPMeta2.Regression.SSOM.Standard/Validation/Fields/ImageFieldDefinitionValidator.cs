@@ -26,11 +26,10 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
         {
             base.DeployModel(modelHost, model);
 
-            var typedModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<SSOMModelHostBase>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ImageFieldDefinition>("model", value => value.RequireNotNull());
 
-            var site = typedModelHost.HostSite;
-            var spObject = GetField(modelHost, definition) as ImageField;
+            var spObject = GetField(typedModelHost, definition) as ImageField;
 
 
             var assert = ServiceFactory.AssertService

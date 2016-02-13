@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
@@ -29,6 +30,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
+            var site = HostSite;
+            var context = site.Context;
+
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
@@ -54,8 +58,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             else
                 typedField.TypeAsString = "Lookup";
 
-            if (typedFieldModel.LookupWebId.HasValue)
+            if (typedFieldModel.LookupWebId.HasGuidValue())
+            {
                 typedField.LookupWebId = typedFieldModel.LookupWebId.Value;
+            }
+            else if (!string.IsNullOrEmpty(typedFieldModel.LookupWebUrl))
+            {
+                var targetWeb = GetTargetWeb(site, typedFieldModel);
+
+                typedField.LookupWebId = targetWeb.Id;
+            }
+
+            if (!string.IsNullOrEmpty(typedFieldModel.RelationshipDeleteBehavior))
+            {
+                var value = (RelationshipDeleteBehaviorType)Enum.Parse(typeof(RelationshipDeleteBehaviorType), typedFieldModel.RelationshipDeleteBehavior);
+                typedField.RelationshipDeleteBehavior = value;
+            }
 
             if (string.IsNullOrEmpty(typedField.LookupList))
             {
@@ -65,33 +83,21 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 }
                 else if (!string.IsNullOrEmpty(typedFieldModel.LookupListUrl))
                 {
-                    var site = HostSite;
-                    var context = site.Context;
+                    var targetWeb = GetTargetWeb(site, typedFieldModel);
 
-                    var web = typedFieldModel.LookupWebId.HasValue
-                        ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
-                        : site.RootWeb;
-
-                    if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+                    if (!targetWeb.IsPropertyAvailable("ServerRelativeUrl"))
                     {
-                        context.Load(web, w => w.ServerRelativeUrl);
+                        context.Load(targetWeb, w => w.ServerRelativeUrl);
                         context.ExecuteQueryWithTrace();
                     }
 
-                    var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
-
+                    var list = targetWeb.QueryAndGetListByUrl(UrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, typedFieldModel.LookupListUrl));
                     typedField.LookupList = list.Id.ToString();
                 }
                 else if (!string.IsNullOrEmpty(typedFieldModel.LookupListTitle))
                 {
-                    var site = HostSite;
-                    var context = site.Context;
-
-                    var web = typedFieldModel.LookupWebId.HasValue
-                        ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
-                        : site.RootWeb;
-
-                    var list = web.Lists.GetByTitle(typedFieldModel.LookupListTitle);
+                    var targetWeb = GetTargetWeb(site, typedFieldModel);
+                    var list = targetWeb.Lists.GetByTitle(typedFieldModel.LookupListTitle);
 
                     context.Load(list);
                     context.ExecuteQueryWithTrace();
@@ -104,51 +110,94 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             {
                 typedField.LookupField = typedFieldModel.LookupField;
             }
-                
+        }
+
+        public Web GetTargetWeb(Site site, LookupFieldDefinition definition)
+        {
+            return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
+        }
+
+        public Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        {
+            var context = site.Context;
+
+            if (webId.HasGuidValue())
+            {
+                var targetWeb = site.OpenWebById(webId.Value);
+
+                context.Load(targetWeb);
+                context.ExecuteQueryWithTrace();
+
+                return targetWeb;
+            }
+            else if (!string.IsNullOrEmpty(webUrl))
+            {
+                var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                {
+                    Value = webUrl,
+                    Context = context
+                }).Value;
+
+                // server relative url, ensure / in the beginning
+                targetWebUrl = UrlUtility.RemoveStartingSlash(targetWebUrl);
+                targetWebUrl = "/" + targetWebUrl;
+
+                var targetWeb = site.OpenWeb(targetWebUrl);
+
+
+                context.Load(targetWeb);
+                context.ExecuteQueryWithTrace();
+
+                return targetWeb;
+            }
+
+            // root web by default
+            return site.RootWeb;
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
+            var site = HostSite;
+            var context = HostSite.Context;
+
             base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
             var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Mult, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
 
-            if (typedFieldModel.LookupWebId.HasValue)
+            if (typedFieldModel.LookupWebId.HasGuidValue())
+            {
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.WebId, typedFieldModel.LookupWebId.Value.ToString("B"));
+            }
+            else if (!string.IsNullOrEmpty(typedFieldModel.LookupWebUrl))
+            {
+                var targetWeb = GetTargetWeb(site, typedFieldModel);
 
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.WebId, targetWeb.Id.ToString("B"));
+            }
             if (!string.IsNullOrEmpty(typedFieldModel.LookupList))
+            {
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, typedFieldModel.LookupList);
+            }
             else if (!string.IsNullOrEmpty(typedFieldModel.LookupListUrl))
             {
-                var site = HostSite;
-                var context = site.Context;
+                var targetWeb = GetTargetWeb(site, typedFieldModel);
 
-                var web = typedFieldModel.LookupWebId.HasValue
-                    ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
-                    : site.RootWeb;
-
-                if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+                if (!targetWeb.IsPropertyAvailable("ServerRelativeUrl"))
                 {
-                    context.Load(web, w => w.ServerRelativeUrl);
+                    context.Load(targetWeb, w => w.ServerRelativeUrl);
                     context.ExecuteQueryWithTrace();
                 }
 
-                var list = web.QueryAndGetListByUrl(UrlUtility.CombineUrl(web.ServerRelativeUrl, typedFieldModel.LookupListUrl));
+                var list = targetWeb.QueryAndGetListByUrl(UrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, typedFieldModel.LookupListUrl));
 
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, list.Id.ToString());
             }
             else if (!string.IsNullOrEmpty(typedFieldModel.LookupListTitle))
             {
-                var site = HostSite;
-                var context = site.Context;
-
-                var web = typedFieldModel.LookupWebId.HasValue
-                    ? site.OpenWebById(typedFieldModel.LookupWebId.Value)
-                    : site.RootWeb;
-
-                var list = web.Lists.GetByTitle(typedFieldModel.LookupListTitle);
+                var targetWeb = GetTargetWeb(site, typedFieldModel);
+                var list = targetWeb.Lists.GetByTitle(typedFieldModel.LookupListTitle);
 
                 context.Load(list);
                 context.ExecuteQueryWithTrace();

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.BlogLinksWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">$Resources:core,BlogNotificationsWPTitle;</property>
+        <property name="Description" type="string">$Resources:core,BlogNotificationsWPDescription;</property>
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="ListUrl" type="string">$Resources:core,lists_Folder;/$Resources:core,blogpost_Folder;</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

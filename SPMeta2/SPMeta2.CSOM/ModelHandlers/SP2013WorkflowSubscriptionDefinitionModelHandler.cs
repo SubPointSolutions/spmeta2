@@ -178,8 +178,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             hostclientContext.Load(subscriptions);
             hostclientContext.ExecuteQueryWithTrace();
 
-            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
-
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -216,8 +214,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 newSubscription.SetProperty("WebId", web.Id.ToString());
                 newSubscription.SetProperty("Microsoft.SharePoint.ActivationProperties.WebId", web.Id.ToString());
 
-                // to be able to change HistoryListId, TaskListId, ListId
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
+                MapProperties(currentSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -239,8 +236,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing SP2013 workflow subscription");
 
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
-
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
+                MapProperties(currentSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -310,8 +306,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             hostclientContext.Load(subscriptions);
             hostclientContext.ExecuteQueryWithTrace();
 
-            InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(null, ModelEventType.OnUpdating);
-
             var currentSubscription = subscriptions.FirstOrDefault(s => s.Name == workflowSubscriptionModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -348,8 +342,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 newSubscription.SetProperty("ListId", list.Id.ToString());
                 newSubscription.SetProperty("Microsoft.SharePoint.ActivationProperties.ListId", list.Id.ToString());
 
-                // to be able to change HistoryListId, TaskListId, ListId
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(newSubscription, ModelEventType.OnUpdated);
+                MapProperties(currentSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -372,7 +365,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentSubscription.EventTypes = workflowSubscriptionModel.EventTypes;
 
-                InvokeOnModelEvent<SP2013WorkflowSubscriptionDefinition, WorkflowSubscription>(currentSubscription, ModelEventType.OnUpdated);
+                MapProperties(currentSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -400,6 +393,12 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected List GetHistoryList(Web web, SP2013WorkflowSubscriptionDefinition definition)
         {
             return WebExtensions.QueryAndGetListByUrl(web, definition.HistoryListUrl);
+        }
+
+        protected virtual void MapProperties(WorkflowSubscription workflow, SP2013WorkflowSubscriptionDefinition definition)
+        {
+            foreach (var prop in definition.Properties)
+                workflow.SetProperty(prop.Name, prop.Value);
         }
 
         #endregion

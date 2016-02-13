@@ -26,30 +26,20 @@ namespace SPMeta2.Regression.CSOM.Validation
                 throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost or WebModelHost");
             }
 
-            var assert = ServiceFactory.AssertService
-                               .NewAssert(definition, spObject)
-                                     .ShouldNotBeNull(spObject)
-                                     .ShouldBeEqual(m => m.Name, o => o.ReceiverName)
-                                     .ShouldBeEqual(m => m.Class, o => o.ReceiverClass)
-                                     .ShouldBeEqual(m => m.Assembly, o => o.ReceiverAssembly)
-                                     .SkipProperty(m => m.Data, "Data property is not supported by CSOM. SKipping.")
-                                     .ShouldBeEqual(m => m.SequenceNumber, o => o.SequenceNumber)
-                                     .ShouldBeEqual(m => m.Synchronization, o => o.GetSynchronization())
-                                     .ShouldBeEqual(m => m.Type, o => o.GetEventReceiverType());
-        }
-    }
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
+            assert
+                .ShouldNotBeNull(spObject)
 
-    internal static class EventReceiverDefinitionExtension
-    {
-        public static string GetSynchronization(this Microsoft.SharePoint.Client.EventReceiverDefinition def)
-        {
-            return def.Synchronization.ToString();
-        }
+                .ShouldBeEqual(m => m.Name, o => o.ReceiverName)
+                .ShouldBeEqual(m => m.Class, o => o.ReceiverClass)
+                .ShouldBeEqual(m => m.Assembly, o => o.ReceiverAssembly)
 
-        public static string GetEventReceiverType(this Microsoft.SharePoint.Client.EventReceiverDefinition def)
-        {
-            return def.EventType.ToString();
+                .SkipProperty(m => m.Data, "Data property is not supported by CSOM. SKipping.")
+
+                .ShouldBeEqual(m => m.SequenceNumber, o => o.SequenceNumber)
+                .ShouldBeEqual(m => m.Synchronization, o => o.Synchronization.ToString())
+                .ShouldBeEqual(m => m.Type, o => o.EventType.ToString());
         }
     }
 }

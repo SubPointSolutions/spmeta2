@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Validation.Common;
 using SPMeta2.Validation.Extensions;
 
@@ -24,9 +20,15 @@ namespace SPMeta2.Validation.Validators.Definitions
                     .NotEmptyString(m => m.Description, result)
                     .NoSpacesBeforeOrAfter(m => m.Description, result)
 
+#pragma warning disable 618
                     .NotNullString(m => m.Url, result)
+#pragma warning restore 618
+#pragma warning disable 618
                     .NotEmptyString(m => m.Url, result)
+#pragma warning restore 618
+#pragma warning disable 618
                     .NoSpacesBeforeOrAfter(m => m.Url, result);
+#pragma warning restore 618
 
                 if (model.TemplateType == 0)
                 {

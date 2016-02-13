@@ -14,13 +14,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using SPMeta2.Containers.Services;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Enumerations;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Regression.Tests.Utils;
+using SPMeta2.Regression.Tests.Prototypes;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -122,12 +124,76 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.PublishingPage")]
-        public void CanDeploy_Default_PublishingPage_WithRequiredFields()
+        public void CanDeploy_Default_PublishingPage_With_Content()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var page = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.FileName = Rnd.AspxFileName();
+                def.Content = Rnd.String();
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site => site.AddSiteFeature(siteFeature));
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(webFeature);
+                web.AddHostList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddPublishingPage(page);
+                });
+            });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage.Values")]
+        public void CanDeploy_PublishingPage_With_ContentType_ByName()
+        {
+            var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
+            var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInPublishingContentTypeId.Page;
+            });
+
+            var itemDef = ModelGeneratorService.GetRandomDefinition<PublishingPageDefinition>(def =>
+            {
+                def.ContentTypeName = contentTypeDef.Name;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddFeature(siteFeature);
+                site.AddContentType(contentTypeDef);
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddFeature(webFeature);
+
+                web.AddHostList(BuiltInListDefinitions.Pages, list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef);
+                    list.AddPublishingPage(itemDef);
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.PublishingPage.Values")]
+        public void CanDeploy_Default_PublishingPage_With_RequiredFieldValues()
         {
             var siteFeature = BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f => f.Enable());
             var webFeature = BuiltInWebFeatures.SharePointServerPublishing.Inherit(f => f.Enable());
@@ -139,23 +205,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ParentContentTypeId = BuiltInPublishingContentTypeId.ArticlePage;
             });
 
-            var requiredText = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
-            {
-                def.ShowInDisplayForm = true;
-                def.ShowInEditForm = true;
-                def.ShowInListSettings = true;
-                def.ShowInNewForm = true;
-                def.ShowInVersionHistory = true;
-                def.ShowInViewForms = true;
+            var requiredText = RItemValues.GetRequiredTextField(ModelGeneratorService);
 
-                def.ValidationFormula = null;
-                def.ValidationMessage = null;
-
-                def.Hidden = false;
-
-                def.DefaultValue = string.Empty;
-                def.Required = true;
-            });
+            var text1 = RItemValues.GetRandomTextField(ModelGeneratorService);
+            var text2 = RItemValues.GetRandomTextField(ModelGeneratorService);
 
             var publishingPageLayout = ModelGeneratorService.GetRandomDefinition<PublishingPageLayoutDefinition>(def =>
             {
@@ -171,6 +224,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     FieldName = requiredText.InternalName,
                     Value = Rnd.String()
                 });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text1.InternalName,
+                    Value = Rnd.String()
+                });
+
+                def.Values.Add(new FieldValue()
+                {
+                    FieldName = text2.InternalName,
+                    Value = Rnd.String()
+                });
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -178,10 +243,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddSiteFeature(siteFeature);
 
                 site.AddField(requiredText);
+                site.AddField(text1);
+                site.AddField(text2);
 
                 site.AddContentType(publishingPageLayoutContentType, contentType =>
                 {
                     contentType.AddContentTypeFieldLink(requiredText);
+
+                    contentType.AddContentTypeFieldLink(text1);
+                    contentType.AddContentTypeFieldLink(text2);
                 });
             });
 
@@ -202,7 +272,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -227,7 +297,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         private void WithPublishingPageNode(Action<ModelNode> pageSetup)
@@ -250,7 +320,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]

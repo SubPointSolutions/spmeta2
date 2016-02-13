@@ -107,7 +107,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             TestModel(webModel);
 
             // rebind lookup 
+#pragma warning disable 618
             lookupField.LookupListUrl = masterList.GetListUrl();
+#pragma warning restore 618
 
             TestModel(siteModel);
 
@@ -221,7 +223,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
             TestModel(webModel);
 
             // rebind lookup 
+#pragma warning disable 618
             lookupField.LookupListUrl = masterList.GetListUrl();
+#pragma warning restore 618
 
             TestModel(siteModel);
 

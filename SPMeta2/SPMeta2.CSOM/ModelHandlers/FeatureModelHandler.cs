@@ -235,7 +235,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    throw e;
+                    throw;
                 }
             }
 

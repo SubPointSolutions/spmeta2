@@ -46,11 +46,10 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original Url: [{0}]", linkValue);
 
-
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = CurrentHost.PageListItem.Web
+                    Context = CurrentHost.HostFile.Web
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced Url: [{0}]", linkValue);

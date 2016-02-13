@@ -1,9 +1,9 @@
-﻿using SPMeta2.Attributes;
-using SPMeta2.Attributes.Regression;
-using System;
-using SPMeta2.Utils;
+﻿using System;
 using System.Runtime.Serialization;
+using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -12,11 +12,11 @@ namespace SPMeta2.Definitions
     /// </summary>
     /// 
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable]
     [DataContract]
@@ -25,9 +25,26 @@ namespace SPMeta2.Definitions
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class WikiPageDefinition : PageDefinitionBase
     {
         #region properties
+
+        /// <summary>
+        /// Title of the target page.
+        /// Is not used by the SharePoint for wiki pages.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectUpdate]
+        // Title is not used by the wiki pages and SharePoint
+        // Should not be required
+        // https://github.com/SubPointSolutions/spmeta2/issues/684
+        //[ExpectRequired]
+        [DataMember]
+        public override string Title { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]

@@ -1,8 +1,5 @@
-﻿using SPMeta2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using SPMeta2.Models;
 
 namespace SPMeta2.Events
 {

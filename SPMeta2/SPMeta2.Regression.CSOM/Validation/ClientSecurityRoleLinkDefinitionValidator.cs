@@ -42,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleName);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -66,7 +66,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleType);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -91,7 +91,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleId);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -109,14 +109,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(m => m.SecurityRoleId, "SecurityRoleId == 0. Skipping.");
             }
-        }
-    }
-
-    internal static class SPRoleAssignmentExtensinos
-    {
-        public static string GetRoleDefinitionBindings(this RoleAssignment assignment)
-        {
-            return assignment.RoleDefinitionBindings.ToString();
         }
     }
 }

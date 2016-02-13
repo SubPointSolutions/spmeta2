@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
-using SPMeta2.Syntax.Default.Extensions;
-
 
 namespace SPMeta2.Syntax.Default.Utils
 {
@@ -33,23 +28,43 @@ namespace SPMeta2.Syntax.Default.Utils
 
         public static byte[] FromResource(Assembly assembly, string resourceName)
         {
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            Stream stream = null;
+            StreamReader reader = null;
+
+            try
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    return ReadFully(reader.BaseStream);
-                }
+                stream = assembly.GetManifestResourceStream(resourceName);
+                reader = new StreamReader(stream);
+
+                return ReadFully(reader.BaseStream);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Dispose();
+                else if (stream != null)
+                    stream.Dispose();
             }
         }
 
-        public static void LoadModuleFilesFromLocalFolder(ListModelNode hostNode, string folderPath)
+        //public static void LoadModuleFilesFromLocalFolder(ListModelNode hostNode, string folderPath)
+        //{
+        //    LoadModuleFilesFromLocalFolder((ModelNode) hostNode, folderPath);
+        //}
+
+        //public static void LoadModuleFilesFromLocalFolder(FolderModelNode hostNode, string folderPath)
+        //{
+        //    LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath);
+        //}
+
+        public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath)
         {
-            LoadModuleFilesFromLocalFolder((ModelNode) hostNode, folderPath);
+            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath, null);
         }
 
-        public static void LoadModuleFilesFromLocalFolder(FolderModelNode hostNode, string folderPath)
+        public static void LoadModuleFilesFromLocalFolder(IFolderHostModelNode hostNode, string folderPath, Func<string, bool> shouldIncludeFolderOrFile)
         {
-            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath);
+            LoadModuleFilesFromLocalFolder((ModelNode)hostNode, folderPath, shouldIncludeFolderOrFile);
         }
 
         /// <summary>
@@ -57,13 +72,21 @@ namespace SPMeta2.Syntax.Default.Utils
         /// </summary>
         /// <param name="hostNode"></param>
         /// <param name="folderPath"></param>
-        internal static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath)
+        /// <param name="shouldIncludeFolderOrFile"></param>
+        internal static void LoadModuleFilesFromLocalFolder(ModelNode hostNode, string folderPath,
+            Func<string, bool> shouldIncludeFolderOrFile)
         {
             var files = Directory.GetFiles(folderPath);
             var folders = Directory.GetDirectories(folderPath);
 
             foreach (var file in files)
             {
+                if (shouldIncludeFolderOrFile != null)
+                {
+                    if (!shouldIncludeFolderOrFile(file))
+                        continue;
+                }
+
                 hostNode.AddDefinitionNode(new ModuleFileDefinition
                 {
                     Content = File.ReadAllBytes(file),
@@ -76,13 +99,18 @@ namespace SPMeta2.Syntax.Default.Utils
             {
                 var subFolderPath = subFolder;
 
+                if (shouldIncludeFolderOrFile != null)
+                {
+                    if (!shouldIncludeFolderOrFile(subFolderPath))
+                        continue;
+                }
+
                 var folderDef = new FolderDefinition
                 {
                     Name = Path.GetFileName(subFolderPath)
                 };
 
-
-                hostNode.AddDefinitionNode(folderDef, folderNode => LoadModuleFilesFromLocalFolder(folderNode, subFolderPath));
+                hostNode.AddDefinitionNode(folderDef, folderNode => LoadModuleFilesFromLocalFolder(folderNode, subFolderPath, shouldIncludeFolderOrFile));
             }
         }
 

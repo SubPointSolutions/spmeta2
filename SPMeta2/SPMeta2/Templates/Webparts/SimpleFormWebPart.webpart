@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Assembly>Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.SharePoint.WebPartPages.SimpleFormWebPart</TypeName>
+  <Title>$Resources:core,FormWebPartTitle;</Title>
+  <Description>$Resources:core,FormWebPartDescription;</Description>
+  <PartImageLarge>/_layouts/15/images/mssfwp.gif</PartImageLarge>
+  <sfwp:Content xmlns:sfwp="http://schemas.microsoft.com/WebPart/v2/SimpleForm">
+
+    <![CDATA[<div onkeydown="javascript:if (event.keyCode == 13) _SFSUBMIT_"><input type="text" name="T1"/><input type="button" value="$Resources:core,FormWebPartButtonText;" onclick="javascript:_SFSUBMIT_"/></div>]]>
+  </sfwp:Content>
+</WebPart>

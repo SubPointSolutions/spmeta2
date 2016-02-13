@@ -21,6 +21,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SPMeta2.Standard.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,6 +91,30 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\CI-O365\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\SPMeta2.Standard.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\CI-CSOM2013\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\SPMeta2.Standard.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -99,16 +126,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
+    <Compile Include="BuiltInDefinitions\BuiltInPublishingPages.cs" />
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
     <Compile Include="Definitions\DisplayTemplates\FilterDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\ManagedPropertyDefinition.cs" />
+    <Compile Include="Definitions\MetadataNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
+    <Compile Include="Definitions\Webparts\CategoryWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\CommunityAdminWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\CommunityJoinWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\DocumentSetContentsWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\DocumentSetPropertiesWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\MyMembershipWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\ProjectSummaryWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\RefinementScriptWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\RSSAggregatorWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SearchBoxScriptWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SearchNavigationWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SiteDocumentsDefinition.cs" />
+    <Compile Include="Definitions\Webparts\SocialCommentWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\TableOfContentsWebPartDefinition.cs" />
+    <Compile Include="Definitions\Webparts\TagCloudWebPartDefinition.cs" />
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
+    <Compile Include="Enumerations\BuiltInManagedDataType.cs" />
+    <Compile Include="Syntax\MetadataNavigationSettingsSyntax.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\CategoryWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\CommunityAdminWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\CommunityJoinWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\ContentBySearchWebPartSyntax.cs" />
     <Compile Include="Definitions\Base\ItemControlTemplateDefinitionBase.cs" />
     <Compile Include="Definitions\Base\TemplateDefinitionBase.cs" />
@@ -158,11 +205,19 @@
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingValue.cs" />
     <Compile Include="Services\Webparts\ContentByQueryWebPart\DataMappingViewFieldValue.cs" />
     <Compile Include="Syntax\DisplayTemplates\FilterDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\DocumentSetContentsWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\DocumentSetPropertiesWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\MyMembershipWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\RefinementScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\ManagedPropertyDefinitionSyntax.cs" />
     <Compile Include="Syntax\ReusableIHTMLtemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\ResultScriptWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\DisplayTemplates\JavaScriptDisplayTemplateDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\RSSAggregatorWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SearchBoxScriptWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SearchNavigationWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SiteDocumentsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\SocialCommentWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\SummaryLinkWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\HTMLFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Fields\ImageFieldDefinitionSyntax.cs" />
@@ -191,6 +246,8 @@
     <Compile Include="Syntax\PageLayoutAndSiteTemplateSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\ProjectSummaryWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\WebNavigationSettingsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\TableOfContentsWebPartDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\TagCloudWebPartDefinitionSyntax.cs" />
     <Compile Include="Utils\TaxonomyUtility.cs" />
   </ItemGroup>
   <ItemGroup>

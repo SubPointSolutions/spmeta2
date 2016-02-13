@@ -1,6 +1,9 @@
-﻿using Microsoft.SharePoint;
+﻿using System.Linq;
+using Microsoft.SharePoint;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
+using SPMeta2.Regression.SSOM.Standard.Extensions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
@@ -29,32 +32,113 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                                              .ShouldBeEndOf(m => m.PageLayoutFileName, o => o.GetPublishingPagePageLayoutFileName())
                                              .ShouldBeEqual(m => m.Title, o => o.Title);
 
-            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                assert.ShouldBeEqual(m => m.ContentTypeName, o => o.GetPublishingPageContentType());
+
             }
             else
             {
-                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is NULL. Skipping.");
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d["ContentType"] as string;
+
+                    var isValis = s.ContentTypeName == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+            if (definition.DefaultValues.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefaultValues);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.DefaultValues)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = spObject[value.FieldId.Value];
+                        else
+                            itemValue = spObject[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues is empty. Skipping.");
+            }
+
+
+            if (definition.Values.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Values);
+
+                    var isValid = true;
+
+                    foreach (var value in definition.Values)
+                    {
+                        object itemValue = null;
+
+                        if (value.FieldId.HasValue)
+                            itemValue = spObject[value.FieldId.Value];
+                        else
+                            itemValue = spObject[value.FieldName];
+
+                        if (!Equals(itemValue, value.Value))
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values is empty. Skipping.");
             }
         }
     }
 
-    public static class SPListItemHelper
-    {
-        public static string GetPublishingPageDescription(this SPListItem item)
-        {
-            return item[BuiltInPublishingFieldId.Description] as string;
-        }
-
-        public static string GetPublishingPagePageLayoutFileName(this SPListItem item)
-        {
-            return (new SPFieldUrlValue(item[BuiltInPublishingFieldId.PageLayout].ToString())).Url;
-        }
-
-        public static string GetPublishingPageContentType(this SPListItem item)
-        {
-            return item["ContentType"].ToString();
-        }
-    }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
-namespace SPMeta2.Common
+﻿namespace SPMeta2.Common
 {
     /// <summary>
     /// Reflects a particular model provisioning event.

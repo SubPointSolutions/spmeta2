@@ -26,6 +26,9 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [ExpectArrayExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class JavaScriptDisplayTemplateDefinition : TemplateDefinitionBase
     {
         #region constructors

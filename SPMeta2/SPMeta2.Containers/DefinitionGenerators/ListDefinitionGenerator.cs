@@ -16,7 +16,9 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Title = Rnd.String();
                 def.Description = Rnd.String();
 
+#pragma warning disable 618
                 def.Url = Rnd.String(16);
+#pragma warning restore 618
 
                 def.TemplateType = BuiltInListTemplateTypeId.GenericList;
 
@@ -72,6 +74,10 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 //{
                 //    def.OnQuickLaunch = false;
                 //}
+
+                if (action != null)
+                    action(def);
+
             });
         }
     }

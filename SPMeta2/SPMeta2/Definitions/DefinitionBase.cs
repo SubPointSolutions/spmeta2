@@ -1,7 +1,7 @@
-﻿using SPMeta2.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using SPMeta2.Common;
 
 namespace SPMeta2.Definitions
 {
@@ -23,7 +23,6 @@ namespace SPMeta2.Definitions
     /// <summary>
     /// Base definition for all SharePoint artifacts to be defined and deployed.
     /// </summary>
-    /// 
     [Serializable]
     [DataContract]
     public abstract class DefinitionBase : ICloneable
@@ -32,7 +31,7 @@ namespace SPMeta2.Definitions
 
         protected DefinitionBase()
         {
-            RequireSelfProcessing = true;
+            //RequireSelfProcessing = true;
             PropertyBag = new List<PropertyBagValue>();
         }
 
@@ -40,17 +39,10 @@ namespace SPMeta2.Definitions
 
         #region properties
 
-        [IgnoreDataMember]
-        /// <summary>
-        /// Internal usage only. Will be removed in future versions of SPMeta2 library.
-        /// </summary>
-        [Obsolete("Please use AddHostXXX syntax to setup RequireSelfProcessing on the particular model node. RequireSelfProcessing property will be removed from the future releases of SPMeta2 library.")]
-        public virtual bool RequireSelfProcessing { get; set; }
-
-        [DataMember]
         /// <summary>
         /// A property bag to be used for any 'custom' properties attached to definition.
         /// </summary>
+        [DataMember]
         public List<PropertyBagValue> PropertyBag { get; set; }
 
         #endregion
@@ -71,8 +63,8 @@ namespace SPMeta2.Definitions
         {
             var targetType = typeof(TDefinition);
 
-            if (GetType() != targetType ||
-                !GetType().IsSubclassOf(targetType))
+            if (GetType() != targetType
+                && !GetType().IsSubclassOf(targetType))
             {
                 throw new InvalidCastException("TDefinition should be either current class or one of the parants.");
             }
@@ -81,4 +73,6 @@ namespace SPMeta2.Definitions
 
         #endregion
     }
+
+
 }

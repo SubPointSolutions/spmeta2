@@ -7,6 +7,7 @@ using SPMeta2.CSOM.ModelHandlers.ContentTypes.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
@@ -36,6 +37,8 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
         {
             var context = list.Context;
 
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching list content types");
+
             context.Load(list, l => l.ContentTypes);
             context.ExecuteQueryWithTrace();
 
@@ -58,21 +61,39 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                 ContentType listContentType = null;
 
                 if (!string.IsNullOrEmpty(srcContentTypeDef.ContentTypeName))
-                    listContentType = listContentTypes.FirstOrDefault(c => c.Name == srcContentTypeDef.ContentTypeName);
+                {
+                    listContentType = listContentTypes.FirstOrDefault(c => c.Name.ToUpper() == srcContentTypeDef.ContentTypeName.ToUpper());
+
+                    if (listContentType != null)
+                    {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                            string.Format("Found content type by name:[{0}]", srcContentTypeDef.ContentTypeName));
+                    }
+                }
 
                 if (listContentType == null && !string.IsNullOrEmpty(srcContentTypeDef.ContentTypeId))
-                    listContentType = listContentTypes.FirstOrDefault(c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
+                {
+                    listContentType =
+                        listContentTypes.FirstOrDefault(
+                            c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
+
+                    if (listContentType != null)
+                    {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                            string.Format("Found content type by matching ID start:[{0}]", srcContentTypeDef.ContentTypeId));
+                    }
+                }
 
                 if (listContentType != null)
                 {
                     try
                     {
+                        TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, string.Format("Deleting list content type"));
                         listContentType.DeleteObject();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        // TODO
-
+                        TraceService.Error((int)LogEventId.ModelProvisionCoreCall, e);
                     }
                 }
             }

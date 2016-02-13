@@ -4,14 +4,12 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHandlers.Fields;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Fields;
-using SPMeta2.Enumerations;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
 {
-    public class HTMLFieldModelHandler : FieldModelHandler
+    public class HTMLFieldModelHandler : NoteFieldModelHandler
     {
         #region properties
 
@@ -20,10 +18,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Fields
             get { return typeof(HTMLFieldDefinition); }
         }
 
-        //protected override Type GetTargetFieldType(FieldDefinition model)
-        //{
-        //    return typeof(FieldChoice);
-        //}
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(Field);
+        }
 
         #endregion
 

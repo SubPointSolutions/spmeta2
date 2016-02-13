@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 
 namespace SPMeta2.Services
 {
@@ -44,8 +40,8 @@ namespace SPMeta2.Services
 
         #region properties
 
-        protected List<TokenInfo> _supportedTokens = new List<TokenInfo>();
-        public IEnumerable<TokenInfo> SupportedTokens { get { return _supportedTokens; } }
+        protected readonly List<TokenInfo> SupportedTokensInternal = new List<TokenInfo>();
+        public IEnumerable<TokenInfo> SupportedTokens { get { return SupportedTokensInternal; } }
 
 
         #endregion

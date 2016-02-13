@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SPMeta2.Events
+﻿namespace SPMeta2.Events
 {
     /// <summary>
     /// Internal usage only.

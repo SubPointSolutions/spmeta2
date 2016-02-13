@@ -42,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Base
 
         public static string GetReusableHTML(this ListItem item)
         {
-            return ConvertUtils.ToString(item["ReusableHTML"]);
+            return ConvertUtils.ToString(item["ReusableHtml"]);
         }
 
         public static string GetReusableText(this ListItem item)

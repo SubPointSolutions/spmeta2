@@ -7,7 +7,6 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
@@ -36,8 +35,14 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var groupModelHost = modelHost.WithAssertAndCast<TermGroupModelHost>("modelHost", value => value.RequireNotNull());
             var termSetModel = model.WithAssertAndCast<TaxonomyTermSetDefinition>("model", value => value.RequireNotNull());
 
@@ -114,13 +119,26 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
         private static void MapTermSet(TermSet currentTermSet, TaxonomyTermSetDefinition termSetModel)
         {
-            currentTermSet.Description = termSetModel.Description;
+            if (!string.IsNullOrEmpty(termSetModel.Description))
+                currentTermSet.Description = termSetModel.Description;
+
+            if (!string.IsNullOrEmpty(termSetModel.Contact))
+                currentTermSet.Contact = termSetModel.Contact;
+
+            if (!string.IsNullOrEmpty(termSetModel.CustomSortOrder))
+                currentTermSet.CustomSortOrder = termSetModel.CustomSortOrder;
 
             if (termSetModel.IsOpenForTermCreation.HasValue)
                 currentTermSet.IsOpenForTermCreation = termSetModel.IsOpenForTermCreation.Value;
 
             if (termSetModel.IsAvailableForTagging.HasValue)
                 currentTermSet.IsAvailableForTagging = termSetModel.IsAvailableForTagging.Value;
+
+
+            foreach (var customProp in termSetModel.CustomProperties.Where(p => p.Override))
+            {
+                currentTermSet.SetCustomProperty(customProp.Name, customProp.Value);
+            }
         }
 
         protected TermSet FindTermSet(TermGroup termGroup, TaxonomyTermSetDefinition termSetModel)

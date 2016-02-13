@@ -20,14 +20,14 @@ namespace SPMeta2.Standard.Syntax
         #region methods
 
         public static TModelNode AddTaxonomyTermLabel<TModelNode>(this TModelNode model, TaxonomyTermLabelDefinition definition)
-            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
+            where TModelNode : ModelNode, ITaxonomyTermModelNode, new()
         {
             return AddTaxonomyTermLabel(model, definition, null);
         }
 
         public static TModelNode AddTaxonomyTermLabel<TModelNode>(this TModelNode model, TaxonomyTermLabelDefinition definition,
             Action<TaxonomyTermLabelModelNode> action)
-            where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
+            where TModelNode : ModelNode, ITaxonomyTermModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -37,7 +37,7 @@ namespace SPMeta2.Standard.Syntax
         #region array overload
 
         public static TModelNode AddTaxonomyTermLabels<TModelNode>(this TModelNode model, IEnumerable<TaxonomyTermLabelDefinition> definitions)
-           where TModelNode : ModelNode, ITaxonomyTermSetHostModelNode, new()
+           where TModelNode : ModelNode, ITaxonomyTermModelNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

@@ -8,12 +8,11 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.Standard.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
-using SPMeta2.Utils;
-using SPMeta2.Exceptions;
 using SPMeta2.Standard.Utils;
+using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 {
@@ -34,12 +33,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
         {
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
-            // TODO, move to common validator infrastructure
             if (!TaxonomyUtility.IsValidTermName(definition.Name))
             {
                 throw new SPMeta2Exception(
-                    string.Format("Term name [{0}] cannot contain any of the following characters: \" ; < > | and Tab",
-                        definition.Name));
+                    string.Format("Term name [{0}] cannot contain any of the following characters: {1}",
+                        definition.Name,
+                        string.Join(", ", TaxonomyUtility.InvalidTermNameStrings)));
             }
 
             if (modelHost is TermModelHost)
@@ -52,8 +51,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
         }
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        protected virtual string NormalizeTermName(string termName)
         {
+            return TaxonomyUtility.NormalizeName(termName);
+        }
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
             Term currentTerm = null;
@@ -103,6 +113,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var termSet = groupModelHost.HostTermSet;
 
             var currentTerm = FindTermInTermSet(termSet, termModel);
+            var termName = NormalizeTermName(termModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -120,10 +131,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term");
 
                 currentTerm = termModel.Id.HasValue
-                    ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
-                    : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
+                    ? termSet.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
+                    : termSet.CreateTerm(termName, termModel.LCID, Guid.NewGuid());
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -140,7 +151,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -158,12 +169,36 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             termStore.Context.ExecuteQueryWithTrace();
         }
 
+        private void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel)
+        {
+            if (!string.IsNullOrEmpty(termModel.Description))
+                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+
+            if (!string.IsNullOrEmpty(termModel.CustomSortOrder))
+                currentTerm.CustomSortOrder = termModel.CustomSortOrder;
+
+            if (termModel.IsAvailableForTagging.HasValue)
+                currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
+
+
+            foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
+            {
+                currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
+            }
+
+            foreach (var customProp in termModel.LocalCustomProperties.Where(p => p.Override))
+            {
+                currentTerm.SetLocalCustomProperty(customProp.Name, customProp.Value);
+            }
+        }
+
         private void DeployTermUnderTerm(object modelHost, TermModelHost groupModelHost, TaxonomyTermDefinition termModel)
         {
             var termStore = groupModelHost.HostTermStore;
             var termSet = groupModelHost.HostTerm;
 
             var currentTerm = FindTermInTerm(termSet, termModel);
+            var termName = NormalizeTermName(termModel.Name);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -181,10 +216,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Term");
 
                 currentTerm = termModel.Id.HasValue
-                    ? termSet.CreateTerm(termModel.Name, termModel.LCID, termModel.Id.Value)
-                    : termSet.CreateTerm(termModel.Name, termModel.LCID, Guid.NewGuid());
+                    ? termSet.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
+                    : termSet.CreateTerm(termName, termModel.LCID, Guid.NewGuid());
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -201,7 +236,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                currentTerm.SetDescription(termModel.Description, termModel.LCID);
+                MapTermProperties(currentTerm, termModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -238,17 +273,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             else if (!string.IsNullOrEmpty(termModel.Name))
             {
-                var name = termModel.Name;
+                var termName = NormalizeTermName(termModel.Name);
 
-                //var terms = term.Terms;
-
-                //context.Load(terms);
-                //context.ExecuteQueryWithTrace();
-
-
-                results = context.LoadQuery(term.Terms.Where(t => t.Name == name));
+                results = context.LoadQuery(term.Terms.Where(t => t.Name == termName));
                 context.ExecuteQueryWithTrace();
-                //result = term.Terms.FirstOrDefault(t => t.Name == termModel.Name);
             }
 
             result = results.FirstOrDefault();
@@ -291,10 +319,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             else if (!string.IsNullOrEmpty(termModel.Name))
             {
+                var termName = NormalizeTermName(termModel.Name);
+
                 var terms = termSet.GetTerms(new LabelMatchInformation(context)
                 {
                     Lcid = termModel.LCID,
-                    TermLabel = termModel.Name,
+                    TermLabel = termName,
                     TrimUnavailable = false
                 });
 

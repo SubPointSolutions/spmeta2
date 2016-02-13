@@ -20,10 +20,21 @@ namespace SPMeta2.Definitions.Fields
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
+    [ExpectManyInstances]
 
     public class DependentLookupFieldDefinition : LookupFieldDefinition
     {
         #region properties
+
+        /// <summary>
+        /// ID of the target field.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        //[ExpectRequired]
+        [DataMember]
+        [IdentityKey]
+        public override Guid Id { get; set; }
 
         [ExpectValidation]
         [DataMember]

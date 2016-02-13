@@ -134,6 +134,7 @@ namespace SPMeta2.Standard.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         public bool? CurrentNavigationShowPages { get; set; }
+
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]

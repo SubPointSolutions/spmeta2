@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Models;
-using SPMeta2.Syntax.Default.Extensions;
 
 namespace SPMeta2.Syntax.Default
 {
@@ -80,7 +78,7 @@ namespace SPMeta2.Syntax.Default
 
         public static WebModelNode AddWebFeature(this WebModelNode model, FeatureDefinition definition, Action<FeatureModelNode> action)
         {
-            return AddFeature(model, definition, action) as WebModelNode;
+            return AddFeature(model, definition, action);
         }
 
         #region array overload

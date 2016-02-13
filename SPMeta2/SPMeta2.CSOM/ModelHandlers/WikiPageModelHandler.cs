@@ -26,28 +26,33 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         #region methods
 
-        public override void WithResolvingModelHost(object modelHost, DefinitionBase model, Type childModelType, Action<object> action)
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
             var web = folderModelHost.CurrentList.ParentWeb;
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
 
             var currentPage = GetWikiPageFile(web, folder, wikiPageModel);
 
             var context = folder.Context;
-
-            var currentListItem = currentPage.ListItemAllFields;
-            context.Load(currentListItem);
-            context.ExecuteQueryWithTrace();
 
             if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))
             {
                 var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                 {
-                    itemHost.HostListItem = currentListItem;
+                    itemHost.HostFolder = folderModelHost.CurrentListFolder;
+                    itemHost.HostListItem = folderModelHost.CurrentListItem;
+                    itemHost.HostFile = currentPage;
+                    itemHost.HostList = folderModelHost.CurrentList;
                 });
 
                 action(listItemHost);
@@ -58,6 +63,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 var listItemHost = ModelHostBase.Inherit<ListItemModelHost>(folderModelHost, itemHost =>
                 {
+                    var currentListItem = currentPage.ListItemAllFields;
+                    context.Load(currentListItem);
+                    context.ExecuteQueryWithTrace();
+
                     itemHost.HostListItem = currentListItem;
                 });
 
@@ -73,7 +82,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected string GetSafeWikiPageFileName(WikiPageDefinition wikiPageModel)
         {
-            var pageName = wikiPageModel.FileName;
+            return GetSafeWikiPageFileName(wikiPageModel.FileName);
+        }
+
+        protected string GetSafeWikiPageFileName(string fileName)
+        {
+            var pageName = fileName;
             if (!pageName.EndsWith(".aspx")) pageName += ".aspx";
 
             return pageName;
@@ -84,17 +98,33 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var wikiPageModel = model.WithAssertAndCast<WikiPageDefinition>("model", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
 
-            DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folder, wikiPageModel);
+            DeployWikiPage(folderModelHost.CurrentList.ParentWeb, folderModelHost.CurrentList, folder, wikiPageModel);
         }
 
-        private void DeployWikiPage(Web web, Folder folder, WikiPageDefinition wikiPageModel)
+        private void DeployWikiPage(Web web, List list, Folder folder, WikiPageDefinition definition)
         {
             var context = folder.Context;
 
             var newWikiPageUrl = string.Empty;
-            var file = GetWikiPageFile(web, folder, wikiPageModel, out newWikiPageUrl);
+
+            var contentTypeId = string.Empty;
+
+            // pre load content type
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                contentTypeId = definition.ContentTypeId;
+
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                contentTypeId = ContentTypeLookupService
+                                            .LookupContentTypeByName(list, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
+
+            var file = GetWikiPageFile(web, folder, definition, out newWikiPageUrl);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -103,7 +133,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 EventType = ModelEventType.OnProvisioning,
                 Object = file,
                 ObjectType = typeof(File),
-                ObjectDefinition = wikiPageModel,
+                ObjectDefinition = definition,
                 ModelHost = folder
             });
 
@@ -119,7 +149,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.Load(currentListItem);
                 context.ExecuteQueryWithTrace();
 
-                currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
+
+                if (!string.IsNullOrEmpty(contentTypeId))
+                    currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+
+                currentListItem[BuiltInInternalFieldNames.WikiField] = definition.Content ?? String.Empty;
+
+                FieldLookupService.EnsureValues(currentListItem, definition.Values, true);
+                
                 currentListItem.Update();
 
                 context.ExecuteQueryWithTrace();
@@ -131,7 +169,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = newPageFile,
                     ObjectType = typeof(File),
-                    ObjectDefinition = wikiPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = folder
                 });
 
@@ -142,7 +180,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // TODO,override if force
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing wiki page");
 
-                if (wikiPageModel.NeedOverride)
+                if (definition.NeedOverride)
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "NeedOverride = true. Updating wiki page content.");
 
@@ -150,7 +188,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                     context.Load(currentListItem);
                     context.ExecuteQueryWithTrace();
 
-                    currentListItem[BuiltInInternalFieldNames.WikiField] = wikiPageModel.Content ?? String.Empty;
+                    FieldLookupService.EnsureDefaultValues(currentListItem, definition.DefaultValues);
+
+                    if (!string.IsNullOrEmpty(contentTypeId))
+                        currentListItem[BuiltInInternalFieldNames.ContentTypeId] = contentTypeId;
+
+                    currentListItem[BuiltInInternalFieldNames.WikiField] = definition.Content ?? String.Empty;
                     currentListItem.Update();
                 }
                 else
@@ -165,7 +208,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     EventType = ModelEventType.OnProvisioned,
                     Object = file,
                     ObjectType = typeof(File),
-                    ObjectDefinition = wikiPageModel,
+                    ObjectDefinition = definition,
                     ModelHost = folder
                 });
 

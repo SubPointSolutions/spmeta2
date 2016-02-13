@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-
 using System.Xml.Linq;
 using SPMeta2.Definitions;
+using SPMeta2.Services.Impl;
+
+// ReSharper disable InconsistentNaming
 
 namespace SPMeta2.Utils
 {
@@ -51,102 +51,115 @@ namespace SPMeta2.Utils
 
         public static XDocument SetPropertyMappings(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetOverwriteResultPath(this XDocument webpartXmlDocument, bool value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetShouldHideControlWhenEmpty(this XDocument webpartXmlDocument, bool value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetLogAnalyticsViewEvent(this XDocument webpartXmlDocument, bool value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetAddSEOPropertiesFromSearch(this XDocument webpartXmlDocument, bool value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetStartingItemIndex(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetPropertyMappings(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
 
         public static XDocument SetNumberOfItems(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
 
         public static XDocument SetResultsPerPage(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
 
         public static XDocument SetRenderTemplateId(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetItemTemplateId(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetGroupTemplateId(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
 
         public static XDocument SetDataProviderJSON(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetDescription(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetWidth(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+       
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV3, false, "uint");
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+
         }
 
         public static XDocument SetHeight(this XDocument webpartXmlDocument, int value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV3, false, "uint");
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
 
@@ -154,7 +167,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return SetOrUpdateMetadataProperty(webpartXmlDocument, "importErrorMessage", value);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "MissingAssembly", value, WebPartNamespaceV2, false);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -163,7 +176,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetV3MetadataNode(webpartXmlDocument, "importErrorMessage", WebPartNamespaceV3).Value;
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "MissingAssembly");
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -171,15 +184,15 @@ namespace SPMeta2.Utils
 
         public static XDocument SetPrimaryTaskListUrl(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetChromeType(this XDocument webpartXmlDocument, string value)
         {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeType", value, WebPartNamespaceV3, false);
-            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeType", value, WebPartNamespaceV3, false, "chrometype");
+            if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "FrameType", value, WebPartNamespaceV2, false);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -189,8 +202,27 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "ChromeType", WebPartNamespaceV3);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "FrameType", WebPartNamespaceV2);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        public static string GetWebPartAssemblyQualifiedName(this XDocument webpartXmlDocument)
+        {
+            if (IsV3version(webpartXmlDocument))
+            {
+                var typeNode = GetV3MetadataNode(webpartXmlDocument, "type", WebPartNamespaceV3);
+
+                return typeNode.Attribute("name").Value;
+            }
+            if (IsV2version(webpartXmlDocument))
+            {
+                var classPart = GetProperty(webpartXmlDocument, "TypeName", WebPartNamespaceV2);
+                var assemblyPart = GetProperty(webpartXmlDocument, "Assembly", WebPartNamespaceV2);
+
+                return classPart + ", " + assemblyPart;
+            }
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
@@ -198,8 +230,8 @@ namespace SPMeta2.Utils
         public static XDocument SetChromeState(this XDocument webpartXmlDocument, string value)
         {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeState", value, WebPartNamespaceV3, false);
-            else if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "ChromeState", value, WebPartNamespaceV3, false, "chromestate");
+            if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "FrameState", value, WebPartNamespaceV2, false);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -209,7 +241,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "ChromeState", WebPartNamespaceV3);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "FrameState", WebPartNamespaceV2);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -219,7 +251,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return SetOrUpdateV3Property(webpartXmlDocument, "TitleUrl", value, WebPartNamespaceV3, false);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "DetailLink", value, WebPartNamespaceV2, false);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -229,7 +261,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "TitleIconImageUrl", WebPartNamespaceV3);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "PartImageSmall", WebPartNamespaceV2);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -239,7 +271,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return SetOrUpdateV3Property(webpartXmlDocument, "TitleIconImageUrl", value, WebPartNamespaceV3, false);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return SetOrUpdateV2Property(webpartXmlDocument, "PartImageSmall", value, WebPartNamespaceV2, false);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -249,7 +281,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "TitleIconImageUrl", WebPartNamespaceV3);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, "PartImageSmall", WebPartNamespaceV2);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -257,115 +289,115 @@ namespace SPMeta2.Utils
 
         public static XDocument SetExportMode(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static string GetExportMode(this XDocument webpartXmlDocument)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
             return GetProperty(webpartXmlDocument, name);
         }
 
         public static XDocument SetListId(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static string GetListId(this XDocument webpartXmlDocument)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
             return GetProperty(webpartXmlDocument, name);
         }
 
         public static XDocument SetShowTimelineIfAvailable(this XDocument webpartXmlDocument, bool value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value.ToString());
         }
 
         public static XDocument SetTitle(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetXmlDefinition(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetWebUrl(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetJSLink(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static string GetJSLink(this XDocument webpartXmlDocument)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
             return GetProperty(webpartXmlDocument, name);
         }
 
         public static XDocument SetListName(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static string GetListName(this XDocument webpartXmlDocument)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
             return GetProperty(webpartXmlDocument, name);
         }
 
         public static XDocument SetFilterDisplayValue1(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetDataMappingViewFields(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetID(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetItemStyle(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetListGuid(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetDataMappings(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         public static XDocument SetFilterValue1(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
@@ -428,7 +460,7 @@ namespace SPMeta2.Utils
 
             var propNodePath = "{" + propXlmns + "}property";
             return propsNode.Descendants(propNodePath)
-                                            .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == propName);
+                                            .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value.ToUpper() == propName.ToUpper());
         }
 
         internal static XDocument SetOrUpdateV3MetadataProperty(this XDocument webpartXmlDocument, string propName,
@@ -501,7 +533,32 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        internal static XDocument RemoveV3Property(this XDocument webpartXmlDocument, string propName,
+            string propXlmns)
+        {
+            var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
+            var propNode = GetV3Node(webpartXmlDocument, propName, propXlmns);
+
+            if (propNode != null)
+                propNode.Remove();
+
+            return webpartXmlDocument;
+        }
+
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData)
+        {
+            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propXlmns, isCData, "string");
+        }
+
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData, string propType)
+        {
+            return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propType, propXlmns, isCData);
+        }
+
+        internal static XDocument SetOrUpdateV3Property(this XDocument webpartXmlDocument, string propName, string propValue,
+            string propType, string propXlmns, bool isCData)
         {
             var propsNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV3 + "}properties").FirstOrDefault();
             var propNode = GetV3Node(webpartXmlDocument, propName, propXlmns);
@@ -511,7 +568,7 @@ namespace SPMeta2.Utils
                 var newNode = (new XElement("{" + WebPartNamespaceV3 + "}property"));
 
                 newNode.SetAttributeValue("name", propName);
-                newNode.SetAttributeValue("type", "string");
+                newNode.SetAttributeValue("type", propType);
 
                 if (isCData)
                 {
@@ -556,8 +613,29 @@ namespace SPMeta2.Utils
             return webPartNode.Descendants(propNodePath).FirstOrDefault();
         }
 
+        internal static XDocument RemoveV2Property(this XDocument webpartXmlDocument, string propName,
+           string propXlmns)
+        {
+            var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
+            if (webPartNode == null) throw new ArgumentException("Web part xml template is very wrong");
 
-        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+            var propNodePath = "{" + propXlmns + "}" + propName;
+            var propNode = webPartNode.Descendants(propNodePath).FirstOrDefault();
+
+            if (propNode != null)
+                propNode.Remove();
+
+            return webpartXmlDocument;
+        }
+
+        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName,
+            string propValue, string propXlmns, bool isCData)
+        {
+            return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, "string", propXlmns, isCData);
+        }
+
+        internal static XDocument SetOrUpdateV2Property(this XDocument webpartXmlDocument, string propName, string propValue,
+            string propType, string propXlmns, bool isCData)
         {
             var webPartNode = webpartXmlDocument.Descendants("{" + WebPartNamespaceV2 + "}WebPart").FirstOrDefault();
 
@@ -626,18 +704,36 @@ namespace SPMeta2.Utils
             return webpartXmlDocument;
         }
 
-        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
-            bool isCData)
+        public static XDocument RemoveProperty(this XDocument webpartXmlDocument, string propName)
         {
             if (IsV3version(webpartXmlDocument))
-                return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV3, isCData);
-            else if (IsV2version(webpartXmlDocument))
-                return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, WebPartNamespaceV2, isCData);
+                return RemoveV3Property(webpartXmlDocument, propName, WebPartNamespaceV3);
+            if (IsV2version(webpartXmlDocument))
+                return RemoveV2Property(webpartXmlDocument, propName, WebPartNamespaceV2);
+
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
-        internal static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, string propXlmns, bool isCData)
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
+            bool isCData)
+        {
+            return SetOrUpdateProperty(webpartXmlDocument, propName, propValue, "string", isCData);
+        }
+
+        public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue,
+          string propType, bool isCData)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propType, WebPartNamespaceV3, isCData);
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, propName, propValue, propType, WebPartNamespaceV2, isCData);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
+        }
+
+        internal static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue, string propType,
+            string propXlmns, bool isCData)
         {
             if (IsV3version(webpartXmlDocument))
                 SetOrUpdateV3Property(webpartXmlDocument, propName, propValue, propXlmns, isCData);
@@ -648,6 +744,8 @@ namespace SPMeta2.Utils
 
             return webpartXmlDocument;
         }
+
+
 
         public static XDocument SetOrUpdateProperty(this XDocument webpartXmlDocument, string propName, string propValue)
         {
@@ -661,8 +759,8 @@ namespace SPMeta2.Utils
 
         public static XDocument SetGroupStyle(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
 
@@ -678,15 +776,15 @@ namespace SPMeta2.Utils
 
         public static XDocument SetUseCache(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
 
         public static XDocument SetCacheXslStorage(this XDocument webpartXmlDocument, string value)
         {
-            var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-            return WebpartXmlExtensions.SetOrUpdateProperty(webpartXmlDocument, name, value);
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
         #endregion
@@ -697,7 +795,7 @@ namespace SPMeta2.Utils
         {
             if (IsV3version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, propName, WebPartNamespaceV3);
-            else if (IsV2version(webpartXmlDocument))
+            if (IsV2version(webpartXmlDocument))
                 return GetProperty(webpartXmlDocument, propName, WebPartNamespaceV2);
 
             throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
@@ -826,7 +924,7 @@ namespace SPMeta2.Utils
             if (toType.IsGenericType &&
                 toType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                toType = Nullable.GetUnderlyingType(toType); ;
+                toType = Nullable.GetUnderlyingType(toType);
             }
 
             bool canConvert = toType is IConvertible || (toType.IsValueType && !toType.IsEnum);

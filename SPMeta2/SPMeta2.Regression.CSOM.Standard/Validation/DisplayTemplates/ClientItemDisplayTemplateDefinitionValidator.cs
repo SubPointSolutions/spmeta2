@@ -22,7 +22,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.DisplayTemplates
 
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
             var file = GetItemFile(folderModelHost.CurrentList, folder, definition.FileName);

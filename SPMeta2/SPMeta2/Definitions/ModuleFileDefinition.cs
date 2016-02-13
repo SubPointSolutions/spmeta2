@@ -1,14 +1,11 @@
-﻿using SPMeta2.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using SPMeta2.Attributes;
+using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
-using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Definitions
 {
@@ -16,18 +13,22 @@ namespace SPMeta2.Definitions
     /// Allows to define and deploy module file.
     /// </summary>
 
-    [SPObjectTypeAttribute(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
-    [SPObjectTypeAttribute(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFile", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
-    [DefaultRootHostAttribute(typeof(WebDefinition))]
-    [DefaultParentHostAttribute(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
 
     [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
+    [ExpectAddHostExtensionMethod]
 
     [ParentHostCapability(typeof(ListDefinition))]
+
+    [ExpectManyInstances]
+
     public class ModuleFileDefinition : DefinitionBase
     {
         #region constructors
@@ -38,6 +39,7 @@ namespace SPMeta2.Definitions
             Overwrite = true;
 
             DefaultValues = new List<FieldValue>();
+            Values = new List<FieldValue>();
         }
 
         #endregion
@@ -58,6 +60,10 @@ namespace SPMeta2.Definitions
         [DataMember]
         public List<FieldValue> DefaultValues { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        public List<FieldValue> Values { get; set; }
+
         /// <summary>
         /// Target file name,
         /// </summary>
@@ -67,6 +73,12 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string FileName { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string Title { get; set; }
 
         /// <summary>
         /// Target file content.

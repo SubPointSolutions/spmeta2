@@ -71,19 +71,44 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapRegionalSettings(SPRegionalSettings settings, RegionalSettingsDefinition definition)
         {
-            settings.AdjustHijriDays = definition.AdjustHijriDays;
-            settings.AlternateCalendarType = definition.AlternateCalendarType;
-            settings.CalendarType = definition.CalendarType;
-            settings.Collation = definition.Collation;
-            settings.FirstDayOfWeek = definition.FirstDayOfWeek;
-            settings.FirstWeekOfYear = definition.FirstWeekOfYear;
-            settings.LocaleId = definition.LocaleId;
-            settings.WorkDayStartHour = definition.WorkDayStartHour;
-            settings.WorkDayEndHour = definition.WorkDayEndHour;
-            settings.WorkDays = definition.WorkDays;
-            settings.ShowWeeks = definition.ShowWeeks;
-            settings.Time24 = definition.Time24;
-            settings.LocaleId = definition.LocaleId;
+            if (definition.AdjustHijriDays.HasValue)
+                settings.AdjustHijriDays = definition.AdjustHijriDays.Value;
+
+            if (definition.AlternateCalendarType.HasValue)
+                settings.AlternateCalendarType = definition.AlternateCalendarType.Value;
+
+            if (definition.CalendarType.HasValue)
+                settings.CalendarType = definition.CalendarType.Value;
+
+            if (definition.Collation.HasValue)
+                settings.Collation = definition.Collation.Value;
+
+            if (definition.FirstDayOfWeek.HasValue)
+                settings.FirstDayOfWeek = definition.FirstDayOfWeek.Value;
+
+            if (definition.FirstWeekOfYear.HasValue)
+                settings.FirstWeekOfYear = definition.FirstWeekOfYear.Value;
+
+            if (definition.LocaleId.HasValue)
+                settings.LocaleId = definition.LocaleId.Value;
+
+            if (definition.WorkDayStartHour.HasValue)
+                settings.WorkDayStartHour = definition.WorkDayStartHour.Value;
+
+            if (definition.WorkDayEndHour.HasValue)
+                settings.WorkDayEndHour = definition.WorkDayEndHour.Value;
+
+            if (definition.WorkDays.HasValue)
+                settings.WorkDays = definition.WorkDays.Value;
+
+            if (definition.ShowWeeks.HasValue)
+                settings.ShowWeeks = definition.ShowWeeks.Value;
+
+            if (definition.Time24.HasValue)
+                settings.Time24 = definition.Time24.Value;
+
+            if (definition.LocaleId.HasValue)
+                settings.LocaleId = definition.LocaleId.Value;
         }
 
         #endregion

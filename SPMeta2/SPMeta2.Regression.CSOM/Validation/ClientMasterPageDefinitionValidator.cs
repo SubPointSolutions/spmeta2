@@ -11,6 +11,7 @@ using System.Linq;
 using SPMeta2.Syntax.Default.Utils;
 using System.Text;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -22,7 +23,7 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
-            var folder = folderModelHost.CurrentLibraryFolder;
+            var folder = folderModelHost.CurrentListFolder;
             var definition = model.WithAssertAndCast<MasterPageDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindPage(folderModelHost.CurrentList, folder, definition);
@@ -37,6 +38,20 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spFile, o => o.ServerRelativeUrl);
 
             context.ExecuteQueryWithTrace();
+
+            var stringCustomContentType = string.Empty;
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName)
+                || !string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                {
+                    stringCustomContentType = ContentTypeLookupService
+                                                    .LookupContentTypeByName(folderModelHost.CurrentList, definition.ContentTypeName)
+                                                    .Name;
+                }
+            }
+
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject)
@@ -104,63 +119,122 @@ namespace SPMeta2.Regression.CSOM.Validation
                     IsValid = isContentValid
                 };
             });
+
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual(m => m.ContentTypeName, o => o.GetContentTypeName());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                // TODO
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeId, "ContentTypeId is null or empty. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.ContentTypeName);
+                    var currentContentTypeName = d.ContentType.Name;
+
+                    var isValis = stringCustomContentType == currentContentTypeName;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValis
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
+            }
+
+            if (definition.DefaultValues.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.DefaultValues)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.DefaultValues);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultValues, "DefaultValues.Count == 0. Skipping.");
+            }
+
+            if (definition.Values.Count > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var isValid = true;
+
+                    foreach (var srcValue in s.Values)
+                    {
+                        // big TODO here for == != 
+
+                        if (!string.IsNullOrEmpty(srcValue.FieldName))
+                        {
+                            if (d[srcValue.FieldName].ToString() != srcValue.Value.ToString())
+                                isValid = false;
+                        }
+
+                        if (!isValid)
+                            break;
+                    }
+
+                    var srcProp = s.GetExpressionValue(def => def.Values);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
+            }
         }
 
         #endregion
-    }
-
-    public static class SPListItemHelper
-    {
-        public static List<string> GetUIVersion(this ListItem item)
-        {
-            var result = new List<string>();
-
-            var values = item["UIVersion"] as string[];
-
-            if (values != null && values.Length > 0)
-                result.AddRange(values);
-
-            return result;
-        }
-
-        public static string GetTitle(this ListItem item)
-        {
-            return item["Title"] as string;
-        }
-
-        public static string GetContentTypeName(this ListItem item)
-        {
-            return item.ContentType.Name;
-        }
-
-        public static string GetDefaultCSSFile(this ListItem item)
-        {
-            return item["DefaultCssFile"] as string;
-        }
-
-        public static string GetFileName(this ListItem item)
-        {
-            return item["FileLeafRef"] as string;
-        }
-
-        public static string GetPublishingPageDescription(this ListItem item)
-        {
-            return item["Comments"] as string;
-        }
-
-        public static string GetPublishingPagePageLayoutFileName(this ListItem item)
-        {
-            var result = item["PublishingPageLayout"] as FieldUrlValue;
-
-            if (result != null)
-                return result.Url;
-
-            return string.Empty;
-        }
-
-        public static string GetMasterPageDescription(this ListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
     }
 }

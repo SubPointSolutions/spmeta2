@@ -27,6 +27,9 @@ namespace SPMeta2.Standard.Definitions.Fields
    // [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
+    [ExpectManyInstances]
+
+
     public class MediaFieldDefinition : FieldDefinition
     {
         #region constructors
@@ -39,6 +42,11 @@ namespace SPMeta2.Standard.Definitions.Fields
         #endregion
 
         #region properties
+
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        public override sealed string FieldType { get; set; }
 
         [ExpectValidation]
         [DataMember]

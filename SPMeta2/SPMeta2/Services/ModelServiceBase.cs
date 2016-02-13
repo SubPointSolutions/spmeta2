@@ -1,19 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SPMeta2.Common;
+using System.Reflection;
 using SPMeta2.Definitions;
-using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
-using SPMeta2.Events;
+using SPMeta2.Services.Impl;
 using SPMeta2.Utils;
-using System.Reflection;
 
 namespace SPMeta2.Services
 {
+
+    public class ModelProcessingEventArgs : EventArgs
+    {
+        public ModelNode Model { get; set; }
+        public ModelNode CurrentNode { get; set; }
+
+        public int ProcessedModelNodeCount { get; set; }
+
+        public int TotalModelNodeCount
+        {
+            get
+            {
+                if (Model == null)
+                    return 0;
+
+                var result = 0;
+
+                Model.WithNodesOfType<DefinitionBase>(n => { result++; });
+
+                return result;
+            }
+        }
+    }
+
     /// <summary>
     /// Base model service class for model provision operations.
     /// </summary>
@@ -29,7 +51,12 @@ namespace SPMeta2.Services
                 string.Format("Initializing new ModelServiceBase instance of type: [{0}]", GetType())))
             {
                 ModelHandlers = new Dictionary<Type, ModelHandlerBase>();
-                ModelTraverseService = ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
+
+                // should be a new instance all the time
+                // ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
+                ModelTraverseService = new DefaultModelTreeTraverseService();
+
+                InitModelTraverseService();
 
                 // default pre-post deployment services
                 PreDeploymentServices = new List<PreDeploymentServiceBase>();
@@ -39,6 +66,8 @@ namespace SPMeta2.Services
                 PostDeploymentServices.AddRange(ServiceContainer.Instance.GetServices<PostDeploymentServiceBase>());
             }
         }
+
+
 
         #endregion
 
@@ -94,7 +123,7 @@ namespace SPMeta2.Services
 
         // public ModelWeighServiceBase ModelWeighService { get; set; }
 
-        private readonly List<ModelHandlerBase> ModelHandlerEvents = new List<ModelHandlerBase>();
+        private readonly List<ModelHandlerBase> _modelHandlerEvents = new List<ModelHandlerBase>();
         private ModelNode _activeModelNode = null;
 
         public ModelTreeTraverseServiceBase ModelTraverseService { get; set; }
@@ -106,10 +135,8 @@ namespace SPMeta2.Services
 
         #region events
 
-        public EventHandler<ModelEventArgs> OnModelEvent;
-
-        public EventHandler<OnModelNodeProcessedEventArgs> OnModelNodeProcessed;
-        public EventHandler<OnModelNodeProcessingEventArgs> OnModelNodeProcessing;
+        public EventHandler<ModelProcessingEventArgs> OnModelNodeProcessed;
+        public EventHandler<ModelProcessingEventArgs> OnModelNodeProcessing;
 
         #endregion
 
@@ -208,18 +235,6 @@ namespace SPMeta2.Services
 
         #region protected
 
-        protected void InvokeOnModelNodeProcessed(object sender, OnModelNodeProcessedEventArgs args)
-        {
-            if (OnModelNodeProcessed != null)
-                OnModelNodeProcessed(sender, args);
-        }
-
-        protected void InvokeOnModelNodeProcessing(object sender, OnModelNodeProcessingEventArgs args)
-        {
-            if (OnModelNodeProcessing != null)
-                OnModelNodeProcessing(sender, args);
-        }
-
         protected virtual ModelHandlerBase ResolveModelHandler(Type modelType)
         {
             ModelHandlerBase result;
@@ -234,7 +249,7 @@ namespace SPMeta2.Services
             using (new TraceMethodActivityScope(TraceService, (int)LogEventId.CoreCalls))
             {
                 foreach (var modelHandler in ModelHandlers.Values
-                    .Where(modelHandler => !ModelHandlerEvents.Contains(modelHandler)))
+                    .Where(modelHandler => !_modelHandlerEvents.Contains(modelHandler)))
                 {
                     modelHandler.OnModelEvent += (s, e) =>
                     {
@@ -250,18 +265,23 @@ namespace SPMeta2.Services
                         }
                     };
 
-                    ModelHandlerEvents.Add(modelHandler);
+                    _modelHandlerEvents.Add(modelHandler);
                 }
             }
         }
 
-        protected ModelHandlerBase ResolveModelHandlerForNode(ModelNode modelNode)
+        public static Func<ModelNode, ModelHandlerBase> OnResolveNullModelHandler;
+
+        protected virtual ModelHandlerBase ResolveModelHandlerForNode(ModelNode modelNode)
         {
             var modelDefinition = modelNode.Value as DefinitionBase;
             var modelHandler = ResolveModelHandler(modelDefinition.GetType());
 
             if (modelHandler == null)
             {
+                if (OnResolveNullModelHandler != null)
+                    return OnResolveNullModelHandler(modelNode);
+
                 TraceService.Error((int)LogEventId.ModelProcessingNullModelHandler, string.Format("Model handler instance is NULL. Throwing ArgumentNullException exception."));
 
                 throw new ArgumentNullException(
@@ -273,44 +293,84 @@ namespace SPMeta2.Services
             return modelHandler;
         }
 
+
+        protected virtual void RaiseOnModelNodeProcessing(object sender, ModelProcessingEventArgs args)
+        {
+            if (OnModelNodeProcessing != null)
+                OnModelNodeProcessing(sender, args);
+        }
+
+        protected virtual void RaiseOnModelNodeProcessed(object sender, ModelProcessingEventArgs args)
+        {
+            if (OnModelNodeProcessed != null)
+                OnModelNodeProcessed(sender, args);
+        }
+        private void InitModelTraverseService()
+        {
+            ModelTraverseService.OnModelHandlerResolve += ResolveModelHandlerForNode;
+
+            // these are hack due event propagation mis-disign
+            ModelTraverseService.OnModelProcessing += (node) =>
+            {
+                RaiseOnModelNodeProcessing(this, new ModelProcessingEventArgs
+                {
+                    Model = CurrentModelNode,
+                    CurrentNode = node,
+                    ProcessedModelNodeCount = CurrentModelNodeIndex
+                });
+
+                _activeModelNode = node;
+            };
+
+            ModelTraverseService.OnModelProcessed += (node) =>
+            {
+                CurrentModelNodeIndex++;
+
+                RaiseOnModelNodeProcessed(this, new ModelProcessingEventArgs
+                {
+                    Model = CurrentModelNode,
+                    CurrentNode = node,
+                    ProcessedModelNodeCount = CurrentModelNodeIndex
+                });
+
+                _activeModelNode = null;
+            };
+
+            // on model fully-partially processed events
+            ModelTraverseService.OnModelFullyProcessing += (node) =>
+            {
+
+            };
+
+            ModelTraverseService.OnModelFullyProcessed += (node) =>
+            {
+
+            };
+
+            ModelTraverseService.OnChildModelsProcessing += (node, type, childNodels) =>
+            {
+
+            };
+
+            ModelTraverseService.OnChildModelsProcessed += (node, type, childNodels) =>
+            {
+
+            };
+        }
+
+        private object CurrentModelHost;
+        private ModelNode CurrentModelNode;
+        private int CurrentModelNodeIndex;
+
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
+            CurrentModelNodeIndex = 0;
+
+            CurrentModelHost = modelHost;
+            CurrentModelNode = modelNode;
+
             using (new TraceActivityScope(TraceService, (int)LogEventId.ModelProcessing, string.Format("ProcessModelDeployment for model:[{0}]", modelNode.Value.GetType())))
             {
-                ModelTraverseService.OnModelHandlerResolve += ResolveModelHandlerForNode;
-
-                // these are hack due event propagation mis-disign
-                ModelTraverseService.OnModelProcessing += (node) =>
-                {
-                    _activeModelNode = node;
-                };
-
-                ModelTraverseService.OnModelProcessed += (node) =>
-                {
-                    _activeModelNode = null;
-                };
-
-                // on model fully-partially processed events
-                ModelTraverseService.OnModelFullyProcessing += (node) =>
-                {
-
-                };
-
-                ModelTraverseService.OnModelFullyProcessed += (node) =>
-                {
-
-                };
-
-                ModelTraverseService.OnChildModelsProcessing += (node, type, childNodels) =>
-                {
-
-                };
-
-                ModelTraverseService.OnChildModelsProcessed += (node, type, childNodels) =>
-                {
-
-                };
-
                 ModelTraverseService.Traverse(modelHost, modelNode);
             }
         }

@@ -2,26 +2,104 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls.WebParts;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
     public class ListViewModelHandler : SSOMModelHandlerBase
     {
+        #region constructors
+
+        public ListViewModelHandler()
+        {
+            ListViewScopeTypesConvertService = ServiceContainer.Instance.GetService<ListViewScopeTypesConvertService>();
+        }
+
+        #endregion
+
         #region methods
+
+        public ListViewScopeTypesConvertService ListViewScopeTypesConvertService { get; set; }
 
         public override Type TargetType
         {
             get { return typeof(ListViewDefinition); }
+        }
+
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
+
+            var listModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+
+            var list = listModelHost.HostList;
+            var web = list.ParentWeb;
+
+            if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType))
+            {
+                var listViewDefinition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
+                var currentView = FindView(list, listViewDefinition);
+
+                string serverRelativeFileUrl;
+                if (currentView != null)
+                    serverRelativeFileUrl = currentView.ServerRelativeUrl;
+                else
+                {
+                    //  maybe forms files?
+                    // they aren't views, but files
+
+                    if (list.BaseType == SPBaseType.DocumentLibrary)
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            "Forms",
+                            listViewDefinition.Url
+                        });
+                    }
+                    else
+                    {
+                        serverRelativeFileUrl = UrlUtility.CombineUrl(new[]
+                        {
+                            list.RootFolder.ServerRelativeUrl, 
+                            listViewDefinition.Url
+                        });
+                    }
+                }
+
+                var targetFile = web.GetFile(serverRelativeFileUrl);
+
+                using (var webPartManager = targetFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
+                {
+                    var webpartPageHost = new WebpartPageModelHost
+                    {
+                        HostFile = targetFile,
+                        PageListItem = targetFile.Item,
+                        SPLimitedWebPartManager = webPartManager
+                    };
+
+                    action(webpartPageHost);
+                }
+            }
+            else
+            {
+                action(modelHost);
+            }
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -78,6 +156,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var viewFields = new StringCollection();
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
+                var isPersonalView = false;
+                var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
+                    string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
+
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
                             string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : GetSafeViewUrl(listViewModel.Url),
@@ -85,7 +167,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                             listViewModel.Query,
                             (uint)listViewModel.RowLimit,
                             listViewModel.IsPaged,
-                            listViewModel.IsDefault);
+                            listViewModel.IsDefault,
+                            viewType,
+                            isPersonalView);
 
                 currentView.Title = listViewModel.Title;
             }
@@ -96,6 +180,29 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // viewModel.InvokeOnDeployingModelEvents<ListViewDefinition, SPView>(currentView);
 
+            MapProperties(targetList, currentView, listViewModel);
+
+            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
+
+            ProcessLocalization(currentView, listViewModel);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentView,
+                ObjectType = typeof(SPView),
+                ObjectDefinition = listViewModel,
+                ModelHost = modelHost
+            });
+
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
+            currentView.Update();
+        }
+
+        private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
+        {
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
@@ -103,6 +210,26 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 foreach (var viewField in listViewModel.Fields)
                     currentView.ViewFields.Add(viewField);
+            }
+
+            if (!string.IsNullOrEmpty(listViewModel.ViewData))
+                currentView.ViewData = listViewModel.ViewData;
+
+            if (!string.IsNullOrEmpty(listViewModel.Scope))
+            {
+                var scopeValue = ListViewScopeTypesConvertService.NormilizeValueToSSOMType(listViewModel.Scope);
+
+                currentView.Scope = (SPViewScope)Enum.Parse(
+                    typeof(SPViewScope), scopeValue);
+            }
+
+            // There is no value in setting Aggregations if AggregationsStatus is not to "On"
+            if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
+            {
+                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
+
+                if (!string.IsNullOrEmpty(listViewModel.Aggregations))
+                    currentView.Aggregations = listViewModel.Aggregations;
             }
 
             currentView.Hidden = listViewModel.Hidden;
@@ -128,28 +255,18 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(listViewModel.ContentTypeId))
                 currentView.ContentTypeId = LookupListContentTypeById(targetList, listViewModel.ContentTypeId);
 
-            // viewModel.InvokeOnModelUpdatedEvents<ListViewDefinition, SPView>(currentView);
-
-            InvokeOnModelEvent(this, new ModelEventArgs
+            if (listViewModel.ViewStyleId.HasValue)
             {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = currentView,
-                ObjectType = typeof(SPView),
-                ObjectDefinition = listViewModel,
-                ModelHost = modelHost
-            });
-
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling currentView.Update()");
-            currentView.Update();
+                var viewStyle = targetList.ParentWeb.ViewStyles.StyleByID(listViewModel.ViewStyleId.Value);
+                currentView.ApplyStyle(viewStyle);
+            }
         }
 
         protected SPContentTypeId LookupListContentTypeByName(SPList targetList, string name)
         {
             var targetContentType = targetList.ContentTypes
                    .OfType<SPContentType>()
-                   .FirstOrDefault(ct => ct.Name.ToUpper() == name.ToUpper());
+                   .FirstOrDefault(ct => String.Equals(ct.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (targetContentType == null)
                 throw new SPMeta2Exception(string.Format("Cannot find content type by name ['{0}'] in list: [{1}]",
@@ -161,6 +278,19 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected SPContentTypeId LookupListContentTypeById(SPList targetList, string contentTypeId)
         {
             return new SPContentTypeId(contentTypeId);
+        }
+
+        protected virtual void ProcessLocalization(SPView obj, ListViewDefinition definition)
+        {
+
+            if (definition.TitleResource.Any())
+            {
+#if !NET35
+                foreach (var locValue in definition.TitleResource)
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
+#endif
+            }
+
         }
 
         #endregion
