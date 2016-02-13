@@ -67,9 +67,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                                 listTitle,
                                 listModel.Description ?? string.Empty,
 #pragma warning disable 618
-                                listModel.GetListUrl(),
+ listModel.GetListUrl(),
 #pragma warning restore 618
-                                string.Empty,
+ string.Empty,
                                 listModel.TemplateType,
                                 string.Empty);
             }
@@ -84,9 +84,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                                listTitle,
                                listModel.Description ?? string.Empty,
 #pragma warning disable 618
-                               listModel.GetListUrl(),
+ listModel.GetListUrl(),
 #pragma warning restore 618
-                               listTemplate.FeatureId.ToString(),
+ listTemplate.FeatureId.ToString(),
                                (int)listTemplate.Type,
                                listTemplate.DocumentTemplate);
             }
@@ -159,6 +159,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
+#if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
                 foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
@@ -167,6 +168,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         list.IndexedRootFolderPropertyKeys.Add(indexProperty);
                 }
             }
+#endif
 
             if (definition.WriteSecurity.HasValue)
                 list.WriteSecurity = definition.WriteSecurity.Value;
@@ -330,13 +332,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
             }
         }
 
