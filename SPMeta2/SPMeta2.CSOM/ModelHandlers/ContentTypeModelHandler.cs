@@ -74,7 +74,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     if (parentContentType == null)
                         throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
 
-                    contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                    //contentTypeModel.ParentContentTypeId = parentContentType.StringId;
                 }
 
                 var id = contentTypeModel.GetContentTypeId();
@@ -155,7 +155,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (parentContentType == null)
                     throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
 
-                contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                // nope, never change the definition props
+                //contentTypeModel.ParentContentTypeId = parentContentType.StringId;
             }
 
             var contentTypeId = contentTypeModel.GetContentTypeId();
@@ -246,7 +247,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     if (!processedDocumentTemplateUrl.Contains('/')
                         && !processedDocumentTemplateUrl.Contains('\\'))
                     {
-                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new []
+                        processedDocumentTemplateUrl = UrlUtility.CombineUrl(new[]
                         {
                             serverRelativeFolderUrl,
                             processedDocumentTemplateUrl
@@ -329,11 +330,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (parentContentType == null)
                     throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
 
-                contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                // nope, never change the definition props
+                //contentTypeModel.ParentContentTypeId = parentContentType.StringId;
             }
             else
             {
-            context.ExecuteQueryWithTrace();
+                context.ExecuteQueryWithTrace();
             }
 
             var contentTypeId = contentTypeModel.GetContentTypeId();

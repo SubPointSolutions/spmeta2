@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
+    <Compile Include="Impl\ModelHandlers\ModelHandlersTest.cs" />
     <Compile Include="Impl\Misc\ProvisionServiceTest.cs" />
     <Compile Include="Impl\ModelAPI\SPMeta2ModelTests.cs" />
     <Compile Include="Impl\Random\RandomDefinitionTest.cs" />

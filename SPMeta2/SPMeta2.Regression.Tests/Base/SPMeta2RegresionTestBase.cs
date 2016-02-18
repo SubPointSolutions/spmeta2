@@ -260,7 +260,6 @@ namespace SPMeta2.Regression.Tests.Base
 
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
             PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
-
         }
 
         private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)

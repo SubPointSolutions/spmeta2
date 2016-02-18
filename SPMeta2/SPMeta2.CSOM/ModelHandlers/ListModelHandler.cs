@@ -493,6 +493,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             ProcessLocalization(list, definition);
 
+#if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
                 context.Load(list, l => l.RootFolder.Properties);
@@ -523,6 +524,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 list.RootFolder.Update();
                 context.ExecuteQueryWithTrace();
             }
+#endif
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)

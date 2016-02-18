@@ -18,6 +18,7 @@ using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.Services
 {
@@ -426,6 +427,49 @@ namespace SPMeta2.Containers.Services
             TestModels(new ModelNode[] { model });
         }
 
+        private static HashCodeServiceBase _hasService = new MD5HashCodeServiceBase();
+        private static Dictionary<DefinitionBase, string> _definitionHashes = new Dictionary<DefinitionBase, string>();
+
+        private static void PersistDefinitionHashes(IEnumerable<ModelNode> models)
+        {
+            var defs = models.SelectMany(s => s.FindNodes(n => { return true; })
+                                               .Select(n => n.Value as DefinitionBase));
+
+            foreach (var def in defs)
+            {
+                var hash = GetDefinitionHash(def);
+
+                if (!_definitionHashes.ContainsKey(def))
+                    _definitionHashes.Add(def, hash);
+                else
+                    _definitionHashes[def] = hash;
+            }
+        }
+
+        private static string GetDefinitionHash(DefinitionBase def)
+        {
+            return _hasService.GetHashCode(def);
+        }
+
+
+        private void PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(IEnumerable<ModelNode> models)
+        {
+            var defs = models.SelectMany(s => s.FindNodes(n => { return true; })
+                                            .Select(n => n.Value as DefinitionBase));
+
+            foreach (var def in defs)
+            {
+                var oldHash = _definitionHashes[def];
+                var currentHash = GetDefinitionHash(def);
+
+                if (oldHash != currentHash)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Definition was changed by model handler. Avoid changing definitions while provisioning them. [{0}]", def));
+                }
+            }
+        }
+
         public void TestModels(IEnumerable<ModelNode> models)
         {
             // force XML serialiation
@@ -435,6 +479,8 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
+                PersistDefinitionHashes(new[] { model });
+
                 var allHooks = new List<EventHooks>();
 
                 WithProvisionRunnerContext(runnerContext =>
@@ -472,6 +518,8 @@ namespace SPMeta2.Containers.Services
                         AssertService.IsFalse(hasMissedOrInvalidProps);
                     }
                 });
+
+                PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
             }
         }
 
