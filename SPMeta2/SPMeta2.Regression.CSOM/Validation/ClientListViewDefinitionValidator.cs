@@ -126,7 +126,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Type);
 
-            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM  API yet. Skipping.");
+            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM API yet. Skipping.");
+            assert.SkipProperty(m => m.TabularView, "TabularView unsupported by SP CSOM API yet. Skipping.");
+            assert.SkipProperty(m => m.InlineEdit, "InlineEdit unsupported by SP CSOM API yet. Skipping.");
 
             assert.ShouldBeEqualIfNotNullOrEmpty(m => m.JSLink, o => o.JSLink);
 
