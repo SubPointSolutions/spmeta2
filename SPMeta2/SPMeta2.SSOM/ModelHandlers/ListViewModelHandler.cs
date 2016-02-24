@@ -233,6 +233,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             currentView.Hidden = listViewModel.Hidden;
+            currentView.InlineEdit = listViewModel.InlineEdit;
             currentView.Title = listViewModel.Title;
             currentView.RowLimit = (uint)listViewModel.RowLimit;
             currentView.DefaultView = listViewModel.IsDefault;
@@ -259,6 +260,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var viewStyle = targetList.ParentWeb.ViewStyles.StyleByID(listViewModel.ViewStyleId.Value);
                 currentView.ApplyStyle(viewStyle);
+            }
+
+            if (listViewModel.TabularView.HasValue)
+            {
+                currentView.TabularView = listViewModel.TabularView.Value;
             }
         }
 

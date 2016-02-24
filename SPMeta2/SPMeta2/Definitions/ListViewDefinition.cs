@@ -50,6 +50,10 @@ namespace SPMeta2.Definitions
             Type = BuiltInViewType.Html;
 
             TitleResource = new List<ValueForUICulture>();
+
+            InlineEdit = null;
+
+            TabularView = false;
         }
 
         #endregion
@@ -135,6 +139,14 @@ namespace SPMeta2.Definitions
         public bool IsPaged { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the list view should include bulk operation checkboxes if the current list view supports them.
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? TabularView { get; set; }
+
+        /// <summary>
         /// ISDefault flag of the target list view.
         /// </summary>
         /// 
@@ -147,6 +159,14 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [DataMember]
         public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether the view is in inline edit mode.
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public string InlineEdit { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
