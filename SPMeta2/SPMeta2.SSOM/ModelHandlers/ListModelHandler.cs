@@ -102,10 +102,15 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var list = currentObject;
 
-            list.Title = definition.Title;
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(currentObject.ParentWeb.UICulture, () =>
+            {
+                list.Title = definition.Title;
 
-            // SPBug, again & again, must not be null
-            list.Description = definition.Description ?? string.Empty;
+                // SPBug, again & again, must not be null
+                list.Description = definition.Description ?? string.Empty;
+            });
+
             list.ContentTypesEnabled = definition.ContentTypesEnabled;
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))

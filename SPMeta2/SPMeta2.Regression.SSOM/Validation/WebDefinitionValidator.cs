@@ -27,11 +27,16 @@ namespace SPMeta2.Regression.SSOM.Validation
             var spObject = GetWeb(parentWeb, definition);
 
             var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldBeEqual(m => m.Title, o => o.Title)
-                                 .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
-                //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
-                                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+                       .NewAssert(definition, spObject)
+                       .ShouldBeEqual(m => m.LCID, o => o.GetLCID());
+                 //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(spObject.UICulture, () =>
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title)
+                    .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+            });
 
             if (!string.IsNullOrEmpty(definition.WebTemplate))
             {

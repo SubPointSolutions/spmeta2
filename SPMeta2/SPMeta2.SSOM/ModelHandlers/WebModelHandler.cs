@@ -65,11 +65,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private static void MapProperties(SPWeb web, WebDefinition webModel)
         {
-            if (!string.IsNullOrEmpty(webModel.Title))
-            web.Title = webModel.Title;
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(web.UICulture, () =>
+            {
+                if (!string.IsNullOrEmpty(webModel.Title))
+                    web.Title = webModel.Title;
 
-            if (!string.IsNullOrEmpty(webModel.Description))
-                web.Description = webModel.Description;
+                if (!string.IsNullOrEmpty(webModel.Description))
+                    web.Description = webModel.Description;
+            });
 
             if (webModel.LCID > 0)
                 web.Locale = new CultureInfo((int)webModel.LCID);
