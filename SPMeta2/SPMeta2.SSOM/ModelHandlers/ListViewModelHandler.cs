@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls.WebParts;
@@ -233,8 +234,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             currentView.Hidden = listViewModel.Hidden;
-            currentView.InlineEdit = listViewModel.InlineEdit;
+            if (listViewModel.InlineEdit.HasValue)
+            {
+                currentView.InlineEdit = listViewModel.InlineEdit.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
             currentView.Title = listViewModel.Title;
+
             currentView.RowLimit = (uint)listViewModel.RowLimit;
             currentView.DefaultView = listViewModel.IsDefault;
             currentView.Paged = listViewModel.IsPaged;
