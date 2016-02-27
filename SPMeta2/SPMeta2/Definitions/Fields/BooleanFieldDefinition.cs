@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
@@ -55,6 +55,11 @@ namespace SPMeta2.Definitions.Fields
             get { return string.Empty; }
             set { }
         }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectUpdateAsBooleanFieldDefaultValue]
+        public override string DefaultValue { get; set; }
 
         #endregion
 
