@@ -166,7 +166,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
-        public string InlineEdit { get; set; }
+        public bool? InlineEdit { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
