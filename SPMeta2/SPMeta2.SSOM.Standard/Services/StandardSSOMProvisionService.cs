@@ -17,6 +17,8 @@ namespace SPMeta2.SSOM.Standard.Services
         {
             RegisterModelHandlers(typeof(FieldModelHandler).Assembly);
             RegisterModelHandlers(typeof(TaxonomyFieldModelHandler).Assembly);
+
+            InitDefaultPreDeploymentServices(typeof(TaxonomyFieldModelHandler).Assembly);
         }
 
         #endregion

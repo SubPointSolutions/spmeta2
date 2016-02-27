@@ -48,7 +48,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         #region properties
 
         [TestMethod]
-        [TestCategory("Regression.Definitions.ImageFieldDefinitions")]
+        [TestCategory("Regression.Definitions.BooleanFieldDefinition")]
         public void BooleanFieldDefinition_ShouldCheck_DefaultValue()
         {
             // Enhance BooleanFieldDefinition - add DefaultValue property validation #792

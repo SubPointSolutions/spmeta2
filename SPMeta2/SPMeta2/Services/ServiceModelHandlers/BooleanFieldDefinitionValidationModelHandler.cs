@@ -27,7 +27,7 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 if (!isValidValue)
                 {
                     throw new SPMeta2ModelValidationException(
-                        string.Format("Default value shoudl either be '0' or '1'. Current value:[{1}] Definition:[{0}]", model, model.DefaultValue));
+                        string.Format("Default value should either be '0' or '1'. Current value:[{1}] Definition:[{0}]", model, model.DefaultValue));
                 }
             }
         }

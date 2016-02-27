@@ -381,7 +381,7 @@
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
-    <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationService.cs" />
+    <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultNotAbsoluteUrlPropertiesModelHandler.cs" />

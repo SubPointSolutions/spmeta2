@@ -2,6 +2,8 @@
 using SPMeta2.Services.Impl.Validation;
 using SPMeta2.Utils;
 using System;
+using System.Linq;
+using System.Reflection;
 using SPMeta2.Definitions;
 
 namespace SPMeta2.Services
@@ -16,29 +18,42 @@ namespace SPMeta2.Services
             InitDefaultPostDeploymentServices();
         }
 
-        private void InitDefaultPostDeploymentServices()
+        protected void InitDefaultPostDeploymentServices()
+        {
+            InitDefaultPostDeploymentServices(typeof(FieldDefinition).Assembly);
+        }
+
+        protected void InitDefaultPostDeploymentServices(Assembly assembly)
+        {
+            // TODO
+        }
+
+        protected void InitDefaultPreDeploymentServices()
+        {
+            InitDefaultPreDeploymentServices(typeof(FieldDefinition).Assembly);
+        }
+
+        protected void InitDefaultPreDeploymentServices(Assembly assembly)
         {
             // adding default required prop validation on definitions
             // https://github.com/SubPointSolutions/spmeta2/issues/422
 
-            var validationServiceTypes =
-                ReflectionUtils.GetTypesFromAssembly<PreDeploymentValidationServiceBase>(
-                        typeof(FieldDefinition).Assembly);
+            var validationServiceTypes = ReflectionUtils.GetTypesFromAssembly<PreDeploymentValidationServiceBase>(assembly);
 
             foreach (var validationServiceType in validationServiceTypes)
             {
-                var service = Activator.CreateInstance(validationServiceType) as PreDeploymentValidationServiceBase;
+                var exists = PreDeploymentServices.Any(s => s.GetType() == validationServiceType);
 
-                if (service != null)
+                if (!exists)
                 {
-                    PreDeploymentServices.Add(service);
+                    var service = Activator.CreateInstance(validationServiceType) as PreDeploymentValidationServiceBase;
+
+                    if (service != null)
+                    {
+                        PreDeploymentServices.Add(service);
+                    }
                 }
             }
-        }
-
-        private void InitDefaultPreDeploymentServices()
-        {
-
         }
 
         #endregion
