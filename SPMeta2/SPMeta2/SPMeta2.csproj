@@ -223,6 +223,8 @@
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInListWriteSecurity.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowIds.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowNames.cs" />
     <Compile Include="Enumerations\BuiltInToolbarType.cs" />
     <Compile Include="Enumerations\BuiltInViewScope.cs" />
     <Compile Include="Enumerations\BuiltInComposedLookItemNames.cs" />

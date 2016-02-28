@@ -57,7 +57,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Name = Rnd.String();
                 def.Description = Rnd.String();
 
-                def.WorkflowTemplateName = "Approval - SharePoint 2010";
+                def.WorkflowTemplateName = BuiltInWorkflowNames.ApprovalSharePoint2010;
 
                 def.TaskListTitle = TaskList.Title;
                 def.HistoryListTitle = HistoryList.Title;

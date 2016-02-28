@@ -198,6 +198,11 @@
     <Compile Include="Definitions\RegWebs.cs" />
     <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Impl\DefinitionCoverage\BuiltInListDefinitionsCoverage.cs" />
+    <Compile Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebpartDefinitionCoverageTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Impl\Definitions\PublishingPageDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\HTMLFieldDefinitionTests.cs" />
     <Compile Include="Impl\Definitions\BooleanFieldDefinitionTests.cs" />
@@ -223,11 +228,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WebpartDefinitionCoverageTest2.cs</LastGenOutput>
     </None>
-    <Compile Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebpartDefinitionCoverageTest.tt</DependentUpon>
-    </Compile>
     <Compile Include="Impl\Dependencies\ArtifactDependenciesTest.cs" />
     <Compile Include="Impl\Extensions\WebpartXmlExtensionsTest.cs" />
     <Compile Include="Impl\ModelHandlers\ModelHandlersTest.cs" />
