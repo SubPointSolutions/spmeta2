@@ -67,6 +67,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
+            assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is notsupported by CSOM");
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
@@ -321,7 +322,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         var indexedPropertyKeys = d.RootFolder.Properties["vti_indexedpropertykeys"].ToString();
 
                         // TODO, rewrite after #781 merge
-                        
+
                         //var indexList = GetDecodeValueForSearchIndexProperty(indexedPropertyKeys);
 
                         //// Search if any indexPropertyKey from definition is not in WebModel
