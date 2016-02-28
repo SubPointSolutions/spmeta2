@@ -54,9 +54,9 @@ $msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
 $buildProfiles =  @()
 
 $build14 = $true
-$build15 = $true
-$build16 = $true
-$build365 = $true
+$build15 = $false
+$build16 = $false
+$build365 = $false
 
 if($build14 -eq $true) {
 

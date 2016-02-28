@@ -28,6 +28,7 @@ using SPMeta2.SSOM.Standard.ModelHandlers.Webparts;
 using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
 using SPMeta2.Services.Impl.Validation;
+using SPMeta2.SSOM.Standard.Services;
 
 namespace SPMeta2.Containers.SSOM
 {
@@ -53,7 +54,7 @@ namespace SPMeta2.Containers.SSOM
 
         private void InitServices()
         {
-            _provisionService = new SSOMProvisionService();
+            _provisionService = new StandardSSOMProvisionService();
             _validationService = new SSOMValidationService();
 
             // TODO, setup a high level validation registration

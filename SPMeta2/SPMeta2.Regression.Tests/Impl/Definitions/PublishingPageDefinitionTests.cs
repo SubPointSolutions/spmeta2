@@ -10,6 +10,7 @@ using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Containers.DefinitionGenerators.Fields;
 using SPMeta2.Definitions;
@@ -63,14 +64,22 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
-                site.AddFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit());
+                site.AddFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                    def.ForceActivate = true;
+                }));
             });
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit());
+                web.AddFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                    def.ForceActivate = true;
+                }));
 
-                web.AddHostPagesList(list =>
+                web.AddList(BuiltInListDefinitions.Pages.Inherit(), list =>
                 {
                     list.AddPublishingPage(pageDef);
                 });

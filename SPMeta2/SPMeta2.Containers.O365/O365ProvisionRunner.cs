@@ -19,6 +19,7 @@ using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.Standard.Services;
 
 namespace SPMeta2.Containers.O365
 {
@@ -45,7 +46,7 @@ namespace SPMeta2.Containers.O365
 
         private void InitServices()
         {
-            _provisionService = new CSOMProvisionService();
+            _provisionService = new StandardCSOMProvisionService();
             _validationService = new CSOMValidationService();
 
             var csomStandartAsm = typeof(TaxonomyFieldModelHandler).Assembly;
