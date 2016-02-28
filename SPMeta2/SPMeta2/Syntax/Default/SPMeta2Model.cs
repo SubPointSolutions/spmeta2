@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
+using SPMeta2.Services;
 using SPMeta2.Services.Impl;
 using SPMeta2.Utils;
 
@@ -468,6 +469,35 @@ namespace SPMeta2.Syntax.Default
                 RegisterKnownType(node.GetType());
                 RegisterKnownType(node.Value.GetType());
             }
+        }
+
+        #endregion
+
+        #region compatibilities
+
+        public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelCompatibilityServiceBase>();
+
+            return service.CheckProvisionCompatibility(model);
+        }
+
+        public static bool IsCSOMCompatible(ModelNode model)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(model);
+            var result = compatibilityResult.Result.All(r => r.IsCSOMCompatible.HasValue
+                                                       && r.IsCSOMCompatible.Value);
+
+            return result;
+        }
+
+        public static bool IsSSOMCompatible(ModelNode model)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(model);
+            var result = compatibilityResult.Result.All(r => r.IsSSOMCompatible.HasValue
+                                                       && r.IsSSOMCompatible.Value);
+
+            return result;
         }
 
         #endregion
