@@ -332,16 +332,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Adding new web to the web collection and calling ExecuteQuery.");
+
                 var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
+                if (webModel.IndexedPropertyKeys.Any())
+                {
+                    context.Load(newWeb, w => w.AllProperties);
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
+
                 MapProperties(newWeb, webModel);
                 ProcessLocalization(newWeb, webModel);
-
-                context.Load(newWeb);
-
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-                context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -353,13 +357,25 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
+
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "newWeb.Update()");
+
+                newWeb.Update();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Current web is not null. Updating Title/Description.");
 
-                MapProperties(currentWeb, webModel);
+#if !NET35
+                if (webModel.IndexedPropertyKeys.Any())
+                {
+                    context.Load(currentWeb, w => w.AllProperties);
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
 
+                MapProperties(currentWeb, webModel);
                 ProcessLocalization(currentWeb, webModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -383,7 +399,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         private static void MapProperties(Web web, WebDefinition webModel)
         {
             if (!string.IsNullOrEmpty(webModel.Title))
-            web.Title = webModel.Title;
+                web.Title = webModel.Title;
 
             if (!string.IsNullOrEmpty(webModel.Description))
                 web.Description = webModel.Description;
@@ -415,33 +431,43 @@ namespace SPMeta2.CSOM.ModelHandlers
                     "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
             }
 
+#if !NET35
             if (webModel.IndexedPropertyKeys.Any())
             {
-                // TODO, rewrite after #781 merge
+                var props = web.AllProperties;
 
-                //var props = web.AllProperties;
-                //// TODO Not sure if property name should be hardcoded in here and if web.Update needs to be called here
-               
-                //foreach (var indexedProperty in webModel.IndexedPropertyKeys)
-                //{
-                //    var indexedPropertyValue = props["vti_indexedpropertykeys"].ToString();
+                // may not be there at all
+                var indexedPropertyValue = props.FieldValues.Keys.Contains("vti_indexedpropertykeys")
+                                            ? ConvertUtils.ToStringAndTrim(props["vti_indexedpropertykeys"])
+                                            : string.Empty;
 
-                //    var indexedList = GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
-                    
-                //    foreach (var indexedProperty in webModel.IndexedPropertyKeys)
-                //    {
-                //        if (!indexedList.Contains(indexedProperty))
-                //            indexedList.Add(indexedProperty);
-                //    }
+                var currentIndexedProperties = GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
 
-                //    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexedList);
-                //}
-                
-                //props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(webModel.IndexedPropertyKeys.Select(s => s.Name));
+                // setup property bag
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
 
-                web.Update();
-                web.Context.ExecuteQueryWithTrace();
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    props[propName] = propValue;
+                }
+
+                // merge and setup indexed prop keys, preserve existing props
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    if (!currentIndexedProperties.Contains(indexedProperty.Name))
+                        currentIndexedProperties.Add(indexedProperty.Name);
+                }
+
+                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
             }
+#endif
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)
@@ -517,6 +543,9 @@ namespace SPMeta2.CSOM.ModelHandlers
         /// <returns></returns>
         private static List<string> GetDecodeValueForSearchIndexProperty(string encodedValue)
         {
+            if (string.IsNullOrEmpty(encodedValue))
+                return new List<string>();
+
             var keys = encodedValue.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
             return keys.Select(current => Encoding.Unicode.GetString(Convert.FromBase64String(current))).ToList();

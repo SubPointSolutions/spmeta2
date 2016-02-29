@@ -250,8 +250,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
 
                     var isValid = false;
+
                     if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
                     {
+                        // check props
+
+                        // check vti_indexedpropertykeys
                         var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"]
                                                    .ToString()
                                                    .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
