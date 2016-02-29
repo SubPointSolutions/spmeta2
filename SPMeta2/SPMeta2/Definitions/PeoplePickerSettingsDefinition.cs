@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -30,6 +31,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string ActiveDirectoryCustomFilter { get; set; }
 
         /// <summary>
@@ -37,6 +39,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [ExpectValidation]
         [DataMember]
+        [IdentityKey]
         public string ActiveDirectoryCustomQuery { get; set; }
 
         /// <summary>

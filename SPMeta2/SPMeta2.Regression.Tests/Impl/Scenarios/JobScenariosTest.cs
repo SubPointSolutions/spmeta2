@@ -43,33 +43,37 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Job")]
         public void CanDeploy_JobDefinition_WithProps()
         {
-            var jobDef = ModelGeneratorService.GetRandomDefinition<JobDefinition>(def =>
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                def.Properties.Add(new JobDefinitionProperty
+
+                var jobDef = ModelGeneratorService.GetRandomDefinition<JobDefinition>(def =>
                 {
-                    Key = string.Format("string_prop_{0}", Rnd.String()),
-                    Value = string.Format("value_{0}", Rnd.String()),
+                    def.Properties.Add(new JobDefinitionProperty
+                    {
+                        Key = string.Format("string_prop_{0}", Rnd.String()),
+                        Value = string.Format("value_{0}", Rnd.String()),
+                    });
+
+                    def.Properties.Add(new JobDefinitionProperty
+                    {
+                        Key = string.Format("int_prop_{0}", Rnd.String()),
+                        Value = Rnd.Int()
+                    });
+
+                    def.Properties.Add(new JobDefinitionProperty
+                    {
+                        Key = string.Format("double_prop_{0}", Rnd.String()),
+                        Value = Math.Floor(Rnd.Double())
+                    });
                 });
 
-                def.Properties.Add(new JobDefinitionProperty
+                var model = SPMeta2Model.NewWebApplicationModel(webApp =>
                 {
-                    Key = string.Format("int_prop_{0}", Rnd.String()),
-                    Value = Rnd.Int()
+                    webApp.AddJob(jobDef);
                 });
 
-                def.Properties.Add(new JobDefinitionProperty
-                {
-                    Key = string.Format("double_prop_{0}", Rnd.String()),
-                    Value = Math.Floor(Rnd.Double())
-                });
+                TestModel(model);
             });
-
-            var model = SPMeta2Model.NewWebApplicationModel(webApp =>
-            {
-                webApp.AddJob(jobDef);
-            });
-
-            TestModel(model);
         }
 
         #endregion

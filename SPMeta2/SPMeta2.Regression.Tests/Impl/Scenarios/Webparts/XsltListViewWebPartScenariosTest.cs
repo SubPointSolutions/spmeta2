@@ -132,73 +132,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
         public void CanDeploy_XsltListViewWebPart_ByListId()
         {
-            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
-            {
-                def.ListId = Guid.Empty;
-                def.ListTitle = string.Empty;
-                def.ListUrl = string.Empty;
-
-                def.ViewName = string.Empty;
-                def.ViewId = null;
-            });
-
-            var model = SPMeta2Model
-                .NewWebModel(web =>
-                {
-                    web
-                        .AddList(sourceList, list =>
-                        {
-                            list.OnProvisioned<object>(context =>
-                            {
-                                xsltListViewWebpart.ListId = ExtractListId(context);
-                            });
-                        })
-                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
-                        {
-                            list
-                                .AddRandomWebPartPage(page =>
-                                {
-                                    page.AddXsltListViewWebPart(xsltListViewWebpart);
-                                });
-                        });
-
-                });
-
-            TestModel(model);
-        }
-
-        #endregion
-
-        #region list view binding tests
-
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
-        public void CanDeploy_XsltListViewWebPart_ByViewId()
-        {
-            WithDisabledPropertyUpdateValidation(() =>
+            WithDisabledDefinitionImmutabilityValidation(() =>
             {
                 var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
-                var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
-                {
-                    def.Fields = new System.Collections.ObjectModel.Collection<string>
-                    {
-                        BuiltInInternalFieldNames.ID,
-                        BuiltInInternalFieldNames.Edit,
-                        BuiltInInternalFieldNames.Title
-                    };
-
-                    def.IsDefault = false;
-                });
-
                 var xsltListViewWebpart =
                     ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
                     {
                         def.ListId = Guid.Empty;
                         def.ListTitle = string.Empty;
-#pragma warning disable 618
-                        def.ListUrl = sourceList.GetListUrl();
-#pragma warning restore 618
+                        def.ListUrl = string.Empty;
 
                         def.ViewName = string.Empty;
                         def.ViewId = null;
@@ -210,12 +152,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                         web
                             .AddList(sourceList, list =>
                             {
-                                list.AddListView(sourceView, view =>
+                                list.OnProvisioned<object>(context =>
                                 {
-                                    view.OnProvisioned<object>(context =>
-                                    {
-                                        xsltListViewWebpart.ViewId = ExtractViewId(context);
-                                    });
+                                    xsltListViewWebpart.ListId = ExtractListId(context);
                                 });
                             })
                             .AddHostList(BuiltInListDefinitions.SitePages, list =>
@@ -230,6 +169,74 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                     });
 
                 TestModel(model);
+            });
+        }
+
+        #endregion
+
+        #region list view binding tests
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart")]
+        public void CanDeploy_XsltListViewWebPart_ByViewId()
+        {
+            WithDisabledDefinitionImmutabilityValidation(() =>
+            {
+                WithDisabledPropertyUpdateValidation(() =>
+                {
+                    var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
+                    var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+                    {
+                        def.Fields = new System.Collections.ObjectModel.Collection<string>
+                    {
+                        BuiltInInternalFieldNames.ID,
+                        BuiltInInternalFieldNames.Edit,
+                        BuiltInInternalFieldNames.Title
+                    };
+
+                        def.IsDefault = false;
+                    });
+
+                    var xsltListViewWebpart =
+                        ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+                        {
+                            def.ListId = Guid.Empty;
+                            def.ListTitle = string.Empty;
+#pragma warning disable 618
+                            def.ListUrl = sourceList.GetListUrl();
+#pragma warning restore 618
+
+                            def.ViewName = string.Empty;
+                            def.ViewId = null;
+                        });
+
+                    var model = SPMeta2Model
+                        .NewWebModel(web =>
+                        {
+                            web
+                                .AddList(sourceList, list =>
+                                {
+                                    list.AddListView(sourceView, view =>
+                                    {
+                                        view.OnProvisioned<object>(context =>
+                                        {
+                                            xsltListViewWebpart.ViewId = ExtractViewId(context);
+                                        });
+                                    });
+                                })
+                                .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                                {
+                                    list
+                                        .AddRandomWebPartPage(page =>
+                                        {
+                                            page.AddXsltListViewWebPart(xsltListViewWebpart);
+                                        });
+                                });
+
+                        });
+
+                    TestModel(model);
+                });
             });
         }
 

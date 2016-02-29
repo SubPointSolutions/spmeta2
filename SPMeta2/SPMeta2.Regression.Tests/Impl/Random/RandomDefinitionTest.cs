@@ -176,6 +176,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region web app scope
 
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.CustomDocumentIdProvider")]
+        public void CanDeployRandom_PeoplePickerSettingsDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<PeoplePickerSettingsDefinition>();
+            });
+        }
+
         [TestMethod]
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_AlternateUrlDefinition()
@@ -927,7 +938,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_AnonymousAccessSettingsDefinition()
         {
             // need to disable validation on web node
-            // it would trigger 'UseUniquePermission' mismatch die to anon settings applied
+            // it would trigger 'UseUniquePermission' mismatch due to anon settings applied
             WithDisabledValidationOnTypes(typeof(WebDefinition), () =>
             {
                 TestRandomDefinition<AnonymousAccessSettingsDefinition>();

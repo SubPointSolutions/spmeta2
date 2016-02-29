@@ -8,6 +8,7 @@ using System.Text;
 
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -30,6 +31,8 @@ namespace SPMeta2.Definitions
     [ExpectManyInstances]
     public class WorkflowAssociationDefinition : DefinitionBase
     {
+        #region properties
+
         [DataMember]
         [IdentityKey]
         [ExpectRequired]
@@ -74,5 +77,21 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectRequired]
         public string WorkflowTemplateName { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public override string ToString()
+        {
+            return new ToStringResult<WorkflowAssociationDefinition>(this)
+                          .AddPropertyValue(p => p.Name)
+                          .AddPropertyValue(p => p.WorkflowTemplateName)
+                          .AddPropertyValue(p => p.TaskListTitle)
+                          .AddPropertyValue(p => p.HistoryListTitle)
+                          .ToString();
+        }
+
+        #endregion
     }
 }

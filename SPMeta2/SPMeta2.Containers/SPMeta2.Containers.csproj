@@ -107,6 +107,7 @@
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AnonymousAccessSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PeoplePickerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SupportedUICultureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\DependentLookupFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\GeolocationFieldDefinitionGenerator.cs" />

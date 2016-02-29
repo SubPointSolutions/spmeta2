@@ -57,13 +57,13 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		#region internal
 
 		public static bool UseWikiPages = true;
-		public static bool UseWebPartPages = false;
-		public static bool UsePublishingPages = false;
+		public static bool UseWebPartPages = true;
+		public static bool UsePublishingPages = true;
 
-		public static bool UseListPages = false;
-		public static bool UseLibraryPages = false;
+		public static bool UseListPages = true;
+		public static bool UseLibraryPages = true;
 
-		public static bool UseSubWebs = false;
+		public static bool UseSubWebs = true;
 
 		#endregion
 

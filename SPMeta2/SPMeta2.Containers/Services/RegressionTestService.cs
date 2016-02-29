@@ -57,6 +57,8 @@ namespace SPMeta2.Containers.Services
             EnablePropertyValidation = true;
             EnableEventValidation = true;
 
+            EnableDefinitionImmutabilityValidation = true;
+
             InitConfig();
         }
 
@@ -479,7 +481,8 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
-                PersistDefinitionHashes(new[] { model });
+                if (EnableDefinitionImmutabilityValidation)
+                    PersistDefinitionHashes(new[] { model });
 
                 var allHooks = new List<EventHooks>();
 
@@ -519,7 +522,8 @@ namespace SPMeta2.Containers.Services
                     }
                 });
 
-                PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
+                if (EnableDefinitionImmutabilityValidation)
+                    PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
             }
         }
 
@@ -912,6 +916,8 @@ namespace SPMeta2.Containers.Services
 
 
         #endregion
+
+        public bool EnableDefinitionImmutabilityValidation { get; set; }
     }
 
     public class ProvisionRunnerContext

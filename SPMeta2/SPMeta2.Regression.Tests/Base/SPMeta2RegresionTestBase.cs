@@ -115,6 +115,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         #region properties
 
+
         public bool EnablePropertyNullableValidation { get; set; }
         public int PropertyNullableGenerationCount { get; set; }
 
@@ -147,6 +148,23 @@ namespace SPMeta2.Regression.Tests.Base
             finally
             {
                 RegressionService.RegExcludedDefinitionTypes.Clear();
+            }
+        }
+
+
+        protected void WithDisabledDefinitionImmutabilityValidation(Action action)
+        {
+            var _oldValue = RegressionService.EnableDefinitionImmutabilityValidation;
+
+
+            try
+            {
+                RegressionService.EnableDefinitionImmutabilityValidation = false;
+                action();
+            }
+            finally
+            {
+                RegressionService.EnableDefinitionImmutabilityValidation = _oldValue;
             }
         }
 
