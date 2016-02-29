@@ -441,7 +441,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                                             ? ConvertUtils.ToStringAndTrim(props["vti_indexedpropertykeys"])
                                             : string.Empty;
 
-                var currentIndexedProperties = GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+                var currentIndexedProperties = IndexedPropertyUtils.GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
 
                 // setup property bag
                 foreach (var indexedProperty in webModel.IndexedPropertyKeys)
@@ -465,7 +465,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         currentIndexedProperties.Add(indexedProperty.Name);
                 }
 
-                props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
+                props["vti_indexedpropertykeys"] = IndexedPropertyUtils.GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
             }
 #endif
         }
@@ -514,41 +514,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 { "TitleResource", definition.TitleResource },
                 { "DescriptionResource", definition.DescriptionResource },
             });
-        }
-
-        /// <summary>
-        /// Method to create property bag for search index properties
-        /// http://blogs.msdn.com/b/vesku/archive/2013/10/12/ftc-to-cam-setting-indexed-property-bag-keys-using-csom.aspx
-        /// </summary>
-        /// <param name="keys"></param>
-        /// <returns></returns>
-        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
-        {
-            var stringBuilder = new StringBuilder();
-
-            foreach (var current in keys)
-            {
-                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
-                stringBuilder.Append('|');
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Decode the IndexedPropertyKeys value so it's readable
-        /// https://lixuan0125.wordpress.com/2014/07/24/make-property-bags-searchable-in-sharepoint-2013/
-        /// </summary>
-        /// <param name="encodedValue"></param>
-        /// <returns></returns>
-        private static List<string> GetDecodeValueForSearchIndexProperty(string encodedValue)
-        {
-            if (string.IsNullOrEmpty(encodedValue))
-                return new List<string>();
-
-            var keys = encodedValue.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            return keys.Select(current => Encoding.Unicode.GetString(Convert.FromBase64String(current))).ToList();
         }
 
         #endregion

@@ -194,10 +194,13 @@ namespace SPMeta2.Regression.SSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
 
-                    // Search if any indexedRootFolderPropertyKey from definition is not in ListModel
-                    var differentKeys = s.IndexedRootFolderPropertyKeys.Except(d.IndexedRootFolderPropertyKeys);
+                    // TODO
 
-                    var isValid = !differentKeys.Any();
+                    // Search if any indexedRootFolderPropertyKey from definition is not in ListModel
+                    //var differentKeys = s.IndexedRootFolderPropertyKeys.Except(d.IndexedRootFolderPropertyKeys);
+
+                    //var isValid = !differentKeys.Any();
+                    var isValid = false;
 
                     return new PropertyValidationResult
                     {

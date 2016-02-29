@@ -206,7 +206,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!scope.HasException && folder != null && folder.ServerObjectIsNull != true)
             {
 #if !NET35
-
                 folder = web.GetFolderByServerRelativeUrl(listUrl);
 
                 context.Load(folder.Properties);
@@ -216,6 +215,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var list = web.Lists.GetById(listId);
 
                 context.Load(list);
+
+                if (listModel.IndexedRootFolderPropertyKeys.Any())
+                {
+                    context.Load(list, l => l.RootFolder.Properties);
+                }
+
                 context.ExecuteQueryWithTrace();
 
                 currentList = list;
@@ -496,33 +501,39 @@ namespace SPMeta2.CSOM.ModelHandlers
 #if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
-                context.Load(list, l => l.RootFolder.Properties);
-                context.ExecuteQueryWithTrace();
-
                 var props = list.RootFolder.Properties;
 
-                // If other property keys have been set before, overwriting them would be bad
-                if (props["vti_indexedpropertykeys"] == null || props["vti_indexedpropertykeys"].ToString() == string.Empty)
+                // may not be there at all
+                var indexedPropertyValue = props.FieldValues.Keys.Contains("vti_indexedpropertykeys")
+                                            ? ConvertUtils.ToStringAndTrim(props["vti_indexedpropertykeys"])
+                                            : string.Empty;
+
+                var currentIndexedProperties = IndexedPropertyUtils.GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+
+                // setup property bag
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
                 {
-                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(definition.IndexedRootFolderPropertyKeys);
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    props[propName] = propValue;
                 }
-                else
+
+                // merge and setup indexed prop keys, preserve existing props
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
                 {
-                    var indexPropertyValue = props["vti_indexedpropertykeys"].ToString();
-
-                    var indexList = GetDecodeValueForSearchIndexProperty(indexPropertyValue);
-
-                    foreach (var propKey in definition.IndexedRootFolderPropertyKeys)
-                    {
-                        if (!indexList.Contains(propKey))
-                            indexList.Add(propKey);
-                    }
-
-                    props["vti_indexedpropertykeys"] = GetEncodedValueForSearchIndexProperty(indexList);
+                    if (!currentIndexedProperties.Contains(indexedProperty.Name))
+                        currentIndexedProperties.Add(indexedProperty.Name);
                 }
 
+                props["vti_indexedpropertykeys"] = IndexedPropertyUtils.GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
                 list.RootFolder.Update();
-                context.ExecuteQueryWithTrace();
             }
 #endif
         }
@@ -555,36 +566,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
         }
 
-        /// <summary>
-        /// Method to create property bag for search index properties
-        /// http://blogs.msdn.com/b/vesku/archive/2013/10/12/ftc-to-cam-setting-indexed-property-bag-keys-using-csom.aspx
-        /// </summary>
-        /// <param name="keys"></param>
-        /// <returns></returns>
-        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
-        {
-            var stringBuilder = new StringBuilder();
 
-            foreach (var current in keys)
-            {
-                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
-                stringBuilder.Append('|');
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Decode the IndexedPropertyKeys value so it's readable
-        /// https://lixuan0125.wordpress.com/2014/07/24/make-property-bags-searchable-in-sharepoint-2013/
-        /// </summary>
-        /// <param name="encodedValue"></param>
-        /// <returns></returns>
-        private static List<string> GetDecodeValueForSearchIndexProperty(string encodedValue)
-        {
-            var keys = encodedValue.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            return keys.Select(current => Encoding.Unicode.GetString(Convert.FromBase64String(current))).ToList();
-        }
     }
 }

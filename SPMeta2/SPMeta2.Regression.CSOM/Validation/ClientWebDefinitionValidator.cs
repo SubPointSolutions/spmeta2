@@ -253,7 +253,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
                     {
-                        // check props
+                        // check props, TODO
 
                         // check vti_indexedpropertykeys
                         var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"]

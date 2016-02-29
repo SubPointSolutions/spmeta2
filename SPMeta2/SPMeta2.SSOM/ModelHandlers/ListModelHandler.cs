@@ -165,14 +165,16 @@ namespace SPMeta2.SSOM.ModelHandlers
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
 #if !NET35
-            if (definition.IndexedRootFolderPropertyKeys.Any())
-            {
-                foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
-                {
-                    if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
-                        list.IndexedRootFolderPropertyKeys.Add(indexProperty);
-                }
-            }
+            // TODO
+
+            //if (definition.IndexedRootFolderPropertyKeys.Any())
+            //{
+            //    foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
+            //    {
+            //        if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
+            //            list.IndexedRootFolderPropertyKeys.Add(indexProperty);
+            //    }
+            //}
 #endif
 
             if (definition.WriteSecurity.HasValue)

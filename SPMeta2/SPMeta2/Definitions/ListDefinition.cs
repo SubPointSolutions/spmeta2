@@ -38,7 +38,7 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
-            IndexedRootFolderPropertyKeys = new List<string>();
+            IndexedRootFolderPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #region properties
@@ -255,7 +255,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         [DataMember]
         [ExpectValidation]
-        public List<string> IndexedRootFolderPropertyKeys { get; set; }
+        public List<IndexedPropertyValue> IndexedRootFolderPropertyKeys { get; set; }
 
         [DataMember]
         [ExpectValidation]

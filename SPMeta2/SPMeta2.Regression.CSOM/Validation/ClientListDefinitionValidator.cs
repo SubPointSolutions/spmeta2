@@ -11,6 +11,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -34,6 +35,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 #pragma warning restore 618
 
             context.Load(spObject);
+            context.Load(spObject, list => list.RootFolder.Properties);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
             context.Load(spObject, list => list.RootFolder.Properties);
             context.Load(spObject, list => list.EnableAttachments);
@@ -317,18 +319,22 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
 
                     var isValid = false;
-                    if (d.RootFolder.Properties["vti_indexedpropertykeys"] != null)
+
+                    if (d.RootFolder.Properties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
                     {
-                        var indexedPropertyKeys = d.RootFolder.Properties["vti_indexedpropertykeys"].ToString();
+                        // check props, TODO
 
-                        // TODO, rewrite after #781 merge
+                        // check vti_indexedpropertykeys
+                        var indexedPropertyKeys = d.RootFolder.Properties["vti_indexedpropertykeys"]
+                                                   .ToString()
+                                                   .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(es => Encoding.Unicode.GetString(System.Convert.FromBase64String(es)));
 
-                        //var indexList = GetDecodeValueForSearchIndexProperty(indexedPropertyKeys);
+                        // Search if any indexPropertyKey from definition is not in WebModel
+                        var differentKeys = s.IndexedRootFolderPropertyKeys.Select(o => o.Name)
+                                                                 .Except(indexedPropertyKeys);
 
-                        //// Search if any indexPropertyKey from definition is not in WebModel
-                        //var differentKeys = s.IndexedRootFolderPropertyKeys.Except(indexList);
-
-                        //isValid = !differentKeys.Any();
+                        isValid = !differentKeys.Any();
                     }
 
                     return new PropertyValidationResult
