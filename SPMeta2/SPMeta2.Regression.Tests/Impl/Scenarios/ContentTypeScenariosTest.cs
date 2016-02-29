@@ -91,11 +91,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ContentTypes")]
+        public void CanDeploy_CustomListItemContentType_ByParentName()
+        {
+            TestRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = string.Empty;
+                def.ParentContentTypeName = BuiltInContentTypeNames.Item;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes")]
         public void CanDeploy_CustomDocumentContentType()
         {
             TestRandomDefinition<ContentTypeDefinition>(def =>
             {
                 def.ParentContentTypeId = BuiltInContentTypeId.Document;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes")]
+        public void CanDeploy_CustomDocumentContentType_ByParentName()
+        {
+            TestRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = string.Empty;
+                def.ParentContentTypeName = BuiltInContentTypeNames.Document;
             });
         }
 
@@ -349,7 +371,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var fieldDef = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
             {
                 def.Hidden = false;
-               
+
                 def.ShowInDisplayForm = true;
                 def.ShowInEditForm = true;
                 def.ShowInListSettings = true;

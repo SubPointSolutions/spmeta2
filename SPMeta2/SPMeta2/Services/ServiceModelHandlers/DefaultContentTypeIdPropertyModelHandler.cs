@@ -15,8 +15,14 @@ namespace SPMeta2.Services.ServiceModelHandlers
     {
         protected override void ProcessDefinition(object modelHost, ContentTypeDefinition model)
         {
-            // https://github.com/SubPointSolutions/spmeta2/issues/689
+            // skipping check
+            if (string.IsNullOrEmpty(model.ParentContentTypeId)
+                && !string.IsNullOrEmpty(model.ParentContentTypeName))
+            {
+                return;
+            }
 
+            // https://github.com/SubPointSolutions/spmeta2/issues/689
             var contentTypeId = model.GetContentTypeId();
 
             // crazy and impossible case, but..
