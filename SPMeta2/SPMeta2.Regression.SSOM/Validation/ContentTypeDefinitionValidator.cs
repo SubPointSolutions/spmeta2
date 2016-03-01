@@ -28,9 +28,13 @@ namespace SPMeta2.Regression.SSOM.Validation
             var contentTypes = web.AvailableContentTypes;
             var spObject = contentTypes[definition.Name];
 
+            if (spObject == null)
+                spObject = web.ContentTypes[definition.Name];
+
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
+                .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.Name, o => o.Name)
                 .ShouldBeEqual(m => m.Group, o => o.Group)
                 .ShouldBeEqual(m => m.Hidden, o => o.Hidden);

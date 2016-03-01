@@ -165,16 +165,28 @@ namespace SPMeta2.SSOM.ModelHandlers
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
 #if !NET35
-            // TODO
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
 
-            //if (definition.IndexedRootFolderPropertyKeys.Any())
-            //{
-            //    foreach (var indexProperty in definition.IndexedRootFolderPropertyKeys)
-            //    {
-            //        if (!list.IndexedRootFolderPropertyKeys.Contains(indexProperty))
-            //            list.IndexedRootFolderPropertyKeys.Add(indexProperty);
-            //    }
-            //}
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    if (list.RootFolder.Properties.ContainsKey(propName))
+                        list.RootFolder.Properties[propName] = propValue;
+                    else
+                        list.RootFolder.Properties.Add(propName, propValue);
+
+                    if (!list.IndexedRootFolderPropertyKeys.Contains(propName))
+                        list.IndexedRootFolderPropertyKeys.Add(propName);
+                }
+            }
 #endif
 
             if (definition.WriteSecurity.HasValue)

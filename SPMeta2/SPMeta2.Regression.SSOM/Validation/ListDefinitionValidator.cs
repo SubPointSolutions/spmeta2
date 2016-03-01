@@ -47,6 +47,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                     assert.SkipProperty(m => m.Description);
             });
 
+            if (definition.WriteSecurity.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.WriteSecurity, o => o.WriteSecurity);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is null or empty");
+            }
+
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
                 var draftOption =
@@ -194,13 +203,11 @@ namespace SPMeta2.Regression.SSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
 
-                    // TODO
+                    // Search if any indexPropertyKey from definition is not in WebModel
+                    var differentKeys = s.IndexedRootFolderPropertyKeys.Select(o => o.Name)
+                                                             .Except(d.IndexedRootFolderPropertyKeys);
 
-                    // Search if any indexedRootFolderPropertyKey from definition is not in ListModel
-                    //var differentKeys = s.IndexedRootFolderPropertyKeys.Except(d.IndexedRootFolderPropertyKeys);
-
-                    //var isValid = !differentKeys.Any();
-                    var isValid = false;
+                    var isValid = !differentKeys.Any();
 
                     return new PropertyValidationResult
                     {

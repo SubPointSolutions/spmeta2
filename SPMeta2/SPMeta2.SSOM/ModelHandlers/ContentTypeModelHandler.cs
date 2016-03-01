@@ -36,16 +36,6 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (site != null && contentTypeDefinition != null)
             {
-                if (string.IsNullOrEmpty(contentTypeDefinition.ParentContentTypeId))
-                {
-                    var parentContentType = web.AvailableContentTypes.Cast<SPContentType>().FirstOrDefault(ct => String.Equals(ct.Name, contentTypeDefinition.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
-
-                    if (parentContentType == null)
-                        throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
-
-                    contentTypeDefinition.ParentContentTypeId = parentContentType.Id.ToString();
-                }
-
                 var contentTypeId = new SPContentTypeId(contentTypeDefinition.GetContentTypeId());
 
                 // SPBug, it has to be new SPWeb for every content type operation inside feature event handler
@@ -100,10 +90,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
                 {
-                    var parentContentType = web.AvailableContentTypes.Cast<SPContentType>().FirstOrDefault(ct => String.Equals(ct.Name, contentTypeModel.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
+                    var parentContentType = web.AvailableContentTypes
+                                               .OfType<SPContentType>()
+                                               .FirstOrDefault(ct => String.Equals(ct.Name, contentTypeModel.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
 
                     if (parentContentType == null)
-                        throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
+                        throw new SPMeta2Exception(string.Format("Cannot find parent content type by giving name: [{0}]", contentTypeModel.ParentContentTypeName));
 
                     contentTypeModel.ParentContentTypeId = parentContentType.Id.ToString();
                 }
@@ -197,7 +189,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.UpdateIncludingSealedAndReadOnly(true)");
                 targetContentType.UpdateIncludingSealedAndReadOnly(true);
 
                 tmpWeb.Update();

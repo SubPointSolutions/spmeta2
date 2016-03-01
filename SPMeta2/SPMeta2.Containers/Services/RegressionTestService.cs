@@ -57,7 +57,7 @@ namespace SPMeta2.Containers.Services
             EnablePropertyValidation = true;
             EnableEventValidation = true;
 
-            EnableDefinitionImmutabilityValidation = true;
+            EnableDefinitionImmutabilityValidation = false;
 
             InitConfig();
         }

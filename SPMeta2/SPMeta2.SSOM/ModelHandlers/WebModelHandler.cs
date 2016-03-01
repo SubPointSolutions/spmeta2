@@ -103,7 +103,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                     else
                         web.AllProperties.Add(propName, propValue);
 
-                    web.IndexedPropertyKeys.Add(propName);
+                    if (!web.IndexedPropertyKeys.Contains(propName))
+                        web.IndexedPropertyKeys.Add(propName);
                 }
             }
 #endif
@@ -115,7 +116,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-            
+
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
 
