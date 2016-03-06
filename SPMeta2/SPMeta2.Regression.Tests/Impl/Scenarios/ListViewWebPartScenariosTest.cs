@@ -414,6 +414,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.Type = BuiltInViewType.Grid;
 
                 def.IsDefault = false;
+                
+                def.TabularView = null;
 
                 def.Fields = new Collection<string>
                     {
@@ -466,6 +468,5 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
-
     }
 }

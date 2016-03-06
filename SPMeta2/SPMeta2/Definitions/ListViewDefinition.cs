@@ -52,8 +52,7 @@ namespace SPMeta2.Definitions
             TitleResource = new List<ValueForUICulture>();
 
             InlineEdit = null;
-
-            TabularView = false;
+            TabularView = null;
         }
 
         #endregion
@@ -142,7 +141,7 @@ namespace SPMeta2.Definitions
         /// Gets or sets whether the list view should include bulk operation checkboxes if the current list view supports them.
         /// </summary>
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         [DataMember]
         public bool? TabularView { get; set; }
 
@@ -164,7 +163,7 @@ namespace SPMeta2.Definitions
         /// Gets or sets a string that specifies whether the view is in inline edit mode.
         /// </summary>
         [ExpectValidation]
-        [ExpectUpdate]
+        //[ExpectUpdate]
         [DataMember]
         public bool? InlineEdit { get; set; }
 
