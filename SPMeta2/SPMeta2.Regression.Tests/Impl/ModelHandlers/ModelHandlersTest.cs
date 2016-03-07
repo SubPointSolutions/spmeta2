@@ -71,40 +71,43 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
         [TestCategory("Regression.ModelHandlers")]
         public void Model_Handlers_Should_Fail_On_Changed_Definitions()
         {
-            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            if (RegressionService.EnableDefinitionImmutabilityValidation)
             {
-
-            });
-
-            var model = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddContentType(contentTypeDef, field =>
+                var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
                 {
-                    field.OnProvisioned<object>(context =>
+
+                });
+
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site.AddContentType(contentTypeDef, field =>
                     {
-                        (context.ObjectDefinition as ContentTypeDefinition).ParentContentTypeName = BuiltInContentTypeNames.UDCDocument;
+                        field.OnProvisioned<object>(context =>
+                        {
+                            (context.ObjectDefinition as ContentTypeDefinition).ParentContentTypeName = BuiltInContentTypeNames.UDCDocument;
+                        });
                     });
                 });
-            });
 
-            var hasException = false;
+                var hasException = false;
 
-            try
-            {
-                TestModel(model);
-            }
-            catch (Exception e)
-            {
-                if (e is SPMeta2Exception)
+                try
                 {
-                    if (e.Message.Contains("was changed"))
+                    TestModel(model);
+                }
+                catch (Exception e)
+                {
+                    if (e is SPMeta2Exception)
                     {
-                        hasException = true;
+                        if (e.Message.Contains("was changed"))
+                        {
+                            hasException = true;
+                        }
                     }
                 }
-            }
 
-            Assert.IsTrue(hasException);
+                Assert.IsTrue(hasException);
+            }
         }
     }
 }
