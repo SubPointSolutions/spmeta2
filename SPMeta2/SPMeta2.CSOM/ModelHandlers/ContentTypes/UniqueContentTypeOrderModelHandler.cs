@@ -79,6 +79,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                     }
                 }
 
+#if !NET35
                 if (listContentType == null && !string.IsNullOrEmpty(srcContentTypeDef.ContentTypeId))
                 {
                     listContentType = listContentTypes.FirstOrDefault(c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
@@ -89,6 +90,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                             string.Format("Found content type by matching ID start:[{0}]", srcContentTypeDef.ContentTypeId));
                     }
                 }
+#endif
 
                 if (listContentType != null && !newContentTypeOrder.Contains(listContentType.Id))
                 {
@@ -101,9 +103,23 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
             // filling up gapes
             foreach (var oldCt in oldContentTypeOrder)
             {
+#if !NET35
                 if (newContentTypeOrder.Count(c =>
                     c.StringValue.ToString().ToUpper().StartsWith(oldCt.StringValue.ToUpper())) == 0)
+                {
                     newContentTypeOrder.Add(oldCt);
+                }
+#endif
+
+#if NET35
+                // .ToString() should return .StringValue of the content type ID
+                if (newContentTypeOrder.Count(c =>
+                                   c.ToString().ToUpper().StartsWith(oldCt.ToString().ToUpper())) == 0)
+                {
+                    newContentTypeOrder.Add(oldCt);
+                }
+#endif
+
             }
 
             if (newContentTypeOrder.Count() > 0)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 

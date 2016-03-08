@@ -151,6 +151,8 @@
     <Compile Include="Enumerations\BuiltInContentClass.cs" />
     <Compile Include="Enumerations\BuiltInCompatibleSearchDataTypes.cs" />
     <Compile Include="Enumerations\BuiltInManagedDataType.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultPublishingPageDefinitionValidationService.cs" />
+    <Compile Include="Services\ServiceModelHandlers\PublishingPageDefinitionValidationModelHandler.cs" />
     <Compile Include="Syntax\MetadataNavigationSettingsSyntax.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CategoryWebPartDefinitionSyntax.cs" />

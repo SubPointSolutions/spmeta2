@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -16,7 +17,6 @@ using UrlUtility = SPMeta2.Utils.UrlUtility;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
-
     public class ListModelHandler : CSOMModelHandlerBase
     {
         #region properties
@@ -44,7 +44,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(web, w => w.ServerRelativeUrl);
             context.ExecuteQueryWithTrace();
 
-            if (web != null && listDefinition != null)
+            if (listDefinition != null)
             {
                 var list = LoadCurrentList(web, listDefinition);
 
@@ -66,15 +66,15 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (childModelType == typeof(ListViewDefinition))
                 {
-                    context.Load<List>(list, l => l.Views);
+                    context.Load(list, l => l.Views);
                     context.ExecuteQueryWithTrace();
 
                     action(listModelHost);
                 }
                 else if (childModelType == typeof(ModuleFileDefinition))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -98,8 +98,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else if (childModelType == typeof(FolderDefinition))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -133,8 +133,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 //}
                 else if (typeof(PageDefinitionBase).IsAssignableFrom(childModelType))
                 {
-                    context.Load<List>(list, l => l.RootFolder);
-                    context.Load<List>(list, l => l.BaseType);
+                    context.Load(list, l => l.RootFolder);
+                    context.Load(list, l => l.BaseType);
 
                     context.ExecuteQueryWithTrace();
 
@@ -144,15 +144,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                         itemHost.CurrentList = list;
                     });
 
-
-                    if (list.BaseType == BaseType.DocumentLibrary)
-                    {
-                        folderModelHost.CurrentListFolder = list.RootFolder;
-                    }
-                    else
-                    {
-                        folderModelHost.CurrentListFolder = list.RootFolder;
-                    }
+                    folderModelHost.CurrentListFolder = list.RootFolder;
 
                     action(folderModelHost);
                 }
@@ -191,7 +183,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             var listUrl = UrlUtility.CombineUrl(web.ServerRelativeUrl, listModel.GetListUrl());
 #pragma warning restore 618
 
-            Folder folder = null;
+            Folder folder;
 
             var scope = new ExceptionHandlingScope(context);
 
@@ -213,7 +205,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!scope.HasException && folder != null && folder.ServerObjectIsNull != true)
             {
+#if !NET35
                 folder = web.GetFolderByServerRelativeUrl(listUrl);
+
                 context.Load(folder.Properties);
                 context.ExecuteQueryWithTrace();
 
@@ -221,9 +215,34 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var list = web.Lists.GetById(listId);
 
                 context.Load(list);
+
+                if (listModel.IndexedRootFolderPropertyKeys.Any())
+                {
+                    context.Load(list, l => l.RootFolder.Properties);
+                }
+
                 context.ExecuteQueryWithTrace();
 
                 currentList = list;
+
+#endif
+
+#if NET35
+
+                // SP2010 CSOM hack
+                // http://impl.com/questions/4284722/sharepoint-2010-client-object-model-get-a-list-item-from-a-url
+
+                var listQuery = from list in web.Lists
+                                where list.RootFolder.ServerRelativeUrl == listUrl
+                                select list;
+
+                var queryResult = context.LoadQuery(listQuery);
+                context.ExecuteQueryWithTrace();
+
+                var resultList = queryResult.FirstOrDefault();
+
+                currentList = resultList;
+#endif
             }
 
             return currentList;
@@ -285,7 +304,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 else if (!string.IsNullOrEmpty(listModel.TemplateName))
                 {
                     TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Creating list by TemplateName: [{0}]", listModel.TemplateName);
-
 
                     var listTemplate = ResolveListTemplate(webModelHost, listModel);
 
@@ -387,6 +405,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 list.DraftVersionVisibility = draftOption;
             }
 
+#if !NET35
             // IRM
             if (definition.IrmEnabled.HasValue)
                 list.IrmEnabled = definition.IrmEnabled.Value;
@@ -396,6 +415,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (definition.IrmReject.HasValue)
                 list.IrmReject = definition.IrmReject.Value;
+
+#endif
 
             // the rest
             if (definition.EnableAttachments.HasValue)
@@ -436,7 +457,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                         string.Format(
                             "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                            string.Join(", ", "MajorVersionLimit")));
+                            string.Join(", ", new string[] { "MajorVersionLimit" })));
                 }
             }
 
@@ -451,7 +472,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                         string.Format(
                             "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                            string.Join(", ", "MajorWithMinorVersionsLimit")));
+                            string.Join(", ", new string[] { "MajorWithMinorVersionsLimit" })));
                 }
             }
 
@@ -476,6 +497,45 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
 
             ProcessLocalization(list, definition);
+
+#if !NET35
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                var props = list.RootFolder.Properties;
+
+                // may not be there at all
+                var indexedPropertyValue = props.FieldValues.Keys.Contains("vti_indexedpropertykeys")
+                                            ? ConvertUtils.ToStringAndTrim(props["vti_indexedpropertykeys"])
+                                            : string.Empty;
+
+                var currentIndexedProperties = IndexedPropertyUtils.GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+
+                // setup property bag
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    props[propName] = propValue;
+                }
+
+                // merge and setup indexed prop keys, preserve existing props
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    if (!currentIndexedProperties.Contains(indexedProperty.Name))
+                        currentIndexedProperties.Add(indexedProperty.Name);
+                }
+
+                props["vti_indexedpropertykeys"] = IndexedPropertyUtils.GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
+                list.RootFolder.Update();
+            }
+#endif
         }
 
         public static List FindListByUrl(IEnumerable<List> listCollection, string listUrl)
@@ -505,5 +565,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 { "DescriptionResource", definition.DescriptionResource },
             });
         }
+
+
     }
 }

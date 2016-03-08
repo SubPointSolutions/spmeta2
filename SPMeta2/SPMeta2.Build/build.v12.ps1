@@ -1,5 +1,7 @@
 ﻿cls
 
+#region  utils
+
 function Get-ScriptDirectory
 {
     $Invocation = (Get-Variable MyInvocation -Scope 1).Value;
@@ -17,60 +19,107 @@ function Get-ScriptDirectory
     }
 }
 
+function BuildProfile($buildProfile) {
+    
+    $configuration = $buildProfile.Configuration
+
+    foreach($projectName in $buildProfiles.ProjectNames) {
+        
+        $buildProfile.BuildParams
+     
+        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams)"
+    }
+
+}
+
+#endregion
+
+#region default values / profiles
+
+$defaultProjects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM", "SPMeta2.SSOM.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
+#$defaultProjects = @( "SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM")
+$o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
+
+$verbosity = "minimal"
+$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:$verbosity"
+
 $currentPath =  Get-ScriptDirectory
 $solutionRootPath =  "$currentPath\..\"
 
 $msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
 
-$includeV14Build = $true
-$includeV15Build = $true
-$includeV16Build = $true
+#endregion
 
-$verbosity = "minimal"
 
-# 14, 3.5 
-if($includeV14Build -eq $true) {
-    
-    & $msbuild_path """$solutionRootPath\SPMeta2\SPMeta2.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    & $msbuild_path """$solutionRootPath\SPMeta2.Standard\SPMeta2.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    
-    & $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    & $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug35 /p:DefineConstants=NET35 /p:spRuntime=14 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+$buildProfiles =  @()
+
+$build14 = $true
+$build15 = $true
+$build16 = $true
+$build365 = $true
+
+if($build14 -eq $true) {
+
+    $buildProfiles += @{
+        "Name"  = "M2 SP2010 - NET35";
+        "ProjectNames" = $defaultProjects
+        "BuildParams" = ("/p:spRuntime=14 /p:Configuration=Debug35 /p:DefineConstants=NET35 " + $defaultBuildParams);
+    }
 }
 
-# 15, main solution, all, 45
-if($includeV15Build -eq $true) {
-    & $msbuild_path """$solutionRootPath\..\SPMeta2.sln"" /t:Clean,Rebuild /p:WarningLevel=0 /verbosity:minimal"
+if($build15 -eq $true) {
+
+    $buildProfiles += @{
+        "Name"  = "M2 SP2013 NET40";
+        "ProjectNames" = $defaultProjects
+        "BuildParams" = ("/p:spRuntime=15 /p:Configuration=Debug40 /p:DefineConstants=NET40 " + $defaultBuildParams);
+    }
+
+    $buildProfiles += @{
+        "Name"  = "M2 SP2013 NET45";
+        "ProjectNames" = $defaultProjects
+        "BuildParams" = ("/p:spRuntime=15 /p:Configuration=Debug45 /p:DefineConstants=NET45 " + $defaultBuildParams);
+    }
 }
 
-# partial, for NuGet, 40/45
-& $msbuild_path """$solutionRootPath\SPMeta2\SPMeta2.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2\SPMeta2.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+if($build16 -eq $true) {
 
-& $msbuild_path """$solutionRootPath\SPMeta2.Standard\SPMeta2.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2.Standard\SPMeta2.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+    $buildProfiles += @{
+        "Name"  = "M2 SP2016 NET40";
+        "ProjectNames" = $defaultProjects
+        "BuildParams" = ("/p:spRuntime=16 /p:Configuration=Debug40 /p:DefineConstants=NET40 " + $defaultBuildParams);
+    }
 
-# CSOM
-
-& $msbuild_path """$solutionRootPath\SPMeta2.CSOM\SPMeta2.CSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2.CSOM\SPMeta2.CSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-
-if($includeV16Build -eq $true) {
-    & $msbuild_path """$solutionRootPath\SPMeta2.CSOM\SPMeta2.CSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=16 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    & $msbuild_path """$solutionRootPath\SPMeta2.CSOM\SPMeta2.CSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=16 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+    $buildProfiles += @{
+        "Name"  = "M2 SP2016 NET45";
+        "ProjectNames" = $defaultProjects
+        "BuildParams" = ("/p:spRuntime=16 /p:Configuration=Debug45 /p:DefineConstants=NET45 " + $defaultBuildParams);
+    }
 }
 
-& $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+if($build365 -eq $true) {
 
-if($includeV16Build -eq $true) {
-    & $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:spRuntime=16 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-    & $msbuild_path """$solutionRootPath\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=16 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+    $buildProfiles += @{
+        "Name"  = "M2 O365 NET40";
+        "ProjectNames" = $o365Projects; 
+        "BuildParams" = ("/p:spRuntime=365 /p:Configuration=Debug40 /p:DefineConstants=NET40 " + $defaultBuildParams);
+    }
+
+    $buildProfiles += @{
+        "Name"  = "M2 O365 NET45";
+        "ProjectNames" = $o365Projects; 
+        "BuildParams" = ("/p:spRuntime=365 /p:Configuration=Debug45 /p:DefineConstants=NET45 " + $defaultBuildParams);
+    }
 }
 
-# SSOM
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:DefineConstants=NET40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM\SPMeta2.SSOM.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+foreach($buildProfile in $buildProfiles) {
 
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug40 /p:DefineConstants=NET40 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
-& $msbuild_path """$solutionRootPath\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj"" /t:Clean,Rebuild /p:Configuration=Debug45 /p:spRuntime=15 /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:minimal"
+    Write-Host "Building profile [$($buildProfile.Name)]"
+
+    BuildProfile $buildProfile
+}
+
+
+
+
+

@@ -65,6 +65,30 @@ namespace SPMeta2.Extensions
             return FindNodes(model, modelNode => modelNode.Value == definition);
         }
 
+        public static List<ModelNode> Flatten(this ModelNode model)
+        {
+            return Flatten(model, node => true);
+        }
+
+        public static List<ModelNode> Flatten(this ModelNode model, Func<ModelNode, bool> match)
+        {
+            var result = new List<ModelNode>();
+
+            if (match != null)
+            {
+                if (match(model))
+                    result.Add(model);
+            }
+            else
+            {
+                result.Add(model);
+            }
+
+            result.AddRange(FindNodes(model, match));
+
+            return result;
+        }
+
         public static List<ModelNode> FindNodes(this ModelNode model, Func<ModelNode, bool> match)
         {
             var result = new List<ModelNode>();

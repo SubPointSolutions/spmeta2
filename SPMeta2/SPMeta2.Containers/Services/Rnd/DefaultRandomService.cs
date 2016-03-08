@@ -44,7 +44,7 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override double Double()
         {
-            return Double(double.MaxValue);
+            return Double(100);
         }
 
         public override double Double(double maxValue)

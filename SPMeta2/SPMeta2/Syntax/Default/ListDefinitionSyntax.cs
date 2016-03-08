@@ -20,6 +20,7 @@ namespace SPMeta2.Syntax.Default
         IContentTypeLinkHostModelNode,
         IUserCustomActionHostModelNode,
         ISP2013WorkflowSubscriptionHostModelNode,
+        IWorkflowAssociationHostModelNode,
         IPropertyHostModelNode
     {
 

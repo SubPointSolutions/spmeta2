@@ -941,5 +941,39 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region index props
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.IndexedProps")]
+        public void CanDeploy_Lists_WithIndexed_Props()
+        {
+            var testList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                def.CustomUrl = Rnd.String();
+
+                def.IndexedRootFolderPropertyKeys.Add(new IndexedPropertyValue
+                {
+                    Name = string.Format("name_{0}", Rnd.String()),
+                    Value = string.Format("value_{0}", Rnd.String()),
+                });
+
+                def.IndexedRootFolderPropertyKeys.Add(new IndexedPropertyValue
+                {
+                    Name = string.Format("name_{0}", Rnd.String()),
+                    Value = string.Format("value_{0}", Rnd.String()),
+                });
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(testList);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

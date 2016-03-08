@@ -459,82 +459,86 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Fields.Scopes")]
         public void CanDeploy_AllFields_UnderList()
         {
-            var fields = GetAllRandomFields();
+            WithDisabledDefinitionImmutabilityValidation(() =>
+            {
 
-            fields.OfType<CalculatedFieldDefinition>()
-                 .ToList()
-                 .ForEach(f =>
-                 {
-                     // clean fomula, that's not gonna work in list
-                     // there is a separated test for it
-                     f.Formula = String.Empty;
-                 });
+                var fields = GetAllRandomFields();
 
-            var model = SPMeta2Model
-                   .NewWebModel(web =>
-                   {
-                       web.AddRandomList(list =>
+                fields.OfType<CalculatedFieldDefinition>()
+                     .ToList()
+                     .ForEach(f =>
+                     {
+                         // clean fomula, that's not gonna work in list
+                         // there is a separated test for it
+                         f.Formula = String.Empty;
+                     });
+
+                var model = SPMeta2Model
+                       .NewWebModel(web =>
                        {
-                           foreach (var fieldDef in fields)
+                           web.AddRandomList(list =>
                            {
-                               // honest regression testing will update Formula
-                               // need to reset oit before provision
-                               // same-same with ValidationFormula/ValidationMessage
-
-                               if (fieldDef is CalculatedFieldDefinition)
+                               foreach (var fieldDef in fields)
                                {
-                                   list.AddField(fieldDef, field =>
+                                   // honest regression testing will update Formula
+                                   // need to reset oit before provision
+                                   // same-same with ValidationFormula/ValidationMessage
+
+                                   if (fieldDef is CalculatedFieldDefinition)
                                    {
-                                       field.OnProvisioning<object, CalculatedFieldDefinition>(cntx =>
+                                       list.AddField(fieldDef, field =>
                                        {
-                                           cntx.ObjectDefinition.ValidationFormula = string.Empty;
-                                           cntx.ObjectDefinition.ValidationMessage = string.Empty;
+                                           field.OnProvisioning<object, CalculatedFieldDefinition>(cntx =>
+                                           {
+                                               cntx.ObjectDefinition.ValidationFormula = string.Empty;
+                                               cntx.ObjectDefinition.ValidationMessage = string.Empty;
 
-                                           cntx.ObjectDefinition.Formula = "=5*ID";
+                                               cntx.ObjectDefinition.Formula = "=5*ID";
 
-                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
-                                           cntx.ObjectDefinition.Indexed = false;
+                                               // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                               cntx.ObjectDefinition.Indexed = false;
+                                           });
                                        });
-                                   });
-                               }
-                               else
-                               {
-                                   list.AddField(fieldDef, field =>
+                                   }
+                                   else
                                    {
-                                       field.OnProvisioning<object>(cntx =>
+                                       list.AddField(fieldDef, field =>
                                        {
-                                           var def = cntx.ObjectDefinition as FieldDefinition;
-
-                                           def.ValidationFormula = string.Empty;
-                                           def.ValidationMessage = string.Empty;
-
-                                           // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
-                                           if (def is MultiChoiceFieldDefinition)
+                                           field.OnProvisioning<object>(cntx =>
                                            {
-                                               def.Indexed = false;
-                                           }
+                                               var def = cntx.ObjectDefinition as FieldDefinition;
 
-                                           // CSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
-                                           if (def is URLFieldDefinition
-                                               || def is ImageFieldDefinition
-                                               || def is LinkFieldDefinition
-                                               || def is ComputedFieldDefinition
-                                               || def is SummaryLinkFieldDefinition
-                                               || def is MediaFieldDefinition
-                                               || def is HTMLFieldDefinition
-                                               || def is GeolocationFieldDefinition
-                                              )
-                                           {
-                                               def.Indexed = false;
-                                           }
+                                               def.ValidationFormula = string.Empty;
+                                               def.ValidationMessage = string.Empty;
+
+                                               // SSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                               if (def is MultiChoiceFieldDefinition)
+                                               {
+                                                   def.Indexed = false;
+                                               }
+
+                                               // CSOM: weird, but we can't pass this test unless turn off toggling or TRUE for ndexed value
+                                               if (def is URLFieldDefinition
+                                                   || def is ImageFieldDefinition
+                                                   || def is LinkFieldDefinition
+                                                   || def is ComputedFieldDefinition
+                                                   || def is SummaryLinkFieldDefinition
+                                                   || def is MediaFieldDefinition
+                                                   || def is HTMLFieldDefinition
+                                                   || def is GeolocationFieldDefinition
+                                                  )
+                                               {
+                                                   def.Indexed = false;
+                                               }
+                                           });
                                        });
-                                   });
+                                   }
                                }
-                           }
+                           });
                        });
-                   });
 
-            TestModel(model);
+                TestModel(model);
+            });
         }
 
         #endregion

@@ -164,6 +164,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 // reverting back the dafult view
                 var view = bindingContext.List.GetView(_currentListBindContext.DefaultViewId);
+
                 view.DefaultView = true;
                 view.Update();
 
@@ -207,7 +208,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 // always replace HtmlSchemaXml witjh the real view
                 // some properties aren't coming with CSOM
 
-
                 if (bindContext.OriginalView != null)
                 {
                     var updatedSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
@@ -215,7 +215,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                     updatedSchemaXml.Root.ReplaceWith(originalSchemaXml.Root);
 
+#if !NET35
                     hiddenView.ListViewXml = updatedSchemaXml.Root.GetInnerXmlAsString();
+#endif
                 }
 
                 if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
@@ -256,7 +258,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                             attr.Remove();
                     }
 
+#if !NET35
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
+#endif
                 }
 
                 hiddenView.Update();
@@ -310,15 +314,23 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
             context.Load(list, l => l.Title);
+
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/765
+            // list.DefaultView is not available, so a full fetch for list view is a must for SP2010.
+
+#if !NET35
             context.Load(list, l => l.DefaultView);
+#endif
 
             if (view != null)
             {
                 context.Load(view);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
                 result.OriginalView = list.DefaultView;
                 result.OriginalViewId = list.DefaultView.Id;
+#endif
 
                 result.TargetView = view;
                 result.TargetViewId = view.Id;
@@ -339,7 +351,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                     result.TitleUrl = list.DefaultViewUrl;
             }
 
+#if !NET35
             result.DefaultViewId = list.DefaultView.Id;
+#endif
 
             return result;
         }

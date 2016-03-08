@@ -36,6 +36,8 @@ namespace SPMeta2
             RegisterService(typeof(ListViewScopeTypesConvertService), new DefaultListViewScopeTypesConvertService());
 
             RegisterService(typeof(DefinitionRelationshipServiceBase), new DefaultDefinitionRelationshipService());
+
+            RegisterService(typeof(ModelCompatibilityServiceBase), new DefaultModelCompatibilityService());
         }
 
         #endregion

@@ -25,15 +25,19 @@ namespace SPMeta2.Regression.SSOM.Validation
                                         .NewAssert(definition, spObject)
                                         .ShouldNotBeNull(spObject);
 
-            if (string.IsNullOrEmpty(definition.Title))
-                assert.SkipProperty(m => m.Title, "Title is null or empty");
-            else
-                assert.ShouldBeEqual(m => m.Title, o => o.Title);
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(spObject.UICulture, () =>
+            {
+                if (string.IsNullOrEmpty(definition.Title))
+                    assert.SkipProperty(m => m.Title, "Title is null or empty");
+                else
+                    assert.ShouldBeEqual(m => m.Title, o => o.Title);
 
-            if (string.IsNullOrEmpty(definition.Description))
-                assert.SkipProperty(m => m.Description, "Description is null or empty");
-            else
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+                if (string.IsNullOrEmpty(definition.Description))
+                    assert.SkipProperty(m => m.Description, "Description is null or empty");
+                else
+                    assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            });
 
             assert.ShouldBeEqual((p, s, d) =>
             {

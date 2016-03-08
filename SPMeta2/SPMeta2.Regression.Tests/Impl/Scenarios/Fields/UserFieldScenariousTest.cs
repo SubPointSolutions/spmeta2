@@ -41,27 +41,30 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         [TestCategory("Regression.Scenarios.Fields.UserField.Bindings")]
         public void CanDeploy_UserField_BindedBySecurityGroupId()
         {
-            var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
-            var userField = ModelGeneratorService.GetRandomDefinition<UserFieldDefinition>(def =>
+            WithDisabledDefinitionImmutabilityValidation(() =>
             {
-                def.SelectionGroup = null;
-                def.SelectionGroupName = string.Empty;
-            });
+                var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+                var userField = ModelGeneratorService.GetRandomDefinition<UserFieldDefinition>(def =>
+                {
+                    def.SelectionGroup = null;
+                    def.SelectionGroupName = string.Empty;
+                });
 
-            var siteModel = SPMeta2Model.NewSiteModel(site =>
-            {
-                site
-                    .AddSecurityGroup(securityGroup, group =>
-                    {
-                        group.OnProvisioned<object>(context =>
+                var siteModel = SPMeta2Model.NewSiteModel(site =>
+                {
+                    site
+                        .AddSecurityGroup(securityGroup, group =>
                         {
-                            userField.SelectionGroup = ExtractGroupId(context);
-                        });
-                    })
-                    .AddUserField(userField);
-            });
+                            group.OnProvisioned<object>(context =>
+                            {
+                                userField.SelectionGroup = ExtractGroupId(context);
+                            });
+                        })
+                        .AddUserField(userField);
+                });
 
-            TestModel(siteModel);
+                TestModel(siteModel);
+            });
         }
 
 

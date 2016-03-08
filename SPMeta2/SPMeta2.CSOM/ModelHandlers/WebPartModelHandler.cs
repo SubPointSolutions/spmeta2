@@ -160,6 +160,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
             {
+#if NET35
+                // webPartFile.OpenBinaryStream should be re-implemented for SP2010
+
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/769");
+#endif
+
+#if !NET35
+
                 lock (_wpCacheLock)
                 {
                     var wpKey = webPartModel.WebpartFileName.ToLower();
@@ -221,6 +229,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                             _wpCache[wpKey] = result;
                     }
                 }
+
+#endif
             }
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartType))
@@ -357,6 +367,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (listItemModelHost.HostFolder != null)
                 {
+                    // TODO, re-implement for SP2010 CSOM
+                    // the following stuff is needed only for the web part deployment to the non-web part pages
+                    // like, view/upload/details pages in the lost/libs
+                    // hope no one would use that case on 2010 - folks, migrate to 2013 at least! :)
+#if !NET35
+
                     if (!listItemModelHost.HostFolder.IsPropertyAvailable("Properties") ||
                         listItemModelHost.HostFolder.Properties.FieldValues.Count == 0)
                     {
@@ -365,9 +381,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                         listItemModelHost.HostFolder.Context.ExecuteQueryWithTrace();
                     }
+
+#endif
                 }
 
-                // TODO
+#if !NET35
                 var doesFileHasListItem =
                     //Forms folders
                     !(listItemModelHost.HostFolder != null
@@ -376,6 +394,16 @@ namespace SPMeta2.CSOM.ModelHandlers
                        &&
                        listItemModelHost.HostFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
                        "00000012"));
+
+#endif
+
+#if NET35
+                // TODO, re-implement for SP2010 CSOM
+                // the following stuff is needed only for the web part deployment to the non-web part pages
+
+                var doesFileHasListItem = true;
+#endif
+
 
                 ModuleFileModelHandler.WithSafeFileOperation(listItemModelHost.HostList,
                     currentPageFile, pageFile =>

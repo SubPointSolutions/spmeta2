@@ -98,6 +98,8 @@ SharePoint 2010 SSOM
 * [SPMeta2.SSOM.Standard-v14](https://www.nuget.org/packages/SPMeta2.SSOM.Standard-v14/)
 
 #### Blogposts
+* [Office Dev PnP Web Cast – SharePoint Feature Framework vs Remote Provisioning](http://dev.office.com/blogs/feature-framework-vs-remote-provisioning)
+* [Provisioning Google Maps JSLink with SPMeta2](http://chuvash.eu/2015/12/15/provisioning-google-maps-jslink-with-spmeta2/)
 * [Provisioning: spmeta2 vs O365 PnP provisioning](http://blog.repsaj.nl/index.php/2015/05/o365-provisioning-spmeta2-vs-o365-pnp-provisioning/)
 * [SharePoint Site Provisioning Engine](http://wp.sjkp.dk/sharepoint-site-provisioning-engine/)
 * [Kom igång med SPMeta2](http://chuvash.eu/2015/09/17/kom-igang-med-spmeta2/)

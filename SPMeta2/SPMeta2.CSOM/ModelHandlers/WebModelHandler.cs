@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
-using System.Runtime.Remoting.Contexts;
+using System.Text;
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
@@ -61,8 +60,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var context = parentWeb.Context;
 
+
+#if !NET35
             context.Load(parentWeb, w => w.Url);
+#endif
             //context.Load(parentWeb, w => w.RootFolder);
+
             context.Load(parentWeb, w => w.ServerRelativeUrl);
             context.ExecuteQueryWithTrace();
 
@@ -117,7 +120,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
-        private Site ExtractHostSite(object modelHost)
+        private static Site ExtractHostSite(object modelHost)
         {
             if (modelHost is SiteModelHost)
                 return (modelHost as SiteModelHost).HostSite;
@@ -141,7 +144,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static Web GetParentWeb(WebModelHost csomModelHost)
         {
-            Web parentWeb = null;
+            Web parentWeb;
 
             if (csomModelHost.HostWeb != null)
                 parentWeb = csomModelHost.HostWeb;
@@ -159,13 +162,26 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var srcUrl = currentWebUrl.ToLower().Trim('/').Trim('\\');
 
+#if !NET35
             // for self-hosting and '/'
             if (parentWeb.Url.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
+            {
                 return parentWeb;
+            }
+
+#endif
+
+#if NET35
+            // for self-hosting and '/'
+            if (parentWeb.ServerRelativeUrl.ToLower().Trim('/').Trim('\\').EndsWith(srcUrl))
+            {
+                return parentWeb;
+            }
+#endif
 
             var context = parentWeb.Context;
 
-            Web web = null;
+            Web web;
 
             var scope = new ExceptionHandlingScope(context);
 
@@ -219,8 +235,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Loading Url/ServerRelativeUrl");
             var context = parentWeb.Context;
 
+#if !NET35
             context.Load(parentWeb, w => w.Url);
+#endif
             //context.Load(parentWeb, w => w.RootFolder);
+
             context.Load(parentWeb, w => w.ServerRelativeUrl);
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
@@ -313,16 +332,20 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Adding new web to the web collection and calling ExecuteQuery.");
+
                 var newWeb = parentWeb.Webs.Add(newWebInfo);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
+                if (webModel.IndexedPropertyKeys.Any())
+                {
+                    context.Load(newWeb, w => w.AllProperties);
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
+
                 MapProperties(newWeb, webModel);
                 ProcessLocalization(newWeb, webModel);
-
-                context.Load(newWeb);
-
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-                context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -334,15 +357,25 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ObjectDefinition = model,
                     ModelHost = modelHost
                 });
+
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "newWeb.Update()");
+
+                newWeb.Update();
+                context.ExecuteQueryWithTrace();
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Current web is not null. Updating Title/Description.");
 
+#if !NET35
+                if (webModel.IndexedPropertyKeys.Any())
+                {
+                    context.Load(currentWeb, w => w.AllProperties);
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
+
                 MapProperties(currentWeb, webModel);
-
-                //  locale is not available with CSOM yet
-
                 ProcessLocalization(currentWeb, webModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -365,13 +398,13 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         private static void MapProperties(Web web, WebDefinition webModel)
         {
-            web.Title = webModel.Title;
-            web.Description = webModel.Description ?? string.Empty;
+            if (!string.IsNullOrEmpty(webModel.Title))
+                web.Title = webModel.Title;
 
-            var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl")
-                                 && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
+            if (!string.IsNullOrEmpty(webModel.Description))
+                web.Description = webModel.Description;
 
-
+            var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl") && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
             if (supportedRuntime)
             {
                 var context = web.Context;
@@ -397,6 +430,44 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                     "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
             }
+
+#if !NET35
+            if (webModel.IndexedPropertyKeys.Any())
+            {
+                var props = web.AllProperties;
+
+                // may not be there at all
+                var indexedPropertyValue = props.FieldValues.Keys.Contains("vti_indexedpropertykeys")
+                                            ? ConvertUtils.ToStringAndTrim(props["vti_indexedpropertykeys"])
+                                            : string.Empty;
+
+                var currentIndexedProperties = IndexedPropertyUtils.GetDecodeValueForSearchIndexProperty(indexedPropertyValue);
+
+                // setup property bag
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    props[propName] = propValue;
+                }
+
+                // merge and setup indexed prop keys, preserve existing props
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    if (!currentIndexedProperties.Contains(indexedProperty.Name))
+                        currentIndexedProperties.Add(indexedProperty.Name);
+                }
+
+                props["vti_indexedpropertykeys"] = IndexedPropertyUtils.GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
+            }
+#endif
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)

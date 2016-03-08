@@ -6,9 +6,21 @@ using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
+using System.Collections.Generic;
 
 namespace SPMeta2.Definitions
 {
+    [Serializable]
+    [DataContract]
+    public class JobDefinitionProperty
+    {
+        [DataMember]
+        public object Key { get; set; }
+
+        [DataMember]
+        public object Value { get; set; }
+    }
+
     /// <summary>
     /// Allows to define and deploy SharePoint timer job.
     /// </summary>
@@ -32,6 +44,7 @@ namespace SPMeta2.Definitions
         public JobDefinition()
         {
             ConstructorParams = new Collection<JobDefinitionCtorParams>();
+            Properties = new List<JobDefinitionProperty>();
         }
 
         #endregion
@@ -73,8 +86,14 @@ namespace SPMeta2.Definitions
         public string ScheduleString { get; set; }
 
         [DataMember]
-
         public Collection<JobDefinitionCtorParams> ConstructorParams { get; set; }
+
+        /// <summary>
+        /// Corresponds to SPJobDefinition.Properties
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public List<JobDefinitionProperty> Properties { get; set; }
 
         #endregion
 

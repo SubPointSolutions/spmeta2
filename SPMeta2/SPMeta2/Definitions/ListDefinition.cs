@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -37,10 +38,10 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
+            IndexedRootFolderPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #region properties
-
 
         /// <summary>
         /// Title of the target list.
@@ -249,6 +250,17 @@ namespace SPMeta2.Definitions
         //[ExpectUpdateAsServerRelativeUrl]
         public string DocumentTemplateUrl { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<IndexedPropertyValue> IndexedRootFolderPropertyKeys { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public int? WriteSecurity { get; set; }
+
         #endregion
 
         #region methods
@@ -256,15 +268,9 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
-                            new[] {
-                                Title,
 #pragma warning disable 618
-                              string.IsNullOrEmpty(Url) ? CustomUrl : Url,
+                Title, string.IsNullOrEmpty(Url) ? CustomUrl : Url, TemplateType, TemplateName, ContentTypesEnabled);
 #pragma warning restore 618
-                                TemplateType.ToString(),
-                                TemplateName,
-                                ContentTypesEnabled.ToString()
-                            });
         }
 
         #endregion

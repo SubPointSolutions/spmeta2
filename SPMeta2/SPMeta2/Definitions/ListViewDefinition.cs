@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -49,6 +50,9 @@ namespace SPMeta2.Definitions
             Type = BuiltInViewType.Html;
 
             TitleResource = new List<ValueForUICulture>();
+
+            InlineEdit = null;
+            TabularView = null;
         }
 
         #endregion
@@ -134,6 +138,14 @@ namespace SPMeta2.Definitions
         public bool IsPaged { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the list view should include bulk operation checkboxes if the current list view supports them.
+        /// </summary>
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
+        public bool? TabularView { get; set; }
+
+        /// <summary>
         /// ISDefault flag of the target list view.
         /// </summary>
         /// 
@@ -146,6 +158,14 @@ namespace SPMeta2.Definitions
         [ExpectUpdate]
         [DataMember]
         public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether the view is in inline edit mode.
+        /// </summary>
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
+        public bool? InlineEdit { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
@@ -185,6 +205,21 @@ namespace SPMeta2.Definitions
         [ExpectRequired]
         [DataMember]
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets field references for one or more aggregate, or total, columns used in a view.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string Aggregations { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether aggregate, or total, columns are used in the view.
+        /// A string that specifies "On" if an aggregate column is used in the view; otherwise, an empty string.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string AggregationsStatus { get; set; }
 
         #endregion
 

@@ -25,21 +25,22 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             context.Load(list, l => l.Fields);
             context.Load(list, l => l.Views.Include(
-                o => o.ViewFields,
-                o => o.Title,
-                o => o.DefaultView,
-                o => o.ViewQuery,
-                o => o.RowLimit,
-                o => o.Paged,
-                o => o.Scope,
-                o => o.Hidden,
-                o => o.JSLink,
-                o => o.ServerRelativeUrl,
-                o => o.DefaultViewForContentType,
-                o => o.ContentTypeId,
-                o => o.ViewType,
-                o => o.ViewData,
-                v => v.Title));
+                v => v.ViewFields,
+                v => v.Title,
+                v => v.DefaultView,
+                v => v.ViewQuery,
+                v => v.RowLimit,
+                v => v.Paged,
+                v => v.Scope,
+                v => v.Hidden,
+                v => v.JSLink,
+                v => v.ServerRelativeUrl,
+                v => v.DefaultViewForContentType,
+                v => v.ContentTypeId,
+                v => v.AggregationsStatus,
+                v => v.Aggregations,
+                v => v.ViewType,
+                v => v.ViewData));
             context.ExecuteQueryWithTrace();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
@@ -125,7 +126,9 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Type);
 
-            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM  API yet. Skipping.");
+            assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM API yet. Skipping.");
+            assert.SkipProperty(m => m.TabularView, "TabularView unsupported by SP CSOM API yet. Skipping.");
+            assert.SkipProperty(m => m.InlineEdit, "InlineEdit unsupported by SP CSOM API yet. Skipping.");
 
             assert.ShouldBeEqualIfNotNullOrEmpty(m => m.JSLink, o => o.JSLink);
 
@@ -200,6 +203,16 @@ namespace SPMeta2.Regression.CSOM.Validation
                     };
                 });
             }
+
+            if (string.IsNullOrEmpty(definition.AggregationsStatus))
+                assert.SkipProperty(m => m.AggregationsStatus, "Aggregationsstatus is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.AggregationsStatus, o => o.AggregationsStatus);
+
+            if (string.IsNullOrEmpty(definition.Aggregations))
+                assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
+            else
+                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
 
             assert.ShouldBePartOfIfNotNullOrEmpty(m => m.Url, o => o.ServerRelativeUrl);
 

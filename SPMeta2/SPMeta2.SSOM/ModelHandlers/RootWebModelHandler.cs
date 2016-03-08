@@ -38,11 +38,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if (!string.IsNullOrEmpty(definition.Title))
-                currentObject.Title = definition.Title;
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(currentObject.UICulture, () =>
+            {
+                if (!string.IsNullOrEmpty(definition.Title))
+                    currentObject.Title = definition.Title;
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                currentObject.Description = definition.Description;
+                if (!string.IsNullOrEmpty(definition.Description))
+                    currentObject.Description = definition.Description;
+            });
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

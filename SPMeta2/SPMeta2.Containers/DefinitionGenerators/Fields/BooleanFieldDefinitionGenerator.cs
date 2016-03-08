@@ -20,5 +20,12 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
 
             };
         }
+
+        protected override void PostProcessDefinitionTemplate(FieldDefinition def)
+        {
+            base.PostProcessDefinitionTemplate(def);
+
+            (def as BooleanFieldDefinition).DefaultValue = Rnd.Bool() ? "0" : "1";
+        }
     }
 }

@@ -15,6 +15,7 @@ using SPMeta2.Services;
 using SPMeta2.Utils;
 
 using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -72,8 +73,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 action(newContext);
 
+                // should be fine for 35 too, that's a parent update
+#if !NET35
                 currentListItem.Folder.Update();
                 currentListItem.Context.ExecuteQueryWithTrace();
+#endif
+
             }
             else
             {
@@ -121,6 +126,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             context.Load(list, l => l.RootFolder);
             context.Load(list, l => l.ParentWeb);
 
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/766");
+#endif
+
+#if !NET35
+
             if (folderModelHost.CurrentListItem != null)
             {
                 context.Load(folderModelHost.CurrentListItem, l => l.Folder);
@@ -159,6 +170,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (doesFolderExist)
                 return currentFolder;
+
+#endif
 
             return null;
         }
@@ -204,6 +217,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
+
                 context.Load(currentFolderItem.Folder);
                 context.ExecuteQueryWithTrace();
 
@@ -215,16 +232,24 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 currentFolderItem = currentFolder.ListItemAllFields;
+#endif
+
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list folder");
+
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
 
                 context.Load(currentFolder, f => f.ListItemAllFields);
                 context.Load(currentFolder, f => f.Name);
                 context.ExecuteQueryWithTrace();
 
                 currentFolderItem = currentFolder.ListItemAllFields;
+
+#endif
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
