@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Microsoft.SharePoint.Client;
-using SPMeta2.Common;
-using SPMeta2.CSOM.Extensions;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
-using SPMeta2.Exceptions;
-using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.Extensions;
+using System.Xml.Linq;
+using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
-    public class DependentLookupFieldModelHandler : CSOMModelHandlerBase
+    public class DependentLookupFieldModelHandler : FieldModelHandler
     {
         #region properties
 
@@ -23,207 +18,99 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
         {
             get { return typeof(DependentLookupFieldDefinition); }
         }
+
+        protected override Type GetTargetFieldType(FieldDefinition model)
+        {
+            return typeof(FieldLookup);
+        }
+
         #endregion
 
         #region methods
 
-        public override void DeployModel(object modelHost, DefinitionBase model)
+        protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
-            var definition = model.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
+            var site = HostSite;
+            var context = site.Context;
 
-            if (modelHost is SiteModelHost)
-                DeploySiteDependentLookup(modelHost, modelHost as SiteModelHost, definition);
-            else if (modelHost is WebModelHost)
-                DeployWebDependentLookup(modelHost, modelHost as WebModelHost, definition);
-            else if (modelHost is ListModelHost)
-                DeployListDependentLookup(modelHost, modelHost as ListModelHost, definition);
-        }
+            // let base setting be setup
+            base.ProcessFieldProperties(field, fieldModel);
 
-        private void DeployListDependentLookup(object modelHost, ListModelHost listModelHost, DependentLookupFieldDefinition definition)
-        {
-            DeployDependentLookupField(modelHost, listModelHost.HostList.Fields, definition);
-        }
+            var typedField = field.Context.CastTo<FieldLookup>(field);
+            var typedFieldModel = fieldModel.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
 
-        private void DeployWebDependentLookup(object modelHost, WebModelHost webModelHost, DependentLookupFieldDefinition definition)
-        {
-            DeployDependentLookupField(modelHost, webModelHost.HostWeb.Fields, definition);
-        }
-
-        private void DeploySiteDependentLookup(object modelHost, SiteModelHost siteModelHost, DependentLookupFieldDefinition definition)
-        {
-            DeployDependentLookupField(modelHost, siteModelHost.HostSite.RootWeb.Fields, definition);
-        }
-
-        protected virtual FieldLookup GetField(object modelHost, DependentLookupFieldDefinition definition)
-        {
-            if (modelHost is SiteModelHost)
-                return GetDependentLookupField((modelHost as SiteModelHost).HostSite.RootWeb.Fields, definition);
-            else if (modelHost is WebModelHost)
-                return GetDependentLookupField((modelHost as WebModelHost).HostWeb.Fields, definition);
-            else if (modelHost is ListModelHost)
-                return GetDependentLookupField((modelHost as ListModelHost).HostList.Fields, definition);
-
-            throw new SPMeta2Exception("Unsupported model host");
-        }
-
-        protected virtual FieldLookup GetPrimaryField(object modelHost, DependentLookupFieldDefinition definition)
-        {
-            if (modelHost is SiteModelHost)
-                return GetPrimaryLookupField((modelHost as SiteModelHost).HostSite.RootWeb.Fields, definition);
-            else if (modelHost is WebModelHost)
-                return GetPrimaryLookupField((modelHost as WebModelHost).HostWeb.Fields, definition);
-            else if (modelHost is ListModelHost)
-                return GetPrimaryLookupField((modelHost as ListModelHost).HostList.Fields, definition);
-
-            throw new SPMeta2Exception("Unsupported model host");
-        }
-
-        private void DeployDependentLookupField(object modelHost, FieldCollection fields, DependentLookupFieldDefinition definition)
-        {
-            var context = fields.Context;
-
-            var primaryLookupField = GetPrimaryLookupField(fields, definition);
-            var dependentLookupField = GetDependentLookupField(fields, definition);
-
-            if (dependentLookupField == null)
+            if (!typedField.IsPropertyAvailable("PrimaryFieldId"))
             {
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioning,
-                    Object = null,
-                    ObjectType = typeof(FieldLookup),
-                    ObjectDefinition = definition,
-                    ModelHost = modelHost
-                });
-
-                var internalName = fields.AddDependentLookup(definition.InternalName, primaryLookupField, definition.LookupField);
-
-                dependentLookupField = GetDependentLookupField(fields, definition);
-                dependentLookupField.Title = definition.Title;
-
-                dependentLookupField.LookupList = primaryLookupField.LookupList;
-                dependentLookupField.LookupWebId = primaryLookupField.LookupWebId;
-
-                if (!string.IsNullOrEmpty(primaryLookupField.LookupList) &&
-                string.IsNullOrEmpty(dependentLookupField.LookupList))
-                {
-                    dependentLookupField.LookupList = primaryLookupField.LookupList;
-                }
-
-                if (string.IsNullOrEmpty(dependentLookupField.PrimaryFieldId))
-                    dependentLookupField.PrimaryFieldId = primaryLookupField.Id.ToString();
-
-                dependentLookupField.ReadOnlyField = true;
-                dependentLookupField.AllowMultipleValues = primaryLookupField.AllowMultipleValues;
-
-                // unsuppoeted in CSOM yet
-                //dependentLookupField.UnlimitedLengthInDocumentLibrary = primaryLookupField.UnlimitedLengthInDocumentLibrary;
-                dependentLookupField.Direction = primaryLookupField.Direction;
-            }
-            else
-            {
-                InvokeOnModelEvent(this, new ModelEventArgs
-                {
-                    CurrentModelNode = null,
-                    Model = null,
-                    EventType = ModelEventType.OnProvisioning,
-                    Object = dependentLookupField,
-                    ObjectType = typeof(FieldLookup),
-                    ObjectDefinition = definition,
-                    ModelHost = modelHost
-                });
-
+                typedField.Context.Load(typedField, f => f.PrimaryFieldId);
+                typedField.Context.ExecuteQueryWithTrace();
             }
 
-            dependentLookupField.Title = definition.Title;
+            var primaryLookupField = GetPrimaryField(typedFieldModel);
 
-            dependentLookupField.LookupField = definition.LookupField;
+            typedField.Context.Load(primaryLookupField);
+            typedField.Context.ExecuteQueryWithTrace();
 
-            if (!string.IsNullOrEmpty(primaryLookupField.LookupList) &&
-                string.IsNullOrEmpty(dependentLookupField.LookupList))
+//            var primaryLookupField = field2.TypedObject as FieldLookup;
+
+            typedField.AllowMultipleValues = primaryLookupField.AllowMultipleValues;
+            typedField.TypeAsString = primaryLookupField.TypeAsString;
+            typedField.LookupList = primaryLookupField.LookupList;
+            typedField.LookupWebId = primaryLookupField.LookupWebId;
+            if (string.IsNullOrEmpty(typedField.PrimaryFieldId))
             {
-                dependentLookupField.LookupList = primaryLookupField.LookupList;
+                typedField.PrimaryFieldId = primaryLookupField.Id.ToString();
             }
-            dependentLookupField.LookupWebId = primaryLookupField.LookupWebId;
+            typedField.ReadOnlyField = true;
 
-            dependentLookupField.Group = string.IsNullOrEmpty(definition.Group) ? "Custom" : definition.Group; 
-            dependentLookupField.Description = definition.Description ?? string.Empty;
+            // unsupported in CSOM yet
+            //dependentLookupField.UnlimitedLengthInDocumentLibrary = primaryLookupField.UnlimitedLengthInDocumentLibrary;
+            typedField.Direction = primaryLookupField.Direction;
+            typedField.LookupField = typedFieldModel.LookupField;
 
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = dependentLookupField,
-                ObjectType = typeof(FieldLookup),
-                ObjectDefinition = definition,
-                ModelHost = modelHost
-            });
-
-            dependentLookupField.UpdateAndPushChanges(true);
-
-            context.ExecuteQueryWithTrace();
+            typedField.Group = typedFieldModel.Group ?? string.Empty;
+            typedField.Description = typedFieldModel.Description ?? string.Empty;
+            typedField.Title = typedFieldModel.Title;
         }
 
-        protected virtual FieldLookup GetDependentLookupField(FieldCollection fields, 
-            DependentLookupFieldDefinition definition)
+        protected virtual FieldLookup GetPrimaryField(DependentLookupFieldDefinition definition)
         {
-            var context = fields.Context;
+            var fields = FieldLookupService.GetFieldCollection(this.ModelHost);
 
-            Field field = null;
-
-            var scope = new ExceptionHandlingScope(context);
-
-            using (scope.StartScope())
-            {
-                using (scope.StartTry())
-                {
-                    fields.GetByInternalNameOrTitle(definition.InternalName);
-                }
-
-                using (scope.StartCatch())
-                {
-
-                }
-            }
-
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-            context.ExecuteQueryWithTrace();
-
-            if (!scope.HasException)
-            {
-                field = fields.GetByInternalNameOrTitle(definition.InternalName);
-                context.Load(field);
-
-                context.ExecuteQueryWithTrace();
-
-                return context.CastTo<FieldLookup>(field);
-            }
-
-            return null;
+            return FieldLookupService.GetFieldAs<FieldLookup>(
+                fields, definition.PrimaryLookupFieldId, definition.PrimaryLookupFieldInternalName, definition.PrimaryLookupFieldTitle);
         }
-
-        protected virtual FieldLookup GetPrimaryLookupField(FieldCollection fields, DependentLookupFieldDefinition definition)
+        
+        protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
         {
-            var context = fields.Context;
+            var site = HostSite;
+            var context = HostSite.Context;
 
-            Field result = null;
+            base.ProcessSPFieldXElement(fieldTemplate, fieldModel);
 
-            if (definition.PrimaryLookupFieldId.HasGuidValue())
-                result = fields.GetById(definition.PrimaryLookupFieldId.Value);
+            var typedFieldModel = fieldModel.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
 
-            if (!string.IsNullOrEmpty(definition.PrimaryLookupFieldInternalName))
-                result = fields.GetByInternalNameOrTitle(definition.PrimaryLookupFieldInternalName);
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Mult, typedFieldModel.AllowMultipleValues.ToString().ToUpper());
 
-            if (!string.IsNullOrEmpty(definition.PrimaryLookupFieldTitle))
-                result = fields.GetByTitle(definition.PrimaryLookupFieldTitle);
+            if (typedFieldModel.LookupWebId.HasGuidValue())
+            {
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.WebId, typedFieldModel.LookupWebId.Value.ToString("B"));
+            }
 
-            context.Load(result);
-            context.ExecuteQueryWithTrace();
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupList))
+            {
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.List, typedFieldModel.LookupList);
+            }
+            
+            if (!string.IsNullOrEmpty(typedFieldModel.LookupField))
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.ShowField, typedFieldModel.LookupField);
 
-            return context.CastTo<FieldLookup>(result);
+            Field primaryField = GetPrimaryField(typedFieldModel);
+            if (primaryField == null)
+            {
+                throw new SPMeta2Exception("PrimaryLookupField need to be defined when creating a DependentLookupField");
+            }
+
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.FieldReference, primaryField.Id.ToString("B"));
         }
 
         #endregion
