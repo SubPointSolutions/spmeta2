@@ -24,19 +24,7 @@ namespace SPMeta2.CSOM.Services
             throw new SPMeta2Exception("Unsupported model host");
         }
 
-        public virtual Field GetField(FieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle)
-        {
-            if (fieldId.HasGuidValue())
-                return fields.GetById(fieldId.Value);
 
-            if (!string.IsNullOrEmpty(fieldInternalName))
-                return fields.GetByInternalNameOrTitle(fieldInternalName);
-
-            if (!string.IsNullOrEmpty(fieldTitle))
-                return fields.GetByTitle(fieldTitle);
-
-            throw new SPMeta2Exception("GetField(): on of fieldId / fieldInternalName / fieldTitle needs to be defined");
-        }
 
         public virtual T GetFieldAs<T>(FieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle) where T : Field
         {
@@ -45,7 +33,7 @@ namespace SPMeta2.CSOM.Services
             return fields.Context.CastTo<T>(field);
         }
 
-        public virtual Field FindField(FieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle)
+        public virtual Field GetField(FieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle)
         {
             var context = fields.Context;
 

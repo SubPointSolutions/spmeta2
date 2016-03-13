@@ -50,8 +50,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             typedField.Context.Load(primaryLookupField);
             typedField.Context.ExecuteQueryWithTrace();
 
-//            var primaryLookupField = field2.TypedObject as FieldLookup;
-
             typedField.AllowMultipleValues = primaryLookupField.AllowMultipleValues;
             typedField.TypeAsString = primaryLookupField.TypeAsString;
             typedField.LookupList = primaryLookupField.LookupList;
@@ -66,10 +64,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             //dependentLookupField.UnlimitedLengthInDocumentLibrary = primaryLookupField.UnlimitedLengthInDocumentLibrary;
             typedField.Direction = primaryLookupField.Direction;
             typedField.LookupField = typedFieldModel.LookupField;
-
-            typedField.Group = typedFieldModel.Group ?? string.Empty;
-            typedField.Description = typedFieldModel.Description ?? string.Empty;
-            typedField.Title = typedFieldModel.Title;
         }
 
         protected virtual FieldLookup GetPrimaryField(DependentLookupFieldDefinition definition)

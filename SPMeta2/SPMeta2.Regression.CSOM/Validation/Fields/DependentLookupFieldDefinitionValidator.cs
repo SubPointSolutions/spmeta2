@@ -22,8 +22,11 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            this.ModelHost = modelHost;
+
             var definition = model.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
-            var spObject = GetField(modelHost, definition) as FieldLookup;
+            var spObjectTmp = GetField(modelHost, definition);
+            var spObject = spObjectTmp.Context.CastTo<FieldLookup>(spObjectTmp);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 

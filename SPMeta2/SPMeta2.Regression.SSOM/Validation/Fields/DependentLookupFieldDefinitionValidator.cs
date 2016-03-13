@@ -11,8 +11,17 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 {
     public class DependentLookupFieldDefinitionValidator : FieldDefinitionValidator
     {
+        public override Type TargetType
+        {
+            get
+            {
+                return typeof(DependentLookupFieldDefinition);
+            }
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            this.ModelHost = modelHost;
             var definition = model.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
             var spObject = GetField(modelHost, definition) as SPFieldLookup;
 
