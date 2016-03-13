@@ -20,8 +20,8 @@ namespace SPMeta2.Definitions.Fields
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
-    [ExpectManyInstances]
 
+    [ExpectManyInstances]
     public class DependentLookupFieldDefinition : LookupFieldDefinition
     {
         #region properties
@@ -31,7 +31,7 @@ namespace SPMeta2.Definitions.Fields
         /// </summary>
         /// 
         [ExpectValidation]
-        //[ExpectRequired]
+        [ExpectRequired]
         [DataMember]
         [IdentityKey]
         public override Guid Id { get; set; }

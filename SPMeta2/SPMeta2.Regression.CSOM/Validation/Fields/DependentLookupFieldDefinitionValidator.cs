@@ -1,22 +1,32 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
-using SPMeta2.CSOM.ModelHandlers.Fields;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
-    public class DependentLookupFieldDefinitionValidator : DependentLookupFieldModelHandler
+    public class DependentLookupFieldDefinitionValidator : ClientFieldDefinitionValidator
     {
+        public override Type TargetType
+        {
+            get
+            {
+                return typeof(DependentLookupFieldDefinition);
+            }
+        }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            this.ModelHost = modelHost;
+
             var definition = model.WithAssertAndCast<DependentLookupFieldDefinition>("model", value => value.RequireNotNull());
-            var spObject = GetField(modelHost, definition);
+            var spObjectTmp = GetField(modelHost, definition);
+            var spObject = spObjectTmp.Context.CastTo<FieldLookup>(spObjectTmp);
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
@@ -91,7 +101,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             if (definition.PrimaryLookupFieldId.HasGuidValue())
             {
-                var primaryLookupField = GetPrimaryField(modelHost, definition);
+                var primaryLookupField = GetPrimaryField(definition);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -112,7 +122,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             if (!string.IsNullOrEmpty(definition.PrimaryLookupFieldInternalName))
             {
-                var primaryLookupField = GetPrimaryField(modelHost, definition);
+                var primaryLookupField = GetPrimaryField(definition);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -133,7 +143,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             if (!string.IsNullOrEmpty(definition.PrimaryLookupFieldTitle))
             {
-                var primaryLookupField = GetPrimaryField(modelHost, definition);
+                var primaryLookupField = GetPrimaryField(definition);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -242,6 +252,13 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
+        }
+
+        protected virtual FieldLookup GetPrimaryField(DependentLookupFieldDefinition definition)
+        {
+            var fields = FieldLookupService.GetFieldCollection(this.ModelHost);
+
+            return FieldLookupService.GetFieldAs<FieldLookup>(fields, definition.PrimaryLookupFieldId, definition.PrimaryLookupFieldInternalName, definition.PrimaryLookupFieldTitle);
         }
     }
 }

@@ -17,7 +17,9 @@ namespace SPMeta2.Containers.DefinitionGenerators.Fields
         {
             return WithEmptyDefinition(def =>
             {
+                def.Id = Rnd.Guid();
                 def.Title = Rnd.String(12);
+                def.Group = Rnd.String(12);
                 def.InternalName = string.Format("iname_{0}", Rnd.String(12));
 
                 def.PrimaryLookupFieldId = PrimaryLookupField.Id;
