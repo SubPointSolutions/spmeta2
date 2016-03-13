@@ -25,11 +25,22 @@ function BuildProfile($buildProfile) {
 
     foreach($projectName in $buildProfiles.ProjectNames) {
         
-        $buildProfile.BuildParams
+        Write-Host "Profile:[$($buildProfile.Name)] Params: [$($buildProfile.BuildParams)]" -fore Green
      
-        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams)"
-    }
+        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams)" 
 
+		if (! $?) { 
+		
+            Write-Host "[M2 Build] There was an error building profile:[$($buildProfile.Name)]" -fore red
+            Write-Host "[M2 Build] Expanding params:" -fore Red
+                                    
+            foreach($key in $buildProfile.Keys) {
+                Write-Host "`t$key":[$( $buildProfile[$key])] -fore Red
+            }
+
+			throw "[M2 Build] !!! Build faild on profile:[$($buildProfile.Name)]. Please check output early to check the details. !!!" 
+		}
+    }
 }
 
 #endregion
@@ -114,12 +125,7 @@ if($build365 -eq $true) {
 
 foreach($buildProfile in $buildProfiles) {
 
-    Write-Host "Building profile [$($buildProfile.Name)]"
+    Write-Host "[M2 Build] Building profile [$($buildProfile.Name)]" -fore Green
 
-    BuildProfile $buildProfile
+    BuildProfile $buildProfile	
 }
-
-
-
-
-
