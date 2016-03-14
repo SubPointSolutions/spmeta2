@@ -12,4 +12,4 @@ test: off
 clone_folder: c:\prj\m2
 
 build_script: 
-    -ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
+    - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
