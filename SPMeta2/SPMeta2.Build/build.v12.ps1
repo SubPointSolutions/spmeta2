@@ -19,14 +19,14 @@ function Write-BError($msg, $fore = 'red') {
     Write-Host $msg -fore $fore
 }
 
-function Write-BWrite-BVerbose($msg, $fore = 'gray') {
+function Write-BVerbose($msg, $fore = 'gray') {
     
     $stamp = Get-TimeStamp
 
     if([string]::IsNullOrEmpty($msg) -eq $false) {
-        $msg = "[$stamp] [Write-BVerbose] $msg"
+        $msg = "[$stamp] [Verbose] $msg"
     } else {
-        $msg = "[$stamp] [Write-BVerbose]"
+        $msg = "[$stamp] [Verbose]"
     }
 
     Write-Host $msg -fore $fore
