@@ -649,7 +649,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
-                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.ListTitle = sourceList.Title;
                 def.ListUrl = string.Empty;
 
                 def.ViewName = string.Empty;
@@ -698,21 +698,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
-                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.ListTitle = sourceList.Title;
                 def.WebUrl = "~sitecollection/" + sourceListWeb.Url;
 
                 def.ViewName = string.Empty;
                 def.ViewId = null;
             });
 
-
-            var model = SPMeta2Model.NewWebModel(web =>
+            var listModel = SPMeta2Model.NewWebModel(web =>
             {
                 web
                   .AddWeb(sourceListWeb, subWeb =>
                   {
                       subWeb.AddList(sourceList);
-                  })
+                  });
+            });
+
+            var webPartModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
                   .AddHostList(BuiltInListDefinitions.SitePages, list =>
                   {
                       list
@@ -723,7 +727,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                   });
             });
 
-            TestModel(model);
+            TestModel(listModel, webPartModel);
         }
 
         [TestMethod]
@@ -754,7 +758,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
-                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.ListTitle = sourceList.Title;
                 def.WebUrl = "~sitecollection/" + sourceListWeb.Url;
 
                 def.ViewName = string.Empty;
@@ -762,27 +766,30 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             });
 
 
-            var model = SPMeta2Model.NewWebModel(web =>
+            var listModel = SPMeta2Model.NewWebModel(web =>
             {
-                web
-                  .AddWeb(sourceListWeb, subWeb =>
-                  {
-                      subWeb.AddList(sourceList);
-                  })
-                  .AddWeb(targetWebPartWeb, targetWeb =>
-                  {
-                      targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
-                      {
-                          list
-                              .AddRandomWebPartPage(page =>
-                              {
-                                  page.AddXsltListViewWebPart(xsltListViewWebpart);
-                              });
-                      });
-                  });
+                web.AddWeb(sourceListWeb, subWeb =>
+                {
+                    subWeb.AddList(sourceList);
+                });
             });
 
-            TestModel(model);
+            var webPartModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWeb(targetWebPartWeb, targetWeb =>
+                {
+                    targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list
+                            .AddRandomWebPartPage(page =>
+                            {
+                                page.AddXsltListViewWebPart(xsltListViewWebpart);
+                            });
+                    });
+                });
+            });
+
+            TestModel(listModel, webPartModel);
         }
 
         [TestMethod]
@@ -808,7 +815,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
             {
                 def.ListId = Guid.Empty;
-                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.ListTitle = sourceList.Title;
                 def.WebUrl = "~sitecollection";
 
                 def.ViewName = string.Empty;
@@ -816,24 +823,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             });
 
 
-            var model = SPMeta2Model.NewWebModel(web =>
+            var listModel = SPMeta2Model.NewWebModel(web =>
             {
                 web
-                  .AddList(sourceList)
-                  .AddWeb(targetWebPartWeb, targetWeb =>
-                  {
-                      targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
-                      {
-                          list
-                              .AddRandomWebPartPage(page =>
-                              {
-                                  page.AddXsltListViewWebPart(xsltListViewWebpart);
-                              });
-                      });
-                  });
+                  .AddList(sourceList);
             });
 
-            TestModel(model);
+            var webPartModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWeb(targetWebPartWeb, targetWeb =>
+                {
+                    targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list
+                            .AddRandomWebPartPage(page =>
+                            {
+                                page.AddXsltListViewWebPart(xsltListViewWebpart);
+                            });
+                    });
+                });
+            });
+
+            TestModel(listModel, webPartModel);
         }
 
         #endregion

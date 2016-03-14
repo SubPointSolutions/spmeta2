@@ -312,47 +312,47 @@ namespace SPMeta2.Containers.SSOM
         {
             var scope = GetScopeHash();
 
-            //foreach (var siteUrl in SiteUrls)
-            //{
-            var siteUrl = GetTargetSiteCollectionUrl();
-
-            Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
-
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var siteUrl in SiteUrls)
             {
-                WithSSOMSiteAndWebContext(siteUrl, (site, web) =>
-                {
-                    if (EnableDefinitionProvision)
-                        _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+                //var siteUrl = GetTargetSiteCollectionUrl();
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(SiteModelHost.FromSite(site), model);
-                });
+                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithSSOMSiteAndWebContext(siteUrl, (site, web) =>
+                    {
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(SiteModelHost.FromSite(site), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(SiteModelHost.FromSite(site), model);
+                    });
+                }
             }
-            //}
         }
 
         public override void DeployWebModel(ModelNode model)
         {
-            //foreach (var webUrl in WebUrls)
-            // {
-            var webUrl = GetTargetSiteCollectionUrl();
-
-
-            Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
-
-            for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+            foreach (var webUrl in WebUrls)
             {
-                WithSSOMSiteAndWebContext(webUrl, (site, web) =>
-                {
-                    if (EnableDefinitionProvision)
-                        _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+                //var webUrl = GetTargetSiteCollectionUrl();
 
-                    if (EnableDefinitionValidation)
-                        _validationService.DeployModel(WebModelHost.FromWeb(web), model);
-                });
+
+                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+                for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
+                {
+                    WithSSOMSiteAndWebContext(webUrl, (site, web) =>
+                    {
+                        if (EnableDefinitionProvision)
+                            _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+
+                        if (EnableDefinitionValidation)
+                            _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                    });
+                }
             }
-            //}
         }
 
         public override void DeployListModel(ModelNode model)
