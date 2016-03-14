@@ -1,15 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Microsoft.SharePoint;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
+using SPMeta2.Exceptions;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.Services
 {
     public class SSOMFieldLookupService
     {
+        public virtual SPField GetField(SPFieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle)
+        {
+            if (fieldId.HasGuidValue())
+                return fields[fieldId.Value];
+
+            if (!string.IsNullOrEmpty(fieldInternalName))
+                return fields.GetFieldByInternalName(fieldInternalName);
+
+            if (!string.IsNullOrEmpty(fieldTitle))
+                return fields.GetField(fieldTitle);
+
+            throw new SPMeta2Exception("GetField(): one of fieldId / fieldInternalName / fieldTitle need to be defined");
+        }
+
+        public virtual T GetFieldAs<T>(SPFieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle) where T : SPField
+        {
+            var field = GetField(fields, fieldId, fieldInternalName, fieldTitle);
+
+            return field as T;
+        }
+
+        public virtual SPFieldCollection GetFieldCollection(object modelHost)
+        {
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb.Fields;
+            else if (modelHost is WebModelHost)
+                return (modelHost as WebModelHost).HostWeb.Fields;
+            else if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.Fields;
+
+            throw new SPMeta2Exception("Unsupported model host");
+        }
+
         public virtual void EnsureDefaultValues(SPListItem item, List<FieldValue> defaultValues)
         {
             EnsureValues(item, defaultValues, false);

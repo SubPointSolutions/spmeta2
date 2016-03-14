@@ -192,37 +192,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected SPField GetField(object modelHost, FieldDefinition definition)
         {
-            if (modelHost is SiteModelHost)
-                return GetSiteField((modelHost as SiteModelHost).HostSite, definition);
-            else if (modelHost is WebModelHost)
-                return GetWebField((modelHost as WebModelHost).HostWeb, definition);
-            else if (modelHost is ListModelHost)
-                return GetListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost");
-            }
-        }
+            var fields = FieldLookupService.GetFieldCollection(modelHost);
 
-        private SPField GetWebField(SPWeb web, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving web field by ID: [{0}]", definition.Id);
-
-            return web.Fields[definition.Id];
-        }
-
-        private SPField GetSiteField(SPSite site, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving site field by ID: [{0}]", definition.Id);
-
-            return site.RootWeb.Fields[definition.Id];
-        }
-
-        private SPField GetListField(SPList list, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving list field by ID: [{0}]", definition.Id);
-
-            return list.Fields[definition.Id];
+            return FieldLookupService.GetField(fields, definition.Id, definition.InternalName, definition.Title);
         }
 
         protected virtual void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -414,8 +386,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.EnforceUniqueValues.HasValue)
                 field.EnforceUniqueValues = definition.EnforceUniqueValues.Value;
 
-            field.Indexed = definition.Indexed;
-
+            // Setting the index property will throw an exception for dependent lookup fields
+            if (!(field is SPFieldLookup) || !((SPFieldLookup)field).IsDependentLookup)
+            {
+                field.Indexed = definition.Indexed;
+            }
 #if !NET35
             field.JSLink = definition.JSLink;
 #endif
