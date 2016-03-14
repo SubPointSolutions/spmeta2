@@ -8,3 +8,7 @@ environment:
   SPMeta2_RunnerLibraries:
     secure: fjM6KXFe9K4+sdSLrfrlvDYxZlLOQIgVLNZqlBBOf5Tqk2M5E7JLaPzNcUmE9eDz
 test: off
+
+clone_folder: c:\prj\m2
+
+build_script: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1

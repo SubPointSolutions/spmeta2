@@ -2,6 +2,50 @@
 
 #region  utils
 
+function Get-TimeStamp() {
+    return $(get-date -f "yyyy-MM-dd HH:mm:ss") 
+}
+
+function Write-Error($msg, $fore = 'red') {
+    
+    $stamp = Get-TimeStamp
+
+    if([string]::IsNullOrEmpty($msg) -eq $false) {
+        $msg = "[$stamp] [ERROR] $msg"
+    } else {
+        $msg = "[$stamp] [ERROR]"
+    }
+
+    Write-Host $msg -fore $fore
+}
+
+function Write-Verbose($msg, $fore = 'gray') {
+    
+    $stamp = Get-TimeStamp
+
+    if([string]::IsNullOrEmpty($msg) -eq $false) {
+        $msg = "[$stamp] [VERBOSE] $msg"
+    } else {
+        $msg = "[$stamp] [VERBOSE]"
+    }
+
+    Write-Host $msg -fore $fore
+}
+
+function Write-Info($msg, $fore = 'green') {
+    
+    $stamp = Get-TimeStamp
+
+    if([string]::IsNullOrEmpty($msg) -eq $false) {
+        $msg = "[$stamp] [INFO] $msg"
+    } else {
+        $msg = "[$stamp] [INFO]"
+    }
+
+    Write-Host $msg -fore $fore
+}
+
+
 function Get-ScriptDirectory
 {
     $Invocation = (Get-Variable MyInvocation -Scope 1).Value;
@@ -23,22 +67,26 @@ function BuildProfile($buildProfile) {
     
     $configuration = $buildProfile.Configuration
 
-    foreach($projectName in $buildProfiles.ProjectNames) {
+    foreach($projectName in $buildProfile.ProjectNames) {
         
-        Write-Host "Profile:[$($buildProfile.Name)] Params: [$($buildProfile.BuildParams)]" -fore Green
+        $index = $buildProfile.ProjectNames.IndexOf($projectName) + 1
+        $count = $buildProfile.ProjectNames.Count
+
+        Write-Verbose "`t[$index/$count] Profile:[$($buildProfile.Name)] Project name:[$projectName]" -fore Gray
+        Write-Verbose "`tParams: [$($buildProfile.BuildParams)]" -fore Gray
      
-        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams)" 
+        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams) " 
 
 		if (! $?) { 
 		
-            Write-Host "[M2 Build] There was an error building profile:[$($buildProfile.Name)]" -fore red
-            Write-Host "[M2 Build] Expanding params:" -fore Red
+            Write-Error "`t[M2 Build] There was an error building profile:[$($buildProfile.Name)]" -fore red
+            Write-Error "`t[M2 Build] Expanding params:" -fore Red
                                     
             foreach($key in $buildProfile.Keys) {
-                Write-Host "`t$key":[$( $buildProfile[$key])] -fore Red
+                Write-Error "`t$key":[$( $buildProfile[$key])] -fore Red
             }
 
-			throw "[M2 Build] !!! Build faild on profile:[$($buildProfile.Name)]. Please check output early to check the details. !!!" 
+			throw "`t[M2 Build] !!! Build faild on profile:[$($buildProfile.Name)]. Please check output early to check the details. !!!" 
 		}
     }
 }
@@ -51,8 +99,9 @@ $defaultProjects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM", "SPMeta2.SSO
 #$defaultProjects = @( "SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM")
 $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
 
-$verbosity = "minimal"
-$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:$verbosity"
+# https://msdn.microsoft.com/en-us/library/ms164311.aspx
+$verbosity = "quiet" 
+$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:$verbosity /clp:ErrorsOnly /nologo"
 
 $currentPath =  Get-ScriptDirectory
 $solutionRootPath =  "$currentPath\..\"
@@ -125,7 +174,10 @@ if($build365 -eq $true) {
 
 foreach($buildProfile in $buildProfiles) {
 
-    Write-Host "[M2 Build] Building profile [$($buildProfile.Name)]" -fore Green
+    $index = $buildProfiles.IndexOf($buildProfile) + 1
+    $count = $buildProfiles.Count
+
+    Write-Info "[M2 Build] [$index/$count] Building profile [$($buildProfile.Name)]" -fore Green
 
     BuildProfile $buildProfile	
 }
