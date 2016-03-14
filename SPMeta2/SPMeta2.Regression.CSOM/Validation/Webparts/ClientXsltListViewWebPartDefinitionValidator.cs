@@ -33,6 +33,14 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
         private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
+            var webId = default(Guid);
+
+            return LookupBindContext(listItemModelHost, wpModel, out webId);
+        }
+
+        private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel,
+             out Guid webId)
+        {
             var result = new ListBindContext
             {
 
@@ -41,7 +49,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
             var web = listItemModelHost.HostWeb;
             var context = listItemModelHost.HostWeb.Context;
 
-            var list = LookupList(listItemModelHost, wpModel);
+            var list = LookupList(listItemModelHost, wpModel, out webId);
 
             View view = null;
 
@@ -120,13 +128,28 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
                 {
-                    // TODO
+                           var webId = default(Guid);
+                           var bindContext = LookupBindContext(listItemModelHost, typedDefinition, out webId);
+                    // web id should be the same
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebUrl);
+                        var isValid = webId == new  Guid(CurrentWebPartXml.GetWebId());
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                 {
                     assert.SkipProperty(m => m.WebUrl, "WebUrl is NULL. Skipping.");
                 }
-
 
                 // list
                 if (!string.IsNullOrEmpty(definition.ListTitle))
@@ -719,8 +742,36 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
         private List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
+            var webId = default(Guid);
+
+            return LookupList(listItemModelHost, wpModel, out webId);
+        }
+
+        private List LookupList(ListItemModelHost listItemModelHost, 
+            XsltListViewWebPartDefinition wpModel
+            , out Guid webId)
+        {
             var web = listItemModelHost.HostWeb;
-            var context = listItemModelHost.HostWeb.Context;
+            var context = web.Context;
+
+            if (wpModel.WebId.HasGuidValue() || !string.IsNullOrEmpty(wpModel.WebUrl))
+            {
+                web = new LookupFieldModelHandler()
+                                .GetTargetWeb(listItemModelHost.HostClientContext.Site,
+                                        wpModel.WebUrl, wpModel.WebId);
+
+                webId = web.Id;
+            }
+            else
+            {
+                context.Load(web);
+                context.Load(web, w => w.Id);
+
+                context.ExecuteQueryWithTrace();
+
+
+                webId = web.Id;
+            }
 
             List list = null;
 

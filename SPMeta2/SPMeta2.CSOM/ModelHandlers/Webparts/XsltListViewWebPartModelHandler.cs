@@ -39,6 +39,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             public Guid DefaultViewId { get; set; }
 
             public List List { get; set; }
+
+            public Guid WebId { get; set; }
         }
 
         #endregion
@@ -62,6 +64,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
                                 .SetListName(bindContext.ListId.ToString())
                                 .SetListId(bindContext.ListId.ToString())
+                                .SetWebId(bindContext.WebId.ToString())
                                 .SetTitleUrl(bindContext.TitleUrl)
                                 .SetJSLink(wpModel.JSLink);
 
@@ -300,6 +303,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 targetWeb = new LookupFieldModelHandler()
                                 .GetTargetWeb(listItemModelHost.HostClientContext.Site,
                                         webUrl, webId);
+
+                result.WebId = targetWeb.Id;
             }
 
             var list = LookupList(targetWeb, listUrl, listTitle, listId);
@@ -343,6 +348,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             }
 
             result.ListId = list.Id;
+            result.List = list;
+
+            
             result.List = list;
 
             if (webPartTitleUrl == null)
