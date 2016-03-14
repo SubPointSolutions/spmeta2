@@ -109,8 +109,6 @@ $isAppVeyor = [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null
               [System.Environment]::GetEnvironmentVariable("APPVEYOR", "User") -ne $null 
 			
 
-$isAppVeyor = $true
-
 if($isAppVeyor -eq $true) {
     $defaultBuildParams += " /verbosity:minimal /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
 } else {
@@ -123,7 +121,6 @@ $solutionRootPath =  "$currentPath\..\"
 $msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
 
 #endregion
-
 
 $buildProfiles =  @()
 
