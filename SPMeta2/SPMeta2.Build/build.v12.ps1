@@ -103,6 +103,11 @@ $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.S
 $verbosity = "quiet" 
 $defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:$verbosity /clp:ErrorsOnly /nologo"
 
+# https://www.appveyor.com/docs/build-phase
+if( [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null) {
+    $defaultBuildParams += " /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+}
+
 $currentPath =  Get-ScriptDirectory
 $solutionRootPath =  "$currentPath\..\"
 
