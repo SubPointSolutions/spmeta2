@@ -6,7 +6,7 @@ function Get-TimeStamp() {
     return $(get-date -f "yyyy-MM-dd HH:mm:ss") 
 }
 
-function Write-Error($msg, $fore = 'red') {
+function Write-BError($msg, $fore = 'red') {
     
     $stamp = Get-TimeStamp
 
@@ -19,20 +19,20 @@ function Write-Error($msg, $fore = 'red') {
     Write-Host $msg -fore $fore
 }
 
-function Write-Verbose($msg, $fore = 'gray') {
+function Write-BWrite-BVerbose($msg, $fore = 'gray') {
     
     $stamp = Get-TimeStamp
 
     if([string]::IsNullOrEmpty($msg) -eq $false) {
-        $msg = "[$stamp] [VERBOSE] $msg"
+        $msg = "[$stamp] [Write-BVerbose] $msg"
     } else {
-        $msg = "[$stamp] [VERBOSE]"
+        $msg = "[$stamp] [Write-BVerbose]"
     }
 
     Write-Host $msg -fore $fore
 }
 
-function Write-Info($msg, $fore = 'green') {
+function Write-BInfo($msg, $fore = 'green') {
     
     $stamp = Get-TimeStamp
 
@@ -63,6 +63,7 @@ function Get-ScriptDirectory
     }
 }
 
+
 function BuildProfile($buildProfile) {
     
     $configuration = $buildProfile.Configuration
@@ -72,18 +73,18 @@ function BuildProfile($buildProfile) {
         $index = $buildProfile.ProjectNames.IndexOf($projectName) + 1
         $count = $buildProfile.ProjectNames.Count
 
-        Write-Verbose "`t[$index/$count] Profile:[$($buildProfile.Name)] Project name:[$projectName]" -fore Gray
-        Write-Verbose "`tParams: [$($buildProfile.BuildParams)]" -fore Gray
+        Write-BVerbose "`t[$index/$count] Profile:[$($buildProfile.Name)] Project name:[$projectName]" -fore Gray
+        Write-BVerbose "`tParams: [$($buildProfile.BuildParams)]" -fore Gray
      
         & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams) " 
 
 		if (! $?) { 
 		
-            Write-Error "`t[M2 Build] There was an error building profile:[$($buildProfile.Name)]" -fore red
-            Write-Error "`t[M2 Build] Expanding params:" -fore Red
+            Write-BError "`t[M2 Build] There was an error building profile:[$($buildProfile.Name)]" -fore red
+            Write-BError "`t[M2 Build] Expanding params:" -fore Red
                                     
             foreach($key in $buildProfile.Keys) {
-                Write-Error "`t$key":[$( $buildProfile[$key])] -fore Red
+                Write-BError "`t$key":[$( $buildProfile[$key])] -fore Red
             }
 
 			throw "`t[M2 Build] !!! Build faild on profile:[$($buildProfile.Name)]. Please check output early to check the details. !!!" 
@@ -100,7 +101,7 @@ $defaultProjects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM", "SPMeta2.SSO
 $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
 
 # https://msdn.microsoft.com/en-us/library/ms164311.aspx
-$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0"
+$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:quiet /clp:ErrorsOnly /nologo"
 
 # https://www.appveyor.com/docs/build-phase
 $isAppVeyor = [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null -or  `
@@ -110,9 +111,9 @@ $isAppVeyor = [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null
 			
 
 if($isAppVeyor -eq $true) {
-    $defaultBuildParams += " /verbosity:minimal /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+    $defaultBuildParams += " /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
 } else {
-    $defaultBuildParams += " /verbosity:quiet /clp:ErrorsOnly /nologo"
+    $defaultBuildParams += " "
 }
 
 $currentPath =  Get-ScriptDirectory
@@ -188,7 +189,7 @@ foreach($buildProfile in $buildProfiles) {
     $index = $buildProfiles.IndexOf($buildProfile) + 1
     $count = $buildProfiles.Count
 
-    Write-Info "[M2 Build] [$index/$count] Building profile [$($buildProfile.Name)]" -fore Green
+    Write-BInfo "[M2 Build] [$index/$count] Building profile [$($buildProfile.Name)]" -fore Green
 
     BuildProfile $buildProfile	
 }
