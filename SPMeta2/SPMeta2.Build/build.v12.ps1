@@ -156,11 +156,13 @@ if($build15 -eq $true) {
 
 if($build16 -eq $true) {
 
+    <#
     $buildProfiles += @{
         "Name"  = "M2 SP2016 NET40";
         "ProjectNames" = $defaultProjects
         "BuildParams" = ("/p:spRuntime=16 /p:Configuration=Debug40 /p:DefineConstants=NET40 " + $defaultBuildParams);
     }
+    #>
 
     $buildProfiles += @{
         "Name"  = "M2 SP2016 NET45";
