@@ -631,5 +631,211 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         #endregion
+
+        #region scopes
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.Scopes")]
+        public void CanDeploy_XsltListViewWebPart_At_RootWeb_FromRootWeb()
+        {
+            // Add regression tests for XsltListViewWebPart provision on sub-webs #810
+            // https://github.com/SubPointSolutions/spmeta2/issues/810
+
+            // list     : root web 
+            // web part : root web
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList)
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list
+                            .AddRandomWebPartPage(page =>
+                            {
+                                page.AddXsltListViewWebPart(xsltListViewWebpart);
+                            });
+                    });
+
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.Scopes")]
+        public void CanDeploy_XsltListViewWebPart_At_RootWeb_FromSubWeb()
+        {
+            // Add regression tests for XsltListViewWebPart provision on sub-webs #810
+            // https://github.com/SubPointSolutions/spmeta2/issues/810
+
+            // list     : sub web 
+            // web part : root web
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+
+            });
+
+            var sourceListWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.WebUrl = "~sitecollection/" + sourceListWeb.Url;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                  .AddWeb(sourceListWeb, subWeb =>
+                  {
+                      subWeb.AddList(sourceList);
+                  })
+                  .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                  {
+                      list
+                          .AddRandomWebPartPage(page =>
+                          {
+                              page.AddXsltListViewWebPart(xsltListViewWebpart);
+                          });
+                  });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.Scopes")]
+        public void CanDeploy_XsltListViewWebPart_At_SubWeb_FromSubWeb()
+        {
+            // Add regression tests for XsltListViewWebPart provision on sub-webs #810
+            // https://github.com/SubPointSolutions/spmeta2/issues/810
+
+            // list     : sub web 
+            // web part : sub web
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+
+            });
+
+            var sourceListWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var targetWebPartWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.WebUrl = "~sitecollection/" + sourceListWeb.Url;
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                  .AddWeb(sourceListWeb, subWeb =>
+                  {
+                      subWeb.AddList(sourceList);
+                  })
+                  .AddWeb(targetWebPartWeb, targetWeb =>
+                  {
+                      targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                      {
+                          list
+                              .AddRandomWebPartPage(page =>
+                              {
+                                  page.AddXsltListViewWebPart(xsltListViewWebpart);
+                              });
+                      });
+                  });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.Scopes")]
+        public void CanDeploy_XsltListViewWebPart_At_SubWeb_FromRootWeb()
+        {
+            // Add regression tests for XsltListViewWebPart provision on sub-webs #810
+            // https://github.com/SubPointSolutions/spmeta2/issues/810
+
+            // list     : sub web 
+            // web part : sub web
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+
+            });
+
+            var targetWebPartWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = BuiltInDefinitions.BuiltInListDefinitions.StyleLibrary.Title;
+                def.WebUrl = "~sitecollection";
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                  .AddList(sourceList)
+                  .AddWeb(targetWebPartWeb, targetWeb =>
+                  {
+                      targetWeb.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                      {
+                          list
+                              .AddRandomWebPartPage(page =>
+                              {
+                                  page.AddXsltListViewWebPart(xsltListViewWebpart);
+                              });
+                      });
+                  });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }
