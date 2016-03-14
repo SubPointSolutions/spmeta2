@@ -100,12 +100,19 @@ $defaultProjects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM", "SPMeta2.SSO
 $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
 
 # https://msdn.microsoft.com/en-us/library/ms164311.aspx
-$verbosity = "quiet" 
-$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:$verbosity /clp:ErrorsOnly /nologo"
+$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0"
 
 # https://www.appveyor.com/docs/build-phase
-if( [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null) {
-    $defaultBuildParams += " /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+$isAppVeyor = [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null -or  `
+			  [System.Environment]::GetEnvironmentVariable("APPVEYOR", "Machine") -ne $null -or `
+              [System.Environment]::GetEnvironmentVariable("APPVEYOR", "Process") -ne $null -or `
+              [System.Environment]::GetEnvironmentVariable("APPVEYOR", "User") -ne $null 
+			
+
+if($isAppVeyor -eq $true) {
+    $defaultBuildParams += " /verbosity:minimal /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+} else {
+    $defaultBuildParams += " /verbosity:quiet /clp:ErrorsOnly /nologo"
 }
 
 $currentPath =  Get-ScriptDirectory
