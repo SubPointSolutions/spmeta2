@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
-using SPMeta2.Exceptions;
 using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -45,23 +41,6 @@ namespace SPMeta2.Regression.CSOM.Validation
         }
         protected List HostList { get; set; }
         // protected Site HostSite { get; set; }
-
-        protected Field GetField(object modelHost, FieldDefinition definition)
-        {
-            if (modelHost is SiteModelHost)
-                return FindExistingSiteField(modelHost as SiteModelHost, definition);
-            if (modelHost is WebModelHost)
-                return FindExistingWebField(modelHost as WebModelHost, definition);
-            else if (modelHost is ListModelHost)
-                return FindExistingListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new SPMeta2NotSupportedException(
-                    string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
-                    definition.GetType(),
-                    modelHost.GetType()));
-            }
-        }
 
         protected virtual void CustomFieldTypeValidation(AssertPair<FieldDefinition, Field> assert, Field spObject,
            FieldDefinition definition)
@@ -348,5 +327,4 @@ namespace SPMeta2.Regression.CSOM.Validation
             }
         }
     }
-
 }
