@@ -14,6 +14,7 @@ using SPMeta2.Containers.Utils;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
+using SPMeta2.CSOM.Standard.Services;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
@@ -21,6 +22,7 @@ using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Containers.CSOM
 {
@@ -44,7 +46,8 @@ namespace SPMeta2.Containers.CSOM
 
         private void InitServices()
         {
-            _provisionService = new CSOMProvisionService();
+            //_provisionService = new CSOMProvisionService();
+            _provisionService = new StandardCSOMProvisionService();
             _validationService = new CSOMValidationService();
 
             // TODO, setup a high level validation registration

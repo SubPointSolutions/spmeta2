@@ -9,6 +9,11 @@ namespace SPMeta2.BuiltInDefinitions
             FileName = "Home.aspx"
         };
 
+        public static WikiPageDefinition About = new WikiPageDefinition
+        {
+            FileName = "about.aspx"
+        };
+
         public static WikiPageDefinition HowToUserThisLibrary = new WikiPageDefinition
         {
             FileName = "How To Use This Library.aspx"

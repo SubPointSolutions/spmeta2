@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -29,25 +28,38 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
-            assert
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                //.ShouldBeEqual(m => m.Hidden, o => o.Hidden)
-                //.ShouldBeEqual(m => m.Description, o => o.Description)
-                //.ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled)
-                //.ShouldBeEqual(m => m.IrmExpire, o => o.IrmExpire)
-                //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
-                //.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
-                .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
+            // temporarily switch culture to allow getting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(spObject.ParentWeb.UICulture, () =>
+            {
+                assert
+                    .ShouldBeEqual(m => m.Title, o => o.Title)
+                    //.ShouldBeEqual(m => m.Hidden, o => o.Hidden)
+                    //.ShouldBeEqual(m => m.Description, o => o.Description)
+                    //.ShouldBeEqual(m => m.IrmEnabled, o => o.IrmEnabled)
+                    //.ShouldBeEqual(m => m.IrmExpire, o => o.IrmExpire)
+                    //.ShouldBeEqual(m => m.IrmReject, o => o.IrmReject)
+                    //.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl())
+                    .ShouldBeEqual(m => m.ContentTypesEnabled, o => o.ContentTypesEnabled);
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+                if (!string.IsNullOrEmpty(definition.Description))
+                    assert.ShouldBeEqual(m => m.Description, o => o.Description);
+                else
+                    assert.SkipProperty(m => m.Description);
+            });
+
+            if (definition.WriteSecurity.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.WriteSecurity, o => o.WriteSecurity);
+            }
             else
-                assert.SkipProperty(m => m.Description);
-
+            {
+                assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is null or empty");
+            }
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
-                var draftOption = (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
+                var draftOption =
+                    (DraftVisibilityType)Enum.Parse(typeof(DraftVisibilityType), definition.DraftVersionVisibility);
 
                 assert.ShouldBeEqual((p, s, d) =>
                 {
@@ -65,13 +77,15 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
-                assert.SkipProperty(m => m.DraftVersionVisibility, "Skipping from validation. DraftVersionVisibility IS NULL");
+                assert.SkipProperty(m => m.DraftVersionVisibility,
+                    "Skipping from validation. DraftVersionVisibility IS NULL");
             }
 
 #pragma warning disable 618
             if (!string.IsNullOrEmpty(definition.Url))
 
-                assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(), o => o.GetServerRelativeUrl());
+                assert.ShouldBeEndOf(m => m.GetListUrl(), m => m.Url, o => o.GetServerRelativeUrl(),
+                    o => o.GetServerRelativeUrl());
             else
                 assert.SkipProperty(m => m.Url, "Skipping from validation. Url IS NULL");
 #pragma warning restore 618
@@ -90,7 +104,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (definition.EnableFolderCreation.HasValue)
                 assert.ShouldBeEqual(m => m.EnableFolderCreation, o => o.EnableFolderCreation);
             else
-                assert.SkipProperty(m => m.EnableFolderCreation, "Skipping from validation. EnableFolderCreation IS NULL");
+                assert.SkipProperty(m => m.EnableFolderCreation,
+                    "Skipping from validation. EnableFolderCreation IS NULL");
 
             if (definition.EnableMinorVersions.HasValue)
                 assert.ShouldBeEqual(m => m.EnableMinorVersions, o => o.EnableMinorVersions);
@@ -121,7 +136,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual(m => m.NoCrawl, o => o.NoCrawl);
             else
                 assert.SkipProperty(m => m.NoCrawl, "Skipping from validation. NoCrawl IS NULL");
-
 
             if (definition.OnQuickLaunch.HasValue)
                 assert.ShouldBeEqual(m => m.OnQuickLaunch, o => o.OnQuickLaunch);
@@ -180,13 +194,38 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
             else
-                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit, "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
+                assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
+                    "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
+
+                    // Search if any indexPropertyKey from definition is not in WebModel
+                    var differentKeys = s.IndexedRootFolderPropertyKeys.Select(o => o.Name)
+                                                             .Except(d.IndexedRootFolderPropertyKeys);
+
+                    var isValid = !differentKeys.Any();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedRootFolderPropertyKeys, "IndexedRootFolderPropertyKeys is NULL or empty. Skipping.");
 
             // template url
             if (string.IsNullOrEmpty(definition.DocumentTemplateUrl) || !(spObject is SPDocumentLibrary))
             {
-                assert.SkipProperty(m => m.DocumentTemplateUrl, string.Format("Skipping DocumentTemplateUrl or list is not a document library. Skipping."));
+                assert.SkipProperty(m => m.DocumentTemplateUrl,
+                    "Skipping DocumentTemplateUrl or list is not a document library. Skipping.");
             }
             else
             {
@@ -207,23 +246,25 @@ namespace SPMeta2.Regression.SSOM.Validation
                     srcUrl = srcUrl.ToLower();
                     dstUrl = dstUrl.ToLower();
 
-                    var isValid = false;
+                    bool isValid;
 
                     if (s.DocumentTemplateUrl.Contains("~sitecollection"))
                     {
-                        var siteCollectionUrl = web.Site.ServerRelativeUrl == "/" ? string.Empty : web.Site.ServerRelativeUrl;
+                        var siteCollectionUrl = web.Site.ServerRelativeUrl == "/"
+                            ? string.Empty
+                            : web.Site.ServerRelativeUrl;
 
                         isValid = srcUrl
-                                    .Replace("~sitecollection", siteCollectionUrl)
-                                    .Replace("//", "/") == dstUrl;
+                            .Replace("~sitecollection", siteCollectionUrl)
+                            .Replace("//", "/") == dstUrl;
                     }
                     else if (s.DocumentTemplateUrl.Contains("~site"))
                     {
                         var siteCollectionUrl = web.ServerRelativeUrl == "/" ? string.Empty : web.ServerRelativeUrl;
 
                         isValid = srcUrl
-                                    .Replace("~site", siteCollectionUrl)
-                                    .Replace("//", "/") == dstUrl;
+                            .Replace("~site", siteCollectionUrl)
+                            .Replace("//", "/") == dstUrl;
                     }
                     else
                     {
@@ -240,8 +281,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 });
             }
 
-
-            /// localization
+            // localization
             if (definition.TitleResource.Any())
             {
                 assert.ShouldBeEqual((p, s, d) =>
@@ -305,14 +345,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
-        }
-    }
-
-    public static class ListExtensions
-    {
-        public static string GetServerRelativeUrl(this SPList list)
-        {
-            return list.RootFolder.ServerRelativeUrl;
         }
     }
 }

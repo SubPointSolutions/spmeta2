@@ -5,6 +5,7 @@ using Microsoft.SharePoint.Publishing;
 using SPMeta2.Common;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.SSOM.Standard.Extensions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
@@ -169,25 +170,5 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
         #endregion
     }
 
-    public static class PublishingWebExtensions
-    {
-
-
-        public static bool GetInheritWebTemplates(this PublishingWeb publishingWeb)
-        {
-            return publishingWeb.IsInheritingAvailableWebTemplates;
-        }
-
-        public static bool GetConverBlankSpacesIntoHyphen(this PublishingWeb publishingWeb)
-        {
-            var web = publishingWeb.Web;
-
-            var key = "__AllowSpacesInNewPageName";
-
-            if (!web.AllProperties.ContainsKey(key))
-                return false;
-
-            return ConvertUtils.ToBool(web.AllProperties[key]).Value;
-        }
-    }
+   
 }

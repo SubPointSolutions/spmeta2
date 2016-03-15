@@ -138,5 +138,51 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
         }
 
         #endregion
+
+        #region compatibility
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        public void Should_Pass_On_Valid_SSOM_CSOM()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(ModelGeneratorService.GetRandomDefinition<FieldDefinition>());
+            });
+
+            // both CSOM / SSOM
+            Assert.IsTrue(SPMeta2Model.IsCSOMCompatible(model));
+            Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        public void Should_Pass_On_Valid_SSOM_Invalid_CSOM()
+        {
+            var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+            {
+                webApp.AddSite(ModelGeneratorService.GetRandomDefinition<SiteDefinition>());
+            });
+
+            // - CSOM / + SSOM
+            Assert.IsFalse(SPMeta2Model.IsCSOMCompatible(model));
+            Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        public void Should_Pass_On_Valid_SSOM_Invalid_CSOM_2()
+        {
+            var model = SPMeta2Model.NewFarmModel(farm =>
+            {
+                farm.AddProperty(ModelGeneratorService.GetRandomDefinition<PropertyDefinition>());
+            });
+
+            // - CSOM / + SSOM
+            Assert.IsFalse(SPMeta2Model.IsCSOMCompatible(model));
+            Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+        }
+
+        #endregion
     }
 }

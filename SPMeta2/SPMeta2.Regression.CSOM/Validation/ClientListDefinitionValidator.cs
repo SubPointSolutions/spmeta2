@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -33,7 +35,9 @@ namespace SPMeta2.Regression.CSOM.Validation
 #pragma warning restore 618
 
             context.Load(spObject);
+            context.Load(spObject, list => list.RootFolder.Properties);
             context.Load(spObject, list => list.RootFolder.ServerRelativeUrl);
+            context.Load(spObject, list => list.RootFolder.Properties);
             context.Load(spObject, list => list.EnableAttachments);
             context.Load(spObject, list => list.EnableFolderCreation);
             context.Load(spObject, list => list.EnableMinorVersions);
@@ -65,6 +69,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
+            assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is notsupported by CSOM");
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {
@@ -167,7 +172,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (definition.TemplateType > 0)
             {
-                assert.ShouldBeEqual(m => m.TemplateType, o => (int)o.BaseTemplate);
+                assert.ShouldBeEqual(m => m.TemplateType, o => o.BaseTemplate);
             }
             else
             {
@@ -193,7 +198,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         Dst = null,
                         IsValid =
                             (spObject.TemplateFeatureId == listTemplate.FeatureId) &&
-                            (spObject.BaseTemplate == (int)listTemplate.ListTemplateTypeKind)
+                            (spObject.BaseTemplate == listTemplate.ListTemplateTypeKind)
                     };
                 });
             }
@@ -202,35 +207,67 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.TemplateName, "TemplateName is null or empty. Skipping.");
             }
 
-
-
             if (definition.MajorVersionLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                if (ReflectionUtils.HasProperty(spObject, "MajorVersionLimit"))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MajorVersionLimit);
+                        var value = (int)ReflectionUtils.GetPropertyValue(spObject, "MajorVersionLimit");
 
-                //assert.ShouldBeEqual(m => m.MajorVersionLimit, o => o.MajorVersionLimit);
+                        var isValid = value == definition.MajorVersionLimit.Value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit does not exist. CSOM runtime is below required.");
+                }
             }
             else
                 assert.SkipProperty(m => m.MajorVersionLimit, "Skipping from validation. MajorVersionLimit IS NULL");
 
-
             if (definition.MajorWithMinorVersionsLimit.HasValue)
             {
-                /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
-                /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
+                if (ReflectionUtils.HasProperty(spObject, "MajorWithMinorVersionsLimit"))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MajorWithMinorVersionsLimit);
+                        var value = (int)ReflectionUtils.GetPropertyValue(spObject, "MajorWithMinorVersionsLimit");
 
-                // assert.ShouldBeEqual(m => m.MajorWithMinorVersionsLimit, o => o.MajorWithMinorVersionsLimit);
+                        var isValid = value == definition.MajorWithMinorVersionsLimit.Value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MajorWithMinorVersionsLimit, "Skipping from validation. MajorWithMinorVersionsLimit does not exist. CSOM runtime is below required.");
+                }
             }
             else
                 assert.SkipProperty(m => m.MajorWithMinorVersionsLimit,
                     "Skipping from validation. MajorWithMinorVersionsLimit IS NULL");
 
-
             // template url
             if (string.IsNullOrEmpty(definition.DocumentTemplateUrl))
             {
-                assert.SkipProperty(m => m.DocumentTemplateUrl, string.Format("Skipping DocumentTemplateUrl or library. Skipping."));
+                assert.SkipProperty(m => m.DocumentTemplateUrl, "Skipping DocumentTemplateUrl or library. Skipping.");
             }
             else
             {
@@ -245,7 +282,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     if (!dstUrl.StartsWith("/"))
                         dstUrl = "/" + dstUrl;
 
-                    var isValid = false;
+                    bool isValid;
 
                     if (s.DocumentTemplateUrl.Contains("~sitecollection"))
                     {
@@ -274,6 +311,43 @@ namespace SPMeta2.Regression.CSOM.Validation
                     };
                 });
             }
+
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedRootFolderPropertyKeys);
+
+                    var isValid = false;
+
+                    if (d.RootFolder.Properties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
+                    {
+                        // check props, TODO
+
+                        // check vti_indexedpropertykeys
+                        var indexedPropertyKeys = d.RootFolder.Properties["vti_indexedpropertykeys"]
+                                                   .ToString()
+                                                   .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(es => Encoding.Unicode.GetString(System.Convert.FromBase64String(es)));
+
+                        // Search if any indexPropertyKey from definition is not in WebModel
+                        var differentKeys = s.IndexedRootFolderPropertyKeys.Select(o => o.Name)
+                                                                 .Except(indexedPropertyKeys);
+
+                        isValid = !differentKeys.Any();
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedRootFolderPropertyKeys, "IndexedRootFolderPropertyKeys is NULL or empty. Skipping.");
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
@@ -355,7 +429,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
                 }
-
             }
             else
             {
@@ -381,6 +454,5 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             return list.RootFolder.ServerRelativeUrl;
         }
-
     }
 }

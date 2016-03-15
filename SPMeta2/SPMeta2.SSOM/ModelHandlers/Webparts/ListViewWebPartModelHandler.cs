@@ -114,7 +114,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                                             typedDefinition.ListUrl,
                                             typedDefinition.ListId);
 
-                            var targetView = list.Views[Guid.Parse(xsltWebPart.ViewGuid)];
+                            var targetView = list.Views[ConvertUtils.ToGuid(xsltWebPart.ViewGuid).Value];
 
                             // fixing up the Toolbar
                             if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
@@ -155,7 +155,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                                 if (field != null)
                                 {
-                                    field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString());
+                                    field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString(), null);
                                 }
                             }
 

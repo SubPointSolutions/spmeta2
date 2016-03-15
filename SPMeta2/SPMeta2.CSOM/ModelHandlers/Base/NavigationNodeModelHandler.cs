@@ -159,7 +159,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             existingNode.Title = quickLaunchNode.Title;
             existingNode.Url = ResolveTokenizedUrl(navigationNodeModelHost.HostClientContext, quickLaunchNode);
+
+#if !NET35
             existingNode.IsVisible = quickLaunchNode.IsVisible;
+#endif
 
             ProcessLocalization(existingNode, quickLaunchNode);
 
@@ -300,7 +303,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
             existingNode.Title = navigationNodeModel.Title;
             existingNode.Url = ResolveTokenizedUrl(webModelHost.HostClientContext, navigationNodeModel);
+
+#if !NET35
             existingNode.IsVisible = navigationNodeModel.IsVisible;
+#endif
 
             ProcessLocalization(existingNode, navigationNodeModel);
 

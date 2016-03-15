@@ -17,13 +17,14 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var definition = model.WithAssertAndCast<AnonymousAccessSettingsDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<AnonymousAccessSettingsDefinition>("model",
+                value => value.RequireNotNull());
 
             var spObject = webModelHost.HostWeb;
 
             var assert = ServiceFactory.AssertService
-                                       .NewAssert(definition, spObject)
-                                       .ShouldNotBeNull(spObject);
+                .NewAssert(definition, spObject)
+                .ShouldNotBeNull(spObject);
 
             if (definition.AnonymousState == BuiltInWebAnonymousState.Disabled)
             {
@@ -58,17 +59,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 });
             }
 
-            assert.ShouldBeEqual(m => m.AnonymousState, o => o.GetAnonymousState());
-        }
-
-
-    }
-
-    internal static class WebHelper
-    {
-        public static string GetAnonymousState(this SPWeb web)
-        {
-            return web.AnonymousState.ToString();
+            assert.ShouldBeEqual(m => m.AnonymousState, o => o.AnonymousState.ToString());
         }
     }
 }

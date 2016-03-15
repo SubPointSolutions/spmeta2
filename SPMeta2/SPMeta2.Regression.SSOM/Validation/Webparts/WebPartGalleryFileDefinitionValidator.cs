@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Containers.Assertion;
 using System.Text;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation.Webparts
 {

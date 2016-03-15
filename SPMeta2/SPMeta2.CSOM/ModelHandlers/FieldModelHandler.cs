@@ -23,7 +23,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         static FieldModelHandler()
         {
-        
+
         }
 
         #endregion
@@ -433,13 +433,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.EnforceUniqueValues.HasValue)
                 field.EnforceUniqueValues = definition.EnforceUniqueValues.Value;
 
-            field.Indexed = definition.Indexed;
-
 #if !NET35
+            field.Indexed = definition.Indexed;
             field.JSLink = definition.JSLink;
 #endif
 
-            // missed in CSOM
+#if !NET35
 
             // NASTY CALLS
             // http://sharepoint.stackexchange.com/questions/94911/hide-a-field-in-list-when-new-item-created-but-show-it-when-edit
@@ -461,6 +460,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 field.SetShowInNewForm(definition.ShowInNewForm.Value);
                 field.Context.ExecuteQueryWithTrace();
             }
+
+#endif
 
             //if (definition.AllowDeletion.HasValue)
             //    field.AllowDeletion = definition.AllowDeletion.Value;

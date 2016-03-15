@@ -15,8 +15,14 @@ namespace SPMeta2.Services.ServiceModelHandlers
     {
         protected override void ProcessDefinition(object modelHost, ContentTypeDefinition model)
         {
-            // https://github.com/SubPointSolutions/spmeta2/issues/689
+            // skipping check
+            if (string.IsNullOrEmpty(model.ParentContentTypeId)
+                && !string.IsNullOrEmpty(model.ParentContentTypeName))
+            {
+                return;
+            }
 
+            // https://github.com/SubPointSolutions/spmeta2/issues/689
             var contentTypeId = model.GetContentTypeId();
 
             // crazy and impossible case, but..
@@ -32,7 +38,15 @@ namespace SPMeta2.Services.ServiceModelHandlers
             if (!contentTypeId.ToUpper().StartsWith("0X"))
             {
                 throw new SPMeta2ModelValidationException(
-                    string.Format("contentTypeId is invalid:[{1}]. Definition:[{0}]", model, contentTypeId));
+                    string.Format("contentTypeId value is invalid:[{1}]. Definition:[{0}]", model, contentTypeId));
+            }
+
+            // turned out that the 0x must be in the lower case :)
+            // https://github.com/SubPointSolutions/spmeta2/issues/754
+            if (!contentTypeId.StartsWith("0x"))
+            {
+                throw new SPMeta2ModelValidationException(
+                    string.Format("contentTypeId value must start with '0x' in lower case:[{1}]. Definition:[{0}]", model, contentTypeId));
             }
         }
     }

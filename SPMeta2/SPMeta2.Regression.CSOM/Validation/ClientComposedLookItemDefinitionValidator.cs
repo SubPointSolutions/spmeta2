@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Standard.Definitions.Base;
 using SPMeta2.Utils;
 
@@ -20,15 +21,15 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var typedDefinition = definition as ComposedLookItemDefinition;
 
-            var assert = ServiceFactory.AssertService
-                       .NewAssert(typedDefinition, item)
-                       .ShouldNotBeNull(item)
-                       .ShouldBeEqual(m => m.Name, o => o.GetComposedLookName());
+            var assert = ServiceFactory.AssertService.NewAssert(typedDefinition, item);
 
-            if (typedDefinition.DisplayOrder.HasValue)
-                assert.ShouldBeEqual(m => m.DisplayOrder, o => o.GetComposedLookDisplayOrder());
-            else
-                assert.SkipProperty(m => m.DisplayOrder, "DisplayOrder is NULL");
+
+            assert
+                .ShouldNotBeNull(item)
+
+                .ShouldBeEqual(m => m.Name, o => o.GetComposedLookName())
+
+                .ShouldBeEqualIfHasValue(m => m.DisplayOrder, o => o.GetComposedLookDisplayOrder());
 
             // master page
             if (!string.IsNullOrEmpty(typedDefinition.MasterPageUrl))
@@ -187,50 +188,4 @@ namespace SPMeta2.Regression.CSOM.Validation
             }
         }
     }
-
-    internal static class ComposedLookItemHelper
-    {
-        public static string GetComposedLookName(this ListItem item)
-        {
-            return item["Name"] as string;
-        }
-
-        public static int? GetComposedLookDisplayOrder(this ListItem item)
-        {
-            return ConvertUtils.ToInt(item["DisplayOrder"]);
-        }
-
-        public static FieldUrlValue GetComposedLookFontSchemeUrl(this ListItem item)
-        {
-            if (item["FontSchemeUrl"] != null)
-                return item["FontSchemeUrl"] as FieldUrlValue;
-
-            return null;
-        }
-
-        public static FieldUrlValue GetComposedLookImageUrl(this ListItem item)
-        {
-            if (item["ImageUrl"] != null)
-                return item["ImageUrl"] as FieldUrlValue;
-
-            return null;
-        }
-
-        public static FieldUrlValue GetComposedLookMasterPageUrl(this ListItem item)
-        {
-            if (item["MasterPageUrl"] != null)
-                return item["MasterPageUrl"] as FieldUrlValue;
-
-            return null;
-        }
-
-        public static FieldUrlValue GetComposedLookThemeUrl(this ListItem item)
-        {
-            if (item["ThemeUrl"] != null)
-                return item["ThemeUrl"] as FieldUrlValue;
-
-            return null;
-        }
-    }
-
 }

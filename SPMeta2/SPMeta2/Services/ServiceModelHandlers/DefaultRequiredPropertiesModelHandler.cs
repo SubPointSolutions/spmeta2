@@ -25,6 +25,9 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            //var aggregateException = new c();
+            var exceptions = new List<SPMeta2ModelValidationException>();
+
             var props = ReflectionUtils.GetPropertiesWithCustomAttribute<ExpectRequired>(model, true);
 
             var requiredPropsGroups = props
@@ -37,14 +40,9 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 {
                     var isAllValid = AllOfThem(model, group.ToList());
 
-                    if (!isAllValid)
+                    if (isAllValid.Count > 0)
                     {
-                        throw new SPMeta2ModelValidationException(
-                            string.Format("All properties with [{0}] attribute should be set. Definition:[{1}]",
-                            group.Key, model))
-                        {
-                            Definition = model
-                        };
+                        exceptions.AddRange(isAllValid);
                     }
                 }
                 else
@@ -59,14 +57,22 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
                     if (!oneOfThem)
                     {
-                        throw new SPMeta2ModelValidationException(
+                        var ex = new SPMeta2ModelValidationException(
                             string.Format("One of the properties with [{0}] attribute should be set. Definition:[{1}]",
                             group.Key, model))
                         {
                             Definition = model
                         };
+
+                        exceptions.Add(ex);
                     }
                 }
+            }
+
+            if (exceptions.Count > 0)
+            {
+                throw new SPMeta2AggregateException("Required properties validation error", 
+                    exceptions.OfType<Exception>());
             }
         }
 
@@ -77,17 +83,22 @@ namespace SPMeta2.Services.ServiceModelHandlers
             return result.Any(p => p.IsValid);
         }
 
-        private bool AllOfThem(object obj, List<PropertyInfo> props)
+        private List<SPMeta2ModelValidationException> AllOfThem(object obj, List<PropertyInfo> props)
         {
+            var r = new List<SPMeta2ModelValidationException>();
+
             var result = ValidateProps(obj, props);
 
-            if (!result.All(p => p.IsValid))
+            foreach (var res in result.Where(rr => !rr.IsValid))
             {
-                throw new Exception(string.Format("Property [{0}] is not valid.",
-                    result.First(r => !r.IsValid).Name));
+                r.Add(new SPMeta2ModelValidationException(string.Format("Property [{0}] is not valid.",
+                    res.Name))
+                {
+                    Definition = obj as DefinitionBase
+                });
             }
 
-            return result.All(p => p.IsValid);
+            return r;
         }
 
         protected List<PropResult> ValidateProps(object obj, List<PropertyInfo> props)

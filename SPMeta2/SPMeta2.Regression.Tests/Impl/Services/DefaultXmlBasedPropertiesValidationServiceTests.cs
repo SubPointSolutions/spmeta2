@@ -13,6 +13,7 @@ using SPMeta2.Exceptions;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
@@ -84,10 +85,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                Assert.IsTrue(e is SPMeta2Exception);
-                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
-
-                isValid = true;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);
@@ -211,10 +209,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                Assert.IsTrue(e is SPMeta2Exception);
-                Assert.IsTrue(e.InnerException is SPMeta2ModelValidationException);
-
-                isValid = true;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);

@@ -25,35 +25,17 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spObject);
             context.ExecuteQueryWithTrace();
 
-            var assert = ServiceFactory.AssertService
-                .NewAssert(definition, spObject)
-                .ShouldNotBeNull(spObject);
-            //.ShouldBeEqual(m => m.FieldId, o => o.Id);
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
-            if (!string.IsNullOrEmpty(definition.FieldInternalName))
-                assert.ShouldBeEqual(m => m.FieldInternalName, o => o.InternalName);
-            else
-                assert.SkipProperty(m => m.FieldInternalName, "FieldInternalName is null or empty. Skipping");
+            assert
+                .ShouldNotBeNull(spObject)
 
-            if (definition.FieldId.HasGuidValue())
-                assert.ShouldBeEqual(m => m.FieldId, o => o.Id);
-            else
-                assert.SkipProperty(m => m.FieldId, "FieldId is null or empty. Skipping");
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.FieldInternalName, o => o.InternalName)
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.DisplayName, o => o.Title)
 
-            if (!string.IsNullOrEmpty(definition.DisplayName))
-                assert.ShouldBeEqual(m => m.DisplayName, o => o.Title);
-            else
-                assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
-
-            if (definition.Required.HasValue)
-                assert.ShouldBeEqual(m => m.Required, o => o.Required);
-            else
-                assert.SkipProperty(m => m.Required, "Required is null or empty. Skipping");
-
-            if (definition.Hidden.HasValue)
-                assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
-            else
-                assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping");
+                .ShouldBeEqualIfHasValue(m => m.FieldId, o => o.Id)
+                .ShouldBeEqualIfHasValue(m => m.Required, o => o.Required)
+                .ShouldBeEqualIfHasValue(m => m.Hidden, o => o.Hidden);
 
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {

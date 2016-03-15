@@ -51,7 +51,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is FolderModelHost)
             {
-                // suppose it is a list, ir must be
+#if NET35
+                throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/767");
+#endif
+
+#if !NET35
+
+                // suppose it is a list, it must be
                 var list = (modelHost as FolderModelHost).CurrentList;
                 var rootFolder = (modelHost as FolderModelHost).CurrentListItem.Folder;
 
@@ -62,6 +68,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
 
                 DeployInternall(list, rootFolder, listItemModel);
+
+#endif
             }
             else
             {
@@ -108,6 +116,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
             else if (modelHost is FolderModelHost)
             {
+#if NET35
+                throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/767");
+#endif
+
+#if !NET35
                 list = (modelHost as FolderModelHost).CurrentList;
                 rootFolder = (modelHost as FolderModelHost).CurrentListItem.Folder;
 
@@ -116,6 +129,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                     rootFolder.Context.Load(rootFolder, f => f.ServerRelativeUrl);
                     rootFolder.Context.ExecuteQueryWithTrace();
                 }
+
+#endif
             }
 
             var item = EnsureListItem(list, rootFolder, listItemModel);

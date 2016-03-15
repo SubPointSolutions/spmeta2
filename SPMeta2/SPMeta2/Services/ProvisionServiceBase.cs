@@ -1,4 +1,10 @@
 ﻿using SPMeta2.Services.Impl;
+using SPMeta2.Services.Impl.Validation;
+using SPMeta2.Utils;
+using System;
+using System.Linq;
+using System.Reflection;
+using SPMeta2.Definitions;
 
 namespace SPMeta2.Services
 {
@@ -12,24 +18,42 @@ namespace SPMeta2.Services
             InitDefaultPostDeploymentServices();
         }
 
-        private void InitDefaultPostDeploymentServices()
+        protected void InitDefaultPostDeploymentServices()
+        {
+            InitDefaultPostDeploymentServices(typeof(FieldDefinition).Assembly);
+        }
+
+        protected void InitDefaultPostDeploymentServices(Assembly assembly)
+        {
+            // TODO
+        }
+
+        protected void InitDefaultPreDeploymentServices()
+        {
+            InitDefaultPreDeploymentServices(typeof(FieldDefinition).Assembly);
+        }
+
+        protected void InitDefaultPreDeploymentServices(Assembly assembly)
         {
             // adding default required prop validation on definitions
             // https://github.com/SubPointSolutions/spmeta2/issues/422
 
-            PreDeploymentServices.Add(new DefaultRequiredPropertiesValidationService());
+            var validationServiceTypes = ReflectionUtils.GetTypesFromAssembly<PreDeploymentValidationServiceBase>(assembly);
 
-            PreDeploymentServices.Add(new DefaultXmlBasedPropertiesValidationService());
-            PreDeploymentServices.Add(new DefaultVersionBasedPropertiesValidationService());
-            PreDeploymentServices.Add(new DefaultNotAbsoluteUrlPropertiesValidationService());
+            foreach (var validationServiceType in validationServiceTypes)
+            {
+                var exists = PreDeploymentServices.Any(s => s.GetType() == validationServiceType);
 
-            PreDeploymentServices.Add(new DefaultFieldInternalNamePropertyValidationService());
-            PreDeploymentServices.Add(new DefaultContentTypeIdPropertyValidationService());
-        }
+                if (!exists)
+                {
+                    var service = Activator.CreateInstance(validationServiceType) as PreDeploymentValidationServiceBase;
 
-        private void InitDefaultPreDeploymentServices()
-        {
-
+                    if (service != null)
+                    {
+                        PreDeploymentServices.Add(service);
+                    }
+                }
+            }
         }
 
         #endregion

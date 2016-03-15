@@ -58,9 +58,11 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(SPMeta2NotImplementedException))]
         public void ClientRuntimeContextService_Should_Survive_IISReset()
         {
+            // TODO
+            // emulate IISReset some day once we don't have anything to do
             throw new SPMeta2NotImplementedException();
         }
 
@@ -209,6 +211,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
             service.ExecuteQuery(default(ClientRuntimeContext));
         }
+
 
         #endregion
 

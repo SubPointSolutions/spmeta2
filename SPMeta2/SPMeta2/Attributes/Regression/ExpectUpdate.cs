@@ -101,6 +101,10 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsBooleanFieldDefaultValue : ExpectUpdate
+    {
+        
+    }
 
     public class ExpectUpdateAsIntRange : ExpectUpdate
     {

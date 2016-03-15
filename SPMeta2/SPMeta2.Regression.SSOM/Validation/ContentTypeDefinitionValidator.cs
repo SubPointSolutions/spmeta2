@@ -11,6 +11,7 @@ using SPMeta2.Utils;
 
 using System;
 using System.Linq;
+using SPMeta2.Regression.SSOM.Extensions;
 
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -27,13 +28,29 @@ namespace SPMeta2.Regression.SSOM.Validation
             var contentTypes = web.AvailableContentTypes;
             var spObject = contentTypes[definition.Name];
 
+            if (spObject == null)
+                spObject = web.ContentTypes[definition.Name];
+
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
+                .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.Name, o => o.Name)
                 .ShouldBeEqual(m => m.Group, o => o.Group)
                 .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
             //.ShouldBeEqual(m => m.Description, o => o.Description);
+
+
+            if (definition.Sealed.HasValue)
+                assert.ShouldBeEqual(m => m.Sealed, o => o.Sealed);
+            else
+                assert.SkipProperty(m => m.Sealed, "Sealed is null or empty. Skipping.");
+
+            if (definition.ReadOnly.HasValue)
+                assert.ShouldBeEqual(m => m.ReadOnly, o => o.ReadOnly);
+            else
+                assert.SkipProperty(m => m.ReadOnly, "ReadOnly is null or empty. Skipping.");
+
 
             if (!string.IsNullOrEmpty(definition.JSLink))
                 assert.ShouldBeEqual(m => m.JSLink, o => o.JSLink);
@@ -197,14 +214,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
-        }
-    }
-
-    internal static class ContentTypeDefinitionValidatorUtils
-    {
-        public static string GetId(this SPContentType c)
-        {
-            return c.Id.ToString();
         }
     }
 }

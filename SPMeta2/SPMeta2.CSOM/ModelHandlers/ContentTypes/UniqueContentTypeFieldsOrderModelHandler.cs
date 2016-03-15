@@ -80,8 +80,14 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
                 }
             }
 
+#if !NET35
+            // TODO, not supported at all by SP2010 CSOM?
+            // https://github.com/SubPointSolutions/spmeta2/issues/763
+
             if (newOrder.Count > 0)
                 contentType.FieldLinks.Reorder(newOrder.ToArray());
+
+#endif
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {

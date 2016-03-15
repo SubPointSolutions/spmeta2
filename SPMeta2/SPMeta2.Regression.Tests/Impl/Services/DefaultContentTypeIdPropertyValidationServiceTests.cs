@@ -13,6 +13,7 @@ using SPMeta2.Exceptions;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
@@ -33,6 +34,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public DefaultContentTypeIdPropertyValidationService Service { get; set; }
 
         #endregion
+
 
         #region caml
 
@@ -69,11 +71,50 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                isValid = e is SPMeta2ModelDeploymentException
-                          && e.InnerException is SPMeta2ModelValidationException;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.DefaultContentTypeIdPropertyValidationService")]
+        public void ShouldFail_On_UpperCased_X_ContentTypeId()
+        {
+            var isValid = false;
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomContentType(ct =>
+                {
+                    (ct.Value as ContentTypeDefinition).ParentContentTypeId = BuiltInContentTypeId.AdminTask.ToUpper();
+                });
+            });
+            try
+            {
+                Service.DeployModel(null, model);
+            }
+            catch (Exception e)
+            {
+                isValid = IsCorrectValidationException(e);
+            }
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.DefaultContentTypeIdPropertyValidationService")]
+        public void ShouldPass_On_LowerCased_X_ContentTypeId()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomContentType(ct =>
+                {
+                    (ct.Value as ContentTypeDefinition).ParentContentTypeId = BuiltInContentTypeId.AdminTask.ToLower();
+                });
+            });
+
+            Service.DeployModel(null, model);
         }
 
 

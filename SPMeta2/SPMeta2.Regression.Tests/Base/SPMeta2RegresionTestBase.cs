@@ -53,7 +53,9 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions.EnableWebApplicationDefinitionTest = false;
             TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
+            TestOptions.EnableContentTypeHubTests = true;
 
+            TestOptions.EnablWebConfigModificationTest = false;
         }
 
         #endregion
@@ -101,15 +103,18 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected class RunOptions
         {
-
-
             public bool EnableWebApplicationDefinitionTest { get; set; }
             public bool EnableSerializeDeserializeAndStillDeployTests { get; set; }
+
+            public bool EnablWebConfigModificationTest { get; set; }
+
+            public bool EnableContentTypeHubTests { get; set; }
         }
 
         #endregion
 
         #region properties
+
 
         public bool EnablePropertyNullableValidation { get; set; }
         public int PropertyNullableGenerationCount { get; set; }
@@ -143,6 +148,23 @@ namespace SPMeta2.Regression.Tests.Base
             finally
             {
                 RegressionService.RegExcludedDefinitionTypes.Clear();
+            }
+        }
+
+
+        protected void WithDisabledDefinitionImmutabilityValidation(Action action)
+        {
+            var _oldValue = RegressionService.EnableDefinitionImmutabilityValidation;
+
+
+            try
+            {
+                RegressionService.EnableDefinitionImmutabilityValidation = false;
+                action();
+            }
+            finally
+            {
+                RegressionService.EnableDefinitionImmutabilityValidation = _oldValue;
             }
         }
 
@@ -256,7 +278,6 @@ namespace SPMeta2.Regression.Tests.Base
 
             PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
             PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
-
         }
 
         private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)

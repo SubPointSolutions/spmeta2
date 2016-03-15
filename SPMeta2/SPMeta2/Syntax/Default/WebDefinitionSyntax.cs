@@ -23,6 +23,7 @@ namespace SPMeta2.Syntax.Default
         ITopNavigationNodeHostModelNode,
         IQuickLaunchNavigationNodeHostModelNode,
         ISP2013WorkflowSubscriptionHostModelNode,
+        IWorkflowAssociationHostModelNode,
         ISearchSettingsHostModelNode
     {
 

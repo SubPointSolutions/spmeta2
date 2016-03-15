@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provision", "Provision", "{8A0307D3-5564-4034-9DB1-D13FEE1DADD9}"
 EndProject
@@ -60,6 +60,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.Regression.SSOM", "SPMeta2\SPMeta2.Regression.SSOM\SPMeta2.Regression.SSOM.csproj", "{00E1581F-31D9-493E-AD16-C188AE966458}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{200D7335-DB4A-4BF2-906F-9E17DC82113B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMeta2.SSOM.Standard", "SPMeta2\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj", "{7D095A0D-0BDE-446D-8093-13E5685F1D3C}"
 EndProject

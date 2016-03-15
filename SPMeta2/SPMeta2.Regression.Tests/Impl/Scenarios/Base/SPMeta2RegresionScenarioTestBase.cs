@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Exceptions;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
@@ -24,5 +25,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
         #endregion
 
         protected RandomService Rnd { get; set; }
+
+        protected bool IsCorrectValidationException(Exception e)
+        {
+            var result = true;
+
+            result = result & (e is SPMeta2Exception);
+            result = result & (e.InnerException is SPMeta2AggregateException);
+            result = result & ((e.InnerException as AggregateException)
+                                    .InnerExceptions.All(ee => ee is SPMeta2ModelValidationException));
+
+            return result;
+        }
     }
 }

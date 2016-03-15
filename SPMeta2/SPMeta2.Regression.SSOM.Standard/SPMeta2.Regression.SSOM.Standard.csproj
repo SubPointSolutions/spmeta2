@@ -122,7 +122,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\PublishingPageItemExtensions.cs" />
+    <Compile Include="Extensions\PublishingPageLayoutItemExtensions.cs" />
+    <Compile Include="Extensions\PublishingWebExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\FilterDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\ManagedPropertyDefinitionValidator.cs" />
     <Compile Include="Validation\Base\ReusableTextItemDefinitionBaseValidator.cs" />

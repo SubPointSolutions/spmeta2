@@ -110,6 +110,13 @@
   <ItemGroup>
     <Compile Include="Base\CSOMTestBase.cs" />
     <Compile Include="CSOMValidationService.cs" />
+    <Compile Include="Extensions\ComposedLookItemExtensions.cs" />
+    <Compile Include="Extensions\ContentTypeExtensions.cs" />
+    <Compile Include="Extensions\GroupExtensions.cs" />
+    <Compile Include="Extensions\ListItemExtensions.cs" />
+    <Compile Include="Extensions\MasterPageItemExtensions.cs" />
+    <Compile Include="Extensions\SecurableObjectExtensions.cs" />
+    <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Utils\FieldSchemaXmlUtils.cs" />
     <Compile Include="Validation\ClientRecycleBinDefinitionValidator.cs" />
@@ -184,7 +191,6 @@
     <Compile Include="Validation\ClientInformationRightsManagementSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientRootWebDefinitionValidator.cs" />
     <Compile Include="Validation\ClientTreeViewSettingsDefinitionValidator.cs" />
-    <Compile Include="Validation\WebApplicationModelHost.cs" />
     <Compile Include="Validation\Webparts\BlogAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\BlogLinksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\BlogMonthQuickLaunchValidator.cs" />

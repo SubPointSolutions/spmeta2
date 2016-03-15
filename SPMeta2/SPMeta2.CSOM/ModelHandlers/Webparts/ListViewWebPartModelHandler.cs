@@ -266,7 +266,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                             attr.Remove();
                     }
 
+#if !NET35
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
+#endif
 
                     hiddenView.Update();
                     context.ExecuteQueryWithTrace();

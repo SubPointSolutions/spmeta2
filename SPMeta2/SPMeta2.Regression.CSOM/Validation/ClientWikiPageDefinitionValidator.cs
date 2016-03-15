@@ -7,6 +7,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Regression.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -43,25 +44,23 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
             }
 
-            var assert = ServiceFactory.AssertService
-                                     .NewAssert(definition, spObject)
-                                           .ShouldNotBeNull(spObject)
-                                           .ShouldBeEqual(m => m.FileName, o => o.GetName())
-                //.ShouldBePartOf(m => m.Content, o => o.GetWikiPageContent())
-                                           .SkipProperty(m => m.Title, "Title field is not available for wiki pages.");
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
 
+            assert
+                .ShouldNotBeNull(spObject)
 
+                .ShouldBeEqual(m => m.FileName, o => o.GetFileLeafRef())
+                .SkipProperty(m => m.Title, "Title field is not available for wiki pages.");
 
             if (!string.IsNullOrEmpty(definition.Content))
             {
-
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.Content);
 
                     var srcContent = Regex.Replace(definition.Content, @"<[^>]*>", string.Empty);
-                    var dstContent = Regex.Replace(spObject.GetWikiPageContent(), @"<[^>]*>", string.Empty);
+                    var dstContent = Regex.Replace(spObject.GetWikiField(), @"<[^>]*>", string.Empty);
 
                     // crazy lazy
                     var isValid =
@@ -188,18 +187,5 @@ namespace SPMeta2.Regression.CSOM.Validation
         }
 
         #endregion
-    }
-
-    internal static class LIstItemUtils
-    {
-        public static string GetName(this ListItem item)
-        {
-            return item.FieldValues["FileLeafRef"] as string;
-        }
-
-        public static string GetWikiPageContent(this ListItem pageItem)
-        {
-            return pageItem["WikiField"] as string;
-        }
     }
 }

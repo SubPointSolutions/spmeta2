@@ -39,6 +39,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.WebConfigModification")]
         public void CanDeploy_WebConfigModification_As_EnsureChildNode()
         {
+            if (!TestOptions.EnablWebConfigModificationTest)
+                return;
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var childNodeConfig = ModelGeneratorService.GetRandomDefinition<WebConfigModificationDefinition>(def =>
@@ -68,6 +71,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.WebConfigModification")]
         public void CanDeploy_WebConfigModification_As_EnsureAttribute()
         {
+            if (!TestOptions.EnablWebConfigModificationTest)
+                return;
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var attributeNodeConfig =
@@ -99,6 +105,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.WebConfigModification")]
         public void CanDeploy_WebConfigModification_As_EnsureSection()
         {
+            if (!TestOptions.EnablWebConfigModificationTest)
+                return;
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var ensureSectionNodeConfig =

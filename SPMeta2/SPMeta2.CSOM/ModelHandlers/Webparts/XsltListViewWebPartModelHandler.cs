@@ -39,6 +39,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             public Guid DefaultViewId { get; set; }
 
             public List List { get; set; }
+
+            public Guid WebId { get; set; }
         }
 
         #endregion
@@ -62,6 +64,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
                                 .SetListName(bindContext.ListId.ToString())
                                 .SetListId(bindContext.ListId.ToString())
+                                .SetWebId(bindContext.WebId.ToString())
                                 .SetTitleUrl(bindContext.TitleUrl)
                                 .SetJSLink(wpModel.JSLink);
 
@@ -86,7 +89,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             // xml
             if (!string.IsNullOrEmpty(wpModel.XmlDefinition))
-                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.Xsl);
+                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.XmlDefinition);
 
             if (!string.IsNullOrEmpty(wpModel.XmlDefinitionLink))
                 wpXml.SetOrUpdateProperty("XmlDefinitionLink", wpModel.XmlDefinitionLink);
@@ -164,6 +167,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 // reverting back the dafult view
                 var view = bindingContext.List.GetView(_currentListBindContext.DefaultViewId);
+
                 view.DefaultView = true;
                 view.Update();
 
@@ -204,11 +208,30 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 context.Load(hiddenView);
                 context.ExecuteQueryWithTrace();
 
-                // patching the toolbar value
+                // always replace HtmlSchemaXml witjh the real view
+                // some properties aren't coming with CSOM
+
+                if (bindContext.OriginalView != null)
+                {
+                    var updatedSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+                    var originalSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+
+                    updatedSchemaXml.Root.ReplaceWith(originalSchemaXml.Root);
+
+#if !NET35
+                    hiddenView.ListViewXml = updatedSchemaXml.Root.GetInnerXmlAsString();
+#endif
+                }
 
                 if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
                 {
+                    // work with the update schema XML
                     var htmlSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+
+                    if (bindContext.OriginalView != null)
+                    {
+                        htmlSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+                    }
 
                     var useShowAlwaysValue =
                         (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
@@ -238,11 +261,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                             attr.Remove();
                     }
 
+#if !NET35
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
-
-                    hiddenView.Update();
-                    context.ExecuteQueryWithTrace();
+#endif
                 }
+
+                hiddenView.Update();
+                context.ExecuteQueryWithTrace();
             }
         }
 
@@ -278,6 +303,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 targetWeb = new LookupFieldModelHandler()
                                 .GetTargetWeb(listItemModelHost.HostClientContext.Site,
                                         webUrl, webId);
+
+                result.WebId = targetWeb.Id;
             }
 
             var list = LookupList(targetWeb, listUrl, listTitle, listId);
@@ -292,15 +319,23 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
             context.Load(list, l => l.Title);
+
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/765
+            // list.DefaultView is not available, so a full fetch for list view is a must for SP2010.
+
+#if !NET35
             context.Load(list, l => l.DefaultView);
+#endif
 
             if (view != null)
             {
                 context.Load(view);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
                 result.OriginalView = list.DefaultView;
                 result.OriginalViewId = list.DefaultView.Id;
+#endif
 
                 result.TargetView = view;
                 result.TargetViewId = view.Id;
@@ -315,13 +350,18 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             result.ListId = list.Id;
             result.List = list;
 
+            
+            result.List = list;
+
             if (webPartTitleUrl == null)
             {
                 if (string.IsNullOrEmpty(result.TitleUrl))
                     result.TitleUrl = list.DefaultViewUrl;
             }
 
+#if !NET35
             result.DefaultViewId = list.DefaultView.Id;
+#endif
 
             return result;
         }

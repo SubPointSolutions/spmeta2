@@ -57,6 +57,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/761
+            // re-implement with native prop bag to suport SP2010
+            // SP2010 CSOM does not have CustomMasterUrl / MasterUrl props
+
+#if !NET35
+
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
@@ -68,6 +74,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
                 web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
             }
+
+#endif
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||
                 !string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))

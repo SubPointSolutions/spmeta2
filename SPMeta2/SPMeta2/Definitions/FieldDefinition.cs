@@ -129,7 +129,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-        [ExpectRequired(GroupName = "IdOrInternalName")]
+        [ExpectRequired]
         [DataMember]
         [IdentityKey]
         public string InternalName { get; set; }
@@ -186,10 +186,10 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [ExpectValidation]
-        [ExpectRequired(GroupName = "IdOrInternalName")]
+        [ExpectRequired]
         [DataMember]
         [IdentityKey]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
         /// Type of the target field.

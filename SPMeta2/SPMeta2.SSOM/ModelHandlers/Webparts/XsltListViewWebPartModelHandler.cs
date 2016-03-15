@@ -63,6 +63,13 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                     if (xsltWebPart != null)
                     {
+
+                        // big TODO for .NET 35
+                        // xsltWebPart.View does not exist for .NET 35
+                        // the implementation will be done upon the community demand
+
+#if !NET35
+
                         var targetView = xsltWebPart.View;
 
                         // fixing up the Toolbar
@@ -104,11 +111,13 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                             if (field != null)
                             {
-                                field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString());
+                                field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString(), null);
                             }
                         }
 
                         targetView.Update();
+
+#endif
                     }
                 }
             }
@@ -152,6 +161,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
             if (list != null)
             {
+                // for the list from other than current webs
+                typedWebpart.WebId = targetWeb.ID;
+
                 typedWebpart.ListName = list.ID.ToString("B").ToUpperInvariant();
                 typedWebpart.TitleUrl = list.DefaultViewUrl;
             }
@@ -175,21 +187,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                         var hiddenView = list.Views[new Guid(typedWebpart.ViewGuid)];
 
-                        hiddenView.ViewFields.DeleteAll();
-
-                        foreach (string f in srcView.ViewFields)
-                            hiddenView.ViewFields.Add(f);
-
-                        hiddenView.RowLimit = srcView.RowLimit;
-                        hiddenView.Query = srcView.Query;
-#if !NET35
-                        hiddenView.JSLink = srcView.JSLink;
-#endif
-                        hiddenView.IncludeRootFolder = srcView.IncludeRootFolder;
-                        hiddenView.Scope = srcView.Scope;
-
-
-
+                        hiddenView.SetViewXml(srcView.GetViewXml());
+                     
                         hiddenView.Update();
                     }
                     else

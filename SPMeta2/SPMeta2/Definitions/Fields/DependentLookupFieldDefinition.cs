@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -24,6 +25,16 @@ namespace SPMeta2.Definitions.Fields
     public class DependentLookupFieldDefinition : LookupFieldDefinition
     {
         #region properties
+
+        /// <summary>
+        /// ID of the target field.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        //[ExpectRequired]
+        [DataMember]
+        [IdentityKey]
+        public override Guid Id { get; set; }
 
         [ExpectValidation]
         [DataMember]

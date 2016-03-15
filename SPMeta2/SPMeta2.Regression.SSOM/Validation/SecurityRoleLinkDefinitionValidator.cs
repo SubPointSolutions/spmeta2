@@ -4,7 +4,7 @@ using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Utils;
 
 
@@ -107,13 +107,5 @@ namespace SPMeta2.Regression.SSOM.Validation
 
 
         #endregion
-    }
-
-    internal static class SPRoleAssignmentExtensinos
-    {
-        public static string GetRoleDefinitionBindings(this SPRoleAssignment assignment)
-        {
-            return assignment.RoleDefinitionBindings.ToString();
-        }
     }
 }

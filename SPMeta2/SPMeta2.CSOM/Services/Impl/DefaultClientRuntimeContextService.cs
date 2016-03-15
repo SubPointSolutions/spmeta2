@@ -131,7 +131,37 @@ namespace SPMeta2.CSOM.Services.Impl
             if (IsAllowedWebException(ex))
                 return true;
 
+            // The request uses too many resources ?
+            if (IsRequestUsesTooManyResources(ex))
+                return true;
+
+            // some weird exception with sql or something
+            if (IsWeirdSQLException(ex))
+                return true;
+
             return false;
+        }
+
+        protected virtual bool IsWeirdSQLException(Exception ex)
+        {
+            // happens randomly, while adding files or creating pages
+            // something weird with the stream or whatever
+            // https://github.com/SubPointSolutions/spmeta2/issues/567
+
+            return ex != null
+                   && ex.ToString().Contains("0x80131904");
+        }
+
+        protected virtual bool IsRequestUsesTooManyResources(Exception ex)
+        {
+            // happens while activating publishing site features
+            // or creaeting publishing site via CSOM
+            // well-known stuff
+            // https://github.com/SubPointSolutions/spmeta2/issues/567
+
+            return ex != null
+                   && !string.IsNullOrEmpty(ex.Message)
+                   && ex.Message.ToLower().Contains("the request uses too many resources");
         }
 
 

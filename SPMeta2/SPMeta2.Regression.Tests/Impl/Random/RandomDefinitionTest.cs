@@ -148,6 +148,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+
+
         #region secure store application
 
         [TestMethod]
@@ -174,10 +176,24 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #region web app scope
 
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.CustomDocumentIdProvider")]
+        public void CanDeployRandom_PeoplePickerSettingsDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<PeoplePickerSettingsDefinition>();
+            });
+        }
+
         [TestMethod]
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_AlternateUrlDefinition()
         {
+            if (!TestOptions.EnablWebConfigModificationTest)
+                return;
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<AlternateUrlDefinition>();
@@ -731,6 +747,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_MetadataNavigationSettingsDefinition()
+        {
+            TestRandomDefinition<MetadataNavigationSettingsDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_FolderDefinition()
         {
             TestRandomDefinition<FolderDefinition>();
@@ -915,7 +938,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_AnonymousAccessSettingsDefinition()
         {
             // need to disable validation on web node
-            // it would trigger 'UseUniquePermission' mismatch die to anon settings applied
+            // it would trigger 'UseUniquePermission' mismatch due to anon settings applied
             WithDisabledValidationOnTypes(typeof(WebDefinition), () =>
             {
                 TestRandomDefinition<AnonymousAccessSettingsDefinition>();
@@ -1411,9 +1434,18 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ClearRecycleBinDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_WorkflowAssociationDefinition()
+        {
+            TestRandomDefinition<WorkflowAssociationDefinition>();
+        }
+
         #region web parts
 
-        
+
         #endregion
+
+
     }
 }
