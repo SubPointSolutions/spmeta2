@@ -8,6 +8,7 @@ using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Services.Impl;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
     //}
 
     [TestClass]
-    public class ClientRuntimeContextServiceBaseTests : SPMeta2RegresionScenarioTestBase
+    public class ClientRuntimeContextServiceBaseTests : SPMeta2DefinitionRegresionTestBase
     {
         #region constructors
 
