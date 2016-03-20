@@ -5,6 +5,8 @@ environment:
 # expecting 110 base tests passed under 'CI.Core' category
 # everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
 test:
+  assemblies:
+    - '**\*.tests.dll'
   categories:
     only:
       - CI.Core 
