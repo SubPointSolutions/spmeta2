@@ -6,7 +6,7 @@ environment:
 # everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
 test:
   assemblies:
-    - '**\*.tests.dll'
+    - '**\*.Tests.dll'
   categories:
     only:
       - CI.Core 
