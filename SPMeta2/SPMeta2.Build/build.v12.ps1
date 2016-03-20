@@ -75,8 +75,19 @@ function BuildProfile($buildProfile) {
 
         Write-BVerbose "`t[$index/$count] Profile:[$($buildProfile.Name)] Project name:[$projectName]" -fore Gray
         Write-BVerbose "`tParams: [$($buildProfile.BuildParams)]" -fore Gray
-     
-        & $msbuild_path """$solutionRootPath\$projectName\$projectName.csproj"" $($buildProfile.BuildParams) " 
+        
+        # always set the solution dir
+        
+        # build.v12.ps1 cannot build the solution on win10 #815
+        # https://github.com/SubPointSolutions/spmeta2/issues/815
+        
+        # MSBuild does not define the SolutionDir property so you'll need to manually specify it:
+        #http://stackoverflow.com/questions/13628319/cant-build-our-solution-with-msbuild-it-cant-find-our-targets-files
+
+        $solutionDirectory = [System.IO.Path]::GetFullPath("$solutionRootPath\..\")
+        $projectPath = [System.IO.Path]::GetFullPath("$solutionRootPath\$projectName\$projectName.csproj")
+
+        & $msbuild_path "/p:SolutionDir=""$solutionDirectory"" ""$projectPath"" $($buildProfile.BuildParams) " 
 
 		if (! $?) { 
 		
