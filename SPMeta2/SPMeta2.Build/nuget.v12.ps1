@@ -56,7 +56,7 @@ if($g_isAppVeyor -eq $true)
 	$g_SourceUrl = "https://www.myget.org/F/subpointsolutions-staging/api/v2/package"
 	
 	$stamp = ( $date.ToString("yy") + $date.DayOfYear.ToString("000") + $date.ToString("HHmm"))
-	$g_hardcoreVersion = $g_hardcoreVersionBase + "-alpha" + $stamp
+	$g_hardcoreVersion = ($g_hardcoreVersionBase + "-alpha" + $stamp)
 
 	# appveyor path to build
 	$g_solutionDirectory = "c:\prj\m2\SPMeta2"
