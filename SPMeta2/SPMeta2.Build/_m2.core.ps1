@@ -62,6 +62,6 @@ function Get-EnvironmentVariable($name) {
 }
 
 # https://www.appveyor.com/docs/build-phase
-$g_isAppVeyor = Get-EnvironmentVariable "APPVEYOR"
+$g_isAppVeyor = ((Get-EnvironmentVariable "APPVEYOR") -ne $null)
 
 #endregion
