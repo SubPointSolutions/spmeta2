@@ -14,7 +14,7 @@ clone_folder: c:\prj\m2
 build_script: 
     - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
 
-after_build:
+after_test:
     - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\nuget.v12.ps1
 
 artifacts:
