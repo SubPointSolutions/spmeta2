@@ -55,6 +55,7 @@ if($g_isAppVeyor -eq $true)
 	$g_apiKey = Get-EnvironmentVariable "SPMeta2_NuGet_Staging_APIKey"
 	$g_SourceUrl = "https://www.myget.org/F/subpointsolutions-staging/api/v2/package"
 	
+	$date = get-date
 	$stamp = ( $date.ToString("yy") + $date.DayOfYear.ToString("000") + $date.ToString("HHmm"))
 	$g_hardcoreVersion = ($g_hardcoreVersionBase + "-alpha" + $stamp)
 
@@ -69,6 +70,7 @@ else
 	$g_apiKey = "YOUR API KEY"
 	$g_SourceUrl = "YOUR SOURCE KEY"
 	
+	$date = get-date
 	$stamp = ( $date.ToString("yy") + $date.DayOfYear.ToString("000") + $date.ToString("HHmm"))
 	$g_hardcoreVersion = $g_hardcoreVersionBase + "-alpha" + $stamp
 
