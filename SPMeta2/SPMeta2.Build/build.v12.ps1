@@ -1,50 +1,6 @@
 ﻿cls
 
-#region  utils
-
-function Get-TimeStamp() {
-    return $(get-date -f "yyyy-MM-dd HH:mm:ss") 
-}
-
-function Write-BError($msg, $fore = 'red') {
-    
-    $stamp = Get-TimeStamp
-
-    if([string]::IsNullOrEmpty($msg) -eq $false) {
-        $msg = "[$stamp] [ERROR] $msg"
-    } else {
-        $msg = "[$stamp] [ERROR]"
-    }
-
-    Write-Host $msg -fore $fore
-}
-
-function Write-BVerbose($msg, $fore = 'gray') {
-    
-    $stamp = Get-TimeStamp
-
-    if([string]::IsNullOrEmpty($msg) -eq $false) {
-        $msg = "[$stamp] [Verbose] $msg"
-    } else {
-        $msg = "[$stamp] [Verbose]"
-    }
-
-    Write-Host $msg -fore $fore
-}
-
-function Write-BInfo($msg, $fore = 'green') {
-    
-    $stamp = Get-TimeStamp
-
-    if([string]::IsNullOrEmpty($msg) -eq $false) {
-        $msg = "[$stamp] [INFO] $msg"
-    } else {
-        $msg = "[$stamp] [INFO]"
-    }
-
-    Write-Host $msg -fore $fore
-}
-
+#region utils
 
 function Get-ScriptDirectory
 {
@@ -107,6 +63,13 @@ function BuildProfile($buildProfile) {
 
 #region default values / profiles
 
+$currentPath =  Get-ScriptDirectory
+
+. "$currentPath\_m2.core.ps1"
+
+$solutionRootPath =  "$currentPath\..\"
+$msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
+
 $defaultProjects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM", "SPMeta2.SSOM.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
 #$defaultProjects = @( "SPMeta2", "SPMeta2.Standard", "SPMeta2.SSOM")
 $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.Standard" )
@@ -114,23 +77,13 @@ $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.S
 # https://msdn.microsoft.com/en-us/library/ms164311.aspx
 $defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:quiet /clp:ErrorsOnly /nologo"
 
-# https://www.appveyor.com/docs/build-phase
-$isAppVeyor = [System.Environment]::GetEnvironmentVariable("APPVEYOR") -ne $null -or  `
-			  [System.Environment]::GetEnvironmentVariable("APPVEYOR", "Machine") -ne $null -or `
-              [System.Environment]::GetEnvironmentVariable("APPVEYOR", "Process") -ne $null -or `
-              [System.Environment]::GetEnvironmentVariable("APPVEYOR", "User") -ne $null 
-			
+$isAppVeyor = $g_isAppVeyor
 
 if($isAppVeyor -eq $true) {
     $defaultBuildParams += " /logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
 } else {
     $defaultBuildParams += " "
 }
-
-$currentPath =  Get-ScriptDirectory
-$solutionRootPath =  "$currentPath\..\"
-
-$msbuild_path = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
 
 #endregion
 
