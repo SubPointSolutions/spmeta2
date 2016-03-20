@@ -1,6 +1,9 @@
 environment:
   SPMeta2_NuGet_Staging_APIKey:
     secure: wDc3/dNo7jb7UNTHdOQCwub23doUQ58hAIEhpKT/8lNcQqgrjw8BBfAJiAumtKyK
+  
+  SPMeta2_DefaultTestUserLogins:
+    secure: 3HnXxy6w2UfBFP55pJ6q1/TguITu3p3mmEo+7U2dm1g=
 
 # expecting 110 base tests passed under 'CI.Core' category
 # everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
