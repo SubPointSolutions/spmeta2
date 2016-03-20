@@ -13,4 +13,4 @@ after_build:
 	- ps: c:\prj\m2\SPMeta2\SPMeta2.Build\nuget.v12.ps1
 
 artifacts:
-  - path: '**\*.nupkg'
+    - path: '**\*.nupkg'
