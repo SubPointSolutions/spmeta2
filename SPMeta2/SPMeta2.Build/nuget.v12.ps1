@@ -48,6 +48,8 @@ $g_apiKey = $null
 
 if($g_isAppVeyor -eq $true) 
 {
+	Write-BInfo "AppVeyor build"
+
 	# setting up everything for staging build
 	
 	$g_apiKey = Get-EnvironmentVariable "SPMeta2_NuGet_Staging_APIKey"
@@ -61,6 +63,8 @@ if($g_isAppVeyor -eq $true)
 }
 else 
 {
+	Write-BInfo "Local build"
+
 	# setting for user-efined build
 	$g_apiKey = "YOUR API KEY"
 	$g_SourceUrl = "YOUR SOURCE KEY"
@@ -70,6 +74,10 @@ else
 
 	$g_solutionDirectory = "c:\prj\m2\SPMeta2"
 }
+
+Write-BInfo "g_solutionDirectory:[$g_solutionDirectory]"
+Write-BInfo "g_hardcoreVersion:[$g_hardcoreVersion]"
+Write-BInfo "g_SourceUrl:[$g_SourceUrl]"
 
 # override 'g_' here if any
 
