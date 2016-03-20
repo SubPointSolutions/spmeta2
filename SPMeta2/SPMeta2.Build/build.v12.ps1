@@ -94,11 +94,7 @@ $build15 = $true
 $build16 = $true
 $build365 = $true
 
-$buildProfiles += @{
-        "Name"  = "Tests NET45";
-        "ProjectNames" = @('SPMeta2.Regression.Tests', 'SPMeta2.Regression.Impl.Tests'); 
-        "BuildParams" = (" /p:Configuration=Debug /p:DefineConstants=NET45 " + $defaultBuildParams);
-}
+
 
 if($build14 -eq $true) {
 
@@ -156,6 +152,18 @@ if($build365 -eq $true) {
     }
 }
 
+$buildProfiles += @{
+        "Name"  = "Test containers NET45";
+        "ProjectNames" = @('SPMeta2.Containers.CSOM', 'SPMeta2.Containers.O365', 'SPMeta2.Containers.O365v16', 'SPMeta2.Containers.SSOM'); 
+        "BuildParams" = (" /p:Configuration=Debug /p:DefineConstants=NET45 " + $defaultBuildParams);
+}
+
+
+$buildProfiles += @{
+        "Name"  = "Tests NET45";
+        "ProjectNames" = @('SPMeta2.Regression.Tests', 'SPMeta2.Regression.Impl.Tests'); 
+        "BuildParams" = (" /p:Configuration=Debug /p:DefineConstants=NET45 " + $defaultBuildParams);
+}
 
 foreach($buildProfile in $buildProfiles) {
 
