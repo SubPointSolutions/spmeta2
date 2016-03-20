@@ -11,6 +11,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.Serialization")]
+        [TestCategory("CI.Core")]
         public void CanSerializeAndDeserializeJSON()
         {
             var obj = new FieldDefinition();
@@ -24,6 +25,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.Serialization")]
+        [TestCategory("CI.Core")]
         public void CanSerializeAndDeserializeXML()
         {
             var obj = new FieldDefinition();

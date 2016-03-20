@@ -34,7 +34,60 @@ using SPMeta2.Exceptions;
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
     [TestClass]
-    public class RandomDefinitionTest : SPMeta2RegresionTestBase
+    public class RandomDefinitionSelfDiagnoosticTest : SPMeta2DefinitionRegresionTestBase
+    {
+        [TestMethod]
+        [TestCategory("Regression.Rnd")]
+        [TestCategory("CI.Core")]
+        public void RandomDefinitionTest_ShouldHave_Tests_ForAllDefinitions()
+        {
+            var methods = typeof(RandomDefinitionTest).GetMethods();
+
+            var spMetaAssembly = typeof(FieldDefinition).Assembly;
+            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
+
+            var allDefinitions = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+                spMetaAssembly,
+                spMetaStandardAssembly
+            });
+
+            foreach (var def in allDefinitions)
+            {
+                Trace.WriteLine(def.Name);
+            }
+
+            var isValid = true;
+
+            foreach (var definition in allDefinitions)
+            {
+                var hasTestMethod = HasTestMethod("CanDeployRandom_", definition, methods);
+
+                if (!hasTestMethod)
+                {
+                    Trace.WriteLine(string.Format("[ERR]:{0}", definition.Name));
+
+                    isValid = false;
+                }
+            }
+
+            Assert.IsTrue(isValid);
+        }
+
+        private bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
+        {
+            var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
+
+            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
+
+            var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
+
+            return targetMethod != null;
+        }
+    }
+
+    [TestClass]
+    public class RandomDefinitionTest : SPMeta2ProvisionRegresionTestBase
     {
         public RandomDefinitionTest()
         {
@@ -61,42 +114,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             InternalCleanup();
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Rnd")]
-        public void SelfDiagnostic_TestShouldHaveAllDefinitions()
-        {
-            var methods = GetType().GetMethods();
 
-            var spMetaAssembly = typeof(FieldDefinition).Assembly;
-            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
-
-            var allDefinitions = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
-            {
-                spMetaAssembly,
-                spMetaStandardAssembly
-            });
-
-            foreach (var def in allDefinitions)
-            {
-                Trace.WriteLine(def.Name);
-            }
-
-            var isValid = true;
-
-            foreach (var definition in allDefinitions)
-            {
-                var hasTestMethod = RegressionService.HasTestMethod("CanDeployRandom_", definition, methods);
-
-                if (!hasTestMethod)
-                {
-                    Trace.WriteLine(string.Format("[ERR]:{0}", definition.Name));
-
-                    isValid = false;
-                }
-            }
-
-            Assert.IsTrue(isValid);
-        }
 
         #endregion
 

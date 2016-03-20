@@ -27,16 +27,7 @@ namespace SPMeta2.Containers.Services
         public AssertServiceBase AssertService { get; set; }
         public RandomService RndService { get; set; }
 
-        public bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
-        {
-            var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
-
-            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
-
-            var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
-
-            return targetMethod != null;
-        }
+        
 
         public RegressionTestService()
         {

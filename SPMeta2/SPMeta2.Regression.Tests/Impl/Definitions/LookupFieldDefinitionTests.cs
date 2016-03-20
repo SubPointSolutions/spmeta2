@@ -25,21 +25,21 @@ using SPMeta2.Regression.Tests.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class LookupFieldDefinitionTests : SPMeta2RegresionTestBase
+    public class LookupFieldDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
         #region common
 
-        [ClassInitializeAttribute]
-        public static void Init(TestContext context)
-        {
-            InternalInit();
-        }
+        //[ClassInitializeAttribute]
+        //public static void Init(TestContext context)
+        //{
+        //    InternalInit();
+        //}
 
-        [ClassCleanupAttribute]
-        public static void Cleanup()
-        {
-            InternalCleanup();
-        }
+        //[ClassCleanupAttribute]
+        //public static void Cleanup()
+        //{
+        //    InternalCleanup();
+        //}
 
         #endregion
 
@@ -47,6 +47,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.LookupFieldDefinition.Properties")]
+        [TestCategory("CI.Core")]
         public void LookupFieldDefinition_AllowMultipleValues_ShouldUpdate_FieldType()
         {
             var def = new LookupFieldDefinition();

@@ -11,21 +11,21 @@ using SPMeta2.Regression.Tests.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class UserFieldDefinitionTests : SPMeta2RegresionTestBase
+    public class UserFieldDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
         #region common
 
-        [ClassInitializeAttribute]
-        public static void Init(TestContext context)
-        {
-            InternalInit();
-        }
+        //[ClassInitializeAttribute]
+        //public static void Init(TestContext context)
+        //{
+        //    InternalInit();
+        //}
 
-        [ClassCleanupAttribute]
-        public static void Cleanup()
-        {
-            InternalCleanup();
-        }
+        //[ClassCleanupAttribute]
+        //public static void Cleanup()
+        //{
+        //    InternalCleanup();
+        //}
 
         #endregion
 
@@ -33,6 +33,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.UserFieldDefinition.Properties")]
+        [TestCategory("CI.Core")]
         public void UserFieldDefinition_AllowMultipleValues_ShouldUpdate_FieldType()
         {
             var def = new UserFieldDefinition();

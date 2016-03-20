@@ -25,7 +25,7 @@ using SPMeta2.Regression.Tests.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class FieldDefinitionTests : SPMeta2RegresionTestBase
+    public class FieldDefinitionTests : SPMeta2ProvisionRegresionTestBase
     {
         #region common
 

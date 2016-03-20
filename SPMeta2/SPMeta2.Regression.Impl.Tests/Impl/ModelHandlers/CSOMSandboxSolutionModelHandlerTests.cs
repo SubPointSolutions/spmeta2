@@ -73,6 +73,7 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOM.SandboxSolutionModelHandler")]
+        [TestCategory("CI.Core")]
         public void ShouldNotDeploy_CSOM_SandboxSolution_WithDotsInFileName()
         {
             var hasException = false;
@@ -103,6 +104,7 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOM.SandboxSolutionModelHandler")]
+        [TestCategory("CI.Core")]
         public void ShouldNotDeploy_CSOM_SandboxSolution_WithEmptySolutionId()
         {
             var hasException = false;
@@ -133,6 +135,7 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOM.SandboxSolutionModelHandler")]
+        [TestCategory("CI.Core")]
         public void ShouldNotDeploy_CSOM_SandboxSolution_WithActivate_Eq_False()
         {
             var hasException = false;

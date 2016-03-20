@@ -15,9 +15,9 @@ using SPMeta2.Containers.Utils;
 namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 {
     [TestClass]
-    public class SPMeta2ModelTests : SPMeta2RegresionTestBase
+    public class SPMeta2ModelDeploymentTests : SPMeta2ProvisionRegresionTestBase
     {
-        public SPMeta2ModelTests()
+        public SPMeta2ModelDeploymentTests()
         {
 
         }
@@ -88,11 +88,18 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
         }
 
         #endregion
+    }
+
+    [TestClass]
+    public class SPMeta2ModelTests : SPMeta2DefinitionRegresionTestBase
+    {
+       
 
         #region serialization
 
         [TestMethod]
         [TestCategory("Regression.SPMeta2Model.Serialization")]
+        [TestCategory("CI.Core")]
         public void CanSerialize_SiteModelToXMLAndBack()
         {
             var orginalModel = SPMeta2Model.NewSiteModel(site =>
@@ -117,6 +124,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
         [TestMethod]
         [TestCategory("Regression.SPMeta2Model.Serialization")]
+        [TestCategory("CI.Core")]
         public void CanSerialize_SiteModelToJSONAndBack()
         {
             var orginalModel = SPMeta2Model.NewSiteModel(site =>
@@ -143,6 +151,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
         [TestMethod]
         [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        [TestCategory("CI.Core")]
         public void Should_Pass_On_Valid_SSOM_CSOM()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
@@ -157,6 +166,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
         [TestMethod]
         [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        [TestCategory("CI.Core")]
         public void Should_Pass_On_Valid_SSOM_Invalid_CSOM()
         {
             var model = SPMeta2Model.NewWebApplicationModel(webApp =>
@@ -171,6 +181,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
         [TestMethod]
         [TestCategory("Regression.SPMeta2Model.Compatibility")]
+        [TestCategory("CI.Core")]
         public void Should_Pass_On_Valid_SSOM_Invalid_CSOM_2()
         {
             var model = SPMeta2Model.NewFarmModel(farm =>

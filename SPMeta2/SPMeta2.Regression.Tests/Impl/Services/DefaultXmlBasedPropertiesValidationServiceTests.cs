@@ -10,6 +10,7 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
@@ -18,7 +19,7 @@ using SPMeta2.Services.Impl.Validation;
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
-    public class DefaultXmlBasedPropertiesValidationServiceTests : SPMeta2RegresionScenarioTestBase
+    public class DefaultXmlBasedPropertiesValidationServiceTests : SPMeta2DefinitionRegresionTestBase
     {
         #region constructors
 
@@ -39,6 +40,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Caml")]
+        [TestCategory("CI.Core")]
         public void ShouldPass_On_Valid_CAML()
         {
             var model = SPMeta2Model.NewWebModel(web =>
@@ -61,6 +63,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Caml")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_Invalid_CAML()
         {
             var isValid = false;
@@ -97,6 +100,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Xml")]
+        [TestCategory("CI.Core")]
         public void ShouldPass_On_Valid_Xml()
         {
             var model = SPMeta2Model.NewWebModel(web =>
@@ -184,6 +188,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultXmlBasedPropertiesValidationService.Xml")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_Invalid_Xml()
         {
             var isValid = false;

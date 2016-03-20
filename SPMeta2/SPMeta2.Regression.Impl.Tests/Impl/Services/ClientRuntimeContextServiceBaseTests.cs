@@ -59,6 +59,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
         [ExpectedException(typeof(SPMeta2NotImplementedException))]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_Survive_IISReset()
         {
             // TODO
@@ -68,6 +69,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void Can_Create_ClientRuntimeContextService()
         {
             Assert.IsNotNull(new DefaultClientRuntimeContextService());
@@ -76,6 +78,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
         [ExpectedException(typeof(Exception))]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_Rethrow_GenericException()
         {
             // expecting generic exception re-thrown
@@ -91,6 +94,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_MakeNAttempts_And_ThrowException()
         {
             // expecting SPMeta2Exception AND currentReconnectCount == ExecuteQueryRetryAttempts
@@ -133,6 +137,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_SupportHttpStatuses()
         {
             // expecting SPMeta2Exception on known http statuses
@@ -177,6 +182,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         [ExpectedException(typeof(WebException))]
         public void ClientRuntimeContextService_Should_ThrowGenericException_On_UnsupportHttpStatuses()
         {

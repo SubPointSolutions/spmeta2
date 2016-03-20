@@ -2,7 +2,12 @@ environment:
   SPMeta2_NuGet_Staging_APIKey:
     secure: wDc3/dNo7jb7UNTHdOQCwub23doUQ58hAIEhpKT/8lNcQqgrjw8BBfAJiAumtKyK
 
-test: off
+# expecting 110 base tests passed under 'CI.Core' category
+# everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
+test:
+  categories:
+    only:
+      - CI.Core 
 
 clone_folder: c:\prj\m2
 

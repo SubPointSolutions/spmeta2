@@ -25,12 +25,13 @@ using SPMeta2.Regression.Tests.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class ImageFieldDefinitionTests : SPMeta2RegresionTestBase
+    public class ImageFieldDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
         #region properties
 
         [TestMethod]
         [TestCategory("Regression.Definitions.ImageFieldDefinitions")]
+        [TestCategory("CI.Core")]
         public void ImageFieldDefinition_ShouldHave_RichTextMode_And_RichText_Attrs()
         {
             var def = new ImageFieldDefinition();

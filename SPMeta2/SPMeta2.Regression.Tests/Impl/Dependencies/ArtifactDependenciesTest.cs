@@ -21,7 +21,7 @@ using SPMeta2.Syntax.Default;
 namespace SPMeta2.Regression.Tests.Impl.Dependencies
 {
     [TestClass]
-    public class ArtifactDependenciesTest : SPMeta2RegresionTestBase
+    public class ArtifactDependenciesTest : SPMeta2ProvisionRegresionTestBase
     {
         public ArtifactDependenciesTest()
         {
@@ -129,7 +129,7 @@ namespace SPMeta2.Regression.Tests.Impl.Dependencies
 
         [TestMethod]
         [TestCategory("Regression.Dependencies")]
-        public void ListFields_Before_ListViews()
+        public void CanDeploy_ListFields_Before_ListViews()
         {
             var useListScopedeFix = true;
 

@@ -93,6 +93,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void Can_CreateDefinition()
         {
             foreach (var definitionType in AllDefinitionTypes)
@@ -105,6 +106,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void DefinitionPropertyBag_ShouldNotbeNull()
         {
             foreach (var definitionType in AllDefinitionTypes)
@@ -118,6 +120,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHaveToStringOverride()
         {
             foreach (var definitionType in AllDefinitionTypes)
@@ -133,6 +136,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldBeMarkedAsSerializable()
         {
             var result = true;
@@ -153,6 +157,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldBeMarkedAsDataContract()
         {
             var result = true;
@@ -177,6 +182,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void ModelNodesShouldBeMarkedAsDataContract_v12()
         {
             var result = true;
@@ -201,6 +207,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Identity")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHasIdentityOrIdentityKey()
         {
             var result = true;
@@ -240,6 +247,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void ModelNodeTypesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
             var result = true;
@@ -278,6 +286,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void DefinitionsPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
             var targetTypes = AllDefinitionTypes;
@@ -290,6 +299,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void TypedWebPartDefinitions_Should_Have_ExpectWebpartType_Attr()
         {
             var typedWebPartTypes = AllDefinitionTypes.Where(t => t.IsSubclassOf(typeof(WebPartDefinition)));
@@ -347,6 +357,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
         public void AllSerializablesPublicPropsShouldBeMarkedAsDataMemberOrIgnoreDataMemberAttr()
         {
             var targetTypes = new List<Type>();
@@ -373,6 +384,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v11")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHaveAddXXX_DefinitionSyntax_v11()
         {
             if (!M2RegressionRuntime.IsV11)
@@ -531,6 +543,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v11")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHaveWithXXX_DefinitionSyntax_v11()
         {
             if (!M2RegressionRuntime.IsV11)
@@ -636,6 +649,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHave_ParentHostCapabilityAttribute_v12()
         {
             if (!M2RegressionRuntime.IsV12)
@@ -669,6 +683,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHave_TypedModelNodes_v12()
         {
             Trace.WriteLine("Checking typed model nodes");
@@ -707,6 +722,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHaveAddXXX_DefinitionSyntax_v12()
         {
             if (!M2RegressionRuntime.IsV12)
@@ -1115,6 +1131,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.Syntax.v12")]
+        [TestCategory("CI.Core")]
         public void DefinitionsShouldHaveWithXXX_DefinitionSyntax_v12()
         {
             if (!M2RegressionRuntime.IsV12)

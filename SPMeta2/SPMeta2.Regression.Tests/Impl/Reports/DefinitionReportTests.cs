@@ -28,6 +28,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
 
         [TestMethod]
         [TestCategory("Regression.Reports.Definitions")]
+        [TestCategory("CI.Core")]
         public void CreateDefinitionCoverageReport()
         {
 
