@@ -13,6 +13,12 @@ namespace SPMeta2.Services.Impl.Validation
 {
     public class DefaultContentTypeLinkValidationService : PreDeploymentValidationServiceBase
     {
+        public DefaultContentTypeLinkValidationService()
+        {
+            this.Title = "Default Content Type link validator";
+            this.Description = "Ensures that list scoped content type operations such as adding, removing, hiding and reordering are done via ContentTypeName only.";
+        }
+
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
             var exceptionMessage = "List node:[{0}] has [{1}] with ContentTypeId value:[{2}]. ContentTypeId does not work on the list scoped content type operations. Use ContentTypeName for list scoped content type operations.";

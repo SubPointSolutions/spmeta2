@@ -22,12 +22,7 @@ namespace SPMeta2.Containers.Utils
 
         private static string InternalGetEnvironmentVariable(string varName)
         {
-            var result = Environment.GetEnvironmentVariable(varName);
-
-            if (!string.IsNullOrEmpty(result))
-                return result;
-
-            result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Process);
+            var result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
 
             if (!string.IsNullOrEmpty(result))
                 return result;
@@ -37,10 +32,16 @@ namespace SPMeta2.Containers.Utils
             if (!string.IsNullOrEmpty(result))
                 return result;
 
-            result = Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Machine);
+            Environment.GetEnvironmentVariable(varName, EnvironmentVariableTarget.Process);
 
             if (!string.IsNullOrEmpty(result))
                 return result;
+
+            result = Environment.GetEnvironmentVariable(varName);
+
+            if (!string.IsNullOrEmpty(result))
+                return result;
+
 
             return result;
         }
