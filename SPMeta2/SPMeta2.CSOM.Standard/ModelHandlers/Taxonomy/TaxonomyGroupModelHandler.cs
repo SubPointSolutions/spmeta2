@@ -155,6 +155,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                                         ? termStore.CreateGroup(groupModel.Name, groupModel.Id.Value)
                                         : termStore.CreateGroup(groupModel.Name, Guid.NewGuid());
 
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -170,6 +173,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Group");
+
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

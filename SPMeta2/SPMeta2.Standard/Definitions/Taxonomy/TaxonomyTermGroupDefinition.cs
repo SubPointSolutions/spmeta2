@@ -39,6 +39,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         [ExpectValidation]
         [DataMember]
+        public string Description { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
         [IdentityKey]
         public Guid? Id { get; set; }
 
