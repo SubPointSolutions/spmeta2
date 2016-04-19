@@ -357,6 +357,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
+    <Compile Include="Services\Impl\Validation\ContentTypeLinkDeploymentValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
