@@ -39,47 +39,47 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #region AddContentTypeLink
 
-        [TestMethod]
-        [TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
-        [TestCategory("CI.Core")]
-        public void ShouldPass_On_Valid_AddContentTypeLink()
-        {
-            var model = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddRandomList(list =>
-                {
-                    list.AddContentTypeLink(new ContentTypeLinkDefinition
-                    {
-                        ContentTypeName = Rnd.String()
-                    });
-                });
-            });
+        //[TestMethod]
+        //[TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
+        //[TestCategory("CI.Core")]
+        //public void ShouldPass_On_Valid_AddContentTypeLink()
+        //{
+        //    var model = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddRandomList(list =>
+        //        {
+        //            list.AddContentTypeLink(new ContentTypeLinkDefinition
+        //            {
+        //                ContentTypeName = Rnd.String()
+        //            });
+        //        });
+        //    });
 
-            Service.DeployModel(null, model);
-        }
+        //    Service.DeployModel(null, model);
+        //}
 
-        [TestMethod]
-        [TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
-        [TestCategory("CI.Core")]
-        public void ShouldFail_On_Invalid_AddContentTypeLink_Both()
-        {
-            var model = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddRandomList(list =>
-                {
-                    list.AddContentTypeLink(new ContentTypeLinkDefinition
-                    {
-                        ContentTypeName = Rnd.String(),
-                        ContentTypeId = Rnd.String()
-                    });
-                });
-            });
+        //[TestMethod]
+        //[TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
+        //[TestCategory("CI.Core")]
+        //public void ShouldFail_On_Invalid_AddContentTypeLink_Both()
+        //{
+        //    var model = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddRandomList(list =>
+        //        {
+        //            list.AddContentTypeLink(new ContentTypeLinkDefinition
+        //            {
+        //                ContentTypeName = Rnd.String(),
+        //                ContentTypeId = Rnd.String()
+        //            });
+        //        });
+        //    });
 
-            WithExceptionValidation(() =>
-            {
-                Service.DeployModel(null, model);
-            });
-        }
+        //    WithExceptionValidation(() =>
+        //    {
+        //        Service.DeployModel(null, model);
+        //    });
+        //}
 
         private void WithExceptionValidation(Action action)
         {
@@ -97,27 +97,27 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
         }
 
-        [TestMethod]
-        [TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
-        [TestCategory("CI.Core")]
-        public void ShouldFail_On_Invalid_AddContentTypeLink_ContentTypeId()
-        {
-            var model = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddRandomList(list =>
-                {
-                    list.AddContentTypeLink(new ContentTypeLinkDefinition
-                    {
-                        ContentTypeId = Rnd.String()
-                    });
-                });
-            });
+        //[TestMethod]
+        //[TestCategory("Regression.Services.DefaultContentTypeLinkDeploymentValidationService")]
+        //[TestCategory("CI.Core")]
+        //public void ShouldFail_On_Invalid_AddContentTypeLink_ContentTypeId()
+        //{
+        //    var model = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddRandomList(list =>
+        //        {
+        //            list.AddContentTypeLink(new ContentTypeLinkDefinition
+        //            {
+        //                ContentTypeId = Rnd.String()
+        //            });
+        //        });
+        //    });
 
-            WithExceptionValidation(() =>
-            {
-                Service.DeployModel(null, model);
-            });
-        }
+        //    WithExceptionValidation(() =>
+        //    {
+        //        Service.DeployModel(null, model);
+        //    });
+        //}
 
         #endregion
 

@@ -21,30 +21,32 @@ namespace SPMeta2.Services.Impl.Validation
 
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
+            Exceptions.Clear();
+
             var exceptionMessage = "List node:[{0}] has [{1}] with ContentTypeId value:[{2}]. ContentTypeId does not work on the list scoped content type operations. Use ContentTypeName for list scoped content type operations.";
 
             var allNodes = model.Flatten();
 
-            var addContentTypes = GetParenChildNodes<ListDefinition, ContentTypeLinkDefinition>(allNodes);
+            //var addContentTypes = GetParenChildNodes<ListDefinition, ContentTypeLinkDefinition>(allNodes);
             var hideContentTypes = GetParenChildNodes<ListDefinition, HideContentTypeLinksDefinition>(allNodes);
             var removeContentTypes = GetParenChildNodes<ListDefinition, RemoveContentTypeLinksDefinition>(allNodes);
             var uniqueContentTypes = GetParenChildNodes<ListDefinition, UniqueContentTypeOrderDefinition>(allNodes);
 
-            ValidateChildNodes<ContentTypeLinkDefinition>(addContentTypes, (node, child) =>
-            {
-                var typedDef = child.Value as ContentTypeLinkDefinition;
+            //ValidateChildNodes<ContentTypeLinkDefinition>(addContentTypes, (node, child) =>
+            //{
+            //    var typedDef = child.Value as ContentTypeLinkDefinition;
 
-                if (!string.IsNullOrEmpty(typedDef.ContentTypeId))
-                {
-                    Exceptions.Add(new SPMeta2ModelValidationException(
-                        string.Format(exceptionMessage,
-                        new object[]{ 
-                                node,
-                                typedDef.GetType(),
-                                typedDef.ContentTypeName
-                            })));
-                }
-            });
+            //    if (!string.IsNullOrEmpty(typedDef.ContentTypeId))
+            //    {
+            //        Exceptions.Add(new SPMeta2ModelValidationException(
+            //            string.Format(exceptionMessage,
+            //            new object[]{ 
+            //                    node,
+            //                    typedDef.GetType(),
+            //                    typedDef.ContentTypeName
+            //                })));
+            //    }
+            //});
 
             ValidateChildNodes<HideContentTypeLinksDefinition>(hideContentTypes, (node, child) =>
             {

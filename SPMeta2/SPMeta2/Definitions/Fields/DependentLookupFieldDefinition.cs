@@ -31,6 +31,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         #endregion
+      
         #region properties
 
         /// <summary>
