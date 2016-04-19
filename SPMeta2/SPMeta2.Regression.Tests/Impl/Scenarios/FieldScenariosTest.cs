@@ -619,6 +619,83 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region list scope
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_SiteField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field1);
+                site.AddField(field2);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_WebField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddField(field1);
+                web.AddField(field2);
+            });
+
+            TestModel(model);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_ListField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddField(field1);
+                    list.AddField(field2);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region utils
 
         protected FieldDefinition GetLocalizedFieldDefinition()
