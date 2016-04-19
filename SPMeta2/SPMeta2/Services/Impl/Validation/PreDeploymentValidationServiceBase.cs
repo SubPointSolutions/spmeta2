@@ -6,6 +6,9 @@ using System.Text;
 using SPMeta2.Exceptions;
 using SPMeta2.ModelHosts;
 using SPMeta2.Models;
+using SPMeta2.Definitions;
+
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Services.Impl.Validation
 {
@@ -46,10 +49,14 @@ namespace SPMeta2.Services.Impl.Validation
 
         #region methods
 
-        //public override void DeployModel(ModelHostBase modelHost, ModelNode model)
-        //{
-
-        //}
+        protected virtual IEnumerable<ModelNode> GetParenChildNodes<TParent, TChild>(IEnumerable<ModelNode> nodes)
+            where TParent : DefinitionBase
+            where TChild : DefinitionBase
+        {
+            return nodes.Where(n => n.Value is TParent
+                                       && n.Flatten().Any(c => c.Value is TChild))
+                            .ToList();
+        }
 
         public override string ToString()
         {

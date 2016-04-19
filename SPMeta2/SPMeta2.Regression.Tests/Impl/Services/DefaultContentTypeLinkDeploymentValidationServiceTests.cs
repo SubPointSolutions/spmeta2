@@ -26,14 +26,14 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         public DefaultContentTypeLinkDeploymentValidationServiceTests()
         {
-            Service = new DefaultContentTypeLinkDeploymentValidationService();
+            Service = new DefaultContentTypeLinkValidationService();
         }
 
         #endregion
 
         #region properties
 
-        public DefaultContentTypeLinkDeploymentValidationService Service { get; set; }
+        public DefaultContentTypeLinkValidationService Service { get; set; }
 
         #endregion
 

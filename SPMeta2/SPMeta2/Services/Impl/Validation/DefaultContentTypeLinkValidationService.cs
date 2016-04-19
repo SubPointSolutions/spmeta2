@@ -11,17 +11,8 @@ using SPMeta2.Exceptions;
 
 namespace SPMeta2.Services.Impl.Validation
 {
-    public class DefaultContentTypeLinkDeploymentValidationService : PreDeploymentValidationServiceBase
+    public class DefaultContentTypeLinkValidationService : PreDeploymentValidationServiceBase
     {
-        protected virtual IEnumerable<ModelNode> GetParenChildNodes<TParent, TChild>(IEnumerable<ModelNode> nodes)
-            where TParent : DefinitionBase
-            where TChild : DefinitionBase
-        {
-            return nodes.Where(n => n.Value is TParent
-                                       && n.Flatten().Any(c => c.Value is TChild))
-                            .ToList();
-        }
-
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
             var exceptionMessage = "List node:[{0}] has [{1}] with ContentTypeId value:[{2}]. ContentTypeId does not work on the list scoped content type operations. Use ContentTypeName for list scoped content type operations.";

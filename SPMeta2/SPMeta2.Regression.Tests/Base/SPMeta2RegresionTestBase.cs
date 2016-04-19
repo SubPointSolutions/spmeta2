@@ -179,10 +179,10 @@ namespace SPMeta2.Regression.Tests.Base
             }
         }
 
-        public ModelGeneratorService ModelGeneratorService
-        {
-            get { return RegressionService.ModelGeneratorService; }
-        }
+        //public ModelGeneratorService ModelGeneratorService
+        //{
+        //    get { return RegressionService.ModelGeneratorService; }
+        //}
 
         #endregion
 
