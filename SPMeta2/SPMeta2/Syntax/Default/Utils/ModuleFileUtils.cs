@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 
@@ -9,6 +10,11 @@ namespace SPMeta2.Syntax.Default.Utils
     public static class ModuleFileUtils
     {
         #region from resource helpers
+
+        public static string ReadFullyAsString(Stream input)
+        {
+            return Encoding.UTF8.GetString(ReadFully(input));
+        }
 
         public static byte[] ReadFully(Stream input)
         {
