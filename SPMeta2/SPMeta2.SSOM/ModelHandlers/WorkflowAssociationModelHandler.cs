@@ -117,10 +117,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var workflowTemplate = GetWorkflowTemplate(modelHost, definition);
 
+                if (workflowTemplate == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find workflow template by definition:[{0}]", definition));
+                }
+
                 existingWorkflowAssotiation = SPWorkflowAssociation.CreateListAssociation(workflowTemplate,
                            definition.Name,
-                           list.Lists[definition.TaskListTitle],
-                           list.Lists[definition.HistoryListTitle]);
+                           list.ParentWeb.Lists[definition.TaskListTitle],
+                           list.ParentWeb.Lists[definition.HistoryListTitle]);
 
                 isNew = true;
             }

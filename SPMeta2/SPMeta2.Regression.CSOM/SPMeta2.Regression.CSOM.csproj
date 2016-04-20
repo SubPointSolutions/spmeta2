@@ -214,6 +214,7 @@
     <Compile Include="Validation\Webparts\UserDocsWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\UserTasksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\XmlWebPartValidator.cs" />
+    <Compile Include="Validation\ClientWorkflowAssociationDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
