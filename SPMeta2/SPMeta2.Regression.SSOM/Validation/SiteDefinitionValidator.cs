@@ -45,11 +45,21 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
                 .ShouldBePartOf(m => m.OwnerName, o => o.GetOwnerName())
                 .SkipProperty(m => m.OwnerEmail, "Skipping OwnerEmail validation.")
 
-                .ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin())
-                .ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName())
+                //.ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin())
+                //.ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName())
                 .SkipProperty(m => m.SecondaryContactEmail, "Skipping SecondaryContactEmail validation.")
 
                 .ShouldBeEqual(m => m.LCID, o => o.GetSiteLCID());
+
+            if (!string.IsNullOrEmpty(definition.SecondaryContactLogin))
+                assert.ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin());
+            else
+                assert.SkipProperty(m => m.SecondaryContactLogin, "SecondaryContactLogin is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.SecondaryContactName))
+                assert.ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName());
+            else
+                assert.SkipProperty(m => m.SecondaryContactName, "SecondaryContactName is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.PrefixName))
             {
@@ -85,7 +95,7 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
 
         public static string GetOwnerLogin(this SPSite site)
         {
-            return site.Owner.LoginName;
+            return site.Owner.LoginName.ToLower();
         }
 
         public static string GetOwnerName(this SPSite site)
@@ -95,7 +105,7 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
 
         public static string GetSecondOwnerLogin(this SPSite site)
         {
-            return site.SecondaryContact.LoginName;
+            return site.SecondaryContact.LoginName.ToLower();
         }
 
         public static string GeSecondtOwnerName(this SPSite site)
