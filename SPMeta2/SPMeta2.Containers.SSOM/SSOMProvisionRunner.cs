@@ -29,6 +29,8 @@ using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
 using SPMeta2.Services.Impl.Validation;
 using SPMeta2.SSOM.Standard.Services;
+using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Containers.SSOM
 {
@@ -355,6 +357,8 @@ namespace SPMeta2.Containers.SSOM
             }
         }
 
+
+
         public override void DeployListModel(ModelNode model)
         {
             foreach (var webUrl in WebUrls)
@@ -365,11 +369,30 @@ namespace SPMeta2.Containers.SSOM
                 {
                     WithSSOMSiteAndWebContext(webUrl, (site, web) =>
                     {
+                        var list = web.Lists.TryGetList("Site Pages");
+                       
+                        if (list == null)
+                        {
+                            list = web.Lists.TryGetList("Pages");
+                        }
+
+                        if (list == null)
+                        {
+                            throw new SPMeta2Exception("Cannot find host list");
+                        }
+
                         if (EnableDefinitionProvision)
-                            _provisionService.DeployModel(WebModelHost.FromWeb(web), model);
+                            _provisionService.DeployListModel(list, model);
 
                         if (EnableDefinitionValidation)
-                            _validationService.DeployModel(WebModelHost.FromWeb(web), model);
+                        {
+                            var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromWeb(list.ParentWeb), h =>
+                            {
+                                h.HostList = list;
+                            });
+
+                            _validationService.DeployModel(listHost, model);
+                        }
                     });
                 }
             }

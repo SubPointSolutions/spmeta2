@@ -25,7 +25,7 @@ namespace SPMeta2.CSOM.Services
             ServiceContainer.Instance.RegisterService(typeof(CSOMLocalizationService), new CSOMLocalizationService());
 
             PreDeploymentServices.Add(new RequireCSOMRuntimeVersionDeploymentService());
-            
+
             RegisterModelHandlers();
         }
 
@@ -95,6 +95,16 @@ namespace SPMeta2.CSOM.Services
         public static void DeployWebModel(this CSOMProvisionService modelHost, ClientContext context, ModelNode model)
         {
             modelHost.DeployModel(new WebModelHost(context), model);
+        }
+
+        public static void DeployListModel(this CSOMProvisionService modelHost, ClientContext context, List list, ModelNode model)
+        {
+            var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+            {
+                h.HostList = list;
+            });
+
+            modelHost.DeployModel(listHost, model);
         }
     }
 }

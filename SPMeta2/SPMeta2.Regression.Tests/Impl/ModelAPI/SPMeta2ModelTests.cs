@@ -87,13 +87,27 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
             TestModel(model);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model")]
+        public void CanDeploy_ListModel_WithFolders()
+        {
+            var model = SPMeta2Model.NewListModel(list =>
+            {
+                list.AddFolder(ModelGeneratorService.GetRandomDefinition<FolderDefinition>());
+                list.AddFolder(ModelGeneratorService.GetRandomDefinition<FolderDefinition>());
+                list.AddFolder(ModelGeneratorService.GetRandomDefinition<FolderDefinition>());
+            });
+
+            TestModel(model);
+        }
+
         #endregion
     }
 
     [TestClass]
     public class SPMeta2ModelTests : SPMeta2DefinitionRegresionTestBase
     {
-       
+
 
         #region serialization
 

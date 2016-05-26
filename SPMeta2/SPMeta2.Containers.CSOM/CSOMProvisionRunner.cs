@@ -24,6 +24,9 @@ using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
 using SPMeta2.Services.Impl.Validation;
 
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.ModelHosts;
+
 namespace SPMeta2.Containers.CSOM
 {
     public class CSOMProvisionRunner : ProvisionRunnerBase
@@ -193,11 +196,42 @@ namespace SPMeta2.Containers.CSOM
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
                     {
+                        List list = null;
+
+                        try
+                        {
+                            list = context.Web.QueryAndGetListByTitle("Site Pages");
+                        }
+                        catch (Exception ex) { }
+
+                        if (list == null)
+                        {
+                            try
+                            {
+                                list = context.Web.QueryAndGetListByTitle("Pages");
+                            }
+                            catch (Exception ex) { }
+
+                        }
+
+                        if (list == null)
+                        {
+                            throw new SPMeta2Exception("Cannot find host list");
+                        }
+
                         if (EnableDefinitionProvision)
-                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                            _provisionService.DeployListModel(context, list, model);
 
                         if (EnableDefinitionValidation)
-                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                        {
+                            var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                            {
+                                h.HostList = list;
+                            });
+
+                            _validationService.DeployModel(listHost, model);
+
+                        }
                     }
                 });
             }

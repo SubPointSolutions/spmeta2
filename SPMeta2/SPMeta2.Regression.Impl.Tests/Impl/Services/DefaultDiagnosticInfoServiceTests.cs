@@ -56,7 +56,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.DefaultDiagnosticInfoService")]
-        [TestCategory("CI.Core")]
+        [TestCategory("CI.Core.SharePoint")]
         public void DefaultDiagnosticInfoService_ShouldHaveAllProperties()
         {
             WarmupSharePoint();
@@ -85,7 +85,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestMethod]
         [TestCategory("Regression.Impl.DefaultDiagnosticInfoService")]
         [TestCategory("CI.Core")]
-        public void DefaultDiagnosticInfoService_ShouldNotFail_OnColSharePoint()
+        public void DefaultDiagnosticInfoService_ShouldNotFail_WithoutSharePoint()
         {
             // should not fail on non-loaded SharePoint
             //WarmupSharePoint();

@@ -168,8 +168,8 @@ namespace SPMeta2.Containers.Services
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
 
-            ProvisionRunnerAssemblies.Clear();
-            ProvisionRunnerAssemblies.Add("SPMeta2.Containers.SSOM.dll");
+            //ProvisionRunnerAssemblies.Clear();
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Containers.SSOM.dll");
         }
 
         protected ProvisionRunnerBase CurrentProvisionRunner;
