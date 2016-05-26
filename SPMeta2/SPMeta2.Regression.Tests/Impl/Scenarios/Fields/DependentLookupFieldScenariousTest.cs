@@ -318,6 +318,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
+        [ExpectedException(typeof(SPMeta2NotImplementedException))]
         public void CanDeploy_DependentLookupField_OnWeb()
         {
             throw new SPMeta2NotImplementedException("");
@@ -492,9 +493,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 def.Required = false;
                 def.AllowMultipleValues = false;
 
-                #pragma warning disable 618
+#pragma warning disable 618
                 def.LookupListUrl = masterList.GetListUrl();
-                #pragma warning restore 618
+#pragma warning restore 618
             });
 
             var dependentIdLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(

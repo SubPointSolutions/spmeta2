@@ -18,6 +18,8 @@ using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Attributes.Regression;
 
+using SPMeta2.Containers.Extensions;
+
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
@@ -637,8 +639,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var model = SPMeta2Model.NewSiteModel(site =>
             {
-                site.AddField(field1);
-                site.AddField(field2);
+                // should not validate fieldd, it would fail on Id validation
+                // it we can deploy the second field - all good
+                site.AddField(field1, f => f.RegExcludeFromValidation());
+                site.AddField(field2, f => f.RegExcludeFromValidation());
             });
 
             TestModel(model);
@@ -660,8 +664,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddField(field1);
-                web.AddField(field2);
+                // should not validate fieldd, it would fail on Id validation
+                // it we can deploy the second field - all good
+                web.AddField(field1, f => f.RegExcludeFromValidation());
+                web.AddField(field2, f => f.RegExcludeFromValidation());
             });
 
             TestModel(model);

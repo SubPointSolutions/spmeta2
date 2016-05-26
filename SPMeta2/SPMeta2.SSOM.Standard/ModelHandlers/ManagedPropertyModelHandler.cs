@@ -43,7 +43,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
         private void DeploySiteManagedProperty(object modelHost, SiteModelHost siteModelHost, ManagedPropertyDefinition managedProperty)
         {
-            throw new NotImplementedException();
+            throw new SPMeta2NotImplementedException("Managed property deployment under site is not implemented yet");
         }
 
         protected ManagedProperty GetCurrentObject(object modelHost, ManagedPropertyDefinition definition)

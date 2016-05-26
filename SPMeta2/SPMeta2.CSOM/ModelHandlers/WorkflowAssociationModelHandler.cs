@@ -86,7 +86,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (modelHost is WebModelHost)
             {
-                throw new SPMeta2NotImplementedException("todo");
+                throw new SPMeta2NotImplementedException("WorkflowAssociation under web is not implemented yet");
             }
 
 

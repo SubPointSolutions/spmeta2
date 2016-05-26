@@ -279,8 +279,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             object modelHost,
             SPFieldCollection fields, FieldDefinition fieldModel)
         {
+            // by ID?
             var currentField = fields.OfType<SPField>()
                                         .FirstOrDefault(f => f.Id == fieldModel.Id);
+
+            // by internal name?
+            if (currentField == null && !string.IsNullOrEmpty(fieldModel.InternalName))
+            {
+                TraceService.Information((int)LogEventId.CoreCalls, "Could not find field by ID, fallback on InternalName");
+
+                currentField = fields.OfType<SPField>()
+                                           .FirstOrDefault(f => String.Equals(f.InternalName, fieldModel.InternalName,
+                                                                StringComparison.OrdinalIgnoreCase));
+            }
 
             if (currentField == null)
             {
@@ -308,7 +319,24 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing field");
 
-                currentField = fields[fieldModel.Id];
+                currentField = fields.OfType<SPField>()
+                                        .FirstOrDefault(f => f.Id == fieldModel.Id);
+
+                if (currentField == null && !string.IsNullOrEmpty(fieldModel.InternalName))
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls, "Could not find existing field by ID, fallback on InternalName");
+
+                    currentField = fields.OfType<SPField>()
+                                               .FirstOrDefault(f => String.Equals(f.InternalName, fieldModel.InternalName,
+                                                                    StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (currentField == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find existing field neither by ID [{0}] or InternalName [{1}]. Definition:[{2}]",
+                        fieldModel.Id, fieldModel.InternalName, fieldModel));
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

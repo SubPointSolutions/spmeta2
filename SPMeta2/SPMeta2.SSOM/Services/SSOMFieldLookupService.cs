@@ -14,16 +14,34 @@ namespace SPMeta2.SSOM.Services
     {
         public virtual SPField GetField(SPFieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle)
         {
+            SPField result = null;
+
             if (fieldId.HasGuidValue())
-                return fields[fieldId.Value];
+            {
+                result = fields.OfType<SPField>().FirstOrDefault(f => f.Id == fieldId.Value);
+            }
 
-            if (!string.IsNullOrEmpty(fieldInternalName))
-                return fields.GetFieldByInternalName(fieldInternalName);
+            if (result == null && !string.IsNullOrEmpty(fieldInternalName))
+            {
+                result = fields.OfType<SPField>()
+                                           .FirstOrDefault(f => String.Equals(f.InternalName, fieldInternalName,
+                                                                StringComparison.OrdinalIgnoreCase));
+            }
 
-            if (!string.IsNullOrEmpty(fieldTitle))
-                return fields.GetField(fieldTitle);
+            if (result == null && !string.IsNullOrEmpty(fieldTitle))
+            {
+                result = fields.OfType<SPField>()
+                                           .FirstOrDefault(f => String.Equals(f.Title, fieldTitle,
+                                                                StringComparison.OrdinalIgnoreCase));
+            }
 
-            throw new SPMeta2Exception("GetField(): one of fieldId / fieldInternalName / fieldTitle need to be defined");
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new SPMeta2Exception(string.Format("SSOMFieldLookupService.GetField(): cannot find field by fieldId:[{0}],  fieldInternalName:[{1}], fieldTitle:[{2}]",
+                fieldId, fieldInternalName, fieldTitle));
         }
 
         public virtual T GetFieldAs<T>(SPFieldCollection fields, Guid? fieldId, string fieldInternalName, string fieldTitle) where T : SPField

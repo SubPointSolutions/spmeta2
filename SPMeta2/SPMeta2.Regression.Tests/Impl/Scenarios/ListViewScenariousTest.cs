@@ -175,8 +175,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        [ExpectedException(typeof(SPMeta2NotImplementedException))]
         public void CanDeploy_ListView_AsRecurrence()
         {
+            
             throw new SPMeta2NotImplementedException();
 
             //TestRandomDefinition<ListViewDefinition>(def =>
