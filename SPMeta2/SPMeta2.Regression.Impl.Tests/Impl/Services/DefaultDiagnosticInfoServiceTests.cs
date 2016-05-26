@@ -71,7 +71,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.DefaultDiagnosticInfoService")]
-        [TestCategory("CI.Core")]
+        [TestCategory("CI.Core.SharePoint")]
         public void DefaultDiagnosticInfoService_SPMeta2Diagnostic_NotNull()
         {
             WarmupSharePoint();
