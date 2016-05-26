@@ -62,6 +62,8 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert.ShouldBeEqualIfNotNullOrEmpty(m => m.Group, o => o.Group);
             assert.ShouldBeEqualIfNotNullOrEmpty(m => m.StaticName, o => o.StaticName);
 
+            assert.SkipProperty(m => m.DefaultFormula, "Not supported in CSOM API yet");
+
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {
                 assert.SkipProperty(m => m.AddFieldOptions, "BuiltInAddFieldOptions.DefaultValue. Skipping.");
