@@ -119,6 +119,7 @@
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Utils\FieldSchemaXmlUtils.cs" />
+    <Compile Include="Validation\ClientAnonymousAccessSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientRecycleBinDefinitionValidator.cs" />
     <Compile Include="Validation\ClientAppDefinitionValidator.cs" />
     <Compile Include="Validation\ClientComposedLookItemLinkDefinitionValidator.cs" />

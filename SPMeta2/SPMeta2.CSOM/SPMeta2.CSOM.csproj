@@ -184,6 +184,7 @@
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
+    <Compile Include="ModelHandlers\AnonymousAccessSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
