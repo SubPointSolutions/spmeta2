@@ -40,6 +40,11 @@ namespace SPMeta2.Containers.SSOM
 
         public SSOMProvisionRunner()
         {
+            if (!Environment.Is64BitProcess)
+            {
+                throw new SPMeta2Exception("Environment.Is64BitProcess is false. SSOMProvisionRunner runs SSOM based stuff requiring x64 running process. If you run unit tests from Visual Studio, ensure 'Test -> Test Setting -> Default Processor Architecture -> x64'");
+            }
+
             Name = "SSOM";
 
             WebApplicationUrls = new List<string>();
@@ -370,7 +375,7 @@ namespace SPMeta2.Containers.SSOM
                     WithSSOMSiteAndWebContext(webUrl, (site, web) =>
                     {
                         var list = web.Lists.TryGetList("Site Pages");
-                       
+
                         if (list == null)
                         {
                             list = web.Lists.TryGetList("Pages");
