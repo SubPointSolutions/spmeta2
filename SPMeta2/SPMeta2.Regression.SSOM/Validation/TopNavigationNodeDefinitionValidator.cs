@@ -35,6 +35,40 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             assert.ShouldBeEqual((p, s, d) =>
             {
+                var srcProp = s.GetExpressionValue(def => def.Properties);
+                var dstProp = d.GetExpressionValue(ct => ct.Properties);
+
+                var isValid = true;
+
+                var srcValues = s.Properties;
+                var dstValues = d.Properties;
+
+                foreach (var srcValue in srcValues)
+                {
+                    if (!dstValues.ContainsKey(srcValue.Key))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (ConvertUtils.ToString(dstValues[srcValue.Key]) != srcValue.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
                 var srcProp = s.GetExpressionValue(def => def.Url);
                 var dstProp = d.GetExpressionValue(ct => ct.Url);
 

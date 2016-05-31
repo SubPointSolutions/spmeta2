@@ -83,6 +83,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Url = ResolveTokenizedUrl(CurrentWebModelHost, quickLaunchNode);
             existingNode.IsVisible = quickLaunchNode.IsVisible;
 
+            ProcessProperties(existingNode, quickLaunchNode);
             ProcessLocalization(existingNode, quickLaunchNode);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -99,6 +100,20 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Update();
 
             return existingNode;
+        }
+
+        protected virtual void ProcessProperties(SPNavigationNode existingNode, NavigationNodeDefinitionBase quickLaunchNode)
+        {
+            if (quickLaunchNode.Properties != null && quickLaunchNode.Properties.Any())
+            {
+                foreach (var prop in quickLaunchNode.Properties)
+                {
+                    if (existingNode.Properties.ContainsKey(prop.Key))
+                        existingNode.Properties[prop.Key] = prop.Value;
+                    else
+                        existingNode.Properties.Add(prop.Key, prop.Value);
+                }
+            }
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
@@ -204,6 +219,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             existingNode.Url = ResolveTokenizedUrl(webModelHost, rootNode);
             existingNode.IsVisible = rootNode.IsVisible;
 
+            ProcessProperties(existingNode, rootNode);
             ProcessLocalization(existingNode, rootNode);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -228,7 +244,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
             }
         }
 
