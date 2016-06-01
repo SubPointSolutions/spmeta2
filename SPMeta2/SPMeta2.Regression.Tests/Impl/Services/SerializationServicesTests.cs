@@ -15,10 +15,10 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public void CanSerializeAndDeserializeJSON()
         {
             var obj = new FieldDefinition();
-            var jsonService = new DefaultJSONSerializationService();
+            var service = new DefaultJSONSerializationService();
 
-            var strValue = jsonService.Serialize(obj);
-            jsonService.Deserialize(obj.GetType(), strValue);
+            var strValue = service.Serialize(obj);
+            service.Deserialize(obj.GetType(), strValue);
 
         }
 
@@ -29,10 +29,10 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public void CanSerializeAndDeserializeXML()
         {
             var obj = new FieldDefinition();
-            var jsonService = new DefaultJSONSerializationService();
+            var service = new DefaultXMLSerializationService();
 
-            var strValue = jsonService.Serialize(obj);
-            jsonService.Deserialize(obj.GetType(), strValue);
+            var strValue = service.Serialize(obj);
+            service.Deserialize(obj.GetType(), strValue);
 
         }
 
