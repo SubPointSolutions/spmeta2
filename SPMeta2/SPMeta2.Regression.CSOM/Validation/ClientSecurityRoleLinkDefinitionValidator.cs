@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -24,9 +26,19 @@ namespace SPMeta2.Regression.CSOM.Validation
             securityRoleContext.Load(securityRole);
             securityRoleContext.ExecuteQueryWithTrace();
 
-            var spObject = securableObject.RoleAssignments
+            var roleAssignments = securableObject.RoleAssignments;
+            var spObject = roleAssignments
                                           .OfType<RoleAssignment>()
                                           .FirstOrDefault(r => r.Member.Id == securityGroup.Id);
+
+
+            if (definition.RegIsMustBeSingleItem())
+            {
+                if (roleAssignments.Count != 1)
+                {
+                    throw new SPMeta2Exception("There must be only one RoleAssignments. RegIsMustBeSingleItem() == true");
+                }
+            }
 
             var context = spObject.Context;
             context.Load(spObject, o => o.RoleDefinitionBindings);

@@ -59,7 +59,8 @@ namespace SPMeta2.Common
                 {
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
-               
+                    typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }
@@ -73,6 +74,7 @@ namespace SPMeta2.Common
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
                     typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }

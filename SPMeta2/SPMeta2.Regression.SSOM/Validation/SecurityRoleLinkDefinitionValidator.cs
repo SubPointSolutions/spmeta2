@@ -3,7 +3,9 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Utils;
 
@@ -24,14 +26,22 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             var securityRole = ResolveSecurityRole(ExtractWeb(securableObject), definition);
 
-            var spObject = securableObject.RoleAssignments
-                                          .OfType<SPRoleAssignment>()
+            var roleAssignments = securableObject.RoleAssignments;
+            var spObject = roleAssignments.OfType<SPRoleAssignment>()
                                           .FirstOrDefault(r => r.Member.ID == securityGroup.ID);
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
                  .ShouldNotBeNull(spObject);
+
+            if (definition.RegIsMustBeSingleItem())
+            {
+                if (roleAssignments.Count != 1)
+                {
+                    throw new SPMeta2Exception("There must be only one RoleAssignments. RegIsMustBeSingleItem() == true");
+                }
+            }
 
             if (!string.IsNullOrEmpty(definition.SecurityRoleName))
             {
