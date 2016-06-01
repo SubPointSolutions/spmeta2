@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
 using System.Text;
 using SPMeta2.Containers.Services.Rnd;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
@@ -55,11 +56,23 @@ namespace SPMeta2.Regression.Tests.Base
         }
 
         public ModelGeneratorService ModelGeneratorService { get; set; }
+
+        protected virtual T RndDef<T>()
+            where T : DefinitionBase
+        {
+            return RndDef<T>(null);
+        }
+
+        protected virtual T RndDef<T>(Action<T> action)
+            where T : DefinitionBase
+        {
+            return ModelGeneratorService.GetRandomDefinition<T>(action);
+        }
     }
 
     public class SPMeta2DefinitionRegresionTestBase : SPMeta2RegresionTestCoreBase
     {
-        
+
     }
 
     public class SPMeta2ProvisionRegresionTestBase : SPMeta2RegresionTestCoreBase

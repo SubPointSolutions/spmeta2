@@ -656,6 +656,22 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_DeleteQuickLaunchNavigationNodesDefinition()
+        {
+            TestRandomDefinition<DeleteQuickLaunchNavigationNodesDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_DeleteTopNavigationNodesDefinition()
+        {
+            TestRandomDefinition<DeleteTopNavigationNodesDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_QuickLaunchNavigationNodeDefinition()
         {
             TestRandomDefinition<QuickLaunchNavigationNodeDefinition>();

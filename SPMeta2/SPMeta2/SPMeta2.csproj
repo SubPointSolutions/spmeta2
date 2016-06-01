@@ -161,10 +161,12 @@
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\DeleteNavigationNodesDefinitionBase.cs" />
     <Compile Include="Definitions\ClearRecycleBinDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemLinkDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
+    <Compile Include="Definitions\DeleteQuickNavigationNodesDefinition.cs" />
     <Compile Include="Definitions\DeleteWebPartsDefinition.cs" />
     <Compile Include="Definitions\Fields\DependentLookupFieldDefinition.cs" />
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
@@ -176,6 +178,7 @@
     <Compile Include="Definitions\PeoplePickerSettingsDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\SupportedUICultureDefinition.cs" />
+    <Compile Include="Definitions\DeleteTopNavigationNodesDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />
     <Compile Include="Definitions\RootWebDefinition.cs" />
     <Compile Include="Definitions\DiagnosticsServiceBaseDefinition.cs" />
@@ -410,6 +413,7 @@
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />
+    <Compile Include="Syntax\Default\DeleteTopNavigationNodesDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Extensions\DefinitionExtensions.cs" />
     <Compile Include="Syntax\Default\Fields\BooleanFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\BreakRoleInheritanceDefinitionSyntax.cs" />

@@ -198,6 +198,8 @@
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\SingleHostTypedSSOMModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\DeleteTopNavigationNodesModelHandler.cs" />
+    <Compile Include="ModelHandlers\DeleteQuickLaunchNavigationNodesModelHandler.cs" />
     <Compile Include="ModelHandlers\ClearRecycleBinModelHandler.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemLinkModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
@@ -329,6 +331,7 @@
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\SSOMContentTypeLookupService.cs" />
+    <Compile Include="Services\SSOMDeleteNavigationNodesService.cs" />
     <Compile Include="Services\SSOMFieldLookupService.cs" />
     <Compile Include="Services\SSOMLocalizationService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />

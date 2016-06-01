@@ -170,13 +170,16 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
 
         protected virtual string ResolveTokenizedUrl(WebModelHost webModelHost, NavigationNodeDefinitionBase rootNode)
         {
-            var urlValue = rootNode.Url;
+            return ResolveTokenizedUrl(webModelHost, rootNode.Url);
+        }
 
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original Url: [{0}]", urlValue);
+        protected virtual string ResolveTokenizedUrl(WebModelHost webModelHost, string tokenizedUrl)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original Url: [{0}]", tokenizedUrl);
 
             var newUrlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
             {
-                Value = urlValue,
+                Value = tokenizedUrl,
                 Context = webModelHost.HostWeb
             }).Value;
 

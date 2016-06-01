@@ -105,6 +105,8 @@
     <Compile Include="DefinitionGenerators\ClearRecycleBinDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeleteQuickLaunchNavigationNodesDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeleteTopNavigationNodesDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AnonymousAccessSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PeoplePickerSettingsDefinitionGenerator.cs" />
