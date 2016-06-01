@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Utils;
@@ -26,7 +27,7 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(WebDefinition))]
 
     //[ExpectManyInstances]
-
+    [SingletonIdentity]
     public class DeleteQuickLaunchNavigationNodesDefinition : DeleteNavigationNodesDefinitionBase
     {
         #region methods
