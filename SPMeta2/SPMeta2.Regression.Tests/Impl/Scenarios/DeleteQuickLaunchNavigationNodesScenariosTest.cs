@@ -20,7 +20,7 @@ using SPMeta2.Validation.Validators.Relationships;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class DeleteTopNavigationNodesScenariosTest : SPMeta2RegresionScenarioTestBase
+    public class DeleteQuickLaunchNavigationNodesScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 
@@ -41,14 +41,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region test
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.DeleteTopNavigationNodes")]
-        public void CanDeploy_DeleteTopNavigationNodes_ByTitle()
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNodes")]
+        public void CanDeploy_DeleteQuickLaunchNavigationNodes_ByTitle()
         {
             // deploy some links, and then delete them by title
 
-            var node1 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
-            var node2 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
-            var node3 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
+            var node2 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
+            var node3 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
 
             var subWeb = RndDef<WebDefinition>();
 
@@ -56,9 +56,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddTopNavigationNode(node1);
-                    web.AddTopNavigationNode(node2);
-                    web.AddTopNavigationNode(node3);
+                    web.AddQuickLaunchNavigationNode(node1);
+                    web.AddQuickLaunchNavigationNode(node2);
+                    web.AddQuickLaunchNavigationNode(node3);
                 });
             });
 
@@ -68,7 +68,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddDeleteTopNavigationNodes(new DeleteTopNavigationNodesDefinition
+                    web.AddDeleteQuickLaunchNavigationNodes(new DeleteQuickLaunchNavigationNodesDefinition
                     {
                         NavigationNodes = new List<NavigationNodeMatch>
                         {
@@ -84,14 +84,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.DeleteTopNavigationNodes")]
-        public void CanDeploy_DeleteTopNavigationNodes_ByUrl()
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNodes")]
+        public void CanDeploy_DeleteQuickLaunchNavigationNodes_ByUrl()
         {
             // deploy some links, and then delete them by title
 
-            var node1 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
-            var node2 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
-            var node3 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
+            var node2 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
+            var node3 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
 
             var subWeb = RndDef<WebDefinition>();
 
@@ -99,9 +99,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddTopNavigationNode(node1);
-                    web.AddTopNavigationNode(node2);
-                    web.AddTopNavigationNode(node3);
+                    web.AddQuickLaunchNavigationNode(node1);
+                    web.AddQuickLaunchNavigationNode(node2);
+                    web.AddQuickLaunchNavigationNode(node3);
                 });
             });
 
@@ -111,7 +111,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddDeleteTopNavigationNodes(new DeleteTopNavigationNodesDefinition
+                    web.AddDeleteQuickLaunchNavigationNodes(new DeleteQuickLaunchNavigationNodesDefinition
                     {
                         NavigationNodes = new List<NavigationNodeMatch>
                         {
@@ -127,16 +127,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.DeleteTopNavigationNodes")]
-        public void CanDeploy_DeleteTopNavigationNodes_ByTitleAndUrl()
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNodes")]
+        public void CanDeploy_DeleteQuickLaunchNavigationNodes_ByTitleAndUrl()
         {
             // deploy some links, and then delete them by bot title  / url
 
             // deploy some links, and then delete them by title
 
-            var node1 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
-            var node2 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
-            var node3 = RndDef<TopNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "1_" + def.Title);
+            var node2 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "2_" + def.Title);
+            var node3 = RndDef<QuickLaunchNavigationNodeDefinition>(def => def.Title = "3_" + def.Title);
 
             var subWeb = RndDef<WebDefinition>();
 
@@ -144,9 +144,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddTopNavigationNode(node1);
-                    web.AddTopNavigationNode(node2);
-                    web.AddTopNavigationNode(node3);
+                    web.AddQuickLaunchNavigationNode(node1);
+                    web.AddQuickLaunchNavigationNode(node2);
+                    web.AddQuickLaunchNavigationNode(node3);
                 });
             });
 
@@ -156,7 +156,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 rootWeb.AddWeb(subWeb, web =>
                 {
-                    web.AddDeleteTopNavigationNodes(new DeleteTopNavigationNodesDefinition
+                    web.AddDeleteQuickLaunchNavigationNodes(new DeleteQuickLaunchNavigationNodesDefinition
                     {
                         NavigationNodes = new List<NavigationNodeMatch>
                         {

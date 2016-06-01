@@ -18,13 +18,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public DeleteQuickLaunchNavigationNodesModelHandler()
         {
-            DeleteNavigationNodesService = new DeleteNavigationNodesService();
+            DeleteNavigationNodesService = new SSOMDeleteNavigationNodesService();
         }
 
         #endregion
 
         #region properties
-        protected DeleteNavigationNodesService DeleteNavigationNodesService { get; set; }
+        protected SSOMDeleteNavigationNodesService DeleteNavigationNodesService { get; set; }
 
         public override Type TargetType
         {
@@ -60,10 +60,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (typedDefinition.NavigationNodes != null && typedDefinition.NavigationNodes.Any())
             {
-                var service = new DeleteNavigationNodesService();
                 var nodesCollection = GetNavigationNodeCollection(web);
 
-                service.DeleteNodesByMatch(typedDefinition, nodesCollection, url =>
+                DeleteNavigationNodesService.DeleteNodesByMatch(typedDefinition, nodesCollection, url =>
                 {
                     return ResolveTokenizedUrl(typedModelHost, url);
                 });

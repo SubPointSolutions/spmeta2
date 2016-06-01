@@ -2,39 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using Microsoft.SharePoint.Navigation;
+using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions.Base;
 
-namespace SPMeta2.SSOM.Services
+namespace SPMeta2.CSOM.Services
 {
-    public class SSOMDeleteNavigationNodesService
+    public class CSOMDeleteNavigationNodesService
     {
 
         public virtual void DeleteNodesByMatch(DeleteNavigationNodesDefinitionBase typedDefinition,
-            SPNavigationNodeCollection nodesCollection,
+            NavigationNodeCollection nodesCollection,
             Func<string, string> resolveTokenizedUrlAction)
         {
-            var allNodes = nodesCollection.OfType<SPNavigationNode>()
-                                             .ToArray();
-
+            var allNodes = nodesCollection.ToArray();
             var nodesToDelete = FindMatches(allNodes, typedDefinition, resolveTokenizedUrlAction);
 
             if (nodesToDelete.Any())
             {
+                var context = nodesCollection.Context;
+
                 foreach (var node in nodesToDelete.ToArray())
                 {
-                    node.Delete();
+                    node.DeleteObject();
                 }
+
+                context.ExecuteQueryWithTrace();
             }
         }
 
-        public virtual List<SPNavigationNode> FindMatches(
-            SPNavigationNode[] allNodes,
+        public virtual List<NavigationNode> FindMatches(
+            NavigationNode[] allNodes,
             DeleteNavigationNodesDefinitionBase typedDefinition,
             Func<string, string> resolveTokenizedUrlAction)
         {
-            var nodesToDelete = new List<SPNavigationNode>();
+            var nodesToDelete = new List<NavigationNode>();
 
             foreach (var nodeMatch in typedDefinition.NavigationNodes)
             {

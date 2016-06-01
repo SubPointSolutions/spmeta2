@@ -105,8 +105,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
 
         protected virtual string ResolveTokenizedUrl(ClientContext context, NavigationNodeDefinitionBase rootNode)
         {
-            var urlValue = rootNode.Url;
+            return ResolveTokenizedUrl(context, rootNode.Url);
+        }
 
+        protected virtual string ResolveTokenizedUrl(ClientContext context, string urlValue)
+        {
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original Url: [{0}]", urlValue);
 
             var newUrlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext

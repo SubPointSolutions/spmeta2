@@ -413,6 +413,7 @@
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />
+    <Compile Include="Syntax\Default\DeleteTopNavigationNodesDefinitionSyntax - Copy.cs" />
     <Compile Include="Syntax\Default\DeleteTopNavigationNodesDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Extensions\DefinitionExtensions.cs" />
     <Compile Include="Syntax\Default\Fields\BooleanFieldDefinitionSyntax.cs" />

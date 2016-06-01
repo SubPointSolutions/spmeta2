@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.SharePoint;
-using Microsoft.SharePoint.Navigation;
+using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.CSOM.Services;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
-using SPMeta2.SSOM.ModelHosts;
-using SPMeta2.SSOM.Services;
 using SPMeta2.Utils;
 
-namespace SPMeta2.SSOM.ModelHandlers
+namespace SPMeta2.CSOM.ModelHandlers
 {
     public class DeleteTopNavigationNodesModelHandler : TopNavigationNodeModelHandler
     {
@@ -20,13 +22,13 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public DeleteTopNavigationNodesModelHandler()
         {
-            DeleteNavigationNodesService = new SSOMDeleteNavigationNodesService();
+            DeleteNavigationNodesService = new CSOMDeleteNavigationNodesService();
         }
 
         #endregion
 
         #region properties
-        protected SSOMDeleteNavigationNodesService DeleteNavigationNodesService { get; set; }
+        protected CSOMDeleteNavigationNodesService DeleteNavigationNodesService { get; set; }
 
         public override Type TargetType
         {
@@ -46,6 +48,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         private void DeployDefinition(object modelHost, WebModelHost typedModelHost, DeleteTopNavigationNodesDefinition typedDefinition)
         {
             var web = typedModelHost.HostWeb;
+            var context = web.Context;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -53,7 +56,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioning,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = typedDefinition,
                 ModelHost = modelHost
             });
@@ -62,9 +65,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var nodesCollection = GetNavigationNodeCollection(web);
 
+                context.Load(nodesCollection);
+                context.ExecuteQueryWithTrace();
+
                 DeleteNavigationNodesService.DeleteNodesByMatch(typedDefinition, nodesCollection, url =>
                 {
-                    return ResolveTokenizedUrl(typedModelHost, url);
+                    return ResolveTokenizedUrl(typedModelHost.HostClientContext, url);
                 });
             }
 
@@ -74,7 +80,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 Model = null,
                 EventType = ModelEventType.OnProvisioned,
                 Object = web,
-                ObjectType = typeof(SPWeb),
+                ObjectType = typeof(Web),
                 ObjectDefinition = typedDefinition,
                 ModelHost = modelHost
             });
