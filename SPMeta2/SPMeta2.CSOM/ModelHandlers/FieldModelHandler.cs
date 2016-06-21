@@ -203,51 +203,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             CurrentHostClientContext = null;
         }
 
-        private Field DeployWebField(WebModelHost webModelHost, FieldDefinition fieldDefinition)
+        private Field DeployWebField(WebModelHost webModelHost, FieldDefinition fieldModel)
         {
-            var id = fieldDefinition.Id;
+            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying web field");
+
             var web = webModelHost.HostWeb;
-
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "FindExistingWebField with Id: [{0}]", id);
-
             var context = web.Context;
-            var scope = new ExceptionHandlingScope(context);
 
-            Field field = null;
+            var field = GetField(webModelHost, fieldModel);
 
-            using (scope.StartScope())
-            {
-                using (scope.StartTry())
-                {
-                    web.Fields.GetById(id);
-                }
-
-                using (scope.StartCatch())
-                {
-
-                }
-            }
-
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-            context.ExecuteQueryWithTrace();
-
-            if (!scope.HasException)
-            {
-                field = web.Fields.GetById(id);
-                context.Load(field);
-                PreloadProperties(field);
-
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Found site field with Id: [{0}]", id);
-                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
-
-                context.ExecuteQueryWithTrace();
-            }
-            else
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find site field with Id: [{0}]", id);
-            }
-
-            return EnsureField(context, field, web.Fields, fieldDefinition);
+            return EnsureField(context, field, web.Fields, fieldModel);
         }
 
         private Field DeployListField(ListModelHost modelHost, FieldDefinition fieldModel)
@@ -294,7 +259,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Cannot find list field with Id: [{0}]", fieldModel.Id);
             return EnsureField(context, null, list.Fields, fieldModel);
         }
-        
+
         private Field DeploySiteField(SiteModelHost siteModelHost, FieldDefinition fieldModel)
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying site field");

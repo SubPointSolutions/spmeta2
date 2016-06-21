@@ -49,7 +49,8 @@ namespace SPMeta2.CSOM.Services
                 {
                     using (scope.StartTry())
                     {
-                        fields.GetById(id);
+                        field = fields.GetById(id);
+                        context.Load(field);
                     }
 
                     using (scope.StartCatch())
@@ -57,6 +58,8 @@ namespace SPMeta2.CSOM.Services
 
                     }
                 }
+
+                context.ExecuteQueryWithTrace();
             }
             else if (!string.IsNullOrEmpty(fieldInternalName))
             {
@@ -64,7 +67,8 @@ namespace SPMeta2.CSOM.Services
                 {
                     using (scope.StartTry())
                     {
-                        fields.GetByInternalNameOrTitle(fieldInternalName);
+                        field = fields.GetByInternalNameOrTitle(fieldInternalName);
+                        context.Load(field);
                     }
 
                     using (scope.StartCatch())
@@ -72,6 +76,8 @@ namespace SPMeta2.CSOM.Services
 
                     }
                 }
+
+                context.ExecuteQueryWithTrace();
             }
             else if (!string.IsNullOrEmpty(fieldTitle))
             {
@@ -79,7 +85,8 @@ namespace SPMeta2.CSOM.Services
                 {
                     using (scope.StartTry())
                     {
-                        fields.GetByTitle(fieldTitle);
+                        field = fields.GetByTitle(fieldTitle);
+                        context.Load(field);
                     }
 
                     using (scope.StartCatch())
@@ -87,15 +94,16 @@ namespace SPMeta2.CSOM.Services
 
                     }
                 }
+
+                context.ExecuteQueryWithTrace();
             }
 
-            context.ExecuteQueryWithTrace();
-
-            if (!scope.HasException)
+            if (!scope.HasException && field != null && field.ServerObjectIsNull == false)
             {
                 if (fieldId.HasGuidValue())
                 {
-                    field = fields.GetById(fieldId.Value);
+                    var id = fieldId.Value;
+                    field = fields.GetById(id);
                 }
                 else if (!string.IsNullOrEmpty(fieldInternalName))
                 {
@@ -110,6 +118,40 @@ namespace SPMeta2.CSOM.Services
                 context.Load(field, f => f.SchemaXml);
 
                 context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                // falback on internal name
+                var internalNameScope = new ExceptionHandlingScope(context);
+
+                using (internalNameScope.StartScope())
+                {
+                    using (internalNameScope.StartTry())
+                    {
+                        fields.GetByInternalNameOrTitle(fieldInternalName);
+                    }
+
+                    using (internalNameScope.StartCatch())
+                    {
+
+                    }
+                }
+
+                context.ExecuteQueryWithTrace();
+
+                if (!internalNameScope.HasException)
+                {
+                    var t = fields.GetByInternalNameOrTitle(fieldInternalName);
+
+                    context.Load(t);
+                    context.Load(t, f => f.SchemaXml);
+
+                    context.ExecuteQueryWithTrace();
+
+                    return t;
+                }
+
+                return null;
             }
 
             return field;
