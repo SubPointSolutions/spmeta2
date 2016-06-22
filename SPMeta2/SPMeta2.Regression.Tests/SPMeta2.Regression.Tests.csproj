@@ -411,7 +411,7 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="PSScripts\200 - Configure M2 Test Environment - Copy.ps1" />
+    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
     <None Include="PSScripts\300 - Configure M2 Grid.ps1" />
     <None Include="Resources\XsltListViewWebPart_TestXsl.txt" />
     <None Include="Resources\CustomAllItemsPage.txt" />

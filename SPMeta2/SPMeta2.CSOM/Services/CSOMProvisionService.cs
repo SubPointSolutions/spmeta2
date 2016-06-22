@@ -24,6 +24,12 @@ namespace SPMeta2.CSOM.Services
             ServiceContainer.Instance.RegisterService(typeof(CSOMTokenReplacementService), new CSOMTokenReplacementService());
             ServiceContainer.Instance.RegisterService(typeof(CSOMLocalizationService), new CSOMLocalizationService());
 
+            // Align CSOM throttling setting with MS recommendations, open up API #849
+            // https://github.com/SubPointSolutions/spmeta2/issues/849
+
+            // register an instance of ClientRuntimeContextServiceBase -> DefaultClientRuntimeContextService
+            ServiceContainer.Instance.RegisterService(typeof(ClientRuntimeContextServiceBase), new DefaultClientRuntimeContextService());
+
             PreDeploymentServices.Add(new RequireCSOMRuntimeVersionDeploymentService());
 
             RegisterModelHandlers();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
@@ -156,6 +157,9 @@ namespace SPMeta2.Containers.CSOM
         /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
+            if (!SiteUrls.Any())
+                throw new SPMeta2Exception("SiteUrls is empty");
+
             foreach (var siteUrl in SiteUrls)
             {
                 Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
@@ -243,6 +247,9 @@ namespace SPMeta2.Containers.CSOM
         /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
+            if (!WebUrls.Any())
+                throw new SPMeta2Exception("WebUrls is empty");
+
             foreach (var webUrl in WebUrls)
             {
                 Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));

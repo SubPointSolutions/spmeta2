@@ -17,10 +17,17 @@ namespace SPMeta2.CSOM.Services.Impl
 
         public DefaultClientRuntimeContextService()
         {
-            ExecuteQueryDelayInMilliseconds = 1000;
+            // changes as per Microsoft recommendations
+            // https://msdn.microsoft.com/en-us/library/office/dn889829.aspx?f=255&MSPPError=-2147217396#BKMK_Bestpracticestohandlethrottling
+            // https://github.com/SubPointSolutions/spmeta2/issues/849
+            // https://www.yammer.com/spmeta2feedback/#/threads/show?threadId=725945901&messageId=725945901
 
-            ExecuteQueryRetryAttempts = 10;
-            ExecuteQueryRetryDelayMultiplier = 1.5;
+            // 5 re-try, 30 sec each and x2 backoff multiplier 
+
+            ExecuteQueryDelayInMilliseconds = 30000;
+
+            ExecuteQueryRetryAttempts = 5;
+            ExecuteQueryRetryDelayMultiplier = 2;
 
             InitAllowedStatusCodes();
             InitAllowedIISResetSocketStatusCodes();

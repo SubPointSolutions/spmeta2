@@ -166,6 +166,9 @@ namespace SPMeta2.Containers.SSOM
 
         public override void DeployWebApplicationModel(ModelNode model)
         {
+            if (!WebApplicationUrls.Any())
+                throw new SPMeta2Exception("WebApplicationUrls is empty");
+
             foreach (var webAppUrl in WebApplicationUrls)
             {
                 Trace.WriteLine(string.Format("[INF]    Running on web app: [{0}]", webAppUrl));
@@ -319,6 +322,9 @@ namespace SPMeta2.Containers.SSOM
         {
             var scope = GetScopeHash();
 
+            if (!SiteUrls.Any())
+                throw new SPMeta2Exception("SiteUrls is empty");
+
             foreach (var siteUrl in SiteUrls)
             {
                 //var siteUrl = GetTargetSiteCollectionUrl();
@@ -341,6 +347,9 @@ namespace SPMeta2.Containers.SSOM
 
         public override void DeployWebModel(ModelNode model)
         {
+            if (!WebUrls.Any())
+                throw new SPMeta2Exception("WebUrls is empty");
+
             foreach (var webUrl in WebUrls)
             {
                 //var webUrl = GetTargetSiteCollectionUrl();
