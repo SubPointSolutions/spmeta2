@@ -25,7 +25,7 @@ $currentDir = Get-ScriptDirectory
 # global 'g_' variables to be used across the board
 
 # should publish to NuGet?
-$g_shouldPublish = $true
+$g_shouldPublish = $false
 
 # should use daily-based version
 $g_useDayVersion = $false
@@ -35,7 +35,7 @@ $g_is13 = $false
 
 # M2 NuGet package version, release noted URL and target solution directory
 $g_hardcoreVersionBase = "1.2.65";
-$g_hardcoreVersion = "$g_hardcoreVersionBase-beta1";
+$g_hardcoreVersion = "$g_hardcoreVersionBase-beta2";
 
 $g_releaseNotes = "https://github.com/SubPointSolutions/spmeta2/releases/tag/1.2.60";
 $g_solutionDirectory = "C:\Users\$env:USERNAME.$env:USERDOMAIN\Source\Repos\spmeta2\spmeta2"
@@ -74,7 +74,7 @@ else
 	$stamp = ( $date.ToString("yy") + $date.DayOfYear.ToString("000") + $date.ToString("HHmm"))
 	$g_hardcoreVersion = $g_hardcoreVersionBase + "-alpha" + $stamp
 
-	$g_solutionDirectory = "c:\prj\m2\SPMeta2"
+	#$g_solutionDirectory = "c:\prj\m2\SPMeta2"
 }
 
 Write-BInfo "g_solutionDirectory:[$g_solutionDirectory]"
@@ -113,7 +113,6 @@ function CreateSPMeta2Packages() {
 	    CreateSPMeta2CSOMFoundationPackage $version ""
         CreateSPMeta2CSOMFoundationPackage $version "16"
     }
-
 
 	Write-BInfo "Creating SPMeta2.CSOM.Standard package"
 

@@ -198,6 +198,7 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -212,6 +213,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Impl\Build\BuildBaselineTests.cs" />
     <Compile Include="Impl\ModelHandlers\Base\ModelHandlerTestBase.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
