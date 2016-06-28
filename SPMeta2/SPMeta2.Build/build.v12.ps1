@@ -210,6 +210,11 @@ function BuildProfile($buildProfile) {
             $projectFolder = [system.io.path]::GetDirectoryName($projectPath)
         
             $assemblyDirectory = $projectFolder  + "/bin/$configuration-$runtime/" 
+
+            if($assemblyFileName -eq "SPMeta2.dll" -or $assemblyFileName -eq "SPMeta2.Standard.dll") {
+                $assemblyDirectory = $projectFolder  + "/bin/$configuration/" 
+            }
+
             $assemblyPath = $assemblyDirectory  + "/$assemblyFileName" 
 
             # loading a "tmp" assembly to avoid locking due the next build

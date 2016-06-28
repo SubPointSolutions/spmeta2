@@ -1,5 +1,118 @@
 ﻿#region utils
 
+function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, $baselines) {
+
+    if($baselines -eq $null) {
+        throw "baselines is null"
+    }
+
+    # ensure Mono.Cecil
+    $assemblies = @(
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Mdb.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Pdb.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Rocks.dll"
+    )
+
+    $currentPath =  Get-ScriptDirectory
+
+    foreach($path in $assemblies) {
+        $fullPath = [System.IO.Path]::Combine( $currentPath, $path)
+        [System.Reflection.Assembly]::LoadFile($fullPath) |out-null
+    }
+
+    # load the baseline
+    $baseline = [xml](Get-Content "m2.buildbaseline.xml")
+    $customBaseline = $baselines.Assemblies `
+                                  | Where-Object { ($_.AssemblyFileName -eq $assemblyFileName) -and ($_.Runtime -eq $runtime) }
+
+    if($baseline -eq $null) {
+        throw "Cannot load baseline from m2.buildbaseline.xml"
+    }
+
+    if($customBaseline -eq $null) {
+      #$g_buildBaseline.Assemblies
+     throw "Cannot find custom baseline form assembly [$assemblyFileName] and runtime [$runtime]"
+    }
+        
+    $targetBaseline = $baseline.ArrayOfBuildBaseline.BuildBaseline `
+                                    | Where-Object { $_.AssemblyFileName -eq $assemblyFileName }
+
+    if($targetBaseline -eq $null) {
+        $projectName
+        throw ("Cannot find baseline for project:[$projectName]")
+    } else {
+
+        Write-BVerbose "Target baseline: [$($targetBaseline.AssemblyFileName)]"
+        Write-BVerbose "Custom baseline runtime: [$($customBaseline.Runtime)]"
+
+        Write-BVerbose " - DefinitionTypeFullNames: [$($targetBaseline.DefinitionTypeFullNames.ChildNodes.Count)]"
+        Write-BVerbose " - ModelHandlerTypeFullNames: [$($targetBaseline.ModelHandlerTypeFullNames.ChildNodes.Count)]"
+    }
+
+    $assembly = [Mono.Cecil.AssemblyDefinition]::ReadAssembly($assemblyFilePath);
+    $typeReferences = $assembly.MainModule.GetTypes();
+
+    $allTypes = @()
+
+    foreach($type in $typeReferences)
+    {
+        $allTypes += @{
+            AssemblyQualifiedName = ($type.FullName + ", " +  $assembly.Name)
+        };
+    }
+
+    foreach($type in $allTypes){
+        #Write-BVerbose $type.AssemblyQualifiedName
+    }
+
+            Write-BInfo "Checking definition types..."
+            foreach($typeNode in $targetBaseline.DefinitionTypeFullNames.ChildNodes) {
+               $typeFullName = $typeNode.InnerText;
+
+               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
+               $hasType = $type -ne $null
+
+               if($hasType -eq $true)
+               {
+                    #Write-BVerbose "[+] Found type:[$typeFullName]"
+               } else {
+
+                    Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
+                    throw ("[-] CANNOT find type:[$typeFullName]")
+               }
+           
+            }
+
+            Write-BInfo "Checking model handler types..."
+            foreach($typeNode in $targetBaseline.ModelHandlerTypeFullNames.ChildNodes) {
+               $typeFullName = $typeNode.InnerText;
+
+               #$assembly.GetTypes()
+
+               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
+               $hasType = $type -ne $null
+
+               if($hasType -eq $true)
+               {
+                    #Write-BVerbose "[+] Found type:[$typeFullName]"
+               } else {
+
+                    # is special type?
+                    $isExcludedModelHandler = $customBaseline.ExcludedHandlers.Contains($typeFullName);
+                
+                    if($isExcludedModelHandler -eq $true) {
+                        Write-BInfo "[!] Excluded handler for runtime [$($customBaseline.Runtime)] and assembly [$($customBaseline.AssemblyFileName)] Type:[$typeFullName]"
+                    }
+                    else {
+                        Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
+                        throw ("[-] CANNOT find type:[$typeFullName]")
+                    }
+               }
+           
+            }
+
+}
 
 function Get-TimeStamp() {
     return $(get-date -f "yyyy-MM-dd HH:mm:ss") 

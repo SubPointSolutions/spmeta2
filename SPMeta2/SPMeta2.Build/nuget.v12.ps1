@@ -19,7 +19,10 @@ function Get-ScriptDirectory
 
 $currentDir = Get-ScriptDirectory
 
+cd "$currentDir"
+
 . "$currentDir\_m2.core.ps1"
+. "$currentDir\_m2.baseline.ps1"
 . "$currentDir\_m2.nuget.core.ps1"
 
 # global 'g_' variables to be used across the board

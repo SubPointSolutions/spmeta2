@@ -361,6 +361,73 @@ function CreateNugetSpec($package, $targetFolder) {
 		Write-BInfo "File:[$nugetFilePath]"
 	}
 
+	# baseline check!
+	# unpack NUuGet package, get all m2 assemblies and check the baseline
+	# $nupkgFileName
+    $packageName = [System.IO.Path]::GetFileNameWithoutExtension($nugetFilePath)
+    
+    $tmpPath = $env:TEMP 
+    $assemblyTemporaryDirectory = [System.IO.Path]::Combine($tmpPath, "m2.nuget.tmp")
+
+    [System.IO.Directory]::CreateDirectory($assemblyTemporaryDirectory) | out-null;
+    $assemblyTmpPath = [System.IO.Path]::Combine($assemblyTemporaryDirectory, [guid]::NewGuid().ToString("N") + ".dll")
+    Copy-Item $nugetFilePath $assemblyTmpPath -Force -Confirm:$false
+            
+    #tmp folder
+    $tmpNuGetPackageFolder = [System.IO.Path]::Combine($assemblyTemporaryDirectory,$packageName + ([guid]::NewGuid().ToString("N")) )
+    [System.IO.Directory]::CreateDirectory($tmpNuGetPackageFolder) | out-null;
+
+    # unpack
+    Write-BInfo "Unpacking NuGet package for baseline check:[$tmpNuGetPackageFolder]"
+    Add-Type -assembly "system.io.compression.filesystem" | out-null
+    [io.compression.zipfile]::ExtractToDirectory($nugetFilePath, $tmpNuGetPackageFolder)
+
+    $libFolder = [System.IO.Path]::Combine($tmpNuGetPackageFolder, "lib")
+    $netProfileFolders = Get-ChildItem $libFolder
+
+    foreach($netProfileFolder in $netProfileFolders) {
+        Write-BInfo "Checking baseline for net folder:[$netProfileFolder]"
+
+        $assemblies = Get-ChildItem $netProfileFolder.FullName -Filter "*.dll"
+
+        foreach($assembyPath in $assemblies) {
+            
+            $assembyFullPath = $assembyPath.FullName
+            $assembyFullName = $assembyPath.Name
+
+            Write-BVerbose "Checking baseline for assembly:[$assembyFullPath]"
+
+            $runtime = "15"
+
+            if($assembyPath.Name -eq "net35") {
+                $runtime = "14"
+            }
+
+            if($assembyPath.Name -eq "net40") {
+                $runtime = "15"
+            }
+
+            if($assembyPath.Name -eq "net45") {
+                $runtime = "15"
+            }
+
+            # is vXX version? SPMeta2.CSOM.Foundation-v14.1.2.65-
+            if($packageName.Contains("-v") -eq $true) {
+                Write-BVerbose "vXX package:[$packageName]"
+                $packageRuntimeversion = (($packageName -split "-v")[1]).Split('.')[0]
+
+                if($runtime -eq "16") {
+                    $runtime = "365"
+                }
+
+                Write-BVerbose "Runtime version:[$packageRuntimeversion]"
+                $runtime = $packageRuntimeversion               
+            }
+
+            Check-AssemblyBaseline $assembyFullName $runtime $assembyFullPath $g_buildBaseline
+        }
+    }    
+
 	if($g_shouldPublish -eq $true) {
 	
 		Write-BInfo "Publishing NuGet package [$nupkgFileName] "
