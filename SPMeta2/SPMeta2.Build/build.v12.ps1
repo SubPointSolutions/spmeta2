@@ -2,6 +2,114 @@
 
 #region utils
 
+function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, $baselines) {
+
+    # ensure Mono.Cecil
+    $assemblies = @(
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Mdb.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Pdb.dll",
+        "../SPMeta2.Dependencies/Mono.Cecil/Mono.Cecil.0.9.6.1/Mono.Cecil.Rocks.dll"
+    )
+
+    $currentPath =  Get-ScriptDirectory
+
+    foreach($path in $assemblies) {
+        $fullPath = [System.IO.Path]::Combine( $currentPath, $path)
+        [System.Reflection.Assembly]::LoadFile($fullPath) |out-null
+    }
+
+    # load the baseline
+    $baseline = [xml](Get-Content "m2.buildbaseline.xml")
+    $customBaseline = $baselines.Assemblies `
+                                  | Where-Object { ($_.AssemblyFileName -eq $assemblyFileName) -and ($_.Runtime -eq $runtime) }
+
+    if($baseline -eq $null) {
+        throw "Cannot load baseline from m2.buildbaseline.xml"
+    }
+
+    if($customBaseline -eq $null) {
+      #$g_buildBaseline.Assemblies
+     throw "Cannot find custom baseline form assembly [$assemblyFileName] and runtime [$runtime]"
+    }
+        
+    $targetBaseline = $baseline.ArrayOfBuildBaseline.BuildBaseline `
+                                    | Where-Object { $_.AssemblyFileName -eq $assemblyFileName }
+
+    if($targetBaseline -eq $null) {
+        $projectName
+        throw ("Cannot find baseline for project:[$projectName]")
+    } else {
+
+        Write-BVerbose "Target baseline: [$($targetBaseline.AssemblyFileName)]"
+        Write-BVerbose " - DefinitionTypeFullNames: [$($targetBaseline.DefinitionTypeFullNames.ChildNodes.Count)]"
+        Write-BVerbose " - ModelHandlerTypeFullNames: [$($targetBaseline.ModelHandlerTypeFullNames.ChildNodes.Count)]"
+    }
+
+    $assembly = [Mono.Cecil.AssemblyDefinition]::ReadAssembly($assemblyFilePath);
+    $typeReferences = $assembly.MainModule.GetTypes();
+
+    $allTypes = @()
+
+    foreach($type in $typeReferences)
+    {
+        $allTypes += @{
+            AssemblyQualifiedName = ($type.FullName + ", " +  $assembly.Name)
+        };
+    }
+
+    foreach($type in $allTypes){
+        #Write-BVerbose $type.AssemblyQualifiedName
+    }
+
+            Write-BInfo "Checking definition types..."
+            foreach($typeNode in $targetBaseline.DefinitionTypeFullNames.ChildNodes) {
+               $typeFullName = $typeNode.InnerText;
+
+               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
+               $hasType = $type -ne $null
+
+               if($hasType -eq $true)
+               {
+                    #Write-BVerbose "[+] Found type:[$typeFullName]"
+               } else {
+
+                    Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
+                    throw ("[-] CANNOT find type:[$typeFullName]")
+               }
+           
+            }
+
+            Write-BInfo "Checking model handler types..."
+            foreach($typeNode in $targetBaseline.ModelHandlerTypeFullNames.ChildNodes) {
+               $typeFullName = $typeNode.InnerText;
+
+               #$assembly.GetTypes()
+
+               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
+               $hasType = $type -ne $null
+
+               if($hasType -eq $true)
+               {
+                    #Write-BVerbose "[+] Found type:[$typeFullName]"
+               } else {
+
+                    # is special type?
+                    $isExcludedModelHandler = $customBaseline.ExcludedHandlers.Contains($typeFullName);
+                
+                    if($isExcludedModelHandler -eq $true) {
+                        Write-BInfo "[!] Excluded handler for runtime [$($customBaseline.Runtime)] and assembly [$($customBaseline.AssemblyFileName)] Type:[$typeFullName]"
+                    }
+                    else {
+                        Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
+                        throw ("[-] CANNOT find type:[$typeFullName]")
+                    }
+               }
+           
+            }
+
+}
+
 function Get-ScriptDirectory
 {
     $Invocation = (Get-Variable MyInvocation -Scope 1).Value;
@@ -98,166 +206,24 @@ function BuildProfile($buildProfile) {
         if($checkBaseline -eq $true)
         {
             $assemblyFileName = $projectName + ".dll"
-     
-            # load the baseline
-            $baseline = [xml](Get-Content "m2.buildbaseline.xml")
-            $customBaseline = $g_buildBaseline.Assemblies `
-                                        | Where-Object { ($_.AssemblyFileName -eq $assemblyFileName) -and ($_.Runtime -eq $runtime) }
 
-            if($baseline -eq $null) {
-                throw "Cannot load baseline from m2.buildbaseline.xml"
-            }
-
-            if($customBaseline -eq $null) {
-                #$g_buildBaseline.Assemblies
-                throw "Cannot find custom baseline form assembly [$assemblyFileName] and runtime [$runtime]"
-            }
-        
-            $targetBaseline = $baseline.ArrayOfBuildBaseline.BuildBaseline `
-                                    | Where-Object { $_.AssemblyFileName -eq $assemblyFileName }
-
-            if($targetBaseline -eq $null) {
-                $projectName
-                throw ("Cannot find baseline for project:[$projectName]")
-            } else {
-
-                Write-BVerbose "Target baseline: [$($targetBaseline.AssemblyFileName)]"
-                Write-BVerbose " - DefinitionTypeFullNames: [$($targetBaseline.DefinitionTypeFullNames.ChildNodes.Count)]"
-                Write-BVerbose " - ModelHandlerTypeFullNames: [$($targetBaseline.ModelHandlerTypeFullNames.ChildNodes.Count)]"
-            }
-
-            # file check
             $projectFolder = [system.io.path]::GetDirectoryName($projectPath)
         
             $assemblyDirectory = $projectFolder  + "/bin/$configuration-$runtime/" 
             $assemblyPath = $assemblyDirectory  + "/$assemblyFileName" 
-        
-            if([system.io.file]::Exists($assemblyPath) -eq $false) {
-                Write-BError ("Cannot find file:[$assemblyPath]")
-                throw "Cannot find file:[$assemblyPath]"
-            }
 
-            # baseline check
+            # loading a "tmp" assembly to avoid locking due the next build
             $tmpPath = $env:TEMP 
             $assemblyTemporaryDirectory = [System.IO.Path]::Combine($tmpPath, "m2.build.tmp")
 
-            #[System.IO.Directory]::CreateDirectory($assemblyTemporaryDirectory) | out-null;
-            #$assemblyTmpPath = [System.IO.Path]::Combine($assemblyTemporaryDirectory, [guid]::NewGuid().ToString("N") + ".dll")
-            
-            # should be in the same folder to be able to loas refs
-            $assemblyTmpPath = [System.IO.Path]::Combine($assemblyDirectory, [guid]::NewGuid().ToString("N") + ".dll")
+            [System.IO.Directory]::CreateDirectory($assemblyTemporaryDirectory) | out-null;
+            $assemblyTmpPath = [System.IO.Path]::Combine($assemblyTemporaryDirectory, [guid]::NewGuid().ToString("N") + ".dll")
             Copy-Item $assemblyPath $assemblyTmpPath -Force -Confirm:$false
-
-            [System.Reflection.Assembly]$assembly = [System.Reflection.Assembly]::LoadFile($assemblyTmpPath)
-
-            $refs = $assembly.GetReferencedAssemblies()
-            $assemblyRefs = @()
-
             
-            foreach($ref in $refs) {
+            $assemblyFileName = $projectName + ".dll"
 
-                #if(($ref.Name.StartsWith("Microsoft.SharePoint") -eq $true) -or ($ref.Name.StartsWith("SPMeta2") -eq $true)) {
-                if(($ref.Name.StartsWith("Microsoft.SharePoint") -eq $true) ) {
-
-                    $name = ($ref.Name + ".dll")
-                    $assemblyRefsPaths = [System.IO.Directory]::GetFiles($assemblyDirectory, $name);
-
-                    if($assemblyRefsPaths -ne $null -and $assemblyRefsPaths.Count -gt 0) {
-                        $assemblyRefs += $assemblyRefsPaths[0]
-                    }
-                }
-            }
-            
-
-            foreach($assemblyRef in $assemblyRefs) {
-
-                Write-BVerbose "Copying ref assembly:[$assemblyRef]"
-                [System.IO.Directory]::CreateDirectory($assemblyTemporaryDirectory) | out-null;
-                $assemblyTmpPath = [System.IO.Path]::Combine($assemblyTemporaryDirectory, [guid]::NewGuid().ToString("N") + ".dll")
-            
-                $assemblyTmpPath = [System.IO.Path]::Combine($assemblyDirectory, [guid]::NewGuid().ToString("N") + ".dll")
-                Copy-Item $assemblyRef $assemblyTmpPath -Force -Confirm:$false
-
-                Write-BVerbose "Loading ref assembly:[$assemblyTmpPath]"
-                $asm = [System.Reflection.Assembly]::LoadFile($assemblyTmpPath) 
-                if($asm -eq $null) {
-                    throw ("Cannot load ref asembly:[$assemblyTmpPath)]")
-                }
-            } 
-
-            if($assembly -eq $null) {
-                throw "Cannot load assembly from file:[$assemblyTmpPath]"
-            } else {
-                Write-BVerbose "Loaded TMP assembly from file:[$assemblyTmpPath]"
-            }
-        
-            $allTypes = $null
-            try {
-                $allTypes = $assembly.GetTypes() 
-            } catch {
-                
-                $_.Exception
-                $_.Exception.InnerException.LoaderExceptions
-                #$_.Exception.LoaderExceptions[0]
-            }
-
-            if($allTypes -eq $null) {
-                Write-BError "Cannot load types from assembly:[$assemblyTmpPath]"
-                throw ("Cannot load types from assembly:[$assemblyTmpPath]")
-            }
-            else {
-                Write-BVerbose "Found [$($allTypes.Count)] types"
-
-                foreach($type in $allTypes ) {
-                   # Write-BVerbose "`t[$($type.AssemblyQualifiedName)]"
-                }
-            }
-
-            Write-BInfo "Checking definition types..."
-            foreach($typeNode in $targetBaseline.DefinitionTypeFullNames.ChildNodes) {
-               $typeFullName = $typeNode.InnerText;
-
-               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
-               $hasType = $type -ne $null
-
-               if($hasType -eq $true)
-               {
-                    #Write-BVerbose "[+] Found type:[$typeFullName]"
-               } else {
-
-                    Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
-                    throw ("[-] CANNOT find type:[$typeFullName]")
-               }
-           
-            }
-
-            Write-BInfo "Checking model handler types..."
-            foreach($typeNode in $targetBaseline.ModelHandlerTypeFullNames.ChildNodes) {
-               $typeFullName = $typeNode.InnerText;
-
-               #$assembly.GetTypes()
-
-               $type = $allTypes | where-object { $_.AssemblyQualifiedName -eq $typeFullName };
-               $hasType = $type -ne $null
-
-               if($hasType -eq $true)
-               {
-                    #Write-BVerbose "[+] Found type:[$typeFullName]"
-               } else {
-
-                    # is special type?
-                    $isExcludedModelHandler = $customBaseline.ExcludedHandlers.Contains($typeFullName);
-                
-                    if($isExcludedModelHandler -eq $true) {
-                        Write-BInfo "[!] Excluded handler for runtime [$($customBaseline.Runtime)] and assembly [$($customBaseline.AssemblyFileName)] Type:[$typeFullName]"
-                    }
-                    else {
-                        Write-BVerbose "[-] CANNOT find type:[$typeFullName]"
-                        throw ("[-] CANNOT find type:[$typeFullName]")
-                    }
-               }
-           
-            }
+            # Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyTmpPath, $baselines) {
+            Check-AssemblyBaseline $assemblyFileName $runtime $assemblyTmpPath $g_buildBaseline
         }           
     }
 }
@@ -356,7 +322,7 @@ if($build16 -eq $true) {
         "Name"  = "M2 SP2016 NET45";
         "ProjectNames" = $defaultProjects
 
-        "CheckBaseline" = $false;
+        "CheckBaseline" = $true;
         "Runtime" = "16";
         "Configuration" = "Debug45";
 

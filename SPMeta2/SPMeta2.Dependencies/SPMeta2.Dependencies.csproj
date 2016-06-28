@@ -84,6 +84,10 @@
     <Content Include="Images\SPMeta2_64_64.png" />
     <Content Include="Images\SubPointSolutions_2014_240.png" />
     <Content Include="Images\SubPointSolutions_2014_64.png" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Mdb.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Pdb.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Rocks.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.Portable.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.dll" />
