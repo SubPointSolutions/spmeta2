@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="m2.buildbaseline.xml" />
+    <Content Include="tools\NuGet 2.8.3\NuGet.exe" />
     <Content Include="tools\NuGet\NuGet.exe" />
   </ItemGroup>
   <ItemGroup>
