@@ -219,6 +219,11 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.SkipProperty(m => m.DefaultValue, string.Format("Default value is not set. Skippping."));
 
+            if (!string.IsNullOrEmpty(definition.DefaultFormula))
+                assert.ShouldBePartOf(m => m.DefaultFormula, o => o.DefaultFormula);
+            else
+                assert.SkipProperty(m => m.DefaultFormula, string.Format("Default formula is not set. Skippping."));
+
             if (!string.IsNullOrEmpty(spObject.JSLink) &&
                 (spObject.JSLink == "SP.UI.Taxonomy.js|SP.UI.Rte.js(d)|SP.Taxonomy.js(d)|ScriptForWebTaggingUI.js(d)" ||
                 spObject.JSLink == "choicebuttonfieldtemplate.js" ||

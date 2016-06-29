@@ -59,7 +59,8 @@ namespace SPMeta2.Common
                 {
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
-               
+                    typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }
@@ -73,6 +74,7 @@ namespace SPMeta2.Common
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
                     typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }
@@ -147,6 +149,13 @@ namespace SPMeta2.Common
                     typeof (DependentLookupFieldDefinition),
 
                     typeof (ContentTypeDefinition),
+
+                    // removing navigation first, then add
+                    typeof (DeleteQuickLaunchNavigationNodesDefinition),
+                    typeof (DeleteTopNavigationNodesDefinition),
+
+                    typeof (QuickLaunchNavigationNodeDefinition),
+                    typeof (TopNavigationNodeDefinition),
                     
                     typeof (SP2013WorkflowDefinition),
                     

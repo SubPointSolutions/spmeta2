@@ -17,6 +17,14 @@ namespace SPMeta2.Containers.Consts
 
                 public static string WebTemplateName = "{7DA6B762-9AB9-4D81-870A-E93B586B7534}#M2CustomTeamSite";
             }
+
+            public static class M2CustomWebAsTemplate
+            {
+                public static Guid SolutionId = new Guid("{0b56e6f8-9d35-4eda-b095-ad55b5f3b2ec}");
+                public static string FilePath = @"Containers\WebTemplates\M2CustomWebAsTemplate.wsp";
+
+                public static string WebTemplateName = "M2CustomWebAsTemplate";
+            }
         }
 
         public static class Sandbox

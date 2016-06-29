@@ -228,6 +228,11 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         //[ExpectUpdate]
         [DataMember]
+        public virtual string DefaultFormula { get; set; }
+
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
         public bool Hidden { get; set; }
 
         [ExpectValidation]

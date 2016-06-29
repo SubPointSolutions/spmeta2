@@ -69,104 +69,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.Publishing, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.Runtime, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.Search, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.Search.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.ServerRuntime, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-O365'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.ServerRuntime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="'$(Configuration)'=='CI-CSOM2013' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
@@ -224,6 +126,24 @@
       <Link>Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\Apps\1.0.0.1\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.2\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\WebTemplates\M2CustomWebAsTemplate.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Impl\DefinitionCoverage\WebpartDefinitionCoverageTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WebpartDefinitionCoverageTest2.cs</LastGenOutput>
@@ -237,6 +157,8 @@
     <Compile Include="Impl\RegressionAPI\RegressionAPITests.cs" />
     <Compile Include="Impl\Reports\DefinitionReportTests.cs" />
     <Compile Include="Impl\Scenarios\ComposedLookItemLinkScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\DeleteQuickLaunchNavigationNodesScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\DeleteTopNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WorkflowAssociationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\MetadataNavigationSettingsScenarios.cs" />
     <Compile Include="Impl\Scenarios\ManagedPropertiesScenarios.cs" />
@@ -299,6 +221,7 @@
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebConfigModificationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
+    <Compile Include="Impl\Services\DefaultContentTypeLinkDeploymentValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultRequiredPropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultFieldInternalNamePropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultNotAbsoluteUrlPropertiesValidationServiceTests.cs" />
@@ -489,6 +412,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
+    <None Include="PSScripts\300 - Configure M2 Grid.ps1" />
     <None Include="Resources\XsltListViewWebPart_TestXsl.txt" />
     <None Include="Resources\CustomAllItemsPage.txt" />
   </ItemGroup>

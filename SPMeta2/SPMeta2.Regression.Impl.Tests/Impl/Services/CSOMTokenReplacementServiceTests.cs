@@ -54,6 +54,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        [TestCategory("CI.Core")]
         public void SelfDiagnostic_TestShouldHaveAllTokens()
         {
             var isValid = HasAllTestsForTokens("CSOM", Service.SupportedTokens, GetType().GetMethods());

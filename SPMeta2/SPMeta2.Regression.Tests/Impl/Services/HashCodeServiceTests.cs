@@ -12,12 +12,13 @@ using System.Collections.Generic;
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
-    public class HashCodeServiceTests : SPMeta2RegresionTestBase
+    public class HashCodeServiceTests : SPMeta2DefinitionRegresionTestBase
     {
         #region tests
 
         [TestMethod]
         [TestCategory("Regression.Services.HashCodeService")]
+        [TestCategory("CI.Core")]
         public void CanGetHashForAllDefinitions()
         {
             var service = new MD5HashCodeServiceBase();

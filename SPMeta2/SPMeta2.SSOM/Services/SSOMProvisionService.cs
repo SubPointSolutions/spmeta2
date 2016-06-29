@@ -91,5 +91,15 @@ namespace SPMeta2.SSOM.Services
         {
             modelHost.DeployModel(WebModelHost.FromWeb(web), model);
         }
+
+        public static void DeployListModel(this SSOMProvisionService modelHost, SPList list, ModelNode model)
+        {
+            var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromWeb(list.ParentWeb), h =>
+            {
+                h.HostList = list;
+            });
+
+            modelHost.DeployModel(listHost, model);
+        }
     }
 }

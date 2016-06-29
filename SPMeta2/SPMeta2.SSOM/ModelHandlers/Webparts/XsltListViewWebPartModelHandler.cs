@@ -161,6 +161,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
             if (list != null)
             {
+                // for the list from other than current webs
+                typedWebpart.WebId = targetWeb.ID;
+
                 typedWebpart.ListName = list.ID.ToString("B").ToUpperInvariant();
                 typedWebpart.TitleUrl = list.DefaultViewUrl;
             }

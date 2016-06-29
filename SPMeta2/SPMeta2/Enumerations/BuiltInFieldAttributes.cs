@@ -83,6 +83,8 @@ namespace SPMeta2.Enumerations
 
         public static string Format = "Format";
 
+        public static string FieldReference = "FieldRef";
+
         #endregion
     }
 }

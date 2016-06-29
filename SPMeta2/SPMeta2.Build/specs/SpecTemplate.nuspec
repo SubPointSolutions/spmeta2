@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id></id>
+    <version></version>
+    <title></title>
+    <authors></authors>
+    <owners></owners>
+    <tags></tags>
+    <releaseNotes></releaseNotes>
+    <licenseUrl>http://docs.subpointsolutions.com/spmeta2/license</licenseUrl>
+    <projectUrl>https://github.com/SubPointSolutions/spmeta2</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description></description>
+    <summary></summary>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+    </frameworkAssemblies>
+    <dependencies>
+      <group>
+
+      </group>
+
+    </dependencies>
+  </metadata>
+  <files>
+
+  </files>
+</package>

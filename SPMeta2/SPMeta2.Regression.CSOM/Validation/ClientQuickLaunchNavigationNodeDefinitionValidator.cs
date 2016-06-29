@@ -36,6 +36,8 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = spObject.Context;
 
+            assert.SkipProperty(m => m.Properties, "Skipping. Not supported by CSOM API");
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(def => def.Url);

@@ -119,6 +119,7 @@
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Utils\FieldSchemaXmlUtils.cs" />
+    <Compile Include="Validation\ClientAnonymousAccessSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientRecycleBinDefinitionValidator.cs" />
     <Compile Include="Validation\ClientAppDefinitionValidator.cs" />
     <Compile Include="Validation\ClientComposedLookItemLinkDefinitionValidator.cs" />
@@ -155,6 +156,8 @@
     <Compile Include="Validation\ClientMasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientDeleteWebPartsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientComposedLookItemDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientDeleteQuickLaunchNavigationNodesDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientDeleteTopNavigationNodesDefinitionValidator.cs" />
     <Compile Include="Validation\Extended\XsltListViewWebPartGridModePresenceValidator.cs" />
     <Compile Include="Validation\Extended\ClientWebpartPresenceOnPageDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\DependentLookupFieldDefinitionValidator.cs" />
@@ -214,6 +217,7 @@
     <Compile Include="Validation\Webparts\UserDocsWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\UserTasksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\XmlWebPartValidator.cs" />
+    <Compile Include="Validation\ClientWorkflowAssociationDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">

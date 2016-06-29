@@ -10,6 +10,7 @@ namespace SPMeta2.Regression.Tests.Impl.Misc
 
         [TestMethod]
         [TestCategory("Regression.Misc")]
+        [TestCategory("CI.Core")]
         public void CanCreate_BuiltInWebpartTemplates()
         {
             var tmp = BuiltInWebPartTemplates.XsltListViewWebPart;

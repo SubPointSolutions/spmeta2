@@ -10,6 +10,7 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using System.Text.RegularExpressions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -73,6 +74,10 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var srcViewDate = assert.Src.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
                     var dstViewDate = assert.Dst.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
 
+                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
                     return new PropertyValidationResult
@@ -97,6 +102,9 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                     var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
                     var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
+
+                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
 
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 

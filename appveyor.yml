@@ -1,10 +1,25 @@
 environment:
-  SPMeta2_O365_SiteUrl:
-    secure: j0L8clRyLW7xY7UFBuI2k8G+ootYCT3+a6BFobQ26dbu20RPDFHXTjPlfZDSMzOnrSWX4VAzlaLg52L3Xydvew==
-  SPMeta2_O365_UserName:
-    secure: wFqfEa659MyPAksIbkzh0zv6vnTCIA2vmEPVRZ60WwSqdwe5cuJ5QOBazAYirbV9
-  SPMeta2_O365_Password:
-    secure: HE7kgk9JwRjrFb2u1JBBTw==
-  SPMeta2_RunnerLibraries:
-    secure: fjM6KXFe9K4+sdSLrfrlvDYxZlLOQIgVLNZqlBBOf5Tqk2M5E7JLaPzNcUmE9eDz
-test: off
+  SPMeta2_NuGet_Staging_APIKey:
+    secure: wDc3/dNo7jb7UNTHdOQCwub23doUQ58hAIEhpKT/8lNcQqgrjw8BBfAJiAumtKyK
+  SPMeta2_DefaultTestUserLogins:
+    secure: 3HnXxy6w2UfBFP55pJ6q1/TguITu3p3mmEo+7U2dm1g=
+
+# expecting 110 base tests passed under 'CI.Core' category
+# everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
+test:
+  assemblies:
+    - '**\*.Tests.dll'
+  categories:
+    only:
+      - CI.Core 
+
+clone_folder: c:\prj\m2
+
+build_script: 
+    - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
+
+after_test:
+    - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\nuget.v12.ps1
+
+artifacts:
+    - path: '**\*.nupkg'

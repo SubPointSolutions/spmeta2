@@ -12,28 +12,13 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class ScriptEditorWebPartDefinitionTests : SPMeta2RegresionScenarioTestBase
+    public class ScriptEditorWebPartDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
-        #region common
-
-        [ClassInitializeAttribute]
-        public static void Init(TestContext context)
-        {
-            InternalInit();
-        }
-
-        [ClassCleanupAttribute]
-        public static void Cleanup()
-        {
-            InternalCleanup();
-        }
-
-        #endregion
-
         #region tests
 
         [TestMethod]
         [TestCategory("Regression.Definitions.ScriptEditorWebPartDefinition")]
+        [TestCategory("CI.Core")]
         [ExpectedException(typeof(SPMeta2InvalidDefinitionPropertyException))]
         public void ScriptEditorWebPartDefinition_Id_LessThan_32_ShouldFail()
         {
@@ -47,6 +32,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.ScriptEditorWebPartDefinition")]
+        [TestCategory("CI.Core")]
         public void ScriptEditorWebPartDefinition_Id_LessThan_32_ShouldPass()
         {
             var id = Rnd.String(32);

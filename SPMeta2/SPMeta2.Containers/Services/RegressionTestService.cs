@@ -27,16 +27,7 @@ namespace SPMeta2.Containers.Services
         public AssertServiceBase AssertService { get; set; }
         public RandomService RndService { get; set; }
 
-        public bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
-        {
-            var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
 
-            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
-
-            var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
-
-            return targetMethod != null;
-        }
 
         public RegressionTestService()
         {
@@ -176,7 +167,9 @@ namespace SPMeta2.Containers.Services
 
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
-            //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+
+            //ProvisionRunnerAssemblies.Clear();
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Containers.SSOM.dll");
         }
 
         protected ProvisionRunnerBase CurrentProvisionRunner;
@@ -200,23 +193,28 @@ namespace SPMeta2.Containers.Services
             }
             catch (Exception e)
             {
+                var targetExeption = e;
                 var isAllowedException = false;
 
+                if (e is SPMeta2ModelDeploymentException)
+                {
+                    targetExeption = e.InnerException;
+                }
+
                 foreach (var allowedType in exceptionTypes)
-                    if (e.GetType().IsAssignableFrom(allowedType))
+                    if (targetExeption.GetType().IsAssignableFrom(allowedType))
                         isAllowedException = true;
 
                 if (isAllowedException)
                 {
-                    // TODO, Trace utils to report
+                    Trace.WriteLine
+                        (string.Format("Handled expected exception:[{0}] - [{1}]",
+                            targetExeption.GetType().Name, targetExeption));
                 }
                 else
                 {
-                    // TOOD, trace utils to report
-
                     throw;
                 }
-
             }
         }
 
@@ -857,6 +855,8 @@ namespace SPMeta2.Containers.Services
                 CurrentProvisionRunner = provisionRunner;
 
                 Trace.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
+                Trace.WriteLine(string.Format("[INF]    Testing with Is64BitProcess flag: [{0}]", Environment.Is64BitProcess));
+                Trace.WriteLine(string.Format(@"[INF]    Testing as user: [{0}\{1}]", Environment.UserDomainName, Environment.UserName));
                 Trace.WriteLine(string.Empty);
 
                 Trace.WriteLine(string.Format("[INF]        - Current VM: [{0}]", Environment.MachineName));

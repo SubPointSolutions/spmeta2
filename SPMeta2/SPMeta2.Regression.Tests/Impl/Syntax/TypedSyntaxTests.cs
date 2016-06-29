@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
@@ -22,6 +23,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_FarmLevel()
         {
             var model = SPMeta2Model.NewFarmModel(farm =>
@@ -42,6 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_WebApplicationLevel()
         {
             var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
@@ -65,6 +68,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_SiteLevel()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
@@ -138,6 +142,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_WebLevel()
         {
             var model = SPMeta2Model.NewWebModel(web =>
@@ -278,17 +283,24 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax.Extensions")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_Extensions()
         {
+            var tmpDir = Path.Combine(
+                                Path.GetTempPath(),
+                                string.Format("m2_regression_test_CanPassTypedSyntax_Extensions_{0}", Guid.NewGuid().ToString("N")));
+
+            Directory.CreateDirectory(tmpDir);
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddRandomList(list =>
                 {
-                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, Directory.GetCurrentDirectory());
+                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, tmpDir);
 
                     list.AddRandomFolder(folder =>
                     {
-                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, Directory.GetCurrentDirectory());
+                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, tmpDir);
                     });
                 });
             });

@@ -58,7 +58,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="build.v12.ps1" />
+    <None Include="nuget.v12.ps1" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="specs\SpecTemplate.nuspec" />
+    <None Include="tools\NuGet\NuGet.Config" />
+    <None Include="tools\NuGet\NuGet.targets" />
+    <None Include="_m2.baseline.ps1" />
+    <None Include="_m2.core.ps1" />
+    <None Include="_m2.nuget.core.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="m2.buildbaseline.xml" />
+    <Content Include="tools\NuGet 2.8.3\NuGet.exe" />
+    <Content Include="tools\NuGet\NuGet.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="packages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

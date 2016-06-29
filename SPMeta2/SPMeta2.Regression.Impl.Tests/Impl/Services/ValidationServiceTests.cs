@@ -36,6 +36,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ValidationServices")]
+        [TestCategory("CI.Core")]
         public void All_Services_Should_Have_Metadata()
         {
             var isValid = true;

@@ -192,37 +192,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected SPField GetField(object modelHost, FieldDefinition definition)
         {
-            if (modelHost is SiteModelHost)
-                return GetSiteField((modelHost as SiteModelHost).HostSite, definition);
-            else if (modelHost is WebModelHost)
-                return GetWebField((modelHost as WebModelHost).HostWeb, definition);
-            else if (modelHost is ListModelHost)
-                return GetListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost");
-            }
-        }
+            var fields = FieldLookupService.GetFieldCollection(modelHost);
 
-        private SPField GetWebField(SPWeb web, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving web field by ID: [{0}]", definition.Id);
-
-            return web.Fields[definition.Id];
-        }
-
-        private SPField GetSiteField(SPSite site, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving site field by ID: [{0}]", definition.Id);
-
-            return site.RootWeb.Fields[definition.Id];
-        }
-
-        private SPField GetListField(SPList list, FieldDefinition definition)
-        {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving list field by ID: [{0}]", definition.Id);
-
-            return list.Fields[definition.Id];
+            return FieldLookupService.GetField(fields, definition.Id, definition.InternalName, definition.Title);
         }
 
         protected virtual void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)
@@ -307,8 +279,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             object modelHost,
             SPFieldCollection fields, FieldDefinition fieldModel)
         {
+            // by ID?
             var currentField = fields.OfType<SPField>()
                                         .FirstOrDefault(f => f.Id == fieldModel.Id);
+
+            // by internal name?
+            if (currentField == null && !string.IsNullOrEmpty(fieldModel.InternalName))
+            {
+                TraceService.Information((int)LogEventId.CoreCalls, "Could not find field by ID, fallback on InternalName");
+
+                currentField = fields.OfType<SPField>()
+                                           .FirstOrDefault(f => String.Equals(f.InternalName, fieldModel.InternalName,
+                                                                StringComparison.OrdinalIgnoreCase));
+            }
 
             if (currentField == null)
             {
@@ -336,7 +319,24 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing field");
 
-                currentField = fields[fieldModel.Id];
+                currentField = fields.OfType<SPField>()
+                                        .FirstOrDefault(f => f.Id == fieldModel.Id);
+
+                if (currentField == null && !string.IsNullOrEmpty(fieldModel.InternalName))
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls, "Could not find existing field by ID, fallback on InternalName");
+
+                    currentField = fields.OfType<SPField>()
+                                               .FirstOrDefault(f => String.Equals(f.InternalName, fieldModel.InternalName,
+                                                                    StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (currentField == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find existing field neither by ID [{0}] or InternalName [{1}]. Definition:[{2}]",
+                        fieldModel.Id, fieldModel.InternalName, fieldModel));
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -411,11 +411,17 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.DefaultValue))
                 field.DefaultValue = definition.DefaultValue;
 
+            if (!string.IsNullOrEmpty(definition.DefaultFormula))
+                field.DefaultValue = definition.DefaultFormula;
+
             if (definition.EnforceUniqueValues.HasValue)
                 field.EnforceUniqueValues = definition.EnforceUniqueValues.Value;
 
-            field.Indexed = definition.Indexed;
-
+            // Setting the index property will throw an exception for dependent lookup fields
+            if (!(field is SPFieldLookup) || !((SPFieldLookup)field).IsDependentLookup)
+            {
+                field.Indexed = definition.Indexed;
+            }
 #if !NET35
             field.JSLink = definition.JSLink;
 #endif

@@ -46,6 +46,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices")]
+        [TestCategory("CI.Core")]
         public void Can_CreateFoundationProvisionService()
         {
             Assert.IsNotNull(new CSOMProvisionService());
@@ -55,6 +56,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices")]
+        [TestCategory("CI.Core")]
         public void Can_CreateStandardProvisionService()
         {
             Assert.IsNotNull(new StandardCSOMProvisionService());
@@ -64,6 +66,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices.CSOM")]
+        [TestCategory("CI.Core")]
         public void EnsureCSOMModelHandlers()
         {
             var service = new CSOMProvisionService();
@@ -78,6 +81,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices.CSOM")]
+        [TestCategory("CI.Core")]
         public void EnsureStandardCSOMModelHandlers()
         {
             var service = new StandardCSOMProvisionService();
@@ -101,6 +105,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices.SSOM")]
+        [TestCategory("CI.Core")]
         public void EnsureSSOMModelHandlers()
         {
             var service = new SSOMProvisionService();
@@ -115,6 +120,7 @@ namespace SPMeta2.Regression.Impl.Tests
 
         [TestMethod]
         [TestCategory("Regression.Impl.ProvisionServices.SSOM")]
+        [TestCategory("CI.Core")]
         public void EnsureStandardSSOMModelHandlers()
         {
             var service = new StandardSSOMProvisionService();

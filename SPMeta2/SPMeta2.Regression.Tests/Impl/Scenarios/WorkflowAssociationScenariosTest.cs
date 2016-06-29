@@ -20,6 +20,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -63,17 +64,20 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios. WorkflowAssociation")]
         public void CanDeploy_WorkflowAssociation_UnderWeb()
         {
-            var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+            WithExcpectedException(typeof(SPMeta2NotImplementedException), () =>
             {
+                var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+                {
 
+                });
+
+                var model = SPMeta2Model.NewWebModel(web =>
+                {
+                    web.AddWorkflowAssociation(workflowDef);
+                });
+
+                TestModel(model);
             });
-
-            var model = SPMeta2Model.NewWebModel(web =>
-            {
-                web.AddWorkflowAssociation(workflowDef);
-            });
-
-            TestModel(model);
         }
 
         [TestMethod]

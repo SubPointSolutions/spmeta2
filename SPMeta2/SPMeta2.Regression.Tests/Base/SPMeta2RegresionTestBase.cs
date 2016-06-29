@@ -24,17 +24,62 @@ using SPMeta2.Validation.Services;
 using System.Collections.ObjectModel;
 using SPMeta2.Standard.Enumerations;
 using System.Text;
+using SPMeta2.Containers.Services.Rnd;
+using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
 
 namespace SPMeta2.Regression.Tests.Base
 {
-    public class SPMeta2RegresionTestBase
+    public class SPMeta2RegresionTestCoreBase
+    {
+        public SPMeta2RegresionTestCoreBase()
+        {
+            Rnd = new DefaultRandomService();
+
+            ModelGeneratorService = new ModelGeneratorService();
+            ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+        }
+        protected RandomService Rnd { get; set; }
+
+        protected virtual bool IsCorrectValidationException(Exception e)
+        {
+            var result = true;
+
+            result = result & (e is SPMeta2Exception);
+            result = result & (e.InnerException is SPMeta2AggregateException);
+            result = result & ((e.InnerException as AggregateException)
+                                    .InnerExceptions.All(ee => ee is SPMeta2ModelValidationException));
+
+            return result;
+        }
+
+        public ModelGeneratorService ModelGeneratorService { get; set; }
+
+        protected virtual T RndDef<T>()
+            where T : DefinitionBase
+        {
+            return RndDef<T>(null);
+        }
+
+        protected virtual T RndDef<T>(Action<T> action)
+            where T : DefinitionBase
+        {
+            return ModelGeneratorService.GetRandomDefinition<T>(action);
+        }
+    }
+
+    public class SPMeta2DefinitionRegresionTestBase : SPMeta2RegresionTestCoreBase
+    {
+
+    }
+
+    public class SPMeta2ProvisionRegresionTestBase : SPMeta2RegresionTestCoreBase
     {
         #region constructors
 
-        public SPMeta2RegresionTestBase()
+        public SPMeta2ProvisionRegresionTestBase()
         {
             ModelServiceBase.OnResolveNullModelHandler = (node => new EmptyModelhandler());
 
@@ -79,7 +124,7 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionService.OnModelPropertyValidated(sender, e);
         }
 
-        static SPMeta2RegresionTestBase()
+        static SPMeta2ProvisionRegresionTestBase()
         {
             // ensure we aren't in GAC
             var location = typeof(FieldDefinition).Assembly.Location;
@@ -89,12 +134,14 @@ namespace SPMeta2.Regression.Tests.Base
                 throw new SPMeta2Exception(string.Format("M2 assemblies are beinfg loaded from the GAC: [{0}].", location));
             }
 
-            RegressionService = new RegressionTestService();
 
-            RegressionService.AssertService = new VSAssertService();
+            // moved to RegressionService lazy load initialization
+            //RegressionService = new RegressionTestService();
 
-            RegressionService.EnableDefinitionValidation = true;
-            RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+            //RegressionService.AssertService = new VSAssertService();
+
+            //RegressionService.EnableDefinitionValidation = true;
+            //RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
         }
 
         #endregion
@@ -122,12 +169,33 @@ namespace SPMeta2.Regression.Tests.Base
         protected RunOptions TestOptions { get; set; }
         public bool EnablePropertyUpdateValidation { get; set; }
 
-        public static RegressionTestService RegressionService { get; set; }
+        private static RegressionTestService _regressionService;
 
-        public ModelGeneratorService ModelGeneratorService
+        public static RegressionTestService RegressionService
         {
-            get { return RegressionService.ModelGeneratorService; }
+            get
+            {
+                if (_regressionService == null)
+                {
+                    _regressionService = new RegressionTestService();
+                    _regressionService.AssertService = new VSAssertService();
+
+                    _regressionService.EnableDefinitionValidation = true;
+                    _regressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+                }
+
+                return _regressionService;
+            }
+            set
+            {
+                _regressionService = value;
+            }
         }
+
+        //public ModelGeneratorService ModelGeneratorService
+        //{
+        //    get { return RegressionService.ModelGeneratorService; }
+        //}
 
         #endregion
 

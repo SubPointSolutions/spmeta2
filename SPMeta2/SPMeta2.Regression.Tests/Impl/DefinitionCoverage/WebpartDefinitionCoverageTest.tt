@@ -79,6 +79,8 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 
 		public static bool UseSubWebs = true;
 
+		public static bool UseApps = false;
+
 		#endregion
 
         #region pre-generated tests
@@ -227,8 +229,10 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
             var listWebPartDef = initialDef.Clone<TWebpartType>();
             var docWebPartDef = initialDef.Clone<TWebpartType>();
 
-            // ensure for the client web part
-            currentWeb.AddRandomApp();
+			if(UseApps) {
+				// ensure for the client web part
+				currentWeb.AddRandomApp();
+			}
 
             currentWeb
                 /// for the Pages lib & pubnlishing pages

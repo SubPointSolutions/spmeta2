@@ -30,23 +30,39 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
-            var modelHost = modelHostContext.ModelHost;
+            var modelHost = modelHostContext.ModelHost as ModelHostBase;
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            Web web = null;
+            List hostList = null;
 
-            var web = webModelHost.HostWeb;
+            if (modelHost is WebModelHost)
+                web = (modelHost as WebModelHost).HostWeb;
+            else if (modelHost is ListModelHost)
+            {
+                web = (modelHost as ListModelHost).HostList.ParentWeb;
+                hostList = (modelHost as ListModelHost).HostList;
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException(
+                    string.Format("Unsupported model host type:[{0}]", modelHost.GetType()));
+            }
+
             var listDefinition = model as ListDefinition;
             var context = web.Context;
 
-            context.Load(web, w => w.ServerRelativeUrl);
-            context.ExecuteQueryWithTrace();
-
-            if (listDefinition != null)
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                var list = LoadCurrentList(web, listDefinition);
+                context.Load(web, w => w.ServerRelativeUrl);
+                context.ExecuteQueryWithTrace();
+            }
+
+            if (listDefinition != null && (web != null || hostList != null))
+            {
+                var list = hostList ?? LoadCurrentList(web, listDefinition);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -59,7 +75,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                var listModelHost = ModelHostBase.Inherit<ListModelHost>(webModelHost, c =>
+                var listModelHost = ModelHostBase.Inherit<ListModelHost>(modelHost, c =>
                 {
                     c.HostList = list;
                 });
@@ -78,7 +94,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQueryWithTrace();
 
-                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, itemHost =>
                     {
                         itemHost.CurrentWeb = web;
                         itemHost.CurrentList = list;
@@ -103,7 +119,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQueryWithTrace();
 
-                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, itemHost =>
                     {
                         itemHost.CurrentWeb = web;
                         itemHost.CurrentList = list;
@@ -138,7 +154,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     context.ExecuteQueryWithTrace();
 
-                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(webModelHost, itemHost =>
+                    var folderModelHost = ModelHostBase.Inherit<FolderModelHost>(modelHost, itemHost =>
                     {
                         itemHost.CurrentWeb = web;
                         itemHost.CurrentList = list;

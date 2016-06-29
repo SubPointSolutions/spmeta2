@@ -12,21 +12,21 @@ using SPMeta2.Standard.Definitions.Fields;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class TaxonomyFieldDefinitionTests : SPMeta2RegresionTestBase
+    public class TaxonomyFieldDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
         #region common
 
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            InternalInit();
-        }
+        //[ClassInitialize]
+        //public static void Init(TestContext context)
+        //{
+        //    InternalInit();
+        //}
 
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            InternalCleanup();
-        }
+        //[ClassCleanup]
+        //public static void Cleanup()
+        //{
+        //    InternalCleanup();
+        //}
 
         #endregion
 
@@ -34,6 +34,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.TaxonomyFieldDefinition.Properties")]
+        [TestCategory("CI.Core")]
         public void TaxonomyFieldDefinition_AllowMultipleValues_ShouldUpdate_FieldType()
         {
             var def = new TaxonomyFieldDefinition();

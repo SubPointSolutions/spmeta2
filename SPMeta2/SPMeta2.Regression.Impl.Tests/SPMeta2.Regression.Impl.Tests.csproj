@@ -198,6 +198,7 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -212,11 +213,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Impl\Build\BuildBaselineTests.cs" />
     <Compile Include="Impl\ModelHandlers\Base\ModelHandlerTestBase.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="Impl\Services\Base\TokenReplacementServiceTestBase.cs" />
     <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
+    <Compile Include="Impl\Services\DefaultDiagnosticInfoServiceTests.cs" />
     <Compile Include="Impl\Services\ValidationServiceTests.cs" />
     <Compile Include="Impl\Services\SSOMTokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Services\CSOMTokenReplacementServiceTests.cs" />
@@ -331,9 +334,33 @@
       <Link>Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SPMeta2.Containers.SSOM.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Containers\Apps\1.0.0.0\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.1\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.2\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

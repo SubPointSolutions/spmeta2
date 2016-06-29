@@ -140,6 +140,8 @@
     <Compile Include="SSOMValidationService.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Validation\AuditSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\DeleteQuickLaunchNavigationNodesDefinitionValidator.cs" />
+    <Compile Include="Validation\DeleteTopNavigationNodesDefinitionValidator.cs" />
     <Compile Include="Validation\Extended\WebpartPresenceOnPageDefinitionValidator.cs" />
     <Compile Include="Validation\AnonymousAccessSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\Extended\XsltListViewWebPartGridModePresenceValidator.cs" />

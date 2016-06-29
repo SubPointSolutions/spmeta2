@@ -18,6 +18,8 @@ using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Attributes.Regression;
 
+using SPMeta2.Containers.Extensions;
+
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
@@ -612,6 +614,87 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddField(field);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region list scope
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_SiteField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                // should not validate fieldd, it would fail on Id validation
+                // it we can deploy the second field - all good
+                site.AddField(field1, f => f.RegExcludeFromValidation());
+                site.AddField(field2, f => f.RegExcludeFromValidation());
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_WebField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                // should not validate fieldd, it would fail on Id validation
+                // it we can deploy the second field - all good
+                web.AddField(field1, f => f.RegExcludeFromValidation());
+                web.AddField(field2, f => f.RegExcludeFromValidation());
+            });
+
+            TestModel(model);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.InternalNameLookup")]
+        public void CanDeploy_ListField_Same_InternalName()
+        {
+            // we should be able to deploy field with same internal name and different ID in the list
+            // https://github.com/SubPointSolutions/spmeta2/issues/825
+
+            var field1 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            var field2 = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Id = Guid.NewGuid();
+                def.InternalName = field1.InternalName;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddField(field1);
+                    list.AddField(field2);
+                });
             });
 
             TestModel(model);

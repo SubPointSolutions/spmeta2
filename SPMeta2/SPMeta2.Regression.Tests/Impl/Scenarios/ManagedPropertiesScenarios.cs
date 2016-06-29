@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -91,14 +91,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var managedProperty = ModelGeneratorService.GetRandomDefinition<ManagedPropertyDefinition>();
-
-                var mdoel = SPMeta2Model.NewSiteModel(farm =>
+                WithExcpectedException(typeof(SPMeta2NotImplementedException), () =>
                 {
-                    farm.AddManagedProperty(managedProperty);
-                });
+                    var managedProperty = ModelGeneratorService.GetRandomDefinition<ManagedPropertyDefinition>();
 
-                TestModel(mdoel);
+                    var mdoel = SPMeta2Model.NewSiteModel(farm =>
+                    {
+                        farm.AddManagedProperty(managedProperty);
+                    });
+
+                    TestModel(mdoel);
+                });
             });
         }
 

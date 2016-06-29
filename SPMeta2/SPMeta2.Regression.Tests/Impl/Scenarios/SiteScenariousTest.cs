@@ -37,6 +37,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Sites")]
+        public void CanDeploy_Simple_Site_WithNullableSecondaryContactLogin()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>();
+
+                //site.PrefixName = string.Empty;
+
+                site.SecondaryContactEmail = null;
+                site.SecondaryContactLogin = null;
+                site.SecondaryContactName = null;
+
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddSite(site);
+                });
+
+                TestModel(model);
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Sites")]
