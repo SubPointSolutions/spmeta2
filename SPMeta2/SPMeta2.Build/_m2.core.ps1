@@ -1,6 +1,6 @@
 ﻿#region utils
 
-function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, $baselines) {
+function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, $baselines, $netRuntime) {
 
     if($baselines -eq $null) {
         throw "baselines is null"
@@ -34,6 +34,8 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
       #$g_buildBaseline.Assemblies
      throw "Cannot find custom baseline form assembly [$assemblyFileName] and runtime [$runtime]"
     }
+
+   
         
     $targetBaseline = $baseline.ArrayOfBuildBaseline.BuildBaseline `
                                     | Where-Object { $_.AssemblyFileName -eq $assemblyFileName }
@@ -52,6 +54,32 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
 
     $assembly = [Mono.Cecil.AssemblyDefinition]::ReadAssembly($assemblyFilePath);
     $typeReferences = $assembly.MainModule.GetTypes();
+
+    if($netRuntime -ne $null) {
+        Write-BVerbose "Checking expecting .NET runtime:[$netRuntime]"
+
+        $targetFrameworkAttr = $assembly.CustomAttributes | where-object { $_.AttributeType.Name -eq "TargetFrameworkAttribute" }
+
+        $framework = "v3.5"
+
+        if($targetFrameworkAttr -eq $null) {
+            # they don't have TargetFrameworkAttribute attr
+            $framework = "v3.5"
+            #throw "Cannot find TargetFrameworkAttribute for assembly:[$assemblyFilePath]"
+        } else {
+            $targetFrameworkValue = $targetFrameworkAttr.ConstructorArguments[0].Value;
+            $framework = $targetFrameworkValue.ToString().Split(',')[1].Split('=')[1];
+        }
+
+        if($framework -ne $netRuntime) {
+            throw "[FAILED]: expecting NET framework [$netRuntime] and it was:[$framework]"
+        } else {
+            Write-BVerbose "[+]: expecting NET framework [$netRuntime] and it was:[$framework]"
+        }
+
+    } else {
+        Write-BVerbose "Skipping expecting .NET runtime check"
+    }
 
     $allTypes = @()
 

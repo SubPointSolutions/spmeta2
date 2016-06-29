@@ -398,17 +398,24 @@ function CreateNugetSpec($package, $targetFolder) {
             Write-BVerbose "Checking baseline for assembly:[$assembyFullPath]"
 
             $runtime = "15"
+            $netRuntime = "v3.5"
 
-            if($assembyPath.Name -eq "net35") {
+            if($netProfileFolder.Name -eq "net35") {
+                Write-BVerbose "Handling net35 folder"
                 $runtime = "14"
+                $netRuntime = "v3.5"
             }
 
-            if($assembyPath.Name -eq "net40") {
+            if($netProfileFolder.Name -eq "net40") {
+                Write-BVerbose "Handling net40 folder"
                 $runtime = "15"
+                $netRuntime = "v4.0"
             }
 
-            if($assembyPath.Name -eq "net45") {
+            if($netProfileFolder.Name -eq "net45") {
+                Write-BVerbose "Handling net45 folder"
                 $runtime = "15"
+                $netRuntime = "v4.5"
             }
 
             # is vXX version? SPMeta2.CSOM.Foundation-v14.1.2.65-
@@ -424,7 +431,7 @@ function CreateNugetSpec($package, $targetFolder) {
                 $runtime = $packageRuntimeversion               
             }
 
-            Check-AssemblyBaseline $assembyFullName $runtime $assembyFullPath $g_buildBaseline
+            Check-AssemblyBaseline $assembyFullName $runtime $assembyFullPath $g_buildBaseline $netRuntime
         }
     }    
 

@@ -144,7 +144,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="ModelHandlers\AnonymousAccessSettingsModelHandler.cs" />
-    <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='3651' or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />

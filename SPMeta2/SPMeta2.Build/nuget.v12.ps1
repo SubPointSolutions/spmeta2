@@ -96,7 +96,7 @@ function CreateSPMeta2Packages() {
 	Write-BInfo "Creating SPMeta2.Core package"
 	CreateSPMeta2CorePackage $version
 
-	#Write-BInfo "Creating SPMeta2.Core.Standard package"
+	Write-BInfo "Creating SPMeta2.Core.Standard package"
 	CreateSPMeta2CoreStandardPackage $version 
 
     #CSOM
