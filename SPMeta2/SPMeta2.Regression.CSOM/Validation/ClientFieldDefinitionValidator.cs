@@ -64,6 +64,40 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             assert.SkipProperty(m => m.DefaultFormula, "Not supported in CSOM API yet");
 
+            if (!string.IsNullOrEmpty(definition.DefaultFormula))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefaultFormula);
+
+                    var isValid = false;
+
+                    var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
+                    var defaultValueNode = dstXmlNode.Descendants("DefaultFormula").FirstOrDefault();
+
+                    if (defaultValueNode == null)
+                    {
+                        isValid = false;
+                    }
+                    else
+                    {
+                        isValid = defaultValueNode.Value == s.DefaultFormula;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultFormula, "DefaultFormula is null or empty. Skipping.");
+            }
+
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {
                 assert.SkipProperty(m => m.AddFieldOptions, "BuiltInAddFieldOptions.DefaultValue. Skipping.");

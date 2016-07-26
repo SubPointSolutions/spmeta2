@@ -478,6 +478,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed.ToString().ToUpper());
             }
+
+            // Enhance FieldDefinition provision - investigate DefaultFormula property support for CSOM #842
+            // https://github.com/SubPointSolutions/spmeta2/issues/842
+            if (!string.IsNullOrEmpty(fieldModel.DefaultFormula))
+            {
+                var defaultFormulaNode = new XElement("DefaultFormula");
+                defaultFormulaNode.Value = fieldModel.DefaultFormula;
+
+                fieldTemplate.Add(defaultFormulaNode);
+            }
         }
 
         protected virtual string GetTargetSPFieldXmlDefinition(FieldDefinition fieldModel)
