@@ -178,7 +178,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [ExpectedException(typeof(SPMeta2NotImplementedException))]
         public void CanDeploy_ListView_AsRecurrence()
         {
-            
+
             throw new SPMeta2NotImplementedException();
 
             //TestRandomDefinition<ListViewDefinition>(def =>
@@ -331,6 +331,59 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region oot list view modifications
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_As_OOTB_Library_MySubmissions()
+        {
+            var listDefinition = BuiltInListViewDefinitions.Libraries.MySubmissions.Inherit(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Title
+                };
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.Documents, list =>
+                {
+                    list.AddListView(listDefinition);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_As_OOTB_Library_ApproveRejectItems()
+        {
+            var listDefinition = BuiltInListViewDefinitions.Libraries.ApproveRejectItems.Inherit(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Title
+                };
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.Documents, list =>
+                {
+                    list.AddListView(listDefinition);
+                });
+            });
+
+            TestModel(webModel);
         }
 
         #endregion
