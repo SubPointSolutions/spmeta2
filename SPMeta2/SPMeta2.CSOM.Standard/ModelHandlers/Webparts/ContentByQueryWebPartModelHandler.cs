@@ -245,12 +245,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 var list = targetWeb.QueryAndGetListByTitle(typedDefinition.ListName);
                 wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
 
+#if !NET35
                 var folder = list.RootFolder;
 
                 context.Load(folder, f => f.Properties);
                 context.ExecuteQueryWithTrace();
 
-#if !NET35
                 var serverTemplate = ConvertUtils.ToString(list.RootFolder.Properties["vti_listservertemplate"]);
 
                 if (string.IsNullOrEmpty(serverTemplate))
@@ -275,6 +275,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 var list = targetWeb.QueryAndGetListByUrl(typedDefinition.ListUrl);
                 wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
 
+#if !NET35
                 var folder = list.RootFolder;
 
                 context.Load(folder, f => f.Properties);
@@ -290,6 +291,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 }
 
                 wpXml.SetOrUpdateProperty("ServerTemplate", serverTemplate);
+#endif
             }
 
             if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
