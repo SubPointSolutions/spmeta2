@@ -57,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #endregion
 
-        #region
+        #region list bindings
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.Lists")]
@@ -99,6 +99,124 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
                 def.ListId = Guid.Empty;
                 def.ListUrl = BuiltInListDefinitions.StyleLibrary.CustomUrl;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(webpartDef);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region list types
+
+     
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_ListTemplateType_Posts()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.Posts;
+
+            var webpartDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId;
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(webpartDef);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_ListTemplateType_GenericList()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.GenericList;
+
+            var webpartDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId;
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(webpartDef);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_ListTemplateType_DocumentLibrary()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.DocumentLibrary;
+
+            var webpartDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId;
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(webpartDef);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_ListTemplateType_AssetLibrary()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.AssetLibrary;
+
+            var webpartDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId;
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
             });
 
             var model = SPMeta2Model.NewWebModel(web =>

@@ -288,7 +288,21 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
 
                 if (typedDefinition.ServerTemplate.HasValue)
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ServerTemplate);
+                        var isValid = false;
+
+                        isValid = s.ServerTemplate == ConvertUtils.ToInt(d.ServerTemplate);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.ServerTemplate, "ServerTemplate is null or empty, skipping.");
