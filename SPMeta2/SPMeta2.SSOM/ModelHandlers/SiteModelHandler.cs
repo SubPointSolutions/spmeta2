@@ -34,7 +34,9 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var siteCollectionUrl = SPUrlUtility.CombineUrl(definition.PrefixName, definition.Url);
 
-            if (siteCollectionUrl.StartsWith("/"))
+            siteCollectionUrl = siteCollectionUrl.TrimEnd('/');
+
+            if (siteCollectionUrl.StartsWith("/") && siteCollectionUrl.Length > 0)
                 siteCollectionUrl = siteCollectionUrl.Substring(1, siteCollectionUrl.Length - 1);
 
             if (webApp.Sites.Names.Contains(siteCollectionUrl))
@@ -81,6 +83,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new site");
 
                 var siteCollectionUrl = SPUrlUtility.CombineUrl(siteModel.PrefixName, siteModel.Url);
+                siteCollectionUrl = siteCollectionUrl.TrimEnd('/');
 
                 SPSite newSite = null;
 
