@@ -28,6 +28,16 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     public class ContentByQueryWebPartDefinition : WebPartDefinition
     {
+        #region constructor
+
+        public ContentByQueryWebPartDefinition()
+        {
+            ItemStyle = "Default";
+            GroupStyle = "DefaultHeader";
+        }
+
+        #endregion
+
         #region properties
 
         [DataMember]
@@ -72,6 +82,10 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [DataMember]
         [ExpectValidation]
         public string WebUrl { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public Guid? WebId { get; set; }
 
         [DataMember]
         [ExpectValidation]

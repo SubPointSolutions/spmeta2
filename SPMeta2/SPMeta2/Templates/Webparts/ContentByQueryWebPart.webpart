@@ -59,7 +59,7 @@
         <property name="ContentTypeBeginsWithId" type="string" />
         <property name="AllowHide" type="bool">True</property>
         <property name="FeedEnabled" type="bool">False</property>
-        <property name="SortBy" type="string">{8c06beca-0777-48f7-91c7-6da68bc07b69}</property>
+        <property name="SortBy" type="string"></property>
         <property name="FilterByContextTerm" type="bool">False</property>
         <property name="TitleIconImageUrl" type="string" />
         <property name="PlayMediaInBrowser" type="bool">True</property>
