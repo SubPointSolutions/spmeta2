@@ -47,6 +47,15 @@ namespace SPMeta2.Regression.SSOM.Validation
                     assert.SkipProperty(m => m.Description);
             });
 
+            if (definition.NavigateForFormsPages.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.NavigateForFormsPages, o => o.NavigateForFormsPages);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages  is null or empty");
+            }
+
             if (definition.WriteSecurity.HasValue)
             {
                 assert.ShouldBeEqual(m => m.WriteSecurity, o => o.WriteSecurity);
