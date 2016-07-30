@@ -59,6 +59,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                     targetWeb.Dispose();
             }
 
+            if (typedFieldModel.CountRelated.HasValue)
+            {
+                typedField.CountRelated = typedFieldModel.CountRelated.Value;
+            }
+
             if (!string.IsNullOrEmpty(typedFieldModel.RelationshipDeleteBehavior))
             {
                 var value = (SPRelationshipDeleteBehavior)Enum.Parse(typeof(SPRelationshipDeleteBehavior), typedFieldModel.RelationshipDeleteBehavior);
@@ -99,7 +104,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             }
         }
 
-        public  SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
+        public SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
         {
             return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
         }

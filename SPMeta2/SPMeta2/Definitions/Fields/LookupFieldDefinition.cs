@@ -159,6 +159,16 @@ namespace SPMeta2.Definitions.Fields
         [ExpectNullable]
         public string RelationshipDeleteBehavior { get; set; }
 
+        /// <summary>
+        /// Represents'CountRelated' property.
+        /// Supported by only SSOM
+        /// https://github.com/SubPointSolutions/spmeta2/issues/531
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public bool? CountRelated { get; set; }
+
         #endregion
 
         #region methods

@@ -286,6 +286,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                     typedFieldAssert.SkipProperty(m => m.LookupField, "LookupField is NULL. Skipping.");
                 }
             }
+
+            typedFieldAssert.SkipProperty(m => m.CountRelated, "CountRelated is not supported by CSOM");
         }
     }
 }
