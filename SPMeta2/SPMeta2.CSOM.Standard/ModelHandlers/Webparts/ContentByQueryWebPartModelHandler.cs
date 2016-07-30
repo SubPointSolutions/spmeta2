@@ -250,6 +250,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 context.Load(folder, f => f.Properties);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
                 var serverTemplate = ConvertUtils.ToString(list.RootFolder.Properties["vti_listservertemplate"]);
 
                 if (string.IsNullOrEmpty(serverTemplate))
@@ -260,6 +261,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 }
 
                 wpXml.SetOrUpdateProperty("ServerTemplate", serverTemplate);
+#endif
             }
 
             if (!string.IsNullOrEmpty(typedDefinition.ListUrl))
