@@ -274,7 +274,21 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
 
                 if (typedDefinition.ItemLimit.HasValue)
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ItemLimit);
+                        var isValid = false;
+
+                        isValid = s.ItemLimit == d.ItemLimit;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.ItemLimit, "ItemLimit is null or empty, skipping.");

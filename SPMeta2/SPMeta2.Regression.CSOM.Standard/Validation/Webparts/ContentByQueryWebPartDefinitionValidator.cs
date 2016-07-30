@@ -334,9 +334,28 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                 }
 
                 if (typedDefinition.ItemLimit.HasValue)
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ItemLimit);
+                        var isValid = false;
+
+                        isValid = ConvertUtils.ToInt(CurrentWebPartXml.GetProperty("ItemLimit"))
+                                        == typedDefinition.ItemLimit;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
+                {
                     assert.SkipProperty(m => m.ItemLimit, "ItemLimit is null or empty, skipping.");
+                }
 
                 if (typedDefinition.PlayMediaInBrowser.HasValue)
                     throw new NotImplementedException();

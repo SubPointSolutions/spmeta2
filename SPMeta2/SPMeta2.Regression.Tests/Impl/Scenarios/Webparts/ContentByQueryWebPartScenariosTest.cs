@@ -281,5 +281,72 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         #endregion
+
+        #region limit
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_Limit()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.Posts;
+
+            var defLimit1 = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and limit 1";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemLimit = 1;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Asc";
+            });
+
+            var defLimit3 = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and limit 3";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+
+            var defLimit5 = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and limit 5";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemLimit = 5;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(defLimit1);
+                        page.AddContentByQueryWebPart(defLimit3);
+                        page.AddContentByQueryWebPart(defLimit5);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }
