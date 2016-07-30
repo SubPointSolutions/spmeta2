@@ -83,21 +83,63 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
                 // operators 1-2-3
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator1))
                 {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator1);
+                        var isValid = false;
 
+                        isValid = s.FilterOperator1.ToLower() == d.FilterOperator1.ToString().ToLower();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.FilterOperator1, "FilterOperator1 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator2))
                 {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator2);
+                        var isValid = false;
 
+                        isValid = s.FilterOperator2.ToLower() == d.FilterOperator2.ToString().ToLower();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.FilterOperator2, "FilterOperator2 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator3))
                 {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator3);
+                        var isValid = false;
 
+                        isValid = s.FilterOperator3.ToLower() == d.FilterOperator3.ToString().ToLower();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.FilterOperator3, "FilterOperator3 is null or empty, skipping.");

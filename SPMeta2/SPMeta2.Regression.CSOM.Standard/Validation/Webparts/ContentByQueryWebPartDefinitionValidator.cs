@@ -54,51 +54,195 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                 // filter display values
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue1))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterDisplayValue1);
+                        var isValid = false;
+
+                        isValid = s.FilterDisplayValue1 == CurrentWebPartXml.GetProperty("FilterDisplayValue1");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterDisplayValue1, "FilterDisplayValue1 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue2))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterDisplayValue2);
+                        var isValid = false;
+
+                        isValid = s.FilterDisplayValue2 == CurrentWebPartXml.GetProperty("FilterDisplayValue2");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterDisplayValue2, "FilterDisplayValue2 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterDisplayValue3))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterDisplayValue3);
+                        var isValid = false;
+
+                        isValid = s.FilterDisplayValue3 == CurrentWebPartXml.GetProperty("FilterDisplayValue3");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterDisplayValue3, "FilterDisplayValue3 is null or empty, skipping.");
 
                 // filter operator
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator1))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator1);
+                        var isValid = false;
+
+                        isValid = s.FilterOperator1 == CurrentWebPartXml.GetProperty("FilterOperator1");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterOperator1, "FilterOperator1 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator2))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator2);
+                        var isValid = false;
+
+                        isValid = s.FilterOperator2 == CurrentWebPartXml.GetProperty("FilterOperator2");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterOperator2, "FilterOperator2 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterOperator3))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterOperator3);
+                        var isValid = false;
+
+                        isValid = s.FilterOperator3 == CurrentWebPartXml.GetProperty("FilterOperator3");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterOperator3, "FilterOperator3 is null or empty, skipping.");
 
                 // filter types
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterType1))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterType1);
+                        var isValid = false;
+
+                        isValid = s.FilterType1 == CurrentWebPartXml.GetProperty("FilterType1");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterType1, "FilterType1 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterType2))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterType2);
+                        var isValid = false;
+
+                        isValid = s.FilterType2 == CurrentWebPartXml.GetProperty("FilterType2");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterType2, "FilterType2 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterType3))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterType3);
+                        var isValid = false;
+
+                        isValid = s.FilterType3 == CurrentWebPartXml.GetProperty("FilterType3");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterType3, "FilterType3 is null or empty, skipping.");
 
@@ -168,17 +312,65 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                 // filter values
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterValue1))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterValue1);
+                        var isValid = false;
+
+                        isValid = s.FilterValue1 == CurrentWebPartXml.GetProperty("FilterValue1");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterValue1, "FilterValue1 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterValue2))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterValue2);
+                        var isValid = false;
+
+                        isValid = s.FilterValue2 == CurrentWebPartXml.GetProperty("FilterValue2");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterValue2, "FilterValue2 is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.FilterValue3))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.FilterValue3);
+                        var isValid = false;
+
+                        isValid = s.FilterValue3 == CurrentWebPartXml.GetProperty("FilterValue3");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.FilterValue3, "FilterValue3 is null or empty, skipping.");
 

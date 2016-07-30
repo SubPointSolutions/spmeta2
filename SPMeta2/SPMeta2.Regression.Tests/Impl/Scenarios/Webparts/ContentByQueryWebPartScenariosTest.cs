@@ -120,8 +120,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #region list types
 
-
-
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
         public void CanDeploy_ContentByQueryWebPart_AsIs_With_ListTemplateType_Posts()
@@ -388,33 +386,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
             });
 
 
-              var defTitleOnly = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
-            {
-                def.Title = "As is with template type " + templateTypeId + " and item style TitleOnly";
+            var defTitleOnly = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+          {
+              def.Title = "As is with template type " + templateTypeId + " and item style TitleOnly";
 
-                def.ServerTemplate = templateTypeId;
+              def.ServerTemplate = templateTypeId;
 
-                def.ItemStyle = BuiltInItemStyleNames.TitleOnly;
-                def.ItemLimit = 3;
+              def.ItemStyle = BuiltInItemStyleNames.TitleOnly;
+              def.ItemLimit = 3;
 
-                def.SortByFieldType = "DateTime";
-                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
-                def.SortByDirection = "Desc";
-            });
+              def.SortByFieldType = "DateTime";
+              def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+              def.SortByDirection = "Desc";
+          });
 
-              var defNoImage = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
-            {
-                def.Title = "As is with template type " + templateTypeId + " and item style NoImage";
+            var defNoImage = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+          {
+              def.Title = "As is with template type " + templateTypeId + " and item style NoImage";
 
-                def.ServerTemplate = templateTypeId;
+              def.ServerTemplate = templateTypeId;
 
-                def.ItemStyle = BuiltInItemStyleNames.NoImage;
-                def.ItemLimit = 3;
+              def.ItemStyle = BuiltInItemStyleNames.NoImage;
+              def.ItemLimit = 3;
 
-                def.SortByFieldType = "DateTime";
-                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
-                def.SortByDirection = "Desc";
-            });
+              def.SortByFieldType = "DateTime";
+              def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+              def.SortByDirection = "Desc";
+          });
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
@@ -426,6 +424,99 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                         page.AddContentByQueryWebPart(defBullets);
                         page.AddContentByQueryWebPart(defDefault);
                         page.AddContentByQueryWebPart(defTitleOnly);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region filters
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_Filters()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.GenericList;
+
+            var defToday = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " today";
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+
+                def.FilterType1 = "DateTime";
+                def.FilterField1 = BuiltInFieldId.Created.ToString("B");
+                def.FilterDisplayValue1 = "[TODAY]";
+                def.Filter1ChainingOperator = "And";
+                def.FilterOperator1 = "Eq";
+            });
+
+            var defFromLastWeek = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " from last week";
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+
+                def.FilterType1 = "DateTime";
+                def.FilterField1 = BuiltInFieldId.Created.ToString("B");
+                def.FilterDisplayValue1 = "[TODAY]";
+                def.Filter1ChainingOperator = "And";
+                def.FilterOperator1 = "Leq";
+
+                def.FilterType2 = "DateTime";
+                def.FilterField2 = BuiltInFieldId.Created.ToString("B");
+                def.FilterDisplayValue2 = "-7";
+                def.Filter2ChainingOperator = "And";
+                def.FilterOperator2 = "Geq";
+
+                def.Filter2IsCustomValue = true;
+                def.Filter2ChainingOperator = "And";
+            });
+
+            var defFromLastWeekContains = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " from last week contains";
+
+                //def.WebUrl = "~sitecollection";
+                def.ServerTemplate = templateTypeId;
+
+                def.FilterType1 = "DateTime";
+                def.FilterField1 = BuiltInFieldId.Created.ToString("B");
+                def.FilterDisplayValue1 = "[TODAY]";
+                def.Filter1ChainingOperator = "And";
+                def.FilterOperator1 = "Leq";
+
+                def.FilterType2 = "DateTime";
+                def.FilterField2 = BuiltInFieldId.Created.ToString("B");
+                def.FilterDisplayValue2 = "-7";
+                def.Filter2ChainingOperator = "And";
+                def.FilterOperator2 = "Geq";
+
+                def.Filter2IsCustomValue = true;
+                def.Filter2ChainingOperator = "And";
+
+                def.FilterType3 = "Text";
+                def.FilterField3 = BuiltInFieldId.Title.ToString("B");
+                def.FilterDisplayValue3 = "m2";
+                def.FilterOperator3 = "Contains";
+
+                def.Filter3IsCustomValue = false;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(defToday);
+                        page.AddContentByQueryWebPart(defFromLastWeek);
+                        page.AddContentByQueryWebPart(defFromLastWeekContains);
                     });
                 });
             });
