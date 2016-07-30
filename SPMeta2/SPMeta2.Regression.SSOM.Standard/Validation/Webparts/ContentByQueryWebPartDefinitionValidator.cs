@@ -148,7 +148,21 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(typedDefinition.SortByDirection))
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.SortByDirection);
+                        var isValid = false;
+
+                        isValid = s.SortByDirection.ToLower() == d.SortByDirection.ToString().ToLower();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.SortByDirection, "SortByDirection is null or empty, skipping.");

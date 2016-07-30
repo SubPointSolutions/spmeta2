@@ -119,7 +119,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #region list types
 
-     
+
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
@@ -226,6 +226,53 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                     list.AddRandomWebPartPage(page =>
                     {
                         page.AddContentByQueryWebPart(webpartDef);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region asc-desc
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_Sorting()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.AssetLibrary;
+
+            var ascDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and sort Asc";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Asc";
+            });
+
+            var descDef = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and sort Desc";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(ascDef);
+                        page.AddContentByQueryWebPart(descDef);
                     });
                 });
             });

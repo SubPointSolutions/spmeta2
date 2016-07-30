@@ -104,21 +104,63 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(typedDefinition.SortBy))
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.SortBy);
+                        var isValid = false;
+
+                        isValid = s.SortBy == CurrentWebPartXml.GetProperty("SortBy");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.SortBy, "SortBy is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.SortByFieldType))
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.SortByFieldType);
+                        var isValid = false;
+
+                        isValid = s.SortByFieldType == CurrentWebPartXml.GetProperty("SortByFieldType");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.SortByFieldType, "SortByFieldType is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.SortByDirection))
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.SortByDirection);
+                        var isValid = false;
+
+                        isValid = s.SortByDirection == CurrentWebPartXml.GetProperty("SortByDirection");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                     assert.SkipProperty(m => m.SortByDirection, "SortByDirection is null or empty, skipping.");
