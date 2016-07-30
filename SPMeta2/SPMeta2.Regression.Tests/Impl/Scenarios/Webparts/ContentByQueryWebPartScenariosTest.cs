@@ -29,6 +29,7 @@ using SPMeta2.Models;
 using SPMeta2.Regression.Definitions.Extended;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Standard.Syntax;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 {
@@ -340,6 +341,91 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                         page.AddContentByQueryWebPart(defLimit1);
                         page.AddContentByQueryWebPart(defLimit3);
                         page.AddContentByQueryWebPart(defLimit5);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region styling
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.TemplateTypes")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_Styles()
+        {
+            var templateTypeId = BuiltInListTemplateTypeId.Posts;
+
+            var defDefault = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style Default";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemStyle = BuiltInItemStyleNames.Default;
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+
+            var defBullets = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style Bullets";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemStyle = BuiltInItemStyleNames.Bullets;
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+
+              var defTitleOnly = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style TitleOnly";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemStyle = BuiltInItemStyleNames.TitleOnly;
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+              var defNoImage = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style NoImage";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemStyle = BuiltInItemStyleNames.NoImage;
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(defNoImage);
+                        page.AddContentByQueryWebPart(defBullets);
+                        page.AddContentByQueryWebPart(defDefault);
+                        page.AddContentByQueryWebPart(defTitleOnly);
                     });
                 });
             });
