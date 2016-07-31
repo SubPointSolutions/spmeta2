@@ -435,6 +435,49 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
         #endregion
 
+        #region mics props
+
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.Mics")]
+        //public void CanDeploy_ContentByQueryWebPart_AsIs_With_MicsProps()
+        //{
+        //    var templateTypeId = BuiltInListTemplateTypeId.AssetLibrary;
+
+        //    var misc1 = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+        //    {
+        //        def.Title = "As is with template type " + templateTypeId + " and sort Asc";
+
+        //        def.ServerTemplate = templateTypeId;
+
+        //        def.PlayMediaInBrowser = Rnd.Bool();
+        //        def.ShowUntargetedItems = Rnd.Bool();
+        //        def.UseCopyUtil = Rnd.Bool();
+        //    });
+
+        //    var misc2 = misc1.Inherit(def =>
+        //    {
+        //        def.PlayMediaInBrowser = !def.PlayMediaInBrowser;
+        //        def.ShowUntargetedItems = !def.ShowUntargetedItems;
+        //        def.UseCopyUtil = !def.UseCopyUtil;
+        //    });
+
+        //    var model = SPMeta2Model.NewWebModel(web =>
+        //    {
+        //        web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+        //        {
+        //            list.AddRandomWebPartPage(page =>
+        //            {
+        //                page.AddContentByQueryWebPart(misc1);
+        //                page.AddContentByQueryWebPart(misc2);
+        //            });
+        //        });
+        //    });
+
+        //    TestModel(model);
+        //}
+
+        #endregion
+
         #region filters
 
         [TestMethod]

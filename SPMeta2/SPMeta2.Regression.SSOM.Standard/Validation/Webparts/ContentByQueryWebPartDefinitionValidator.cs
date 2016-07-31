@@ -337,21 +337,21 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
 
                 if (typedDefinition.PlayMediaInBrowser.HasValue)
                 {
-                    // TODO
+                    assert.ShouldBeEqual(m => m.PlayMediaInBrowser, o => o.PlayMediaInBrowser);
                 }
                 else
                     assert.SkipProperty(m => m.PlayMediaInBrowser, "PlayMediaInBrowser is null or empty, skipping.");
 
                 if (typedDefinition.ShowUntargetedItems.HasValue)
                 {
-                    // TODO
+                    assert.ShouldBeEqual(m => m.ShowUntargetedItems, o => o.ShowUntargetedItems);
                 }
                 else
                     assert.SkipProperty(m => m.ShowUntargetedItems, "ShowUntargetedItems is null or empty, skipping.");
 
                 if (typedDefinition.UseCopyUtil.HasValue)
                 {
-                    // TODO
+                    assert.ShouldBeEqual(m => m.UseCopyUtil, o => o.UseCopyUtil);
                 }
                 else
                     assert.SkipProperty(m => m.UseCopyUtil, "UseCopyUtil is null or empty, skipping.");

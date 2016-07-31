@@ -129,6 +129,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             if (typedDefinition.PlayMediaInBrowser.HasValue)
                 typedWebpart.PlayMediaInBrowser = typedDefinition.PlayMediaInBrowser.Value;
 
+            if (typedDefinition.UseCopyUtil.HasValue)
+                typedWebpart.UseCopyUtil = typedDefinition.UseCopyUtil.Value;
+
             // FilterTypeXXX
             if (!string.IsNullOrEmpty(typedDefinition.FilterType1))
                 typedWebpart.FilterType1 = typedDefinition.FilterType1;
