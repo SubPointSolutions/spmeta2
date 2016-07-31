@@ -42,12 +42,44 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 
                 // mappings
                 if (!string.IsNullOrEmpty(typedDefinition.DataMappings))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DataMappings);
+                        var isValid = false;
+
+                        isValid = s.DataMappings == CurrentWebPartXml.GetProperty("DataMappings");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.DataMappings, "DataMappings is null or empty, skipping.");
 
                 if (!string.IsNullOrEmpty(typedDefinition.DataMappingViewFields))
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DataMappingViewFields);
+                        var isValid = false;
+
+                        isValid = s.DataMappingViewFields == CurrentWebPartXml.GetProperty("DataMappingViewFields");
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.DataMappingViewFields, "DataMappingViewFields is null or empty, skipping.");
 

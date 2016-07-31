@@ -30,6 +30,8 @@ using SPMeta2.Regression.Definitions.Extended;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Standard.Enumerations;
+using SPMeta2.Standard.Services.Webparts;
+using SPMeta2.Standard.BuiltInDefinitions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 {
@@ -387,18 +389,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
 
 
             var defTitleOnly = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
-          {
-              def.Title = "As is with template type " + templateTypeId + " and item style TitleOnly";
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style TitleOnly";
 
-              def.ServerTemplate = templateTypeId;
+                def.ServerTemplate = templateTypeId;
 
-              def.ItemStyle = BuiltInItemStyleNames.TitleOnly;
-              def.ItemLimit = 3;
+                def.ItemStyle = BuiltInItemStyleNames.TitleOnly;
+                def.ItemLimit = 3;
 
-              def.SortByFieldType = "DateTime";
-              def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
-              def.SortByDirection = "Desc";
-          });
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+            });
 
             var defNoImage = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
           {
@@ -517,6 +519,68 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                         page.AddContentByQueryWebPart(defToday);
                         page.AddContentByQueryWebPart(defFromLastWeek);
                         page.AddContentByQueryWebPart(defFromLastWeekContains);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region field mappings
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ContentByQueryWebPart.Mappings")]
+        public void CanDeploy_ContentByQueryWebPart_AsIs_With_Mappings()
+        {
+            var cqwpBindingService = new ContentByQueryWebPartBindingService();
+
+            cqwpBindingService
+                .AddDataMappingViewFields(new[]
+                {
+                    BuiltInPublishingFieldDefinitions.PublishedLinksURL,
+                    BuiltInFieldDefinitions.EncodedAbsThumbnailUrl,
+                    BuiltInPublishingFieldDefinitions.PublishingRollupImage,
+                    BuiltInPublishingFieldDefinitions.Title,
+                    BuiltInFieldDefinitions.Description,
+                    BuiltInFieldDefinitions.PublishedDate,
+                    BuiltInFieldDefinitions.LikesCount
+                })
+                .AddDataMapping("Description", new[] { BuiltInFieldDefinitions.PublishedDate, BuiltInFieldDefinitions.LikesCount })
+                .AddDataMapping("ImageUrl", new[] { BuiltInFieldDefinitions.EncodedAbsThumbnailUrl, BuiltInPublishingFieldDefinitions.PublishingRollupImage })
+                .AddDataMapping("Title", new[] { BuiltInPublishingFieldDefinitions.Title, BuiltInFieldDefinitions.Description })
+                .AddDataMapping("LinkUrl", new[] { BuiltInPublishingFieldDefinitions.PublishedLinksURL });
+
+            var dataMappingViewFields = cqwpBindingService.DataMappingViewFields;
+            var dataMapping = cqwpBindingService.DataMapping;
+
+            var templateTypeId = BuiltInListTemplateTypeId.Posts;
+
+            var defDefault = ModelGeneratorService.GetRandomDefinition<ContentByQueryWebPartDefinition>(def =>
+            {
+                def.Title = "As is with template type " + templateTypeId + " and item style Default";
+
+                def.ServerTemplate = templateTypeId;
+
+                def.ItemStyle = BuiltInItemStyleNames.Default;
+                def.ItemLimit = 3;
+
+                def.SortByFieldType = "DateTime";
+                def.SortBy = BuiltInFieldDefinitions.Created.Id.ToString("B");
+                def.SortByDirection = "Desc";
+
+                def.DataMappings = dataMapping;
+                def.DataMappingViewFields = dataMappingViewFields;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list.AddRandomWebPartPage(page =>
+                    {
+                        page.AddContentByQueryWebPart(defDefault);
                     });
                 });
             });
