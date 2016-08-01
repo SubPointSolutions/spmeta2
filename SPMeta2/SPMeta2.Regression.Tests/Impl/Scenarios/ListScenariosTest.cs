@@ -413,6 +413,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_DiscussionBoard_By_TemplateType()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                //def.EnableAttachments = false;
+                def.ContentTypesEnabled = true;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DiscussionBoard;
+                def.TemplateName = string.Empty;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_DiscussionBoard_By_TemplateName()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                //def.EnableAttachments = false;
+                def.ContentTypesEnabled = true;
+
+                def.TemplateType = 0;
+                def.TemplateName = BuiltInListTemplates.DiscussionBoard.InternalName;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
         public void CanDeploy_CalendarList()
         {
             WithDisabledPropertyUpdateValidation(() =>
