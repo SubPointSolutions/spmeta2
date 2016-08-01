@@ -214,6 +214,36 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
+            
+            if (!string.IsNullOrEmpty(definition.NewFormUrl))
+                assert.ShouldBeEqual(m => m.NewFormUrl, o => o.NewFormUrl);
+            else
+                assert.SkipProperty(m => m.NewFormUrl, "NewFormUrl is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.NewFormTemplateName))
+                assert.ShouldBeEqual(m => m.NewFormTemplateName, o => o.NewFormTemplateName);
+            else
+                assert.SkipProperty(m => m.NewFormTemplateName, "NewFormTemplateName is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.EditFormUrl))
+                assert.ShouldBeEqual(m => m.EditFormUrl, o => o.EditFormUrl);
+            else
+                assert.SkipProperty(m => m.EditFormUrl, "EditFormUrl is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.EditFormTemplateName))
+                assert.ShouldBeEqual(m => m.EditFormTemplateName, o => o.EditFormTemplateName);
+            else
+                assert.SkipProperty(m => m.EditFormTemplateName, "EditFormTemplateName is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.DisplayFormUrl))
+                assert.ShouldBeEqual(m => m.DisplayFormUrl, o => o.DisplayFormUrl);
+            else
+                assert.SkipProperty(m => m.DisplayFormUrl, "DisplayFormUrl is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.DisplayFormTemplateName))
+                assert.ShouldBeEqual(m => m.DisplayFormTemplateName, o => o.DisplayFormTemplateName);
+            else
+                assert.SkipProperty(m => m.DisplayFormTemplateName, "DisplayFormTemplateName is null or empty. Skipping.");
         }
     }
 }

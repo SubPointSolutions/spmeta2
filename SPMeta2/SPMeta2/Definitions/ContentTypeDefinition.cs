@@ -157,6 +157,42 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public bool? Sealed { get; set; }
 
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string NewFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string NewFormTemplateName { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string EditFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string EditFormTemplateName { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string DisplayFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string DisplayFormTemplateName { get; set; }
+
         #endregion
 
         #region methods
