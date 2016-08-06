@@ -327,30 +327,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region customizations
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Webs.Customizations")]
-        public void CanDeploy_ProjectWeb_With_Customizations()
-        {
-            var webDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
-            {
-                def.WebTemplate = BuiltInWebTemplates.Collaboration.ProjectSite;
-            });
+        //[TestMethod]
+        //[TestCategory("Regression.Scenarios.Webs.Customizations")]
+        //public void CanDeploy_ProjectWeb_With_Customizations()
+        //{
+        //    https://github.com/SubPointSolutions/spmeta2/issues/860 
+        //    var webDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+        //    {
+        //        def.WebTemplate = BuiltInWebTemplates.Collaboration.ProjectSite;
+        //    });
 
-            var model = SPMeta2Model.NewWebModel(rootWeb =>
-            {
-                rootWeb.AddWeb(webDef, web =>
-                {
-                    web.AddRandomList();
-                    web.AddRandomDocumentLibrary();
+        //    var model = SPMeta2Model.NewWebModel(rootWeb =>
+        //    {
+        //        rootWeb.AddRandomList();
+        //        rootWeb.AddRandomDocumentLibrary();
 
-                    web.AddRandomField();
+        //        rootWeb.AddRandomField();
 
-                    web.AddRandomWeb();
-                });
-            });
+        //        rootWeb.AddRandomWeb();
 
-            TestModel(model);
-        }
+        //        rootWeb.AddWeb(webDef, web =>
+        //        {
+        //            web.AddRandomList();
+        //            web.AddRandomDocumentLibrary();
+
+        //            web.AddRandomField();
+
+        //            web.AddRandomWeb();
+        //        });
+        //    });
+
+        //    TestModel(model);
+        //}
 
         #endregion
 
