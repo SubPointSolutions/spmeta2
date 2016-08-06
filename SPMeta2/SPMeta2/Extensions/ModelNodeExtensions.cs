@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Services;
 
 namespace SPMeta2.Extensions
 {
@@ -181,6 +182,17 @@ namespace SPMeta2.Extensions
             return node;
         }
 
+
+        #endregion
+
+        #region pretty print
+
+        public static string ToPrettyPrint(this ModelNode modelNode)
+        {
+            var prettyPrintService = ServiceContainer.Instance.GetService<PrettyPrintServiceBase>();
+
+            return prettyPrintService.ToPrettyPrint(modelNode);
+        }
 
         #endregion
     }

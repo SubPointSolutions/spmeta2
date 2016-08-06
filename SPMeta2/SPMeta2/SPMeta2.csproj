@@ -38,9 +38,8 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  
   <!-- m2 build start -->
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug35\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -52,8 +51,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug40\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -65,8 +63,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug45\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -80,8 +77,7 @@
     <DocumentationFile>bin\Debug45\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
   <!-- m2 build end -->
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"> 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -94,7 +90,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug)\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
@@ -350,6 +345,7 @@
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
+    <Compile Include="Services\Impl\DefaultPrettyPrintService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
@@ -377,6 +373,7 @@
     <Compile Include="Services\Impl\TraceSourceService.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
+    <Compile Include="Services\PrettyPrintServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />
