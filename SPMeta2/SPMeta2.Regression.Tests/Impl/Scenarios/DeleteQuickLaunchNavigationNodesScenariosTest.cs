@@ -223,5 +223,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region ootb nodes
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNodes.OOTBNodes")]
+        public void CanDeploy_DeleteQuickLaunchNavigationNodes_OOTB_Recent_Node()
+        {
+            var deleteNodesModel = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddRandomWeb(web =>
+                {
+                    web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit((f =>
+                    {
+                        f.Enable = true;
+                    })));
+
+                    for (var i = 0; i < 10; i++)
+                    {
+                        web.AddRandomDocumentLibrary();
+                    }
+
+                    web.AddDeleteQuickLaunchNavigationNodes(new DeleteQuickLaunchNavigationNodesDefinition
+                    {
+                        NavigationNodes = new List<NavigationNodeMatch>
+                        {
+                            new NavigationNodeMatch { Title =  "Recent" },
+                        }
+                    });
+                });
+            });
+
+            TestModel(deleteNodesModel);
+        }
+
+        #endregion
     }
 }
