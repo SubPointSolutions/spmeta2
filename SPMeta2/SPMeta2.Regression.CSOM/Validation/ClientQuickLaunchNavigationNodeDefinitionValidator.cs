@@ -12,6 +12,7 @@ using SPMeta2.Utils;
 
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Services;
+using Microsoft.SharePoint.Client.Utilities;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -45,12 +46,13 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var srcProp = s.GetExpressionValue(def => def.Url);
                 var dstProp = d.GetExpressionValue(ct => ct.Url);
 
-                var srcUrl = s.Url;
+                var srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition); ;
                 var dstUrl = d.Url;
 
-                srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition);
+                srcUrl = HttpUtility.UrlKeyValueDecode(srcUrl);
+                dstUrl = HttpUtility.UrlKeyValueDecode(dstUrl);
 
-                var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
+                var isValid = dstUrl.ToUpper().EndsWith(srcUrl.ToUpper());
 
                 return new PropertyValidationResult
                 {
