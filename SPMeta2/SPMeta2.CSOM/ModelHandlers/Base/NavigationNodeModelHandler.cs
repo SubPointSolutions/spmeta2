@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Utilities;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
@@ -80,6 +81,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
             if (currentNode == null)
             {
                 var url = ResolveTokenizedUrl(CurrentModelHost, definition);
+
+                url = HttpUtility.UrlKeyValueDecode(url);
 
                 currentNode = nodes
                                 .OfType<NavigationNode>()

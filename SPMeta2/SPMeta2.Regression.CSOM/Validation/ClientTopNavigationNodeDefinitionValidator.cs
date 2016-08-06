@@ -6,6 +6,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using Microsoft.SharePoint.Client.Utilities;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -25,7 +26,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             assert
                   .ShouldNotBeNull(spObject)
-                  //.ShouldBeEndOf(m => m.Url, o => o.Url)
+                //.ShouldBeEndOf(m => m.Url, o => o.Url)
                   .ShouldBeEqual(m => m.IsExternal, o => o.IsExternal)
                   .ShouldBeEqual(m => m.IsVisible, o => o.IsVisible)
                   .ShouldBeEqual(m => m.Title, o => o.Title);
@@ -39,12 +40,13 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var srcProp = s.GetExpressionValue(def => def.Url);
                 var dstProp = d.GetExpressionValue(ct => ct.Url);
 
-                var srcUrl = s.Url;
+                var srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition);
                 var dstUrl = d.Url;
 
-                srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition);
+                srcUrl = HttpUtility.UrlKeyValueDecode(srcUrl);
+                dstUrl = HttpUtility.UrlKeyValueDecode(dstUrl);
 
-                var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
+                var isValid = dstUrl.ToUpper().EndsWith(srcUrl.ToUpper());
 
                 return new PropertyValidationResult
                 {
@@ -106,6 +108,6 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
             }
-        }     
+        }
     }
 }

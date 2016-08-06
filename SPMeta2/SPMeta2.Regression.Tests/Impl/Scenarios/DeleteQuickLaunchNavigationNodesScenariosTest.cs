@@ -172,5 +172,56 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region special characters
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNodes.SpecialCharacters")]
+        public void CanDeploy_DeleteQuickLaunchNavigationNodes_WithSpaces()
+        {
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0} {1}", Rnd.String(), Rnd.String());
+            });
+
+            var node2 = RndDef<QuickLaunchNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("2_{0}", Rnd.String());
+                def.Url = string.Format("{0}%20{1}", Rnd.String(), Rnd.String());
+            });
+
+            var subWeb = RndDef<WebDefinition>();
+
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(subWeb, web =>
+                {
+                    web.AddQuickLaunchNavigationNode(node1);
+                    web.AddQuickLaunchNavigationNode(node2);
+                });
+            });
+
+            TestModel(model);
+
+            var deleteNodesModel = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(subWeb, web =>
+                {
+                    web.AddDeleteQuickLaunchNavigationNodes(new DeleteQuickLaunchNavigationNodesDefinition
+                    {
+                        NavigationNodes = new List<NavigationNodeMatch>
+                        {
+                            new NavigationNodeMatch { Url =  node1.Url },
+                            new NavigationNodeMatch { Url =  node2.Url },
+                        }
+                    });
+                });
+            });
+
+            TestModel(deleteNodesModel);
+        }
+
+        #endregion
     }
 }

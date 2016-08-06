@@ -252,7 +252,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens")]
-        public void CanDeploy_TopNavigationNode_WithSiteCollectionToken()
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteCollectionToken()
         {
             var nav1Node = GenerateNode(n =>
             {
@@ -273,7 +273,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens")]
-        public void CanDeploy_TopNavigationNode_WithSiteToken()
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteToken()
         {
             var nav1Node = GenerateNode(n =>
             {
@@ -319,6 +319,52 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         def.AddQuickLaunchNavigationNode(subWebDefinitionSecondLevel);
                     });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region special characters
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.SpecialCharacters")]
+        public void CanDeploy_QuickLaunchNavigationNode_With_Space()
+        {
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0} {1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(node1);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.SpecialCharacters")]
+        public void CanDeploy_QuickLaunchNavigationNode_With_PercentTwenty()
+        {
+            var node1 = RndDef<QuickLaunchNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0}%20{1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(node1);
                 });
             });
 
