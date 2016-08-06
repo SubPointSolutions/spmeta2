@@ -69,6 +69,14 @@ namespace SPMeta2.SSOM.Services
                     result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context.Context, tokenInfo.Name));
             }
 
+            if (OnTokenReplaced != null)
+            {
+                OnTokenReplaced(this, new TokenReplacementResultEventArgs
+                {
+                    Result = result
+                });
+            }
+
             return result;
         }
 

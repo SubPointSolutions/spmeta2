@@ -230,6 +230,7 @@
     <Compile Include="Impl\Services\DefaultContentTypeIdPropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultXmlBasedPropertiesValidationServiceTests.cs" />
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
+    <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Syntax\TypedSyntaxTests.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />

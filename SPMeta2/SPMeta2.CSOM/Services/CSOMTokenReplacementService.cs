@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
 
@@ -11,6 +12,11 @@ namespace SPMeta2.CSOM.Services
     public class CSOMTokenReplacementService : TokenReplacementServiceBase
     {
         #region constructors
+
+        static CSOMTokenReplacementService()
+        {
+            AllowClientContextAsTokenReplacementContext = true;
+        }
 
         public CSOMTokenReplacementService()
         {
@@ -33,9 +39,15 @@ namespace SPMeta2.CSOM.Services
 
         #endregion
 
+        #region static
+
+        public static bool AllowClientContextAsTokenReplacementContext { get; set; }
+
+        #endregion
+
         #region classes
 
-        private class TokenProcessInfo
+        protected class TokenProcessInfo
         {
             public string Name { get; set; }
             public Regex RegEx { get; set; }
@@ -67,10 +79,18 @@ namespace SPMeta2.CSOM.Services
                     result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context.Context, tokenInfo.Name));
             }
 
+            if (OnTokenReplaced != null)
+            {
+                OnTokenReplaced(this, new TokenReplacementResultEventArgs
+                {
+                    Result = result
+                });
+            }
+
             return result;
         }
 
-        private string ResolveToken(object contextObject, string token)
+        protected virtual string ResolveToken(object contextObject, string token)
         {
             if (string.Equals(token, "~sitecollection", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -95,18 +115,54 @@ namespace SPMeta2.CSOM.Services
             return token;
         }
 
-        private Web ExtractWeb(object contextObject)
+        protected virtual Web ExtractWeb(object contextObject)
         {
             if (contextObject is ClientContext)
-                return (contextObject as ClientContext).Web;
+            {
+                if (AllowClientContextAsTokenReplacementContext)
+                {
+                    return (contextObject as ClientContext).Web;
+                }
+                else
+                {
+                    throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
+                }
+            }
+
+            if (contextObject is WebModelHost)
+                return (contextObject as WebModelHost).HostWeb;
+
+            if (contextObject is SiteModelHost)
+                return (contextObject as SiteModelHost).HostWeb;
+
+            if (contextObject is CSOMModelHostBase)
+                return (contextObject as CSOMModelHostBase).HostWeb;
 
             throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
         }
 
-        private Site ExtractSite(object contextObject)
+        protected virtual Site ExtractSite(object contextObject)
         {
             if (contextObject is ClientContext)
-                return (contextObject as ClientContext).Site;
+            {
+                if (AllowClientContextAsTokenReplacementContext)
+                {
+                    return (contextObject as ClientContext).Site;
+                }
+                else
+                {
+                    throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
+                }
+            }
+
+            if (contextObject is WebModelHost)
+                return (contextObject as WebModelHost).HostSite;
+
+            if (contextObject is SiteModelHost)
+                return (contextObject as SiteModelHost).HostSite;
+
+            if (contextObject is CSOMModelHostBase)
+                return (contextObject as CSOMModelHostBase).HostSite;
 
             throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
         }

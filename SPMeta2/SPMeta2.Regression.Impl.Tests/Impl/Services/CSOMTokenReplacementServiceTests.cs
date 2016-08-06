@@ -11,6 +11,7 @@ using System.Reflection;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.CSOM;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Regression.Impl.Tests.Impl.Services.Base;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
@@ -119,7 +120,84 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
             Assert.IsTrue(isValid);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        public void CSOMTokenReplacementService_Should_Support_ClientContext()
+        {
+            var runner = new CSOMProvisionRunner();
 
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithCSOMContext(siteUrl, context =>
+                {
+                    PreloadProperties(context);
+
+                    var valueResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = "~site",
+                        Context = context
+                    });
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        public void CSOMTokenReplacementService_Should_Support_WebModelHost()
+        {
+            var runner = new CSOMProvisionRunner();
+
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithCSOMContext(siteUrl, context =>
+                {
+                    PreloadProperties(context);
+
+                    var valueResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = "~site",
+                        Context = new WebModelHost
+                        {
+                            HostClientContext = context,
+
+                            HostSite = context.Site,
+                            HostWeb = context.Web
+                        }
+                    });
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        public void CSOMTokenReplacementService_Should_Support_SiteModelHost()
+        {
+            var runner = new CSOMProvisionRunner();
+
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithCSOMContext(siteUrl, context =>
+                {
+                    PreloadProperties(context);
+
+                    var valueResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = "~site",
+                        Context = new SiteModelHost
+                        {
+                            HostClientContext = context,
+
+                            HostSite = context.Site,
+                            HostWeb = context.Web
+                        }
+                    });
+                });
+            });
+        }
+
+        #endregion
+
+        #region utils
 
         private static void PreloadProperties(ClientContext clientContext)
         {
