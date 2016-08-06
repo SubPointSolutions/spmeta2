@@ -141,6 +141,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var web = ExtractWeb(modelHost);
 
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
@@ -242,7 +244,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = contentTypeModel.DocumentTemplate,
-                        Context = context
+                        Context = csomModelHost
                     }).Value;
 
                     // resource related path

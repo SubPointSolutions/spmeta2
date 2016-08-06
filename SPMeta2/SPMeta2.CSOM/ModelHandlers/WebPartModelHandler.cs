@@ -269,7 +269,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = urlValue,
-                    Context = CurrentClientContext
+                    Context = CurrentModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
@@ -337,6 +337,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
         protected ClientContext CurrentClientContext { get; set; }
+        protected CSOMModelHostBase CurrentModelHost { get; set; }
 
         protected virtual void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
         {
@@ -359,6 +360,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 OnBeforeDeploy(listItemModelHost, webPartModel);
 
+                CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
                 CurrentClientContext = listItemModelHost.HostClientContext;
 
                 var context = listItemModelHost.HostClientContext;

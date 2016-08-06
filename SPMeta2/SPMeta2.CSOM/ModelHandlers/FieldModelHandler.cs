@@ -33,6 +33,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         protected ClientContext CurrentHostClientContext { get; set; }
+        protected CSOMModelHostBase CurrentModelHost { get; set; }
 
         #endregion
 
@@ -125,6 +126,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost instance.");
 
             CurrentHostClientContext = (modelHost as CSOMModelHostBase).HostClientContext;
+            CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
 
             HostSite = ExtractSiteFromHost(modelHost);
             HostWeb = ExtractWebFromHost(modelHost);

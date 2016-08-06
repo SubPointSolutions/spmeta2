@@ -16,6 +16,8 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (modelHost is WebModelHost)
                 CurrentClientContext = (modelHost as WebModelHost).HostClientContext;
 
+            CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var definition = model.WithAssertAndCast<TopNavigationNodeDefinition>("model", value => value.RequireNotNull());
 
             var spObject = LookupNodeForHost(modelHost, definition);
@@ -40,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var srcUrl = s.Url;
                 var dstUrl = d.Url;
 
-                srcUrl = ResolveTokenizedUrl(CurrentClientContext, definition);
+                srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition);
 
                 var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
 

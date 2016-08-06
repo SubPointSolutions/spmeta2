@@ -62,7 +62,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     var value = CurrentWebPartXml.GetContentEditorWebPartProperty("ContentLink");
                     var defValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = listItemModelHost.HostClientContext,
+                        Context = listItemModelHost,
                         Value = definition.ContentLink
                     }).Value;
 

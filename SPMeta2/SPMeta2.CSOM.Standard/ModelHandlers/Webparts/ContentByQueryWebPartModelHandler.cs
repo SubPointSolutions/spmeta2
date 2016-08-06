@@ -51,7 +51,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced MainXslLink: [{0}]", linkValue);
@@ -68,7 +68,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced ItemXslLink: [{0}]", linkValue);
@@ -85,7 +85,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced HeaderXslLink: [{0}]", linkValue);

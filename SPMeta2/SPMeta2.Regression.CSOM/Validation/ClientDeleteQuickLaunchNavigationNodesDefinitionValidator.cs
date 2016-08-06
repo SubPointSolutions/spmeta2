@@ -49,7 +49,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         definition,
                         url =>
                         {
-                            return ResolveTokenizedUrl(host.HostClientContext, url);
+                            return ResolveTokenizedUrl(host, url);
                         });
 
                 var isValid = matches.Count == 0;

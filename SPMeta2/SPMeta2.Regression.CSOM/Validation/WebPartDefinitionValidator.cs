@@ -325,7 +325,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var value = CurrentWebPartXml.GetTitleUrl();
                     var defValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = listItemModelHost.HostClientContext,
+                        Context = listItemModelHost,
                         Value = value
                     }).Value;
 

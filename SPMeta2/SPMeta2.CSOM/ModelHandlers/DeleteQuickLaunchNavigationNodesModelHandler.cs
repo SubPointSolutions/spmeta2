@@ -71,7 +71,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 DeleteNavigationNodesService.DeleteNodesByMatch(typedDefinition, nodesCollection, url =>
                 {
-                    return ResolveTokenizedUrl(typedModelHost.HostClientContext, url);
+                    return ResolveTokenizedUrl(typedModelHost, url);
                 });
             }
 

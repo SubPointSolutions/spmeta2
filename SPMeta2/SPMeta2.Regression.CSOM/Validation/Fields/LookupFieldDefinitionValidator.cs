@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers.Fields;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
@@ -68,6 +69,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
 
             HostList = ExtractListFromHost(modelHost);
             HostSite = ExtractSiteFromHost(modelHost);
+
+            CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 

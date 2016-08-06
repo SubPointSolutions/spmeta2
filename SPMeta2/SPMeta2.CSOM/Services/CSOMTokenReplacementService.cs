@@ -41,6 +41,13 @@ namespace SPMeta2.CSOM.Services
 
         #region static
 
+        /// <summary>
+        /// Restrics token resolution to only CSOM model host classes
+        /// Used only by regression tests
+        /// 
+        /// Incorrect ~site token resolution for CSOM for the subwebs #863
+        /// https://github.com/SubPointSolutions/spmeta2/issues/863
+        /// </summary>
         public static bool AllowClientContextAsTokenReplacementContext { get; set; }
 
         #endregion
