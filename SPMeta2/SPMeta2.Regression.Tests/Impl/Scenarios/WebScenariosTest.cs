@@ -152,6 +152,16 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webs")]
+        public void CanDeploy_ProjectWeb()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Collaboration.ProjectSite;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs")]
         public void CanDeploy_BlogWeb()
         {
             TestRandomDefinition<WebDefinition>(def =>
@@ -314,6 +324,36 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region customizations
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webs.Customizations")]
+        public void CanDeploy_ProjectWeb_With_Customizations()
+        {
+            var webDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+                def.WebTemplate = BuiltInWebTemplates.Collaboration.ProjectSite;
+            });
+
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(webDef, web =>
+                {
+                    web.AddRandomList();
+                    web.AddRandomDocumentLibrary();
+
+                    web.AddRandomField();
+
+                    web.AddRandomWeb();
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
 
         #region utils
 
