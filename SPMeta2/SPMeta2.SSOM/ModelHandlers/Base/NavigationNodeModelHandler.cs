@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Web;
 using SPMeta2.Utils;
 using SPMeta2.Common;
 using SPMeta2.SSOM.ModelHandlers.Base;
@@ -159,6 +159,8 @@ namespace SPMeta2.SSOM.ModelHandlers.Base
             if (currentNode == null)
             {
                 var url = ResolveTokenizedUrl(CurrentWebModelHost, definition);
+
+                url = HttpUtility.UrlDecode(url);
 
                 currentNode = nodes
                                 .OfType<SPNavigationNode>()

@@ -225,9 +225,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         public virtual string DefaultValue { get; set; }
 
+        /// <summary>
+        /// Corresponds to SPField.DefaultFormula
+        /// Writeable for SSOM and read-only, first-time provision for CSOM.
+        /// </summary>
         [ExpectValidation]
         //[ExpectUpdate]
         [DataMember]
+
         public virtual string DefaultFormula { get; set; }
 
         [ExpectValidation]

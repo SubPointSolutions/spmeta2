@@ -33,8 +33,8 @@ The dark side of SharePoint's API is also handled by SPMeta2: inconsistency, bug
 
 Don't wait! Write amazing console applications, desktop application, full-trust *.wsp packages, implement remote provision via CSOM or modern SharePoint "apps" and "add-ons" - that's up to you.
 
-#### Enterprise-ready: 600+ regression and unit tests, localization, Visual Studio integration
-The outstanding quality of SPMeta2 is a result of 600+ regression tests being repeatedly run against a real SharePoint 2013 farm via SSOM, then via CSOM, and then it is also run against real O365 tenants via CSOM. Testing is done against REAL SharePoint 2013 SP1 instancies and O365 tenants - zero fakes or stubs are used.
+#### Enterprise-ready: 800+ regression and unit tests, localization, Visual Studio integration
+The outstanding quality of SPMeta2 is a result of 800+ regression tests being repeatedly run against a real SharePoint 2013 farm via SSOM, then via CSOM, and then it is also run against real O365 tenants via CSOM. Testing is done against REAL SharePoint 2013 SP1 instancies and O365 tenants - zero fakes or stubs are used.
 
 SPMeta2 supports localization scenarios and has its Visual Studio project and items templates, snippets and debugger visualizer. Everything is covered to boost up SharePoint development process.
 
@@ -62,9 +62,9 @@ Hundreds of companies trust SPMeta2 to boost up they daily SharePoint related ro
 * ['Ideas & Feedback' Yammer group](https://www.yammer.com/spmeta2feedback/#/threads/inGroup?type=in_group&feedId=4881224)
 
 #### Support
-* [Report bug](https://subpointsolutions.myjetbrains.com/youtrack/issues)
-* [Feature request](https://subpointsolutions.myjetbrains.com/youtrack/issues) 
-* [Premium support & SLA](http://localhost:48435/services)
+* [Report bug](https://www.yammer.com/spmeta2feedback)
+* [Feature request](https://www.yammer.com/spmeta2feedback) 
+* [Premium support & SLA]https://www.yammer.com/spmeta2feedback)
 
 #### Visual Studio integration
 
@@ -98,6 +98,9 @@ SharePoint 2010 SSOM
 * [SPMeta2.SSOM.Standard-v14](https://www.nuget.org/packages/SPMeta2.SSOM.Standard-v14/)
 
 #### Blogposts
+* [SPMeta2 samples - fields, lists, views and models in Russian](http://www.dzsoft.ru/post/spmeta2-samples)
+* [Provisioning lists with SPMeta2](http://oleksiionsoftware.com/post/spmeta2-provisioning-lists)
+* [How to deploy your SharePoint artifacts like content types, site columns, lists, and much more](http://rolandoldengarm.com/index.php/2016/06/24/how-to-deploy-your-sharepoint-artifacts-like-content-types-site-columns-lists-and-much-more/)
 * [Office Dev PnP Web Cast – SharePoint Feature Framework vs Remote Provisioning](http://dev.office.com/blogs/feature-framework-vs-remote-provisioning)
 * [Provisioning Google Maps JSLink with SPMeta2](http://chuvash.eu/2015/12/15/provisioning-google-maps-jslink-with-spmeta2/)
 * [Provisioning: spmeta2 vs O365 PnP provisioning](http://blog.repsaj.nl/index.php/2015/05/o365-provisioning-spmeta2-vs-o365-pnp-provisioning/)

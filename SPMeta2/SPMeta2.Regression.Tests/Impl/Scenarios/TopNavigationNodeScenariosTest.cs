@@ -352,5 +352,51 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region special characters
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode.SpecialCharacters")]
+        public void CanDeploy_TopNavigationNode_With_Space()
+        {
+            var node1 = RndDef<TopNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0} {1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(node1);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode.SpecialCharacters")]
+        public void CanDeploy_TopNavigationNode_With_PercentTwenty()
+        {
+            var node1 = RndDef<TopNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0}%20{1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(node1);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

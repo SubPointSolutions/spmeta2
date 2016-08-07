@@ -49,6 +49,7 @@ namespace SPMeta2.Standard.Definitions
 
         [DataMember]
         [ExpectValidation]
+        [ExpectRequired(GroupName = "NavigationSource")]
         public string GlobalNavigationSource { get; set; }
 
         #region global navigation term store support
@@ -82,6 +83,7 @@ namespace SPMeta2.Standard.Definitions
 
         [DataMember]
         [ExpectValidation]
+        [ExpectRequired(GroupName = "NavigationSource")]
         public string CurrentNavigationSource { get; set; }
 
         #region current navigation term store support

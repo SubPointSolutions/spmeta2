@@ -167,6 +167,11 @@ namespace SPMeta2.Containers
             return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(action);
         }
 
+        public static WebModelNode AddRandomDocumentLibrary(this WebModelNode model)
+        {
+            return AddRandomDocumentLibrary(model, null);
+        }
+
         public static WebModelNode AddRandomDocumentLibrary(this WebModelNode model, Action<ListModelNode> action)
         {
             return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(node =>
@@ -176,7 +181,8 @@ namespace SPMeta2.Containers
                 def.ContentTypesEnabled = true;
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
 
-                action(node);
+                if (action != null)
+                    action(node);
             });
         }
 

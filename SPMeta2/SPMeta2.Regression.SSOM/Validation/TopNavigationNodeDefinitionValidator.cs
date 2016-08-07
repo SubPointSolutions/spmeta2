@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Web;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
@@ -77,7 +77,10 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 srcUrl = ResolveTokenizedUrl(CurrentWebModelHost, definition);
 
-                var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
+                srcUrl = HttpUtility.UrlDecode(srcUrl);
+                dstUrl = HttpUtility.UrlDecode(dstUrl);
+
+                var isValid = dstUrl.ToUpper().EndsWith(srcUrl.ToUpper());
 
                 return new PropertyValidationResult
                 {

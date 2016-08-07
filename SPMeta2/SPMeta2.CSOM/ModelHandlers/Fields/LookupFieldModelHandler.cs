@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.CSOM.Services;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -132,23 +133,33 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(webUrl))
             {
-                var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
+
+                try
                 {
-                    Value = webUrl,
-                    Context = context
-                }).Value;
+                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = true;
 
-                // server relative url, ensure / in the beginning
-                targetWebUrl = UrlUtility.RemoveStartingSlash(targetWebUrl);
-                targetWebUrl = "/" + targetWebUrl;
+                    var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = webUrl,
+                        Context = context
+                    }).Value;
 
-                var targetWeb = site.OpenWeb(targetWebUrl);
+                    // server relative url, ensure / in the beginning
+                    targetWebUrl = UrlUtility.RemoveStartingSlash(targetWebUrl);
+                    targetWebUrl = "/" + targetWebUrl;
 
+                    var targetWeb = site.OpenWeb(targetWebUrl);
 
-                context.Load(targetWeb);
-                context.ExecuteQueryWithTrace();
+                    context.Load(targetWeb);
+                    context.ExecuteQueryWithTrace();
 
-                return targetWeb;
+                    return targetWeb;
+                }
+                finally
+                {
+                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = oldValue;
+                }
             }
 
             // root web by default

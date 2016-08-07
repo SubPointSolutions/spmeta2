@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Utilities;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions.Base;
 
@@ -63,6 +64,11 @@ namespace SPMeta2.CSOM.Services
                 if (!foundByTitle && !string.IsNullOrEmpty(nodeMatch.Url))
                 {
                     var matchUrl = resolveTokenizedUrlAction(nodeMatch.Url);
+
+                    // special char resolution, manual fix to avoid 
+                    // Add more tests for DeleteXXXnavigationNode scenarios #864
+                    // https://github.com/SubPointSolutions/spmeta2/issues/864
+                    matchUrl = HttpUtility.HtmlEncode(matchUrl);
 
                     var nodeByUrl = allNodes.FirstOrDefault(f =>
                         !string.IsNullOrEmpty(f.Url)

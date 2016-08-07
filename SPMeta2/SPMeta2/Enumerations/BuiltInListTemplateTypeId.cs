@@ -65,5 +65,6 @@
         public static int HealthRules = 1220;
         public static int HealthReports = 1221;
         public static int DeveloperSiteDraftApps = 1230;
+        public static int AssetLibrary = 851;
     }
 }

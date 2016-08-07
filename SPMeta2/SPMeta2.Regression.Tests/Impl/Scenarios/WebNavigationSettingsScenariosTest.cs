@@ -17,6 +17,7 @@ using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -397,6 +398,125 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                         DisplayShowHideRibbonAction = true
                     });
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        #endregion
+
+        #region validation for requred props
+
+        // WebNavigationSettingsDefinition
+        // https://github.com/SubPointSolutions/spmeta2/issues/854
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings.Props")]
+        public void CanNotDeploy_WebNavigationSettings_With_EmptySource()
+        {
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
+                {
+                    //GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //GlobalNavigationShowSubsites = true,
+                    //GlobalNavigationShowPages = true,
+
+                    //CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //CurrentNavigationShowSubsites = true,
+                    //CurrentNavigationShowPages = true
+                });
+            });
+
+            var hasCorrectException = false;
+
+            try
+            {
+                TestModel(webModel);
+            }
+            catch (Exception ex)
+            {
+                var aggregateException = ex.InnerException as SPMeta2AggregateException;
+
+                if (aggregateException == null)
+                {
+                    hasCorrectException = false;
+                }
+                else
+                {
+                    hasCorrectException = aggregateException.InnerExceptions
+                                                            .Any(e => e is SPMeta2ModelValidationException);
+                }
+            }
+
+            Assert.IsTrue(hasCorrectException);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings.Props")]
+        public void CanDeploy_WebNavigationSettings_With_GlobalNavigationSource()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
+                {
+                    GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //GlobalNavigationShowSubsites = true,
+                    //GlobalNavigationShowPages = true,
+
+                    //CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //CurrentNavigationShowSubsites = true,
+                    //CurrentNavigationShowPages = true
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings.Props")]
+        public void CanDeploy_WebNavigationSettings_With_CurrentNavigationSource()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
+                {
+                    //GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //GlobalNavigationShowSubsites = true,
+                    //GlobalNavigationShowPages = true,
+
+                    CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //CurrentNavigationShowSubsites = true,
+                    //CurrentNavigationShowPages = true
                 });
             });
 

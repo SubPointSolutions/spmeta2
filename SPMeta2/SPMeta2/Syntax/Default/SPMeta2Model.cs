@@ -501,5 +501,14 @@ namespace SPMeta2.Syntax.Default
         }
 
         #endregion
+
+        #region pretty print
+
+        public static string ToPrettyPrint(ModelNode modelNode)
+        {
+            return modelNode.ToPrettyPrint();
+        }
+
+        #endregion
     }
 }

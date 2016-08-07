@@ -261,6 +261,16 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public int? WriteSecurity { get; set; }
 
+        /// <summary>
+        /// Represents SPList.NavigateForFormsPages property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/752 
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? NavigateForFormsPages { get; set; }
+
         #endregion
 
         #region methods
@@ -269,7 +279,7 @@ namespace SPMeta2.Definitions
         {
             return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
 #pragma warning disable 618
-                Title, string.IsNullOrEmpty(Url) ? CustomUrl : Url, TemplateType, TemplateName, ContentTypesEnabled);
+ Title, string.IsNullOrEmpty(Url) ? CustomUrl : Url, TemplateType, TemplateName, ContentTypesEnabled);
 #pragma warning restore 618
         }
 

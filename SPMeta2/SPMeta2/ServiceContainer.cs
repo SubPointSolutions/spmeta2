@@ -40,7 +40,8 @@ namespace SPMeta2
             RegisterService(typeof(ModelCompatibilityServiceBase), new DefaultModelCompatibilityService());
 
             RegisterService(typeof(DefaultDiagnosticInfoService), new DefaultDiagnosticInfoService());
-            
+
+            RegisterService(typeof(PrettyPrintServiceBase), new DefaultPrettyPrintService());
         }
 
         #endregion

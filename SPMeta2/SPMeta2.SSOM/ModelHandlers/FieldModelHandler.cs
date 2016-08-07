@@ -412,7 +412,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 field.DefaultValue = definition.DefaultValue;
 
             if (!string.IsNullOrEmpty(definition.DefaultFormula))
-                field.DefaultValue = definition.DefaultFormula;
+                field.DefaultFormula = definition.DefaultFormula;
 
             if (definition.EnforceUniqueValues.HasValue)
                 field.EnforceUniqueValues = definition.EnforceUniqueValues.Value;

@@ -95,6 +95,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<PublishingPageLayoutDefinition>("model", value => value.RequireNotNull());
 
@@ -190,7 +192,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     var urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = definition.PreviewImageUrl,
-                        Context = context
+                        Context = csomModelHost
                     }).Value;
 
                     var urlFieldValue = new FieldUrlValue { Url = urlValue };

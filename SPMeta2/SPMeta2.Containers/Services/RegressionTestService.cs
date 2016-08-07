@@ -479,6 +479,9 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
+                Trace.WriteLine(string.Format("PrettyPrint result:"));
+                Trace.WriteLine(model.ToPrettyPrint());
+
                 if (EnableDefinitionImmutabilityValidation)
                     PersistDefinitionHashes(new[] { model });
 
@@ -636,7 +639,6 @@ namespace SPMeta2.Containers.Services
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
         {
             // should be re-written with ModelTreeTraverseService
-
             Trace.WriteLine(string.Format(""));
 
             var hasMissedOrInvalidProps = false;

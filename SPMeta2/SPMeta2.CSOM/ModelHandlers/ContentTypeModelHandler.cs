@@ -141,6 +141,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var web = ExtractWeb(modelHost);
 
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
@@ -242,7 +244,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = contentTypeModel.DocumentTemplate,
-                        Context = context
+                        Context = csomModelHost
                     }).Value;
 
                     // resource related path
@@ -259,8 +261,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
+                ProcessFormProperties(currentContentType, contentTypeModel);
+
                 // only after DocumentTemplate processing
                 ProcessLocalization(currentContentType, contentTypeModel);
+                
 
                 currentContentType.Hidden = contentTypeModel.Hidden;
 
@@ -306,6 +311,28 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
             }
 #endif
+        }
+
+        private void ProcessFormProperties(ContentType targetContentType, ContentTypeDefinition contentTypeModel)
+        {
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormUrl))
+                targetContentType.NewFormUrl = contentTypeModel.NewFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormTemplateName))
+                targetContentType.NewFormTemplateName = contentTypeModel.NewFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormUrl))
+                targetContentType.EditFormUrl = contentTypeModel.EditFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormTemplateName))
+                targetContentType.EditFormTemplateName = contentTypeModel.EditFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormUrl))
+                targetContentType.DisplayFormUrl = contentTypeModel.DisplayFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormTemplateName))
+                targetContentType.DisplayFormTemplateName = contentTypeModel.DisplayFormTemplateName;
+
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)

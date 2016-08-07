@@ -702,6 +702,29 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region default formula
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultFormula")]
+        public void CanDeploy_Field_WithDefaultFormula()
+        {
+            var fieldDef = ModelGeneratorService.GetRandomDefinition<DateTimeFieldDefinition>(def =>
+            {
+                def.DisplayFormat = "DateOnly";
+                def.DefaultFormula = "=[Today]+30";
+                def.DefaultValue = string.Empty;
+            });
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(fieldDef);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region utils
 
         protected FieldDefinition GetLocalizedFieldDefinition()

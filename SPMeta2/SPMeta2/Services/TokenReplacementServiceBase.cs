@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SPMeta2.Services
 {
@@ -35,6 +36,21 @@ namespace SPMeta2.Services
         {
 
         }
+
+        #endregion
+
+        #region classes
+
+        public class TokenReplacementResultEventArgs : EventArgs
+        {
+            public TokenReplacementResult Result { get; set; }
+        }
+
+        #endregion
+
+        #region events
+
+        public EventHandler<TokenReplacementResultEventArgs> OnTokenReplaced;
 
         #endregion
 

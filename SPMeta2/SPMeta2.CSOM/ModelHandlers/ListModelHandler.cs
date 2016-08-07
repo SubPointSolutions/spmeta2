@@ -346,7 +346,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing list");
             }
 
-            MapListProperties(currentList, listModel);
+            MapListProperties(modelHost, currentList, listModel);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -404,8 +404,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             return listTemplate;
         }
 
-        private void MapListProperties(List list, ListDefinition definition)
+        private void MapListProperties(object modelHost,  List list, ListDefinition definition)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var context = list.Context;
 
             list.Title = definition.Title;
@@ -499,7 +501,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = urlValue,
-                    Context = list.Context,
+                    Context = csomModelHost
                 }).Value;
 
                 if (!urlValue.StartsWith("/")

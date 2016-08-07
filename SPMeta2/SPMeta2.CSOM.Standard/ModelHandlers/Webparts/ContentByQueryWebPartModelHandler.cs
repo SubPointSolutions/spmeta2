@@ -1,8 +1,11 @@
 ﻿using System;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.CSOM.ModelHandlers.Fields;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
@@ -32,6 +35,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
             var typedDefinition = webPartModel.WithAssertAndCast<ContentByQueryWebPartDefinition>("model", value => value.RequireNotNull());
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(this.ProcessCommonWebpartProperties(BuiltInWebPartTemplates.ContentByQueryWebPart, webPartModel));
 
+            // reset SortBy initially
+            // it is set to {8c06beca-0777-48f7-91c7-6da68bc07b69} initially
+            //wpXml.SetOrUpdateProperty("SortBy", string.Empty);
+
+            var context = listItemModelHost.HostClientContext;
+
             // xslt links
             if (!string.IsNullOrEmpty(typedDefinition.MainXslLink))
             {
@@ -42,7 +51,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced MainXslLink: [{0}]", linkValue);
@@ -59,7 +68,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced ItemXslLink: [{0}]", linkValue);
@@ -76,7 +85,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 linkValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = linkValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced HeaderXslLink: [{0}]", linkValue);
@@ -224,7 +233,66 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
                 wpXml.SetOrUpdateProperty("ListGuid", typedDefinition.ListGuid.Value.ToString("D"));
 
             if (!string.IsNullOrEmpty(typedDefinition.ListName))
-                wpXml.SetOrUpdateProperty("ListName", typedDefinition.ListName);
+            {
+                // ServerTemplate
+
+                var webLookup = new LookupFieldModelHandler();
+
+                var targetWeb = webLookup.GetTargetWeb(listItemModelHost.HostSite,
+                    typedDefinition.WebUrl,
+                    typedDefinition.WebId);
+
+                var list = targetWeb.QueryAndGetListByTitle(typedDefinition.ListName);
+                wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
+
+#if !NET35
+                var folder = list.RootFolder;
+
+                context.Load(folder, f => f.Properties);
+                context.ExecuteQueryWithTrace();
+
+                var serverTemplate = ConvertUtils.ToString(list.RootFolder.Properties["vti_listservertemplate"]);
+
+                if (string.IsNullOrEmpty(serverTemplate))
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find vti_listservertemplate property for the list name:[{0}]",
+                        typedDefinition.ListName));
+                }
+
+                wpXml.SetOrUpdateProperty("ServerTemplate", serverTemplate);
+#endif
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.ListUrl))
+            {
+                var webLookup = new LookupFieldModelHandler();
+
+                var targetWeb = webLookup.GetTargetWeb(listItemModelHost.HostSite,
+                    typedDefinition.WebUrl,
+                    typedDefinition.WebId);
+
+                var list = targetWeb.QueryAndGetListByUrl(typedDefinition.ListUrl);
+                wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
+
+#if !NET35
+                var folder = list.RootFolder;
+
+                context.Load(folder, f => f.Properties);
+                context.ExecuteQueryWithTrace();
+
+                var serverTemplate = ConvertUtils.ToString(list.RootFolder.Properties["vti_listservertemplate"]);
+
+                if (string.IsNullOrEmpty(serverTemplate))
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find vti_listservertemplate property for the list url:[{0}]",
+                        typedDefinition.ListUrl));
+                }
+
+                wpXml.SetOrUpdateProperty("ServerTemplate", serverTemplate);
+#endif
+            }
 
             if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
                 wpXml.SetOrUpdateProperty("WebUrl", typedDefinition.WebUrl);

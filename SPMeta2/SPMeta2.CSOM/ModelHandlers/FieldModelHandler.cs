@@ -33,6 +33,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         }
 
         protected ClientContext CurrentHostClientContext { get; set; }
+        protected CSOMModelHostBase CurrentModelHost { get; set; }
 
         #endregion
 
@@ -125,6 +126,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost instance.");
 
             CurrentHostClientContext = (modelHost as CSOMModelHostBase).HostClientContext;
+            CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
 
             HostSite = ExtractSiteFromHost(modelHost);
             HostWeb = ExtractWebFromHost(modelHost);
@@ -477,6 +479,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!(fieldModel is DependentLookupFieldDefinition))
             {
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Indexed, fieldModel.Indexed.ToString().ToUpper());
+            }
+
+            // Enhance FieldDefinition provision - investigate DefaultFormula property support for CSOM #842
+            // https://github.com/SubPointSolutions/spmeta2/issues/842
+            if (!string.IsNullOrEmpty(fieldModel.DefaultFormula))
+            {
+                var defaultFormulaNode = new XElement("DefaultFormula");
+                defaultFormulaNode.Value = fieldModel.DefaultFormula;
+
+                fieldTemplate.Add(defaultFormulaNode);
             }
         }
 

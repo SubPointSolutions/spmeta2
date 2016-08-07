@@ -6,10 +6,12 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.SSOM.ModelHandlers.Fields;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Standard.Definitions.Webparts;
 using SPMeta2.Utils;
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
+using Microsoft.SharePoint.Utilities;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
 {
@@ -127,6 +129,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             if (typedDefinition.PlayMediaInBrowser.HasValue)
                 typedWebpart.PlayMediaInBrowser = typedDefinition.PlayMediaInBrowser.Value;
 
+            if (typedDefinition.UseCopyUtil.HasValue)
+                typedWebpart.UseCopyUtil = typedDefinition.UseCopyUtil.Value;
+
             // FilterTypeXXX
             if (!string.IsNullOrEmpty(typedDefinition.FilterType1))
                 typedWebpart.FilterType1 = typedDefinition.FilterType1;
@@ -240,17 +245,73 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
             if (!string.IsNullOrEmpty(typedDefinition.ContentTypeBeginsWithId))
                 typedWebpart.ContentTypeBeginsWithId = typedDefinition.ContentTypeBeginsWithId;
 
-            if (typedDefinition.ListId.HasGuidValue())
-                typedWebpart.ListId = typedDefinition.ListId.Value;
-
-            if (typedDefinition.ListGuid.HasGuidValue())
-                typedWebpart.ListGuid = typedDefinition.ListGuid.Value.ToString("D");
-
-            if (!string.IsNullOrEmpty(typedDefinition.ListName))
-                typedWebpart.ListName = typedDefinition.ListName;
 
             if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
+            {
+                // go with OOTB one, no changes are required
+
+                //var webLookup = new LookupFieldModelHandler();
+
+                //using (var targetWeb = webLookup.GetTargetWeb(CurrentHost.HostFile.Web.Site,
+                //    typedDefinition.WebUrl,
+                //    typedDefinition.WebId))
+                //{
+                //    typedWebpart.WebUrl = targetWeb.ServerRelativeUrl;
+                //}
+
                 typedWebpart.WebUrl = typedDefinition.WebUrl;
+            }
+
+            #region list URL
+
+            if (typedDefinition.ListId.HasGuidValue())
+            {
+                //typedWebpart.ListId = typedDefinition.ListId.Value;
+                // fallback to ListGuid
+
+                typedWebpart.ListGuid = typedDefinition.ListId.Value.ToString("D");
+            }
+
+            if (typedDefinition.ListGuid.HasGuidValue())
+            {
+                typedWebpart.ListGuid = typedDefinition.ListGuid.Value.ToString("D");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.ListName))
+            {
+                // lookup from the target web
+                // fallback to ListGuid
+
+                var webLookup = new LookupFieldModelHandler();
+
+                using (var targetWeb = webLookup.GetTargetWeb(CurrentHost.HostFile.Web.Site,
+                    typedDefinition.WebUrl,
+                    typedDefinition.WebId))
+                {
+                    var list = targetWeb.Lists[typedDefinition.ListName];
+                    typedWebpart.ListGuid = list.ID.ToString("D");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.ListUrl))
+            {
+                // lookup from the target web
+                // fallback to ListGuid
+
+                var webLookup = new LookupFieldModelHandler();
+
+                using (var targetWeb = webLookup.GetTargetWeb(CurrentHost.HostFile.Web.Site,
+                    typedDefinition.WebUrl,
+                    typedDefinition.WebId))
+                {
+                    var listUrl = SPUrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, typedDefinition.ListUrl);
+                    var list = targetWeb.GetList(listUrl);
+
+                    typedWebpart.ListGuid = list.ID.ToString("D");
+                }
+            }
+
+            #endregion
 
             // overrides
             if (!string.IsNullOrEmpty(typedDefinition.ListsOverride))
