@@ -347,7 +347,8 @@
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
-    <Compile Include="Services\Impl\DefaultPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
@@ -369,13 +370,15 @@
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
+    <Compile Include="Services\ModelPrintServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />
     <Compile Include="Services\Impl\TraceSourceService.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
-    <Compile Include="Services\PrettyPrintServiceBase.cs" />
+    <Compile Include="Services\ModelDotPrintServiceBase.cs" />
+    <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />

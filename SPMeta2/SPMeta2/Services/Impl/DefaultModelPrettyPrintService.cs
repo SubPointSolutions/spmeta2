@@ -7,10 +7,10 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Services.Impl
 {
-    public class DefaultPrettyPrintService : PrettyPrintServiceBase
+    public class DefaultModelPrettyPrintService : ModelPrettyPrintServiceBase
     {
         #region constructora
-        public DefaultPrettyPrintService()
+        public DefaultModelPrettyPrintService()
         {
             IndentString = "    ";
             NewLineString = Environment.NewLine;
@@ -26,7 +26,7 @@ namespace SPMeta2.Services.Impl
         #endregion
 
         #region methods
-        public override string ToPrettyPrint(ModelNode modelNode)
+        public override string PrintModel(ModelNode modelNode)
         {
             var result = new StringBuilder();
 

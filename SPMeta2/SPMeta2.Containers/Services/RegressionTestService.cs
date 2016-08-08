@@ -479,8 +479,11 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
-                Trace.WriteLine(string.Format("PrettyPrint result:"));
+                Trace.WriteLine(string.Format(".ToPrettyPrint() result:"));
                 Trace.WriteLine(model.ToPrettyPrint());
+
+                Trace.WriteLine(string.Format(".ToDotGraph result:"));
+                Trace.WriteLine(model.ToDotGraph());
 
                 if (EnableDefinitionImmutabilityValidation)
                     PersistDefinitionHashes(new[] { model });

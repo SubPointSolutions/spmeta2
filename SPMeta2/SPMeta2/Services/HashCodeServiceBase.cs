@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -42,7 +43,19 @@ namespace SPMeta2.Services
 
         public override string GetHashCode(object instance)
         {
-            var serializer = new DataContractSerializer(instance.GetType());
+            var instanceType = instance.GetType();
+
+            var knowTypes = new List<Type>();
+            knowTypes.Add(instanceType);
+
+            var props = instanceType.GetProperties();
+            foreach (var prop in props)
+            {
+                if (!knowTypes.Contains(prop.PropertyType))
+                    knowTypes.Add(prop.PropertyType);
+            }
+
+            var serializer = new DataContractSerializer(instance.GetType(), knowTypes);
 
             using (var memoryStream = new MemoryStream())
             {
@@ -60,9 +73,8 @@ namespace SPMeta2.Services
             if (disposing)
             {
                 if (_cryptoServiceProvider != null)
-          
                 {
-#if !NET35 
+#if !NET35
                     // OMG
                     _cryptoServiceProvider.Dispose();
 #endif
