@@ -17,7 +17,6 @@
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  
   <!-- m2 build start -->
   <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
@@ -31,7 +30,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.CSOM.XML</DocumentationFile>
   </PropertyGroup>
- 
   <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug40-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -44,7 +42,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.CSOM.XML</DocumentationFile>
   </PropertyGroup>
-  
   <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -58,7 +55,6 @@
     <DocumentationFile>bin\Debug45-$(spRuntime)\SPMeta2.CSOM.XML</DocumentationFile>
   </PropertyGroup>
   <!-- m2 build end -->
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -71,7 +67,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\SPMeta2.CSOM.XML</DocumentationFile>
   </PropertyGroup>
-  
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -147,6 +142,7 @@
     <Compile Include="ModelHandlers\AppModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\AppPrincipalModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\Base\MasterPageModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\NavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\PageItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\PropertyModelHandler.cs" />
@@ -198,6 +194,7 @@
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
+    <Compile Include="ModelHandlers\HtmlMasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PropertyModelHandler.cs" />
