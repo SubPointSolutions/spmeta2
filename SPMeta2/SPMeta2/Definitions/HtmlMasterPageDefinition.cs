@@ -28,11 +28,11 @@ namespace SPMeta2.Definitions
 
     [ExpectManyInstances]
 
-    public class MasterPageDefinition : MasterPageDefinitionBase
+    public class HtmlMasterPageDefinition : MasterPageDefinitionBase
     {
         #region constructors
 
-        public MasterPageDefinition()
+        public HtmlMasterPageDefinition()
         {
 
         }
@@ -43,7 +43,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<MasterPageDefinition>(this, base.ToString())
+            return new ToStringResult<HtmlMasterPageDefinition>(this, base.ToString())
                           .ToString();
         }
 

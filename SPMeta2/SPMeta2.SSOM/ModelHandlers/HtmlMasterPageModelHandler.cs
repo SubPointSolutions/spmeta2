@@ -8,30 +8,30 @@ using Microsoft.SharePoint.Utilities;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
-using SPMeta2.SSOM.ModelHandlers.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHandlers.Base;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    public class MasterPageModelHandler : MasterPageModelHandlerBase
+    public class HtmlMasterPageModelHandler : MasterPageModelHandlerBase
     {
         #region properties
 
         public override Type TargetType
         {
-            get { return typeof(MasterPageDefinition); }
+            get { return typeof(HtmlMasterPageDefinition); }
         }
 
         public override string PageContentTypeId
         {
-            get { return BuiltInContentTypeId.MasterPage; }
+            get { return BuiltInSiteContentTypeId.HtmlMasterPage; }
             set { }
         }
 
         public override string PageFileExtension
         {
-            get { return ".master"; }
+            get { return ".html"; }
             set { }
         }
 
@@ -44,7 +44,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var listModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
 
             var folder = listModelHost.CurrentLibraryFolder;
-            var masterPageModel = model.WithAssertAndCast<MasterPageDefinition>("model", value => value.RequireNotNull());
+            var masterPageModel = model.WithAssertAndCast<HtmlMasterPageDefinition>("model", value => value.RequireNotNull());
 
             DeployPage(modelHost, listModelHost.CurrentLibrary, folder, masterPageModel);
         }

@@ -87,6 +87,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultDwpWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefaultHtmlMasterPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultHtmlMasterPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="DefaultMasterPagePreviewTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,6 +114,7 @@
     <Compile Include="DefinitionGenerators\DeleteTopNavigationNodesDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AnonymousAccessSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\HtmlMasterPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PeoplePickerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SupportedUICultureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\DependentLookupFieldDefinitionGenerator.cs" />
@@ -256,6 +262,10 @@
     <EmbeddedResource Include="DefaultDwpWebpartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultDwpWebpartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultHtmlMasterPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultHtmlMasterPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="DefaultMasterPagePreviewTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
