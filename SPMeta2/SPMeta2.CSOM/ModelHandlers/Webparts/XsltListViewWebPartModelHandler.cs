@@ -291,14 +291,14 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             return LookupBindContext(listItemModelHost,
                 wpModel.WebUrl, wpModel.WebId,
                 wpModel.ListUrl, wpModel.ListTitle, wpModel.ListId,
-                wpModel.ViewName, wpModel.ViewId,
+                wpModel.ViewUrl, wpModel.ViewName, wpModel.ViewId,
                 wpModel.TitleUrl);
         }
 
         internal static ListBindContext LookupBindContext(ListItemModelHost listItemModelHost,
            string webUrl, Guid? webId,
            string listUrl, string listTitle, Guid? listId,
-           string viewTitle, Guid? viewId,
+           string viewUrl, string viewTitle, Guid? viewId,
             string webPartTitleUrl
             )
         {
@@ -329,6 +329,16 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 view = list.Views.GetById(viewId.Value);
             else if (!string.IsNullOrEmpty(viewTitle))
                 view = list.Views.GetByTitle(viewTitle);
+            else if (!string.IsNullOrEmpty(viewUrl))
+            {
+                var views = list.Views;
+
+                context.Load(views, v => v.Include(r => r.ServerRelativeUrl));
+                context.ExecuteQueryWithTrace();
+
+                view = views.ToArray()
+                            .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(viewUrl.ToUpper()));
+            }
 
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
