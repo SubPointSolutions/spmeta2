@@ -366,7 +366,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 }
                 else
                 {
-                    assert.SkipProperty(m => m.ViewName, "ViewName is null or empty. Skipping.");
+                    assert.SkipProperty(m => m.ViewUrl, "ViewUrl is null or empty. Skipping.");
                 }
 
                 // jslink

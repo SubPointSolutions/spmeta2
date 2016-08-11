@@ -275,6 +275,58 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart")]
+        public void CanDeploy_ListViewWebPart_ByViewUrl()
+        {
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
+            var sourceView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Fields = new System.Collections.ObjectModel.Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Edit,
+                    BuiltInInternalFieldNames.Title                    
+                };
+
+                def.Url = string.Format("{0}.aspx", Rnd.String());
+                def.IsDefault = false;
+            });
+
+            var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = string.Empty;
+#pragma warning disable 618
+                def.ListUrl = sourceList.GetListUrl();
+#pragma warning restore 618
+
+                def.ViewName = string.Empty;
+                def.ViewId = null;
+                def.ViewUrl = sourceView.Url;
+            });
+
+            var model = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web
+                        .AddList(sourceList, list =>
+                        {
+                            list.AddListView(sourceView);
+                        })
+                        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                        {
+                            list
+                                .AddRandomWebPartPage(page =>
+                                {
+                                    page.AddListViewWebPart(listViewWebpart);
+                                });
+                        });
+
+                });
+
+            TestModel(model);
+        }
 
         #endregion
 
