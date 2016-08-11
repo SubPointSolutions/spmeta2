@@ -12,7 +12,8 @@ namespace SPMeta2.Syntax.Default
     public class ContentTypeModelNode : TypedModelNode, IContentTypeModelNode,
         IEventReceiverHostModelNode,
         IModuleFileHostModelNode,
-        IContentTypeFieldLinkHostModelNode
+        IContentTypeFieldLinkHostModelNode,
+        IWorkflowAssociationHostModelNode
     {
 
     }
