@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 
 using SPMeta2.Containers.Assertion;
+using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -48,10 +50,18 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.WorkflowTemplateName, "Cant validate. Property is unsupported by CSOM API.");
             }
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
+            if (modelHost is WebModelHost ||
+                modelHost is ModelHostContext)
+            {
+                assert.SkipProperty(m => m.Description, "Skipping Description valiation. CSOM deployment under web/content type gives only the description of the worklow.");
+            }
             else
-                assert.SkipProperty(m => m.Description);
+            {
+                if (!string.IsNullOrEmpty(definition.Description))
+                    assert.ShouldBeEqual(m => m.Description, o => o.Description);
+                else
+                    assert.SkipProperty(m => m.Description);
+            }
 
             if (!string.IsNullOrEmpty(definition.AssociationData))
                 assert.ShouldBeEqual(m => m.AssociationData, o => o.AssociationData);

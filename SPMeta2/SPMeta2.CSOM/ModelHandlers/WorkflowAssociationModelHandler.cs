@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Workflow;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -46,11 +47,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 DeployWebWorkflowAssociationDefinition(webModelHost, web, workflowAssociationModel);
             }
+            else if (modelHost is ModelHostContext)
+            {
+                var contentType = (modelHost as ModelHostContext).ContentType;
+
+                DeployContentTypeWorkflowAssociationDefinition(modelHost, contentType, workflowAssociationModel);
+            }
             else
             {
                 throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
             }
         }
+
 
         private Web GetWebFromModelHost(object modelHost)
         {
@@ -64,9 +72,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 return (modelHost as WebModelHost).HostWeb;
             }
 
+            if (modelHost is ModelHostContext)
+            {
+                return (modelHost as ModelHostContext).Web;
+            }
 
             throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
-
         }
 
         protected WorkflowAssociation FindExistringWorkflowAssotiation(object modelHost, WorkflowAssociationDefinition def)
@@ -86,9 +97,29 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (modelHost is WebModelHost)
             {
-                throw new SPMeta2NotImplementedException("WorkflowAssociation under web is not implemented yet");
+                var web = (modelHost as WebModelHost).HostWeb;
+                var context = web.Context;
+
+                var defName = def.Name;
+
+                var res = context.LoadQuery(web.WorkflowAssociations.Where(w => w.Name == defName));
+                context.ExecuteQueryWithTrace();
+
+                return res.FirstOrDefault();
             }
 
+            if (modelHost is ModelHostContext)
+            {
+                var contentType = (modelHost as ModelHostContext).ContentType;
+                var context = contentType.Context;
+
+                var defName = def.Name;
+
+                var res = context.LoadQuery(contentType.WorkflowAssociations.Where(w => w.Name == defName));
+                context.ExecuteQueryWithTrace();
+
+                return res.FirstOrDefault();
+            }
 
             throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
         }
@@ -106,9 +137,161 @@ namespace SPMeta2.CSOM.ModelHandlers
             return result;
         }
 
-        private void DeployWebWorkflowAssociationDefinition(WebModelHost webModelHost, Web web, WorkflowAssociationDefinition workflowAssociationModel)
+        private void DeployContentTypeWorkflowAssociationDefinition(object modelHost, ContentType contentType, WorkflowAssociationDefinition definition)
         {
-            // TODO
+            var context = contentType.Context;
+            var web = (modelHost as ModelHostContext).Web;
+
+            var existingWorkflowAssotiation = FindExistringWorkflowAssotiation(modelHost, definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(WorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            if (existingWorkflowAssotiation == null
+                ||
+                (existingWorkflowAssotiation.ServerObjectIsNull.HasValue &&
+                 existingWorkflowAssotiation.ServerObjectIsNull.Value))
+            {
+                var workflowTemplate = GetWorkflowTemplate(modelHost, definition);
+
+                if (workflowTemplate == null ||
+                    (workflowTemplate.ServerObjectIsNull.HasValue && workflowTemplate.ServerObjectIsNull.Value))
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find workflow template by definition:[{0}]", definition));
+                }
+
+                var historyList = web.QueryAndGetListByTitle(definition.HistoryListTitle);
+                var taskList = web.QueryAndGetListByTitle(definition.TaskListTitle);
+
+                var newWorkflowAssotiation = contentType.WorkflowAssociations.Add(new WorkflowAssociationCreationInformation
+                {
+                    Name = definition.Name,
+                    Template = workflowTemplate,
+                    HistoryList = historyList,
+                    TaskList = taskList
+                });
+
+                MapProperties(definition, newWorkflowAssotiation);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newWorkflowAssotiation,
+                    ObjectType = typeof(WorkflowAssociation),
+                    ObjectDefinition = definition,
+                    ModelHost = modelHost
+                });
+
+                contentType.Update(true);
+                context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                MapProperties(definition, existingWorkflowAssotiation);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingWorkflowAssotiation,
+                    ObjectType = typeof(WorkflowAssociation),
+                    ObjectDefinition = definition,
+                    ModelHost = modelHost
+                });
+
+                contentType.Update(true);
+                context.ExecuteQueryWithTrace();
+            }
+        }
+
+
+        private void DeployWebWorkflowAssociationDefinition(WebModelHost modelHost, Web web, WorkflowAssociationDefinition definition)
+        {
+            var context = web.Context;
+            var existingWorkflowAssotiation = FindExistringWorkflowAssotiation(modelHost, definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(WorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            if (existingWorkflowAssotiation == null
+                ||
+                (existingWorkflowAssotiation.ServerObjectIsNull.HasValue &&
+                 existingWorkflowAssotiation.ServerObjectIsNull.Value))
+            {
+                var workflowTemplate = GetWorkflowTemplate(modelHost, definition);
+
+                if (workflowTemplate == null ||
+                    (workflowTemplate.ServerObjectIsNull.HasValue && workflowTemplate.ServerObjectIsNull.Value))
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find workflow template by definition:[{0}]", definition));
+                }
+
+                var historyList = web.QueryAndGetListByTitle(definition.HistoryListTitle);
+                var taskList = web.QueryAndGetListByTitle(definition.TaskListTitle);
+
+                var newWorkflowAssotiation = web.WorkflowAssociations.Add(new WorkflowAssociationCreationInformation
+                {
+                    Name = definition.Name,
+                    Template = workflowTemplate,
+                    HistoryList = historyList,
+                    TaskList = taskList
+                });
+
+                MapProperties(definition, newWorkflowAssotiation);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = newWorkflowAssotiation,
+                    ObjectType = typeof(WorkflowAssociation),
+                    ObjectDefinition = definition,
+                    ModelHost = modelHost
+                });
+
+                web.Update();
+                context.ExecuteQueryWithTrace();
+            }
+            else
+            {
+                MapProperties(definition, existingWorkflowAssotiation);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingWorkflowAssotiation,
+                    ObjectType = typeof(WorkflowAssociation),
+                    ObjectDefinition = definition,
+                    ModelHost = modelHost
+                });
+
+                web.Update();
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         private void DeployListWorkflowAssociationDefinition(ListModelHost modelHost, List list, WorkflowAssociationDefinition definition)

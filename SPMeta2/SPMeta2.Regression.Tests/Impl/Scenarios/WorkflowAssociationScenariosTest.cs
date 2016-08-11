@@ -156,7 +156,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.HistoryListTitle = historyList.Title;
             });
 
-            var model = SPMeta2Model.NewSiteModel(site =>
+            // lists are to be deployed before contet type
+            // workflow association on the cotnent type references lists
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(historyList);
+                web.AddList(taskList);
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
                 site.AddRandomContentType(contentType =>
                 {
@@ -164,7 +172,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(webModel, siteModel);
         }
     }
 }
