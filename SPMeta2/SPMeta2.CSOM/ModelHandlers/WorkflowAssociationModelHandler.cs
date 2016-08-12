@@ -211,6 +211,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
+                // no update
+                // gives weird null ref exception
+
+                // Enhance WorkflowAssociationDefinition - add more tests on updatability #871
+                // https://github.com/SubPointSolutions/spmeta2/issues/871
+
+                //existingWorkflowAssotiation.Update();
+
                 contentType.Update(true);
                 context.ExecuteQueryWithTrace();
             }
@@ -289,7 +297,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                web.Update();
+                // no update
+                // gives weird null ref exception
+
+                // Enhance WorkflowAssociationDefinition - add more tests on updatability #871
+                // https://github.com/SubPointSolutions/spmeta2/issues/871
+
+                //existingWorkflowAssotiation.Update();
+                //web.Update();
                 context.ExecuteQueryWithTrace();
             }
         }

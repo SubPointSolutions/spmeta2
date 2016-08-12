@@ -88,9 +88,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             // deploy the same association with different props
             var workflowDefChanges = workflowDef.Inherit(def =>
             {
-                def.AllowManual = !def.AllowManual;
-                def.AutoStartChange = !def.AutoStartChange;
-                def.AutoStartCreate = !def.AutoStartCreate;
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
 
                 def.AssociationData = Rnd.String();
             });
@@ -133,9 +135,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             // deploy the same association with different props
             var workflowDefChanges = workflowDef.Inherit(def =>
             {
-                def.AllowManual = !def.AllowManual;
-                def.AutoStartChange = !def.AutoStartChange;
-                def.AutoStartCreate = !def.AutoStartCreate;
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
 
                 def.AssociationData = Rnd.String();
             });
@@ -184,9 +188,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             // deploy the same association with different props
             var workflowDefChanges = workflowDef.Inherit(def =>
             {
-                def.AllowManual = !def.AllowManual;
-                def.AutoStartChange = !def.AutoStartChange;
-                def.AutoStartCreate = !def.AutoStartCreate;
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
 
                 def.AssociationData = Rnd.String();
             });

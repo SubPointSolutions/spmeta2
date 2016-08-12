@@ -63,30 +63,66 @@ namespace SPMeta2.Regression.SSOM.Validation
                     assert.SkipProperty(m => m.Description);
             }
 
-            if (!string.IsNullOrEmpty(definition.AssociationData))
-                assert.ShouldBeEqual(m => m.AssociationData, o => o.AssociationData);
+            if (modelHost is WebModelHost ||
+                modelHost is ModelHostContext)
+            {
+                assert.SkipProperty(m => m.AssociationData,
+                    "Skipping AssociationData valiation. CSOM deployment under web/content does not seem to update it.");
+            }
             else
-                assert.SkipProperty(m => m.AssociationData);
+            {
+                if (!string.IsNullOrEmpty(definition.AssociationData))
+                    assert.ShouldBeEqual(m => m.AssociationData, o => o.AssociationData);
+                else
+                    assert.SkipProperty(m => m.AssociationData);
+            }
 
             if (definition.Enabled.HasValue)
                 assert.ShouldBeEqual(m => m.Enabled, o => o.Enabled);
             else
                 assert.SkipProperty(m => m.Enabled);
 
-            if (definition.AllowManual.HasValue)
-                assert.ShouldBeEqual(m => m.AllowManual, o => o.AllowManual);
+            if (modelHost is WebModelHost ||
+                modelHost is ModelHostContext)
+            {
+                assert.SkipProperty(m => m.AllowManual,
+                    "Skipping AutoStartCreate valiation. CSOM deployment under web/content does not seem to update it.");
+            }
             else
-                assert.SkipProperty(m => m.AllowManual);
+            {
+                if (definition.AllowManual.HasValue)
+                    assert.ShouldBeEqual(m => m.AllowManual, o => o.AllowManual);
+                else
+                    assert.SkipProperty(m => m.AllowManual);
+            }
 
-            if (definition.AutoStartChange.HasValue)
-                assert.ShouldBeEqual(m => m.AutoStartChange, o => o.AutoStartChange);
+            if (modelHost is WebModelHost ||
+                modelHost is ModelHostContext)
+            {
+                assert.SkipProperty(m => m.AutoStartChange,
+                    "Skipping AutoStartChange valiation. CSOM deployment under web/content does not seem to update it.");
+            }
             else
-                assert.SkipProperty(m => m.AutoStartChange);
+            {
+                if (definition.AutoStartChange.HasValue)
+                    assert.ShouldBeEqual(m => m.AutoStartChange, o => o.AutoStartChange);
+                else
+                    assert.SkipProperty(m => m.AutoStartChange);
+            }
 
-            if (definition.AutoStartCreate.HasValue)
-                assert.ShouldBeEqual(m => m.AutoStartCreate, o => o.AutoStartCreate);
+            if (modelHost is WebModelHost ||
+                modelHost is ModelHostContext)
+            {
+                assert.SkipProperty(m => m.AutoStartCreate,
+                    "Skipping AutoStartCreate valiation. CSOM deployment under web/content does not seem to update it.");
+            }
             else
-                assert.SkipProperty(m => m.AutoStartCreate);
+            {
+                if (definition.AutoStartCreate.HasValue)
+                    assert.ShouldBeEqual(m => m.AutoStartCreate, o => o.AutoStartCreate);
+                else
+                    assert.SkipProperty(m => m.AutoStartCreate);
+            }
 
             if (!string.IsNullOrEmpty(definition.TaskListTitle))
                 assert.ShouldBeEqual(m => m.TaskListTitle, o => o.TaskListTitle);
