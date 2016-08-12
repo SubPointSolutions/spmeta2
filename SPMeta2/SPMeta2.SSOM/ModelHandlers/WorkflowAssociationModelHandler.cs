@@ -175,8 +175,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                // TODO, what's the logic for update?
-                // what to update at all?
+                contentType.WorkflowAssociations.Update(existingWorkflowAssotiation);
+                contentType.UpdateWorkflowAssociationsOnChildren(false,
+                                                                 true,
+                                                                 true,
+                                                                 false);
             }
         }
 
@@ -235,8 +238,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                // TODO, what's the logic for update?
-                // what to update at all?
+                web.WorkflowAssociations.Update(existingWorkflowAssotiation);
             }
         }
 
@@ -295,7 +297,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                // ??
+                list.WorkflowAssociations.Update(existingWorkflowAssotiation);
             }
         }
 

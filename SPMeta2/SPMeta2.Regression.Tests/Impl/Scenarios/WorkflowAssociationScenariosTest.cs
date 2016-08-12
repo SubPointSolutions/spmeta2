@@ -84,12 +84,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.HistoryListTitle = historyList.Title;
             });
 
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                def.AllowManual = !def.AllowManual;
+                def.AutoStartChange = !def.AutoStartChange;
+                def.AutoStartCreate = !def.AutoStartCreate;
+
+                def.AssociationData = Rnd.String();
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
                 web.AddList(historyList);
 
                 web.AddWorkflowAssociation(workflowDef);
+                web.AddWorkflowAssociation(workflowDefChanges);
             });
 
             TestModel(model);
@@ -117,6 +129,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.HistoryListTitle = historyList.Title;
             });
 
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                def.AllowManual = !def.AllowManual;
+                def.AutoStartChange = !def.AutoStartChange;
+                def.AutoStartCreate = !def.AutoStartCreate;
+
+                def.AssociationData = Rnd.String();
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
@@ -125,6 +148,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddRandomList(list =>
                 {
                     list.AddWorkflowAssociation(workflowDef);
+                    list.AddWorkflowAssociation(workflowDefChanges);
                 });
             });
 
@@ -156,6 +180,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.HistoryListTitle = historyList.Title;
             });
 
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                def.AllowManual = !def.AllowManual;
+                def.AutoStartChange = !def.AutoStartChange;
+                def.AutoStartCreate = !def.AutoStartCreate;
+
+                def.AssociationData = Rnd.String();
+            });
+
             // lists are to be deployed before contet type
             // workflow association on the cotnent type references lists
             var webModel = SPMeta2Model.NewWebModel(web =>
@@ -169,6 +204,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddRandomContentType(contentType =>
                 {
                     contentType.AddWorkflowAssociation(workflowDef);
+                    contentType.AddWorkflowAssociation(workflowDefChanges);
                 });
             });
 
