@@ -22,6 +22,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
 using SPMeta2.Models;
 using SPMeta2.Syntax.Extended;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -420,6 +421,50 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         });
 
                 });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        public void CanDeploy_WebpartToWebpartPage_WithCustomPageLayout()
+        {
+            var webPartPage1 = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>(def =>
+            {
+                def.CustomPageLayout = CustomWebPartPageLayoutTemplates.Custom1;
+            });
+
+            var webPartPage2 = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>(def =>
+            {
+                def.CustomPageLayout = CustomWebPartPageLayoutTemplates.Custom1;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+                {
+                    list
+                        .AddWebPartPage(webPartPage1, page =>
+                        {
+                            // the content will be changed
+                            page.RegExcludeFromValidation();
+
+                            page
+                                .AddRandomWebpart()
+                                .AddRandomWebpart();
+                        })
+                        .AddWebPartPage(webPartPage2, page =>
+                        {
+                            // the content will be changed
+                            page.RegExcludeFromValidation();
+
+                            page
+                                .AddRandomWebpart()
+                                .AddRandomWebpart();
+                        });
+                });
+
+            });
 
             TestModel(model);
         }
@@ -1070,6 +1115,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         #endregion
-    }
 
+
+    }
 }

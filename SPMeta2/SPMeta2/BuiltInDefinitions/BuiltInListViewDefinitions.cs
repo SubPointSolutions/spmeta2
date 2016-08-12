@@ -27,6 +27,12 @@ namespace SPMeta2.BuiltInDefinitions
                 Url = "AllItems.aspx"
             };
 
+            public static ListViewDefinition AllDocuments = new ListViewDefinition
+            {
+                Title = "All Documents",
+                Url = "AllItems.aspx"
+            };
+
             public static ListViewDefinition Combine = new ListViewDefinition
             {
                 Title = "Combine",
