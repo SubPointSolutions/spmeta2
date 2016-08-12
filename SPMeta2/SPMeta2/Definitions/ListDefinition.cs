@@ -219,7 +219,7 @@ namespace SPMeta2.Definitions
 
         /// <summary>
         /// The maximum number of major versions allowed for an item in a document library that uses version control with major versions only.
-        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// M2 provisions that property if only current CSOM runtime provide support for that property.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
         [DataMember]
@@ -228,7 +228,7 @@ namespace SPMeta2.Definitions
 
         /// <summary>
         /// The maximum number of major versions that are allowed for an item in a document library that uses version control with both major and minor versions.
-        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// M2 provisions that property if only current CSOM runtime provide support for that property.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
         [DataMember]
