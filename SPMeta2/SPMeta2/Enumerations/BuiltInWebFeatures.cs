@@ -9,6 +9,24 @@ namespace SPMeta2.Enumerations
     /// </summary>
     public static class BuiltInWebFeatures
     {
+
+        #region custom added
+
+        /// <summary>
+        /// This Feature enables default experience for lists or document libraries from new or classic on the web.
+        /// https://support.office.com/en-us/article/Switch-the-default-experience-for-lists-or-document-libraries-from-new-or-classic-66dac24b-4177-4775-bf50-3d267318caa9
+        /// </summary>
+        public static FeatureDefinition EnableDefaultListAndLibraryExperience = new FeatureDefinition
+        {
+            Title = "EnableDefaultListLibrarExperience",
+            Id = new Guid("{52E14B6F-B1BB-4969-B89B-C4FAA56745EF}"),
+            Scope = FeatureDefinitionScope.Web,
+            ForceActivate = false,
+            Enable = false
+        };
+
+        #endregion
+
         /// <summary>
         /// Access web app.
         /// </summary>
