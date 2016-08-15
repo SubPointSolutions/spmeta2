@@ -56,7 +56,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             //var list = listModelHost.HostList;
             var folder = folderModelHost.CurrentLibraryFolder;
 
-            var targetFile = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
+            // Web part provision seems to put only the last web part on the page #869
+            // https://github.com/SubPointSolutions/spmeta2/issues/869
+            var targetFile = FindWebPartPage(folder, webpartPageModel);
+            //var targetFile = GetOrCreateNewWebPartFile(modelHost, folder, webpartPageModel);
 
             using (var webPartManager = targetFile.GetLimitedWebPartManager(PersonalizationScope.Shared))
             {

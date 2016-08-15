@@ -55,6 +55,10 @@ namespace SPMeta2.Definitions.Webparts
         public Guid? ViewId { get; set; }
 
         [ExpectValidation]
+        [DataMember]
+        public string ViewUrl { get; set; }
+
+        [ExpectValidation]
         [ExpectUpdatAsToolbarType]
         [ExpectNullable]
         [DataMember]

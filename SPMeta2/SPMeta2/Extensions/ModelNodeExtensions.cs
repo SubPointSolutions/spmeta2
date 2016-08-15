@@ -185,13 +185,33 @@ namespace SPMeta2.Extensions
 
         #endregion
 
-        #region pretty print
+        #region print extensions
 
+        /// <summary>
+        /// Renders readable, tree view looking-like model view as a string
+        /// More details - https://github.com/SubPointSolutions/spmeta2/issues/826
+        /// </summary>
+        /// <param name="modelNode"></param>
+        /// <returns></returns>
         public static string ToPrettyPrint(this ModelNode modelNode)
         {
-            var prettyPrintService = ServiceContainer.Instance.GetService<PrettyPrintServiceBase>();
+            var service = ServiceContainer.Instance.GetService<ModelPrettyPrintServiceBase>();
 
-            return prettyPrintService.ToPrettyPrint(modelNode);
+            return service.PrintModel(modelNode);
+        }
+
+        /// <summary>
+        /// Generates graph in DOT notation
+        /// Use http://www.webgraphviz.com to visualize it fast
+        /// Mere details - https://github.com/SubPointSolutions/spmeta2/issues/845
+        /// </summary>
+        /// <param name="modelNode"></param>
+        /// <returns></returns>
+        public static string ToDotGraph(this ModelNode modelNode)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelDotGraphPrintServiceBase>();
+
+            return service.PrintModel(modelNode);
         }
 
         #endregion

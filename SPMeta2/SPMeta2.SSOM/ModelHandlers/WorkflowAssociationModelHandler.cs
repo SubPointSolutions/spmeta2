@@ -43,11 +43,20 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 DeployWebWorkflowAssociationDefinition(webModelHost, web, workflowAssociationModel);
             }
+            else if (modelHost is SPContentType)
+            {
+                var contentType = (modelHost as SPContentType);
+
+                DeployContentTypeWorkflowAssociationDefinition(contentType, contentType, workflowAssociationModel);
+            }
+
             else
             {
                 throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
             }
         }
+
+
 
         private SPWeb GetWebFromModelHost(object modelHost)
         {
@@ -62,8 +71,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
 
-            throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
+            if (modelHost is SPContentType)
+            {
+                return (modelHost as SPContentType).ParentWeb;
+            }
 
+            throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
         }
 
         protected SPWorkflowAssociation FindExistringWorkflowAssotiation(object modelHost, WorkflowAssociationDefinition def)
@@ -73,16 +86,29 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var list = (modelHost as ListModelHost).HostList;
 
                 return list.WorkflowAssociations
-                           .GetAssociationByName(def.Name, list.ParentWeb.UICulture);
+                          .GetAssociationByName(def.Name, list.ParentWeb.UICulture);
             }
-
             if (modelHost is WebModelHost)
             {
-                throw new SPMeta2NotImplementedException("WorkflowAssociation under web is not implemented yet");
+                var web = (modelHost as WebModelHost).HostWeb;
+
+                return web.WorkflowAssociations
+                          .GetAssociationByName(def.Name, web.UICulture);
             }
+            if (modelHost is SPContentType)
+            {
+                var contentType = (modelHost as SPContentType);
+                var web = contentType.ParentWeb;
 
-
-            throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
+                return contentType.WorkflowAssociations
+                                  .GetAssociationByName(def.Name, web.UICulture);
+            }
+            else
+            {
+                throw new SPMeta2NotImplementedException(
+                    string.Format("Unsupported model host: WorkflowAssociation under {0} is not implemented yet",
+                        modelHost.GetType()));
+            }
         }
 
         private SPWorkflowTemplate GetWorkflowTemplate(object modelHost, WorkflowAssociationDefinition def)
@@ -91,9 +117,129 @@ namespace SPMeta2.SSOM.ModelHandlers
             return targetWeb.WorkflowTemplates.GetTemplateByName(def.WorkflowTemplateName, targetWeb.UICulture);
         }
 
-        private void DeployWebWorkflowAssociationDefinition(WebModelHost webModelHost, Microsoft.SharePoint.SPWeb web, WorkflowAssociationDefinition workflowAssociationModel)
+        private void DeployContentTypeWorkflowAssociationDefinition(SPContentType modelHost, SPContentType contentType, WorkflowAssociationDefinition definition)
         {
-            // TODO
+            var existingWorkflowAssotiation = FindExistringWorkflowAssotiation(modelHost, definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(SPWorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            bool isNew = false;
+
+            if (existingWorkflowAssotiation == null)
+            {
+                var workflowTemplate = GetWorkflowTemplate(modelHost, definition);
+
+                if (workflowTemplate == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find workflow template by definition:[{0}]", definition));
+                }
+
+                existingWorkflowAssotiation = SPWorkflowAssociation.CreateWebContentTypeAssociation(workflowTemplate,
+                           definition.Name,
+                           definition.TaskListTitle,
+                           definition.HistoryListTitle);
+
+                isNew = true;
+            }
+
+            MapProperties(definition, existingWorkflowAssotiation);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(SPWorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            if (isNew)
+            {
+                contentType.WorkflowAssociations.Add(existingWorkflowAssotiation);
+                contentType.UpdateWorkflowAssociationsOnChildren(false,
+                                                                 true,
+                                                                 true,
+                                                                 false);
+            }
+            else
+            {
+                contentType.WorkflowAssociations.Update(existingWorkflowAssotiation);
+                contentType.UpdateWorkflowAssociationsOnChildren(false,
+                                                                 true,
+                                                                 true,
+                                                                 false);
+            }
+        }
+
+        private void DeployWebWorkflowAssociationDefinition(WebModelHost modelHost, Microsoft.SharePoint.SPWeb web, WorkflowAssociationDefinition definition)
+        {
+            var existingWorkflowAssotiation = FindExistringWorkflowAssotiation(modelHost, definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(SPWorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            bool isNew = false;
+
+            if (existingWorkflowAssotiation == null)
+            {
+                var workflowTemplate = GetWorkflowTemplate(modelHost, definition);
+
+                if (workflowTemplate == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find workflow template by definition:[{0}]", definition));
+                }
+
+                existingWorkflowAssotiation = SPWorkflowAssociation.CreateListAssociation(workflowTemplate,
+                           definition.Name,
+                           web.Lists[definition.TaskListTitle],
+                           web.Lists[definition.HistoryListTitle]);
+
+                isNew = true;
+            }
+
+            MapProperties(definition, existingWorkflowAssotiation);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = existingWorkflowAssotiation,
+                ObjectType = typeof(SPWorkflowAssociation),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+
+            if (isNew)
+            {
+                web.WorkflowAssociations.Add(existingWorkflowAssotiation);
+                web.Update();
+            }
+            else
+            {
+                web.WorkflowAssociations.Update(existingWorkflowAssotiation);
+            }
         }
 
         private void DeployListWorkflowAssociationDefinition(ListModelHost modelHost, SPList list, WorkflowAssociationDefinition definition)
@@ -147,10 +293,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (isNew)
             {
                 list.WorkflowAssociations.Add(existingWorkflowAssotiation);
+                list.Update();
             }
             else
             {
-                // ??
+                list.WorkflowAssociations.Update(existingWorkflowAssotiation);
             }
         }
 

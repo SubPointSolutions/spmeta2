@@ -31,9 +31,8 @@
     <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-   
   <!-- m2 build start -->
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -45,8 +44,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug40-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -58,8 +56,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')"> 
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -72,8 +69,7 @@
     <DocumentationFile>bin\Debug45-$(spRuntime)\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
   <!-- m2 build end -->
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"> 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -85,7 +81,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\SPMeta2.SSOM.XML</DocumentationFile>
   </PropertyGroup>
-  
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -207,6 +202,7 @@
     <Compile Include="ModelHandlers\AnonymousAccessSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\AuditSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ContentFileModelHandlerBase.cs" />
+    <Compile Include="ModelHandlers\Base\MasterPageModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\SingleHostTypedSSOMModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\DeleteTopNavigationNodesModelHandler.cs" />
     <Compile Include="ModelHandlers\DeleteQuickLaunchNavigationNodesModelHandler.cs" />
@@ -248,6 +244,7 @@
     <Compile Include="ModelHandlers\ContentDatabaseModelHandler.cs" />
     <Compile Include="ModelHandlers\InformationRightsManagementSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
+    <Compile Include="ModelHandlers\HtmlMasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPagePreviewModelHandler.cs" />
     <Compile Include="ModelHandlers\MasterPageModelHandler.cs" />
     <Compile Include="ModelHandlers\PeoplePickerSettingsModelHandler.cs" />

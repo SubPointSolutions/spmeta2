@@ -7,10 +7,11 @@ using SPMeta2.Models;
 
 namespace SPMeta2.Services
 {
-    public abstract class PrettyPrintServiceBase
+    public abstract class ModelPrintServiceBase
     {
         #region methods
-        public abstract string ToPrettyPrint(ModelNode modelNode);
+        public abstract string PrintModel(ModelNode modelNode);
+
         #endregion
     }
 }

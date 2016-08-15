@@ -214,6 +214,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Impl\Build\BuildBaselineTests.cs" />
+    <Compile Include="Impl\Consts\BuiltInFeatureEnumerationTests.cs" />
     <Compile Include="Impl\ModelHandlers\Base\ModelHandlerTestBase.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />

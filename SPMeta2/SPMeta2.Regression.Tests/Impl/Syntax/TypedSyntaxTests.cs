@@ -195,6 +195,9 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 {
                     list.AddAuditSettings(new AuditSettingsDefinition());
 
+                    list.AddMasterPage(new MasterPageDefinition());
+                    list.AddHtmlMasterPage(new HtmlMasterPageDefinition());
+
                     list
                       .AddProperty(new PropertyDefinition())
                       .AddProperty(new PropertyDefinition());

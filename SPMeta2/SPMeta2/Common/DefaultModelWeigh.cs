@@ -166,6 +166,7 @@ namespace SPMeta2.Common
 
                     // goes after list definitions to make sure you get history/task lists 
                     typeof (SP2013WorkflowSubscriptionDefinition),
+                    typeof (WorkflowAssociationDefinition),
 
                     typeof (MasterPageSettingsDefinition),
                     typeof (WelcomePageDefinition)

@@ -70,6 +70,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                     view = list.Views[typedModel.ViewId.Value];
                 else if (!string.IsNullOrEmpty(typedModel.ViewName))
                     view = list.Views[typedModel.ViewName];
+                else if (!string.IsNullOrEmpty(typedModel.ViewUrl))
+                {
+                    view = list.Views.OfType<SPView>()
+                        .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(typedModel.ViewUrl.ToUpper()));
+                }
 
                 if (view != null)
                 {

@@ -241,6 +241,47 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     assert.SkipProperty(m => m.ViewName, "ViewName is null or empty. Skipping.");
                 }
 
+                if (!string.IsNullOrEmpty(definition.ViewUrl))
+                {
+                    var list = LookupList(listItemModelHost, definition);
+                    var bindContext = LookupBindContext(listItemModelHost, definition);
+
+                    var viewBindingXml = XDocument.Parse(CurrentWebPartXml.GetListViewWebPartProperty("ListViewXml"));
+                    var viewId = new Guid(viewBindingXml.Root.GetAttributeValue("Name"));
+
+                    var bindedView = list.Views.GetById(viewId);
+                    var targetView = list.Views.GetByTitle(definition.ViewName);
+
+                    context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
+                    context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
+
+                    context.ExecuteQueryWithTrace();
+
+                    var isValid = false;
+
+                    // these are two different views, just CAML and field count
+                    isValid = (bindedView.ViewFields.Count == targetView.ViewFields.Count)
+                              && (bindedView.ViewQuery == targetView.ViewQuery)
+                              && (bindedView.RowLimit == targetView.RowLimit);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ViewUrl);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.ViewUrl, "ViewUrl is null or empty. Skipping.");
+                }
+
                 // skip it, it will be part of the .Toolbar validation
                 assert.SkipProperty(m => m.ToolbarShowAlways, "");
 
@@ -348,6 +389,16 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 view = list.Views.GetById(wpModel.ViewId.Value);
             else if (!string.IsNullOrEmpty(wpModel.ViewName))
                 view = list.Views.GetByTitle(wpModel.ViewName);
+            else if (!string.IsNullOrEmpty(wpModel.ViewUrl))
+            {
+                var views = list.Views;
+
+                context.Load(views, v => v.Include(r => r.ServerRelativeUrl));
+                context.ExecuteQueryWithTrace();
+
+                view = views.ToArray()
+                            .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(wpModel.ViewUrl.ToUpper()));
+            }
 
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
