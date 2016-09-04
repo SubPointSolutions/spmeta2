@@ -328,6 +328,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
 
             if (typedDefinition.FilterByAudience.HasValue)
                 typedWebpart.FilterByAudience = typedDefinition.FilterByAudience.Value;
+
+            // misc
+            if (!string.IsNullOrEmpty(typedDefinition.GroupBy))
+                typedWebpart.GroupBy = typedDefinition.GroupBy;
+
+            if (typedDefinition.DisplayColumns.HasValue)
+                typedWebpart.DisplayColumns = typedDefinition.DisplayColumns.Value;
         }
 
         #endregion

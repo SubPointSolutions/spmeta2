@@ -377,6 +377,16 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Webparts
                 else
                     assert.SkipProperty(m => m.ServerTemplate, "ServerTemplate is null or empty, skipping.");
 
+                if (!string.IsNullOrEmpty(typedDefinition.GroupBy))
+                    assert.ShouldBeEqual(m => m.GroupBy, o => o.GroupBy);
+                else
+                    assert.SkipProperty(m => m.GroupBy, "GroupBy is null or empty, skipping.");
+
+                if (typedDefinition.DisplayColumns.HasValue)
+                    assert.ShouldBeEqual(m => m.DisplayColumns, o => o.DisplayColumns);
+                else
+                    assert.SkipProperty(m => m.DisplayColumns, "DisplayColumns is null or empty, skipping.");
+
             });
         }
 

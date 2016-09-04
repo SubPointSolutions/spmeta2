@@ -316,6 +316,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
             if (typedDefinition.FilterByAudience.HasValue)
                 wpXml.SetOrUpdateProperty("FilterByAudience", typedDefinition.FilterByAudience.ToString());
 
+            // misc
+            if (!string.IsNullOrEmpty(typedDefinition.GroupBy))
+                wpXml.SetOrUpdateProperty("GroupBy", typedDefinition.GroupBy);
+
+            if (typedDefinition.DisplayColumns.HasValue)
+                wpXml.SetOrUpdateProperty("DisplayColumns", typedDefinition.DisplayColumns.ToString());
 
             return wpXml.ToString();
         }
