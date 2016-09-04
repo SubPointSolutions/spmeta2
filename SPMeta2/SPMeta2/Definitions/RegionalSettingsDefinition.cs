@@ -50,7 +50,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         public short? FirstWeekOfYear { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public uint? LocaleId { get; set; }
 
@@ -62,7 +62,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool? Time24 { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public short? WorkDayEndHour { get; set; }
 
@@ -70,9 +70,14 @@ namespace SPMeta2.Definitions
         [DataMember]
         public short? WorkDays { get; set; }
 
-        [ExpectValidation]
+        //[ExpectValidation]
         [DataMember]
         public short? WorkDayStartHour { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 5, MaxValue = 10)]
+        public ushort? TimeZoneId { get; set; }
 
         #endregion
 
@@ -81,6 +86,7 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return new ToStringResult<RegionalSettingsDefinition>(this)
+                          .AddPropertyValue(p => p.TimeZoneId)
                           .AddPropertyValue(p => p.AdjustHijriDays)
                           .AddPropertyValue(p => p.AlternateCalendarType)
                           .AddPropertyValue(p => p.CalendarType)

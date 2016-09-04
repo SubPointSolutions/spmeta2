@@ -22,7 +22,14 @@ namespace SPMeta2.Regression.Tests.Services.ExpectUpdateServices
 
             if (prop.PropertyType == typeof(double?) ||
                 prop.PropertyType == typeof(double))
+            {
                 newValue = Convert.ToDouble(tmpValue);
+            }
+            else if (prop.PropertyType == typeof(UInt16?) ||
+                     prop.PropertyType == typeof(UInt16))
+            {
+                newValue = Convert.ToUInt16(tmpValue);
+            }
             else
             {
                 // TODO, as per case
