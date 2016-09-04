@@ -67,7 +67,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         public bool? UseCopyUtil { get; set; }
 
         [DataMember]

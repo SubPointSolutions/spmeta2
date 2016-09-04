@@ -582,17 +582,65 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
                 }
 
                 if (typedDefinition.PlayMediaInBrowser.HasValue)
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.PlayMediaInBrowser);
+                        var isValid = false;
+
+                        isValid = s.PlayMediaInBrowser == ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("PlayMediaInBrowser"));
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.PlayMediaInBrowser, "PlayMediaInBrowser is null or empty, skipping.");
 
                 if (typedDefinition.ShowUntargetedItems.HasValue)
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ShowUntargetedItems);
+                        var isValid = false;
+
+                        isValid = s.ShowUntargetedItems == ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("ShowUntargetedItems"));
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.ShowUntargetedItems, "ShowUntargetedItems is null or empty, skipping.");
 
                 if (typedDefinition.UseCopyUtil.HasValue)
-                    throw new NotImplementedException();
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.UseCopyUtil);
+                        var isValid = false;
+
+                        isValid = s.UseCopyUtil == ConvertUtils.ToBool(CurrentWebPartXml.GetProperty("UseCopyUtil"));
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
                 else
                     assert.SkipProperty(m => m.UseCopyUtil, "UseCopyUtil is null or empty, skipping.");
 

@@ -129,6 +129,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
             if (typedDefinition.PlayMediaInBrowser.HasValue)
                 wpXml.SetOrUpdateProperty("PlayMediaInBrowser", typedDefinition.PlayMediaInBrowser.ToString());
 
+            if (typedDefinition.UseCopyUtil.HasValue)
+                wpXml.SetOrUpdateProperty("UseCopyUtil", typedDefinition.UseCopyUtil.ToString());
+
             // FilterTypeXXX
             if (!string.IsNullOrEmpty(typedDefinition.FilterType1))
                 wpXml.SetOrUpdateProperty("FilterType1", typedDefinition.FilterType1);
