@@ -222,6 +222,7 @@
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebConfigModificationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
+    <Compile Include="Impl\Services\DiscussionBoardListFieldDefinitionValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultContentTypeLinkDeploymentValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultRequiredPropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultFieldInternalNamePropertyValidationServiceTests.cs" />

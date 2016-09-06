@@ -350,6 +350,7 @@
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
@@ -382,6 +383,7 @@
     <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
