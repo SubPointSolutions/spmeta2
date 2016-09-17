@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tabular</name>
+    </assembly>
+    <members>
+        <member name="T:Tabular.DataType">
+            <summary>
+            The type of the data in the cell.
+            </summary>
+        </member>
+        <member name="F:Tabular.DataType.Text">
+            <summary>
+            Cell contains raw text.
+            </summary>
+        </member>
+        <member name="F:Tabular.DataType.Number">
+            <summary>
+            Cell contains a number.
+            </summary>
+        </member>
+        <member name="F:Tabular.DataType.Date">
+            <summary>
+            Cell contains a date type.
+            </summary>
+        </member>
+        <member name="F:Tabular.DataType.Bool">
+            <summary>
+            Cell contains a boolean type.
+            </summary>
+        </member>
+        <member name="T:Tabular.Cell">
+            <summary>
+            A cell that contains data.
+            </summary>
+        </member>
+        <member name="M:Tabular.Cell.#ctor(System.String)">
+            <summary>
+            Create a cell.
+            </summary>
+            <param name="value">The cell contents.</param>
+        </member>
+        <member name="M:Tabular.Cell.#ctor(System.String,Tabular.DataType)">
+            <summary>
+            Create a cell.
+            </summary>
+            <param name="value">The cell contents.</param>
+            <param name="dataType">The data type of the cell contents.</param>
+        </member>
+        <member name="M:Tabular.Cell.Equals(Tabular.Cell)">
+            <summary>
+            Compares cells for equality.
+            </summary>
+            <param name="other">The cell to compare to.</param>
+            <returns>True if the contents are equivalent, false otherwise.</returns>
+        </member>
+        <member name="M:Tabular.Cell.ToString">
+            <summary>
+            Generates a string representation.
+            </summary>
+            <returns>Generates a string representation of the object.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.String)~Tabular.Cell">
+            <summary>
+            Implicitly convert strings to cells. 
+            </summary>
+            <param name="value">The text.</param>
+            <returns>A cell containing the given value.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Int32)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.UInt32)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Int64)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.UInt64)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Int16)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.UInt16)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Single)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Double)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Decimal)~Tabular.Cell">
+            <summary>
+            Implicitly convert number to cell.
+            </summary>
+            <param name="value">The number to convert.</param>
+            <returns>A cell containing the given number.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.DateTime)~Tabular.Cell">
+            <summary>
+            Implicitly convert DateTime to cell.
+            </summary>
+            <param name="value">The dateto convert.</param>
+            <returns>A cell containing the given date.</returns>
+        </member>
+        <member name="M:Tabular.Cell.op_Implicit(System.Nullable{System.DateTime})~Tabular.Cell">
+            <summary>
+            Implicitly convert DateTime to cell.
+            </summary>
+            <param name="value">The dateto convert.</param>
+            <returns>A cell containing the given date.</returns>
+        </member>
+        <member name="P:Tabular.Cell.DataType">
+            <summary>
+            The cell's data type.
+            </summary>
+            <remarks>
+            The data type is used to properly strongly type the contents of the <see cref="P:Tabular.Cell.Value"/> string.
+            </remarks>
+        </member>
+        <member name="P:Tabular.Cell.Value">
+            <summary>
+            The cell contents.
+            </summary>
+        </member>
+        <member name="T:Tabular.Row">
+            <summary>
+            The row in a table containing cells.
+            </summary>
+        </member>
+        <member name="M:Tabular.Row.#ctor(System.Collections.Generic.IEnumerable{Tabular.Cell})">
+            <summary>
+            Create a table.
+            </summary>
+            <param name="cells">The table rows.</param>
+        </member>
+        <member name="M:Tabular.Row.#ctor">
+            <summary>
+            Create an empty table.
+            </summary>
+        </member>
+        <member name="T:Tabular.Table">
+            <summary>
+            A data table containing rows.
+            </summary>
+            <remarks>
+            Tables can be created in declaratively using C#'s collection initializer syntax:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99 },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            </code>
+            
+            Tables can also be bound to enumerable sources:
+            
+            <code>
+            IEnumerable&lt;string&gt; list = ...
+            var table = new Table
+            {
+                Name = "EnumerableTable",
+                Bind = list.Select((x,i) =&gt; new Row { i, x })
+            }
+            </code>
+            
+            Tables can also be created imperatively via the <see cref="M:Tabular.Table.AddRow"/> method:
+            
+            <code>
+            var table = new Table();
+            foreach (var x in list)
+            {
+                table.AddRow(new Row { x });
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Table.#ctor">
+            <summary>
+            Create a new empty table.
+            </summary>
+        </member>
+        <member name="M:Tabular.Table.#ctor(System.Collections.Generic.IEnumerable{Tabular.Row})">
+            <summary>
+            Create a table.
+            </summary>
+            <param name="rows">The table rows.</param>
+        </member>
+        <member name="M:Tabular.Table.AddRow">
+            <summary>
+            Adds a new row to the table.
+            </summary>
+            <returns>A new table row.</returns>
+            <remarks>
+            Tables can be created imperatively via the <see cref="M:Tabular.Table.AddRow"/> method:
+            <code>
+            IEnumerable&lt;string&gt; list = ...
+            var table = new Table();
+            foreach (var x in list)
+            {
+                table.AddRow(new Row { x });
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Tabular.Table.Name">
+            <summary>
+            The name of the table.
+            </summary>
+        </member>
+        <member name="P:Tabular.Table.Rows">
+            <summary>
+            The rows of the table.
+            </summary>
+            <remarks>
+            Tables can be created in declaratively using C#'s collection initializer syntax:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99 },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Tabular.Table.Bind">
+            <summary>
+            Bind the rows of the table.
+            </summary>
+            <remarks>
+            Tables can be bound to enumerable sources:
+            <code>
+            IEnumerable&lt;string&gt; list = ...
+            var table = new Table
+            {
+                Name = "EnumerableTable",
+                Bind = list.Select((x,i) => new Row { i, x })
+            }
+            </code>
+            </remarks>
+        </member>
+    </members>
+</doc>

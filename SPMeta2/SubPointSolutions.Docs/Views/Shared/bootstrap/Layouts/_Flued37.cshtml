@@ -1,0 +1,27 @@
+﻿@{
+    Layout = SConfig.GetThemedTemplate("Layouts/_Master.cshtml");
+}
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_TopNavigation.cshtml"))
+
+@Model.String("IsFirst")
+
+<div class="container body-content sd-body-content">
+    <div class="row">
+        @Html.Partial(SConfig.GetThemedTemplate("Components/_SecondNavigation.cshtml"))
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            @RenderBody()
+
+
+            @Html.Partial(SConfig.GetThemedTemplate("Components/_PrevNextNavigation.cshtml"))
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            @Html.Partial(SConfig.GetThemedTemplate("Components/_Sidebar.cshtml"))
+        </div>
+    </div>
+</div>
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_Footer.cshtml"))

@@ -1,0 +1,27 @@
+var listContentType = new ContentTypeDefinition
+{
+    Name = "Content Type With Hidden Fields",
+    Id = new Guid("e71cdcc9-5765-47ea-8879-b9456d57dfa6"),
+    ParentContentTypeId = BuiltInContentTypeId.Item,
+    Group = "SPMeta2.Samples"
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+       .AddContentType(listContentType, contentType =>
+       {
+           contentType
+               .AddHideContentTypeFieldLinks(new HideContentTypeFieldLinksDefinition
+               {
+                   Fields = new System.Collections.Generic.List<FieldLinkValue>
+                   {
+                       new FieldLinkValue { Id = BuiltInFieldId.Title  },
+                       new FieldLinkValue { Id = BuiltInFieldId.Comment  },
+                   }
+               });
+       });
+});
+
+DeployModel(model);
+

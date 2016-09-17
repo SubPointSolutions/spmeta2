@@ -1,0 +1,60 @@
+﻿@{
+
+    var tiles = Documents
+                .Where(x => x.ContainsKey("Tile")
+                    && x.ContainsKey("TileTitle")
+                    && !x.Get<bool>("Hidden", false)
+                    && x.ContainsKey("TileDescription")
+                    && x.ContainsKey("TileOrder")
+                    )
+         .OrderBy(x => x.Get<int>("TileOrder", 0))
+         .ToList();
+
+}
+
+@if (tiles.Any())
+{
+    <hr />
+}
+
+@foreach (var tile in tiles)
+{
+    var tilePath = System.IO.Path.GetDirectoryName(tile.String("RelativeFilePath"));
+    var tileLinks = Documents
+                .Where(x => x.ContainsKey("TileLink")
+                      && x.ContainsKey("RelativeFilePath")
+                      && !x.Get<bool>("Hidden", false)
+                      && x.String("RelativeFilePath").StartsWith(tilePath + @"\"))
+                .OrderBy(x => x.Get<int>("TileLinkOrder", 0))
+                .ToList();
+
+
+    <div class="col-md-4 m-landing-project-cnt" m2-order='@(tile.Get<int>("TileLinkOrder", 0))'>
+        <div class="panel panel-default ">
+            <div class="panel-heading">
+                <a href="@(PathHelper.ToRootLink(PathHelper.RemoveExtension(tile.String("RelativeFilePath"))))">
+                    @(tile.String("TileTitle"))
+                </a>
+            </div>
+            <div class="panel-body m-landing-project-links-cnt" tile-path="@tilePath">
+                @tile.String("TileDescription")
+
+                @if (tileLinks.Any())
+                {
+                    <ul>
+                        @foreach (var tileLink in tileLinks)
+                        {
+                            <li>
+                                <a href="@(PathHelper.ToRootLink(PathHelper.RemoveExtension(tileLink.String("RelativeFilePath"))))">
+                                    @(tileLink.String("Title"))
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+    </div>
+}

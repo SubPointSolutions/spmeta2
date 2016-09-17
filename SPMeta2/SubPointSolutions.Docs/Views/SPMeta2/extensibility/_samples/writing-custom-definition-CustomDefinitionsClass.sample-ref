@@ -1,0 +1,87 @@
+public class CustomDefinitions : ProvisionTestBase
+{
+    #region methods
+
+    [TestMethod]
+    [TestCategory("Docs.Models")]
+    public void RegisterCustomModelHandler()
+    {
+        var csomProvisionService = new CSOMProvisionService();
+
+        csomProvisionService.RegisterModelHandler(new ChangeWebTitleAndDescriptionModelHandler());
+
+        var webModel = SPMeta2Model.NewWebModel(web =>
+        {
+            web.AddDefinitionNode(new ChangeWebTitleAndDescriptionDefinition
+            {
+                Title = "A new name for the web",
+                Description = "Some changes done by ChangeWebTitleAndDescriptionDefinition"
+            });
+        });
+
+        using (var clientContext = new ClientContext(CSOMSiteUrl))
+            csomProvisionService.DeployWebModel(clientContext, webModel);
+    }
+
+    [TestMethod]
+    [TestCategory("Docs.Models")]
+    public void RegisterCustomModelHandlerWithSyntax()
+    {
+        var csomProvisionService = new CSOMProvisionService();
+
+        csomProvisionService.RegisterModelHandler(new ChangeWebTitleAndDescriptionModelHandler());
+
+        var webModel = SPMeta2Model.NewWebModel(web =>
+        {
+            web.AddChangeWebTitleAndDescription(new ChangeWebTitleAndDescriptionDefinition
+            {
+                Title = "A new name for the web",
+                Description = "Some changes done by ChangeWebTitleAndDescriptionDefinition"
+            });
+        });
+
+        using (var clientContext = new ClientContext(CSOMSiteUrl))
+            csomProvisionService.DeployWebModel(clientContext, webModel);
+    }
+
+    [TestMethod]
+    [TestCategory("Docs.Models")]
+    public void RegisterCustomModelHandlerWithEvents()
+    {
+        var csomProvisionService = new CSOMProvisionService();
+
+        csomProvisionService.RegisterModelHandler(new ChangeWebTitleAndDescriptionModelHandler());
+
+        var webModel = SPMeta2Model.NewWebModel(web =>
+        {
+            web.AddChangeWebTitleAndDescription(new ChangeWebTitleAndDescriptionDefinition
+            {
+                Title = "A new name for the web",
+                Description = "Some changes done by ChangeWebTitleAndDescriptionDefinition"
+            },
+            changeWebAndTitle =>
+            {
+                changeWebAndTitle.OnProvisioning<Web, ChangeWebTitleAndDescriptionDefinition>(cntx =>
+                {
+                    var cntxWeb = cntx.Object;
+                    var cntxDef = cntx.ObjectDefinition;
+
+                    // do stuff
+                });
+
+                changeWebAndTitle.OnProvisioned<Web, ChangeWebTitleAndDescriptionDefinition>(cntx =>
+                {
+                    var cntxWeb = cntx.Object;
+                    var cntxDef = cntx.ObjectDefinition;
+
+                    // do stuff
+                });
+            });
+        });
+
+        using (var clientContext = new ClientContext(CSOMSiteUrl))
+            csomProvisionService.DeployWebModel(clientContext, webModel);
+    }
+
+    #endregion
+}

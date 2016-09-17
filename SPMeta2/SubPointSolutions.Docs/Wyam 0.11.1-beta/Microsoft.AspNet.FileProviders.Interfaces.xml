@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.AspNet.FileProviders.Interfaces</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.AspNet.FileProviders.IDirectoryContents">
+            <summary>
+            Represents a directory's content in the file provider.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IDirectoryContents.Exists">
+            <summary>
+            True if a directory was located at the given path.
+            </summary>
+        </member>
+        <member name="T:Microsoft.AspNet.FileProviders.IFileInfo">
+            <summary>
+            Represents a file in the given file provider.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.Exists">
+            <summary>
+            True if resource exists in the underlying storage system.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.Length">
+            <summary>
+            The length of the file in bytes, or -1 for a directory or non-existing files.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.PhysicalPath">
+            <summary>
+            The path to the file, including the file name. Return null if the file is not directly accessible.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.Name">
+            <summary>
+            The name of the file or directory, not including any path.
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.LastModified">
+            <summary>
+            When the file was last modified
+            </summary>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.IFileInfo.IsDirectory">
+            <summary>
+            True for the case TryGetDirectoryContents has enumerated a sub-directory
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.IFileInfo.CreateReadStream">
+            <summary>
+            Return file contents as readonly stream. Caller should dispose stream when complete.
+            </summary>
+            <returns>The file stream</returns>
+        </member>
+        <member name="T:Microsoft.AspNet.FileProviders.IFileProvider">
+            <summary>
+            A read-only file provider abstraction.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.IFileProvider.GetFileInfo(System.String)">
+            <summary>
+            Locate a file at the given path.
+            </summary>
+            <param name="subpath">Relative path that identifies the file.</param>
+            <returns>The file information. Caller must check Exists property.</returns>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.IFileProvider.GetDirectoryContents(System.String)">
+            <summary>
+            Enumerate a directory at the given path, if any.
+            </summary>
+            <param name="subpath">Relative path that identifies the directory.</param>
+            <returns>Returns the contents of the directory.</returns>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.IFileProvider.Watch(System.String)">
+            <summary>
+            Creates a change trigger with the specified filter.
+            </summary>
+            <param name="filter">Filter string used to determine what files or folders to monitor. Example: **/*.cs, *.*, subFolder/**/*.cshtml.</param>
+            <returns>An <see cref="T:Microsoft.Framework.Expiration.Interfaces.IExpirationTrigger"/> that is triggered when a file matching <paramref name="filter"/> is added, modified or deleted.</returns>
+        </member>
+    </members>
+</doc>

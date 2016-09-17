@@ -1,0 +1,8 @@
+var wpXml = WebpartXmlExtensions
+                .LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
+                .SetListName(listName)
+                .SetListId(listId)
+                .SetTitleUrl(titleUrl)
+                .SetOrUpdateProperty("JSLink", jsLink)
+                .ToString();
+

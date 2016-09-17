@@ -1,0 +1,190 @@
+﻿@using System;
+@using System.Linq
+@using System.Collections;
+@using System.Collections.Generic;
+@using SPMeta2;
+@using SPMeta2.Utils;
+@using SPMeta2.Definitions;
+@using SPMeta2.Standard.Definitions;
+@using SPMeta2.ModelHandlers;
+@using SPMeta2.CSOM.Services;
+@using SPMeta2.CSOM.Standard.Services;
+@using SPMeta2.SSOM.Services;
+@using SPMeta2.SSOM.Standard.Services;
+@using SPMeta2.Attributes;
+@using SPMeta2.Attributes.Capabilities;
+@using SPMeta2.Attributes.Identity;
+@using SPMeta2.Attributes.Regression;
+@using SubPointSolutions.Docs.Code.API
+@using SubPointSolutions.Docs.Code.Data
+@using SubPointSolutions.Docs.Code.Samples
+@using SubPointSolutions.Docs.Code.Enumerations
+
+@{
+    Layout = SConfig.GetThemedTemplate("Layouts/_Master.cshtml");
+}
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_TopNavigation.cshtml"))
+
+<style>
+    
+
+    section {
+        padding-top: 60px;
+        margin-top: -60px;
+    }
+
+    @@media only screen and (max-width : 768px) {
+      section {
+        padding-top: 120px;
+        margin-top: -120px;
+    }
+    }
+</style>
+
+<div class="container body-content sd-body-content sd-definition-content">
+    <div class="row">
+        @Html.Partial(SConfig.GetThemedTemplate("Components/_SecondNavigation.cshtml"))
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-8">
+
+            @{
+                var definitionName = Model.String("SourceFileBase").Replace("Tests", string.Empty);
+                var samples = m2Samples.SysAllSamples.Where(s => s.IsMethod).ToList().Where(s => s.ClassName.StartsWith(definitionName));
+
+                var allHandlers = new List<Type>();
+
+                // built in
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(FieldDefinition).Assembly));
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(AudienceDefinition).Assembly));
+
+                // csom
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(CSOMProvisionService).Assembly));
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(StandardCSOMProvisionService).Assembly));
+
+                // ssom
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(SSOMProvisionService).Assembly));
+                allHandlers.AddRange(ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(typeof(StandardSSOMProvisionService).Assembly));
+
+
+                var modelHandlerName = definitionName.Replace("Definition", "ModelHandler").ToLower();
+
+                var supportsCSOM = allHandlers.Any(h => h.Name.ToLower().StartsWith(modelHandlerName)
+                                                         && h.FullName.ToLower().Contains("csom"));
+                var supportsSSOM = allHandlers.Any(h => h.Name.ToLower().StartsWith(modelHandlerName)
+                                                         && h.FullName.ToLower().Contains("ssom"));
+
+                var csomLabel = supportsCSOM ? "label-success" : "label-default";
+                var ssomLabel = supportsSSOM ? "label-success" : "label-default";
+
+                var allDefinitions = new List<Type>();
+
+                // built in
+                allDefinitions.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(typeof(FieldDefinition).Assembly));
+                allDefinitions.AddRange(ReflectionUtils.GetTypesFromAssembly<DefinitionBase>(typeof(AudienceDefinition).Assembly));
+
+
+                var scopes = new List<string>();
+
+                var definitionClassType = allDefinitions.FirstOrDefault(c => c.Name.ToLower().StartsWith(definitionName.ToLower()));
+
+                if (definitionClassType != null)
+                {
+                    var parentHosts = definitionClassType
+                                              .GetCustomAttributes(true)
+                                              .OfType<ParentHostCapabilityAttribute>()
+                                              .ToList();
+
+                    foreach (var parent in parentHosts)
+                    {
+                        var scopeName = parent.HostType.Name.Replace("Definition", String.Empty);
+                        scopes.Add(scopeName);
+                    }
+                }
+            }
+
+            <h4>API support</h4>
+            <span class="label @csomLabel">CSOM</span>
+            <span class="label @ssomLabel">SSOM</span>
+
+            <h4>Can be deployed under</h4>
+            @foreach (var scope in scopes)
+            {
+                <span class="label label-success">@scope</span>
+            }
+
+            <h4>Notes @*- <span><a href='#' target="_blank">edit</a></span>*@</h4>
+
+            @{
+                var body = RenderBody();
+            }
+
+            @if (body != null)
+            {
+                this.WriteTo(Output, body);
+            }
+            else
+            {
+                // TODO
+                <div class="well well-lg">
+                    <h2>Ouch...</h2>
+                    <p>Seems there are't much notes yet.</p>
+                    <p>
+                        Drop us a line at <a href='#'>Yammer</a> or put a few words together at <span><a href='#' target="_blank">github</a></span>.
+                        We'll help you out.
+                    </p>
+                </div>
+            }
+
+            <h4>Examples</h4>
+
+            @if (samples.Any())
+            {
+                <ul>
+                    @foreach (var sample in samples)
+                    {
+                        <li><a href="@("#" + SamplesAPI.GetSafeAnchor(sample.Title))">@sample.Title</a></li>
+                    }
+                </ul>
+
+                foreach (var sample in samples)
+                {
+                    <section name="@(SamplesAPI.GetSafeAnchor(sample.Title))" id="@(SamplesAPI.GetSafeAnchor(sample.Title))"></section>
+
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">
+                            @sample.Title
+                        </div>
+
+                        <div class="panel-body">
+                            <pre><code class="language-cs brush: csharp">
+@sample.MethodBody
+                            </code></pre>
+                        </div>
+                    </div>
+
+                }
+            }
+            else
+            {
+                <div class="well well-lg">
+                    <h2>Ouch...</h2>
+                    <p>Seems there are't much samples yet.</p>
+                    <p>
+                        Drop us a line at <a href='#'>Yammer</a> or put a few words together at <span><a href='#' target="_blank">github</a></span>.
+                        We'll help you out.
+                    </p>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            @Html.Partial(SConfig.GetThemedTemplate("Components/_Sidebar.cshtml"))
+        </div>
+    </div>
+</div>
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_Footer.cshtml"))

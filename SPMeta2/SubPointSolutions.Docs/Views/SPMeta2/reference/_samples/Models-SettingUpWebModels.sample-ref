@@ -1,0 +1,20 @@
+// step 1, setup your definition
+
+// step 2, setup your site models
+var featuresModel = SPMeta2Model.NewWebModel(web =>
+{
+    // setup features
+});
+
+var listsModel = SPMeta2Model.NewWebModel(web =>
+{
+    // setup fields and content types
+});
+
+var navigationModel = SPMeta2Model.NewWebModel(web =>
+{
+    // setup web navigation
+});
+
+// step 3, deploy web models
+

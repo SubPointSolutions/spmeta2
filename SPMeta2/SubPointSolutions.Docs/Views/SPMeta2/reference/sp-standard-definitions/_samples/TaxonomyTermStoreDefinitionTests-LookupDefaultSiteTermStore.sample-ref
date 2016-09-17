@@ -1,0 +1,15 @@
+var defaultSiteTermStore = new TaxonomyTermStoreDefinition
+{
+    UseDefaultSiteCollectionTermStore = true
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site.AddTaxonomyTermStore(defaultSiteTermStore, termStore =>
+    {
+        // do stuff, add groups, term sets
+    });
+});
+
+DeployModel(model);
+

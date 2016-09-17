@@ -1,0 +1,20 @@
+// step 1, setup your definition
+
+// step 2, setup your site models
+var taxonomyModel = SPMeta2Model.NewSiteModel(site =>
+{
+    // setup site taxonomy
+});
+
+var featuresAndSandboxSolutionsModel = SPMeta2Model.NewSiteModel(site =>
+{
+    // setup sandbox solutions and features
+});
+
+var fieldsAndContentTypesModel = SPMeta2Model.NewSiteModel(site =>
+{
+    // setup fields and content types
+});
+
+// step 3, deploy site models
+

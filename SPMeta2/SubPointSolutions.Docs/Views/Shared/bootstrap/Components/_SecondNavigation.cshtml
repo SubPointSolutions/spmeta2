@@ -1,0 +1,111 @@
+﻿@using System
+@*<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Documentation</a>
+            </div>
+            <div class="navbar-collapse collapse">
+
+            </div>
+        </div>
+    </div>*@
+
+@{
+
+    var navSplit = Model.String("RelativeFilePath", string.Empty).Split(new[] { '\\' });
+
+    var navFolder = navSplit[0];
+    var navSubFolder = navSplit.Count() > 1 ? navSplit[1] : string.Empty;
+    
+    // root link, home
+    if (navSubFolder.EndsWith(".md"))
+    {
+        navSubFolder = string.Empty;
+    }
+
+    var allSubnavDocuments = Documents
+        .Where(x => x.ContainsKey("RelativeFilePath")
+                    && x.String("RelativeFilePath").StartsWith(navFolder + @"\")
+                    && !x.String("SourceFileBase").StartsWith("_")
+                    && x.String("RelativeFilePath").StartsWith(navFolder)
+                    && x.String("RelativeFilePath").EndsWith("ndex.md")
+                    && x.String("RelativeFilePath", string.Empty)
+                                .Split(new[] { '\\' })
+                                .Count() == 3)
+         .OrderBy(x => x.String("Order", "0"))
+         .ToList();
+
+    // adding home link to the subgroups
+    var homeDocument = Documents
+        .Where(x => x.ContainsKey("RelativeFilePath")
+                    && x.String("RelativeFilePath").StartsWith(navFolder + @"\")
+                    && !x.String("SourceFileBase").StartsWith("_")
+                    && x.String("RelativeFilePath").StartsWith(navFolder)
+                    && x.String("RelativeFilePath").EndsWith("ndex.md")
+                    && x.String("RelativeFilePath", string.Empty)
+                                .Split(new[] { '\\' })
+                                .Count() == 2)
+         .FirstOrDefault();
+         
+    var allSubgroups = allSubnavDocuments
+        .Select(x => new
+        {
+            Document = x,
+            SubgroupName = x.String("RelativeFileDir")
+                .Replace(navFolder, string.Empty)
+                .Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries)[0]
+        })
+        .ToList();
+
+    if (homeDocument != null)
+    {
+        allSubgroups.Insert(0,new
+        {
+            Document = homeDocument,
+            SubgroupName = string.Empty
+        });
+    }        
+        
+    var selectedGroup = allSubgroups.FirstOrDefault(g => g.SubgroupName == navSubFolder);
+}
+
+<div class="sub-nav" m-current-subfolder="@navSubFolder">
+
+
+
+    <h2>
+        @if (selectedGroup != null)
+        {
+            var g = selectedGroup;
+            
+            <a href="@(PathHelper.ToRootLink(PathHelper.RemoveExtension(g.Document.String("RelativeFilePath"))) + ".html")">
+                @(g.Document.String("Title", g.Document.String("SourceFileBase")).Replace("Tests", String.Empty))
+            </a> <span>-</span> <span style="font-size: 18px;">@( string.IsNullOrEmpty(Model.String("Title")) ? PathHelper.RemoveExtension(Model.String("SourceFileBase")) : Model.String("Title"))</span>
+        }
+        else
+        {
+            <a href="#">@( string.IsNullOrEmpty(Model.String("Title")) ? PathHelper.RemoveExtension(Model.String("SourceFileBase")) : Model.String("Title"))</a>
+        }
+        
+    </h2>
+
+    <ul>
+        @foreach (var g in allSubgroups)
+        {
+            var isActive = navSubFolder == g.SubgroupName;
+            var cssClass = isActive ? "active" : string.Empty;
+
+            <li >
+                <a m-subgroup="@g.SubgroupName" class="@cssClass" href="@(PathHelper.ToRootLink(PathHelper.RemoveExtension(g.Document.String("RelativeFilePath"))) + ".html")">
+                    @(g.Document.String("Title", g.Document.String("SourceFileBase")).Replace("Tests", String.Empty))
+                </a>
+            </li>
+        }
+
+    </ul>
+</div>

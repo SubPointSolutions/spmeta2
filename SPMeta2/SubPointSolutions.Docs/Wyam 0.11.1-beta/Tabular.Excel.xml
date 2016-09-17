@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tabular.Excel</name>
+    </assembly>
+    <members>
+        <member name="T:Tabular.ExcelFormat">
+            <summary>
+            The Excel format to use.
+            </summary>
+        </member>
+        <member name="F:Tabular.ExcelFormat.Excel2003">
+            <summary>
+            The 2003 excel workbook format.
+            </summary>
+        </member>
+        <member name="F:Tabular.ExcelFormat.Excel2007">
+            <summary>
+            The Excel 2007/2010 format.
+            </summary>
+        </member>
+        <member name="T:Tabular.Excel">
+            <summary>
+            Extensions to convert tabular data to and from Excel documents.
+            </summary>
+            <remarks>
+            XML schema from:
+            
+            The Tabular.Excel assembly provides import and export features for the Excel XML file format. The Excel 2002 XML schema [1] is used for simplicity:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // generate in-memory XDocument that you can work with
+            XDocument excel = Excel.ToXml(table1);
+            
+            // or write directly to stream
+            using (var stream = File.OpenWrite("foo.xml"))
+            {
+                Excel.WriteTo(table1, stream);
+            }
+            
+            // you can also import the xml data
+            Table table2 = Excel.FromXml(excel);
+            
+            // or import by reading from a stream
+            using (var stream = File.OpenRead("foo.xml"))
+            {
+                table2 = Excel.ReadFrom(stream);
+            }
+            </code>
+            [1] http://msdn.microsoft.com/en-us/library/aa140066(office.10).aspx
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.WriteTo(Tabular.Table,System.IO.TextWriter)">
+            <summary>
+            Generate an Excel 2003 XML document.
+            </summary>
+            <param name="table">The <seealso cref="T:Tabular.Table"/> data to write.</param>
+            <param name="output">The output stream.</param>
+            <remarks>
+            Exporting from a stream is simple:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // write directly to stream
+            using (var stream = File.OpenWrite("foo.xml"))
+            {
+                Excel.WriteTo(table1, stream);
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.WriteTo(Tabular.Table,System.IO.Stream,Tabular.ExcelFormat)">
+            <summary>
+            Generate an Excel document.
+            </summary>
+            <param name="table">The <seealso cref="T:Tabular.Table"/> data to write.</param>
+            <param name="output">The output stream.</param>
+            <param name="format">The Excel version to save.</param>
+            <remarks>
+            Exporting from a stream is simple:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // write directly to stream
+            using (var stream = File.OpenWrite("foo.xml"))
+            {
+                Excel.WriteTo(table1, stream);
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.ToXml(Tabular.Table)">
+            <summary>
+            Generates an Excel 2003 XML document.
+            </summary>
+            <param name="table">The <seealso cref="T:Tabular.Table"/> to convert.</param>
+            <returns>An <see cref="T:System.Xml.Linq.XDocument"/> containing the Excel data.</returns>
+            <remarks>
+            Export to Excel format is simple:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // generate in-memory XDocument that you can work with
+            XDocument excel = Excel.ToXml(table1);
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.ToString(System.Xml.Linq.XDocument,System.Boolean)">
+            <summary>
+            Generates a full xml document string.
+            </summary>
+            <param name="xml">The xml document.</param>
+            <param name="withXmlDeclaration">The xml document.</param>
+            <returns>A string including the xml declaration.</returns>
+        </member>
+        <member name="M:Tabular.Excel.FromXml(System.Xml.Linq.XDocument)">
+            <summary>
+            Convert an Excel 2003 XML Workbook into a <seealso cref="T:Tabular.Table"/>.
+            </summary>
+            <param name="xml">The Excel Workbook in XML format.</param>
+            <returns>A <seealso cref="T:Tabular.Table"/> representing the data.</returns>
+            <remarks>
+            Converting from Excel format to tabular data is straightforward:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // generate in-memory XDocument that you can work with
+            XDocument excel = Excel.ToXml(table1);
+            
+            // you can also import the xml data
+            Table table2 = Excel.FromXml(excel);
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.ReadFrom(System.IO.TextReader)">
+            <summary>
+            Convert an Excel 2003 XML Workbook into a <seealso cref="T:Tabular.Table"/>.
+            </summary>
+            <param name="reader">The <seealso cref="T:System.IO.TextReader"/> providing the Excel Workbook in XML format.</param>
+            <returns>A <seealso cref="T:Tabular.Table"/> representing the data.</returns>
+            <remarks>
+            Importing from a stream is simple:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // write directly to stream
+            using (var stream = File.OpenWrite("foo.xml"))
+            {
+                Excel.WriteTo(table1, stream);
+            }
+            
+            // import by reading from a stream
+            using (var stream = File.OpenRead("foo.xml"))
+            {
+                table2 = Excel.ReadFrom(stream);
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Tabular.Excel.ReadFrom(System.IO.Stream,Tabular.ExcelFormat)">
+            <summary>
+            Convert an Excel Workbook into a <seealso cref="T:Tabular.Table"/>.
+            </summary>
+            <param name="stream">The <seealso cref="T:System.IO.TextReader"/> providing the Excel Workbook in XML format.</param>
+            <param name="format">The Excel format to load.</param>
+            <returns>A <seealso cref="T:Tabular.Table"/> representing the data.</returns>
+            <remarks>
+            Importing from a stream is simple:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            // write directly to stream
+            using (var stream = File.OpenWrite("foo.xml"))
+            {
+                Excel.WriteTo(table1, stream);
+            }
+            
+            // import by reading from a stream
+            using (var stream = File.OpenRead("foo.xml"))
+            {
+                table2 = Excel.ReadFrom(stream);
+            }
+            </code>
+            </remarks>
+        </member>
+    </members>
+</doc>

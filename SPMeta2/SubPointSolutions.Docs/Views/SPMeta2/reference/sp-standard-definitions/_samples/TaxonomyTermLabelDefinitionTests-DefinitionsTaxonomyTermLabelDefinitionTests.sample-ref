@@ -1,0 +1,23 @@
+SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+lic class TaxonomyTermLabelDefinitionTests : ProvisionTestBase
+    {
+ #region methods
+
+ [TestMethod]
+ [TestCategory("Docs.TaxonomyTermLabelDefinition")]
+ [SampleMetadata(Title = "Add taxonomy term label",
+     Description = ""
+     )]
+ [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void CanDeploySimpleTaxonomyTermLabelDefinition()
+ {
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+
+     });
+
+     DeployModel(model);
+ }
+
+ #endregion
+    }

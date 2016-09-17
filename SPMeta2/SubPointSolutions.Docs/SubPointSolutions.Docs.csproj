@@ -1,0 +1,1357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B30F6CA8-3E96-4734-B6B1-A61F201099E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubPointSolutions.Docs</RootNamespace>
+    <AssemblyName>SubPointSolutions.Docs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK.Core">
+      <HintPath>..\packages\AWSSDK.Core.3.1.4.3\lib\net45\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.S3">
+      <HintPath>..\packages\AWSSDK.S3.3.1.3.11\lib\net45\AWSSDK.S3.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.BusinessData, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.BusinessData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.1.1\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.1.1\lib\net45\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.VisualBasic.1.1.1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.1.1.1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.WindowsTokenService, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.WindowsTokenService.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.SecureStoreService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Applications.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search.Connector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Connector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search.ExchangeAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.ExchangeAdapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Linq, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Portal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Taxonomy.Intl, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.Intl.dll</HintPath>
+    </Reference>
+    <Reference Include="microsoft.sharepoint.WorkflowActions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\microsoft.sharepoint.WorkflowActions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.WorkflowServicesBase, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.WorkManagement.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="SPMeta2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.Core.1.2.60\lib\net45\SPMeta2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.CSOM.Foundation.1.2.60\lib\net45\SPMeta2.CSOM.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.CSOM.Standard.1.2.60\lib\net45\SPMeta2.CSOM.Standard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SPMeta2.SSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.SSOM.Foundation.1.2.60\lib\net45\SPMeta2.SSOM.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.SSOM.Standard.1.2.60\lib\net45\SPMeta2.SSOM.Standard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SPMeta2.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SPMeta2.Core.Standard.1.2.60\lib\net45\SPMeta2.Standard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Reflection.Metadata, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Reflection.Metadata.1.1.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Code\API\SamplesAPI.cs" />
+    <Compile Include="Code\Base\ProvisionTestBase.cs" />
+    <Compile Include="Code\Consts\DocConsts.cs" />
+    <Compile Include="Code\Consts\SampleGroups.cs" />
+    <Compile Include="Code\Data\DocSample.cs" />
+    <Compile Include="Code\Definitions\DocContentTypes.cs" />
+    <Compile Include="Code\Definitions\DocFields.cs" />
+    <Compile Include="Code\Definitions\DocFolders.cs" />
+    <Compile Include="Code\Definitions\DocLists.cs" />
+    <Compile Include="Code\Definitions\DocSecurityGroups.cs" />
+    <Compile Include="Code\Definitions\DocSiteFeatures.cs" />
+    <Compile Include="Code\Definitions\DocWebFeatures.cs" />
+    <Compile Include="Code\Definitions\DocWebs.cs" />
+    <Compile Include="Code\Definitions\DocWikiPages.cs" />
+    <Compile Include="Code\Enumerations\BuiltInSampleCategoryTagValues.cs" />
+    <Compile Include="Code\Enumerations\BuiltInM2ModelTagValues.cs" />
+    <Compile Include="Code\Enumerations\BuiltInSPRuntimeTagValues.cs" />
+    <Compile Include="Code\Enumerations\BuiltInTagNames.cs" />
+    <Compile Include="Code\Metadata\SampleMetadataAttribute.cs" />
+    <Compile Include="Code\Metadata\SampleMetadataTagAttribute.cs" />
+    <Compile Include="Code\Resources\DefaultMasterPageTemplates.Designer.cs" />
+    <Compile Include="Code\Resources\DefaultPublishingPageLayoutTemplates.Designer.cs" />
+    <Compile Include="Code\Resources\WorkflowTemplates.Designer.cs" />
+    <Compile Include="Code\Samples\m2ExtSamples.cs" />
+    <Compile Include="Code\Samples\m2Samples.cs" />
+    <Compile Include="Code\Samples\m2SpecSamples.cs" />
+    <Compile Include="Code\Samples\reSPSamples.cs" />
+    <Compile Include="Code\Services\Base\SamplesServiceBase.cs" />
+    <Compile Include="Code\Services\CSSamplesService.cs" />
+    <Compile Include="Code\Services\HtmlSamplesService.cs" />
+    <Compile Include="Code\Services\S3Service.cs" />
+    <Compile Include="Code\Services\XmlSamplesService.cs" />
+    <Compile Include="Code\Tests\DocSamplesServiceTests.cs" />
+    <Compile Include="Code\Tests\DocTests.cs" />
+    <Compile Include="Code\Utils\StringUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\writing-custom-definition.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\writing-custom-syntax.cs" />
+    <Compile Include="Views\SPMeta2\getting-started\ConsoleAppSamples.cs" />
+    <Compile Include="Views\SPMeta2\getting-started\Basics.cs" />
+    <Compile Include="Views\SPMeta2\reference\Models.cs" />
+    <Compile Include="Views\SPMeta2\reference\SiteModel.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\AlternateUrlDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\AppDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\AppPrincipalDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\AuditSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\BooleanFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\BreakRoleInheritanceDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\BusinessDataFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\CalculatedFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ChoiceFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ClientWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ComputedFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentDatabaseDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentEditorWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeFieldLinkDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeLinkDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\CurrencyFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DateTimeFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DiagnosticsServiceBaseDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DocumentParserDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\EventReceiverDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmSolutionDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\FeatureDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\FieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\GuidFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\HideContentTypeFieldLinksDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\HideContentTypeLinksDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\InformationRightsManagementSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\JobDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListFieldLinkDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListItemDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListItemFieldValueDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListViewDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ListViewWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\LookupFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ManagedAccountDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\MasterPageDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\MasterPageSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ModuleFileDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\MultiChoiceFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\NoteFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\NumberFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\PrefixDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\PropertyDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\QuickLaunchNavigationNodeDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\RegionalSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\RemoveContentTypeFieldLinksDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\RemoveContentTypeLinksDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ResetRoleInheritanceDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\RootWebDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SandboxSolutionDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ScriptEditorWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SecureStoreApplicationDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityGroupDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityGroupLinkDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityRoleDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityRoleLinkDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SiteDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SP2013WorkflowDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\SP2013WorkflowSubscriptionDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\TargetApplicationDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\TextFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\TopNavigationNodeDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\TreeViewSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\UniqueContentTypeFieldsOrderDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\UniqueContentTypeOrderDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\URLFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\UserCustomActionDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\UserFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WebApplicationDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WebConfigModificationDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WebDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WebPartPageDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WelcomePageDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\WikiPageDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\XsltListViewWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\AudienceDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ContactFieldControlDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ContentByQueryWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ControlDisplayTemplateDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\CustomDocumentIdProviderDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\HTMLFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ImageFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ImageRenditionDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\ItemDisplayTemplateDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\JavaScriptDisplayTemplateDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\LinkFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\MediaFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\PageLayoutAndSiteTemplateSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\PublishingPageDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\PublishingPageLayoutDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SearchConfigurationDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SearchResultDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SearchSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SiteFeedWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SummaryLinkFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\SummaryLinkWebPartDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermGroupDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermLabelDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermSetDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermStoreDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\WebNavigationSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\Utils.cs" />
+    <Compile Include="Views\SPMeta2\reference\WebModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Code\Modules\jquery-1.11.2.min.js" />
+    <Content Include="content\bootstrap\bootstrap.min.css" />
+    <Content Include="content\bootstrap\s.docs.default.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCore.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreDefault.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreDjango.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreEclipse.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreEmacs.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreFadeToGrey.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreMDUltra.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreMidnight.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shCoreRDark.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeDefault.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeDjango.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeEclipse.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeEmacs.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeFadeToGrey.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeMDUltra.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeMidnight.css" />
+    <Content Include="content\bootstrap\SyntaxHighlighter\shThemeRDark.css" />
+    <Content Include="fonts\bootstrap\fontawesome-webfont.svg" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap\jquery-1.9.1.js" />
+    <Content Include="Scripts\bootstrap\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shAutoloader.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushAppleScript.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushAS3.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushBash.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushColdFusion.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushCpp.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushCSharp.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushCss.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushDelphi.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushDiff.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushErlang.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushGroovy.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushJava.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushJavaFX.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushJScript.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushPerl.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushPhp.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushPlain.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushPowerShell.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushPython.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushRuby.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushSass.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushScala.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushSql.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushVb.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shBrushXml.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shCore.js" />
+    <Content Include="Scripts\bootstrap\SyntaxHighlighter\shLegacy.js" />
+    <Content Include="Views\SPMeta2\getting-started\_img\1-new-console-app.png" />
+    <Content Include="Wyam 0.11.1-beta\AngleSharp.dll" />
+    <Content Include="Wyam 0.11.1-beta\AngleSharp.xml" />
+    <Content Include="Wyam 0.11.1-beta\CommonMark.dll" />
+    <Content Include="Wyam 0.11.1-beta\CommonMark.pdb" />
+    <Content Include="Wyam 0.11.1-beta\CommonMark.xml" />
+    <Content Include="Wyam 0.11.1-beta\dotless.ClientOnly.dll" />
+    <Content Include="Wyam 0.11.1-beta\dotless.ClientOnly.pdb" />
+    <Content Include="Wyam 0.11.1-beta\EPPlus.dll" />
+    <Content Include="Wyam 0.11.1-beta\EPPlus.xml" />
+    <Content Include="Wyam 0.11.1-beta\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Wyam 0.11.1-beta\ImageProcessor.dll" />
+    <Content Include="Wyam 0.11.1-beta\LibGit2Sharp.dll" />
+    <Content Include="Wyam 0.11.1-beta\LibGit2Sharp.xml" />
+    <Content Include="Wyam 0.11.1-beta\MetadataExtractor.dll" />
+    <Content Include="Wyam 0.11.1-beta\MetadataExtractor.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.FileProviders.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.FileProviders.Interfaces.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.FileProviders.Interfaces.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.FileProviders.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.Razor.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.AspNet.Razor.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Build.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Build.Engine.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Build.Framework.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Build.Tasks.Core.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Build.Utilities.Core.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.CSharp.Workspaces.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.CSharp.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.VisualBasic.Workspaces.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.VisualBasic.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.Workspaces.Desktop.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.Workspaces.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.Workspaces.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.CodeAnalysis.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Framework.Caching.Interfaces.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Framework.Caching.Interfaces.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.FileSystems.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.FileSystems.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.Host.HttpListener.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.Host.HttpListener.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.Hosting.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.Hosting.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.StaticFiles.dll" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.StaticFiles.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Owin.xml" />
+    <Content Include="Wyam 0.11.1-beta\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="Wyam 0.11.1-beta\NativeBinaries\amd64\git2-e0902fb.dll" />
+    <Content Include="Wyam 0.11.1-beta\NativeBinaries\amd64\git2-e0902fb.pdb" />
+    <Content Include="Wyam 0.11.1-beta\NativeBinaries\x86\git2-e0902fb.dll" />
+    <Content Include="Wyam 0.11.1-beta\NativeBinaries\x86\git2-e0902fb.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Newtonsoft.Json.dll" />
+    <Content Include="Wyam 0.11.1-beta\Newtonsoft.Json.xml" />
+    <Content Include="Wyam 0.11.1-beta\NuGet.Core.dll" />
+    <Content Include="Wyam 0.11.1-beta\NuGet.Frameworks.dll" />
+    <Content Include="Wyam 0.11.1-beta\NuGet.Frameworks.xml" />
+    <Content Include="Wyam 0.11.1-beta\Octokit.dll" />
+    <Content Include="Wyam 0.11.1-beta\Octokit.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Octokit.xml" />
+    <Content Include="Wyam 0.11.1-beta\Owin.dll" />
+    <Content Include="Wyam 0.11.1-beta\Rant.dll" />
+    <Content Include="Wyam 0.11.1-beta\Rant.xml" />
+    <Content Include="Wyam 0.11.1-beta\ReflectionMagic.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Collections.Immutable.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Collections.Immutable.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.CommandLine.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.CommandLine.pdb" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.AttributedModel.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.AttributedModel.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Convention.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Convention.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Hosting.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Hosting.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Runtime.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.Runtime.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.TypedParts.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Composition.TypedParts.xml" />
+    <Content Include="Wyam 0.11.1-beta\System.Console.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Reflection.Metadata.dll" />
+    <Content Include="Wyam 0.11.1-beta\System.Reflection.Metadata.xml" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.Csv.dll" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.Csv.xml" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.dll" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.Excel.dll" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.Excel.xml" />
+    <Content Include="Wyam 0.11.1-beta\Tabular.xml" />
+    <Content Include="Wyam 0.11.1-beta\UniversalTypeConverter.dll" />
+    <Content Include="Wyam 0.11.1-beta\UniversalTypeConverter.xml" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Common.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Common.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Core.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Core.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.exe" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.AmazonWebServices.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.AmazonWebServices.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.CodeAnalysis.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.CodeAnalysis.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Git.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Git.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.GitHub.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.GitHub.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Html.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Html.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Images.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Images.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Json.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Json.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Less.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Less.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Markdown.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Markdown.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Razor.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Razor.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.SearchIndex.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.SearchIndex.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Tables.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Tables.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.TextGeneration.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.TextGeneration.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Xmp.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Xmp.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Yaml.dll" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.Modules.Yaml.pdb" />
+    <Content Include="Wyam 0.11.1-beta\Wyam.pdb" />
+    <Content Include="Wyam 0.11.1-beta\XmpCore.dll" />
+    <Content Include="Wyam 0.11.1-beta\XmpCore.xml" />
+    <Content Include="Wyam 0.11.1-beta\YamlDotNet.dll" />
+    <Content Include="Wyam 0.11.1-beta\YamlDotNet.Dynamic.dll" />
+    <Content Include="Wyam 0.11.1-beta\YamlDotNet.Dynamic.pdb" />
+    <Content Include="Wyam 0.11.1-beta\YamlDotNet.pdb" />
+    <Content Include="Wyam 0.11.1-beta\YamlDotNet.xml" />
+    <Content Include="Wyam\AngleSharp.dll" />
+    <Content Include="Wyam\AngleSharp.xml" />
+    <Content Include="Wyam\CommonMark.dll" />
+    <Content Include="Wyam\CommonMark.pdb" />
+    <Content Include="Wyam\CommonMark.xml" />
+    <Content Include="Wyam\dotless.ClientOnly.dll" />
+    <Content Include="Wyam\dotless.ClientOnly.pdb" />
+    <Content Include="Wyam\EPPlus.dll" />
+    <Content Include="Wyam\EPPlus.xml" />
+    <Content Include="Wyam\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Wyam\ImageProcessor.dll" />
+    <Content Include="Wyam\LibGit2Sharp.dll" />
+    <Content Include="Wyam\LibGit2Sharp.xml" />
+    <Content Include="Wyam\MetadataExtractor.dll" />
+    <Content Include="Wyam\MetadataExtractor.xml" />
+    <Content Include="Wyam\Microsoft.AspNet.FileProviders.dll" />
+    <Content Include="Wyam\Microsoft.AspNet.FileProviders.Interfaces.dll" />
+    <Content Include="Wyam\Microsoft.AspNet.FileProviders.Interfaces.xml" />
+    <Content Include="Wyam\Microsoft.AspNet.FileProviders.xml" />
+    <Content Include="Wyam\Microsoft.AspNet.Razor.dll" />
+    <Content Include="Wyam\Microsoft.AspNet.Razor.xml" />
+    <Content Include="Wyam\Microsoft.Build.dll" />
+    <Content Include="Wyam\Microsoft.Build.Engine.dll" />
+    <Content Include="Wyam\Microsoft.Build.Framework.dll" />
+    <Content Include="Wyam\Microsoft.Build.Tasks.Core.dll" />
+    <Content Include="Wyam\Microsoft.Build.Utilities.Core.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.CSharp.Workspaces.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.CSharp.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.VisualBasic.Workspaces.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.VisualBasic.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.Workspaces.Desktop.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.Workspaces.dll" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.Workspaces.xml" />
+    <Content Include="Wyam\Microsoft.CodeAnalysis.xml" />
+    <Content Include="Wyam\Microsoft.Framework.Caching.Interfaces.dll" />
+    <Content Include="Wyam\Microsoft.Framework.Caching.Interfaces.xml" />
+    <Content Include="Wyam\Microsoft.Owin.dll" />
+    <Content Include="Wyam\Microsoft.Owin.FileSystems.dll" />
+    <Content Include="Wyam\Microsoft.Owin.FileSystems.xml" />
+    <Content Include="Wyam\Microsoft.Owin.Host.HttpListener.dll" />
+    <Content Include="Wyam\Microsoft.Owin.Host.HttpListener.xml" />
+    <Content Include="Wyam\Microsoft.Owin.Hosting.dll" />
+    <Content Include="Wyam\Microsoft.Owin.Hosting.xml" />
+    <Content Include="Wyam\Microsoft.Owin.StaticFiles.dll" />
+    <Content Include="Wyam\Microsoft.Owin.StaticFiles.xml" />
+    <Content Include="Wyam\Microsoft.Owin.xml" />
+    <Content Include="Wyam\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="Wyam\NativeBinaries\amd64\git2-e0902fb.dll" />
+    <Content Include="Wyam\NativeBinaries\amd64\git2-e0902fb.pdb" />
+    <Content Include="Wyam\NativeBinaries\x86\git2-e0902fb.dll" />
+    <Content Include="Wyam\NativeBinaries\x86\git2-e0902fb.pdb" />
+    <Content Include="Wyam\Newtonsoft.Json.dll" />
+    <Content Include="Wyam\Newtonsoft.Json.xml" />
+    <Content Include="Wyam\NuGet.Core.dll" />
+    <Content Include="Wyam\NuGet.Frameworks.dll" />
+    <Content Include="Wyam\NuGet.Frameworks.xml" />
+    <Content Include="Wyam\Octokit.dll" />
+    <Content Include="Wyam\Octokit.pdb" />
+    <Content Include="Wyam\Octokit.xml" />
+    <Content Include="Wyam\Owin.dll" />
+    <Content Include="Wyam\Rant.dll" />
+    <Content Include="Wyam\Rant.xml" />
+    <Content Include="Wyam\ReflectionMagic.dll" />
+    <Content Include="Wyam\System.Collections.Immutable.dll" />
+    <Content Include="Wyam\System.Collections.Immutable.xml" />
+    <Content Include="Wyam\System.CommandLine.dll" />
+    <Content Include="Wyam\System.CommandLine.pdb" />
+    <Content Include="Wyam\System.Composition.AttributedModel.dll" />
+    <Content Include="Wyam\System.Composition.AttributedModel.xml" />
+    <Content Include="Wyam\System.Composition.Convention.dll" />
+    <Content Include="Wyam\System.Composition.Convention.xml" />
+    <Content Include="Wyam\System.Composition.Hosting.dll" />
+    <Content Include="Wyam\System.Composition.Hosting.xml" />
+    <Content Include="Wyam\System.Composition.Runtime.dll" />
+    <Content Include="Wyam\System.Composition.Runtime.xml" />
+    <Content Include="Wyam\System.Composition.TypedParts.dll" />
+    <Content Include="Wyam\System.Composition.TypedParts.xml" />
+    <Content Include="Wyam\System.Console.dll" />
+    <Content Include="Wyam\System.Reflection.Metadata.dll" />
+    <Content Include="Wyam\System.Reflection.Metadata.xml" />
+    <Content Include="Wyam\Tabular.Csv.dll" />
+    <Content Include="Wyam\Tabular.Csv.xml" />
+    <Content Include="Wyam\Tabular.dll" />
+    <Content Include="Wyam\Tabular.Excel.dll" />
+    <Content Include="Wyam\Tabular.Excel.xml" />
+    <Content Include="Wyam\Tabular.xml" />
+    <Content Include="Wyam\UniversalTypeConverter.dll" />
+    <Content Include="Wyam\UniversalTypeConverter.xml" />
+    <Content Include="Wyam\Wyam.Common.dll" />
+    <Content Include="Wyam\Wyam.Common.pdb" />
+    <Content Include="Wyam\Wyam.Core.dll" />
+    <Content Include="Wyam\Wyam.Core.pdb" />
+    <Content Include="Wyam\Wyam.exe" />
+    <Content Include="Wyam\Wyam.Modules.AmazonWebServices.dll" />
+    <Content Include="Wyam\Wyam.Modules.AmazonWebServices.pdb" />
+    <Content Include="Wyam\Wyam.Modules.CodeAnalysis.dll" />
+    <Content Include="Wyam\Wyam.Modules.CodeAnalysis.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Git.dll" />
+    <Content Include="Wyam\Wyam.Modules.Git.pdb" />
+    <Content Include="Wyam\Wyam.Modules.GitHub.dll" />
+    <Content Include="Wyam\Wyam.Modules.GitHub.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Html.dll" />
+    <Content Include="Wyam\Wyam.Modules.Html.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Images.dll" />
+    <Content Include="Wyam\Wyam.Modules.Images.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Json.dll" />
+    <Content Include="Wyam\Wyam.Modules.Json.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Less.dll" />
+    <Content Include="Wyam\Wyam.Modules.Less.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Markdown.dll" />
+    <Content Include="Wyam\Wyam.Modules.Markdown.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Razor.dll" />
+    <Content Include="Wyam\Wyam.Modules.Razor.pdb" />
+    <Content Include="Wyam\Wyam.Modules.SearchIndex.dll" />
+    <Content Include="Wyam\Wyam.Modules.SearchIndex.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Tables.dll" />
+    <Content Include="Wyam\Wyam.Modules.Tables.pdb" />
+    <Content Include="Wyam\Wyam.Modules.TextGeneration.dll" />
+    <Content Include="Wyam\Wyam.Modules.TextGeneration.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Xmp.dll" />
+    <Content Include="Wyam\Wyam.Modules.Xmp.pdb" />
+    <Content Include="Wyam\Wyam.Modules.Yaml.dll" />
+    <Content Include="Wyam\Wyam.Modules.Yaml.pdb" />
+    <Content Include="Wyam\Wyam.pdb" />
+    <Content Include="Wyam\XmpCore.dll" />
+    <Content Include="Wyam\XmpCore.xml" />
+    <Content Include="Wyam\YamlDotNet.dll" />
+    <Content Include="Wyam\YamlDotNet.Dynamic.dll" />
+    <Content Include="Wyam\YamlDotNet.Dynamic.pdb" />
+    <Content Include="Wyam\YamlDotNet.pdb" />
+    <Content Include="Wyam\YamlDotNet.xml" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.BusinessData.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.IdentityModel.WindowsTokenService.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.DocumentManagement.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Applications.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.Connector.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.Search.ExchangeAdapter.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.Server.UserProfiles.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Linq.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Portal.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Publishing.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Taxonomy.Intl.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\microsoft.sharepoint.WorkflowActions.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServices.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkflowServicesBase.dll" />
+    <Content Include="_Dependencies\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="fonts\bootstrap\fontawesome-webfont.eot" />
+    <None Include="fonts\bootstrap\fontawesome-webfont.ttf" />
+    <None Include="fonts\bootstrap\fontawesome-webfont.woff" />
+    <None Include="fonts\bootstrap\fontawesome-webfont.woff2" />
+    <None Include="fonts\bootstrap\FontAwesome.otf" />
+    <None Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
+    <None Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
+    <None Include="packages.config" />
+    <None Include="Scripts\bootstrap\jquery-1.9.1.min.map" />
+    <None Include="Views\index.md" />
+    <None Include="Views\Shared\bootstrap\Components\_PrevNextNavigation.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_Footer.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_LandingProjectsList.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_SampleListCategory.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_SampleList.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_SecondNavigation.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_Sidebar.cshtml" />
+    <None Include="Views\Shared\bootstrap\Components\_TopNavigation.cshtml" />
+    <None Include="Views\Shared\bootstrap\Layouts\_Flued28.cshtml" />
+    <None Include="Views\Shared\bootstrap\Layouts\_Flued37.cshtml" />
+    <None Include="Views\Shared\bootstrap\Layouts\_Master.cshtml" />
+    <None Include="Views\Shared\bootstrap\PageLayouts\_LandingPage.cshtml" />
+    <None Include="Views\Shared\bootstrap\PageLayouts\_M2Definition.cshtml" />
+    <None Include="Views\Shared\bootstrap\PageLayouts\_M2Samples.cshtml" />
+    <None Include="Views\SPMeta2\extensibility\Index.md" />
+    <None Include="Views\SPMeta2\extensibility\writing-custom-definition.md" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_2_Params.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_3_Params.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-ChangeWebTitleAndDescriptionDefinitionClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-ChangeWebTitleAndDescriptionDefinitionSyntaxClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-ChangeWebTitleAndDescriptionModelHandlerClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-CustomDefinitionsClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-DeployModel.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandler.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithEvents.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithSyntax.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-CustomSyntaxClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsExtension.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsOOTB.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsByIds.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsExtensionsClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SyntaxExtensionPrototype.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_writing-custom-logging.md" />
+    <None Include="Views\SPMeta2\extensibility\writing-custom-syntax.md" />
+    <None Include="Views\SPMeta2\getting-started\_csom-provision.md" />
+    <None Include="Views\SPMeta2\getting-started\_FAQ.md" />
+    <None Include="Views\SPMeta2\getting-started\index.md" />
+    <None Include="Views\SPMeta2\getting-started\_installing-spmeta2.md" />
+    <None Include="Views\SPMeta2\getting-started\License.md" />
+    <None Include="Views\SPMeta2\getting-started\_Logging.md" />
+    <None Include="Views\SPMeta2\getting-started\_o365-provision.md" />
+    <None Include="Views\SPMeta2\getting-started\Releases.md" />
+    <None Include="Views\SPMeta2\getting-started\_samples\Basics-ABigPictureSample.sample-ref" />
+    <None Include="Views\SPMeta2\getting-started\_samples\Basics-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\getting-started\_samples\ConsoleAppSamples-CSOMConsoleAppSample.sample-ref" />
+    <None Include="Views\SPMeta2\getting-started\_samples\ConsoleAppSamples-SSOMConsoleAppSample.sample-ref" />
+    <None Include="Views\SPMeta2\getting-started\_samples\ConsoleAppSamples-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\getting-started\_ssom-provision.md" />
+    <None Include="Views\SPMeta2\getting-started\_Support.md" />
+    <None Include="Views\SPMeta2\getting-started\writing-console-app.md" />
+    <None Include="Views\SPMeta2\Index.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000008.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000007.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000006.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000005.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000004.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000003.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000002.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000001.md" />
+    <None Include="Views\SPMeta2\kb\Index.md" />
+    <None Include="Views\SPMeta2\reference\Definitions.md" />
+    <None Include="Views\SPMeta2\reference\Index.md" />
+    <None Include="Views\SPMeta2\reference\Models.md" />
+    <None Include="Views\SPMeta2\reference\ProvisionServices.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\AlternateUrlDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\AppDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\AppPrincipalDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\AuditSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\BooleanFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\BreakRoleInheritanceDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\BusinessDataFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\CalculatedFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ChoiceFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ClientWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ComputedFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentDatabaseDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentEditorWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeFieldLinkDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeLinkDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\CurrencyFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\DateTimeFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\DiagnosticsServiceBaseDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\DocumentParserDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\EventReceiverDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmSolutionDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FeatureDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderIndex.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\GuidFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\HideContentTypeFieldLinksDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\HideContentTypeLinksDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\InformationRightsManagementSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\JobDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListFieldLinkDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListItemDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListItemFieldValueDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListViewDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ListViewWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\LookupFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ManagedAccountDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\MasterPageDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\MasterPageSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ModuleFileDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\MultiChoiceFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\NoteFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\NumberFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\PrefixDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\PropertyDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\QuickLaunchNavigationNodeDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\RegionalSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\RemoveContentTypeFieldLinksDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\RemoveContentTypeLinksDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ResetRoleInheritanceDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\RootWebDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SandboxSolutionDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ScriptEditorWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SecureStoreApplicationDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityGroupDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityGroupLinkDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityRoleDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SecurityRoleLinkDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SiteDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SP2013WorkflowDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\SP2013WorkflowSubscriptionDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\TargetApplicationDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\TextFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\TopNavigationNodeDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\TreeViewSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\UniqueContentTypeFieldsOrderDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\UniqueContentTypeOrderDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\URLFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\UserCustomActionDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\UserFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WebApplicationDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WebConfigModificationDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WebDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WebPartPageDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WelcomePageDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\WikiPageDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\XsltListViewWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_ContentTypeDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_ContentTypes.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_Fields.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AlternateUrlDefinitionTests-CanDeploySimpleAlternateUrlDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AlternateUrlDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AppDefinitionTests-CanDeploySimpleAppDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AppDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AppPrincipalDefinitionTests-CanDeploySimpleAppPrincipalDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AppPrincipalDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AuditSettingsDefinitionTests-CanDeploySimpleAuditSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\AuditSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BooleanFieldDefinitionTests-CanDeploySimpleBooleanFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BooleanFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BreakRoleInheritanceDefinitionTests-CanDeploySimpleBreakRoleInheritanceDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BreakRoleInheritanceDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BusinessDataFieldDefinitionTests-CanDeploySimpleBusinessDataFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\BusinessDataFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\CalculatedFieldDefinitionTests-CanDeploySimpleCalculatedFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\CalculatedFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ChoiceFieldDefinitionTests-CanDeploySimpleChoiceFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ChoiceFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ClientWebPartDefinitionTests-CanDeploySimpleClientWebPartDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ClientWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ComputedFieldDefinitionTests-CanDeploySimpleComputedFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ComputedFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentDatabaseDefinitionTests-CanDeploySimpleContentDatabaseDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentDatabaseDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentEditorWebPartDefinitionTests-CanDeploContentEditorWebpartWithUrlLink.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentEditorWebPartDefinitionTests-CanDeploEmptyContentEditorWebpart.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentEditorWebPartDefinitionTests-CanDeployContentEditorWebpartWithContent.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentEditorWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeployHierarhicalContentTypes.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeploySimpleContentTypes.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeploySimpleContentTypesWithFields.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeploySimpleDocumentContentType.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeploySimpleDocumentSetContentType.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-CanDeploySimpleListContentType.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeFieldLinkDefinitionTests-CanDeploySimpleContentTypeFieldLinkDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeFieldLinkDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeLinkDefinitionTests-CanDeploySimpleContentTypeLinkDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ContentTypeLinkDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\CurrencyFieldDefinitionTests-CanDeploySimpleCurrencyFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\CurrencyFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DateTimeFieldDefinitionTests-CanDeploySimpleDateTimeFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DateTimeFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DiagnosticsServiceBaseDefinitionTests-CanDeploySimpleDiagnosticsServiceBaseDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DiagnosticsServiceBaseDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DocumentParserDefinitionTests-CanDeploySimpleDocumentParserDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\DocumentParserDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\EventReceiverDefinitionTests-CanDeploySimpleEventReceiverDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\EventReceiverDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FarmDefinitionTests-CanDeploySimpleFarmDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FarmDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FarmSolutionDefinitionTests-CanDeploySimpleFarmSolutionDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FarmSolutionDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-CanActivateCustomWebFeature.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-CanActivateOOTBSiteFeatures.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-CanActivateOOTBWebFeatures.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-CanDeactivateCustomWebFeature.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-CanDeactivateOOTBWebFeatures.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-OOTBFeatureInheritance.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FeatureDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FieldDefinitionTests-CanDeployListFields.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FieldDefinitionTests-CanDeploySiteFields.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FolderDefinitionTests-CanDeployHierarchicalFolderList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FolderDefinitionTests-CanDeploySimpleFolderList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FolderDefinitionTests-CanDeploySimpleFolders.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\FolderDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\GuidFieldDefinitionTests-CanDeploySimpleGuidFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\GuidFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\HideContentTypeFieldLinksDefinitionTests-CanReorderContentTypeFields.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\HideContentTypeFieldLinksDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\HideContentTypeLinksDefinitionTests-CanHideContentTypesInList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\HideContentTypeLinksDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\InformationRightsManagementSettingsDefinitionTests-CanDeploySimpleInformationRightsManagementSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\InformationRightsManagementSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\JobDefinitionTests-CanDeploySimpleJobDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\JobDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-CanDeployListByTemplateId.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-CanDeployListByTemplateName.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-CanDeployOOTBListsLibrary.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-CanDeploySimpleLists.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-CanDeployStyleLibrary.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListFieldLinkDefinitionTests-CanDeploySimpleListFieldLinkDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListFieldLinkDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListItemDefinitionTests-CanDeploySimpleListItemDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListItemDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListItemFieldValueDefinitionTests-CanDeploySimpleListItemFieldValueDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListItemFieldValueDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewDefinitionTests-CanDeploySimpleListViews.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewDefinitionTests-CanDeploySimpleListViewsWithCAMLQuery.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewDefinitionTests-CanDeploySimpleListViewsWithCustomUrl.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewWebPartDefinitionTests-CanBindListViewWebPartByListTitle.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewWebPartDefinitionTests-CanBindListViewWebPartByListUrl.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewWebPartDefinitionTests-CanBindListViewWebPartByListViewTitle.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewWebPartDefinitionTests-CanBindListViewWebPartToCalendarView.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ListViewWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\LookupFieldDefinitionTests-CanDeployEmptyLookupField.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\LookupFieldDefinitionTests-CanDeployLookupFieldBindedToList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\LookupFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ManagedAccountDefinitionTests-CanDeploySimpleManagedAccountDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ManagedAccountDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MasterPageDefinitionTests-CanDeploySimpleMasterPageDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MasterPageDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MasterPageSettingsDefinitionTests-CanDeployWebmasterPageSettings.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MasterPageSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ModuleFileDefinitionTests-CanDeployModuleFilesToFolders.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ModuleFileDefinitionTests-CanDeployModuleFilesToStyleLibrary.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ModuleFileDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MultiChoiceFieldDefinitionTests-CanDeploySimpleMultiChoiceFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\MultiChoiceFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\NoteFieldDefinitionTests-CanDeploySimpleNoteFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\NoteFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\NumberFieldDefinitionTests-CanDeploySimpleNumberFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\NumberFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PrefixDefinitionTests-CanDeploySimplePrefixDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PrefixDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-CanDeployPropertyBagUnderFarm.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-CanDeployPropertyBagUnderFolder.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-CanDeployPropertyBagUnderList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-CanDeployPropertyBagUnderSite.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-CanDeployPropertyBagUnderWeb.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\PropertyDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\QuickLaunchNavigationNodeDefinitionTests-CaDeployFlatQuickLaunchNavigation.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\QuickLaunchNavigationNodeDefinitionTests-CaDeployHierarchicalQuickLaunchNavigation.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\QuickLaunchNavigationNodeDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RegionalSettingsDefinitionTests-CanDeploySimpleRegionalSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RegionalSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RemoveContentTypeFieldLinksDefinitionTests-CanCreateContentTypeWithOutTitleField.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RemoveContentTypeFieldLinksDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RemoveContentTypeLinksDefinitionTests-CanRemoveContentTypeFromList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RemoveContentTypeLinksDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ResetRoleInheritanceDefinitionTests-CanDeploySimpleResetRoleInheritanceDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ResetRoleInheritanceDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RootWebDefinitionTests-CanProvisionRootWebLists.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RootWebDefinitionTests-CanUpdateRootWebProperties.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\RootWebDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SandboxSolutionDefinitionTests-CanDeploySimpleSandboxSolutionDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SandboxSolutionDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ScriptEditorWebPartDefinitionTests-CanDeployScriptEditorWebPartwithContent.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ScriptEditorWebPartDefinitionTests-CanDeploySimpleScriptEditorWebPartDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\ScriptEditorWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecureStoreApplicationDefinitionTests-CanDeploySimpleSecureStoreApplicationDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecureStoreApplicationDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityGroupDefinitionTests-CanDeploySimpleSecurityGroup.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityGroupDefinitionTests-CanDeploySimpleSecurityGroups.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityGroupDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityGroupLinkDefinitionTests-CanDeploySimpleSecurityGroupLinkDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityGroupLinkDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityRoleDefinitionTests-CanDeploySimpleSecurityRoleDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityRoleDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityRoleLinkDefinitionTests-CanDeploySimpleSecurityRoleLinkDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SecurityRoleLinkDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SiteDefinitionTests-CanDeploySimpleSiteDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SiteDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SP2013WorkflowDefinitionTests-CanDeploySimpleSP2013WorkflowDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SP2013WorkflowDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SP2013WorkflowSubscriptionDefinitionTests-CanDeploySimpleSP2013WorkflowSubscriptionToList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SP2013WorkflowSubscriptionDefinitionTests-CanDeploySimpleSP2013WorkflowSubscriptionToWeb.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\SP2013WorkflowSubscriptionDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TargetApplicationDefinitionTests-CanDeploySimpleTargetApplicationDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TargetApplicationDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TextFieldDefinitionTests-CanDeploySimpleTextFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TextFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TopNavigationNodeDefinitionTests-CaDeployFlatTopNavigation.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TopNavigationNodeDefinitionTests-CaDeployHierarchicalTopNavigation.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TopNavigationNodeDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TreeViewSettingsDefinitionTests-CanDeploySimpleTreeViewSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\TreeViewSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UniqueContentTypeFieldsOrderDefinitionTests-CanReorderContentTypeFields.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UniqueContentTypeFieldsOrderDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UniqueContentTypeOrderDefinitionTests-CanReorderContentTypesInList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UniqueContentTypeOrderDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\URLFieldDefinitionTests-CanDeploySimpleURLFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\URLFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserCustomActionDefinitionTests-CanDeployUserCustomActionOnWeb.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserCustomActionDefinitionTests-CanDeployUserCustomActionUnderSite.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserCustomActionDefinitionTests-CanDeployUserCustomActionWithJquery.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserCustomActionDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserFieldDefinitionTests-CanDeploySimpleUserFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\UserFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebApplicationDefinitionTests-CanDeploySimpleWebApplicationDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebApplicationDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebConfigModificationDefinitionTests-CanDeploySimpleWebConfigModificationDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebConfigModificationDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebDefinitionTests-CanDeployHierarchicalWebs.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebDefinitionTests-CanDeploySimpleWeb.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebDefinitionTests-CanDeploySimpleWebs.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartDefinitionTests-CanDeployWebpartByWebpartGalleryFileName.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartDefinitionTests-CanDeployWebpartByWebpartType.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartDefinitionTests-CanDeployWebpartByXML.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartDefinitionTests-CanDeployWebpartWithPreprocessedXML.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartPageDefinitionTests-CanDeployWebPartPages.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartPageDefinitionTests-CanDeployWebPartPagesUnderFolders.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartPageDefinitionTests-CanDeployWebPartPageWithCustomTemplate.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WebPartPageDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WelcomePageDefinitionTests-CanDeployWelcomePageToFolder.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WelcomePageDefinitionTests-CanDeployWelcomePageToList.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WelcomePageDefinitionTests-CanDeployWelcomePageToWeb.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WelcomePageDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WikiPageDefinitionTests-CanDeploySimpleWikiPages.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WikiPageDefinitionTests-CanDeployWikiPagesUnderFolder.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\WikiPageDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\XsltListViewWebPartDefinitionTests-CanBindXsltListViewWebPartByListTitle.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\XsltListViewWebPartDefinitionTests-CanBindXsltListViewWebPartByListUrl.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\XsltListViewWebPartDefinitionTests-CanBindXsltListViewWebPartByListViewTitle.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_samples\XsltListViewWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_ViewStart.cshtml" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\_WebParts.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\AudienceDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ContactFieldControlDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ContentByQueryWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ControlDisplayTemplateDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\CustomDocumentIdProviderDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\FolderIndex.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\HTMLFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ImageFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ImageRenditionDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\ItemDisplayTemplateDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\JavaScriptDisplayTemplateDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\LinkFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\MediaFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\PageLayoutAndSiteTemplateSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\PublishingPageDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\PublishingPageLayoutDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SearchConfigurationDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SearchResultDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SearchSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SiteFeedWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SummaryLinkFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\SummaryLinkWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyFieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermGroupDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermLabelDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermSetDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermStoreDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\WebNavigationSettingsDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_DisplayTemplates.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_Fields.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\AudienceDefinitionTests-CanDeploySimpleAudienceDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\AudienceDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ContactFieldControlDefinitionTests-CanDeploySimpleContactFieldControlDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ContactFieldControlDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ContentByQueryWebPartDefinitionTests-CanDeploySimpleContentByQueryWebPartDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ContentByQueryWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ControlDisplayTemplateDefinitionTests-CanDeploySimpleControlDisplayTemplateDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ControlDisplayTemplateDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\CustomDocumentIdProviderDefinitionTests-CanDeploySimpleCustomDocumentIdProviderDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\CustomDocumentIdProviderDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\HTMLFieldDefinitionTests-CanDeploySimpleHTMLFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\HTMLFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ImageFieldDefinitionTests-CanDeploySimpleImageFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ImageFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ImageRenditionDefinitionTests-CanDeploySimpleImageRenditionDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ImageRenditionDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ItemDisplayTemplateDefinitionTests-CanDeploySimpleItemDisplayTemplateDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\ItemDisplayTemplateDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\JavaScriptDisplayTemplateDefinitionTests-CanDeploySimpleJavaScriptDisplayTemplateDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\JavaScriptDisplayTemplateDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\LinkFieldDefinitionTests-CanDeploySimpleLinkFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\LinkFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\MediaFieldDefinitionTests-CanDeploySimpleMediaFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\MediaFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PageLayoutAndSiteTemplateSettingsDefinitionTests-CanDeploySimplePageLayoutAndSiteTemplateSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PageLayoutAndSiteTemplateSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageDefinitionTests-CanDeployPublishingPage.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageDefinitionTests-CanDeployPublishingPageToFolders.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageDefinitionTests-CanDeployPublishingPageWithCustomeLayout.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageLayoutDefinitionTests-CanDeploySimplePublishingPageLayoutDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\PublishingPageLayoutDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchConfigurationDefinitionTests-CanDeploySimpleSearchConfigurationDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchConfigurationDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchResultDefinitionTests-CanDeploySimpleSearchResultDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchResultDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchSettingsDefinitionTests-CanDeploySimpleSearchSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SearchSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SiteFeedWebPartDefinitionTests-CanDeploySimpleSiteFeedWebPartDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SiteFeedWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SummaryLinkFieldDefinitionTests-CanDeploySimpleSummaryLinkFieldDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SummaryLinkFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SummaryLinkWebPartDefinitionTests-CanDeploySimpleSummaryLinkWebPartDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\SummaryLinkWebPartDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyFieldDefinitionTests-CanDeployTaxonomyField.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyFieldDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermDefinitionTests-CanDeploySimpleTaxonomyTerms.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermGroupDefinitionTests-CanDeploySimpleTaxonomyGroup.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermGroupDefinitionTests-CanDeploySimpleTaxonomyGroups.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermGroupDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermLabelDefinitionTests-CanDeploySimpleTaxonomyTermLabelDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermLabelDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermSetDefinitionTests-CanDeploySimpleTaxonomyTermSets.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermSetDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermStoreDefinitionTests-LookupDefaultSiteTermStore.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermStoreDefinitionTests-LookupTermStoreByName.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\TaxonomyTermStoreDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\WebNavigationSettingsDefinitionTests-CanDeploySimpleWebNavigationSettingsDefinition.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_samples\WebNavigationSettingsDefinitionTests-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_Taxonomy.md" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_ViewStart.cshtml" />
+    <None Include="Views\SPMeta2\reference\sp-standard-definitions\_WebParts.md" />
+    <None Include="Views\SPMeta2\reference\Utils.md" />
+    <None Include="Views\SPMeta2\reference\_samples\Models-SettingUpSiteModels.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Models-SettingUpWebModels.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Models-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\SiteModel-SiteModelProvision.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\SiteModel-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Utils-ClientWebPartSetup.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Utils-ContentEditorWebPartSetup.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Utils-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Utils-UrlConcatenation.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\Utils-XsltListViewWebPartSetup.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\WebModel-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_samples\WebModel-WebModelProvision.sample-ref" />
+    <None Include="Views\SPMeta2\reference\_SiteModel.md" />
+    <None Include="Views\SPMeta2\reference\_WebModel.md" />
+    <None Include="Views\SPMeta2\scenarios\Index.md" />
+    <None Include="Views\SPMeta2\scenarios\_Sample Repository.md" />
+    <None Include="Views\SPMeta2\scenarios\_ViewStart.cshtml" />
+    <None Include="Views\SPMeta2\_ViewStart.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="Wyam 0.11.1-beta\config.wyam" />
+    <None Include="Wyam 0.11.1-beta\LICENSE" />
+    <None Include="Wyam 0.11.1-beta\README.md" />
+    <None Include="Wyam 0.11.1-beta\ReleaseNotes.md" />
+    <None Include="Wyam 0.11.1-beta\Wyam.exe.config" />
+    <None Include="Wyam\config.wyam" />
+    <None Include="Wyam\LICENSE" />
+    <None Include="Wyam\README.md" />
+    <None Include="Wyam\ReleaseNotes.md" />
+    <None Include="Wyam\Wyam.exe.config" />
+    <None Include="_site.wyam" />
+    <None Include="_start-site.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="content\Shared\" />
+    <Folder Include="Views\SPMeta2\reference\Models\" />
+    <Folder Include="Wyam 0.11.1-beta\Input\" />
+    <Folder Include="Wyam 0.11.1-beta\Output\" />
+    <Folder Include="Wyam\Input\" />
+    <Folder Include="Wyam\Output\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Code\Resources\DefaultMasterPageTemplates.resx" />
+    <EmbeddedResource Include="Code\Resources\DefaultPublishingPageLayoutTemplates.resx" />
+    <EmbeddedResource Include="Code\Resources\WorkflowTemplates.resx" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

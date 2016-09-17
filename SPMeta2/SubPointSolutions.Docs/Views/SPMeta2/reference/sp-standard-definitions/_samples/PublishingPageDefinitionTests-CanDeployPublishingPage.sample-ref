@@ -1,0 +1,34 @@
+var aboutPublishing = new PublishingPageDefinition
+{
+    Title = "About publishing",
+    FileName = "About-publishing.aspx",
+    PageLayoutFileName = BuiltInPublishingPageLayoutNames.ArticleLeft
+};
+
+var howToPublising = new PublishingPageDefinition
+{
+    Title = "How to publish",
+    FileName = "How-to-publish.aspx",
+    PageLayoutFileName = BuiltInPublishingPageLayoutNames.ArticleRight
+};
+
+var publishingLinks = new PublishingPageDefinition
+{
+    Title = "Publishing links",
+    FileName = "Publishing-links.aspx",
+    PageLayoutFileName = BuiltInPublishingPageLayoutNames.ArticleLinks
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.Pages, list =>
+    {
+        list
+            .AddPublishingPage(aboutPublishing)
+            .AddPublishingPage(howToPublising)
+            .AddPublishingPage(publishingLinks);
+    });
+});
+
+DeployModel(model);
+

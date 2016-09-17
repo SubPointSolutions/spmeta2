@@ -1,0 +1,239 @@
+﻿/* default site css */
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* custom css */
+.sd-sidebar {
+    margin-top: 20px;
+}
+
+    .sd-sidebar li.active {
+        background-color: #eeeeee;
+    }
+
+.sd-body-content {
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+body {
+    background-color: #fafafa;
+}
+
+/* callouts */
+.s-docs-callout-info {
+    background-color: #f0f7fd;
+    border-color: #d0e3f0;
+}
+
+.s-docs-callout {
+    margin: 20px 0;
+    padding: 15px 5px 5px 15px;
+    border-left: 5px solid #eee;
+}
+
+/* side bar */
+.sd-sidebar li > ul > li > a {
+    padding-left: 30px;
+}
+
+.sd-sidebar li > a.group-link {
+    background-color: #f9f9f9;
+}
+
+/* subnav bar */
+.sub-nav {
+    margin: 0 auto;
+    position: relative;
+    border-bottom: 1px solid #d8d8d8;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+    .sub-nav > h2, .sub-nav > h2 > a {
+        color: #333;
+        font-weight: 400;
+        font-size: 22px;
+        margin: 15px 0 15px;
+        text-decoration: none;
+    }
+
+    .sub-nav li a {
+        color: #767676;
+        font-size: 14px;
+        margin-left: 16px;
+        padding: 4px 2px 8px;
+    }
+
+    .sub-nav > h2 > a {
+        z-index: 10;
+        position: relative;
+    }
+
+    .sub-nav li {
+        display: inline-block;
+    }
+
+    .sub-nav ul {
+        position: absolute;
+        right: 0;
+        bottom: 8px;
+        width: 100%;
+        text-align: right;
+    }
+
+    .sub-nav li .active {
+        color: #222;
+        border-bottom: 2px solid #d8d8d8;
+    }
+
+/* m2 def layout */
+.sd-definition-content div.panel-body pre {
+    display: block;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: transparent;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+}
+
+.sd-definition-content div.panel-body {
+    padding: 0;
+}
+
+.sd-definition-content pre div.container:before {
+    content: none !important;
+}
+
+.sd-definition-content .syntaxhighlighter {
+    margin-bottom: 0 !important;
+}
+
+.sd-definition-content .well > h2 {
+    margin-top: 0;
+}
+
+
+pre {
+    background-color: #ffffff;
+    padding: 0;
+}
+
+.img-thumbnail {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.m-prevNextNav-cnt {
+    border-top: 1px solid #d8d8d8;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: 65px;
+}
+
+
+    .m-prevNextNav-cnt > a.btn-default {
+        display: inline-block;
+    }
+
+.m-landing-project-links-cnt {
+}
+
+    .m-landing-project-links-cnt ul {
+        padding-left: 25px;
+        margin-top: 15px;
+    }
+
+/*
+.m-sample-list-cnt .panel-body ul {
+    padding-left: 15px;
+}
+
+.m-sample-list-cnt .panel {
+    width:350px;
+    margin-left:20px;
+}
+        */
+
+
+
+.m-landing-project-cnt .panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+}
+
+.m-landing-project-cnt .panel {
+    border: none;
+    min-height: 240px;
+}
+
+.m-landing-project-cnt .panel-body {
+    padding: 15px;
+    background-color: #fcfcfc;
+    min-height: 200px;
+}
+
+/* */
+
+.m-sample-list-cnt h3 {
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+}
+
+.m-sample-list-cnt .panel-body {
+    padding: 15px;
+    padding-left: 4px;
+}
+
+.m-sample-list-cnt ul {
+    padding-left: 20px;
+}
+
+
+.m-sample-list-cnt .panel-default {
+    border-color: none;
+    border: none;
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+}
+
+    .m-sample-list-cnt .panel-default > .panel-heading {
+        color: #333;
+        background-color: transparent;
+        border-color: transparent;
+        border: none;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e7e7e7;
+        padding-left: 3px;
+    }

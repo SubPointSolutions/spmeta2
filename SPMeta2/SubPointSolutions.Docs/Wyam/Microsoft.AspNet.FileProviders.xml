@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.AspNet.FileProviders</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.AspNet.FileProviders.EmbeddedFileProvider">
+            <summary>
+            Looks up files using embedded resources in the specified assembly.
+            This file provider is case sensitive.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.EmbeddedFileProvider.#ctor(System.Reflection.Assembly)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.AspNet.FileProviders.EmbeddedFileProvider" /> class using the specified
+            assembly and empty base namespace.
+            </summary>
+            <param name="assembly"></param>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.EmbeddedFileProvider.#ctor(System.Reflection.Assembly,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.AspNet.FileProviders.EmbeddedFileProvider" /> class using the specified
+            assembly and base namespace.
+            </summary>
+            <param name="assembly">The assembly that contains the embedded resources.</param>
+            <param name="baseNamespace">The base namespace that contains the embedded resources.</param>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.EmbeddedFileProvider.GetFileInfo(System.String)">
+            <summary>
+            Locates a file at the given path.
+            </summary>
+            <param name="subpath">The path that identifies the file. </param>
+            <returns>The file information. Caller must check Exists property.</returns>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.EmbeddedFileProvider.GetDirectoryContents(System.String)">
+            <summary>
+            Enumerate a directory at the given path, if any.
+            This file provider uses a flat directory structure. Everything under the base namespace is considered to be one directory.
+            </summary>
+            <param name="subpath">The path that identifies the directory</param>
+            <returns>Contents of the directory. Caller must check Exists property.</returns>
+        </member>
+        <member name="T:Microsoft.AspNet.FileProviders.PhysicalFileProvider">
+            <summary>
+            Looks up files using the on-disk file system
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.PhysicalFileProvider.#ctor(System.String)">
+            <summary>
+            Creates a new instance of a PhysicalFileProvider at the given root directory.
+            </summary>
+            <param name="root">The root directory. This should be an absolute path.</param>
+        </member>
+        <member name="P:Microsoft.AspNet.FileProviders.PhysicalFileProvider.Root">
+            <summary>
+            The root directory for this instance.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.PhysicalFileProvider.GetFileInfo(System.String)">
+            <summary>
+            Locate a file at the given path by directly mapping path segments to physical directories.
+            </summary>
+            <param name="subpath">A path under the root directory</param>
+            <returns>The file information. Caller must check Exists property. </returns>
+        </member>
+        <member name="M:Microsoft.AspNet.FileProviders.PhysicalFileProvider.GetDirectoryContents(System.String)">
+            <summary>
+            Enumerate a directory at the given path, if any.
+            </summary>
+            <param name="subpath">A path under the root directory</param>
+            <returns>Contents of the directory. Caller must check Exists property.</returns>
+        </member>
+        <member name="T:Microsoft.AspNet.FileProviders.NotFoundFileInfo">
+            <summary>
+            Represents a non-existing file.
+            </summary>
+        </member>
+    </members>
+</doc>

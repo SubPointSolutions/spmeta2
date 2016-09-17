@@ -1,0 +1,25 @@
+//[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+
+public class BooleanFieldDefinitionTests : ProvisionTestBase
+{
+    #region methods
+
+    [TestMethod]
+    [TestCategory("Docs.BooleanFieldDefinition")]
+
+    [SampleMetadata(Title = "Add boolean field",
+                    Description = ""
+                    )]
+    [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+    public void CanDeploySimpleBooleanFieldDefinition()
+    {
+        var model = SPMeta2Model.NewSiteModel(site =>
+        {
+
+        });
+
+        DeployModel(model);
+    }
+
+    #endregion
+}

@@ -1,0 +1,25 @@
+//[SampleMetadataTagAttribute(Name = BuiltInTagNames.SampleHidden)]
+public class AppPrincipalDefinitionTests : ProvisionTestBase
+{
+    #region methods
+
+    [TestMethod]
+    [TestCategory("Docs.AppPrincipalDefinition")]
+
+    [SampleMetadata(Title = "Add app principal",
+                    Description = ""
+                    )]
+    [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+
+    public void CanDeploySimpleAppPrincipalDefinition()
+    {
+        var model = SPMeta2Model.NewSiteModel(site =>
+        {
+
+        });
+
+        DeployModel(model);
+    }
+
+    #endregion
+}

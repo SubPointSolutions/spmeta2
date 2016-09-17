@@ -1,0 +1,52 @@
+public class ChangeWebTitleAndDescriptionModelHandler : CSOMModelHandlerBase
+{
+    public override Type TargetType
+    {
+        get { return typeof(ChangeWebTitleAndDescriptionDefinition); }
+    }
+
+    public override void DeployModel(object modelHost, DefinitionBase model)
+    {
+        var webModeHost = modelHost.WithAssertAndCast<WebModelHost>(
+                                    "model",
+                                    value => value.RequireNotNull());
+
+        var definition = model.WithAssertAndCast<ChangeWebTitleAndDescriptionDefinition>(
+                                    "model",
+                                    value => value.RequireNotNull());
+
+        var currentWeb = webModeHost.HostWeb;
+        var context = currentWeb.Context;
+
+        // raise OnProvisioning event
+        InvokeOnModelEvent(this, new ModelEventArgs
+        {
+            CurrentModelNode = null,
+            Model = null,
+            EventType = ModelEventType.OnProvisioning,
+            Object = currentWeb,
+            ObjectType = typeof(Web),
+            ObjectDefinition = definition,
+            ModelHost = modelHost
+        });
+
+        // do stuff
+        currentWeb.Title = definition.Title;
+        currentWeb.Description = definition.Description;
+
+        // raise OnProvisioned event
+        InvokeOnModelEvent(this, new ModelEventArgs
+        {
+            CurrentModelNode = null,
+            Model = null,
+            EventType = ModelEventType.OnProvisioned,
+            Object = currentWeb,
+            ObjectType = typeof(Web),
+            ObjectDefinition = definition,
+            ModelHost = modelHost
+        });
+
+        currentWeb.Update();
+        context.ExecuteQuery();
+    }
+}
