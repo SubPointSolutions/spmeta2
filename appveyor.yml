@@ -15,7 +15,7 @@ test:
 
 clone_folder: c:\prj\m2
 
-before_build
+before_build:
 	- ps: c:\prj\m2\SPMeta2\Build\build.ps1 -Verbosity Minimal -Target "Default-Appveyor"
 
 build_script: 
