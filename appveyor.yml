@@ -4,7 +4,7 @@ environment:
   SPMeta2_DefaultTestUserLogins:
     secure: 3HnXxy6w2UfBFP55pJ6q1/TguITu3p3mmEo+7U2dm1g=
 
-# expecting 110 base tests passed under 'CI.Core' category
+# expecting base tests passed under 'CI.Core' category
 # everything under .NET (non-SharePoint tests) must be marked as 'CI.Core'
 test:
   assemblies:
@@ -16,6 +16,7 @@ test:
 clone_folder: c:\prj\m2
 
 build_script: 
+	- ps: c:\prj\m2\SPMeta2\Build\build.ps1 -Verbosity Minimal -Target "Default-Appveyor"
     - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
 
 after_test:
