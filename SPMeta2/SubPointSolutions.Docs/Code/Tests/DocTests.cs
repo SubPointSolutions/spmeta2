@@ -38,38 +38,38 @@ namespace SubPointSolutions.Docs.Code.Tests
 
         #region tests
 
-        [TestMethod]
-        [TestCategory("CI")]
-        public void Publish_Docs()
-        {
-            var netlifyContentFolder = ContentDirectory;
-            var branch = Environment.GetEnvironmentVariable("APPVEYOR_REPO_BRANCH");
+        //[TestMethod]
+        //[TestCategory("CI")]
+        //public void Publish_Docs()
+        //{
+        //    var netlifyContentFolder = ContentDirectory;
+        //    var branch = Environment.GetEnvironmentVariable("APPVEYOR_REPO_BRANCH");
 
-            var netlifyDevSiteId = Environment.GetEnvironmentVariable("Netlify-SiteId-SPSDocs-Dev");
-            var netlifyProdSiteId = Environment.GetEnvironmentVariable("Netlify-SiteId-SPSDocs-Prod");
+        //    var netlifyDevSiteId = Environment.GetEnvironmentVariable("Netlify-SiteId-SPSDocs-Dev");
+        //    var netlifyProdSiteId = Environment.GetEnvironmentVariable("Netlify-SiteId-SPSDocs-Prod");
 
-            var netlifyApiKey = Environment.GetEnvironmentVariable("Netlify-ApiKey");
-            var netlifySiteId = netlifyDevSiteId;
+        //    var netlifyApiKey = Environment.GetEnvironmentVariable("Netlify-ApiKey");
+        //    var netlifySiteId = netlifyDevSiteId;
 
-            if (!string.IsNullOrEmpty(branch) && "master".Equals(branch, StringComparison.OrdinalIgnoreCase))
-            {
-                netlifySiteId = netlifyProdSiteId;
-            }
+        //    if (!string.IsNullOrEmpty(branch) && "master".Equals(branch, StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        netlifySiteId = netlifyProdSiteId;
+        //    }
 
-            Console.WriteLine("Building from branch:" + branch);
-            Trace.WriteLine("Building from branch:" + branch);
+        //    Console.WriteLine("Building from branch:" + branch);
+        //    Trace.WriteLine("Building from branch:" + branch);
 
-            RunWyam();
+        //    RunWyam();
 
-            RunCmd("npm", "install netlify-cli -g");
-            RunCmd("netlify", string.Format("deploy -s {0} -t {1} -p {2}", netlifySiteId, netlifyApiKey, netlifyContentFolder));
-        }
+        //    RunCmd("npm", "install netlify-cli -g");
+        //    RunCmd("netlify", string.Format("deploy -s {0} -t {1} -p {2}", netlifySiteId, netlifyApiKey, netlifyContentFolder));
+        //}
 
-        private void RunS3(string bucketName)
-        {
-            var service = new S3Service();
-            service.UploadFilesToBucket(bucketName, ContentDirectory, true);
-        }
+        //private void RunS3(string bucketName)
+        //{
+        //    //var service = new S3Service();
+        //    //service.UploadFilesToBucket(bucketName, ContentDirectory, true);
+        //}
 
         #endregion
 
