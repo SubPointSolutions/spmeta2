@@ -25,8 +25,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
     {
         public SSOMTokenReplacementServiceTests()
         {
-            Service = new SSOMTokenReplacementService();
-            ProvisionRunner = new SSOMProvisionRunner();
+
         }
 
         #region init
@@ -47,7 +46,38 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         #region properties
 
-        public SSOMProvisionRunner ProvisionRunner { get; set; }
+        protected override TokenReplacementServiceBase Service
+        {
+            get
+            {
+                if (base.Service == null)
+                    base.Service = new SSOMTokenReplacementService();
+
+                return base.Service;
+            }
+            set
+            {
+                base.Service = value;
+            }
+        }
+
+        public SSOMProvisionRunner _SSOMProvisionRunner { get; set; }
+
+        public SSOMProvisionRunner SSOMProvisionRunner
+        {
+            get
+            {
+                if (_SSOMProvisionRunner == null)
+                    _SSOMProvisionRunner = new SSOMProvisionRunner();
+
+                return _SSOMProvisionRunner;
+            }
+
+            set
+            {
+                _SSOMProvisionRunner = value;
+            }
+        }
 
         #endregion
 
