@@ -340,6 +340,7 @@
     <Compile Include="Services\SSOMContentTypeLookupService.cs" />
     <Compile Include="Services\SSOMDeleteNavigationNodesService.cs" />
     <Compile Include="Services\SSOMFieldLookupService.cs" />
+    <Compile Include="Services\SSOMListViewLookupService.cs" />
     <Compile Include="Services\SSOMLocalizationService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />
     <Compile Include="Services\SSOMTokenReplacementService.cs" />

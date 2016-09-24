@@ -16,6 +16,7 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.Services;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -118,43 +119,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
         }
 
-        protected SPView FindView(SPList targetList, ListViewDefinition listViewModel)
+        protected virtual SPView FindView(SPList targetList, ListViewDefinition listViewModel)
         {
-            // lookup by title
-            var currentView = targetList.Views.FindByName(listViewModel.Title);
+            var service = ServiceContainer.Instance.GetService<SSOMListViewLookupService>();
+            var result = service.FindView(targetList, listViewModel);
 
-            // lookup by URL match
-            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
-
-                // long story
-                // Problem with webpart deployment to display form #891
-                // https://github.com/SubPointSolutions/spmeta2/issues/891
-
-                // seems that if you have a XsltListViewWebPart on list forms-pages
-                // the result targetList.Views collection would have ALL list views + your binded view from the web part
-
-                // 	targetList.RootFolder.Url	"Lists/TestList3"	string
-                //  targetList.Views[0].ServerRelativeUrl	"/Lists/TestList3/AllItems.aspx"	string
-                //  targetList.Views[1].ServerRelativeUrl	"/Lists/TestList1/DispForm.aspx"	string
-                //  targetList.Views[2].ServerRelativeUrl	"/Lists/TestList3/AllItems3.aspx"	string
-
-                // so we trim by the URL of the list to ensure lookup within 'current' list
-
-                var safeUrl = listViewModel.Url.ToUpper();
-                var safeListUrl = targetList.RootFolder.Url.ToUpper();
-
-                currentView = targetList.Views.OfType<SPView>()
-                                              .FirstOrDefault(w =>
-                                                  // match by view url
-                                                    w.Url.ToUpper().EndsWith(safeUrl)
-                                                        // and within the current list
-                                                    && w.Url.ToUpper().Trim('\\').Trim('/').StartsWith(safeListUrl.Trim('\\').Trim('/'))
-                                                    );
-            }
-
-            return currentView;
+            return result;
         }
 
         protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)

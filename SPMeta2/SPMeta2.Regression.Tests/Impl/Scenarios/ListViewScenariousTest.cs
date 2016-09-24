@@ -13,6 +13,8 @@ using SPMeta2.Containers;
 using SPMeta2.Containers.Services;
 using SPMeta2.Exceptions;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Definitions.Webparts;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
