@@ -432,10 +432,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
             }
 
-            if (ReflectionUtils.HasProperty(web, "RequestAccessEmail"))
+            if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
             {
-                if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
+                if (ReflectionUtils.HasProperty(web, "RequestAccessEmail"))
                 {
+
                     var context = web.Context;
 
                     context.AddQuery(new ClientActionInvokeMethod(web, "RequestAccessEmail", new object[]
@@ -443,16 +444,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                         webModel.SiteLogoUrl
                     }));
                 }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have Web.RequestAccessEmail. Update CSOM runtime to a new version. Provision is skipped");
+                }
             }
-            else
+            if (webModel.MembersCanShare.HasValue)
             {
-                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
-                    "CSOM runtime doesn't have Web.RequestAccessEmail. Update CSOM runtime to a new version. Provision is skipped");
-            }
-
-            if (ReflectionUtils.HasProperty(web, "MembersCanShare"))
-            {
-                if (webModel.MembersCanShare.HasValue)
+                if (ReflectionUtils.HasProperty(web, "MembersCanShare"))
                 {
                     var context = web.Context;
 
@@ -460,14 +460,14 @@ namespace SPMeta2.CSOM.ModelHandlers
                     {
                         webModel.MembersCanShare.Value
                     }));
+
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have Web.MembersCanShare. Update CSOM runtime to a new version. Provision is skipped");
                 }
             }
-            else
-            {
-                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
-                    "CSOM runtime doesn't have Web.MembersCanShare. Update CSOM runtime to a new version. Provision is skipped");
-            }
-
 
 #if !NET35
             if (webModel.IndexedPropertyKeys.Any())
