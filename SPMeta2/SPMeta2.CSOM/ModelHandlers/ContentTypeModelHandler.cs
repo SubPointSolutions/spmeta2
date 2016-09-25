@@ -74,13 +74,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                     if (parentContentType == null)
                         throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
 
-                    //contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                    // rare case where it's ok to change definition
+                    contentTypeModel.ParentContentTypeId = parentContentType.Id.ToString();
                 }
 
+#if !NET35
                 var id = contentTypeModel.GetContentTypeId();
                 var currentContentType = web.ContentTypes.GetById(id);
 
                 context.ExecuteQueryWithTrace();
+#endif
+
+#if NET35
+                var contentTypeName = contentTypeModel.Name;
+                var contentTypeId = contentTypeModel.GetContentTypeId();
+
+                // SP2010 CSOM does not have an option to get the content type by ID
+                // fallback to Name, and that's a huge thing all over the M2 library and provision
+            
+                var currentContentTypes = context.LoadQuery(web.ContentTypes.Where(ct => ct.Name == contentTypeName));
+                context.ExecuteQueryWithTrace();
+
+                var currentContentType = currentContentTypes.FirstOrDefault();
+#endif
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -200,16 +216,31 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type");
 
+#if !NET35
                 currentContentType = web.ContentTypes.Add(new ContentTypeCreationInformation
                 {
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
                     Group = contentTypeModel.Group,
-#if !NET35
                     Id = contentTypeId,
-#endif
                     ParentContentType = null
                 });
+#endif
+
+#if NET35
+                var parentContentTypeId = contentTypeModel.ParentContentTypeId;
+                var parentContentType = web.ContentTypes.GetById(parentContentTypeId);
+                
+                context.ExecuteQueryWithTrace();
+
+                currentContentType = web.ContentTypes.Add(new ContentTypeCreationInformation
+                {
+                    Name = contentTypeModel.Name,
+                    Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
+                    Group = contentTypeModel.Group,
+                    ParentContentType = parentContentType
+                });
+#endif
             }
             else
             {
@@ -265,7 +296,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 // only after DocumentTemplate processing
                 ProcessLocalization(currentContentType, contentTypeModel);
-                
+
 
                 currentContentType.Hidden = contentTypeModel.Hidden;
 
