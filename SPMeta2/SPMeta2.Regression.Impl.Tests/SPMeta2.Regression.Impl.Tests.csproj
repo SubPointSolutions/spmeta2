@@ -220,11 +220,12 @@
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="Impl\Services\Base\TokenReplacementServiceTestBase.cs" />
     <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
+    <Compile Include="Impl\Services\CSOM\RequireCSOMRuntimeVersionDeploymentServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultDiagnosticInfoServiceTests.cs" />
     <Compile Include="Impl\LookupServices\SSOM\SSOMListViewLookupServiceTests.cs" />
     <Compile Include="Impl\Services\ValidationServiceTests.cs" />
-    <Compile Include="Impl\Services\SSOMTokenReplacementServiceTests.cs" />
-    <Compile Include="Impl\Services\CSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\SSOM\SSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\CSOM\CSOMTokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Services\ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
