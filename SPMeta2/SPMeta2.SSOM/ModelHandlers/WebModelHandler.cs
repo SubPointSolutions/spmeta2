@@ -75,6 +75,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                     web.Description = webModel.Description;
             });
 
+            if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
+                web.RequestAccessEmail = webModel.RequestAccessEmail;
+
             if (webModel.LCID > 0)
                 web.Locale = new CultureInfo((int)webModel.LCID);
 
