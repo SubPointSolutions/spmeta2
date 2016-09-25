@@ -63,7 +63,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         public SSOMProvisionRunner _SSOMProvisionRunner { get; set; }
 
-        public SSOMProvisionRunner SSOMProvisionRunner
+        public SSOMProvisionRunner ProvisionRunner
         {
             get
             {

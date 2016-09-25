@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Docs.ProvisionSamples.Base;
 using SPMeta2.Docs.ProvisionSamples.Definitions;
 using SPMeta2.Syntax.Default;
@@ -10,7 +11,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
     [TestClass]
     [SampleMetadataTag(Name = BuiltInTagNames.SPRuntime, Value = BuiltInSPRuntimeTagValues.Foundation)]
 
-    [SampleMetadataTag(Name = BuiltInTagNames.SampleCategory, Value = BuiltInSampleCategoryTagValues.Farm)]
+    [SampleMetadataTag(Name = BuiltInTagNames.SampleCategory, Value = BuiltInSampleCategoryTagValues.WebApplication)]
 
     [SampleMetadataTag(Name = BuiltInTagNames.SampleM2Model, Value = BuiltInM2ModelTagValues.FarmModel)]
 
@@ -27,12 +28,26 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add content database",
                         Description = ""
                         )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleContentDatabaseDefinition()
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
+            var contentDb1 = new ContentDatabaseDefinition
             {
+                ServerName = "localhost",
+                DbName = "intranet_content_db1"
+            };
 
+            var contentDb2 = new ContentDatabaseDefinition
+            {
+                ServerName = "localhost",
+                DbName = "intranet_content_db2"
+            };
+
+            var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+            {
+                webApp
+                    .AddContentDatabase(contentDb1)
+                    .AddContentDatabase(contentDb2);
             });
 
             DeployModel(model);

@@ -172,11 +172,11 @@ namespace SubPointSolutions.Docs.Code.Tests
                 StaticClassName = "m2Samples"
             });
 
-            samples.Add(new SampleMetadata
-            {
-                ContentFolderPath = @"..\..\Views\reSP",
-                StaticClassName = "reSPSamples"
-            });
+            //samples.Add(new SampleMetadata
+            //{
+            //    ContentFolderPath = @"..\..\Views\reSP",
+            //    StaticClassName = "reSPSamples"
+            //});
 
             //samples.Add(new SampleMetadata
             //{
