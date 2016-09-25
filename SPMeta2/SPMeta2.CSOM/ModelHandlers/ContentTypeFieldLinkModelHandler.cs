@@ -173,6 +173,24 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // https://officespdev.uservoice.com/forums/224641-general/suggestions/7024931-enhance-fieldlink-class-with-additional-properties
 
                 //   fieldLink.DisplayName = contentTypeFieldLinkModel.DisplayName;
+
+                // Enhance FieldLinkDefinition - DisplayName, ReadOnly, ShowInDisplayForm #892
+                // https://github.com/SubPointSolutions/spmeta2/issues/892
+                if (ReflectionUtils.HasProperty(fieldLink, "DisplayName"))
+                {
+                    if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.DisplayName))
+                    {
+                        context.AddQuery(new ClientActionInvokeMethod(fieldLink, "DisplayName", new object[]
+                        {
+                            contentTypeFieldLinkModel.DisplayName
+                        }));
+                    }
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have FieldLink.DisplayName. Update CSOM runtime to a new version. Provision is skipped");
+                }
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
