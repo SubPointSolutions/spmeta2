@@ -262,7 +262,7 @@ namespace SPMeta2.Definitions
         public int? WriteSecurity { get; set; }
 
         [DataMember]
-        [ExpectValidation]
+        //[ExpectValidation]
         public int? ReadSecurity { get; set; }
 
         /// <summary>
