@@ -1,0 +1,14 @@
+Assemblies
+    .LoadDirectory(@"C:\_sps_tfsonline\SPMeta2.Ecosystem\SPMeta2.Ecosystem\SubPointSolutions.Docs\bin\Debug");
+
+===
+
+Pipelines.Add("Main",
+
+	ReadFiles("*.cshtml*"),
+	FrontMatter(Yaml()),
+	Razor(),
+	Markdown(),
+	WriteFiles(".html")
+
+);

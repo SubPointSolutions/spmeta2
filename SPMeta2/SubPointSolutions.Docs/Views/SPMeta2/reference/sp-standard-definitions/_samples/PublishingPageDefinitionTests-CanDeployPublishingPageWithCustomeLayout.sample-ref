@@ -1,0 +1,21 @@
+// PageLayoutFileName allows you to setup your own publishing page layout file name
+// it should be a file name of the file inside 'master page' gallery
+
+var customPublishing = new PublishingPageDefinition
+{
+    Title = "Custom publishing",
+    FileName = "Custom-publishing.aspx",
+    PageLayoutFileName = "__ specify a publishing page layout file name here ___"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.Pages, list =>
+    {
+        list
+            .AddPublishingPage(customPublishing);
+    });
+});
+
+DeployModel(model);
+

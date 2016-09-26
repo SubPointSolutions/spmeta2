@@ -404,7 +404,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             return listTemplate;
         }
 
-        private void MapListProperties(object modelHost,  List list, ListDefinition definition)
+        private void MapListProperties(object modelHost, List list, ListDefinition definition)
         {
             var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
 
@@ -491,6 +491,38 @@ namespace SPMeta2.CSOM.ModelHandlers
                         string.Format(
                             "CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
                             string.Join(", ", new string[] { "MajorWithMinorVersionsLimit" })));
+                }
+            }
+
+            if (definition.ReadSecurity.HasValue)
+            {
+                if (ReflectionUtils.HasProperty(list, "ReadSecurity"))
+                {
+                    context.AddQuery(new ClientActionInvokeMethod(list, "ReadSecurity", new object[]
+                    {
+                        definition.ReadSecurity.Value
+                    }));
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have List.ReadSecurity. Update CSOM runtime to a new version. Provision is skipped");
+                }
+            }
+
+            if (definition.WriteSecurity.HasValue)
+            {
+                if (ReflectionUtils.HasProperty(list, "WriteSecurity"))
+                {
+                    context.AddQuery(new ClientActionInvokeMethod(list, "WriteSecurity", new object[]
+                    {
+                        definition.WriteSecurity.Value
+                    }));
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have List.WriteSecurity. Update CSOM runtime to a new version. Provision is skipped");
                 }
             }
 

@@ -212,6 +212,7 @@
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
     <Compile Include="Enumerations\BuiltInListWriteSecurity.cs" />
+    <Compile Include="Enumerations\BuiltInTimeZoneId.cs" />
     <Compile Include="Enumerations\BuiltInWorkflowIds.cs" />
     <Compile Include="Enumerations\BuiltInWorkflowNames.cs" />
     <Compile Include="Enumerations\BuiltInToolbarType.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
@@ -369,6 +371,7 @@
     <Compile Include="Services\LocalizationServiceBase.cs" />
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
+    <Compile Include="Services\LookupServiceBase.cs" />
     <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
     <Compile Include="Services\ModelPrintServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
@@ -381,6 +384,7 @@
     <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />

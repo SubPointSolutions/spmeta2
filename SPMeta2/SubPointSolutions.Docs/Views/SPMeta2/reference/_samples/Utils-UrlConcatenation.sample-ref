@@ -1,0 +1,12 @@
+// fast on two params
+var smQueryUrl = UrlUtility.CombineUrl("http://goole.com", "?q=spmeta2");
+
+// a bigger one
+var bgQueryUrl = UrlUtility.CombineUrl(new string[]{
+    "http://goole.com",
+    "?",
+    "q=1",
+    "&p1=3",
+    "&p2=tmp"
+});
+

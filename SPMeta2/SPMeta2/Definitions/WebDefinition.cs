@@ -171,6 +171,14 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public List<IndexedPropertyValue> IndexedPropertyKeys { get; set; }
 
+        [DataMember]
+        [ExpectNullable]
+        public string RequestAccessEmail { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        public bool? MembersCanShare { get; set; }
+
         #endregion
 
         #region methods

@@ -67,7 +67,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         public bool? UseCopyUtil { get; set; }
 
         [DataMember]
@@ -233,6 +233,15 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         public string GroupByDirection { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string GroupBy { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 10)]
+        public int? DisplayColumns { get; set; }
 
         [DataMember]
         public bool? Filter1IsCustomValue { get; set; }

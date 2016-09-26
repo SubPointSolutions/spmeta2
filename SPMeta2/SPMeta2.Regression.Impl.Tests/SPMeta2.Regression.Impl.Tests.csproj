@@ -220,10 +220,12 @@
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="Impl\Services\Base\TokenReplacementServiceTestBase.cs" />
     <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
+    <Compile Include="Impl\Services\CSOM\RequireCSOMRuntimeVersionDeploymentServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultDiagnosticInfoServiceTests.cs" />
+    <Compile Include="Impl\LookupServices\SSOM\SSOMListViewLookupServiceTests.cs" />
     <Compile Include="Impl\Services\ValidationServiceTests.cs" />
-    <Compile Include="Impl\Services\SSOMTokenReplacementServiceTests.cs" />
-    <Compile Include="Impl\Services\CSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\SSOM\SSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\CSOM\CSOMTokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Services\ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
@@ -281,63 +283,6 @@
       <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
       <Name>SPMeta2</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
-      <Link>SPMeta2.Containers.CSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.dll">
-      <Link>SPMeta2.Containers.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.O365.dll">
-      <Link>SPMeta2.Containers.O365.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll">
-      <Link>Microsoft.SharePoint.Client.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll">
-      <Link>Microsoft.SharePoint.Client.DocumentManagement.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll">
-      <Link>Microsoft.SharePoint.Client.Publishing.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll">
-      <Link>Microsoft.SharePoint.Client.Runtime.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll">
-      <Link>Microsoft.SharePoint.Client.Search.Applications.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll">
-      <Link>Microsoft.SharePoint.Client.Search.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll">
-      <Link>Microsoft.SharePoint.Client.ServerRuntime.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll">
-      <Link>Microsoft.SharePoint.Client.Taxonomy.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll">
-      <Link>Microsoft.SharePoint.Client.UserProfiles.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll">
-      <Link>Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SPMeta2.Containers.SSOM.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

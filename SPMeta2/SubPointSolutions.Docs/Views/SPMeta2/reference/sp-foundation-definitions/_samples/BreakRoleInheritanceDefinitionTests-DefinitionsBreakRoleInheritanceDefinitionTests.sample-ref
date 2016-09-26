@@ -1,0 +1,25 @@
+SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+
+lic class BreakRoleInheritanceDefinitionTests : ProvisionTestBase
+    {
+ #region methods
+
+ [TestMethod]
+ [TestCategory("Docs.BreakRoleInheritanceDefinition")]
+
+ [SampleMetadata(Title = "Break role inheritance",
+                 Description = ""
+                 )]
+ [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void CanDeploySimpleBreakRoleInheritanceDefinition()
+ {
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+
+     });
+
+     DeployModel(model);
+ }
+
+ #endregion
+    }

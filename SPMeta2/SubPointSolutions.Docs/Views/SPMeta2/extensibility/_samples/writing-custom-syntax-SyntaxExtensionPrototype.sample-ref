@@ -1,0 +1,8 @@
+public static ModelNode SyntaxExtensionPrototype(this ModelNode modelNode)
+{
+    // do stuff
+
+
+    // !!! always retun the same model which was passed as 'this' object !!!
+    return modelNode;
+}

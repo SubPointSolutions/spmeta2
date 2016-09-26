@@ -195,6 +195,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.WriteSecurity.HasValue)
                 list.WriteSecurity = definition.WriteSecurity.Value;
 
+            if (definition.ReadSecurity.HasValue)
+                list.ReadSecurity = definition.ReadSecurity.Value;
+
             var docLibrary = list as SPDocumentLibrary;
 
             if (docLibrary != null)

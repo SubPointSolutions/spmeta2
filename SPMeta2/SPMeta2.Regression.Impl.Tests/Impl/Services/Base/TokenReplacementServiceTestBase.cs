@@ -12,7 +12,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
 {
     public class TokenReplacementServiceTestBase
     {
-        protected TokenReplacementServiceBase Service { get; set; }
+        protected virtual TokenReplacementServiceBase Service { get; set; }
 
         protected bool HasAllTestsForTokens(string methodPrefix, IEnumerable<TokenInfo> tokens,
             IEnumerable<MethodInfo> methods)

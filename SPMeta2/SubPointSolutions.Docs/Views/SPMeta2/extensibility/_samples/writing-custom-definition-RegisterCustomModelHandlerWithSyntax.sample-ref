@@ -1,0 +1,16 @@
+var csomProvisionService = new CSOMProvisionService();
+
+csomProvisionService.RegisterModelHandler(new ChangeWebTitleAndDescriptionModelHandler());
+
+var webModel = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddChangeWebTitleAndDescription(new ChangeWebTitleAndDescriptionDefinition
+    {
+        Title = "A new name for the web",
+        Description = "Some changes done by ChangeWebTitleAndDescriptionDefinition"
+    });
+});
+
+using (var clientContext = new ClientContext(CSOMSiteUrl))
+    csomProvisionService.DeployWebModel(clientContext, webModel);
+

@@ -261,6 +261,10 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         public int? WriteSecurity { get; set; }
 
+        [DataMember]
+        //[ExpectValidation]
+        public int? ReadSecurity { get; set; }
+
         /// <summary>
         /// Represents SPList.NavigateForFormsPages property.
         /// Supported only with SSOM provision

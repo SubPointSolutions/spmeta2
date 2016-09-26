@@ -1,0 +1,15 @@
+public static class ChangeWebTitleAndDescriptionDefinitionSyntax
+{
+    public static ModelNode AddChangeWebTitleAndDescription(this ModelNode model,
+        ChangeWebTitleAndDescriptionDefinition definition)
+    {
+        return AddChangeWebTitleAndDescription(model, definition, null);
+    }
+
+    public static ModelNode AddChangeWebTitleAndDescription(this ModelNode model,
+        ChangeWebTitleAndDescriptionDefinition definition, Action<ModelNode>
+        action)
+    {
+        return model.AddDefinitionNode(definition, action);
+    }
+}

@@ -1,0 +1,107 @@
+﻿@{
+
+    var navSplit = Model.String("RelativeFilePath", string.Empty).Split(new[] { '\\' });
+
+    var navFolder = navSplit[0];
+
+    if (navSplit.Count() > 1)
+    {
+        navFolder = navSplit[0] + @"\" + navSplit[1];
+    }
+
+    var activeDocument = Documents.FirstOrDefault(d => d.String("RelativeFilePath") == Model.String("RelativeFilePath"));
+
+    var categoryGroups = Documents
+        .Where(x => x.ContainsKey("RelativeFilePath")
+            //&& !x.String("RelativeFilePath").EndsWith("index.md")
+                    && !x.Get<bool>("Hidden", false)
+                    && !x.String("RelativeFilePath").EndsWith("index.cshtml")
+                    && x.String("RelativeFilePath").StartsWith(navFolder + @"\")
+                    && !x.String("SourceFileBase").StartsWith("_")
+                    && x.String("RelativeFilePath").StartsWith(navFolder))
+
+        .GroupBy(x => !string.IsNullOrEmpty(x.String("Category"))
+            ? x.String("Category")
+            : x.String("RelativeFileDir").Replace(navFolder, string.Empty))
+        .OrderBy(x => x.Key)
+        .ToList();
+
+
+    var documents = new List<IDocument>();
+
+    foreach (IGrouping<string, IDocument> categoryGroup in categoryGroups)
+    {
+        foreach (IDocument childDoc in categoryGroup
+            .Where(x => !x.Get<bool>("Hidden", false))
+            .OrderBy(x => x.Get<int>("Order", 1000))
+            .ThenBy(x => x.String("Title"))
+            .ThenBy(x => x.String("SourceFileBase")))
+        {
+            documents.Add(childDoc);
+        }
+    }
+
+    //    .OrderBy(x => x.Get<int>("Order", 1000))
+                                //.ThenBy(x => x.String("Title"))
+    //.ThenBy(x => x.String("SourceFileBase"))        
+            //.ToList();
+
+    
+    var prevDocument = documents.FirstOrDefault();
+    var nextDocument = documents.FirstOrDefault();
+
+    var prevDocumentUrl = string.Empty;
+    var nextDocumentUrl = string.Empty;
+    
+    prevDocument = null;
+    nextDocument = null;
+
+    if (activeDocument != null && documents.Contains(activeDocument))
+    {
+        var activeDocumentIndex = documents.IndexOf(activeDocument);
+
+        if (activeDocumentIndex > 0)
+        {
+            prevDocument = documents[activeDocumentIndex-1];
+            prevDocumentUrl = PathHelper.ToRootLink(PathHelper.RemoveExtension(prevDocument.String("RelativeFilePath"))) + ".html";
+
+            var customFileName = prevDocument.String("FileName");
+            
+            if (!string.IsNullOrEmpty(customFileName))
+            {
+                prevDocumentUrl = prevDocumentUrl.Replace(System.IO.Path.GetFileName(prevDocumentUrl), customFileName);
+            }
+        }
+
+        if (activeDocumentIndex < documents.Count() - 1)
+        {
+            nextDocument = documents[activeDocumentIndex +1];
+            nextDocumentUrl = PathHelper.ToRootLink(PathHelper.RemoveExtension(nextDocument.String("RelativeFilePath"))) + ".html";
+
+            var customFileName = nextDocument.String("FileName");
+
+            if (!string.IsNullOrEmpty(customFileName))
+            {
+                nextDocumentUrl = nextDocumentUrl.Replace(System.IO.Path.GetFileName(nextDocumentUrl), customFileName);
+            }
+        }
+    }
+}
+
+@if (prevDocument != null || nextDocument != null)
+{
+    <div class="m-prevNextNav-cnt">
+        @if (prevDocument != null)
+        {
+            <a class="btn-lg btn-default m-btn-prev" href="@prevDocumentUrl">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Previous
+            </a>
+        }
+        @if (nextDocument != null)
+        {
+            <a class="btn-lg btn-default pull-right m-btn-next" href="@nextDocumentUrl">
+                Next <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+            </a>
+        }
+    </div>
+}

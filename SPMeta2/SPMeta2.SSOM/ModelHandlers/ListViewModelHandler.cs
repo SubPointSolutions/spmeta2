@@ -16,6 +16,7 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.Services;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -118,21 +119,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
         }
 
-        protected SPView FindView(SPList targetList, ListViewDefinition listViewModel)
+        protected virtual SPView FindView(SPList targetList, ListViewDefinition listViewModel)
         {
-            // lookup by title
-            var currentView = targetList.Views.FindByName(listViewModel.Title);
+            var service = ServiceContainer.Instance.GetService<SSOMListViewLookupService>();
+            var result = service.FindView(targetList, listViewModel);
 
-            // lookup by URL match
-            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
-
-                var safeUrl = listViewModel.Url.ToUpper();
-                currentView = targetList.Views.OfType<SPView>().FirstOrDefault(w => w.Url.ToUpper().EndsWith(safeUrl));
-            }
-
-            return currentView;
+            return result;
         }
 
         protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)

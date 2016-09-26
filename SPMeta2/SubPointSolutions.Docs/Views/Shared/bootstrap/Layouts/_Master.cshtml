@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.String("Title")</title>
+
+    <link href="/content/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="/content/SyntaxHighlighter/shCore.css" rel="stylesheet" />
+    <link href="/content/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" />
+
+    <link href="/content/s.docs.default.css" rel="stylesheet" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-75856437-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</head>
+<body>
+    @{
+        Model.String("IsFirst", "true");
+    }
+
+    @RenderBody()
+
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+
+    <script src="/scripts/SyntaxHighlighter/shCore.js"></script>
+    <script src="/scripts/SyntaxHighlighter/shBrushCSharp.js"></script>
+    <script src="/scripts/SyntaxHighlighter/shBrushXml.js"></script>
+    <script src="/scripts/SyntaxHighlighter/shBrushJScript.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.min.js"></script>
+
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/default.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/vs.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/languages/cs.min.js"></script>
+
+        <script>
+
+            jQuery(document).ready(function () {
+                jQuery('pre code.language-cs').each(function (i, block) {
+                    hljs.highlightBlock(block);
+                });
+            });
+
+        </script>*@
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCoreEclipse.css">*@
+
+
+    <script>
+
+        (function ($) {
+
+            $(document).ready(function () {
+
+                $('code.language-cs')
+                    .addClass('brush: csharp;');
+
+                $('code.language-xml')
+                    .addClass('brush: xml;');
+
+                $('code.language-js')
+                    .addClass('brush: js;');
+
+                SyntaxHighlighter.defaults['quick-code'] = false;
+                SyntaxHighlighter.config.tagName = 'code';
+                SyntaxHighlighter.all();
+            });
+
+            $(document).ready(function () {
+                $("body").bind("keydown", function (event) {
+
+                    console.log(event);
+
+                    if (event.ctrlKey && event.keyCode == 37) {
+
+                        if ($('a.m-btn-prev').size() > 0) {
+                            var href = $('a.m-btn-prev').attr('href');
+
+                            window.location.href = href;
+                        }
+                    }
+
+                    if (event.ctrlKey && event.keyCode == 39) {
+                        if ($('a.m-btn-next').size() > 0) {
+                            var href = $('a.m-btn-next').attr('href');
+
+                            window.location.href = href;
+                        }
+                    }
+                });
+            });
+
+        }(jQuery));
+
+    </script>
+
+</body>
+</html>

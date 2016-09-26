@@ -1,0 +1,360 @@
+﻿Assemblies
+    .LoadDirectory(@"bin\Debug");
+
+===
+
+public static class SConfig
+{
+    public static string Theme = "Bootstrap";
+
+	public static string GetThemedTemplate(string templateFileName) {
+		return string.Format("~/Shared/{0}/{1}", Theme, templateFileName);
+	}
+}
+
+---
+
+
+Pipelines.Add("site-md-content",
+
+	ReadFiles("*.md"),
+	
+	//ReadFiles("*.md").FromTopDirectoryOnly(),
+
+	FrontMatter(Yaml()),
+	FileName("FileName").WithAllowedCharacters(new[] {".", "-"}),
+
+	// process source code refs
+	Execute( (doc, context) => {
+		
+		var result = new List<IDocument>();
+		var x = doc;
+
+		AngleSharp.Parser.Html.HtmlParser parser = new AngleSharp.Parser.Html.HtmlParser();
+		AngleSharp.Dom.Html.IHtmlDocument htmlDocument;
+               
+		try
+        {
+			using (Stream stream = x.GetStream())
+            {
+				htmlDocument = parser.Parse(stream);
+            }
+        }
+        catch (Exception ex)
+        {
+			// context.Trace.Warning("Exception while parsing HTML for {0}: {1}", x.Source, ex.Message);
+			return new [] { x };
+        }
+
+		var refs = htmlDocument.QuerySelectorAll("a[href^='_samples']").ToArray();
+
+		foreach (var codeRef in refs) {
+
+			// <a href="_samples/SPDataSourceScopeDoesNotDefinedInPage-CorrectSPDataSourceScope.sample-ref">Correct sample</a>
+			var refFileName = System.IO.Path.GetFileNameWithoutExtension(codeRef.GetAttribute("href"));
+
+			if(!string.IsNullOrEmpty(refFileName)) {
+				
+				var sampleMethodName = refFileName.Split('-').Last();
+				//codeRef.SetAttribute("sample-method", sampleMethodName);
+
+				// searching for the sample
+				var allSamples = new List<SubPointSolutions.Docs.Code.Data.DocSample>();
+
+				allSamples.AddRange(SubPointSolutions.Docs.Code.Samples.m2Samples.SysAllSamples);
+				allSamples.AddRange(SubPointSolutions.Docs.Code.Samples.reSPSamples.SysAllSamples);
+
+				var sample = allSamples.FirstOrDefault(s => s.MethodName == sampleMethodName);
+
+				if(sample != null) {
+
+					var innerHtml = Environment.NewLine + @"```" + sample.Language + Environment.NewLine;
+					innerHtml += Environment.NewLine + sample.MethodBody + Environment.NewLine;
+					innerHtml += @"```" + Environment.NewLine;
+										
+					var parent = codeRef.ParentElement ?? htmlDocument.DocumentElement;
+
+					var sampleContent = codeRef.OuterHtml;
+
+					//x = context.GetDocument(doc, x.Content.Replace(codeRef.OuterHtml, Environment.NewLine + innerHtml));
+					x = doc.Clone(x.Content.Replace(codeRef.OuterHtml, Environment.NewLine + innerHtml));
+				}
+				else{
+					throw new System.Exception(string.Format("cannot find sample with name:[{0}]", sampleMethodName));
+				}
+
+			} else {
+				throw new System.Exception("missed file ref");
+				codeRef.SetAttribute("sample-method", "MISSED - " + refFileName);
+			}			
+		}
+
+		result.Add(x);
+
+		return result;
+	}),
+
+	Markdown(),
+	Razor(),	
+	Replace("[[ci-date]]", System.String.Format("{0:r}", System.DateTime.Now)),
+	// process img tags 
+	Execute( (doc, context) => {
+	
+		var result = new List<IDocument>();
+		var x = doc;
+		
+		AngleSharp.Parser.Html.HtmlParser parser = new AngleSharp.Parser.Html.HtmlParser();
+		AngleSharp.Dom.Html.IHtmlDocument htmlDocument;
+               
+		try
+        {
+			using (Stream stream = x.GetStream())
+            {
+				htmlDocument = parser.Parse(stream);
+            }
+        }
+        catch (Exception ex)
+        {
+			//context.Trace.Warning("Exception while parsing HTML for {0}: {1}", x.Source, ex.Message);
+			return new [] { x };
+        }
+
+		// images
+		var images = htmlDocument.QuerySelectorAll("img").ToArray();
+
+		var targetAttValues = new string[] {
+			"img-thumbnail",
+			"img-responsive",
+		};
+
+		foreach (var image in images) {
+
+			var attValue = image.GetAttribute("class");
+			var srcValue = image.GetAttribute("src");
+			
+			if(attValue == null)	
+				attValue = string.Empty;
+			else
+				attValue = attValue.ToLower();
+
+			foreach(var targetAttrValue in targetAttValues) {
+				
+				if(!attValue.Contains(targetAttrValue.ToLower())) {
+					attValue += " " + targetAttrValue.ToLower();
+				}
+			}
+
+			image.SetAttribute("class", attValue);
+			image.SetAttribute("src", string.IsNullOrEmpty(srcValue) ? "" : srcValue.ToLower() );
+		}
+
+		// pre and code
+		var codElements = htmlDocument.QuerySelectorAll("code1").ToArray();
+
+		foreach (var codeElement in codElements) {
+			var classValue = codeElement.GetAttribute("class");
+
+			codeElement.ParentElement.SetAttribute("class", classValue + " line-numbers");
+		}
+		
+		//var newDoc = context.GetDocument(x, htmlDocument.DocumentElement.OuterHtml);
+	    
+		var newDoc = x.Clone(htmlDocument.DocumentElement.OuterHtml);
+		result.Add(newDoc);
+
+		return result;
+	}),
+
+	// process markdown blockquotes to nice looking callouts
+	Execute( (doc, context) => {
+	
+		var result = new List<IDocument>();
+		var x = doc;
+		
+		AngleSharp.Parser.Html.HtmlParser parser = new AngleSharp.Parser.Html.HtmlParser();
+		AngleSharp.Dom.Html.IHtmlDocument htmlDocument;
+               
+		try
+        {
+			using (Stream stream = x.GetStream())
+            {
+				htmlDocument = parser.Parse(stream);
+            }
+        }
+        catch (Exception ex)
+        {
+			//context.Trace.Warning("Exception while parsing HTML for {0}: {1}", x.Source, ex.Message);
+			return new [] { x };
+        }
+
+		var elements = htmlDocument.QuerySelectorAll("blockquote")
+                                   .ToArray();
+
+            foreach (var element in elements)
+            {
+                var content = element.InnerHtml;
+
+                if (content == null)
+                    content = string.Empty;
+                else
+                    content = content.Trim();
+
+                var contentHasParagraph = content.StartsWith("<p>");
+
+                var callout = htmlDocument.CreateElement("div");
+
+                callout.SetAttribute("class", "s-docs-callout s-docs-callout-info");
+                callout.InnerHtml = contentHasParagraph
+										? content
+										: string.Format("<p>{0}</p>", content);
+
+                element.Replace(callout);
+            }
+
+		//var newDoc = context.GetDocument(x, htmlDocument.DocumentElement.OuterHtml);
+	    
+		var newDoc = x.Clone(htmlDocument.DocumentElement.OuterHtml);
+		result.Add(newDoc);
+
+		return result;
+	}),
+
+	// all internal links to lower
+	// external links - in a new window
+	Execute( (doc, context) => {
+	
+		var result = new List<IDocument>();
+		var x = doc;
+		
+		AngleSharp.Parser.Html.HtmlParser parser = new AngleSharp.Parser.Html.HtmlParser();
+		AngleSharp.Dom.Html.IHtmlDocument htmlDocument;
+               
+		try
+        {
+			using (Stream stream = x.GetStream())
+            {
+				htmlDocument = parser.Parse(stream);
+            }
+        }
+        catch (Exception ex)
+        {
+			//context.Trace.Warning("Exception while parsing HTML for {0}: {1}", x.Source, ex.Message);
+			return new [] { x };
+        }
+
+		var elements = htmlDocument.QuerySelectorAll("a")
+                                   .ToList();
+
+		elements.AddRange(htmlDocument.QuerySelectorAll("link").ToList());
+
+            foreach (var element in elements)
+            {
+                var href = element.GetAttribute("href");
+
+                if (href == null)
+                    continue;
+                
+				// internal link
+                if (href.StartsWith("/"))
+                {
+					href = href.ToLower();
+
+					// remove .html
+					//if(href.EndsWith(".htm"))
+					//	href = href.Replace(".htm", String.Empty);
+
+					//if(href.EndsWith(".html"))
+					//	href = href.Replace(".html", String.Empty);
+
+					if(href.EndsWith("/index"))
+						href = href.Replace("/index", String.Empty);
+
+					element.SetAttribute("href", href);
+
+				} else if(href.StartsWith("http")) {
+					
+					element.SetAttribute("href", href.ToLower());
+					element.SetAttribute("target", "_blank");
+				}
+            }
+
+			// scipts
+
+			var scripts = htmlDocument.QuerySelectorAll("script")
+                                   .ToList();
+
+			scripts.AddRange(htmlDocument.QuerySelectorAll("img").ToList());
+
+            foreach (var element in scripts)
+            {
+                var href = element.GetAttribute("src");
+
+                if (href == null)
+                    continue;
+                
+				// internal link
+                if (href.StartsWith("/"))
+                {
+					href = href.ToLower();
+
+					element.SetAttribute("src", href);
+
+				} else if(href.StartsWith("http")) {
+					
+					element.SetAttribute("src", href.ToLower());
+				}
+            }
+
+		//var newDoc = context.GetDocument(x, htmlDocument.DocumentElement.OuterHtml);
+	    
+		var newDoc = x.Clone(htmlDocument.DocumentElement.OuterHtml);
+		result.Add(newDoc);
+
+		return result;
+	}),
+
+	//HtmlQuery("img")
+	//	.SetAttribute("class", "img-responsive")
+	//	.SetAttribute("class", "img-thumbnail"),
+
+	
+	//FileName("FileName"),
+	WriteFiles(".html").UseWriteMetadata(true)
+);
+
+Pipelines.Add("site-resources-css",
+	CopyFiles(@"..\content\" + SConfig.Theme + @"\*.*").To(path => path.Replace(@"\content\" + SConfig.Theme, @"\Views-Output\content"))
+);
+
+Pipelines.Add("site-resources-scripts",
+	CopyFiles(@"..\scripts\" + SConfig.Theme + @"\*.*").To(path => path.Replace(@"\scripts\" + SConfig.Theme, @"\Views-Output\scripts"))
+);
+
+Pipelines.Add("site-resources-fonts",
+	CopyFiles(@"..\fonts\" + SConfig.Theme + @"\*.*").To(path => path.Replace(@"\fonts\" + SConfig.Theme, @"\Views-Output\fonts"))
+);
+
+Pipelines.Add("site-resources-images-gif",
+	CopyFiles(@"*.gif")
+);
+
+Pipelines.Add("site-resources-images-png",
+	CopyFiles(@"*.png")
+);
+
+Pipelines.Add("site-resources-images-jpg",
+	CopyFiles(@"*.jpg")
+);
+
+Pipelines.Add("site-resources-images-jpeg",
+	CopyFiles(@"*.jpeg")
+);
+
+ // Pipelines.Add("site-resources-images-thumbs",
+ //      ReadFiles("*").Where(x => x.Contains("img") && new[] { ".jpg", ".jpeg", ".gif", ".png"}.Contains(Path.GetExtension(x))),
+// 	  Image()
+// 		.SetJpegQuality(100).Resize(400,209).SetSuffix("-thumb")
+//         .And
+// 	    .SetJpegQuality(70).Resize(400*2, 209*2).SetSuffix("-medium"),
+ //      WriteFiles("*")
+  //   );

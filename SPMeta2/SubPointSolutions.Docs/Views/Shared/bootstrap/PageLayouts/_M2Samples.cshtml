@@ -1,0 +1,23 @@
+﻿@{
+    Layout = SConfig.GetThemedTemplate("Layouts/_Master.cshtml");
+}
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_TopNavigation.cshtml"))
+
+<div class="container body-content sd-body-content">
+    <div class="row">
+        @Html.Partial(SConfig.GetThemedTemplate("Components/_SecondNavigation.cshtml"))
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+
+            @RenderBody()
+
+            @Html.Partial(SConfig.GetThemedTemplate("Components/_SampleList.cshtml"))
+        </div>
+
+    </div>
+</div>
+
+@Html.Partial(SConfig.GetThemedTemplate("Components/_Footer.cshtml"))

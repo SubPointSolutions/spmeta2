@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tabular.Csv</name>
+    </assembly>
+    <members>
+        <member name="T:Tabular.CsvFormat">
+            <summary>
+            The format of the individual CSV values.
+            </summary>
+        </member>
+        <member name="F:Tabular.CsvFormat.Quoted">
+            <summary>
+            Each value is surrounded by ". This is the safer default.
+            </summary>
+        </member>
+        <member name="F:Tabular.CsvFormat.Raw">
+            <summary>
+            Each value is in its raw form, without quotes or escapes.
+            </summary>
+        </member>
+        <member name="T:Tabular.Csv">
+            <summary>
+            Table conversions for comma-separated value formats.
+            </summary>
+            <remarks>
+            The Tabular.Csv assembly provides import and export of tabular data to CSV format:
+            <code>
+            var table1 = new Table
+            {
+                Name = "SomeTable",
+                Rows =
+                {
+                    new Row { 1, "foo", 5.7 },
+                    new Row { 2, "bar", 99.99M },
+                    new Row { 3, "baz", 0.0 },
+                }
+            };
+            var csv = Csv.ToCsv(table1, CsvFormat.Quoted);
+            Console.WriteLine(csv.Data);
+            // output:
+            // "1","foo","5.7"
+            // "2","bar","99.99"
+            // "3","baz","0"
+            
+            var table2 = Csv.FromCsv(csv);
+            // table2 is equivalent to table1
+            </code>
+            The <see cref="T:Tabular.CsvFormat"/> enumeration describes whether the CSV data should be formatted
+            in the safer quoted data format, or in less safe raw format.
+            </remarks>
+        </member>
+        <member name="M:Tabular.Csv.ToCsv(Tabular.Table,Tabular.CsvFormat)">
+            <summary>
+            Format a table as CSV.
+            </summary>
+            <param name="table">The table to format.</param>
+            <param name="format">Describes how the CSV data should be formatted.</param>
+            <returns>CSV formatted data.</returns>
+        </member>
+        <member name="M:Tabular.Csv.FromCsv(Tabular.Csv)">
+            <summary>
+            Parse a <seealso cref="T:Tabular.Table"/> from a CSV string.
+            </summary>
+            <param name="csv">The CSV data to parse.</param>
+            <returns>A <seealso cref="T:Tabular.Table"/> corresponding to the CSV data.</returns>
+            <remarks>
+            The parsing method is very naive at the moment, and doesn't properly handle data
+            that itself contains commas.
+            </remarks>
+        </member>
+        <member name="M:Tabular.Csv.ToString">
+            <summary>
+            Return a string representation.
+            </summary>
+            <returns>A string representation of the CSV.</returns>
+        </member>
+        <member name="P:Tabular.Csv.Name">
+            <summary>
+            The name attached to the CSV data.
+            </summary>
+        </member>
+        <member name="P:Tabular.Csv.Data">
+            <summary>
+            The CSV data.
+            </summary>
+        </member>
+    </members>
+</doc>

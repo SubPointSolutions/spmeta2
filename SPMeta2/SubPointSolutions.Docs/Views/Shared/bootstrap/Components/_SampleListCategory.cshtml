@@ -1,0 +1,121 @@
+﻿@using SubPointSolutions.Docs.Code.API
+@using SubPointSolutions.Docs.Code.Data
+@using SubPointSolutions.Docs.Code.Samples
+@using SubPointSolutions.Docs.Code.Enumerations
+
+@{
+    var categoryTagName = SubPointSolutions.Docs.Code.Enumerations.BuiltInTagNames.SampleCategory;
+    var categoryOrderTagName = SubPointSolutions.Docs.Code.Enumerations.BuiltInTagNames.SampleCategoryOrder;
+
+    var spRuntimeTagName = SubPointSolutions.Docs.Code.Enumerations.BuiltInTagNames.SPRuntime;
+
+    var spStandardRuntimeValue = SubPointSolutions.Docs.Code.Enumerations.BuiltInSPRuntimeTagValues.Standard;
+    var spEnterpriseRuntimeValue = SubPointSolutions.Docs.Code.Enumerations.BuiltInSPRuntimeTagValues.Enterprise;
+
+    var allSamples = ViewBag.SamplesModel.Samples as List<DocSample>;
+    var samplesWithCategories = allSamples;
+
+    var sampleCategories = SamplesAPI.GetSampleCategories(allSamples);
+
+    var categoryHeight = 80;
+    var categoryItemHeight = 18;
+
+    var categoryRowsCount = 4;
+
+    var totalCategoriesHeight = sampleCategories.Count() * categoryHeight;
+    var totalLinksHeight = 0;
+
+    foreach (var sampleGroupName in sampleCategories)
+    {
+        var samples = allSamples.Where(s => s.Tags.First(t => t.Name == BuiltInTagNames.SampleCategory).Values.Contains(sampleGroupName));
+
+        totalLinksHeight += samples.Count() * categoryItemHeight;
+    }
+
+    var totalHeight = totalCategoriesHeight + totalLinksHeight;
+    var rowHeight = totalHeight / categoryRowsCount;
+
+    var currentRowHeight = 0;
+}
+
+<h3>@ViewBag.SamplesModel.CategoryName</h3>
+
+
+
+<div class="panel-body">
+
+    @Html.Raw("<div class='col-sm-3 col-md-3'>")
+
+    @foreach (var sampleGroupName in sampleCategories)
+    {
+        currentRowHeight += categoryHeight;
+
+        if (currentRowHeight > rowHeight && !(sampleCategories.IndexOf(sampleGroupName) == 0))
+        {
+            currentRowHeight = 0;
+
+            @Html.Raw("</div>")
+            @Html.Raw("<div class='col-sm-3 col-md-3'>")
+        }
+
+        var samples = samplesWithCategories.Where(s => s.Tags.First(t => t.Name == categoryTagName).Values.Contains(sampleGroupName));
+
+        if (!samples.Any())
+        {
+            continue;
+        }
+
+        <div class="panel panel-default ">
+            <div class="panel-heading">
+                @sampleGroupName
+            </div>
+            <div class="panel-body">
+
+                <ul>
+                    @foreach (var sample in samples)
+                    {
+                        currentRowHeight += categoryItemHeight;
+
+                        var definitionClassName = sample.ClassName
+                                                        .Replace("Tests", string.Empty)
+                                                        .Replace("Test", string.Empty);
+
+                        var isStandardSample = sample.Tags.Any(t => t.Name == spRuntimeTagName && t.Values.Contains(spStandardRuntimeValue));
+                        var isEntepriseSample = sample.Tags.Any(t => t.Name == spRuntimeTagName && t.Values.Contains(spEnterpriseRuntimeValue));
+
+                        var definitionUrl = "/spmeta2/reference/sp-foundation-definitions/{0}";
+
+                        if (isStandardSample)
+                        {
+                            definitionUrl = "/spmeta2/reference/sp-standard-definitions/{0}";
+                        }
+
+                        if (isEntepriseSample)
+                        {
+                            definitionUrl = "/spmeta2/reference/sp-enterprise-definitions/{0}";
+                        }
+
+                        var definitionPageUrl = string.Format(definitionUrl, definitionClassName).ToLower();
+                        var isHidden = SamplesAPI.HasTag(sample, BuiltInTagNames.SampleHidden);
+                        <li>
+                            @if (isHidden)
+                            {
+                                @(sample.Title)
+                            }
+                            else
+                            {
+                                <a href="@(definitionPageUrl + "?#" + SamplesAPI.GetSafeAnchor(sample.Title))">
+                                    @(sample.Title)
+                                </a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    @Html.Raw("</div>")
+</div>
+
+

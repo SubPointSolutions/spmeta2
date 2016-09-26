@@ -1,0 +1,90 @@
+﻿@using SubPointSolutions.Docs.Code.API
+@using SubPointSolutions.Docs.Code.Samples
+@using SubPointSolutions.Docs.Code.Enumerations
+
+@{
+
+    //var categoryTagName = BuiltInTagNames.SampleCategory;
+    var categoryTagName = BuiltInTagNames.SampleM2Model;
+
+    var categoryOrderTagName = SubPointSolutions.Docs.Code.Enumerations.BuiltInTagNames.SampleCategoryOrder;
+
+    var spRuntimeTagName = SubPointSolutions.Docs.Code.Enumerations.BuiltInTagNames.SPRuntime;
+
+    var spStandardRuntimeValue = SubPointSolutions.Docs.Code.Enumerations.BuiltInSPRuntimeTagValues.Standard;
+    var spEnterpriseRuntimeValue = SubPointSolutions.Docs.Code.Enumerations.BuiltInSPRuntimeTagValues.Enterprise;
+
+
+    var allSamples = SubPointSolutions.Docs.Code.Samples.m2Samples.SysAllSamples.Where(s => s.IsMethod).ToList();
+
+    //var allCategories = SamplesAPI.GetSampleTagValues(allSamples, BuiltInTagNames.SampleModelCategory);
+
+    // TMP FIX
+    //var allCategories = SamplesAPI.GetSampleTagValues(allSamples, categoryTagName);
+    var allCategories = new List<string>();
+
+    allCategories.Add("Farm Model");
+    allCategories.Add("Web Application Model");
+    allCategories.Add("Site Collection Model");
+    allCategories.Add("Web Model");
+
+    var samplesWithCategories = SamplesAPI.GetSamplesWithTag(allSamples, categoryTagName);
+
+
+    var sampleCategories = allCategories
+        // initial sorting by name
+        //.OrderBy(m => m)
+        // sorting by any category attr
+        //.OrderBy(m => allSamples.FirstOrDefault(
+        //    // has both category and order
+        //                                   s => samplesAPI.HasTag(s, categoryOrderTagName)
+        //                                        && samplesAPI.HasTagValue(s, categoryTagName, m)
+        //                                       ) != null ?
+        //    // get the category order
+        //               int.Parse(samplesAPI.GetSampleTagValue( allSamples.FirstOrDefault(
+        //                                   s => samplesAPI.HasTag(s, categoryOrderTagName)
+        //                                        &&  samplesAPI.HasTagValue(s, categoryTagName, m)
+        //                                       ), categoryOrderTagName, int.MaxValue.ToString()))
+        //                                           : int.MaxValue)
+
+                             //.OrderBy(m => allCategories.Any(c => c.Name == m) ? )
+                             .ToList();
+
+    var categoryHeight = 80;
+    var categoryItemHeight = 18;
+
+    var categoryRowsCount = 3;
+
+    var totalCategoriesHeight = sampleCategories.Count() * categoryHeight;
+    var totalLinksHeight = 0;
+
+    foreach (var sampleGroupName in sampleCategories)
+    {
+        var samples = samplesWithCategories.Where(s => s.Tags.First(t => t.Name == categoryTagName).Values.Contains(sampleGroupName));
+
+        totalLinksHeight += samples.Count() * categoryItemHeight;
+    }
+
+    var totalHeight = totalCategoriesHeight + totalLinksHeight;
+    var rowHeight = totalHeight / categoryRowsCount;
+
+    var currentRowHeight = 0;
+}
+
+<div class="m-sample-list-cnt">
+    @{
+
+        foreach (var sampleGroupName in sampleCategories)
+        {
+            dynamic categoryModel = new System.Dynamic.ExpandoObject();
+
+            categoryModel.Samples = SamplesAPI.GetSamplesWithTag(allSamples, categoryTagName, sampleGroupName);
+            categoryModel.CategoryName = sampleGroupName;
+
+            ViewBag.SamplesModel = categoryModel;
+
+            @Html.Partial(SConfig.GetThemedTemplate("Components/_SampleListCategory.cshtml"));
+        }
+    }
+
+</div>

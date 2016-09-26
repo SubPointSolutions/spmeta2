@@ -1,0 +1,24 @@
+//[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+public class ItemDisplayTemplateDefinitionTests : ProvisionTestBase
+{
+    #region methods
+
+    [TestMethod]
+    [TestCategory("Docs.ItemDisplayTemplateDefinition")]
+
+    [SampleMetadata(Title = "Add item display template",
+        Description = ""
+        )]
+    [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+    public void CanDeploySimpleItemDisplayTemplateDefinition()
+    {
+        var model = SPMeta2Model.NewSiteModel(site =>
+        {
+
+        });
+
+        DeployModel(model);
+    }
+
+    #endregion
+}

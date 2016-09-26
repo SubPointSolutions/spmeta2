@@ -1,0 +1,27 @@
+SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+
+
+
+lic class AlternateUrlDefinitionTests : ProvisionTestBase
+    {
+ #region methods
+
+ [TestMethod]
+ [TestCategory("Docs.AlternateUrlDefinition")]
+
+ [SampleMetadata(Title = "Add alternate URL",
+                 Description = ""
+                 )]
+ [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void CanDeploySimpleAlternateUrlDefinition()
+ {
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+
+     });
+
+     DeployModel(model);
+ }
+
+ #endregion
+    }

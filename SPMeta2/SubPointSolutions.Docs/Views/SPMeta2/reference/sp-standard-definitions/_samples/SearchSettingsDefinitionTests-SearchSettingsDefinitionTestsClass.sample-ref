@@ -1,0 +1,24 @@
+//[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+public class SearchSettingsDefinitionTests : ProvisionTestBase
+{
+    #region methods
+
+    [TestMethod]
+    [TestCategory("Docs.SearchSettingsDefinition")]
+
+    [SampleMetadata(Title = "Add search settings",
+        Description = ""
+        )]
+    [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+    public void CanDeploySimpleSearchSettingsDefinition()
+    {
+        var model = SPMeta2Model.NewSiteModel(site =>
+        {
+
+        });
+
+        DeployModel(model);
+    }
+
+    #endregion
+}

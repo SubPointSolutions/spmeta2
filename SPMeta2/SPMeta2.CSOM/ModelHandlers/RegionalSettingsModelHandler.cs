@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Microsoft.SharePoint.Client;
 
@@ -6,6 +7,8 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -36,6 +39,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = web.Context;
 
             var settings = GetCurrentRegionalSettings(web);
+            var shouldUpdate = SupportSetters(settings);
+
+            if (shouldUpdate && definition.TimeZoneId.HasValue)
+            {
+                // pre-load TimeZones for the further lookup
+                context.Load(settings);
+                context.Load(settings, s => s.TimeZones);
+
+                context.ExecuteQueryWithTrace();
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -48,7 +61,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            bool shouldUpdate;
             MapRegionalSettings(context, settings, definition, out shouldUpdate);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -81,6 +93,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var supportedRuntime = ReflectionUtils.HasMethod(settings, "Update")
                 && ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays");
+
+            if (!supportedRuntime)
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have RegionalSettings.Update() methods support. Update CSOM runtime to a new version. RegionalSettings provision is skipped");
+            }
 
             return supportedRuntime;
         }
@@ -174,6 +192,23 @@ namespace SPMeta2.CSOM.ModelHandlers
                 && definition.Time24.HasValue)
             {
                 context.AddQuery(new ClientActionSetProperty(settings, "Time24", definition.Time24.Value));
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "TimeZone")
+                && definition.TimeZoneId.HasValue)
+            {
+                var targetZone = settings.TimeZones
+                    .ToArray()
+                    .FirstOrDefault(z => z.Id == definition.TimeZoneId.Value);
+
+                if (targetZone == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find TimeZone by ID:[{0}]", definition.TimeZoneId));
+                }
+
+                context.AddQuery(new ClientActionSetProperty(settings, "TimeZone", targetZone));
                 shouldUpdate = true;
             }
         }

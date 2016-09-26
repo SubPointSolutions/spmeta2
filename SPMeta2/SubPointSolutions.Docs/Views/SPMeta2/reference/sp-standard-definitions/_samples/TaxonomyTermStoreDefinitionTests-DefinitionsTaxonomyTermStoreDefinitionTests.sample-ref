@@ -1,0 +1,56 @@
+SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+lic class TaxonomyTermStoreDefinitionTests : ProvisionTestBase
+    {
+ #region methods
+
+
+ [TestMethod]
+ [TestCategory("Docs.TaxonomyTermStoreDefinition")]
+ [SampleMetadata(Title = "Add taxonomy term store by Name",
+     Description = ""
+     )]
+ //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void LookupTermStoreByName()
+ {
+     var mmsTermStore = new TaxonomyTermStoreDefinition
+     {
+         Name = "Managed Metadata Service"
+     };
+
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+         site.AddTaxonomyTermStore(mmsTermStore, termStore =>
+         {
+             // do stuff, add groups, term sets
+         });
+     });
+
+     DeployModel(model);
+ }
+
+ [TestMethod]
+ [TestCategory("Docs.TaxonomyTermStoreDefinition")]
+ [SampleMetadata(Title = "Add default taxonomy term store",
+     Description = ""
+     )]
+ //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void LookupDefaultSiteTermStore()
+ {
+     var defaultSiteTermStore = new TaxonomyTermStoreDefinition
+     {
+         UseDefaultSiteCollectionTermStore = true
+     };
+
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+         site.AddTaxonomyTermStore(defaultSiteTermStore, termStore =>
+         {
+             // do stuff, add groups, term sets
+         });
+     });
+
+     DeployModel(model);
+ }
+
+ #endregion
+    }

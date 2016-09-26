@@ -405,6 +405,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 web.Description = webModel.Description;
 
             var supportedRuntime = ReflectionUtils.HasProperty(web, "AlternateCssUrl") && ReflectionUtils.HasProperty(web, "SiteLogoUrl");
+
             if (supportedRuntime)
             {
                 var context = web.Context;
@@ -429,6 +430,43 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                     "CSOM runtime doesn't have Web.AlternateCssUrl and Web.SiteLogoUrl methods support. Update CSOM runtime to a new version. Provision is skipped");
+            }
+
+            if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
+            {
+                if (ReflectionUtils.HasProperty(web, "RequestAccessEmail"))
+                {
+
+                    var context = web.Context;
+
+                    context.AddQuery(new ClientActionInvokeMethod(web, "RequestAccessEmail", new object[]
+                    {
+                        webModel.SiteLogoUrl
+                    }));
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have Web.RequestAccessEmail. Update CSOM runtime to a new version. Provision is skipped");
+                }
+            }
+            if (webModel.MembersCanShare.HasValue)
+            {
+                if (ReflectionUtils.HasProperty(web, "MembersCanShare"))
+                {
+                    var context = web.Context;
+
+                    context.AddQuery(new ClientActionInvokeMethod(web, "MembersCanShare", new object[]
+                    {
+                        webModel.MembersCanShare.Value
+                    }));
+
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have Web.MembersCanShare. Update CSOM runtime to a new version. Provision is skipped");
+                }
             }
 
 #if !NET35

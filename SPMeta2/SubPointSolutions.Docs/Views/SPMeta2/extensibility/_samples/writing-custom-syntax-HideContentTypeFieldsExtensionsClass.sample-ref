@@ -1,0 +1,29 @@
+public static class HideContentTypeFieldsExtensions
+{
+    [SampleMetadataTagAttribute(Name = BuiltInTagNames.UseFullMethodBody)]
+    public static ContentTypeModelNode HideContentTypeFieldsByIds(
+        this ContentTypeModelNode modelNode,
+        IEnumerable<Guid> ids)
+    {
+        modelNode.AddHideContentTypeFieldLinks(new HideContentTypeFieldLinksDefinition
+        {
+            Fields = new List<FieldLinkValue>(ids.Select(s =>
+                new FieldLinkValue
+                {
+                    Id = s
+                }))
+        });
+
+        return modelNode;
+    }
+
+    [SampleMetadataTagAttribute(Name = BuiltInTagNames.UseFullMethodBody)]
+    public static ModelNode SyntaxExtensionPrototype(this ModelNode modelNode)
+    {
+        // do stuff
+
+
+        // !!! always retun the same model which was passed as 'this' object !!!
+        return modelNode;
+    }
+}

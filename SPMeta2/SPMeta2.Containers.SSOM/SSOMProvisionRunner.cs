@@ -430,6 +430,13 @@ namespace SPMeta2.Containers.SSOM
             action(farm);
         }
 
+        public void WithSSOMSiteAndWebContext(Action<SPSite, SPWeb> action)
+        {
+            var siteUrl = this.SiteUrls.First();
+
+            WithSSOMSiteAndWebContext(siteUrl, action);
+        }
+
         public void WithSSOMSiteAndWebContext(string siteUrl, Action<SPSite, SPWeb> action)
         {
             using (var site = new SPSite(siteUrl))

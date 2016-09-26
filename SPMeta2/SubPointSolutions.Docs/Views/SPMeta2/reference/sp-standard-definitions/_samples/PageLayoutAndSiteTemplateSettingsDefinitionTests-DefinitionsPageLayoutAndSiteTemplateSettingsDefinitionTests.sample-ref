@@ -1,0 +1,24 @@
+SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+lic class PageLayoutAndSiteTemplateSettingsDefinitionTests : ProvisionTestBase
+    {
+ #region methods
+
+ [TestMethod]
+ [TestCategory("Docs.PageLayoutAndSiteTemplateSettingsDefinition")]
+
+ [SampleMetadata(Title = "Add page layout and site template settings",
+     Description = ""
+     )]
+ [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+ public void CanDeploySimplePageLayoutAndSiteTemplateSettingsDefinition()
+ {
+     var model = SPMeta2Model.NewSiteModel(site =>
+     {
+
+     });
+
+     DeployModel(model);
+ }
+
+ #endregion
+    }

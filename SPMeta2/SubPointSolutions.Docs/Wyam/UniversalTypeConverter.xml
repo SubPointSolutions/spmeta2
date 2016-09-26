@@ -1,0 +1,1057 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UniversalTypeConverter</name>
+    </assembly>
+    <members>
+        <member name="T:TB.ComponentModel.UniversalTypeConverter">
+            <summary>
+            Converts a data type to another data type.
+            </summary>
+            <remarks>
+            DBNull.Value is treated as null.<br></br>
+            Supports the following conversions:<br></br>
+            - conversion from a base type to another base type<br></br>
+            - base type conversion includes the typical conversions from/to an enum - supporting flags<br></br>
+            - base type conversion includes string conversion from/to a Guid<br></br>
+            - base type conversion includes enhanced conversions for special values, e.g. "yes" to true, 'n' to false, true to 'T', etc.<br></br>
+            - conversion from a base type to the nullable (?) pendant<br></br>
+            - conversion from a nullable (?) base type to the not nullable pendant<br></br>
+            - conversion supported by the TypeConverters of the given types<br></br>
+            - conversion supported by the implementation of IConvertible of the given types<br></br>
+            - optional conversion from null to value types using the default value<br></br>
+            - optional conversion from whitespace to value types using the default value<br></br>
+            <br></br>
+            Converting whole lists of values is supported through IEnumerable and IEnumerable(T).
+            </remarks>
+        </member>
+        <member name="F:TB.ComponentModel.UniversalTypeConverter.DefaultNullStringValue">
+            <summary>
+            Defines ".null." as the default null value which is used on string conversions.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.UniversalTypeConverter.DefaultStringSeperator">
+            <summary>
+            Defines the semicolon (;) as the default seperator which is used on enumerable conversions.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ValueRepresentsNull(System.Object)">
+            <summary>
+            Checks whether the given value represents null.
+            The DBNull.Value is treated as null.
+            This comes handy if conversion is applied to values coming from or sending to a database via ADO.Net.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.GetDefaultValueOfType(System.Type)">
+            <summary>
+            Returns the default value of the given type.
+            ValueTypes always have a parameterless constructor.
+            The default value of other types is always null.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="F:TB.ComponentModel.UniversalTypeConverter.DefaultCulture">
+            <summary>
+            Defines the default culture which is used during conversion.
+            Same as CultureInfo.CurrentCulture.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvertTo``1(System.Object)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvertTo``1(System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvertTo``1(System.Object,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvertTo``1(System.Object,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvertTo``1(System.Object,``0@)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvertTo``1(System.Object,``0@,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvertTo``1(System.Object,``0@,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvertTo``1(System.Object,``0@,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertTo``1(System.Object)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertTo``1(System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertTo``1(System.Object,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertTo``1(System.Object,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvert(System.Object,System.Type)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvert(System.Object,System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvert(System.Object,System.Type,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.CanConvert(System.Object,System.Type,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the given value can be converted to the specified type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvert(System.Object,System.Type,System.Object@)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvert(System.Object,System.Type,System.Object@,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvert(System.Object,System.Type,System.Object@,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.TryConvert(System.Object,System.Type,System.Object@,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.Convert(System.Object,System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.Convert(System.Object,System.Type,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.Convert(System.Object,System.Type,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the given value to the given type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The type to which the given value is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable``1(System.Collections.IEnumerable)">
+            <summary>
+            Converts all elements of the given list to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the given values are converted.</typeparam>
+            <param name="values">The list of values which are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable``1(System.String)">
+            <summary>
+            Splits the given string by using the semicolon (;) as a seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the given values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable``1(System.String,System.String)">
+            <summary>
+            Splits the given string by using the given seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the given values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="seperator">The value seperator which is used in <paramref name="valueList">valueList</paramref>.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable``1(System.String,TB.ComponentModel.IStringSplitter)">
+            <summary>
+            Splits the given string by using the given splitter and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the given values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="stringSplitter">The splitter to use.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable(System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Converts all elements of the given list to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="values">The list of values which are converted.</param>
+            <param name="destinationType">The type to which the given values are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable(System.String,System.Type)">
+            <summary>
+            Splits the given string by using the semicolon (;) as a seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the given values are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable(System.String,System.Type,System.String)">
+            <summary>
+            Splits the given string by using the given seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the given values are converted.</param>
+            <param name="seperator">The value seperator which is used in <paramref name="valueList">valueList</paramref>.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToEnumerable(System.String,System.Type,TB.ComponentModel.IStringSplitter)">
+            <summary>
+            Splits the given string by using the given splitter and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the given values are converted.</param>
+            <param name="stringSplitter">The splitter to use.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable)">
+            <summary>
+            Converts the given value list to a semicolon seperated string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Converts the given value list to a string where all values a seperated by the given seperator.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="seperator">Seperator.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable,System.String,System.String)">
+            <summary>
+            Converts the given value list to a string where all values a seperated by the given seperator.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="seperator">Seperator.</param>
+            <param name="nullValue">The string which is used for null values.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the given value list to a semicolon seperated string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable,TB.ComponentModel.IStringConcatenator)">
+            <summary>
+            Converts the given value list to a string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="stringConcatenator">The concatenator which is used to build the string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.ConvertToStringRepresentation(System.Collections.IEnumerable,System.Globalization.CultureInfo,TB.ComponentModel.IStringConcatenator)">
+            <summary>
+            Converts the given value list to a string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="stringConcatenator">The concatenator which is used to build the string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1">
+            <summary>
+            Controls an conversion iteration.
+            </summary>
+            <typeparam name="T">The type to which the elements of the source are converted.</typeparam>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.UsingCulture(System.Globalization.CultureInfo)">
+            <summary>
+            Defines the culture used for conversion.
+            </summary>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.UsingConversionOptions(TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Defines options used for conversion.
+            </summary>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.IgnoringNonConvertibleElements">
+            <summary>
+            Use this option to ignore non convertible values without throwing an exception.
+            </summary>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.IgnoringNullElements">
+            <summary>
+            Use this option to ignore null values.
+            </summary>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.Try(System.Collections.Generic.IEnumerable{`0}@)">
+            <summary>
+            Returns an enumerator that iterates through the collection of converted values.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="result">Enumerator that iterates through the collection of converted values if the operation succeeded.</param>
+            <returns>true on success; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection of converted values.
+            </summary>
+            <returns>Enumerator that iterates through the collection of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection of converted values.
+            </summary>
+            <returns>Enumerator that iterates through the collection of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableConversion`1.GetValuesToConvert">
+            <summary>
+            Gets a list of the values to convert.
+            </summary>
+            <returns>List of values to convert.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1">
+            <summary>
+            Controls an conversion iteration.
+            </summary>
+            <typeparam name="T">The type to which the elements of the source are converted.</typeparam>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1.IgnoringEmptyElements">
+            <summary>
+            Use this option to ignore empty strings after splitting.
+            </summary>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1.TrimmingStartOfElements">
+            <summary>
+            Use this option to trim the start of the splitted strings.
+            </summary>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1.TrimmingEndOfElements">
+            <summary>
+            Use this option to trim the end of the splitted strings.
+            </summary>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1.WithNullBeing(System.String[])">
+            <summary>
+            Defines strings which are treated as null after splitting.
+            </summary>
+            <param name="nullValues">List of null values.</param>
+            <returns>This instance.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.UniversalTypeConverter.EnumerableStringConversion`1.GetValuesToConvert">
+            <summary>
+            Gets a list of the values to convert.
+            </summary>
+            <returns>List of values to convert.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.GenericStringConcatenator">
+            <summary>
+            Defines a string representation builder for a value list.
+            </summary>
+        </member>
+        <member name="T:TB.ComponentModel.IStringConcatenator">
+            <summary>
+            Defines a string representation builder for a value list.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.IStringConcatenator.Concatenate(System.String[])">
+            <summary>
+            Concatenates the given values to a string.
+            </summary>
+            <param name="values">Values to concatenate.</param>
+            <returns>String representation.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringConcatenator">GenericStringConcatenator</see> class.<br></br>
+            Using the <see cref="F:TB.ComponentModel.UniversalTypeConverter.DefaultStringSeperator">semicolon</see> as seperator.<br></br>
+            Using <see cref="F:TB.ComponentModel.UniversalTypeConverter.DefaultNullStringValue">".null."</see> for null values.<br></br>
+            Using <see cref="F:TB.ComponentModel.ConcatenationOptions.Default">ConcatenationOptions.Default</see>.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringConcatenator">GenericStringConcatenator</see> class.<br></br>
+            Using the the given seperator.<br></br>
+            Using <see cref="F:TB.ComponentModel.UniversalTypeConverter.DefaultNullStringValue">".null."</see> for null values.<br></br>
+            Using <see cref="F:TB.ComponentModel.ConcatenationOptions.Default">ConcatenationOptions.Default</see>.
+            </summary>
+            <param name="seperator">Seperator.</param>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.#ctor(System.String,TB.ComponentModel.ConcatenationOptions)">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringConcatenator">GenericStringConcatenator</see> class.<br></br>
+            Using the the given seperator.<br></br>
+            Using <see cref="F:TB.ComponentModel.UniversalTypeConverter.DefaultNullStringValue">".null."</see> for null values.<br></br>
+            Using the given options.
+            </summary>
+            <param name="seperator">Seperator.</param>
+            <param name="concatenationOptions">Options.</param>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringConcatenator">GenericStringConcatenator</see> class.<br></br>
+            Using the the given seperator.<br></br>
+            Using the given null value.<br></br>
+            Using <see cref="F:TB.ComponentModel.ConcatenationOptions.Default">ConcatenationOptions.Default</see>.
+            </summary>
+            <param name="seperator">Seperator.</param>
+            <param name="nullValue">Null value.</param>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.#ctor(System.String,System.String,TB.ComponentModel.ConcatenationOptions)">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringConcatenator">GenericStringConcatenator</see> class using the given settings.
+            </summary>
+            <param name="seperator">Seperator.</param>
+            <param name="nullValue">Null value.</param>
+            <param name="concatenationOptions">Options.</param>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.Concatenate(System.String[])">
+            <summary>
+            Concatenates the given values to a string.
+            </summary>
+            <param name="values">Values to concatenate.</param>
+            <returns>String representation.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringConcatenator.ConcatenateCore(System.String[])">
+            <summary>
+            Concatenates the given values to a string.<br></br>
+            This is the core routine to override within subclasses.
+            </summary>
+            <param name="values">Values to concatenate.</param>
+            <returns>String representation.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.ObjectExtension">
+            <summary>
+            Extension methods.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvertTo``1(System.Object)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvertTo``1(System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvertTo``1(System.Object,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvertTo``1(System.Object,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to test.</typeparam>
+            <param name="value">The value to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvertTo``1(System.Object,``0@)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvertTo``1(System.Object,``0@,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvertTo``1(System.Object,``0@,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvertTo``1(System.Object,``0@,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="result">An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertTo``1(System.Object)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertTo``1(System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertTo``1(System.Object,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertTo``1(System.Object,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <typeparam name="T">The Type to which the given value is converted.</typeparam>
+            <param name="value">The value which is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvert(System.Object,System.Type)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvert(System.Object,System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvert(System.Object,System.Type,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.CanConvert(System.Object,System.Type,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Determines whether the value can be converted to the specified type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <param name="destinationType">The Type to test.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> can be converted to <paramref name="destinationType"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvert(System.Object,System.Type,System.Object@)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvert(System.Object,System.Type,System.Object@,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvert(System.Object,System.Type,System.Object@,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.TryConvert(System.Object,System.Type,System.Object@,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            A return value indicates whether the operation succeeded.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="result">An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref> if the operation succeeded.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.Convert(System.Object,System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.<see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">ConvertSpecialValues</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.Convert(System.Object,System.Type,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the current CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.Convert(System.Object,System.Type,System.Globalization.CultureInfo,TB.ComponentModel.ConversionOptions)">
+            <summary>
+            Converts the value to the given Type using the given CultureInfo and the given <see cref="T:TB.ComponentModel.ConversionOptions">ConversionOptions</see>.
+            </summary>
+            <param name="value">The value which is converted.</param>
+            <param name="destinationType">The Type to which the given value is converted.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="options">The options which are used for conversion.</param>
+            <returns>An Object instance of type <paramref name="destinationType">destinationType</paramref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable``1(System.Collections.IEnumerable)">
+            <summary>
+            Converts all elements of the list to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the values are converted.</typeparam>
+            <param name="values">The list of values which are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable``1(System.String)">
+            <summary>
+            Splits the string by using the semicolon (;) as a seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable``1(System.String,System.String)">
+            <summary>
+            Splits the string by using the given seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="seperator">The value seperator which is used in <paramref name="valueList">valueList</paramref>.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable``1(System.String,TB.ComponentModel.IStringSplitter)">
+            <summary>
+            Splits the string by using the given splitter and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <typeparam name="T">The type to which the values are converted.</typeparam>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="stringSplitter">The splitter to use.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable(System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Converts all elements of the list to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="values">The list of values which are converted.</param>
+            <param name="destinationType">The type to which the values are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable(System.String,System.Type)">
+            <summary>
+            Splits the string by using the semicolon (;) as a seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the values are converted.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable(System.String,System.Type,System.String)">
+            <summary>
+            Splits the string by using the given seperator and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the values are converted.</param>
+            <param name="seperator">The value seperator which is used in <paramref name="valueList">valueList</paramref>.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToEnumerable(System.String,System.Type,TB.ComponentModel.IStringSplitter)">
+            <summary>
+            Splits the string by using the given splitter and converts all elements of the result to the given type.
+            The result is configurable further more before first iteration.
+            </summary>
+            <param name="valueList">The string representation of the list of values to convert.</param>
+            <param name="destinationType">The type to which the values are converted.</param>
+            <param name="stringSplitter">The splitter to use.</param>
+            <returns>List of converted values.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable)">
+            <summary>
+            Converts the list to a semicolon seperated string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Converts the list to a string where all values a seperated by the given seperator.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="seperator">Seperator.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable,System.String,System.String)">
+            <summary>
+            Converts the list to a string where all values a seperated by the given seperator.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="seperator">Seperator.</param>
+            <param name="nullValue">The string which is used for null values.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the list to a semicolon seperated string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable,TB.ComponentModel.IStringConcatenator)">
+            <summary>
+            Converts the list to a string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="stringConcatenator">The concatenator which is used to build the string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="M:TB.ComponentModel.ObjectExtension.ConvertToStringRepresentation(System.Collections.IEnumerable,System.Globalization.CultureInfo,TB.ComponentModel.IStringConcatenator)">
+            <summary>
+            Converts the list to a string.
+            </summary>
+            <param name="values">Values to convert to string.</param>
+            <param name="culture">The CultureInfo to use as the current culture.</param>
+            <param name="stringConcatenator">The concatenator which is used to build the string.</param>
+            <returns>String representation of the given value list.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.InvalidConversionException">
+            <summary>
+            The exception that is thrown when a conversion is invalid.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.InvalidConversionException.#ctor(System.Object,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TB.ComponentModel.InvalidConversionException">InvalidConversionException</see> class.
+            </summary>
+            <param name="valueToConvert"></param>
+            <param name="destinationType"></param>
+        </member>
+        <member name="T:TB.ComponentModel.ConversionOptions">
+            <summary>
+            Defines options for a conversion.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConversionOptions.None">
+            <summary>
+            No options are used.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">
+            <summary>
+            Includes some typical conversions, e.g. "yes" to true, 'n' to false, true to 'T', etc.
+            This option is used by default.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConversionOptions.AllowDefaultValueIfNull">
+            <summary>
+            Returns the default value of the given type of destination if the given value is null and the type of destination doesn't support null.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConversionOptions.AllowDefaultValueIfWhitespace">
+            <summary>
+            Returns the default value of the given type of destination if the given value is a string containing only whitespace but no conversion from whitespace is supported.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConversionOptions.Default">
+            <summary>
+            The default value for conversions. Same as <see cref="F:TB.ComponentModel.ConversionOptions.EnhancedTypicalValues">EnhancedTypicalValues</see>.
+            </summary>
+        </member>
+        <member name="T:TB.ComponentModel.IStringSplitter">
+            <summary>
+            Defines a splitter for converting a string represenation of a list of values.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.IStringSplitter.Split(System.String)">
+            <summary>
+            Splits the given string represenation of a list of values.
+            </summary>
+            <param name="valueList">String represenation of the list to split.</param>
+            <returns>A list of the splitted values.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.GenericStringSplitter">
+            <summary>
+            Defines a 'split by seperator process' for converting a string represenation of a list of values.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringSplitter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringSplitter">GenericStringSplitter</see> class using the <see cref="F:TB.ComponentModel.UniversalTypeConverter.DefaultStringSeperator">semicolon</see> as seperator.
+            </summary>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringSplitter.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:TB.ComponentModel.GenericStringSplitter">GenericStringSplitter</see> class.
+            </summary>
+            <param name="seperator">The seperator to use for splitting.</param>
+        </member>
+        <member name="M:TB.ComponentModel.GenericStringSplitter.Split(System.String)">
+            <summary>
+            Splits the given string represenation of a list of values.
+            </summary>
+            <param name="valueList">String represenation of the list to split.</param>
+            <returns>A list of the splitted values.</returns>
+        </member>
+        <member name="T:TB.ComponentModel.ConcatenationOptions">
+            <summary>
+            Defines Options for a string concatenation.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConcatenationOptions.None">
+            <summary>
+            No options are used.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConcatenationOptions.IgnoreNull">
+            <summary>
+            Null values are ignored on concatenation.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConcatenationOptions.IgnoreEmpty">
+            <summary>
+            Empty values are ignored on concatenation.
+            </summary>
+        </member>
+        <member name="F:TB.ComponentModel.ConcatenationOptions.Default">
+            <summary>
+            The default value for concatenations. Same as <see cref="F:TB.ComponentModel.ConcatenationOptions.None">ConcatenationOptions.None</see>.
+            </summary>
+        </member>
+    </members>
+</doc>
