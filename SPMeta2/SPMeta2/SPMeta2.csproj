@@ -345,8 +345,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DefaultPreDeploymentTreeTraverseServiceBase.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
+    <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />

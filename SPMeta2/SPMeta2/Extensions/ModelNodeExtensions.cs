@@ -215,5 +215,24 @@ namespace SPMeta2.Extensions
         }
 
         #endregion
+
+        #region validation
+
+        public static ModelValidationResultSet<DefinitionBase> Validate(this ModelNode node, Action<TypedModelValidationResult<DefinitionBase>> action)
+        {
+            var service = ServiceContainer.Instance.GetService<FluentModelValidationServiceBase>();
+
+            return service.Validate<DefinitionBase>(node, action);
+        }
+
+        public static ModelValidationResultSet<TDefinition> Validate<TDefinition>(this ModelNode node, Action<TypedModelValidationResult<TDefinition>> action)
+            where TDefinition : DefinitionBase
+        {
+            var service = ServiceContainer.Instance.GetService<FluentModelValidationServiceBase>();
+
+            return service.Validate(node, action);
+        }
+
+        #endregion
     }
 }
