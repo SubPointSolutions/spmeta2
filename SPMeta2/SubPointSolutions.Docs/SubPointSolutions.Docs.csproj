@@ -840,6 +840,7 @@
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ComputedFieldDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentDatabaseDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentEditorWebPartDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeFieldLinkDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeLinkDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\CurrencyFieldDefinition.md" />
