@@ -39,6 +39,9 @@ Task("Docs-Publishing")
      var srcDocsPath = System.IO.Path.GetFullPath(string.Format(@"./../SubPointSolutions.Docs/Views/{0}", projectDocsFolder));
      var dstDocsPath = string.Format(@"{0}/subpointsolutions-docs/SubPointSolutions.Docs/Views", docsRepoFolder);
 
+     var srcSamplesPath = System.IO.Path.GetFullPath(string.Format(@"./../SubPointSolutions.Docs/Code/Samples/m2Samples.cs"));
+     var dstSamplesPath = string.Format(@"{0}/subpointsolutions-docs/SubPointSolutions.Docs/Code/Samples", docsRepoFolder);
+
      var commitName = string.Format(@"{0} - CI docs update {1}", projectName, DateTime.Now.ToString("yyyyMMdd_HHmmssfff"));
 
      Information(string.Format("Merging documentation wiht commit:[{0}]", commitName));
@@ -72,6 +75,7 @@ Task("Docs-Publishing")
       var mergeCmd = new []{
             string.Format("cd '{0}'", docsRepoFolder),
             string.Format("copy-item  '{0}' '{1}' -Recurse -Force", srcDocsPath,  dstDocsPath),
+            string.Format("copy-item  '{0}' '{1}' -Recurse -Force", srcSamplesPath,  dstSamplesPath),
             string.Format("git add *.md"),
             string.Format("git add *.cs"),
             string.Format("git commit -m '{0}'", commitName),
