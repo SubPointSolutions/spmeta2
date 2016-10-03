@@ -521,6 +521,8 @@ function CreateSPMeta2CoreStandardPackage($version) {
 
 function CreateSPMeta2CSOMFoundationPackage($version, $spRuntime) {
 
+    Write-BInfo "CreateSPMeta2CSOMFoundationPackage - Version:[$version] Runtime:[$spRuntime]"
+
 	$package = GetPackagePrototype
 
 	$package.Version = $version;
@@ -557,11 +559,27 @@ function CreateSPMeta2CSOMFoundationPackage($version, $spRuntime) {
 
 	$package.Dependencies += $spMetaCore
 
+	# add reference to Microsoft.SharePointOnline.CSOM 
+	if($spRuntime -eq "16") {
+		
+        Write-BInfo "Detected [$spRuntime] runtime, adding ref to Microsoft.SharePointOnline.CSOM"
+
+		$o365CSOMPackage = GetDependencyPrototype
+		$o365CSOMPackage.Id = "Microsoft.SharePointOnline.CSOM"
+		$o365CSOMPackage.Version = "16.1.5715.1200"
+
+		$package.Dependencies += $o365CSOMPackage
+	} else {
+        Write-BInfo "Detected [$spRuntime] runtime, no ref to Microsoft.SharePointOnline.CSOM is needed"
+    }
+
 	CreatePackage $package $spRuntime
 }
 
-function CreateSPMeta2CSOMStandardPackage($versionm, $spRuntime) {
+function CreateSPMeta2CSOMStandardPackage($version, $spRuntime) {
 	
+    Write-BInfo "CreateSPMeta2CSOMStandardPackage - Version:[$version] Runtime:[$spRuntime]"
+
 	$package = GetPackagePrototype
 
 	$package.Version = $version;
@@ -622,6 +640,20 @@ function CreateSPMeta2CSOMStandardPackage($versionm, $spRuntime) {
 
 
 	$package.Dependencies += $spMetaCSOM
+
+	# add reference to Microsoft.SharePointOnline.CSOM 
+	if($spRuntime -eq "16") {
+		
+        Write-BInfo "Detected [$spRuntime] runtime, adding ref to Microsoft.SharePointOnline.CSOM"
+
+		$o365CSOMPackage = GetDependencyPrototype
+		$o365CSOMPackage.Id = "Microsoft.SharePointOnline.CSOM"
+		$o365CSOMPackage.Version = "16.1.5715.1200"
+
+		$package.Dependencies += $o365CSOMPackage
+	} else {
+        Write-BInfo "Detected [$spRuntime] runtime, no ref to Microsoft.SharePointOnline.CSOM is needed"
+    }
 
 	CreatePackage $package $spRuntime
 }

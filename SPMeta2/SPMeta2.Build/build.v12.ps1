@@ -89,7 +89,7 @@ function BuildProfile($buildProfile) {
             Write-BError "`t[M2 Build] Expanding params:" -fore Red
                                     
             foreach($key in $buildProfile.Keys) {
-                Write-BError "`t$key":[$( $buildProfile[$key])] -fore Red
+                Write-BError "`t$key":[$($buildProfile[$key])] -fore Red
             }
 
 			throw "`t[M2 Build] !!! Build faild on profile:[$($buildProfile.Name)]. Please check output early to check the details. !!!" 
@@ -145,6 +145,7 @@ $o365Projects = @("SPMeta2", "SPMeta2.Standard", "SPMeta2.CSOM", "SPMeta2.CSOM.S
 
 # https://msdn.microsoft.com/en-us/library/ms164311.aspx
 $defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:quiet /clp:ErrorsOnly /nologo"
+#$defaultBuildParams = " /t:Clean,Rebuild /p:Platform=AnyCPU /p:WarningLevel=0 /verbosity:detailed /clp:ErrorsOnly /nologo"
 
 $isAppVeyor = $g_isAppVeyor
 

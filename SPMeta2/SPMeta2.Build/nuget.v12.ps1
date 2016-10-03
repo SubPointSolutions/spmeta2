@@ -28,7 +28,7 @@ cd "$currentDir"
 # global 'g_' variables to be used across the board
 
 # should publish to NuGet?
-$g_shouldPublish = $false
+$g_shouldPublish = $true
 
 # should use daily-based version
 $g_useDayVersion = $false
@@ -37,10 +37,10 @@ $g_useDayVersion = $false
 $g_is13 = $false
 
 # M2 NuGet package version, release noted URL and target solution directory
-$g_hardcoreVersionBase = "1.2.75";
-$g_hardcoreVersion = "$g_hardcoreVersionBase-beta1";
+$g_hardcoreVersionBase = "1.2.85";
+$g_hardcoreVersion = "$g_hardcoreVersionBase-beta2";
 
-$g_releaseNotes = "https://github.com/SubPointSolutions/spmeta2/releases/tag/1.2.60";
+$g_releaseNotes = "https://github.com/SubPointSolutions/spmeta2/releases/tag/$g_hardcoreVersion";
 $g_solutionDirectory = "C:\Users\$env:USERNAME.$env:USERDOMAIN\Source\Repos\spmeta2\spmeta2"
 
 $g_Verbosity = 'quiet'
