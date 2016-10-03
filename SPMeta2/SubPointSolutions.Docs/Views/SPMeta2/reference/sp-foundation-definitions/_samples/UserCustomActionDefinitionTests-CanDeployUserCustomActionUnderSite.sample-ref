@@ -1,0 +1,15 @@
+var siteLogger = new UserCustomActionDefinition
+{
+    Name = "m2SiteLogger",
+    Location = "ScriptLink",
+    ScriptBlock = "console.log('site logger on site:' + _spPageContextInfo.siteAbsoluteUrl);",
+    Sequence = 1000
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site.AddUserCustomAction(siteLogger);
+});
+
+DeployModel(model);
+

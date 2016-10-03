@@ -1,0 +1,21 @@
+var contentDb1 = new ContentDatabaseDefinition
+{
+    ServerName = "localhost",
+    DbName = "intranet_content_db1"
+};
+
+var contentDb2 = new ContentDatabaseDefinition
+{
+    ServerName = "localhost",
+    DbName = "intranet_content_db2"
+};
+
+var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+{
+    webApp
+        .AddContentDatabase(contentDb1)
+        .AddContentDatabase(contentDb2);
+});
+
+DeployModel(model);
+

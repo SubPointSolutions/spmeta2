@@ -1,0 +1,16 @@
+var documentContentType = new ContentTypeDefinition
+{
+    Name = "Custom document set",
+    Id = new Guid("AAC93B98-F776-4D5C-9E6E-66F2DC45A467"),
+    ParentContentTypeId = BuiltInContentTypeId.DocumentSet_Correct,
+    Group = "SPMeta2.Samples"
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+       .AddContentType(documentContentType);
+});
+
+DeployModel(model);
+

@@ -1,0 +1,21 @@
+var siteTag = new PropertyDefinition
+{
+    Key = "m2_site_tag",
+    Value = "m2_site_tag_value",
+};
+
+var siteType = new PropertyDefinition
+{
+    Key = "m2_site_type",
+    Value = "m2_site_type_value",
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+        .AddProperty(siteTag)
+        .AddProperty(siteType);
+});
+
+DeployModel(model);
+

@@ -1,0 +1,31 @@
+var ourCompany = new TopNavigationNodeDefinition
+{
+    Title = "Our Company",
+    Url = "our-company.aspx",
+    IsExternal = true
+};
+
+var ourServices = new TopNavigationNodeDefinition
+{
+    Title = "Our Services",
+    Url = "our-services.aspx",
+    IsExternal = true
+};
+
+var ourTeam = new TopNavigationNodeDefinition
+{
+    Title = "Our Team",
+    Url = "our-team.aspx",
+    IsExternal = true
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddTopNavigationNode(ourCompany)
+        .AddTopNavigationNode(ourServices)
+        .AddTopNavigationNode(ourTeam);
+});
+
+DeployModel(model);
+

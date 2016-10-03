@@ -1,0 +1,14 @@
+var solutionDef = new FarmSolutionDefinition
+{
+    FileName = "your-solution-file.wsp",
+    SolutionId = new Guid("your-solution-id"),
+    Content = File.ReadAllBytes("path-to-your-solution-or-byte-array")
+};
+
+var model = SPMeta2Model.NewFarmModel(farm =>
+{
+    farm.AddFarmSolution(solutionDef);
+});
+
+DeployModel(model);
+

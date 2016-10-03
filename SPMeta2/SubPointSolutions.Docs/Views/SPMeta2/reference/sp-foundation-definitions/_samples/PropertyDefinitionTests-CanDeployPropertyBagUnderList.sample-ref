@@ -1,0 +1,32 @@
+var listTag = new PropertyDefinition
+{
+    Key = "m2_list_tag",
+    Value = "m2_list_tag_value",
+};
+
+var listType = new PropertyDefinition
+{
+    Key = "m2_web_type",
+    Value = "m2_web_type_value",
+};
+
+var listWithProperties = new ListDefinition
+{
+    Title = "List with properties",
+    Description = "List with some properties.",
+    TemplateType = BuiltInListTemplateTypeId.GenericList,
+    Url = "ListWithProperties"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddList(listWithProperties, list =>
+    {
+        list
+          .AddProperty(listTag)
+          .AddProperty(listType);
+    });
+});
+
+DeployModel(model);
+

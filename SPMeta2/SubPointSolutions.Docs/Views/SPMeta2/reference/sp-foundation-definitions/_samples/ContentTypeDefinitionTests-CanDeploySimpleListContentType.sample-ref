@@ -1,0 +1,16 @@
+var listContentType = new ContentTypeDefinition
+{
+    Name = "Custom list item",
+    Id = new Guid("79658c1e-3096-4c44-bd55-4228d01a5b97"),
+    ParentContentTypeId = BuiltInContentTypeId.Item,
+    Group = "SPMeta2.Samples"
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+       .AddContentType(listContentType);
+});
+
+DeployModel(model);
+

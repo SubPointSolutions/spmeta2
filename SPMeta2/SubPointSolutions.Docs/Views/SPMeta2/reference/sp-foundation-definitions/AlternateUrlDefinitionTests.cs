@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Docs.ProvisionSamples.Base;
 using SPMeta2.Docs.ProvisionSamples.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Syntax.Default;
 using SubPointSolutions.Docs.Code.Enumerations;
 using SubPointSolutions.Docs.Code.Metadata;
@@ -27,12 +29,25 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add alternate URL",
                         Description = ""
                         )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleAlternateUrlDefinition()
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
+            var internalDef = new AlternateUrlDefinition
             {
+                Url = "http://the-portal",
+                UrlZone = BuiltInUrlZone.Intranet
+            };
 
+            var intranetDef = new AlternateUrlDefinition
+            {
+                Url = "http://my-intranet.com.au",
+                UrlZone = BuiltInUrlZone.Internet
+            };
+
+            var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+            {
+                webApp.AddAlternateUrl(internalDef);
+                webApp.AddAlternateUrl(intranetDef);
             });
 
             DeployModel(model);

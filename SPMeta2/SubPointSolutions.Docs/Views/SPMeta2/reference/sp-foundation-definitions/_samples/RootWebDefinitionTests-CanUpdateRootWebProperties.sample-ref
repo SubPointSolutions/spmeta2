@@ -1,0 +1,13 @@
+var rootWeb = new RootWebDefinition
+{
+    Title = "M2 CRM",
+    Description = "Custom CRM application build on top of M2 framework."
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site.AddRootWeb(rootWeb);
+});
+
+DeployModel(model);
+

@@ -1,0 +1,26 @@
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+        .AddField(DocFields.Clients.ClientCredit)
+        .AddField(DocFields.Clients.ClientDebit)
+        .AddField(DocFields.Clients.ClientDescription)
+        .AddField(DocFields.Clients.ClientNumber)
+        .AddField(DocFields.Clients.ClientWebSite)
+
+       .AddContentType(DocContentTypes.CustomerAccount, contentType =>
+       {
+           contentType
+             .AddContentTypeFieldLink(DocFields.Clients.ClientCredit)
+             .AddContentTypeFieldLink(DocFields.Clients.ClientDebit)
+             .AddContentTypeFieldLink(DocFields.Clients.ClientWebSite);
+       })
+       .AddContentType(DocContentTypes.CustomerDocument, contentType =>
+       {
+           contentType
+              .AddContentTypeFieldLink(DocFields.Clients.ClientDescription)
+              .AddContentTypeFieldLink(DocFields.Clients.ClientNumber);
+       });
+});
+
+DeployModel(model);
+

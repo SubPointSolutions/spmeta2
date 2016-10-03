@@ -1,0 +1,23 @@
+var rootWeb = new RootWebDefinition
+{
+
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site.AddRootWeb(rootWeb, web =>
+    {
+        web
+          .AddHostList(BuiltInListDefinitions.StyleLibrary, list =>
+          {
+              // do stuff with 'Style Library'
+          })
+          .AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+          {
+              // do stuff with 'Master Page Library'
+          });
+    });
+});
+
+DeployModel(model);
+

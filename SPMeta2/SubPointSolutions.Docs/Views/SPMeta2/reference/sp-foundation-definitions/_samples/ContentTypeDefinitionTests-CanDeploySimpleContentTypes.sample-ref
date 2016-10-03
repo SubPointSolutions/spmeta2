@@ -1,0 +1,9 @@
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+       .AddContentType(DocContentTypes.CustomerAccount)
+       .AddContentType(DocContentTypes.CustomerDocument);
+});
+
+DeployModel(model);
+

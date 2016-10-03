@@ -1,0 +1,13 @@
+var treeViewSettings = new TreeViewSettingsDefinition
+{
+    TreeViewEnabled = true,
+    QuickLaunchEnabled = true
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddTreeViewSettings(treeViewSettings);
+});
+
+DeployModel(model);
+

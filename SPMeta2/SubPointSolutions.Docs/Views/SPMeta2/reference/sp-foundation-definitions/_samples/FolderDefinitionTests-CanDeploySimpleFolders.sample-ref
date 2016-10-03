@@ -1,0 +1,30 @@
+var activeDocsFolder = new FolderDefinition
+{
+    Name = "Active documents"
+};
+
+var archiveFolder = new FolderDefinition
+{
+    Name = "Archive"
+};
+
+var listWithFolders = new ListDefinition
+{
+    Title = "List with folders",
+    Description = "Custom list with folders.",
+    TemplateType = BuiltInListTemplateTypeId.GenericList,
+    Url = "ListWithFolders"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddList(listWithFolders, list =>
+    {
+        list
+            .AddFolder(activeDocsFolder)
+            .AddFolder(archiveFolder);
+    });
+});
+
+DeployModel(model);
+

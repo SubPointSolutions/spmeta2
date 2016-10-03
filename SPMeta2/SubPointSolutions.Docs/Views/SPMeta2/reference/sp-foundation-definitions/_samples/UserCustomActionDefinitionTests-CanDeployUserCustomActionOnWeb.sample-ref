@@ -1,0 +1,25 @@
+var webLogger = new UserCustomActionDefinition
+{
+    Name = "m2WebLogger",
+    Location = "ScriptLink",
+    ScriptBlock = "console.log('site logger on web:' + _spPageContextInfo.webAbsoluteUrl);",
+    Sequence = 1800
+};
+
+var loggerWeb = new WebDefinition
+{
+    Title = "M2 Logger Web",
+    Url = "m2logging",
+    WebTemplate = BuiltInWebTemplates.Collaboration.TeamSite
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddWeb(loggerWeb, subWeb =>
+    {
+        subWeb.AddUserCustomAction(webLogger);
+    });
+});
+
+DeployModel(model);
+

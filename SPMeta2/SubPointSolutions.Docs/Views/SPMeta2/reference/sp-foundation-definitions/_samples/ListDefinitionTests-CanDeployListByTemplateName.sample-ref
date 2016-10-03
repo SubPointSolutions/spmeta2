@@ -1,0 +1,15 @@
+var contactsList = new ListDefinition
+{
+    Title = "Some Assert",
+    Description = "Some Assert.",
+    TemplateName = BuiltInListTemplates.AssetLibrary.InternalName,
+    Url = "SomeAssert"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddList(contactsList);
+});
+
+DeployModel(model);
+

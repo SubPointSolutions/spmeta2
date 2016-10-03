@@ -1,0 +1,37 @@
+// this whould deploy the web part using WebpartXmlTemplate prop
+// you need to provide an XML template which you get from SharePoint
+// export the wenb part, and put it into WebpartXmlTemplate prop
+
+// here is a web part XML template
+// usually, you export that XML from SharePoint page, but M2 has pre-build class
+var contentEditorWebPartXml = BuiltInWebPartTemplates.ContentEditorWebPart;
+
+var contentEditorWebPart = new WebPartDefinition
+{
+    Title = "About SharePoint XML",
+    Id = "m2AboutSharePointXML",
+    WebpartXmlTemplate = contentEditorWebPartXml,
+    ZoneIndex = 20,
+    ZoneId = "Main"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 webparts provision",
+    FileName = "web-parts-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list.AddWebPartPage(webPartPage, page =>
+        {
+            page.AddWebPart(contentEditorWebPart);
+        });
+    });
+});
+
+DeployModel(model);
+

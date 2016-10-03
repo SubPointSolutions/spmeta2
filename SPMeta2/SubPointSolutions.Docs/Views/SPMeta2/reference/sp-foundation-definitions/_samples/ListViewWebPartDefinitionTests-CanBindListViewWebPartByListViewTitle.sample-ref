@@ -1,0 +1,55 @@
+var incidentsLibrary = new ListDefinition
+{
+    Title = "Incidents library",
+    Description = "A document library.",
+    TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+    Url = "m2Incidents"
+};
+
+var incidentsView = new ListViewDefinition
+{
+    Title = "Last Incidents",
+    Fields = new Collection<string>
+    {
+        BuiltInInternalFieldNames.Edit,
+        BuiltInInternalFieldNames.ID,
+        BuiltInInternalFieldNames.FileLeafRef
+    },
+    RowLimit = 10
+};
+
+var listView = new ListViewWebPartDefinition
+{
+    Title = "Last Incidents binding by List View Title",
+    Id = "m2LastIncidentsView",
+    ZoneIndex = 10,
+    ZoneId = "Main",
+    ListUrl = incidentsLibrary.GetListUrl(),
+    ViewName = incidentsView.Title
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 List View provision",
+    FileName = "listview-webpart-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+      .AddList(incidentsLibrary, list =>
+      {
+          list.AddListView(incidentsView);
+      })
+      .AddHostList(BuiltInListDefinitions.SitePages, list =>
+      {
+          list.AddWebPartPage(webPartPage, page =>
+          {
+              page.AddListViewWebPart(listView);
+          });
+      });
+});
+
+DeployModel(model);
+

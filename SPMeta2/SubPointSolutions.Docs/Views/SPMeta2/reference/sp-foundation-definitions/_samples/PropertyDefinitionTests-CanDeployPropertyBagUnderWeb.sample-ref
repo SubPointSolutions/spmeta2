@@ -1,0 +1,21 @@
+var webTag = new PropertyDefinition
+{
+    Key = "m2_web_tag",
+    Value = "m2_web_tag_value",
+};
+
+var webType = new PropertyDefinition
+{
+    Key = "m2_web_type",
+    Value = "m2_web_type_value",
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+     .AddProperty(webTag)
+     .AddProperty(webType);
+});
+
+DeployModel(model);
+

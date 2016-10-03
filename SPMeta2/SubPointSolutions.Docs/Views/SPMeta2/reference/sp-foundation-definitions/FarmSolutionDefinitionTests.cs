@@ -1,9 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Docs.ProvisionSamples.Base;
 using SPMeta2.Docs.ProvisionSamples.Definitions;
 using SPMeta2.Syntax.Default;
 using SubPointSolutions.Docs.Code.Enumerations;
 using SubPointSolutions.Docs.Code.Metadata;
+using System;
+using System.IO;
 
 namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
 {
@@ -24,12 +27,19 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add farm solution",
                         Description = ""
                         )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleFarmSolutionDefinition()
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
+            var solutionDef = new FarmSolutionDefinition
             {
-         
+                FileName = "your-solution-file.wsp",
+                SolutionId = new Guid("your-solution-id"),
+                Content = File.ReadAllBytes("path-to-your-solution-or-byte-array")
+            };
+
+            var model = SPMeta2Model.NewFarmModel(farm =>
+            {
+                farm.AddFarmSolution(solutionDef);
             });
 
             DeployModel(model);

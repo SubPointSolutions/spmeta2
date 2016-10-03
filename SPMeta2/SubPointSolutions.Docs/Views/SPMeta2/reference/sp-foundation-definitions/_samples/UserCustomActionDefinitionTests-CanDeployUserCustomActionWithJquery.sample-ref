@@ -1,0 +1,55 @@
+var jQueryFile = new ModuleFileDefinition
+{
+    FileName = "jquery-1.11.2.min.js",
+    Content = ModuleFileUtils.FromResource(GetType().Assembly, "SPMeta2.Docs.Modules.jquery-1.11.2.min.js"),
+    Overwrite = true
+};
+
+var appScriptsFolder = new FolderDefinition
+{
+    Name = "M2 App Scripts"
+};
+
+var jQueryCustomAction = new UserCustomActionDefinition
+{
+    Name = "m2jQuery",
+    Location = "ScriptLink",
+    ScriptSrc = UrlUtility.CombineUrl(new string[]
+    {
+        "~sitecollection",
+        BuiltInListDefinitions.StyleLibrary.GetListUrl(),
+        appScriptsFolder.Name,
+        jQueryFile.FileName
+    }),
+    Sequence = 1500
+};
+
+var jQuerySiteLogger = new UserCustomActionDefinition
+{
+    Name = "m2jQuerySiteLogger",
+    Location = "ScriptLink",
+    ScriptBlock = "jQuery(document).ready( function() { console.log('jQuery site logger on site:' + _spPageContextInfo.siteAbsoluteUrl); } );",
+    Sequence = 1600
+};
+
+var siteModel = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+      .AddUserCustomAction(jQueryCustomAction)
+      .AddUserCustomAction(jQuerySiteLogger);
+});
+
+var webModel = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.StyleLibrary, list =>
+    {
+        list.AddFolder(appScriptsFolder, folder =>
+        {
+            folder.AddModuleFile(jQueryFile);
+        });
+    });
+});
+
+DeployModel(siteModel);
+DeployModel(webModel);
+

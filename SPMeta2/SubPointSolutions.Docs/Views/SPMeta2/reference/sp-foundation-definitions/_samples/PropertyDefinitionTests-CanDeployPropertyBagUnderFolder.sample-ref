@@ -1,0 +1,48 @@
+var folderTag = new PropertyDefinition
+{
+    Key = "m2_folder_tag",
+    Value = "m2_folder_tag_value",
+};
+
+var folderType = new PropertyDefinition
+{
+    Key = "m2_folder_type",
+    Value = "m2_folder_type_value",
+};
+
+var listWithProperties = new ListDefinition
+{
+    Title = "List with properties",
+    Description = "List with some properties.",
+    TemplateType = BuiltInListTemplateTypeId.GenericList,
+    Url = "ListWithProperties"
+};
+
+var fodlerWithProperties = new FolderDefinition
+{
+    Name = "folder with properties"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddList(listWithProperties, list =>
+    {
+        list.AddFolder(fodlerWithProperties, folder =>
+        {
+            // Syntax miss - folder should support adding props #669
+            // https://github.com/SubPointSolutions/spmeta2/issues/669
+
+            //folder
+            //    .AddProperty(folderTag)
+            //    .AddProperty(folderType);
+
+            folder
+                .AddDefinitionNode(folderTag)
+                .AddDefinitionNode(folderType);
+        });
+
+    });
+});
+
+DeployModel(model);
+

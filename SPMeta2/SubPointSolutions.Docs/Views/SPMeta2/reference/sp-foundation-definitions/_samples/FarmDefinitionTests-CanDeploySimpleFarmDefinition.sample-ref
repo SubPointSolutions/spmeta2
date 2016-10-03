@@ -1,0 +1,12 @@
+var farmFeature = BuiltInFarmFeatures.SiteMailboxes.Inherit(f =>
+{
+    f.Enable = true;
+});
+
+var model = SPMeta2Model.NewFarmModel(farm =>
+{
+    farm.AddFarmFeature(farmFeature);
+});
+
+DeployModel(model);
+

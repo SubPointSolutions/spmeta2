@@ -1,0 +1,34 @@
+// this would deploy the web part using WebpartFileName
+// you need to provide a file name ofthe web part template in the web part gallery
+// M2 would load this file, then use an XML as a web part template
+
+var contentEditorWebPart = new WebPartDefinition
+{
+    Title = "About SharePoint web part gallery",
+    Id = "m2AboutSharePointWebPartGallery",
+    // shortcut to "MSContentEditor.dwp",
+    WebpartFileName = BuiltInWebpartFileNames.MSContentEditor,
+    ZoneIndex = 20,
+    ZoneId = "Main"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 webparts provision",
+    FileName = "web-parts-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list.AddWebPartPage(webPartPage, page =>
+        {
+            page.AddWebPart(contentEditorWebPart);
+        });
+    });
+});
+
+DeployModel(model);
+

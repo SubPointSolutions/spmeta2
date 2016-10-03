@@ -1,0 +1,22 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddWeb(DocWebs.News)
+        .AddWeb(DocWebs.Departments, departmentWeb =>
+        {
+            departmentWeb
+                .AddWeb(DocWebs.DepartmentWebs.HR)
+                .AddWeb(DocWebs.DepartmentWebs.ITHelpDesk, itWeb =>
+                {
+                    itWeb
+                        .AddWeb(DocWebs.DepartmentWebs.ITHelpDeskWebs.Apple)
+                        .AddWeb(DocWebs.DepartmentWebs.ITHelpDeskWebs.Cisco)
+                        .AddWeb(DocWebs.DepartmentWebs.ITHelpDeskWebs.Microsoft);
+                })
+                .AddWeb(DocWebs.DepartmentWebs.Sales);
+        })
+        .AddWeb(DocWebs.AboutOurCompany);
+});
+
+DeployModel(model);
+

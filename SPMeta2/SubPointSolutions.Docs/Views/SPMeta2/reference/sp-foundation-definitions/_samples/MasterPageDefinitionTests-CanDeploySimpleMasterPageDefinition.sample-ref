@@ -1,0 +1,19 @@
+var masterPage = new MasterPageDefinition
+{
+    Title = "M2 Oslo",
+    FileName = "m2-oslo.master",
+    // replace with your master page content
+    Content = Encoding.UTF8.GetBytes(DefaultMasterPageTemplates.Oslo),
+    NeedOverride = true
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.Catalogs.MasterPage, list =>
+    {
+        list.AddMasterPage(masterPage);
+    });
+});
+
+DeployModel(model);
+

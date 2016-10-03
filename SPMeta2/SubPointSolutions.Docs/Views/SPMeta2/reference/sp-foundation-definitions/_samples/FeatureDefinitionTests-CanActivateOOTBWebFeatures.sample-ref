@@ -1,0 +1,11 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddWebFeature(DocWebFeatures.WebPublishingInfrastructure)
+        .AddWebFeature(DocWebFeatures.MetadataNavigationAndFiltering)
+        .AddWebFeature(DocWebFeatures.MDS);
+
+});
+
+DeployModel(model);
+

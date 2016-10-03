@@ -814,6 +814,7 @@
     <None Include="Views\SPMeta2\getting-started\_Support.md" />
     <None Include="Views\SPMeta2\getting-started\writing-console-app.md" />
     <None Include="Views\SPMeta2\Index.md" />
+    <None Include="Views\SPMeta2\kb\kb-m2-000009.md" />
     <None Include="Views\SPMeta2\kb\kb-m2-000008.md" />
     <None Include="Views\SPMeta2\kb\kb-m2-000007.md" />
     <None Include="Views\SPMeta2\kb\kb-m2-000006.md" />

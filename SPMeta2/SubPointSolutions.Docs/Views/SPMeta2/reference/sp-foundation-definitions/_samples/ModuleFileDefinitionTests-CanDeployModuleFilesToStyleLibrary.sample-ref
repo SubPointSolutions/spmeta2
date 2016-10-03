@@ -1,0 +1,26 @@
+var cssFile = new ModuleFileDefinition
+{
+    FileName = "m2-styles.css",
+    Overwrite = true,
+    Content = Encoding.UTF8.GetBytes(".m2-content { padding:10px; border:1px red solid; } ")
+};
+
+var jsFile = new ModuleFileDefinition
+{
+    FileName = "m2-app.js",
+    Overwrite = true,
+    Content = Encoding.UTF8.GetBytes(" alert('hello, m2!'); ")
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.StyleLibrary, list =>
+    {
+        list
+            .AddModuleFile(cssFile)
+            .AddModuleFile(jsFile);
+    });
+});
+
+DeployModel(model);
+

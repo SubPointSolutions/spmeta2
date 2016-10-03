@@ -1,0 +1,44 @@
+var htmlContent = new ModuleFileDefinition
+{
+    FileName = "m2-cewp-content.html",
+    Content = Encoding.UTF8.GetBytes("M2 is everything you need to deploy stuff to Sharepoint"),
+    Overwrite = true,
+};
+
+var cewp = new ContentEditorWebPartDefinition
+{
+    Title = "Content Editor Webpart with URL link",
+    Id = "m2ContentLinkCEWP",
+    ZoneIndex = 20,
+    ZoneId = "Main",
+    ContentLink = UrlUtility.CombineUrl(new string[]{
+            "~sitecollection",
+            BuiltInListDefinitions.StyleLibrary.GetListUrl(),
+            htmlContent.FileName})
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 CEWP provision",
+    FileName = "cewp-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddHostList(BuiltInListDefinitions.StyleLibrary, list =>
+        {
+            list.AddModuleFile(htmlContent);
+        })
+        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+        {
+            list.AddWebPartPage(webPartPage, page =>
+            {
+                page.AddContentEditorWebPart(cewp);
+            });
+        });
+});
+
+DeployModel(model);
+

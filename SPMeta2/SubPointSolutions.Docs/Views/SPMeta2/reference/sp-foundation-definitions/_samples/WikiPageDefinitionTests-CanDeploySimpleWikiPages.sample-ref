@@ -1,0 +1,12 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list
+            .AddWikiPage(DocWikiPages.AboutUs)
+            .AddWikiPage(DocWikiPages.Contacts);
+    });
+});
+
+DeployModel(model);
+

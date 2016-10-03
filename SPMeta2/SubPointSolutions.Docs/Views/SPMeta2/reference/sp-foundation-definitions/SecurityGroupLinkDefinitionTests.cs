@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Definitions;
 using SPMeta2.Docs.ProvisionSamples.Base;
 using SPMeta2.Docs.ProvisionSamples.Definitions;
+using SPMeta2.Enumerations;
 using SPMeta2.Syntax.Default;
 using SubPointSolutions.Docs.Code.Enumerations;
 using SubPointSolutions.Docs.Code.Metadata;
@@ -22,32 +24,71 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [TestMethod]
         [TestCategory("Docs.SecurityGroupLinkDefinition")]
 
-        [SampleMetadata(Title = "Add security group to web",
+        [SampleMetadata(Title = "Assign security group to web",
                             Description = ""
                             )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleSecurityGroupLinkDefinitionToWeb()
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
+            var auditors = new SecurityGroupDefinition
             {
-         
+                Name = "External Auditors",
+                Description = "External auditors group."
+            };
+
+            // add group to the site first
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSecurityGroup(auditors);
             });
 
-            DeployModel(model);
+            // assign group to the web, via .AddSecurityGroupLink() method
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+
+                web.AddSecurityGroupLink(auditors);
+            });
+
+            DeployModel(siteModel);
+            DeployModel(webModel);
         }
 
-        [SampleMetadata(Title = "Add security group to list",
+        [SampleMetadata(Title = "Assign security group to list",
                             Description = ""
                             )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleSecurityGroupLinkDefinitionToList()
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
+            var auditors = new SecurityGroupDefinition
             {
+                Name = "External Auditors",
+                Description = "External auditors group."
+            };
 
+            var auditorsList = new ListDefinition
+            {
+                Title = "Auditors documents",
+                TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+                CustomUrl = "audit-docs"
+            };
+
+            // add group to the site first
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSecurityGroup(auditors);
             });
 
-            DeployModel(model);
+            // assign group to the list, via .AddSecurityGroupLink() method
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(auditorsList, list =>
+                {
+                    list.AddSecurityGroupLink(auditors);
+                });
+            });
+
+            DeployModel(siteModel);
+            DeployModel(webModel);
         }
 
         #endregion

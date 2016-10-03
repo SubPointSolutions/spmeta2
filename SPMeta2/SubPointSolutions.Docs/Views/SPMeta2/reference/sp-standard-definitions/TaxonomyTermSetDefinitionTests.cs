@@ -27,7 +27,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add taxonomy termsets",
             Description = ""
             )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleTaxonomyTermSets()
         {
             var defaultSiteTermStore = new TaxonomyTermStoreDefinition

@@ -1,0 +1,40 @@
+var companyEvents = new ListDefinition
+{
+    Title = "Company Events",
+    Description = "A document library.",
+    TemplateType = BuiltInListTemplateTypeId.Events,
+    Url = "m2CompanyEvents"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 List View provision",
+    FileName = "listview-webpart-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var listView = new ListViewWebPartDefinition
+{
+    Title = "Company Events by List View Title",
+    Id = "m2CompanyEvents",
+    ZoneIndex = 10,
+    ZoneId = "Main",
+    ListUrl = companyEvents.GetListUrl(),
+    ViewName = "Calendar"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+      .AddList(companyEvents)
+      .AddHostList(BuiltInListDefinitions.SitePages, list =>
+      {
+          list.AddWebPartPage(webPartPage, page =>
+          {
+              page.AddListViewWebPart(listView);
+          });
+      });
+});
+
+DeployModel(model);
+

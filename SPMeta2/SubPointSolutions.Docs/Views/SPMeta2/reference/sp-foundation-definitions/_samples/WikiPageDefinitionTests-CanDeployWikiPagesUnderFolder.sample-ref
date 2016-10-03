@@ -1,0 +1,22 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list
+            .AddFolder(DocFolders.WikiPages.News, newsFolder =>
+            {
+                newsFolder
+                    .AddWikiPage(DocWikiPages.NewCoffeeMachine)
+                    .AddWikiPage(DocWikiPages.NewSPMeta2Release);
+            })
+            .AddFolder(DocFolders.WikiPages.Archive, archiveFolder =>
+            {
+                archiveFolder
+                   .AddWikiPage(DocWikiPages.December2012News)
+                   .AddWikiPage(DocWikiPages.October2012News);
+            });
+    });
+});
+
+DeployModel(model);
+

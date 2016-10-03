@@ -1,0 +1,16 @@
+var emptyLookupField = new LookupFieldDefinition
+{
+    Title = "Empty Lookup Field",
+    InternalName = "m2EmptyLookupField",
+    Group = "SPMeta2.Samples",
+    Id = new Guid("B6387953-3967-4023-9D38-431F2C6A5E54")
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+        .AddField(emptyLookupField);
+});
+
+DeployModel(model);
+

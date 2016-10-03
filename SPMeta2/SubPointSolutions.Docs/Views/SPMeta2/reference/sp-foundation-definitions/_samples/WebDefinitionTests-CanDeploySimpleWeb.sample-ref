@@ -1,0 +1,23 @@
+var newCustomerWeb = new WebDefinition
+{
+    Title = "New customer site",
+    Description = "A dedicated site for the customer support.",
+    Url = "new-customer-web",
+    WebTemplate = BuiltInWebTemplates.Collaboration.TeamSite
+};
+var newPublishingWeb = new WebDefinition
+{
+    Title = "Temporary Publishing Web",
+    Description = "A temporary punlishing web.",
+    Url = "new-publishing-web",
+    WebTemplate = BuiltInWebTemplates.Publishing.PublishingPortal
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddWeb(newCustomerWeb);
+    web.AddWeb(newPublishingWeb);
+});
+
+DeployModel(model);
+

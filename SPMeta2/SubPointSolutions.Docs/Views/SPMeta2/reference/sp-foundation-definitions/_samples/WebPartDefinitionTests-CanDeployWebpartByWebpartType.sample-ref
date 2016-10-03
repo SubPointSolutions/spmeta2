@@ -1,0 +1,34 @@
+// this would deploy a web part using WebpartType prop
+// you need to provide AssemblyQualifiedName of the target web part type
+// M2 would use reflection to create an instane of the web part in the runtime
+// that works only for SSOM, not CSOM support yet
+
+var contentEditorWebPart = new WebPartDefinition
+{
+    Title = "About SharePoint SSOM",
+    Id = "m2AboutSharePointSSOM",
+    WebpartType = typeof(ContentEditorWebPart).AssemblyQualifiedName,
+    ZoneIndex = 10,
+    ZoneId = "Main"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 webparts provision",
+    FileName = "web-parts-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list.AddWebPartPage(webPartPage, page =>
+        {
+            page.AddWebPart(contentEditorWebPart);
+        });
+    });
+});
+
+DeploySSOMModel(model);
+

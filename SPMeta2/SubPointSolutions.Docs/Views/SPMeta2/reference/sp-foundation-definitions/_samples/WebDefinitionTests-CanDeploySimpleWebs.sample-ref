@@ -1,0 +1,8 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddWeb(DocWebs.News);
+    web.AddWeb(DocWebs.AboutOurCompany);
+});
+
+DeployModel(model);
+

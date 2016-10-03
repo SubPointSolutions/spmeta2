@@ -1,0 +1,59 @@
+var createdQuery = new StringBuilder();
+
+createdQuery.Append("<Where>");
+createdQuery.Append("</Where>");
+createdQuery.Append("<OrderBy>");
+createdQuery.Append("  <FieldRef Name='ID' Ascending='FALSE'/>");
+createdQuery.Append("</OrderBy>");
+
+var lastTenCreatedDocuments = new ListViewDefinition
+{
+    Title = "Last 10 Created Documents",
+    RowLimit = 10,
+    Query = createdQuery.ToString(),
+    Fields = new Collection<string>
+    {
+        BuiltInInternalFieldNames.ID,
+        BuiltInInternalFieldNames.FileLeafRef
+    }
+};
+
+var editedQuery = new StringBuilder();
+
+editedQuery.Append("<Where>");
+editedQuery.Append("</Where>");
+editedQuery.Append("<OrderBy>");
+editedQuery.Append("  <FieldRef Name='Modified' Ascending='FALSE'/>");
+editedQuery.Append("</OrderBy>");
+
+var lastTenEditedDocuments = new ListViewDefinition
+{
+    Title = "Last 10 Edited Documents",
+    RowLimit = 10,
+    Query = editedQuery.ToString(),
+    Fields = new Collection<string>
+    {
+        BuiltInInternalFieldNames.ID,
+        BuiltInInternalFieldNames.FileLeafRef
+    }
+};
+
+var documentLibrary = new ListDefinition
+{
+    Title = "CustomerDocuments",
+    Description = "A customr document library.",
+    TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+    Url = "CustomerDocuments"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddList(documentLibrary, list =>
+    {
+        list.AddListView(lastTenCreatedDocuments);
+        list.AddListView(lastTenEditedDocuments);
+    });
+});
+
+DeployModel(model);
+

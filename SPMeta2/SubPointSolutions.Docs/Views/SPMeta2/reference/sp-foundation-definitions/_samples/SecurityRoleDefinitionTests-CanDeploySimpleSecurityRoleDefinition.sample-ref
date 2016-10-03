@@ -1,0 +1,30 @@
+var customerEditors = new SecurityRoleDefinition
+{
+    Name = "Customer editors",
+    BasePermissions = new Collection<string>
+    {
+        BuiltInBasePermissions.EditListItems,
+        BuiltInBasePermissions.UseClientIntegration
+    }
+};
+
+var customerApprovers = new SecurityRoleDefinition
+{
+    Name = "Customer approvers",
+    BasePermissions = new Collection<string>
+    {
+        BuiltInBasePermissions.EditListItems,
+        BuiltInBasePermissions.DeleteListItems,
+        BuiltInBasePermissions.UseClientIntegration
+    }
+};
+
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+        .AddSecurityRole(customerEditors)
+        .AddSecurityRole(customerApprovers);
+});
+
+DeployModel(model);
+

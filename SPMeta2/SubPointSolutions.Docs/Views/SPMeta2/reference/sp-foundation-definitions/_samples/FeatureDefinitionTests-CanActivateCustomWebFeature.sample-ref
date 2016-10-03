@@ -1,0 +1,15 @@
+var myCustomerFeature = new FeatureDefinition
+{
+    Enable = true,
+    Id = new Guid("87294C72-F260-42f3-A41B-981A2FFCE37A"),
+    Scope = FeatureDefinitionScope.Web
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddWebFeature(myCustomerFeature);
+});
+
+DeployModel(model);
+

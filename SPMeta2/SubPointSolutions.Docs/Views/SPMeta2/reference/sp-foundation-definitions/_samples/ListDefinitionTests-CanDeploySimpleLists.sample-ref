@@ -1,0 +1,27 @@
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddWeb(DocWebs.AboutOurCompany, aboutWeb =>
+        {
+            aboutWeb
+                .AddList(DocLists.AboutUsLists.ManagementTeam)
+                .AddList(DocLists.AboutUsLists.OurClients);
+        })
+        .AddWeb(DocWebs.DepartmentWebs.HR, hrWeb =>
+        {
+            hrWeb
+                .AddList(DocLists.HRLists.AnnualReviews)
+                .AddList(DocLists.HRLists.Poicies)
+                .AddList(DocLists.HRLists.Procedures);
+        })
+        .AddWeb(DocWebs.Departments, departmentWeb =>
+        {
+            departmentWeb
+                .AddList(DocLists.DepartmentsLists.IssueRegister)
+                .AddList(DocLists.DepartmentsLists.TeamEvents)
+                .AddList(DocLists.DepartmentsLists.TeamTasks);
+        });
+});
+
+DeployModel(model);
+

@@ -1,0 +1,13 @@
+var prefixDef = new PrefixDefinition
+{
+    Path = "projects",
+    PrefixType = BuiltInPrefixTypes.WildcardInclusion
+};
+
+var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+{
+    webApp.AddPrefix(prefixDef);
+});
+
+DeployModel(model);
+

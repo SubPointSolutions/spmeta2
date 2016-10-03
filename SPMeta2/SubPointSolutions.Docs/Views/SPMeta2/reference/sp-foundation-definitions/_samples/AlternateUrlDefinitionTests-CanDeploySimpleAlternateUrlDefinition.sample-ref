@@ -1,6 +1,19 @@
-var model = SPMeta2Model.NewSiteModel(site =>
+var internalDef = new AlternateUrlDefinition
 {
+    Url = "http://the-portal",
+    UrlZone = BuiltInUrlZone.Intranet
+};
 
+var intranetDef = new AlternateUrlDefinition
+{
+    Url = "http://my-intranet.com.au",
+    UrlZone = BuiltInUrlZone.Internet
+};
+
+var model = SPMeta2Model.NewWebApplicationModel(webApp =>
+{
+    webApp.AddAlternateUrl(internalDef);
+    webApp.AddAlternateUrl(intranetDef);
 });
 
 DeployModel(model);

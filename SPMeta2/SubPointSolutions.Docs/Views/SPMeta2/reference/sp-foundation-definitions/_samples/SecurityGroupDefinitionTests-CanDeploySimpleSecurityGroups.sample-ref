@@ -1,0 +1,11 @@
+var model = SPMeta2Model.NewSiteModel(site =>
+{
+    site
+        .AddSecurityGroup(DocSecurityGroups.ClientManagers)
+        .AddSecurityGroup(DocSecurityGroups.ClientSupport)
+        .AddSecurityGroup(DocSecurityGroups.Interns)
+        .AddSecurityGroup(DocSecurityGroups.OrderApprovers);
+});
+
+DeployModel(model);
+

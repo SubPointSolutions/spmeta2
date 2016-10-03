@@ -1,0 +1,21 @@
+var farmTag = new PropertyDefinition
+{
+    Key = "m2_farm_tag",
+    Value = "m2_farm_tag_value",
+};
+
+var farmType = new PropertyDefinition
+{
+    Key = "m2_farm_type",
+    Value = "m2_farm_type_value",
+};
+
+var model = SPMeta2Model.NewFarmModel(farm =>
+{
+    farm
+        .AddProperty(farmTag)
+        .AddProperty(farmType);
+});
+
+DeploySSOMModel(model);
+

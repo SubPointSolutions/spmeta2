@@ -1,0 +1,18 @@
+var customizedWebPartPage = new WebPartPageDefinition
+{
+    Title = "Customers report",
+    FileName = "Customers-report.aspx",
+    CustomPageLayout = "___ a custom web part page template here ___ "
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list
+            .AddWebPartPage(customizedWebPartPage);
+    });
+});
+
+DeployModel(model);
+

@@ -1,0 +1,24 @@
+var newWebHomePage = new WikiPageDefinition
+{
+    FileName = "A new landing page for web.aspx",
+    Content = "Hello, this is a new web landing page!"
+};
+
+var welcomePage = new WelcomePageDefinition
+{
+    // should be relating to the web!
+    Url = UrlUtility.CombineUrl(BuiltInListDefinitions.SitePages.GetListUrl(), newWebHomePage.FileName)
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+        {
+            list.AddWikiPage(newWebHomePage);
+        })
+        .AddWelcomePage(welcomePage);
+});
+
+DeployModel(model);
+

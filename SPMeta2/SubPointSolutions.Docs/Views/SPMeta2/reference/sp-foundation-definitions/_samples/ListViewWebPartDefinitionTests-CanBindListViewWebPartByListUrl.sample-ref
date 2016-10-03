@@ -1,0 +1,39 @@
+var annualReviewsLibrary = new ListDefinition
+{
+    Title = "Annual Reviews",
+    Description = "A document library.",
+    TemplateType = BuiltInListTemplateTypeId.DocumentLibrary,
+    Url = "m2AnnualReviews"
+};
+
+var listView = new ListViewWebPartDefinition
+{
+    Title = "Annual Reviews Default View by List Url",
+    Id = "m2AnnualReviewsView",
+    ZoneIndex = 10,
+    ZoneId = "Main",
+    ListUrl = annualReviewsLibrary.GetListUrl()
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 List View provision",
+    FileName = "listview-webpart-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+      .AddList(annualReviewsLibrary)
+      .AddHostList(BuiltInListDefinitions.SitePages, list =>
+      {
+          list.AddWebPartPage(webPartPage, page =>
+          {
+              page.AddListViewWebPart(listView);
+          });
+      });
+});
+
+DeployModel(model);
+

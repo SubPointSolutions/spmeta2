@@ -1,0 +1,63 @@
+// top level departments node
+var departments = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "Departments",
+    Url = "departments.aspx",
+    IsExternal = true
+};
+
+var hr = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "HR",
+    Url = "hr.aspx",
+    IsExternal = true
+};
+
+var it = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "IT",
+    Url = "it.aspx",
+    IsExternal = true
+};
+
+// top level clients node
+var clients = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "Clients",
+    Url = "clients.aspx",
+    IsExternal = true
+};
+
+var microsoft = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "Microsoft",
+    Url = "microsfot.aspx",
+    IsExternal = true
+};
+
+var apple = new QuickLaunchNavigationNodeDefinition
+{
+    Title = "Apple",
+    Url = "apple.aspx",
+    IsExternal = true
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddQuickLaunchNavigationNode(departments, node =>
+        {
+            node
+                .AddQuickLaunchNavigationNode(hr)
+                .AddQuickLaunchNavigationNode(it);
+        })
+        .AddQuickLaunchNavigationNode(clients, node =>
+        {
+            node
+              .AddQuickLaunchNavigationNode(microsoft)
+              .AddQuickLaunchNavigationNode(apple);
+        });
+});
+
+DeployModel(model);
+

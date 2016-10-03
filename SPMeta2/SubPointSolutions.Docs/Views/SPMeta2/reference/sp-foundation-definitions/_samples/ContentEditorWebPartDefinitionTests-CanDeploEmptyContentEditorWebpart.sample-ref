@@ -1,0 +1,28 @@
+var cewp = new ContentEditorWebPartDefinition
+{
+    Title = "Empty Content Editor Webpart",
+    Id = "m2EmptyCEWP",
+    ZoneIndex = 10,
+    ZoneId = "Main"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 CEWP provision",
+    FileName = "cewp-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list.AddWebPartPage(webPartPage, page =>
+        {
+            page.AddContentEditorWebPart(cewp);
+        });
+    });
+});
+
+DeployModel(model);
+

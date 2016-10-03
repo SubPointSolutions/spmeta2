@@ -10,7 +10,7 @@ public class TaxonomyTermSetDefinitionTests : ProvisionTestBase
     [SampleMetadata(Title = "Add taxonomy termsets",
         Description = ""
         )]
-    [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+    //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
     public void CanDeploySimpleTaxonomyTermSets()
     {
         var defaultSiteTermStore = new TaxonomyTermStoreDefinition

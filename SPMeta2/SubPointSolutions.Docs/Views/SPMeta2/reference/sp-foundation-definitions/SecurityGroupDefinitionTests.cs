@@ -28,7 +28,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add security group",
                             Description = ""
                             )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleSecurityGroup()
         {
             var auditors = new SecurityGroupDefinition
@@ -60,7 +60,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add multiple security groups",
                             Description = ""
                             )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
         public void CanDeploySimpleSecurityGroups()
         {
             var model = SPMeta2Model.NewSiteModel(site =>

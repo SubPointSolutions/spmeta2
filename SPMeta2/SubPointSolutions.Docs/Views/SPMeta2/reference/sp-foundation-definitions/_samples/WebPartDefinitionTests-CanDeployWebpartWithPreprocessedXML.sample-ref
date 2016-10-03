@@ -1,0 +1,48 @@
+// this shows how to use M2 API to pre-process web part XML
+
+// here is a web part XML template
+// usually, you export that XML from SharePoint page, but M2 has pre-build class
+var contentEditorWebPartXml = BuiltInWebPartTemplates.ContentEditorWebPart;
+
+// let' set new some properties, shall we?
+// we load XML by WebpartXmlExtensions.LoadWebpartXmlDocument() method
+// it works well web both V2/V3 web part XML
+// then change properties and seehow it goes
+// then call ToString() to get string out of XML
+var wpXml = WebpartXmlExtensions
+               .LoadWebpartXmlDocument(contentEditorWebPartXml)
+               .SetOrUpdateProperty("FrameType", "Standard")
+               .SetOrUpdateProperty("Width", "500")
+               .SetOrUpdateProperty("Heigth", "200")
+               .SetOrUpdateContentEditorWebPartProperty("Content", "This is a new content!", true)
+               .ToString();
+
+var contentEditorWebPart = new WebPartDefinition
+{
+    Title = "New content",
+    Id = "m2AboutSharePointnewContent",
+    WebpartXmlTemplate = wpXml,
+    ZoneIndex = 20,
+    ZoneId = "Main"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 webparts provision",
+    FileName = "web-parts-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web.AddHostList(BuiltInListDefinitions.SitePages, list =>
+    {
+        list.AddWebPartPage(webPartPage, page =>
+        {
+            page.AddWebPart(contentEditorWebPart);
+        });
+    });
+});
+
+DeployCSOMModel(model);
+

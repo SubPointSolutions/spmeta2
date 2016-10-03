@@ -1,0 +1,34 @@
+var newFolderHomePage = new WikiPageDefinition
+{
+    FileName = "A new landing page for folder.aspx",
+    Content = "Hello, this is a new folder landing page!"
+};
+
+var welcomePage = new WelcomePageDefinition
+{
+    // should be relating to the folder!
+    Url = newFolderHomePage.FileName
+};
+
+var landingPageFolder = new FolderDefinition
+{
+    Name = "A folder with custom landing page"
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+        .AddHostList(BuiltInListDefinitions.SitePages, list =>
+        {
+            list
+                .AddFolder(landingPageFolder, folder =>
+                {
+                    folder
+                        .AddWikiPage(newFolderHomePage)
+                        .AddWelcomePage(welcomePage);
+                });
+        });
+});
+
+DeployModel(model);
+

@@ -1,0 +1,30 @@
+var scriptEditor = new ScriptEditorWebPartDefinition
+{
+    Title = "Pre-provisioned Script Editor",
+    Id = "m2ScriptEditorWithLoggerWhichMustBeMoreThan32Chars",
+    ZoneIndex = 20,
+    ZoneId = "Main",
+    Content = " <script> console.log('script editor log');  </script> Pre-provisioned Script Editor Content"
+};
+
+var webPartPage = new WebPartPageDefinition
+{
+    Title = "M2 Script Editor provision",
+    FileName = "script-editor-webpart-provision.aspx",
+    PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1
+};
+
+var model = SPMeta2Model.NewWebModel(web =>
+{
+    web
+      .AddHostList(BuiltInListDefinitions.SitePages, list =>
+      {
+          list.AddWebPartPage(webPartPage, page =>
+          {
+              page.AddScriptEditorWebPart(scriptEditor);
+          });
+      });
+});
+
+DeployModel(model);
+
