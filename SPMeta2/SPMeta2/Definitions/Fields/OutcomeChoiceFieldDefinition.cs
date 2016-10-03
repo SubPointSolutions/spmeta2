@@ -4,67 +4,31 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using System.Collections.ObjectModel;
 
 namespace SPMeta2.Definitions.Fields
 {
     /// <summary>
-    /// Allows to define and deploy boolean field.
+    /// Allows to define and deploy task outcome field.
     /// </summary>
-    /// 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.OutcomeChoiceField", "Microsoft.SharePoint")]
     [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Field", "Microsoft.SharePoint.Client")]
 
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
-    public class OutcomeChoiceFieldDefinition : FieldDefinition
+    public class OutcomeChoiceFieldDefinition : ChoiceFieldDefinition
     {
         #region constructors
 
         public OutcomeChoiceFieldDefinition()
         {
+            this.FieldType = BuiltInFieldTypes.OutcomeChoice;
         }
-
-        #endregion
-
-        #region properties
-
-
-        [ExpectValidation]
-        [ExpectRequired]
-        [DataMember]
-        public override string FieldType
-        {
-            get
-            {
-                return BuiltInFieldTypes.OutcomeChoice;
-            }
-            set
-            {
-
-            }
-        }
-
-        [ExpectValidation]
-        [DataMember]
-        public override string ValidationMessage
-        {
-            get { return string.Empty; }
-            set { }
-        }
-
-        [ExpectValidation]
-        [DataMember]
-        public override string ValidationFormula
-        {
-            get { return string.Empty; }
-            set { }
-        }
-
 
         #endregion
 

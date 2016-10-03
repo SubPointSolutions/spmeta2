@@ -725,6 +725,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region o365 root collection
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.O365")]
+        public void CanDeploy_Field_To_O365_RootSiteCollection()
+        {
+            var fieldDef = new BooleanFieldDefinition
+            {
+                Id = Rnd.Guid(),
+                Title = Rnd.String(),
+                InternalName = Rnd.String(),
+
+                Required = false,
+                Hidden = false,
+
+                ShowInNewForm = true,
+                ShowInEditForm = true,
+                ShowInDisplayForm = true,
+
+                Group = Rnd.String()
+            };
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(fieldDef);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region utils
 
         protected FieldDefinition GetLocalizedFieldDefinition()
