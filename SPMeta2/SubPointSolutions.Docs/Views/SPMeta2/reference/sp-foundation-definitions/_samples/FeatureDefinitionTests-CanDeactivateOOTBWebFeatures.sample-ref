@@ -1,8 +1,0 @@
-var model = SPMeta2Model.NewWebModel(web =>
-{
-    web
-        .AddWebFeature(DocWebFeatures.Disable.MDS);
-});
-
-DeployModel(model);
-
