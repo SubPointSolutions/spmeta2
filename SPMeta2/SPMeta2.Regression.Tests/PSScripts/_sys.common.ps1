@@ -312,7 +312,7 @@ function EnsureAssociatedGroups($web) {
 
 $envType = $g_M2TestEnvironment.EnvironmentType
 #$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.3912.1204"
-$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.0.2617.1200"
+$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200"
 
 $o365_UserName = $g_M2TestEnvironment.O365UserName
 $o365_UserPassword = $g_M2TestEnvironment.O365UserPassword

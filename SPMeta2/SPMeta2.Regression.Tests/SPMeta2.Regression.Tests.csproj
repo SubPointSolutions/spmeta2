@@ -159,6 +159,7 @@
     <Compile Include="Impl\Scenarios\ComposedLookItemLinkScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\DeleteQuickLaunchNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\DeleteTopNavigationNodesScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\Fields\OutcomeChoiceFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Webparts\ContentByQueryWebPartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WorkflowAssociationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\MetadataNavigationSettingsScenarios.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Impl\Services\DefaultVersionBasedPropertiesValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultContentTypeIdPropertyValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultXmlBasedPropertiesValidationServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultFluentModelValidationServiceTests.cs" />
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />

@@ -44,6 +44,7 @@ namespace SPMeta2
             RegisterService(typeof(ModelPrettyPrintServiceBase), new DefaultModelPrettyPrintService());
             RegisterService(typeof(ModelDotGraphPrintServiceBase), new DefaultModelDotGraphPrintService());
 
+            RegisterService(typeof(FluentModelValidationServiceBase), new DefaultFluentModelValidationService());
         }
 
         #endregion

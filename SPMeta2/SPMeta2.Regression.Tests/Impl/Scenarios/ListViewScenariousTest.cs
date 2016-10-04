@@ -390,6 +390,89 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region timeline
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_With_Timeline()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+
+                def.ViewData = "<FieldRef Name=\"DueDate\" Type=\"TimelineDueDate\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_Without_Timeline()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.ViewData = "<FieldRef Name=\"PercentComplete\" Type=\"StrikeThroughPercentComplete\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_Without_Timeline2()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                //def.ViewData = "<FieldRef Name=\"PercentComplete\" Type=\"StrikeThroughPercentComplete\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        #endregion
+
         #region utils
 
         protected ListViewDefinition GetLocalizedDefinition()

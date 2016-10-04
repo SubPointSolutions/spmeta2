@@ -1,6 +1,5 @@
-﻿on is enabled via SecurityGroupDefinition object.
+﻿Security group provision is enabled via SecurityGroupDefinition object.
 
-Both CSOM/SSOM object models are supported. 
 Provision checks if object exists looking up it by Name property, then creates a new object. 
 You can deploy either single object or a set of the objects using AddSecurityGroup() extension method as per following examples.
 

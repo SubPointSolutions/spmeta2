@@ -24,7 +24,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         #region methods
 
 
-       
+
 
         [TestMethod]
         [TestCategory("Docs.ListDefinition")]
@@ -144,7 +144,7 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
             DeployModel(model);
         }
 
-       
+
         [TestMethod]
         [TestCategory("Docs.ListDefinition")]
 
@@ -177,6 +177,30 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
                             .AddList(DocLists.DepartmentsLists.TeamEvents)
                             .AddList(DocLists.DepartmentsLists.TeamTasks);
                     });
+            });
+
+            DeployModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Docs.ListDefinition")]
+
+        [SampleMetadata(Title = "Add promoted links list",
+                        Description = ""
+                        )]
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        public void CanDeployPromotedLinksList()
+        {
+            var listDef = new ListDefinition
+            {
+                Title = "My Links",
+                TemplateName = BuiltInListTemplates.PromotedLinks.InternalName,
+                CustomUrl = "/lists/my-links"
+            };
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef);
             });
 
             DeployModel(model);
