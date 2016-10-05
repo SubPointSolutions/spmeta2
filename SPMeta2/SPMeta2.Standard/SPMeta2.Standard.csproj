@@ -131,6 +131,7 @@
     <Compile Include="Services\ServiceModelHandlers\PublishingPageDefinitionValidationModelHandler.cs" />
     <Compile Include="Syntax\MetadataNavigationSettingsSyntax.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Webparts\AdvancedSearchBoxDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CategoryWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CommunityAdminWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\CommunityJoinWebPartDefinitionSyntax.cs" />

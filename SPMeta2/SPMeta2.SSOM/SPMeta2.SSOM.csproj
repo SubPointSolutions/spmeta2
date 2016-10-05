@@ -279,6 +279,7 @@
     <Compile Include="ModelHandlers\TopNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
+    <Compile Include="ModelHandlers\DeveloperDashboardSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\WebApplicationModelHandler.cs" />
     <Compile Include="ModelHandlers\WebConfigModificationModelHandler.cs" />
     <Compile Include="ModelHandlers\RootWebModelHandler.cs" />

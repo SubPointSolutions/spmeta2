@@ -826,6 +826,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         if (defType == typeof(SiteDocumentsDefinition))
                             addXXXArrayDefinitionMethodName = string.Format("AddSiteDocuments");
 
+                        if (defType == typeof(AdvancedSearchBoxDefinition))
+                            addXXXArrayDefinitionMethodName = string.Format("AddAdvancedSearchBoxes");
+
                         if (defType == typeof(MetadataNavigationSettingsDefinition))
                             addXXXArrayDefinitionMethodName = string.Format("AddMetadataNavigationSettings");
 

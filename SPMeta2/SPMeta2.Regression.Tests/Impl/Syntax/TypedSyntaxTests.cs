@@ -39,6 +39,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 farm.AddManagedProperty(new ManagedPropertyDefinition());
 
                 farm.AddDiagnosticsServiceBase(new DiagnosticsServiceBaseDefinition());
+
+                farm.AddDeveloperDashboardSettings(new DeveloperDashboardSettingsDefinition());
             });
         }
 
