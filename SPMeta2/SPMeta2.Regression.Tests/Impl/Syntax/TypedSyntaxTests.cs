@@ -199,6 +199,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddDocumentSet(new DocumentSetDefinition());
+
                     list.AddAuditSettings(new AuditSettingsDefinition());
 
                     list.AddMasterPage(new MasterPageDefinition());
@@ -262,6 +264,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                         folder
                             .AddProperty(new PropertyDefinition())
                             .AddProperty(new PropertyDefinition())
+
+                            .AddDocumentSet(new DocumentSetDefinition())
 
                             .AddWelcomePage(new WelcomePageDefinition())
                             .AddFolder(new FolderDefinition())

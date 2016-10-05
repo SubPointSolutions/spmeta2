@@ -807,6 +807,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_DocumentSetDefinition()
+        {
+            TestRandomDefinition<DocumentSetDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ListFieldLinkDefinition()
         {
             TestRandomDefinition<ListFieldLinkDefinition>();

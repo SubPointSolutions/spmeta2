@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="BuiltInDefinitions\BuiltInPublishingFieldDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInPublishingPages.cs" />
+    <Compile Include="Definitions\DocumentSetDefinition.cs" />
     <Compile Include="Definitions\Base\ReusableItemDefinitionBase.cs" />
     <Compile Include="Definitions\DisplayTemplates\FilterDisplayTemplateDefinition.cs" />
     <Compile Include="Definitions\ManagedPropertyDefinition.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Enumerations\BuiltInManagedDataType.cs" />
     <Compile Include="Services\Impl\Validation\DefaultPublishingPageDefinitionValidationService.cs" />
     <Compile Include="Services\ServiceModelHandlers\PublishingPageDefinitionValidationModelHandler.cs" />
+    <Compile Include="Syntax\DocumentSetDefinitionSyntax.cs" />
     <Compile Include="Syntax\MetadataNavigationSettingsSyntax.cs" />
     <Compile Include="Syntax\ReusableTextItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Webparts\AdvancedSearchBoxDefinitionSyntax.cs" />
