@@ -221,6 +221,7 @@
     <Compile Include="Impl\Services\Base\TokenReplacementServiceTestBase.cs" />
     <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
     <Compile Include="Impl\Services\CSOM\RequireCSOMRuntimeVersionDeploymentServiceTests.cs" />
+    <Compile Include="Impl\Services\TraceSourceServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultDiagnosticInfoServiceTests.cs" />
     <Compile Include="Impl\LookupServices\SSOM\SSOMListViewLookupServiceTests.cs" />
     <Compile Include="Impl\Services\ValidationServiceTests.cs" />
