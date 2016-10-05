@@ -160,6 +160,7 @@
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\AdvancedSearchBoxValidator.cs" />
     <Compile Include="Validation\Webparts\CategoryWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityJoinWebPartValidator.cs" />

@@ -107,6 +107,7 @@
     <Compile Include="Definitions\MetadataNavigationSettingsDefinition.cs" />
     <Compile Include="Definitions\ReusableHTMLItemDefinition.cs" />
     <Compile Include="Definitions\ReusableTextItemDefinition.cs" />
+    <Compile Include="Definitions\Webparts\AdvancedSearchBoxDefinition.cs" />
     <Compile Include="Definitions\Webparts\CategoryWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\CommunityAdminWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\CommunityJoinWebPartDefinition.cs" />

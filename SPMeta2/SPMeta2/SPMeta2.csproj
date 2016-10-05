@@ -688,6 +688,7 @@
     <EmbeddedResource Include="Templates\Webparts\SocialCommentWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\MyMembershipWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\BlogMonthQuickLaunch.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\AdvancedSearchBox.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\Impl\" />

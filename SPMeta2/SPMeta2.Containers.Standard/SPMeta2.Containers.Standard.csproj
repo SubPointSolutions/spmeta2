@@ -101,6 +101,7 @@
     <Compile Include="DefinitionGenerators\SearchConfigurationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermLabelDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\AdvancedSearchBoxDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CategoryWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CommunityAdminWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CommunityJoinWebPartDefinitionGenerator.cs" />
