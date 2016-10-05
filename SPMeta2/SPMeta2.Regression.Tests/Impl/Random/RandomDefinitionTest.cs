@@ -987,6 +987,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Security")]
+        public void CanDeployRandom_UserDefinition()
+        {
+            TestRandomDefinition<UserDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Security")]
         public void CanDeployRandom_AnonymousAccessSettingsDefinition()
         {
             // need to disable validation on web node

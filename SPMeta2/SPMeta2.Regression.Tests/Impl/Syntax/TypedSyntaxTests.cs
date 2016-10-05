@@ -91,6 +91,10 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 site.AddSecurityGroup(new SecurityGroupDefinition(), group =>
                 {
+                    group
+                        .AddUser(new UserDefinition())
+                        .AddUser(new UserDefinition());
+
                     // TODO
 
                     // .AddSecurityRoleLink() is missed on SecurityGroup #601

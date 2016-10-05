@@ -111,7 +111,6 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    
     <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.dll</HintPath>
@@ -124,9 +123,7 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-
-
-     <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)'=='Debug40'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+    <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)'=='Debug40'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.dll</HintPath>
     </Reference>
@@ -138,9 +135,6 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-
-
-
     <Reference Include="System" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -210,6 +204,7 @@
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\UserModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
     <Compile Include="ModelHandlers\HtmlMasterPageModelHandler.cs" />

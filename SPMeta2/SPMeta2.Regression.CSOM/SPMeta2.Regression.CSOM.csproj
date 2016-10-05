@@ -153,6 +153,7 @@
     <Compile Include="Validation\ClientSP2013WorkflowDefinitionValidator.cs" />
     <Compile Include="Validation\ClientSP2013WorkflowSubscriptionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientUserCustomActionDefinitionValidator.cs" />
+    <Compile Include="Validation\ClientUserDefinitionValidator.cs" />
     <Compile Include="Validation\ClientWebDefinitionValidator.cs" />
     <Compile Include="Validation\ClientMasterPageSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClientDeleteWebPartsDefinitionValidator.cs" />

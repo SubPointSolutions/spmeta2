@@ -205,6 +205,7 @@
     <Compile Include="Definitions\Webparts\UserTasksWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
+    <Compile Include="Definitions\UserDefinition.cs" />
     <Compile Include="Definitions\WorkflowAssociationDefinition.cs" />
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\SPMeta2Diagnostic.cs" />
@@ -465,6 +466,7 @@
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
     <Compile Include="Syntax\Default\HtmlMasterPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
+    <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
