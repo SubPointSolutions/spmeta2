@@ -1,14 +1,15 @@
 ﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint.Administration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
-    public class DeveloperDashboardSettingsDefinitionValidator : WebApplicationModelHandler
+    public class DeveloperDashboardSettingsDefinitionValidator : DeveloperDashboardSettingsModelHandler
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
@@ -18,9 +19,36 @@ namespace SPMeta2.Regression.SSOM.Validation
             ValidateDefinition(farmModelHost, farmModelHost.HostFarm, ddsDefinition);
         }
 
-        private void ValidateDefinition(FarmModelHost farmModelHost, Microsoft.SharePoint.Administration.SPFarm sPFarm, DeveloperDashboardSettingsDefinition ddsDefinition)
+        private void ValidateDefinition(FarmModelHost farmModelHost,
+            SPFarm farm,
+            DeveloperDashboardSettingsDefinition definition)
         {
-            // TODO
+            var spObject = GetCurrentSettings();
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
+
+            assert
+                .ShouldNotBeNull(spObject);
+
+            if (!string.IsNullOrEmpty(definition.DisplayLevel))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.DisplayLevel);
+                    var dstProp = d.GetExpressionValue(ct => ct.DisplayLevel);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = dstProp.Value.ToString().ToUpper() == (srcProp.Value.ToString().ToUpper())
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DisplayLevel);
+            }
         }
     }
 }

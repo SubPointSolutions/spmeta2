@@ -34,14 +34,46 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployArtifact(farmModelHost, farmModelHost.HostFarm, ddsDefinition);
         }
 
-        private void DeployArtifact(FarmModelHost farmModelHost, SPFarm farm, DeveloperDashboardSettingsDefinition ddsDefinition)
+        protected virtual SPDeveloperDashboardSettings GetCurrentSettings()
         {
             var contentService = SPWebService.ContentService;
             var currentSettings = contentService.DeveloperDashboardSettings;
 
-            // TODO, map out the DeveloperDashboardSettingsDefinition
+            return currentSettings;
+        }
 
-            contentService.Update();
+        private void DeployArtifact(FarmModelHost modelHost, SPFarm farm, DeveloperDashboardSettingsDefinition ddsDefinition)
+        {
+            var currentSettings = GetCurrentSettings();
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentSettings,
+                ObjectType = typeof(SPDeveloperDashboardSettings),
+                ObjectDefinition = ddsDefinition,
+                ModelHost = modelHost
+            });
+
+            if (!string.IsNullOrEmpty(ddsDefinition.DisplayLevel))
+            {
+                var displayLevel = (SPDeveloperDashboardLevel)Enum.Parse(typeof(SPDeveloperDashboardLevel), ddsDefinition.DisplayLevel);
+                currentSettings.DisplayLevel = displayLevel;
+                currentSettings.Update();
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentSettings,
+                ObjectType = typeof(SPDeveloperDashboardSettings),
+                ObjectDefinition = ddsDefinition,
+                ModelHost = modelHost
+            });
         }
 
         #endregion

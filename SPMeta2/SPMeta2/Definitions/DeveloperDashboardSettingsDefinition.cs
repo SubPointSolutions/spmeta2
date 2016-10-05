@@ -30,32 +30,11 @@ namespace SPMeta2.Definitions
     {
         #region properties
 
-        /// <summary>
-        /// ProductId of the target application.
-        /// </summary>
-        [ExpectRequired]
         [DataMember]
-        [IdentityKey]
-        public Guid ProductId { get; set; }
-
-
-        /// <summary>
-        /// Target application content.
-        /// </summary>
-        [DataMember]
-        [IdentityKey]
-        [ExpectRequired]
-        public byte[] Content { get; set; }
-
-
-        /// <summary>
-        /// A valid Version string of the target application.
-        /// </summary>
-        [DataMember]
-        [IdentityKey]
-        [ExpectRequired]
-        [VersionPropertyCapability]
-        public string Version { get; set; }
+        [ExpectUpdateDeveloperDashboardSettings]
+        [ExpectValidation]
+        [ExpectNullable]
+        public string DisplayLevel { get; set; }
 
         #endregion
 
@@ -64,8 +43,7 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return new ToStringResult<DeveloperDashboardSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.ProductId)
-                          .AddPropertyValue(p => p.Version)
+                          .AddPropertyValue(p => p.DisplayLevel)
                           .ToString();
         }
 
