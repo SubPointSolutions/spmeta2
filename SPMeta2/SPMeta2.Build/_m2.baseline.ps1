@@ -336,6 +336,7 @@ $g_buildBaseline = @{
                 "SPMeta2.CSOM.Standard.ModelHandlers.TermStoreModelHost, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 
                 "SPMeta2.CSOM.Standard.ModelHandlers.SandboxSolutionModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
+				"SPMeta2.CSOM.Standard.ModelHandlers.DocumentSetModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 
                 
 			);
