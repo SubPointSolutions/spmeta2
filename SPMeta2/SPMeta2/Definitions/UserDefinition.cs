@@ -4,6 +4,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
+using SPMeta2.Attributes.Identity;
 
 namespace SPMeta2.Definitions
 {
@@ -33,11 +34,15 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [IdentityKey]
+        [ExpectRequired(GroupName = "LoginName or Email")]
         public string LoginName { get; set; }
 
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        [IdentityKey]
+        [ExpectRequired(GroupName = "LoginName or Email")]
         public string Email { get; set; }
 
         #endregion
@@ -47,7 +52,6 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return new ToStringResult<UserDefinition>(this, base.ToString())
-
                           .ToString();
         }
 

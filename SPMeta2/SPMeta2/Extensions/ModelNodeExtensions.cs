@@ -75,15 +75,15 @@ namespace SPMeta2.Extensions
         {
             var result = new List<ModelNode>();
 
-            if (match != null)
-            {
-                if (match(model))
-                    result.Add(model);
-            }
-            else
-            {
-                result.Add(model);
-            }
+            //if (match != null)
+            //{
+            //    if (match(model))
+            //        result.Add(model);
+            //}
+            //else
+            //{
+            //    result.Add(model);
+            //}
 
             result.AddRange(FindNodes(model, match));
 

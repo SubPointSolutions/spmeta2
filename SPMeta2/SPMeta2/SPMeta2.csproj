@@ -209,6 +209,7 @@
     <Compile Include="Definitions\WorkflowAssociationDefinition.cs" />
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\SPMeta2Diagnostic.cs" />
+    <Compile Include="Diagnostic\ModelStatInfo.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAggregationsStatus.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
@@ -377,6 +379,7 @@
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\LookupServiceBase.cs" />
     <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
+    <Compile Include="Services\ModelStatInfoServiceBase.cs" />
     <Compile Include="Services\ModelPrintServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
