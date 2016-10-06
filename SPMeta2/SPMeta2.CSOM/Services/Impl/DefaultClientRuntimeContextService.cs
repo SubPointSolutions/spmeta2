@@ -127,6 +127,13 @@ namespace SPMeta2.CSOM.Services.Impl
 
         protected virtual bool ShouldRetryExecuteQuery(Exception ex)
         {
+            // R&D
+            // Fields provision seems to fail on O365 root site collection #885
+            // https://github.com/SubPointSolutions/spmeta2/issues/885
+
+            //if (ex.HResult == -2146233088)
+            //    return true;
+
             // O365 related handling
             if (IsAllowedHttpWebResponseStatusCode(ex))
                 return true;

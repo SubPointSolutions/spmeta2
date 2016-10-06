@@ -10,6 +10,9 @@ using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
+using Microsoft.SharePoint.Client.DocumentSet;
+using Microsoft.SharePoint.Client;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
@@ -28,83 +31,124 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            //var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
-            var navigationModel = model.WithAssertAndCast<DocumentSetDefinition>("model", value => value.RequireNotNull());
+            var siteModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<DocumentSetDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
+            DeployArtifact(siteModelHost, definition);
         }
 
-        //protected ImageRendition GetCurrentImageRendition(IList<ImageRendition> renditions, ImageRenditionDefinition imageRenditionModel)
-        //{
-        //    return renditions.FirstOrDefault(r =>
-        //       !string.IsNullOrEmpty(r.Name) &&
-        //       String.Equals(r.Name, imageRenditionModel.Name, StringComparison.CurrentCultureIgnoreCase));
-        //}
+        private void DeployArtifact(ListModelHost modelHost, DocumentSetDefinition definition)
+        {
+            var currentDocumentSet = GetExistingDocumentSet(modelHost, definition);
 
-        //private void DeployImageRenditionSettings(object modelHost, SiteModelHost siteModelHost,
-        //    ImageRenditionDefinition imageRenditionModel)
-        //{
-        //    var context = siteModelHost.HostSite.Context;
-        //    var renditions = SiteImageRenditions.GetRenditions(siteModelHost.HostSite.Context);
-        //    context.ExecuteQueryWithTrace();
+            var context = modelHost.HostClientContext;
+            var web = modelHost.HostWeb;
 
-        //    var currentRendition = GetCurrentImageRendition(renditions, imageRenditionModel);
+            var documentSetName = definition.Name;
 
-        //    InvokeOnModelEvent(this, new ModelEventArgs
-        //    {
-        //        CurrentModelNode = null,
-        //        Model = null,
-        //        EventType = ModelEventType.OnProvisioning,
-        //        Object = currentRendition,
-        //        ObjectType = typeof(ImageRendition),
-        //        ObjectDefinition = imageRenditionModel,
-        //        ModelHost = modelHost
-        //    });
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = currentDocumentSet,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
 
-        //    if (currentRendition == null)
-        //    {
-        //        TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new Image Rendition");
+            if (currentDocumentSet == null)
+            {
+                var list = modelHost.HostList;
+                var folder = list.RootFolder;
 
-        //        var newRendition = new ImageRendition
-        //         {
-        //             Name = imageRenditionModel.Name,
-        //             Width = imageRenditionModel.Width,
-        //             Height = imageRenditionModel.Height
-        //         };
+                var contentTypeName = definition.ContentTypeName;
+                var contentTypeId = definition.ContentTypeId;
 
-        //        InvokeOnModelEvent(this, new ModelEventArgs
-        //        {
-        //            CurrentModelNode = null,
-        //            Model = null,
-        //            EventType = ModelEventType.OnProvisioned,
-        //            Object = newRendition,
-        //            ObjectType = typeof(ImageRendition),
-        //            ObjectDefinition = imageRenditionModel,
-        //            ModelHost = modelHost
-        //        });
+                ContentType contentType = null;
 
-        //        renditions.Add(newRendition);
-        //        SiteImageRenditions.SetRenditions(context, renditions);
+#if !NET35
+                if (!string.IsNullOrEmpty(contentTypeId))
+                {
+                    var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.StringId == contentTypeId));
+                    context.ExecuteQueryWithTrace();
 
-        //        context.ExecuteQueryWithTrace();
-        //    }
-        //    else
-        //    {
-        //        TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing existing Image Rendition");
+                    contentType = tmpContentType.FirstOrDefault();
 
-        //        InvokeOnModelEvent(this, new ModelEventArgs
-        //        {
-        //            CurrentModelNode = null,
-        //            Model = null,
-        //            EventType = ModelEventType.OnProvisioned,
-        //            Object = currentRendition,
-        //            ObjectType = typeof(ImageRendition),
-        //            ObjectDefinition = imageRenditionModel,
-        //            ModelHost = modelHost
-        //        });
-        //    }
-        //}
+                    if (contentType == null)
+                        throw new SPMeta2Exception(string.Format("Cannot find content type by ID:[{0}]", contentTypeId));
+                }
+                else if (!string.IsNullOrEmpty(contentTypeId))
+                {
+                    var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeName));
+                    context.ExecuteQueryWithTrace();
 
+                    contentType = tmpContentType.FirstOrDefault();
+
+                    if (contentType == null)
+                        throw new SPMeta2Exception(string.Format("Cannot find content type by Name:[{0}]", contentTypeName));
+                }
+#endif
+
+#if NET35
+            // SP2010 CSOM does not have an option to get the content type by ID
+            // fallback to Name, and that's a huge thing all over the M2 library and provision
+            
+            var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeName));
+            context.ExecuteQueryWithTrace();
+
+            contentType = tmpContentType.FirstOrDefault();
+
+            if (contentType == null)
+                throw new SPMeta2Exception(string.Format("Cannot find content type by Name:[{0}]", contentTypeName));
+#endif
+
+                DocumentSet.Create(context, folder, documentSetName, contentType.Id);
+                context.ExecuteQueryWithTrace();
+
+                currentDocumentSet = GetExistingDocumentSet(modelHost, definition);
+            }
+            else
+            {
+                // TODO, update props in the future
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentDocumentSet,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+        }
+
+        protected virtual Folder GetExistingDocumentSet(ListModelHost siteModelHost, DocumentSetDefinition definition)
+        {
+            var folderName = definition.Name;
+            var folder = siteModelHost.HostList.RootFolder;
+
+            var parentFolder = folder;
+            var context = parentFolder.Context;
+
+            context.Load(parentFolder, f => f.Folders);
+            context.ExecuteQueryWithTrace();
+
+            // dirty stuff, needs to be rewritten
+            var currentFolder = parentFolder
+                                   .Folders
+                                   .OfType<Folder>()
+                                   .FirstOrDefault(f => f.Name == folderName);
+
+            if (currentFolder != null)
+            {
+                return currentFolder;
+            }
+
+            return null;
+        }
 
         #endregion
     }

@@ -743,9 +743,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 Required = false,
                 Hidden = false,
 
-                ShowInNewForm = true,
-                ShowInEditForm = true,
-                ShowInDisplayForm = true,
+                //ShowInNewForm = true,
+                //ShowInEditForm = true,
+                //ShowInDisplayForm = true,
 
                 Group = Rnd.String()
             };

@@ -16,12 +16,15 @@ namespace SPMeta2.Standard.Definitions
     /// <summary>
     /// Allows to define and deploy document set.
     /// </summary>
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.Office.DocumentManagement.DocumentSets.DocumentSet", "Microsoft.Office.Server.UserProfiles")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.DocumentSet.DocumentSet", "Microsoft.SharePoint.Client.DocumentManagement")]
+    //[SPObjectType(SPObjectModelType.SSOM, "Microsoft.Office.DocumentManagement.DocumentSets.DocumentSet", "Microsoft.Office.Server.UserProfiles")]
+    //[SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.DocumentSet.DocumentSet", "Microsoft.SharePoint.Client.DocumentManagement")]
+
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPFolder", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Folder", "Microsoft.SharePoint.Client")]
 
 
-    [DefaultParentHost(typeof(WebDefinition))]
-    [DefaultRootHost(typeof(WebDefinition))]
+    [DefaultParentHost(typeof(ListDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]
