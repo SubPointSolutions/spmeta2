@@ -23,7 +23,8 @@ namespace SPMeta2.Definitions
     //[ExpectWithExtensionMethod]
     //[ExpectArrayExtensionMethod]
 
-    [SelfHostCapability]
+    //[SelfHostCapability]
+    [SingletonIdentity]
 
     [ParentHostCapability(typeof(FarmDefinition))]
     public class DeveloperDashboardSettingsDefinition : DefinitionBase
