@@ -31,15 +31,31 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<DocumentSetDefinition>("model", value => value.RequireNotNull());
 
-            DeployArtifact(siteModelHost, definition);
+            if (typedModelHost is ListModelHost)
+            {
+                var folder = (typedModelHost as ListModelHost).HostList.RootFolder;
+
+                DeployArtifact(typedModelHost, folder, definition);
+            }
+            else if (typedModelHost is FolderModelHost)
+            {
+                var folder = (typedModelHost as FolderModelHost).CurrentListFolder;
+
+                DeployArtifact(typedModelHost, folder, definition);
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException(
+                    string.Format("Model host sould be ListModelHost/FolderModelHost. Current:[{0}]", modelHost));
+            }
         }
 
-        private void DeployArtifact(ListModelHost modelHost, DocumentSetDefinition definition)
+        private void DeployArtifact(CSOMModelHostBase modelHost, Folder folder, DocumentSetDefinition definition)
         {
-            var currentDocumentSet = GetExistingDocumentSet(modelHost, definition);
+            var currentDocumentSet = GetExistingDocumentSet(modelHost, folder, definition);
 
             var context = modelHost.HostClientContext;
             var web = modelHost.HostWeb;
@@ -59,35 +75,65 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             if (currentDocumentSet == null)
             {
-                var list = modelHost.HostList;
-                var folder = list.RootFolder;
+                var contentType = GetContentType(modelHost, definition);
 
-                var contentTypeName = definition.ContentTypeName;
-                var contentTypeId = definition.ContentTypeId;
+                DocumentSet.Create(context, folder, documentSetName, contentType.Id);
+                context.ExecuteQueryWithTrace();
 
-                ContentType contentType = null;
+                currentDocumentSet = GetExistingDocumentSet(modelHost, folder, definition);
+            }
+
+            if (!string.IsNullOrEmpty(definition.Description))
+            {
+                currentDocumentSet.ListItemAllFields["DocumentSetDescription"] = definition.Description;
+                currentDocumentSet.ListItemAllFields.Update();
+
+                context.ExecuteQueryWithTrace();
+            }
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioned,
+                Object = currentDocumentSet,
+                ObjectType = typeof(Folder),
+                ObjectDefinition = definition,
+                ModelHost = modelHost
+            });
+        }
+
+        protected virtual ContentType GetContentType(CSOMModelHostBase modelHost, DocumentSetDefinition definition)
+        {
+            var contentTypeName = definition.ContentTypeName;
+            var contentTypeId = definition.ContentTypeId;
+
+            var context = modelHost.HostClientContext;
+            var web = modelHost.HostWeb;
+
+            ContentType contentType = null;
 
 #if !NET35
-                if (!string.IsNullOrEmpty(contentTypeId))
-                {
-                    var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.StringId == contentTypeId));
-                    context.ExecuteQueryWithTrace();
+            if (!string.IsNullOrEmpty(contentTypeId))
+            {
+                var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.StringId == contentTypeId));
+                context.ExecuteQueryWithTrace();
 
-                    contentType = tmpContentType.FirstOrDefault();
+                contentType = tmpContentType.FirstOrDefault();
 
-                    if (contentType == null)
-                        throw new SPMeta2Exception(string.Format("Cannot find content type by ID:[{0}]", contentTypeId));
-                }
-                else if (!string.IsNullOrEmpty(contentTypeId))
-                {
-                    var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeName));
-                    context.ExecuteQueryWithTrace();
+                if (contentType == null)
+                    throw new SPMeta2Exception(string.Format("Cannot find content type by ID:[{0}]", contentTypeId));
+            }
+            else if (!string.IsNullOrEmpty(contentTypeName))
+            {
+                var tmpContentType = context.LoadQuery(web.AvailableContentTypes.Where(ct => ct.Name == contentTypeName));
+                context.ExecuteQueryWithTrace();
 
-                    contentType = tmpContentType.FirstOrDefault();
+                contentType = tmpContentType.FirstOrDefault();
 
-                    if (contentType == null)
-                        throw new SPMeta2Exception(string.Format("Cannot find content type by Name:[{0}]", contentTypeName));
-                }
+                if (contentType == null)
+                    throw new SPMeta2Exception(string.Format("Cannot find content type by Name:[{0}]", contentTypeName));
+            }
 #endif
 
 #if NET35
@@ -103,34 +149,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 throw new SPMeta2Exception(string.Format("Cannot find content type by Name:[{0}]", contentTypeName));
 #endif
 
-                DocumentSet.Create(context, folder, documentSetName, contentType.Id);
-                context.ExecuteQueryWithTrace();
+            return contentType;
 
-                currentDocumentSet = GetExistingDocumentSet(modelHost, definition);
-            }
-            else
-            {
-                // TODO, update props in the future
-            }
-
-            InvokeOnModelEvent(this, new ModelEventArgs
-            {
-                CurrentModelNode = null,
-                Model = null,
-                EventType = ModelEventType.OnProvisioned,
-                Object = currentDocumentSet,
-                ObjectType = typeof(Folder),
-                ObjectDefinition = definition,
-                ModelHost = modelHost
-            });
         }
 
-        protected virtual Folder GetExistingDocumentSet(ListModelHost siteModelHost, DocumentSetDefinition definition)
+        protected virtual Folder GetExistingDocumentSet(CSOMModelHostBase modelHost, Folder folder, DocumentSetDefinition definition)
         {
             var folderName = definition.Name;
-            var folder = siteModelHost.HostList.RootFolder;
-
             var parentFolder = folder;
+
             var context = parentFolder.Context;
 
             context.Load(parentFolder, f => f.Folders);

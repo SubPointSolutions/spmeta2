@@ -47,6 +47,12 @@ namespace SPMeta2.Standard.Definitions
         [ExpectRequired]
         public string Name { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        [ExpectNullable]
+        [ExpectUpdate]
+        public string Description { get; set; }
+
         [ExpectValidation]
         [DataMember]
         [ExpectRequired(GroupName = "ContentType")]

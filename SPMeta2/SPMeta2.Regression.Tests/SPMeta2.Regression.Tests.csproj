@@ -157,6 +157,7 @@
     <Compile Include="Impl\RegressionAPI\RegressionAPITests.cs" />
     <Compile Include="Impl\Reports\DefinitionReportTests.cs" />
     <Compile Include="Impl\Scenarios\ComposedLookItemLinkScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\DocumentSetScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\DeleteQuickLaunchNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\DeleteTopNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\OutcomeChoiceFieldScenariousTest.cs" />
