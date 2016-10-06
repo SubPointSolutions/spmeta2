@@ -11,7 +11,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
-    public class UserDefinitionValidator : WebModelHandler
+    public class UserDefinitionValidator : UserModelHandler
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
