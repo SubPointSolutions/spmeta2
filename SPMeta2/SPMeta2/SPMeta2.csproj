@@ -187,6 +187,7 @@
     <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
+    <Compile Include="Definitions\TrustedAccessProviderDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogAdminWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogLinksWebPartDefinition.cs" />
@@ -473,6 +474,7 @@
     <Compile Include="Syntax\Default\HtmlMasterPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
     <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\TrustedAccessProviderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />

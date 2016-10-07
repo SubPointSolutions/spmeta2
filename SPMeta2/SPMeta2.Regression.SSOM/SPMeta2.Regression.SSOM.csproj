@@ -207,6 +207,7 @@
     <Compile Include="Validation\Webparts\UserTasksWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\WebPartGalleryFileDefinitionValidator.cs" />
     <Compile Include="Validation\Webparts\XmlWebPartValidator.cs" />
+    <Compile Include="Validation\TrustedProviderDefinitionValidator.cs" />
     <Compile Include="Validation\WelcomePageDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeDefinitionValidator.cs" />
     <Compile Include="Validation\ContentTypeFieldLinkDefinitionValidator.cs" />

@@ -32,6 +32,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     .AddProperty(new PropertyDefinition())
                     .AddProperty(new PropertyDefinition());
 
+                farm.AddTrustedAccessProvider(new TrustedAccessProviderDefinition());
+
                 farm.AddFeature(new FeatureDefinition());
                 farm.AddFarmFeature(new FeatureDefinition());
 

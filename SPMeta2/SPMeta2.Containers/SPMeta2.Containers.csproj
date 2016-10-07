@@ -195,6 +195,7 @@
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeveloperDashboardSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\TrustedAccessProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\BlogAdminWebPartDefinitionGenerator.cs" />
