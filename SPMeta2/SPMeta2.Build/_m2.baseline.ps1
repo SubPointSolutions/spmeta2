@@ -204,6 +204,7 @@ $g_buildBaseline = @{
                 "SPMeta2.SSOM.Standard.ModelHandlers.Webparts.SiteFeedWebPartModelHandler, SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 
                 "SPMeta2.SSOM.Standard.ModelHandlers.Webparts.ProjectSummaryWebPartModelHandler, SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
+				"SPMeta2.SSOM.Standard.ModelHandlers.DesignPackageModelHandler, SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 			);
 
 			ExcludedDefinitions =  @(
@@ -338,7 +339,8 @@ $g_buildBaseline = @{
                 "SPMeta2.CSOM.Standard.ModelHandlers.SandboxSolutionModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 				"SPMeta2.CSOM.Standard.ModelHandlers.DocumentSetModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
 
-                
+                "SPMeta2.CSOM.Standard.ModelHandlers.DesignPackageModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
+
 			);
 
 			ExcludedDefinitions =  @(

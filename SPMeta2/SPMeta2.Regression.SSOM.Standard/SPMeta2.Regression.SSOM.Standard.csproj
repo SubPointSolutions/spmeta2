@@ -126,6 +126,7 @@
     <Compile Include="Extensions\PublishingPageLayoutItemExtensions.cs" />
     <Compile Include="Extensions\PublishingWebExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\DesignPackageDefinitionValidator.cs" />
     <Compile Include="Validation\DocumentSetDefinitionValidator.cs" />
     <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\FilterDisplayTemplateDefinitionValidator.cs" />

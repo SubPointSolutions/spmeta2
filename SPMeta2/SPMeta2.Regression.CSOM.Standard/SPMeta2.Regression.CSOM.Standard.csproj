@@ -155,6 +155,7 @@
     <Compile Include="Validation\Fields\ClientImageHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ClientHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\DocumentSetDefinitionValidator.cs" />
+    <Compile Include="Validation\DesignPackageDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />

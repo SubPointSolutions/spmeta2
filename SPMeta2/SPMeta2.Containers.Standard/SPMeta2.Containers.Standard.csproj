@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\DesignPackageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ProfileTypePropertyDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\CorePropertyDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentSetDefinitionGenerator.cs" />
