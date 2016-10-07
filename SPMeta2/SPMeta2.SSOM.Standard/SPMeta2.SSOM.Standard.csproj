@@ -187,6 +187,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelHandlers\CorePropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\ReusableTextItemModelHandlerBase.cs" />

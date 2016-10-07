@@ -319,6 +319,26 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.UserProfiles")]
+        public void CanDeployRandom_CorePropertyDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<CorePropertyDefinition>();
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.UserProfiles")]
+        public void CanDeployRandom_ProfileTypePropertyDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ProfileTypePropertyDefinition>();
+            });
+        }
+
         #region IRM
 
         [TestMethod]

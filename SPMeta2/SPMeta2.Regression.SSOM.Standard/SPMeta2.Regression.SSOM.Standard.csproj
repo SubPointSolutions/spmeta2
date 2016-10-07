@@ -161,6 +161,8 @@
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\ProfileTypePropertyValidator.cs" />
+    <Compile Include="Validation\Webparts\CorePropertyValidator.cs" />
     <Compile Include="Validation\Webparts\AdvancedSearchBoxValidator.cs" />
     <Compile Include="Validation\Webparts\CategoryWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityAdminWebPartValidator.cs" />

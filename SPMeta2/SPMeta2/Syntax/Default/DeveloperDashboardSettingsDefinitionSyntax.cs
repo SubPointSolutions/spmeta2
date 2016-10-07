@@ -23,7 +23,7 @@ namespace SPMeta2.Syntax.Default
         }
 
         public static TModelNode AddDeveloperDashboardSettings<TModelNode>(this TModelNode model, DeveloperDashboardSettingsDefinition definition,
-            Action<TModelNode> action)
+            Action<DeveloperDashboardSettingsModelNode> action)
             where TModelNode : ModelNode, IFarmModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);

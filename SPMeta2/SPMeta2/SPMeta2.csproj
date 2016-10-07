@@ -427,6 +427,8 @@
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityGroupHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ICorePropertyHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IProfileTypePropertyHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />

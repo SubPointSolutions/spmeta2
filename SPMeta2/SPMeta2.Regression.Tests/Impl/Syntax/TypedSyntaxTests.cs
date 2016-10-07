@@ -75,6 +75,13 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddCoreProperty(new CorePropertyDefinition())
+                    .AddCoreProperty(new CorePropertyDefinition(), property =>
+                    {
+                        property.AddProfileTypeProperty(new ProfileTypePropertyDefinition());
+                    });
+
+
                 site.AddAuditSettings(new AuditSettingsDefinition());
                 site.AddImageRendition(new ImageRenditionDefinition());
 

@@ -10,7 +10,7 @@ namespace SPMeta2.Definitions
 {
 
     /// <summary>
-    /// Allows to consigure SPDeveloperDashboardSettings.
+    /// Allows to consigure SPDeveloperDashboardSettings
     /// </summary>
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPDeveloperDashboardSettings", "Microsoft.SharePoint")]
 

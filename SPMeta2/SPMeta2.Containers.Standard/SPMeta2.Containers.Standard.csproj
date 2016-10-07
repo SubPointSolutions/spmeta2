@@ -76,6 +76,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\ProfileTypePropertyDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\CorePropertyDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DocumentSetDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\MetadataNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\FilterDisplayTemplateDefinitionGenerator.cs" />
