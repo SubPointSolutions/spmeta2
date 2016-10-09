@@ -50,6 +50,8 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return new ToStringResult<UserDefinition>(this, base.ToString())
+                          .AddPropertyValue(p => p.LoginName)
+                          .AddPropertyValue(p => p.Email)
                           .ToString();
         }
 
