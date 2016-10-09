@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SPMeta2.Containers.Consts;
+using SPMeta2.Containers.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -272,6 +274,20 @@ namespace SPMeta2.Containers.Services
         }
 
         #endregion
+
+
+        public static string DomainUserEmail(this RandomService service)
+        {
+            var emailString = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultTestDomainUserEmails);
+
+            if (!string.IsNullOrEmpty(emailString))
+            {
+                var emails = emailString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                return emails[service.Int(emails.Length)];
+            }
+
+            throw new Exception(string.Format("Environment value [{0}] is NULL", EnvironmentConsts.DefaultTestDomainUserEmails));
+        }
     }
 
     //public abstract int Short();

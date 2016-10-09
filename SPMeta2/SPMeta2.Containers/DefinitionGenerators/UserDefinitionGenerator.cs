@@ -16,7 +16,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                // TODO
+                def.LoginName = Rnd.UserLogin();
             });
         }
     }

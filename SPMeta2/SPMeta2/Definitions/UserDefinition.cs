@@ -32,14 +32,12 @@ namespace SPMeta2.Definitions
         #region properties
 
         [ExpectValidation]
-        [ExpectUpdate]
         [DataMember]
         [IdentityKey]
         [ExpectRequired(GroupName = "LoginName or Email")]
         public string LoginName { get; set; }
 
         [ExpectValidation]
-        [ExpectUpdate]
         [DataMember]
         [IdentityKey]
         [ExpectRequired(GroupName = "LoginName or Email")]
