@@ -80,7 +80,7 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 		public static bool UseSubWebs = true;
 
 		public static bool UseApps = false;
-
+        
 		#endregion
 
         #region pre-generated tests
@@ -281,6 +281,15 @@ namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
         public void CanDeploy_XsltListViewWebPartDefinition_To_AllPageTypes() 
         {
             DeployWebpartOnSupportedHosts<XsltListViewWebPartDefinition>();
+        }
+		
+
+		[TestMethod]
+        [TestCategory("Regression.DefinitionCoverage.WebpartDefinitions")]
+		[SiteCollectionIsolation]
+        public void CanDeploy_AdvancedSearchBoxDefinition_To_AllPageTypes() 
+        {
+            DeployWebpartOnSupportedHosts<AdvancedSearchBoxDefinition>();
         }
 		
 
