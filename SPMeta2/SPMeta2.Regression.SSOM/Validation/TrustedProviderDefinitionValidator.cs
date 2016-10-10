@@ -13,10 +13,9 @@ namespace SPMeta2.Regression.SSOM.Validation
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var definition = model.WithAssertAndCast<WelcomePageDefinition>("model", value => value.RequireNotNull());
+            var definition = model.WithAssertAndCast<TrustedAccessProviderDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
-            SPTrustedAccessProvider spObject = null;
+            SPTrustedAccessProvider spObject = GetCurrentTrustedAccessProvider(modelHost, definition);
 
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)

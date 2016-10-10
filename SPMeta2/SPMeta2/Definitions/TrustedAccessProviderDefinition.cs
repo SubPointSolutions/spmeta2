@@ -26,6 +26,15 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(FarmDefinition))]
     public class TrustedAccessProviderDefinition : DefinitionBase
     {
+        #region constructors
+
+        public TrustedAccessProviderDefinition()
+        {
+            Certificate = new byte[0];
+        }
+
+        #endregion
+
         #region properties
 
 
@@ -33,6 +42,21 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string Name { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
+        public string Description { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string MetadataEndPoint { get; set; }
+
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectRequired]
+        public byte[] Certificate { get; set; }
 
         #endregion
 
