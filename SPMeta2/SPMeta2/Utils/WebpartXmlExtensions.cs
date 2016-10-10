@@ -137,10 +137,16 @@ namespace SPMeta2.Utils
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
         }
 
+        public static XDocument SetAuthorizationFilter(this XDocument webpartXmlDocument, string value)
+        {
+            var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
+            return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
         public static XDocument SetWidth(this XDocument webpartXmlDocument, int value)
         {
             var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
-       
+
             if (IsV3version(webpartXmlDocument))
                 return SetOrUpdateV3Property(webpartXmlDocument, name, value.ToString(), WebPartNamespaceV3, false, "uint");
             if (IsV2version(webpartXmlDocument))
