@@ -130,6 +130,15 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Farm")]
+        public void CanDeployRandom_TrustedAccessProviderDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<TrustedAccessProviderDefinition>();
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Farm")]
@@ -161,6 +170,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<ManagedAccountDefinition>();
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Farm")]
+        public void CanDeployRandom_DeveloperDashboardSettingsDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<DeveloperDashboardSettingsDefinition>();
             });
         }
 
@@ -283,6 +302,8 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+
+
         #endregion
 
         #region site scope
@@ -304,6 +325,26 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 TestRandomDefinition<AuditSettingsDefinition>();
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.UserProfiles")]
+        public void CanDeployRandom_CorePropertyDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<CorePropertyDefinition>();
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site.UserProfiles")]
+        public void CanDeployRandom_ProfileTypePropertyDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<ProfileTypePropertyDefinition>();
             });
         }
 
@@ -561,6 +602,14 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
+        public void CanDeployRandom_DesignPackageDefinition()
+        {
+            TestRandomDefinition<DesignPackageDefinition>();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_FarmSolutionDefinition()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
@@ -795,6 +844,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.List")]
+        public void CanDeployRandom_DocumentSetDefinition()
+        {
+            TestRandomDefinition<DocumentSetDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List")]
         public void CanDeployRandom_ListFieldLinkDefinition()
         {
             TestRandomDefinition<ListFieldLinkDefinition>();
@@ -972,6 +1028,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         #endregion
 
         #region security scope
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Security")]
+        public void CanDeployRandom_UserDefinition()
+        {
+            TestRandomDefinition<UserDefinition>();
+        }
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Security")]
@@ -1357,6 +1420,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_BlogMonthQuickLaunchDefinition()
         {
             TestRandomDefinition<BlogMonthQuickLaunchDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Webparts10")]
+        public void CanDeployRandom_AdvancedSearchBoxDefinition()
+        {
+            TestRandomDefinition<AdvancedSearchBoxDefinition>();
         }
 
         #endregion

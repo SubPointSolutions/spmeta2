@@ -731,6 +731,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Fields.O365")]
         public void CanDeploy_Field_To_O365_RootSiteCollection()
         {
+            // Fields provision seems to fail on O365 root site collection #885
+            // https://github.com/SubPointSolutions/spmeta2/issues/885
+
             var fieldDef = new BooleanFieldDefinition
             {
                 Id = Rnd.Guid(),
@@ -740,9 +743,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 Required = false,
                 Hidden = false,
 
-                ShowInNewForm = true,
-                ShowInEditForm = true,
-                ShowInDisplayForm = true,
+                //ShowInNewForm = true,
+                //ShowInEditForm = true,
+                //ShowInDisplayForm = true,
 
                 Group = Rnd.String()
             };

@@ -29,7 +29,7 @@
     <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
     <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -117,17 +117,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-  
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
     </Reference>
-  
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
@@ -153,14 +155,12 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    
-	
-	<Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>False</Private>
@@ -185,13 +185,12 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-     <Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-	
-	<Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
@@ -199,7 +198,7 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-	<Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.dll</HintPath>
     </Reference>
@@ -223,8 +222,6 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-	
-   
     <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug40'" Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
@@ -233,7 +230,7 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-	<Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug40'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug40'" Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.dll</HintPath>
     </Reference>
@@ -257,7 +254,6 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
     </Reference>
-
     <Reference Include="System" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -277,12 +273,14 @@
     <Compile Include="ModelHandlers\DisplayTemplates\FilterDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\JavaScriptDisplayTemplateModelHandler.cs" />
     <Compile Include="ModelHandlers\DisplayTemplates\ItemDisplayTemplateModelHandler.cs" />
+    <Compile Include="ModelHandlers\DesignPackageModelHandler.cs"  Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Fields\SummaryLinkFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\MediaFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LinkFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\HTMLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\DocumentSetModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\MetadataNavigationSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
@@ -299,6 +297,7 @@
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\AdvancedSearchBoxModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CategoryWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" />

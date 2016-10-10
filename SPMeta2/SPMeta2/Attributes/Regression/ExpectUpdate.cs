@@ -34,6 +34,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateDeveloperDashboardSettings : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsCamlQuery : ExpectUpdate
     {
 

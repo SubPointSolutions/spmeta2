@@ -32,6 +32,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     .AddProperty(new PropertyDefinition())
                     .AddProperty(new PropertyDefinition());
 
+                farm.AddTrustedAccessProvider(new TrustedAccessProviderDefinition());
+
                 farm.AddFeature(new FeatureDefinition());
                 farm.AddFarmFeature(new FeatureDefinition());
 
@@ -39,6 +41,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 farm.AddManagedProperty(new ManagedPropertyDefinition());
 
                 farm.AddDiagnosticsServiceBase(new DiagnosticsServiceBaseDefinition());
+
+                farm.AddDeveloperDashboardSettings(new DeveloperDashboardSettingsDefinition());
             });
         }
 
@@ -73,6 +77,13 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddCoreProperty(new CorePropertyDefinition())
+                    .AddCoreProperty(new CorePropertyDefinition(), property =>
+                    {
+                        property.AddProfileTypeProperty(new ProfileTypePropertyDefinition());
+                    });
+
+
                 site.AddAuditSettings(new AuditSettingsDefinition());
                 site.AddImageRendition(new ImageRenditionDefinition());
 
@@ -89,6 +100,10 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 site.AddSecurityGroup(new SecurityGroupDefinition(), group =>
                 {
+                    group
+                        .AddUser(new UserDefinition())
+                        .AddUser(new UserDefinition());
+
                     // TODO
 
                     // .AddSecurityRoleLink() is missed on SecurityGroup #601
@@ -193,6 +208,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddDocumentSet(new DocumentSetDefinition());
+
                     list.AddAuditSettings(new AuditSettingsDefinition());
 
                     list.AddMasterPage(new MasterPageDefinition());
@@ -256,6 +273,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                         folder
                             .AddProperty(new PropertyDefinition())
                             .AddProperty(new PropertyDefinition())
+
+                            .AddDocumentSet(new DocumentSetDefinition())
 
                             .AddWelcomePage(new WelcomePageDefinition())
                             .AddFolder(new FolderDefinition())

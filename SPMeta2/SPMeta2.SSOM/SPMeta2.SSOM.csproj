@@ -250,6 +250,7 @@
     <Compile Include="ModelHandlers\PeoplePickerSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ResetRoleInheritanceModelHandler.cs" />
     <Compile Include="ModelHandlers\ComposedLookItemModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\UserModelHandler.cs" />
     <Compile Include="ModelHandlers\SupportedUICultureModelHandler.cs" />
     <Compile Include="ModelHandlers\TreeViewSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ManagedAccountModelHandler.cs" />
@@ -279,6 +280,8 @@
     <Compile Include="ModelHandlers\TopNavigationNodeModelHandler.cs" />
     <Compile Include="ModelHandlers\ContentTypes\UniqueContentTypeOrderModelHandler.cs" />
     <Compile Include="ModelHandlers\UserCustomActionModelHandler.cs" />
+    <Compile Include="ModelHandlers\DeveloperDashboardSettingsModelHandler.cs" />
+    <Compile Include="ModelHandlers\TrustedProviderDefinitionModelHandler.cs" />
     <Compile Include="ModelHandlers\WebApplicationModelHandler.cs" />
     <Compile Include="ModelHandlers\WebConfigModificationModelHandler.cs" />
     <Compile Include="ModelHandlers\RootWebModelHandler.cs" />

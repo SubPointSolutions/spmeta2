@@ -76,16 +76,28 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(def => def.DefaultUser);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetDefaultUserLoginName());
 
-                    var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
-                                dstProp.Value.ToString().ToUpper().Replace("\\", "/");
+                    // should be in the group
+                    var userNames = d.Users.OfType<SPUser>()
+                                           .Select(u => u.LoginName);
+
+                    var isValid = false;
+
+                    foreach (var userName in userNames)
+                    {
+                        if (srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
+                                userName.ToString().ToUpper().Replace("\\", "/"))
+                        {
+                            isValid = true;
+                            break;
+                        }
+                    }
 
                     return new PropertyValidationResult
                     {
                         Tag = p.Tag,
                         Src = srcProp,
-                        Dst = dstProp,
+                        Dst = null,
                         IsValid = isValid
                     };
                 });

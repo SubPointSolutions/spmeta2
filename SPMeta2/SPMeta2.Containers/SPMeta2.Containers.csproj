@@ -194,6 +194,8 @@
     <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeveloperDashboardSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\TrustedAccessProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\BlogAdminWebPartDefinitionGenerator.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebConfigModificationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\UserDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WorkflowAssociationDefinitionGenerator.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />

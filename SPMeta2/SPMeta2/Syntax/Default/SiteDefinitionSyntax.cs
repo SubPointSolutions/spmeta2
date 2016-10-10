@@ -20,7 +20,8 @@ namespace SPMeta2.Syntax.Default
         IUserCustomActionHostModelNode,
         ITaxonomyTermStoreHostModelNode,
         ISearchSettingsHostModelNode,
-        ISecurityGroupHostModelNode
+        ISecurityGroupHostModelNode,
+        ICorePropertyHostModelNode
     {
 
     }

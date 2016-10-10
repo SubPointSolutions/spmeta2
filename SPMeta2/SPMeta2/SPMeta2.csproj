@@ -140,6 +140,7 @@
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
+    <Compile Include="Definitions\DeveloperDashboardSettingsDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
+    <Compile Include="Definitions\TrustedAccessProviderDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogAdminWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogLinksWebPartDefinition.cs" />
@@ -204,13 +206,16 @@
     <Compile Include="Definitions\Webparts\UserTasksWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
+    <Compile Include="Definitions\UserDefinition.cs" />
     <Compile Include="Definitions\WorkflowAssociationDefinition.cs" />
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\SPMeta2Diagnostic.cs" />
+    <Compile Include="Diagnostic\ModelStatInfo.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAggregationsStatus.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
+    <Compile Include="Enumerations\BuiltInDeveloperDashboardLevel.cs" />
     <Compile Include="Enumerations\BuiltInListWriteSecurity.cs" />
     <Compile Include="Enumerations\BuiltInTimeZoneId.cs" />
     <Compile Include="Enumerations\BuiltInWorkflowIds.cs" />
@@ -347,6 +352,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
@@ -375,6 +381,7 @@
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\LookupServiceBase.cs" />
     <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
+    <Compile Include="Services\ModelStatInfoServiceBase.cs" />
     <Compile Include="Services\ModelPrintServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
@@ -402,6 +409,7 @@
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\DeveloperDashboardSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ClearRecycleBinDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AnonymousAccessSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AlternateUrlDefinitionSyntax.cs" />
@@ -420,6 +428,8 @@
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityGroupHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ICorePropertyHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IProfileTypePropertyHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />
@@ -463,6 +473,8 @@
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
     <Compile Include="Syntax\Default\HtmlMasterPageDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
+    <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\TrustedAccessProviderDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
@@ -583,6 +595,7 @@
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\CultureUtils.cs" />
     <Compile Include="Utils\IndexedPropertyUtils.cs" />
+    <Compile Include="Utils\AdvancedSearchBoxWebPartXmlExtensions.cs" />
     <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
@@ -688,6 +701,7 @@
     <EmbeddedResource Include="Templates\Webparts\SocialCommentWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\MyMembershipWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\BlogMonthQuickLaunch.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\AdvancedSearchBox.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\Impl\" />

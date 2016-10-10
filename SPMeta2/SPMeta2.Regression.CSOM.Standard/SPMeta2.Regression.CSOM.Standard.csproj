@@ -154,6 +154,8 @@
     <Compile Include="Validation\Fields\ClientLinkFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ClientImageHTMLFieldDefinitionValidator.cs" />
     <Compile Include="Validation\Fields\ClientHTMLFieldDefinitionValidator.cs" />
+    <Compile Include="Validation\DocumentSetDefinitionValidator.cs" />
+    <Compile Include="Validation\DesignPackageDefinitionValidator.cs" />
     <Compile Include="Validation\ImageRenditionDefinitionValidator.cs" />
     <Compile Include="Validation\ClientPageLayoutAndSiteTemplateSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Validation\Taxonomy\ClientTaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\ClientTaxonomyTermSetDefinitionValidator.cs" />
+    <Compile Include="Validation\Webparts\AdvancedSearchBoxValidator.cs" />
     <Compile Include="Validation\Webparts\CategoryWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityJoinWebPartValidator.cs" />

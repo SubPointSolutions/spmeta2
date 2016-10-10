@@ -93,6 +93,20 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region security groups
+
+        public static ModelNode AddRandomSecurityGroup(this ModelNode model)
+        {
+            return AddRandomSecurityGroup(model, null);
+        }
+
+        public static ModelNode AddRandomSecurityGroup(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<SecurityGroupDefinition>(action);
+        }
+
+        #endregion
+
         #region user custom action
 
         public static ModelNode AddRandomUserCustomAction(this ModelNode model)
