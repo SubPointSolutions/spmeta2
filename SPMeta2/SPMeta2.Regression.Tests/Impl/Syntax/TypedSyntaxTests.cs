@@ -208,6 +208,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddDiscussionItem(new DiscussionItemDefinition(), item =>
+                    {
+                        item.AddDiscussionReplyItem(new DiscussionReplyItemDefinition());
+                    });
+
                     list.AddDocumentSet(new DocumentSetDefinition());
 
                     list.AddAuditSettings(new AuditSettingsDefinition());

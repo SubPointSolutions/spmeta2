@@ -177,6 +177,7 @@
     <Compile Include="ModelHandlers\DeleteQuickLaunchNavigationNodesModelHandler.cs" />
     <Compile Include="ModelHandlers\DeleteTopNavigationNodesModelHandler.cs" />
     <Compile Include="ModelHandlers\DeleteWebPartsModelHandler.cs" />
+    <Compile Include="ModelHandlers\DiscussionReplyItemModelHandler.cs" />
     <Compile Include="ModelHandlers\EventReceiverModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\FeatureModelHandler.cs" />
     <Compile Include="ModelHandlers\FieldModelHandler.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="ModelHandlers\ListFieldLinkModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValuesModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
+    <Compile Include="ModelHandlers\DiscussionItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
     <Compile Include="ModelHandlers\UserModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />

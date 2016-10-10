@@ -785,6 +785,24 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         #endregion
 
+        #region discusison board
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List.DiscussionBoard")]
+        public void CanDeployRandom_DiscussionItemDefinition()
+        {
+            TestRandomDefinition<DiscussionItemDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List.DiscussionBoard")]
+        public void CanDeployRandom_DiscussionReplyItemDefinition()
+        {
+            TestRandomDefinition<DiscussionReplyItemDefinition>();
+        }
+
+        #endregion
+
         #region list scope
 
         [TestMethod]

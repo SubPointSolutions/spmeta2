@@ -119,7 +119,9 @@
     <Compile Include="DefinitionGenerators\DeleteTopNavigationNodesDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AnonymousAccessSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DiscussionReplyItemDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\HtmlMasterPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DiscussionItemDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\PeoplePickerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SupportedUICultureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\DependentLookupFieldDefinitionGenerator.cs" />
