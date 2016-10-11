@@ -27,9 +27,9 @@ namespace SPMeta2.SSOM.ModelHandlers
         protected virtual void SetPropertySafe(Hashtable properties, string key, object value)
         {
             if (!properties.ContainsKey(key))
-                properties.Add(key, value);
+                properties.Add(key, value.ToString());
             else
-                properties[key] = value;
+                properties[key] = value.ToString();
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
@@ -39,6 +39,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var site = siteModelHost.HostSite;
             var rootWeb = site.RootWeb;
+
+            var properties = rootWeb.AllProperties;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -55,7 +57,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.EnableCustomizingMasterPagesAndPageLayouts.HasValue)
             {
-                SetPropertySafe(rootWeb.AllProperties,
+                SetPropertySafe(properties,
                                BuiltInWebPropertyId.AllowMasterpageEditing,
                                definition.EnableCustomizingMasterPagesAndPageLayouts.Value == true ? 1 : 0);
 
@@ -64,7 +66,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.EnableDetachingPages.HasValue)
             {
-                SetPropertySafe(rootWeb.AllProperties,
+                SetPropertySafe(properties,
                                 BuiltInWebPropertyId.AllowRevertFromTemplate,
                                 definition.EnableDetachingPages.Value == true ? 1 : 0);
 
@@ -73,7 +75,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.EnableManagingWebSiteUrlStructure.HasValue)
             {
-                SetPropertySafe(rootWeb.AllProperties,
+                SetPropertySafe(properties,
                                 BuiltInWebPropertyId.ShowUrlStructure,
                                 definition.EnableManagingWebSiteUrlStructure.Value == true ? 1 : 0);
 
@@ -82,7 +84,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.EnableSharePointDesigner.HasValue)
             {
-                SetPropertySafe(rootWeb.AllProperties,
+                SetPropertySafe(properties,
                                BuiltInWebPropertyId.AllowDesigner,
                                definition.EnableSharePointDesigner.Value == true ? 1 : 0);
 
@@ -102,6 +104,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (shouldUpdate)
             {
+                siteModelHost.ShouldUpdateHost = false;
                 rootWeb.Update();
             }
         }

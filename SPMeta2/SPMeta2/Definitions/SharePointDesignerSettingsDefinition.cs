@@ -29,7 +29,7 @@ namespace SPMeta2.Definitions
     //[ExpectArrayExtensionMethod]
 
     [SingletonIdentity]
-    [ExpectManyInstances]
+    //[ExpectManyInstances]
 
     [ParentHostCapability(typeof(WebDefinition))]
     public class SharePointDesignerSettingsDefinition : DefinitionBase
@@ -45,21 +45,33 @@ namespace SPMeta2.Definitions
 
         #region properties
 
+        /// <summary>
+        /// Maps out AllowDesigner property bag value at the root web.
+        /// </summary>
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]
         public bool? EnableSharePointDesigner { get; set; }
 
+        /// <summary>
+        /// Maps out AllowRevertFromTemplate property bag value at the root web.
+        /// </summary>
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]
         public bool? EnableDetachingPages { get; set; }
 
+        /// <summary>
+        /// Maps out AllowMasterpageEditing property bag value at the root web.
+        /// </summary>
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]
         public bool? EnableCustomizingMasterPagesAndPageLayouts { get; set; }
 
+        /// <summary>
+        /// Maps out ShowUrlStructure property bag value at the root web.
+        /// </summary>
         [DataMember]
         [ExpectValidation]
         [ExpectUpdate]
