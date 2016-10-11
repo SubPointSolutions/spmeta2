@@ -379,6 +379,10 @@ namespace SPMeta2.Regression.SSOM.Validation
                     // TODO
                 }
 
+                if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                    assert.ShouldBeEqual(m => m.AuthorizationFilter, o => o.AuthorizationFilter);
+                else
+                    assert.SkipProperty(m => m.AuthorizationFilter, "AuthorizationFilter is null or empty. Skipping.");
             });
         }
 
