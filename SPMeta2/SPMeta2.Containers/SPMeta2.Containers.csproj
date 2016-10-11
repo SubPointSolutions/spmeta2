@@ -112,6 +112,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\SharePointDesignerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ClearRecycleBinDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />

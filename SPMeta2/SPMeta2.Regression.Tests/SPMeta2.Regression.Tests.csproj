@@ -291,6 +291,7 @@
     <Compile Include="Services\VSAssertService.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
+    <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="XsltStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

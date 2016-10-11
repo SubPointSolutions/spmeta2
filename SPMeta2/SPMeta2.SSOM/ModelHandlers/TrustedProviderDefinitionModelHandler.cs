@@ -76,10 +76,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
             }
 
+#if !NET35
             if (!string.IsNullOrEmpty(definition.MetadataEndPoint))
             {
                 currentObject.MetadataEndPoint = new Uri(definition.MetadataEndPoint);
             }
+#endif
 
             if (definition != null && definition.Certificate.Count() > 0)
             {

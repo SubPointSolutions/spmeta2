@@ -84,6 +84,8 @@
         /// </summary>
         public static string AllowRevertFromTemplate = "allowrevertfromtemplate";
 
+        public static string ShowUrlStructure = "showurlstructure";
+
         #endregion
     }
 }

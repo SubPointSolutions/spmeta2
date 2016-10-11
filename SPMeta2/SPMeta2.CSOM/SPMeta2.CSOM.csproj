@@ -206,6 +206,7 @@
     <Compile Include="ModelHandlers\ListItemFieldValueModelHandler.cs" />
     <Compile Include="ModelHandlers\DiscussionItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ListItemModelHandler.cs" />
+    <Compile Include="ModelHandlers\SharePointDesignerSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\UserModelHandler.cs" />
     <Compile Include="ModelHandlers\ListModelHandler.cs" />
     <Compile Include="ModelHandlers\ListViewModelHandler.cs" />
