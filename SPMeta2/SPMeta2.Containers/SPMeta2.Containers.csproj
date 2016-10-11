@@ -66,6 +66,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -253,6 +256,7 @@
     </Compile>
     <Compile Include="Utils\RunnerEnvironment.cs" />
     <Compile Include="Utils\TraceUtils.cs" />
+    <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -325,6 +329,7 @@
     <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Resources\SPMeta2-MSWord-Template.dotx" />
   </ItemGroup>
   <ItemGroup>

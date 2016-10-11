@@ -79,14 +79,26 @@ namespace SPMeta2.SSOM.ModelHandlers
 #if !NET35
             if (!string.IsNullOrEmpty(definition.MetadataEndPoint))
             {
-                currentObject.MetadataEndPoint = new Uri(definition.MetadataEndPoint);
+                if (currentObject.MetadataEndPoint != null)
+                {
+                    if (currentObject.MetadataEndPoint.AbsoluteUri.ToUpper() !=
+                        new Uri(definition.MetadataEndPoint).AbsoluteUri.ToUpper())
+                    {
+                        currentObject.MetadataEndPoint = new Uri(definition.MetadataEndPoint);
+                    }
+                }
+                else
+                {
+                    currentObject.MetadataEndPoint = new Uri(definition.MetadataEndPoint);
+                }
             }
 #endif
 
             if (definition != null && definition.Certificate.Count() > 0)
             {
                 var certificate = new X509Certificate2(definition.Certificate);
-                if (currentObject.SigningCertificate != certificate)
+
+                if (currentObject.SigningCertificate.Thumbprint != certificate.Thumbprint)
                 {
                     currentObject.SigningCertificate = certificate;
                 }
