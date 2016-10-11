@@ -61,6 +61,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             if (currentProperty == null)
                 currentProperty = CreateNewCoreProperty(site, definition);
 
+            MapProperties(currentProperty, definition);
+
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -71,6 +73,19 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+        }
+
+        private void MapProperties(CoreProperty currentProperty, CorePropertyDefinition definition)
+        {
+            if (definition.IsAlias.HasValue)
+                currentProperty.IsAlias = definition.IsAlias.Value;
+
+            if (definition.IsSearchable.HasValue)
+                currentProperty.IsSearchable = definition.IsSearchable.Value;
+
+            // this is cannot be updated
+            //if (definition.IsMultivalued.HasValue)
+            //    currentProperty.IsMultivalued = definition.IsMultivalued.Value;
         }
 
         protected virtual CoreProperty CreateNewCoreProperty(SPSite site, CorePropertyDefinition definition)
@@ -93,6 +108,15 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
             if (definition.Length.HasValue)
                 coreProp.Length = definition.Length.Value;
+
+            if (definition.IsAlias.HasValue)
+                coreProp.IsAlias = definition.IsAlias.Value;
+
+            if (definition.IsSearchable.HasValue)
+                coreProp.IsSearchable = definition.IsSearchable.Value;
+
+            if (definition.IsMultivalued.HasValue)
+                coreProp.IsMultivalued = definition.IsMultivalued.Value;
 
             corePropertiesManager.Add(coreProp);
 
