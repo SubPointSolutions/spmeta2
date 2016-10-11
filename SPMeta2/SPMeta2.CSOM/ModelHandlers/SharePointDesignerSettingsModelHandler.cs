@@ -5,6 +5,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -17,6 +18,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             get { return typeof(SharePointDesignerSettingsDefinition); }
         }
 
+        protected virtual void SetPropertySafe(PropertyValues properties, string key, object value)
+        {
+            properties[key] = value.ToString();
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
@@ -26,6 +32,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             var rootWeb = site.RootWeb;
 
             var context = site.Context;
+
+            context.Load(rootWeb, w => w.AllProperties);
+            context.ExecuteQueryWithTrace();
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -39,34 +48,44 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             var shouldUpdate = false;
+            var properties = rootWeb.AllProperties;
 
             if (definition.EnableCustomizingMasterPagesAndPageLayouts.HasValue)
             {
-                // TODO
+                SetPropertySafe(properties,
+                               BuiltInWebPropertyId.AllowMasterpageEditing,
+                               definition.EnableCustomizingMasterPagesAndPageLayouts.Value == true ? 1 : 0);
 
                 shouldUpdate = true;
             }
 
             if (definition.EnableDetachingPages.HasValue)
             {
-                // TODO
+                SetPropertySafe(properties,
+                                BuiltInWebPropertyId.AllowRevertFromTemplate,
+                                definition.EnableDetachingPages.Value == true ? 1 : 0);
 
                 shouldUpdate = true;
             }
 
             if (definition.EnableManagingWebSiteUrlStructure.HasValue)
             {
-                // TODO
+                SetPropertySafe(properties,
+                                BuiltInWebPropertyId.ShowUrlStructure,
+                                definition.EnableManagingWebSiteUrlStructure.Value == true ? 1 : 0);
 
                 shouldUpdate = true;
             }
 
             if (definition.EnableSharePointDesigner.HasValue)
             {
-                // TODO
+                SetPropertySafe(properties,
+                               BuiltInWebPropertyId.AllowDesigner,
+                               definition.EnableSharePointDesigner.Value == true ? 1 : 0);
 
                 shouldUpdate = true;
             }
+
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -81,7 +100,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (shouldUpdate)
             {
-                // TODO
+                siteModelHost.ShouldUpdateHost = false;
+
+                rootWeb.Update();
                 context.ExecuteQueryWithTrace();
             }
         }

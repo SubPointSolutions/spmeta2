@@ -5,6 +5,7 @@ using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -25,30 +26,109 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject);
 
-            // TODO
+            if (definition.EnableCustomizingMasterPagesAndPageLayouts.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.EnableCustomizingMasterPagesAndPageLayouts);
+                    var isValid = true;
 
-            //if (definition.DeleteAll)
-            //{
-            //    assert.ShouldBeEqual((p, s, d) =>
-            //    {
-            //        var srcProp = s.GetExpressionValue(def => def.DeleteAll);
-            //        var isValid = true;
+                    var dstValue = ConvertUtils.ToBool(spObject.AllProperties[BuiltInWebPropertyId.AllowMasterpageEditing]);
 
-            //        isValid = spObject.RecycleBin.Count == 0;
+                    isValid = s.EnableCustomizingMasterPagesAndPageLayouts.Value == dstValue;
 
-            //        return new PropertyValidationResult
-            //        {
-            //            Tag = p.Tag,
-            //            Src = srcProp,
-            //            Dst = null,
-            //            IsValid = isValid
-            //        };
-            //    });
-            //}
-            //else
-            //{
-            //    assert.SkipProperty(o => o.DeleteAll, "DeleteAll is false");
-            //}
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid,
+                        Message = string.Format("{0} - {1}", BuiltInWebPropertyId.AllowMasterpageEditing, dstValue)
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(o => o.EnableCustomizingMasterPagesAndPageLayouts, "EnableCustomizingMasterPagesAndPageLayouts is NULL. Skipping");
+            }
+
+            if (definition.EnableDetachingPages.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.EnableDetachingPages);
+                    var isValid = true;
+
+                    var dstValue = ConvertUtils.ToBool(spObject.AllProperties[BuiltInWebPropertyId.AllowRevertFromTemplate]);
+
+                    isValid = s.EnableDetachingPages.Value == dstValue;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid,
+                        Message = string.Format("{0} - {1}", BuiltInWebPropertyId.AllowMasterpageEditing, dstValue)
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(o => o.EnableDetachingPages, "EnableDetachingPages is NULL. Skipping");
+            }
+
+            if (definition.EnableManagingWebSiteUrlStructure.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.EnableManagingWebSiteUrlStructure);
+                    var isValid = true;
+
+                    var dstValue = ConvertUtils.ToBool(spObject.AllProperties[BuiltInWebPropertyId.ShowUrlStructure]);
+
+                    isValid = s.EnableManagingWebSiteUrlStructure.Value == dstValue;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid,
+                        Message = string.Format("{0} - {1}", BuiltInWebPropertyId.AllowMasterpageEditing, dstValue)
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(o => o.EnableManagingWebSiteUrlStructure, "EnableManagingWebSiteUrlStructure is NULL. Skipping");
+            }
+
+            if (definition.EnableSharePointDesigner.HasValue)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.EnableSharePointDesigner);
+                    var isValid = true;
+
+                    var dstValue = ConvertUtils.ToBool(spObject.AllProperties[BuiltInWebPropertyId.AllowDesigner]);
+
+                    isValid = s.EnableSharePointDesigner.Value == dstValue;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid,
+                        Message = string.Format("{0} - {1}", BuiltInWebPropertyId.AllowMasterpageEditing, dstValue)
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(o => o.EnableSharePointDesigner, "EnableSharePointDesigner is NULL. Skipping");
+            }
         }
     }
 
