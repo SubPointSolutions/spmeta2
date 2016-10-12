@@ -71,6 +71,7 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is not supported by CSOM");
             assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages is not supported by CSOM");
+            assert.SkipProperty(m => m.EnableThrottling, "EnableThrottling is not supported by CSOM");
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
             {

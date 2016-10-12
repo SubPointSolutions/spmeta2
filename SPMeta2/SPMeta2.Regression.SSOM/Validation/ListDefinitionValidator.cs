@@ -53,7 +53,16 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
-                assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages  is null or empty");
+                assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages is null or empty");
+            }
+
+            if (definition.EnableThrottling.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.EnableThrottling, o => o.EnableThrottling);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.EnableThrottling, "EnableThrottling is null or empty");
             }
 
             if (definition.WriteSecurity.HasValue)
