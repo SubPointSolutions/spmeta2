@@ -321,6 +321,7 @@
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeFieldLinkDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeLinkDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\CurrencyFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DeleteWebPartsDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DateTimeFieldDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DiagnosticsServiceBaseDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DocumentParserDefinitionTests.cs" />
@@ -853,6 +854,7 @@
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmSolutionDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FeatureDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\DeleteWebPartsDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderIndex.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\GuidFieldDefinition.md" />
