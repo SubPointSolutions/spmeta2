@@ -13,6 +13,9 @@ using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.Services;
 using SPMeta2.SSOM.Services;
+using SPMeta2.Containers.Utils;
+using SPMeta2.Containers.Consts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Docs.ProvisionSamples.Base
 {
@@ -22,11 +25,19 @@ namespace SPMeta2.Docs.ProvisionSamples.Base
 
         public ProvisionTestBase()
         {
-            CSOMSiteUrl = "http://tesla-dev:31421";
-            SSOMSiteUrl = "http://tesla-dev:31416";
+            SSOMSiteUrl = RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.SSOM_SiteUrls).First();
+            CSOMSiteUrl = RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.CSOM_SiteUrls).First();
 
-            EnableCSOM = false;
+            EnableCSOM = true;
             EnableSSOM = true;
+
+            if (EnableSSOM)
+            {
+                if (!Environment.Is64BitProcess)
+                {
+                    throw new SPMeta2Exception("Environment.Is64BitProcess is false. If you run unit tests from Visual Studio, ensure 'Test -> Test Setting -> Default Processor Architecture -> x64'");
+                }
+            }
         }
 
         #endregion

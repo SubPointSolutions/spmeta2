@@ -1265,6 +1265,10 @@
     <EmbeddedResource Include="Code\Resources\WorkflowTemplates.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091c48fb-27e3-4f84-897c-5de7bb55a2d3}</Project>
+      <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
       <Project>{5e592eaa-e21f-4bf4-8edf-6f6452dc916a}</Project>
       <Name>SPMeta2.CSOM.Standard</Name>
