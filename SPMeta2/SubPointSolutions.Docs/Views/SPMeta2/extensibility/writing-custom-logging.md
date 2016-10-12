@@ -20,7 +20,7 @@ All the codebase refers to logging subsustem as TraceServiceBase never knowing w
 Obtaining a concrete implementation of the loggin service should be done as following:
 
 Here is an example how a logging service instance can be obtained and used:
-<a href="_samples/writing-custom-logging-RegisterCustomLogginService.sample-ref"></a>
+<a href="_samples/writing-custom-logging-GetDefaultTraceServiceInstance.sample-ref"></a>
 
 SPMeta2 has a default implementation of TraceServiceBase which is TraceSourceService. We use default .NET logging based on Diagnostic.TraceSource. 
 Default TraceSourceService class created a new instance of Diagnostic.TraceSource with the name 'SPMeta2'. It redirects all the logging to the trace listners defined in the app.config file for 'SPMeta2' name.
@@ -35,6 +35,6 @@ Here is an example on a custom logging service implementation:
 <a href="_samples/writing-custom-logging-CustomLoggingServiceClass.sample-ref"></a>
 
 Once a custom logging service is implemented, we still need to replace the default logging service with our custom one. That can be accomplished with the following code:
-<a href="writing-custom-logging-RegisterCustomLogginService.sample-ref"></a>
+<a href="_samples/writing-custom-logging-RegisterCustomLogginService.sample-ref"></a>
 
-Once done, SPMeta2 will use custom logging service to push all traces.
+Once done, SPMeta2 will use custom logging service to push all trace messages.
