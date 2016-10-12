@@ -298,6 +298,7 @@
     <Compile Include="Code\Tests\DocTests.cs" />
     <Compile Include="Code\Utils\StringUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\writing-custom-logging.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-definition.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-syntax.cs" />
     <Compile Include="Views\SPMeta2\getting-started\ConsoleAppSamples.cs" />
@@ -789,6 +790,18 @@
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithEvents.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithSyntax.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Critical.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-CustomLoggingServiceClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-CustomLogginRegistrationClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Error.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-HideContentTypeFieldsAsOOTB.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Information.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityStart.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityStop.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityTransfer.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Verbose.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Warning.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-CustomSyntaxClass.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsExtension.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsOOTB.sample-ref" />
@@ -796,7 +809,7 @@
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsExtensionsClass.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SyntaxExtensionPrototype.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SysAll.sample-ref" />
-    <None Include="Views\SPMeta2\extensibility\_writing-custom-logging.md" />
+    <None Include="Views\SPMeta2\extensibility\writing-custom-logging.md" />
     <None Include="Views\SPMeta2\extensibility\writing-custom-syntax.md" />
     <None Include="Views\SPMeta2\getting-started\_csom-provision.md" />
     <None Include="Views\SPMeta2\getting-started\_FAQ.md" />
