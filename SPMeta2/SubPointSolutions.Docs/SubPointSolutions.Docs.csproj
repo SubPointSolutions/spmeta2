@@ -779,6 +779,7 @@
     <None Include="Views\Shared\bootstrap\PageLayouts\_M2Samples.cshtml" />
     <None Include="Views\SPMeta2\extensibility\Index.md" />
     <None Include="Views\SPMeta2\extensibility\writing-custom-definition.md" />
+    <None Include="Views\SPMeta2\extensibility\regression-testing.md" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_2_Params.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_3_Params.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-ChangeWebTitleAndDescriptionDefinitionClass.sample-ref" />

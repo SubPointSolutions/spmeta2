@@ -1,5 +1,5 @@
 ﻿---
-Title: Custom Logging
+Title: Custom logging
 FileName: custom-logging.html
 Order: 600
 ---
