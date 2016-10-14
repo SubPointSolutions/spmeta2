@@ -298,6 +298,7 @@
     <Compile Include="Code\Tests\DocTests.cs" />
     <Compile Include="Code\Utils\StringUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\regression-testing.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-logging.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-definition.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-syntax.cs" />
