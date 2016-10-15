@@ -162,7 +162,7 @@ In both project we have 'DefinitionGenerators' folder that houses 'random defini
 Such classes generate a random, valid definition that can be deploye to SharePoint.
 Check 'WebDefinitionGenerator', it looks as following:
 
-<a href="_samples/regression-testing-WebDefinitionGeneratorClass.sample-ref></a>
+<a href="_samples/regression-testing-WebDefinitionGeneratorClass.sample-ref"></a>
 
 Follow the same style adding a new definition generator if you created a new definition.
 
@@ -292,7 +292,7 @@ Such approach ensures that:
 All that is made possible by the additional attributes on SPMEta2 definitions and enhanced assert utils we wrote.
 Let's get deeper into regression testing attributes and assert utils with the next paragraph!
 
-### Regression testing attributes and assertions
+### Regression testing attributes
 
 If you reading this, then you should know that SPMeta2 regression testing:
 * Generates 'random models' based on definition attributes
@@ -309,7 +309,8 @@ Open up [WebDefinition](https://github.com/SubPointSolutions/spmeta2/blob/master
 WebDefinition has tons of attributes. Let's go one by one.
 
 **[SPObjectType]**
-THis attribute defines what kind of SharePoint object is passed to OnProvisining/OnProvisioned events.
+
+This attribute defines what kind of SharePoint object is passed to OnProvisining/OnProvisioned events.
 Regression testing checks if:
 * OnProvisining/OnProvisioned events were fired
 * Events have data passed
@@ -318,6 +319,7 @@ Regression testing checks if:
 We are forcing outselves to ensure that SPMeta2 always raises OnProvisining/OnProvisioned events in the right way.
 
 **[DefaultRootHost] / [DefaultParentHost]**
+
 Mentioned early, these two attributes define parent-child relationships between definitions. 
 Such relationships are used within regression testing while generating random models. 
 DefaultRootHost suggest the type of the model to generate - farm, web app, site or web model. 
@@ -328,23 +330,28 @@ For instance, field can be deployed under site, web and list. But FieldDefinitio
 DefaultRootHost and DefaultParentHost attributes are used for random regression tests, the rest of the artifact combinations are handled by scenarios tests.
 
 **[ExpectAddHostExtensionMethod]**
+
 This attributes ensures that .AddHostXXX() methods exists. 
 Sometimes, artoifact already exists (such as style library), so that .AddHostList() method is used to build up a model.
 
 If definition has [ExpectAddHostExtensionMethod] attribute, then regression checks if an appropriate extension method for SPMEta2 model syntax exists.
 
 **[Serializable] / [DataContract]**
+
 Default .NET attributes, Must have to ensure definition can be serialized.
 
 **[ExpectWithExtensionMethod]**
+
 Osolete. Regression would check if .WithXXX() method exists at the model syntax level.
 
 **[ExpectArrayExtensionMethod]**
+
 Regression checks if .AddXXXs() method exists at the model syntax level, such as:
 * AddFields(array)
 * AddWebs(array)
 
 **[ParentHostCapability]**
+
 Similr to [DefaultParentHost] attribute, ParentHostCapability indicates possible parent of the current definitions.
 There might be multiple [ParentHostCapability] attributes to indicate multiple parents. In this case, such attributes represents all potential combinations to create model tree of the giving definitions.
 
@@ -355,6 +362,7 @@ ParentHostCapability (and all other XXXCapability attributes)  are meant to indi
 You can use ParentHostCapability attribute to figure out all possible parent for the current definition in your software or tool.
 
 **[ExpectManyInstances]**
+
 This is part of regression testing and 'random tests'.
 Some definitions, such as lists, fields, webs, can be added into the model several times.
 Some exist alone - such as 'BreakRoleInheritance'.
@@ -376,9 +384,11 @@ Every definition has set of properties, and every propertu has tons of custom at
 Open up [WebDefinition](https://github.com/SubPointSolutions/spmeta2/blob/master/SPMeta2/SPMeta2/Definitions/WebDefinition.cs) source code, let's talk WebDefinition properties and its attributes.
 
 **[DataMember]**
+
 Default .NET attribute to ensure that propety is serialized. Boring.
 
 **[ExpectRequired]**
+
 This attribute indicated that property must have a value. 
 SPMeta2 has builtin validation. We prevent you from deploying incorrectly formed definitions.
 For instance, WebDefinition must have Title and Url. Hence, both props have [ExpectRequired] attributes.
@@ -391,6 +401,7 @@ In such case, ExpectRequiest attribute has a 'group', as following:
 Validation groups all ExpectRequired using the 'GroupName', and then ensures that one of the property with such attribute within a group is set.
 
 **[IdentityKey]**
+
 Identity key is something like a 'global unique identificator' for SPMeta2 definition.
 Every definition must have one, unless the definition is 'single' such as BreakRoleInheritance.
 
@@ -399,10 +410,12 @@ Sure, other properties must be taken into account, but this 'identity key' helps
 Such operations are needed once we perform diff/merge operation over two and more SPMeta2 models.
 
 **[ExpectValidation]**
+
 Used by regression testing. If this attribute exists at the property, then regression testing expect that you performed assert operation via 'model validation' while testing your definition.
 Simply saying, all properties marked by [ExpectValidation] attributes are forces to be checked or irnored by regression testing assert utils.
 
 **[ExpectNullable]**
+
 This is part of the regresison testing. Random models gets deployed deveral times over the provisioning.
 For the second and further provisioning, the model gets random updates: all definition properties get randomly updated.
 
@@ -414,6 +427,7 @@ We automated that via [ExpectNullable] attribute si that regression does several
 Hence, we found all bugs and issues in the provisioning code that was not handling NULLs property. Shame, we know. But not anymore.
 
 **[ExpectUpdate]**
+
 This is cool attribute. Similar to [ExpectNullable], this attribute suggest that definition property can be updated.
 For instance, field title, web title, web descriptions and so on.
 
@@ -446,6 +460,7 @@ Regresison testing gets all definition properties, updates all 'simple' props wi
 
 Woohooo! Pretty much we done with the attributes. Altogether, these little trick and bits helps SPMeta2 prodice such outstanding quality.
 
+### Regression testing asserts
 Let's talk about 'model validators'. Open up [WebDefinitionValidator](https://github.com/SubPointSolutions/spmeta2/blob/master/SPMeta2/SPMeta2.Regression.SSOM/Validation/WebDefinitionValidator.cs).
 Most of the model validators make the 'reverse' of the model handler - thet fetch the object from SharePoint to compare object properties with the definition properties.
 
@@ -459,15 +474,17 @@ Fetching the object, we tend to use the same codebased as model handlers. in cas
 Once we obtain the SharePoint object, we create an 'AsserPair' via AssertService. 
 
 AsserPair has various methods to perform validation sich as:
-* ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate());
-* ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments)
+* .ShouldBeEqual 
+* .ShouldNotBeNull 
+* .ShouldXXX
+* so on...
 
 The first object os always definition instance, the second one is the SharePoint object. Most of the time you can compare simple props such as string and numbers.
 Sometimes you need to skip the property (if it's null, so you don't need to validate it), so that the following methd is to be used:
-* assert.SkipProperty(m => m.CustomWebTemplate);
+* assert.SkipProperty method
 
 Finally, if the props are complex and can't be compard with out of the box methods, use the following ShouldBeEqual() override:
-* assert.ShouldBeEqual((p, s, d) => {} );
+* assert.ShouldBeEqual
 
 You must return PropertyValidationResult object, check [WebDefinitionValidator](https://github.com/SubPointSolutions/spmeta2/blob/master/SPMeta2/SPMeta2.Regression.SSOM/Validation/WebDefinitionValidator.cs) and .Url comparation to get into more details.
 
@@ -490,4 +507,4 @@ Having said that, most of the definition are already created by the SPMeta2 team
 ### Further reading
 * [definitions concept](/spmeta2/reference/definitions)
 * [models concept](/spmeta2/reference/models)
-* [creaeting custom definition](/spmeta2/extensibility/custom-definition)
+* [creating custom definition](/spmeta2/extensibility/custom-definition)

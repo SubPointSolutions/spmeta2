@@ -17,7 +17,12 @@ using SPMeta2.Utils;
 namespace SubPointSolutions.Docs.Views.SPMeta2.extensibility
 {
 
-    public class Regressiontesting : ProvisionTestBase
+    public class RegressionTestingBase : ProvisionTestBase
+    {
+        protected void TestRandomDefinition<WebDefinition>() { }
+    }
+
+    public class Regressiontesting : RegressionTestingBase
     {
         #region methods
 
@@ -27,8 +32,6 @@ namespace SubPointSolutions.Docs.Views.SPMeta2.extensibility
         {
             TestRandomDefinition<WebDefinition>();
         }
-
-        private void TestRandomDefinition<WebDefinition>() { }
 
         #endregion
     }
