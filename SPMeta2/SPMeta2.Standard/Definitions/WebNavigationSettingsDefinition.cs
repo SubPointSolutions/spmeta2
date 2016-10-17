@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
-using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
 
 namespace SPMeta2.Standard.Definitions
@@ -39,12 +37,15 @@ namespace SPMeta2.Standard.Definitions
         #region properties
 
         [DataMember]
+        [ExpectValidation]
         public bool? DisplayShowHideRibbonAction { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? AddNewPagesToNavigation { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? CreateFriendlyUrlsForNewPages { get; set; }
 
         [DataMember]

@@ -52,6 +52,10 @@
         /// </summary>
         public static string ImagesListId = "__ImagesListId";
 
+        /// <summary>
+        /// Refers to __DisplayShowHideRibbonActionId
+        /// </summary>
+        public static string DisplayShowHideRibbonActionId = "__DisplayShowHideRibbonActionId";
 
         /// <summary>
         /// Refers to FollowLinkEnabled
