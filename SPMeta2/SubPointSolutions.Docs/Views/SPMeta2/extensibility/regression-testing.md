@@ -105,9 +105,9 @@ It reflects all definitions in SPMeta2, then creates and instance of definition.
 That ensure that default constructor can be called without any errors.
 
 We have 'RandomDefinitionTest_ShouldHave_Tests_ForAllDefinitions' test that ensure that 'RandomDefinitionSelfDiagnoosticTest' class has 'random' tests for every definition.
-If you addd a new definition, you have to add a 'random' definitio regresison test (will be discussed later) and this test will fail indicating that you haven't added such regression test.
+If you addd a new definition, you have to add a 'random' definition regression test (will be discussed later) and this test will fail indicating that you haven't added such regression test.
 
-There are other unit tests to ensure defaukt services, values, null-reference exception, ensure serialization and presence of correct attributes, and then some test to ensure that particular tests were written.
+There are other unit tests to ensure default services, values, null-reference exception, ensure serialization and presence of correct attributes, and then some test to ensure that particular tests were written.
 Altogether, at unit test level we ensure basic C# tests and some SPMeta2 name convention and integrity.
 
 If you need to test something non-SharePoint related, a unit test is the right place.
@@ -119,7 +119,7 @@ For unit tests you need to focus on /Tests/Impl/ folder and two solutions. Place
 
 ### SPMeta2 regression testing
 Regression testing is more complicated. 
-As mentioned early, regression testing has a complictaed execution flow and it required either SharePoint 2013 farm or SharePoint online tenant.
+As mentioned early, regression testing has a complicated execution flow and it required either SharePoint 2013 farm or SharePoint online tenant.
 
 SSOM testing requires SharePoint 2013 farm.
 CSOM testing goes either with SharePoint 2013 farm or SharePoint online tenant.
@@ -193,7 +193,7 @@ Folow name convention to add a new tests, and then implement correct random defi
 
 ### Scenarios regression tests
 **Scenarios regression** tests is the next step to cover different provision scenarios.
-Such tests reflect real word scenarios coming from comminuty and real world projects.
+Such tests reflect real word scenarios coming from community and real world projects.
 
 All scenarios are written manually and aim to cover a particular scope.
 For instance, with the fields:
@@ -270,8 +270,8 @@ Model validators are meant to compare the original SPMeta2 definition object wit
 Every definition has a 'model validator'. Consider it to be sort of 'reversed model handler'. 
 If model handler provisions artifact to SharePoint, then 'model validator' does the reverse things - it pulls artifact from SharePoint and then compares properties of artifact with properties defined in the definition.
 
-Such flow is oversimlification of the actual things that happening behind. As mentioned, several rounds of provisioning is done, serialization is used, some other maginc is involved.
-At the end, it comes back to model validators and property-to-property comparison.To learn more, have a look how WebDefinitionValidator works. It is a great start to understand the regression testing.
+Such flow is oversimplification of the actual things that happening behind. As mentioned, several rounds of provisioning is done, serialization is used, some other magic is involved.
+At the end, it comes back to model validators and property-to-property comparison. To learn more, have a look how WebDefinitionValidator works. It is a great start to understand the regression testing.
 
 **Why regression testing does not use default "Aseert" class?**
 Now, you may notice that default unit tests have "Aseert" class to check statements. We don't use that in the regression testing.
@@ -280,7 +280,7 @@ It makes a report over all the properties showing:
 * Which properties have not been validated by 'model validator'
 * Which properties have been validated but were not equal
 
-Default C# unit tests framework don't provide such funtionality allowing only to fail on the first wrong sutiation.
+Default C# unit tests framework don't provide such functionality allowing only to fail on the first wrong situation.
 SPMeta2 regression testing runs everything from start to end, allows to compare properties and renders the report over the comparison to the tests trace.
 
 Such approach ensures that:
@@ -332,7 +332,7 @@ DefaultRootHost and DefaultParentHost attributes are used for random regression 
 **[ExpectAddHostExtensionMethod]**
 
 This attributes ensures that .AddHostXXX() methods exists. 
-Sometimes, artoifact already exists (such as style library), so that .AddHostList() method is used to build up a model.
+Sometimes, artifact already exists (such as style library), so that .AddHostList() method is used to build up a model.
 
 If definition has [ExpectAddHostExtensionMethod] attribute, then regression checks if an appropriate extension method for SPMEta2 model syntax exists.
 
@@ -342,7 +342,7 @@ Default .NET attributes, Must have to ensure definition can be serialized.
 
 **[ExpectWithExtensionMethod]**
 
-Osolete. Regression would check if .WithXXX() method exists at the model syntax level.
+Obsolete. Regression would check if .WithXXX() method exists at the model syntax level.
 
 **[ExpectArrayExtensionMethod]**
 
@@ -352,10 +352,10 @@ Regression checks if .AddXXXs() method exists at the model syntax level, such as
 
 **[ParentHostCapability]**
 
-Similr to [DefaultParentHost] attribute, ParentHostCapability indicates possible parent of the current definitions.
+Similar to [DefaultParentHost] attribute, ParentHostCapability indicates possible parent of the current definitions.
 There might be multiple [ParentHostCapability] attributes to indicate multiple parents. In this case, such attributes represents all potential combinations to create model tree of the giving definitions.
 
-For instance, FieldDefinition has three [ParentHostCapability] with site, web and list valies.
+For instance, FieldDefinition has three [ParentHostCapability] with site, web and list values.
 WebDefintion has two: for web, and site.
 
 ParentHostCapability (and all other XXXCapability attributes)  are meant to indicate additional information of the defintion for 3rd part tools.
@@ -368,13 +368,13 @@ Some definitions, such as lists, fields, webs, can be added into the model sever
 Some exist alone - such as 'BreakRoleInheritance'.
 
 If [ExpectManyInstances] exists, then 'random' regression tests will create 1-3 instancies of the definition while constructing a random model for the random regression test.
-That means that random regression tests create a random model with random amont of random definition of the giving type. Sounds cool right?
+That means that random regression tests create a random model with random amount of random definition of the giving type. Sounds cool right?
 
 Okay, random model for BreakRoleInheritance will have only one instance of BreakRoleInheritance.
 Most of the definitions have [ExpectManyInstances] attributes, so that a random model will have 1-3 instancies of the giving definition.
 For instance, random tests for field definition will have 1-3 field definition instancies.
 
-We need that to ensire that several definitions can be deploye in a row. We had some issues with onde definition deployed well, and if you add two definitions in the model (two fields, two lists, two web parts), then provision fails.
+We need that to ensure that several definitions can be deployed in a row. We had some issues with one definition deployed well, and if you add two definitions in the model (two fields, two lists, two web parts), then provision fails.
 Hence, we added [ExpectManyInstances] attributes and enhanced regression testing to generate several instancies of the giving definition within a random test.
 
 Really, cool. Quality rocks, guys.
