@@ -550,9 +550,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
                 {
                     AddNewPagesToNavigation = Rnd.Bool(),
-                    CreateFriendlyUrlsForNewPages = Rnd.Bool()
+                    CreateFriendlyUrlsForNewPages = Rnd.Bool(),
 
-                    //GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
                     //GlobalNavigationShowSubsites = true,
                     //GlobalNavigationShowPages = true,
 

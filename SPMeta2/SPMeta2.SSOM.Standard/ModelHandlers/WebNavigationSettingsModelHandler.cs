@@ -146,16 +146,16 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                         }
                     }
                 }
+            }
 
-                if (navigationModel.AddNewPagesToNavigation.HasValue)
-                {
-                    thisWebNavSettings.AddNewPagesToNavigation = navigationModel.AddNewPagesToNavigation.Value;
-                }
+            if (navigationModel.AddNewPagesToNavigation.HasValue)
+            {
+                thisWebNavSettings.AddNewPagesToNavigation = navigationModel.AddNewPagesToNavigation.Value;
+            }
 
-                if (navigationModel.CreateFriendlyUrlsForNewPages.HasValue)
-                {
-                    thisWebNavSettings.CreateFriendlyUrlsForNewPages = navigationModel.CreateFriendlyUrlsForNewPages.Value;
-                }
+            if (navigationModel.CreateFriendlyUrlsForNewPages.HasValue)
+            {
+                thisWebNavSettings.CreateFriendlyUrlsForNewPages = navigationModel.CreateFriendlyUrlsForNewPages.Value;
             }
 
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)

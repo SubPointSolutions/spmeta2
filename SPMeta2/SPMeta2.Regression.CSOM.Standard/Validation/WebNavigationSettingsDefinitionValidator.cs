@@ -209,7 +209,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
 
                 var isGlobalNavIncludeTypesValid = false;
 
-                if (definition.CurrentNavigationShowSubsites.Value)
+                if (definition.CurrentNavigationShowPages.Value)
                 {
                     isGlobalNavIncludeTypesValid =
                         ((currentNavIncludeTypesValue & 2) == 2) && (currentIncludeSubSitesValue);
@@ -363,7 +363,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
-                        var srcProp = s.GetExpressionValue(m => m.AddNewPagesToNavigation.Value);
+                        var srcProp = s.GetExpressionValue(m => m.AddNewPagesToNavigation);
 
                         return new PropertyValidationResult
                         {
@@ -392,7 +392,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
-                        var srcProp = s.GetExpressionValue(m => m.CreateFriendlyUrlsForNewPages.Value);
+                        var srcProp = s.GetExpressionValue(m => m.CreateFriendlyUrlsForNewPages);
 
                         return new PropertyValidationResult
                         {

@@ -268,11 +268,12 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
 
             if (definition.AddNewPagesToNavigation.HasValue)
             {
-                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource) || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
+                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource)
+                    || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
-                        var srcProp = s.GetExpressionValue(m => m.AddNewPagesToNavigation.Value);
+                        var srcProp = s.GetExpressionValue(m => m.AddNewPagesToNavigation);
 
                         return new PropertyValidationResult
                         {
@@ -294,14 +295,15 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                 assert.SkipProperty(d => d.AddNewPagesToNavigation,
                     "AddNewPagesToNavigation is null");
             }
-            
+
             if (definition.CreateFriendlyUrlsForNewPages.HasValue)
             {
-                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource) || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
+                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource)
+                    || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
-                        var srcProp = s.GetExpressionValue(m => m.CreateFriendlyUrlsForNewPages.Value);
+                        var srcProp = s.GetExpressionValue(m => m.CreateFriendlyUrlsForNewPages);
 
                         return new PropertyValidationResult
                         {
