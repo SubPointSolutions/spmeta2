@@ -1,15 +1,15 @@
 ﻿using System;
 using Microsoft.SharePoint.Publishing.Navigation;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.SSOM.Standard.ModelHandlers.Fields;
 using SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
-using SPMeta2.SSOM.Standard.ModelHandlers.Fields;
 
 namespace SPMeta2.SSOM.Standard.ModelHandlers
 {
@@ -148,9 +148,19 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 }
             }
 
+            if (navigationModel.AddNewPagesToNavigation.HasValue)
+            {
+                thisWebNavSettings.AddNewPagesToNavigation = navigationModel.AddNewPagesToNavigation.Value;
+            }
+
+            if (navigationModel.CreateFriendlyUrlsForNewPages.HasValue)
+            {
+                thisWebNavSettings.CreateFriendlyUrlsForNewPages = navigationModel.CreateFriendlyUrlsForNewPages.Value;
+            }
+
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)
             {
-                allProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
+                allProperties[BuiltInWebPropertyId.DisplayShowHideRibbonActionId] = navigationModel.DisplayShowHideRibbonAction.ToString();
                 shouldUpdateWeb = true;
             }
 
@@ -173,8 +183,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             {
                 thisWebNavSettings.Update(null);
             }
-
-
         }
 
         protected int? GetGlobalNavigationIncludeTypes(WebNavigationSettingsDefinition navigationModel,
@@ -272,7 +280,6 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
             return navigationIncludeTypes;
         }
-
 
         #endregion
     }

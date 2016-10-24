@@ -524,5 +524,47 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region AddNewPagesToNavigation/CreateFriendlyUrlsForNewPages
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WebNavigationSettings.Props")]
+        public void CanDeploy_WebNavigationSettings_With_AddNewPages_And_FriendlyUrls()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
+                web.AddWebNavigationSettings(new WebNavigationSettingsDefinition()
+                {
+                    AddNewPagesToNavigation = Rnd.Bool(),
+                    CreateFriendlyUrlsForNewPages = Rnd.Bool(),
+
+                    GlobalNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //GlobalNavigationShowSubsites = true,
+                    //GlobalNavigationShowPages = true,
+
+                    //CurrentNavigationSource = BuiltInStandardNavigationSources.PortalProvider,
+                    //CurrentNavigationShowSubsites = true,
+                    //CurrentNavigationShowPages = true
+                });
+            });
+
+            TestModel(siteModel, webModel);
+        }
+
+        #endregion
     }
 }

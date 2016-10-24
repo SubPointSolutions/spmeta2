@@ -4,7 +4,6 @@ using CsQuery;
 using Microsoft.SharePoint.Publishing;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
@@ -198,6 +197,32 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                     "CurrentNavigationMaximumNumberOfDynamicItems is null or empty");
             }
 
+            if (definition.DisplayShowHideRibbonAction.HasValue)
+            {
+                var displayShowHideRibbonActionValue =
+                    ConvertUtils.ToBool(web.AllProperties[BuiltInWebPropertyId.DisplayShowHideRibbonActionId]);
+
+                // If displayShowHideRibbonActionValue has no value, property should be skipped, but I don't know how to get ShouldBeEqualIfHasValue to work
+
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DisplayShowHideRibbonAction);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = s.DisplayShowHideRibbonAction.Value == displayShowHideRibbonActionValue.Value
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(d => d.DisplayShowHideRibbonAction,
+                    "DisplayShowHideRibbonAction is null or empty");
+            }
+
             // nav sources
             if (!string.IsNullOrEmpty(definition.GlobalNavigationSource))
             {
@@ -241,10 +266,65 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                    "CurrentNavigationSource is null or empty");
             }
 
+            if (definition.AddNewPagesToNavigation.HasValue)
+            {
+                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource)
+                    || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.AddNewPagesToNavigation);
 
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = s.AddNewPagesToNavigation.Value == spObject.AddNewPagesToNavigation
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(d => d.AddNewPagesToNavigation,
+                        "AddNewPagesToNavigation requires GlobalNavigationSource or CurrentNavigationSource to be not null");
+                }
+            }
+            else
+            {
+                assert.SkipProperty(d => d.AddNewPagesToNavigation,
+                    "AddNewPagesToNavigation is null");
+            }
 
+            if (definition.CreateFriendlyUrlsForNewPages.HasValue)
+            {
+                if (!string.IsNullOrEmpty(definition.GlobalNavigationSource)
+                    || !string.IsNullOrEmpty(definition.CurrentNavigationSource))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.CreateFriendlyUrlsForNewPages);
 
-
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = s.CreateFriendlyUrlsForNewPages.Value == spObject.CreateFriendlyUrlsForNewPages
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(d => d.CreateFriendlyUrlsForNewPages,
+                        "CreateFriendlyUrlsForNewPages requires GlobalNavigationSource or CurrentNavigationSource to be not null");
+                }
+            }
+            else
+            {
+                assert.SkipProperty(d => d.CreateFriendlyUrlsForNewPages,
+                    "CreateFriendlyUrlsForNewPages is null");
+            }
         }
     }
 }

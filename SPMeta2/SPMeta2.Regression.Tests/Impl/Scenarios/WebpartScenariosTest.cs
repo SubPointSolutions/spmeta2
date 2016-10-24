@@ -393,7 +393,41 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region webpart
 
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.AuthorizationFilter")]
+        public void CanDeploy_Webpart_With_AuthorizationFilter()
+        {
+            var securityGroupDef = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>(def =>
+            {
+                def.DefaultUser = string.Empty;
+                def.Owner = string.Empty;
+            });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSecurityGroup(securityGroupDef);
+            });
+
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list.AddRandomWebPartPage(page =>
+                        {
+                            page.AddRandomWebpart(webPart =>
+                            {
+                                var wpDef = webPart.Value as WebPartDefinition;
+                                wpDef.AuthorizationFilter = string.Format(";;;;{0}", securityGroupDef.Name);
+                            });
+                        });
+                    });
+
+            });
+
+            TestModel(siteModel, webModel);
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]

@@ -37,10 +37,12 @@ namespace SPMeta2.Standard.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public string Name { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string DisplayName { get; set; }
 
         [ExpectValidation]
@@ -49,6 +51,7 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired]
         public string Type { get; set; }
 
         [ExpectValidation]
@@ -65,7 +68,7 @@ namespace SPMeta2.Standard.Definitions
 
         [ExpectValidation]
         [DataMember]
-        public int Length { get; set; }
+        public int? Length { get; set; }
 
 
 

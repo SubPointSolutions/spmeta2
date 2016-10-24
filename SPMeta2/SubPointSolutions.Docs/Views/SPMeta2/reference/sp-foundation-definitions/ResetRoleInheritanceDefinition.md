@@ -1,23 +1,10 @@
-----
-Hidden: true
-----
+Resetting role inheritance operations over securable SharePoint objects are implemented with ResetRoleInheritanceDefinition. 
 
-### Provision scenario
-SCENARIO
+ResetRoleInheritanceDefinition maps out SPSecurableObject.ResetRoleInheritance() method call. 
 
-### Scope
-SCOPE
+Note that .AddResetRoleInheritance() syntax passes the object on which the method was called.
+For instance, for list, you would get the list wihtin AddResetRoleInheritance() as following:
+list.AddResetRoleInheritance(list => {} )
 
-### Implementation
-IMPLEMENTATION
-
-### Samples
-A SAMPLE 1
-[TEST.TestFunctionName1]
-
-A SAMPLE 2
-[TEST.TestFunctionName2]
-
-### Links
-- [link 1](http://example.com)
-- [link 2](http://example.com)
+For web, you would get the web wihtin AddResetRoleInheritance() as following:
+web.AddResetRoleInheritance(web => {} )

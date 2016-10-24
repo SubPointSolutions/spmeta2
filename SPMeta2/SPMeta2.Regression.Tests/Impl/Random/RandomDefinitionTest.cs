@@ -620,6 +620,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Site")]
+        public void CanDeployRandom_SharePointDesignerSettingsDefinition()
+        {
+            TestRandomDefinition<SharePointDesignerSettingsDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Site")]
         public void CanDeployRandom_AudienceDefinition()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
@@ -781,6 +788,24 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         public void CanDeployRandom_PageLayoutAndSiteTemplateSettingsDefinition()
         {
             TestRandomDefinition<PageLayoutAndSiteTemplateSettingsDefinition>();
+        }
+
+        #endregion
+
+        #region discusison board
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List.DiscussionBoard")]
+        public void CanDeployRandom_DiscussionItemDefinition()
+        {
+            TestRandomDefinition<DiscussionItemDefinition>();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.List.DiscussionBoard")]
+        public void CanDeployRandom_DiscussionReplyItemDefinition()
+        {
+            TestRandomDefinition<DiscussionReplyItemDefinition>();
         }
 
         #endregion

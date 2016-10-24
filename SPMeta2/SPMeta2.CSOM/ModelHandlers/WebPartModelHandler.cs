@@ -248,6 +248,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                                             .SetTitle(definition.Title)
                                             .SetID(definition.Id);
 
+            if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                xml.SetAuthorizationFilter(definition.AuthorizationFilter);
+
             if (definition.Width.HasValue)
                 xml.SetWidth(definition.Width.Value);
 

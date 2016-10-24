@@ -106,6 +106,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             ProcessWebpartCustomProperties(instance, definition);
             ProcessParameterBindings(instance, definition);
+
+            if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                instance.AuthorizationFilter = definition.AuthorizationFilter;
         }
 
         protected virtual void ProcessWebpartCustomProperties(WebPart instance, WebPartDefinition definition)

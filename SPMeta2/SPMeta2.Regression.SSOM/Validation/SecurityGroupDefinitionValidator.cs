@@ -54,53 +54,66 @@ namespace SPMeta2.Regression.SSOM.Validation
                 else
                     assert.SkipProperty(m => m.AutoAcceptRequestToJoinLeave, "AutoAcceptRequestToJoinLeave is NULL. Skipping.");
 
-
-                assert.ShouldBeEqual((p, s, d) =>
+                if (!string.IsNullOrEmpty(definition.DefaultUser))
                 {
-                    var srcProp = s.GetExpressionValue(def => def.Owner);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
-
-                    var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
-                                  dstProp.Value.ToString().ToUpper().Replace("\\", "/");
-
-
-                    return new PropertyValidationResult
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = dstProp,
-                        IsValid = isValid
-                    };
-                });
+                        var srcProp = s.GetExpressionValue(def => def.Owner);
+                        var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                assert.ShouldBeEqual((p, s, d) =>
-                {
-                    var srcProp = s.GetExpressionValue(def => def.DefaultUser);
+                        var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
+                                      dstProp.Value.ToString().ToUpper().Replace("\\", "/");
 
-                    // should be in the group
-                    var userNames = d.Users.OfType<SPUser>()
-                                           .Select(u => u.LoginName);
 
-                    var isValid = false;
-
-                    foreach (var userName in userNames)
-                    {
-                        if (srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
-                                userName.ToString().ToUpper().Replace("\\", "/"))
+                        return new PropertyValidationResult
                         {
-                            isValid = true;
-                            break;
-                        }
-                    }
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Owner, "");
+                }
 
-                    return new PropertyValidationResult
+                if (!string.IsNullOrEmpty(definition.DefaultUser))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = null,
-                        IsValid = isValid
-                    };
-                });
+                        var srcProp = s.GetExpressionValue(def => def.DefaultUser);
+
+                        // should be in the group
+                        var userNames = d.Users.OfType<SPUser>()
+                                               .Select(u => u.LoginName);
+
+                        var isValid = false;
+
+                        foreach (var userName in userNames)
+                        {
+                            if (srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
+                                    userName.ToString().ToUpper().Replace("\\", "/"))
+                            {
+                                isValid = true;
+                                break;
+                            }
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.DefaultUser, "");
+                }
             }
             else if (modelHost is SecurityGroupModelHost)
             {
