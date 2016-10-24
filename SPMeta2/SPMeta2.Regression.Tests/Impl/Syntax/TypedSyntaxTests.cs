@@ -77,6 +77,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddSharePointDesignerSettings(new SharePointDesignerSettingsDefinition());
+
                 site.AddCoreProperty(new CorePropertyDefinition())
                     .AddCoreProperty(new CorePropertyDefinition(), property =>
                     {
@@ -208,6 +210,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddDiscussionItem(new DiscussionItemDefinition(), item =>
+                    {
+                        item.AddDiscussionReplyItem(new DiscussionReplyItemDefinition());
+                    });
+
                     list.AddDocumentSet(new DocumentSetDefinition());
 
                     list.AddAuditSettings(new AuditSettingsDefinition());

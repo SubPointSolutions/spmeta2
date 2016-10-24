@@ -59,7 +59,7 @@ namespace SubPointSolutions.Docs.Code.Tests
             return result;
         }
 
-       
+
         [TestMethod]
         [TestCategory("Dev.Source")]
         public void Generate_Sample_Ref_Files()
@@ -102,7 +102,14 @@ namespace SubPointSolutions.Docs.Code.Tests
 
                 var sampleFilePath = Path.Combine(directoryPath, sampleFileName);
 
-                File.WriteAllText(sampleFilePath, sampleBody);
+                try
+                {
+                    File.WriteAllText(sampleFilePath, sampleBody);
+                }
+                catch (PathTooLongException e)
+                {
+
+                }
             }
         }
 

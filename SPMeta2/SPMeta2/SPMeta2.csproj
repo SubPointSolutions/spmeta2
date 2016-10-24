@@ -140,6 +140,7 @@
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
+    <Compile Include="Definitions\SharePointDesignerSettingsDefinition.cs" />
     <Compile Include="Definitions\DeveloperDashboardSettingsDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
@@ -152,10 +153,12 @@
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
     <Compile Include="Definitions\DeleteQuickNavigationNodesDefinition.cs" />
     <Compile Include="Definitions\DeleteWebPartsDefinition.cs" />
+    <Compile Include="Definitions\DiscussionReplyItemDefinition.cs" />
     <Compile Include="Definitions\Fields\DependentLookupFieldDefinition.cs" />
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
     <Compile Include="Definitions\Fields\OutcomeChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\GeolocationFieldDefinition.cs" />
+    <Compile Include="Definitions\DiscussionItemDefinition.cs" />
     <Compile Include="Definitions\ListItemFieldValuesDefinition.cs" />
     <Compile Include="Definitions\HtmlMasterPageDefinition.cs" />
     <Compile Include="Definitions\MasterPagePreviewDefinition.cs" />
@@ -409,6 +412,7 @@
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\SharePointDesignerSettingsSyntax.cs" />
     <Compile Include="Syntax\Default\DeveloperDashboardSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ClearRecycleBinDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AnonymousAccessSettingsDefinitionSyntax.cs" />
@@ -418,12 +422,14 @@
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />
     <Compile Include="Syntax\Default\DeleteQuickLaunchNavigationNodesDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\DeleteTopNavigationNodesDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\DiscussionReplyItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Extensions\DefinitionExtensions.cs" />
     <Compile Include="Syntax\Default\Fields\BooleanFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\BusinessDataFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\CalculatedFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IDiscussionItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IListItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
@@ -472,6 +478,7 @@
     <Compile Include="Syntax\Default\Interfaces\IFieldHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
     <Compile Include="Syntax\Default\HtmlMasterPageDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\DiscussionItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
     <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\TrustedAccessProviderDefinitionSyntax.cs" />

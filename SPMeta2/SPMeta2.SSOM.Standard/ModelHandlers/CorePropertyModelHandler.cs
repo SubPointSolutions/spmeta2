@@ -45,7 +45,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             // Add user profile property provision support #820
             // https://github.com/SubPointSolutions/spmeta2/issues/820
 
-            CoreProperty currentProperty = null;
+            CoreProperty currentProperty = GetCurrentCoreProperty(site, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -58,7 +58,10 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ModelHost = modelHost
             });
 
-            // TODO, implementation 
+            if (currentProperty == null)
+                currentProperty = CreateNewCoreProperty(site, definition);
+
+            MapProperties(currentProperty, definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -70,6 +73,70 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
+        }
+
+        private void MapProperties(CoreProperty currentProperty, CorePropertyDefinition definition)
+        {
+            if (definition.IsAlias.HasValue)
+                currentProperty.IsAlias = definition.IsAlias.Value;
+
+            if (definition.IsSearchable.HasValue)
+                currentProperty.IsSearchable = definition.IsSearchable.Value;
+
+            // this is cannot be updated
+            //if (definition.IsMultivalued.HasValue)
+            //    currentProperty.IsMultivalued = definition.IsMultivalued.Value;
+        }
+
+        protected virtual CoreProperty CreateNewCoreProperty(SPSite site, CorePropertyDefinition definition)
+        {
+            var serverContext = SPServiceContext.GetContext(site);
+            var profileManager = new UserProfileManager(serverContext);
+
+            var profilePropertiesManager = new UserProfileConfigManager(serverContext).ProfilePropertyManager;
+            var corePropertiesManager = profilePropertiesManager.GetCoreProperties();
+
+            var coreProp = corePropertiesManager.Create(false);
+
+            coreProp.Name = definition.Name;
+            coreProp.DisplayName = definition.DisplayName;
+
+            coreProp.Type = definition.Type;
+
+            if (!string.IsNullOrEmpty(definition.Description))
+                coreProp.Description = definition.Description;
+
+            if (definition.Length.HasValue)
+                coreProp.Length = definition.Length.Value;
+
+            if (definition.IsAlias.HasValue)
+                coreProp.IsAlias = definition.IsAlias.Value;
+
+            if (definition.IsSearchable.HasValue)
+                coreProp.IsSearchable = definition.IsSearchable.Value;
+
+            if (definition.IsMultivalued.HasValue)
+                coreProp.IsMultivalued = definition.IsMultivalued.Value;
+
+            corePropertiesManager.Add(coreProp);
+
+            return coreProp;
+        }
+
+        protected virtual CoreProperty GetCurrentCoreProperty(SPSite site, CorePropertyDefinition definition)
+        {
+            CoreProperty result = null;
+
+            var serverContext = SPServiceContext.GetContext(site);
+            var profileManager = new UserProfileManager(serverContext);
+
+            var profilePropertiesManager = new UserProfileConfigManager(serverContext).ProfilePropertyManager;
+            var corePropertiesManager = profilePropertiesManager.GetCoreProperties();
+
+            // would return NULL, no try-catch is required
+            result = corePropertiesManager.GetPropertyByName(definition.Name);
+
+            return result;
         }
 
         #endregion

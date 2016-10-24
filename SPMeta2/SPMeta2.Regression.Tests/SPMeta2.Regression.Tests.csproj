@@ -161,6 +161,7 @@
     <Compile Include="Impl\Scenarios\DeleteQuickLaunchNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\DeleteTopNavigationNodesScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\OutcomeChoiceFieldScenariousTest.cs" />
+    <Compile Include="Impl\Scenarios\CorePropertyScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\UserScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Webparts\ContentByQueryWebPartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WorkflowAssociationScenariosTest.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Syntax\TypedSyntaxTests.cs" />
+    <Compile Include="Impl\Utils\ConvertUtilsTests.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
     <Compile Include="Impl\Validation\WikiPageValidationTest.cs" />
@@ -291,6 +293,7 @@
     <Compile Include="Services\VSAssertService.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceReaderUtils.cs" />
+    <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="XsltStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

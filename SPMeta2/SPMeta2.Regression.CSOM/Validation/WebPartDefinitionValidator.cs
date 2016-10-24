@@ -365,6 +365,30 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     // TODO
                 }
+
+                if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                {
+                    var value = CurrentWebPartXml.GetProperty("AuthorizationFilter");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.AuthorizationFilter);
+                        var isValid = (srcProp.Value as string) == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.AuthorizationFilter, "AuthorizationFilter is null or empty. Skipping.");
+                }
+
             });
         }
     }

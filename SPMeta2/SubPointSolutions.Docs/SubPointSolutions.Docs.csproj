@@ -298,6 +298,8 @@
     <Compile Include="Code\Tests\DocTests.cs" />
     <Compile Include="Code\Utils\StringUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\regression-testing.cs" />
+    <Compile Include="Views\SPMeta2\extensibility\writing-custom-logging.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-definition.cs" />
     <Compile Include="Views\SPMeta2\extensibility\writing-custom-syntax.cs" />
     <Compile Include="Views\SPMeta2\getting-started\ConsoleAppSamples.cs" />
@@ -321,6 +323,7 @@
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeFieldLinkDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\ContentTypeLinkDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\CurrencyFieldDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DeleteWebPartsDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DateTimeFieldDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DiagnosticsServiceBaseDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-foundation-definitions\DocumentParserDefinitionTests.cs" />
@@ -777,6 +780,7 @@
     <None Include="Views\Shared\bootstrap\PageLayouts\_M2Samples.cshtml" />
     <None Include="Views\SPMeta2\extensibility\Index.md" />
     <None Include="Views\SPMeta2\extensibility\writing-custom-definition.md" />
+    <None Include="Views\SPMeta2\extensibility\regression-testing.md" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_2_Params.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-AddChangeWebTitleAndDescription_3_Params.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-ChangeWebTitleAndDescriptionDefinitionClass.sample-ref" />
@@ -788,6 +792,18 @@
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithEvents.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-RegisterCustomModelHandlerWithSyntax.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-definition-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Critical.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-CustomLoggingServiceClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-CustomLogginRegistrationClass.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Error.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-HideContentTypeFieldsAsOOTB.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Information.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-SysAll.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityStart.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityStop.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-TraceActivityTransfer.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Verbose.sample-ref" />
+    <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-logging-Warning.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-CustomSyntaxClass.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsExtension.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsAsOOTB.sample-ref" />
@@ -795,7 +811,7 @@
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-HideContentTypeFieldsExtensionsClass.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SyntaxExtensionPrototype.sample-ref" />
     <None Include="Views\SPMeta2\extensibility\_samples\writing-custom-syntax-SysAll.sample-ref" />
-    <None Include="Views\SPMeta2\extensibility\_writing-custom-logging.md" />
+    <None Include="Views\SPMeta2\extensibility\writing-custom-logging.md" />
     <None Include="Views\SPMeta2\extensibility\writing-custom-syntax.md" />
     <None Include="Views\SPMeta2\getting-started\_csom-provision.md" />
     <None Include="Views\SPMeta2\getting-started\_FAQ.md" />
@@ -853,6 +869,7 @@
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FarmSolutionDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FeatureDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FieldDefinition.md" />
+    <None Include="Views\SPMeta2\reference\sp-foundation-definitions\DeleteWebPartsDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderDefinition.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\FolderIndex.md" />
     <None Include="Views\SPMeta2\reference\sp-foundation-definitions\GuidFieldDefinition.md" />
@@ -1265,6 +1282,10 @@
     <EmbeddedResource Include="Code\Resources\WorkflowTemplates.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Containers\SPMeta2.Containers.csproj">
+      <Project>{091c48fb-27e3-4f84-897c-5de7bb55a2d3}</Project>
+      <Name>SPMeta2.Containers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.CSOM.Standard\SPMeta2.CSOM.Standard.csproj">
       <Project>{5e592eaa-e21f-4bf4-8edf-6f6452dc916a}</Project>
       <Name>SPMeta2.CSOM.Standard</Name>

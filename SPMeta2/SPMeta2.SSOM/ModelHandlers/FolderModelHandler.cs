@@ -168,6 +168,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 currentFolderItem = list.AddItem(serverRelativeUrl, SPFileSystemObjectType.Folder);
 
                 currentFolderItem[SPBuiltInFieldId.Title] = folderModel.Name;
+
+                MapFolderProperties(currentFolderItem, folderModel);
+
                 currentFolderItem.Update();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -196,13 +199,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = folderModelHost
                 });
 
+
                 currentFolder.Update();
 
                 currentFolderItem = currentFolder.Item;
+                MapFolderProperties(currentFolderItem, folderModel);
+                currentFolderItem.Update();
             }
 
             return currentFolderItem;
         }
+
+
 
         private SPFolder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
@@ -229,6 +237,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new library folder");
 
                 currentFolder = parentFolder.SubFolders.Add(folderModel.Name);
+                currentFolder.Update();
+
+                MapFolderProperties(currentFolder.Item, folderModel);
+                currentFolder.Item.Update();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -255,11 +267,29 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = folderModel,
                     ModelHost = folderModelHost
                 });
-
+                
                 currentFolder.Update();
+
+                MapFolderProperties(currentFolder.Item, folderModel);
+                currentFolder.Item.Update();
             }
 
             return currentFolder;
+        }
+
+        protected virtual void MapFolderProperties(SPListItem item, FolderDefinition definition)
+        {
+            if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                        !string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                var list = item.ParentList;
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+            }
         }
 
         #endregion

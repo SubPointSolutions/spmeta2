@@ -1,5 +1,6 @@
 ﻿using System;
 using SPMeta2.Containers.Services.Base;
+using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 
@@ -11,8 +12,10 @@ namespace SPMeta2.Containers.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                // TODO
                 def.Name = Rnd.String();
+                //def.MetadataEndPoint = string.Format("https://localhost/{0}.aspx", Rnd.String());
+
+                def.Certificate = X509Utils.GenerateRandomSelfSignedCertificate_AsCertBytes(Rnd.String(), Rnd.String());
             });
         }
     }

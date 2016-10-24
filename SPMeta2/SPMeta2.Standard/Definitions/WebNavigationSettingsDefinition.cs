@@ -42,9 +42,11 @@ namespace SPMeta2.Standard.Definitions
         public bool? DisplayShowHideRibbonAction { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? AddNewPagesToNavigation { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? CreateFriendlyUrlsForNewPages { get; set; }
 
         [DataMember]
