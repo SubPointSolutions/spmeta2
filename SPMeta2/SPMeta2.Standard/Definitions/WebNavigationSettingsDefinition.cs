@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿using System;
+using System;
 using System.ComponentModel;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Identity;
@@ -43,59 +42,6 @@ namespace SPMeta2.Standard.Definitions
         public bool? DisplayShowHideRibbonAction { get; set; }
 
         [DataMember]
-=======
-﻿using System;
-using System.Runtime.Serialization;
-
-using SPMeta2.Attributes;
-using SPMeta2.Attributes.Identity;
-using SPMeta2.Attributes.Regression;
-using SPMeta2.Definitions;
-using SPMeta2.Utils;
-using SPMeta2.Attributes.Capabilities;
-
-namespace SPMeta2.Standard.Definitions
-{
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Publishing.Navigation.WebNavigationSettings", "Microsoft.SharePoint.Publishing")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Publishing.Navigation.WebNavigationSettings", "Microsoft.SharePoint.Client.Publishing")]
-
-    [DefaultParentHost(typeof(WebDefinition))]
-    [DefaultRootHost(typeof(SiteDefinition))]
-
-    [Serializable]
-    [DataContract]
-    [SingletonIdentity]
-
-    [ParentHostCapability(typeof(WebDefinition))]
-    public class WebNavigationSettingsDefinition : DefinitionBase
-    {
-        #region constructors
-
-        public WebNavigationSettingsDefinition()
-        {
-            CurrentNavigationTermSetLCID = 1033;
-            GlobalNavigationTermSetLCID = 1033;
-        }
-
-
-        #endregion
-
-        #region properties
-
-        [DataMember]
-        [ExpectValidation]
-        public bool? DisplayShowHideRibbonAction { get; set; }
-
-        [DataMember]
-        [ExpectValidation]
-        public bool? AddNewPagesToNavigation { get; set; }
-
-        [DataMember]
-        [ExpectValidation]
-        public bool? CreateFriendlyUrlsForNewPages { get; set; }
-
-        [DataMember]
->>>>>>> cabc215006c9caa819cf7fab856a3ec7dd1b707f
         [ExpectValidation]
         public bool? AddNewPagesToNavigation { get; set; }
 
