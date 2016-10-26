@@ -20,6 +20,11 @@ using SPMeta2.Utils;
 using SPMeta2.Attributes.Regression;
 
 using SPMeta2.Containers.Extensions;
+using SPMeta2.Exceptions;
+using SPMeta2.Models;
+
+using SPMeta2.Regression.Tests.Utils;
+using ReflectionUtils = SPMeta2.Utils.ReflectionUtils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -456,7 +461,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            var types = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            var types = SPMeta2.Utils.ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
@@ -1041,6 +1046,131 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             // Cover FieldDefinition.DefaultValue with regression tests #595
             // https://github.com/SubPointSolutions/spmeta2/issues/595
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region PushChangesToLists tests
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.PushChangesToLists")]
+        public void CanDeploy_Field_Without_PushChangesToLists_OnSite()
+        {
+            InternalDeploySiteFieldWithPushChangesToLists(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.PushChangesToLists")]
+        public void CanDeploy_Field_With_PushChangesToLists_OnSite()
+        {
+            InternalDeploySiteFieldWithPushChangesToLists(true);
+        }
+
+        private void InternalDeploySiteFieldWithPushChangesToLists(bool pushChangesToLists)
+        {
+            var oldFieldTitle = Rnd.String();
+            var newFieldTitle = Rnd.String();
+
+            var oldSharePointFieldTitle = string.Empty;
+            var newSharePointFieldTitle = string.Empty;
+
+            // defs
+            var oldFieldDef = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
+            {
+                def.DefaultFormula = string.Empty;
+                def.ValidationFormula = string.Empty;
+
+                def.Title = oldFieldTitle;
+            });
+
+            var newFieldDef = oldFieldDef.Inherit(def =>
+            {
+                def.DefaultFormula = string.Empty;
+                def.ValidationFormula = string.Empty;
+
+                def.Title = newFieldTitle;
+            });
+
+            var oldListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+
+            });
+
+            var newListDef = oldListDef.Inherit(def =>
+            {
+
+            });
+
+            var oldListFielLink = new ListFieldLinkDefinition
+            {
+                FieldId = oldFieldDef.Id
+            };
+
+            var newListFielLink = new ListFieldLinkDefinition
+            {
+                FieldId = oldFieldDef.Id
+            };
+
+            var oldSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(oldFieldDef);
+            });
+
+            var oldWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(oldListDef, list =>
+                {
+                    list.AddListFieldLink(oldListFielLink);
+                });
+            });
+
+            var newWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(newListDef, list =>
+                {
+                    list.AddListFieldLink(newListFielLink);
+                });
+            });
+
+            var newSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(newFieldDef);
+            });
+
+            // passing Reg_Title as definition PropertyBag
+            // later, validation handlers foe ListFieldLink will use Reg_Title instead of title 
+            // bit if a hack
+            if (pushChangesToLists)
+            {
+                newListFielLink.PropertyBag.Add(new PropertyBagValue
+                {
+                    Name = "_Reg_DisplayName",
+                    Value = newFieldTitle
+                });
+            }
+            else
+            {
+                newListFielLink.PropertyBag.Add(new PropertyBagValue
+                {
+                    Name = "_Reg_DisplayName",
+                    Value = oldFieldTitle
+                });
+            }
+
+            // deploy initial field and list
+            TestModel(oldSiteModel);
+            TestModel(oldWebModel);
+
+            // deploy 'new' field model
+            TestModel(newSiteModel);
+            TestModel(newWebModel);
+        }
+
+        private string ExtractFieldTitleFromObject(OnCreatingContext<object, DefinitionBase> context)
+        {
+            var obj = context.Object;
+
+            return obj.GetPropertyValue("Title") as string;
         }
 
         #endregion
