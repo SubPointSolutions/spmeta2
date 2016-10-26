@@ -44,6 +44,11 @@ namespace SPMeta2.CSOM.Standard.Config
             context.Load(list, l => l.RootFolder);
             context.ExecuteQueryWithTrace();
 
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 and NET35");
+#endif
+
+#if !NET35
             var props = list.RootFolder.Properties;
 
             if (props.FieldValues.ContainsKey("client_MOSS_MetadataNavigationSettings"))
@@ -55,6 +60,8 @@ namespace SPMeta2.CSOM.Standard.Config
                     result.SettingDocument = XDocument.Parse(value);
                 }
             }
+
+#endif
 
             return result;
         }
@@ -133,11 +140,18 @@ namespace SPMeta2.CSOM.Standard.Config
             context.Load(list, l => l.RootFolder);
             context.ExecuteQueryWithTrace();
 
+#if NET35
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 and NET35");
+#endif
+
+#if !NET35
+
             list.RootFolder.Properties["client_MOSS_MetadataNavigationSettings"] = xmlValue;
             list.RootFolder.Update();
             list.Update();
 
             context.ExecuteQueryWithTrace();
+#endif
         }
 
         public MetadataNavigationHierarchyConfig FindConfiguredHierarchy(Guid guid)
