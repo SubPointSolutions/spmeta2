@@ -693,7 +693,11 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_RegionalSettingsDefinition()
         {
-            TestRandomDefinition<RegionalSettingsDefinition>();
+            // disable validation on the web as regional setting would toggle LCID 
+            WithDisabledValidationOnTypes(typeof(WebDefinition), () =>
+            {
+                TestRandomDefinition<RegionalSettingsDefinition>();
+            });
         }
 
         [TestMethod]
