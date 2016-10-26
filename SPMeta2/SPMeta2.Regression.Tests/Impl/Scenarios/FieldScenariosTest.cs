@@ -7,6 +7,7 @@ using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using SPMeta2.Containers.Services;
@@ -756,6 +757,277 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region default values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        [TestCategory("CI.Core")]
+        public void SelfDiagnostic_AllFields_Should_Have_DefaultValue_Tests()
+        {
+            var isValid = true;
+
+            var methods = GetType().GetMethods();
+            var targetTypes = new List<Type>();
+
+            var assemblies = new[]
+            {
+                typeof(FieldDefinition).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly,
+            };
+
+            targetTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<FieldDefinition>(assemblies));
+
+            Trace.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
+
+            foreach (var fieldType in targetTypes.OrderBy(m => m.Name))
+            {
+                var fullDefName = fieldType.Name;
+                var shortDefName = fieldType.Name.Replace("Definition", string.Empty);
+
+                var testName = string.Format("CanDeploy_{0}_DefaultValue", shortDefName);
+
+                var testExists = methods.Any(m => m.Name == testName);
+
+                if (!testExists)
+                    isValid = false;
+
+                Trace.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
+                        testExists, fullDefName, testName));
+            }
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_BooleanField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_BusinessDataField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_CalculatedField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ComputedField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_CurrencyField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_DateTimeField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_DependentLookupField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_Field_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_GeolocationField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_GuidField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_HTMLField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ImageField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_LinkField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_LookupField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_MediaField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_MultiChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_NoteField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_NumberField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_OutcomeChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_SummaryLinkField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_TaxonomyField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_TextField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_URLField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_UserField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
         }
 
         #endregion
