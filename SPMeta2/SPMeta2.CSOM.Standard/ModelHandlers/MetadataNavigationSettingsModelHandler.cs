@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.Config;
@@ -40,6 +41,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         private void DeploySettings(object modelHost, ListModelHost listHost, MetadataNavigationSettingsDefinition definition)
         {
             var list = listHost.HostList;
+            var context = list.Context;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -64,8 +66,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     if (h.FieldId.HasGuidValue())
                     {
                         var targetField = list.Fields.GetById(h.FieldId.Value);
+                        
+                        context.Load(targetField);
+                        context.ExecuteQueryWithTrace();
 
-                        settings.AddConfiguredHierarchy(new MetadataNavigationHierarchyConfig(targetField.Id));
+                        settings.AddConfiguredHierarchy(new MetadataNavigationHierarchyConfig
+                        {
+                            FieldId = targetField.Id,
+                            FieldType = targetField.TypeAsString,
+                            CachedDisplayName = targetField.Title,
+                            CachedName = targetField.InternalName
+                        });
                     }
                 }
 
@@ -80,7 +91,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     {
                         var targetField = list.Fields.GetById(h.FieldId.Value);
 
-                        settings.AddConfiguredKeyFilter(new MetadataNavigationKeyFilterConfig(targetField.Id));
+                        context.Load(targetField);
+                        context.ExecuteQueryWithTrace();
+
+                        settings.AddConfiguredKeyFilter(new MetadataNavigationKeyFilterConfig
+                        {
+                            FieldId = targetField.Id,
+                            FieldType = targetField.TypeAsString,
+                            CachedDisplayName = targetField.Title,
+                            CachedName = targetField.InternalName
+                        });
                     }
                 }
 
@@ -97,8 +117,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
-
-
+            
             if (needUpdate)
             {
                 MetadataNavigationSettingsConfig.SetMetadataNavigationSettings(list, settings);

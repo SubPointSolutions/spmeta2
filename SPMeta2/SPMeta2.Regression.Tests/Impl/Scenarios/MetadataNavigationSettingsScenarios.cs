@@ -39,21 +39,21 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.MetadataNavigationSettings")]
         public void CanDeploy_MetadataNavigationSettings_With_Hierary()
         {
-            WithExcpectedException(typeof(SPMeta2NotImplementedException), () =>
-            {
-                var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
-                    def =>
+            var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
+                def =>
+                {
+                    def.Hierarchies.Clear();
+                    def.KeyFilters.Clear();
+
+                    def.Hierarchies.Add(new MetadataNavigationHierarchy
                     {
-                        def.Hierarchies.Clear();
-                        def.KeyFilters.Clear();
-
-                        def.Hierarchies.Add(new MetadataNavigationHierarchy
-                        {
-                            FieldId = BuiltInFieldId.ContentTypeId
-                        });
+                        FieldId = BuiltInFieldId.ContentTypeId
                     });
+                });
 
-                var model = SPMeta2Model.NewWebModel(web =>
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddRandomWeb(web =>
                 {
                     web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
                     {
@@ -64,37 +64,37 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         list.AddMetadataNavigationSettings(managedNavSettings);
                     });
-
                 });
 
-                TestModel(model);
             });
+
+            TestModel(model);
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.MetadataNavigationSettings")]
         public void CanDeploy_MetadataNavigationSettings_With_KeyFilters()
         {
-            WithExcpectedException(typeof(SPMeta2NotImplementedException), () =>
-            {
-                var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
-                    def =>
+            var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
+                def =>
+                {
+                    def.Hierarchies.Clear();
+                    def.KeyFilters.Clear();
+
+                    def.KeyFilters.Add(new MetadataNavigationKeyFilter
                     {
-                        def.Hierarchies.Clear();
-                        def.KeyFilters.Clear();
-
-                        def.KeyFilters.Add(new MetadataNavigationKeyFilter
-                        {
-                            FieldId = BuiltInFieldId.Created
-                        });
-
-                        def.KeyFilters.Add(new MetadataNavigationKeyFilter
-                        {
-                            FieldId = BuiltInFieldId.Modified
-                        });
+                        FieldId = BuiltInFieldId.Created
                     });
 
-                var model = SPMeta2Model.NewWebModel(web =>
+                    def.KeyFilters.Add(new MetadataNavigationKeyFilter
+                    {
+                        FieldId = BuiltInFieldId.Modified
+                    });
+                });
+
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddRandomWeb(web =>
                 {
                     web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
                     {
@@ -105,59 +105,58 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         list.AddMetadataNavigationSettings(managedNavSettings);
                     });
-
                 });
 
-                TestModel(model);
             });
+
+            TestModel(model);
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.MetadataNavigationSettings")]
         public void CanDeploy_MetadataNavigationSettings_With_Hierarchies_And_KeyFilters()
         {
-            WithExcpectedException(typeof(SPMeta2NotImplementedException),
-                () =>
+
+            var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
+                def =>
                 {
+                    def.Hierarchies.Clear();
+                    def.KeyFilters.Clear();
 
-                    var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
-                        def =>
-                        {
-                            def.Hierarchies.Clear();
-                            def.KeyFilters.Clear();
-
-                            def.Hierarchies.Add(new MetadataNavigationHierarchy
-                            {
-                                FieldId = BuiltInFieldId.ContentTypeId
-                            });
-
-                            def.KeyFilters.Add(new MetadataNavigationKeyFilter
-                            {
-                                FieldId = BuiltInFieldId.Created
-                            });
-
-                            def.KeyFilters.Add(new MetadataNavigationKeyFilter
-                            {
-                                FieldId = BuiltInFieldId.Modified
-                            });
-                        });
-
-                    var model = SPMeta2Model.NewWebModel(web =>
+                    def.Hierarchies.Add(new MetadataNavigationHierarchy
                     {
-                        web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
-                        {
-                            f.Enable = true;
-                        }));
-
-                        web.AddRandomDocumentLibrary(list =>
-                        {
-                            list.AddMetadataNavigationSettings(managedNavSettings);
-                        });
-
+                        FieldId = BuiltInFieldId.ContentTypeId
                     });
 
-                    TestModel(model);
+                    def.KeyFilters.Add(new MetadataNavigationKeyFilter
+                    {
+                        FieldId = BuiltInFieldId.Created
+                    });
+
+                    def.KeyFilters.Add(new MetadataNavigationKeyFilter
+                    {
+                        FieldId = BuiltInFieldId.Modified
+                    });
                 });
+
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddRandomWeb(web =>
+                {
+                    web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                    {
+                        f.Enable = true;
+                    }));
+
+                    web.AddRandomDocumentLibrary(list =>
+                    {
+                        list.AddMetadataNavigationSettings(managedNavSettings);
+                    });
+                });
+
+            });
+
+            TestModel(model);
         }
 
         #endregion

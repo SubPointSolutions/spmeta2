@@ -8,11 +8,18 @@ namespace SPMeta2.CSOM.Standard.Config
 {
     public class MetadataNavigationKeyFilterConfig
     {
-        public MetadataNavigationKeyFilterConfig(Guid fieldId)
+         #region constructors
+        public MetadataNavigationKeyFilterConfig()
         {
-            this.FieldId = fieldId;
-        }
 
+        }
+        #endregion
+
+        #region properties
         public Guid FieldId { get; set; }
+        public string FieldType { get; set; }
+        public string CachedName { get; set; }
+        public string CachedDisplayName { get; set; }
+        #endregion
     }
 }
