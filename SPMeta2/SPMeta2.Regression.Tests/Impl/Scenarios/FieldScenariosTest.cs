@@ -24,6 +24,56 @@ using SPMeta2.Containers.Extensions;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
+    public class FieldScenariosSelfTest
+    {
+        #region default values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        [TestCategory("CI.Core")]
+        public void SelfDiagnostic_AllFields_Should_Have_DefaultValue_Tests()
+        {
+            // check if FieldScenariosTest class has all testsfor field default values
+            // should not inherit SPMeta2RegresionScenarioTestBase as it will force to use (init) provisioners under CI
+            // that's why it is separated
+
+            var isValid = true;
+
+            var methods = typeof(FieldScenariosTest).GetMethods();
+            var targetTypes = new List<Type>();
+
+            var assemblies = new[]
+            {
+                typeof(FieldDefinition).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly
+            };
+
+            targetTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<FieldDefinition>(assemblies));
+
+            Trace.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
+
+            foreach (var fieldType in targetTypes.OrderBy(m => m.Name))
+            {
+                var fullDefName = fieldType.Name;
+                var shortDefName = fieldType.Name.Replace("Definition", string.Empty);
+
+                var testName = string.Format("CanDeploy_{0}_DefaultValue", shortDefName);
+
+                var testExists = methods.Any(m => m.Name == testName);
+
+                if (!testExists)
+                    isValid = false;
+
+                Trace.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
+                        testExists, fullDefName, testName));
+            }
+
+            Assert.IsTrue(isValid);
+        }
+        #endregion
+    }
+
+    [TestClass]
     public class FieldScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region constructors
@@ -763,44 +813,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default values
 
-        [TestMethod]
-        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
-        [TestCategory("CI.Core")]
-        public void SelfDiagnostic_AllFields_Should_Have_DefaultValue_Tests()
-        {
-            var isValid = true;
 
-            var methods = GetType().GetMethods();
-            var targetTypes = new List<Type>();
-
-            var assemblies = new[]
-            {
-                typeof(FieldDefinition).Assembly,
-                typeof(TaxonomyFieldDefinition).Assembly,
-            };
-
-            targetTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<FieldDefinition>(assemblies));
-
-            Trace.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
-
-            foreach (var fieldType in targetTypes.OrderBy(m => m.Name))
-            {
-                var fullDefName = fieldType.Name;
-                var shortDefName = fieldType.Name.Replace("Definition", string.Empty);
-
-                var testName = string.Format("CanDeploy_{0}_DefaultValue", shortDefName);
-
-                var testExists = methods.Any(m => m.Name == testName);
-
-                if (!testExists)
-                    isValid = false;
-
-                Trace.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
-                        testExists, fullDefName, testName));
-            }
-
-            Assert.IsTrue(isValid);
-        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
