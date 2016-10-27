@@ -105,6 +105,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // by ID, by Name
                 var targetContentType = tmpWeb.ContentTypes[contentTypeId];
 
+                // fallback to name
                 if (targetContentType == null)
                 {
                     targetContentType = tmpWeb.ContentTypes
