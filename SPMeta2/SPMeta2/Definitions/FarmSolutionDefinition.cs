@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHost(typeof(FarmDefinition))]
     [DefaultRootHost(typeof(FarmDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
 
@@ -30,7 +30,10 @@ namespace SPMeta2.Definitions
 
         public FarmSolutionDefinition()
         {
-            LCID = 1033;
+            // made int?
+            // no locale by default
+            //LCID = 1033;
+
             Content = new byte[0];
         }
 
@@ -43,7 +46,7 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [DataMember]
-        public int LCID { get; set; }
+        public int? LCID { get; set; }
 
         #endregion
 

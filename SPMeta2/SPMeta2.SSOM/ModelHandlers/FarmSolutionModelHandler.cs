@@ -80,7 +80,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (existringSolution == null)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new farm solution");
-                existringSolution = farm.Solutions.Add(tmpWspFilPath, (uint)definition.LCID);
+
+                if (definition.LCID.HasValue)
+                {
+                    existringSolution = farm.Solutions.Add(tmpWspFilPath, (uint)definition.LCID);
+                }
+                else
+                {
+                    existringSolution = farm.Solutions.Add(tmpWspFilPath);
+                }
             }
             else
             {
