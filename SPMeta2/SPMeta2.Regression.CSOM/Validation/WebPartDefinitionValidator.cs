@@ -363,7 +363,36 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
                 else
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        // that's a fast hack
+                        // hope we eoudn't have other web part with ParameterBindings :)
+                        var webPartBindings = CurrentWebPartXml.GetProperty("ParameterBindings");
+                        var isValid = true;
+
+                        var srcProp = s.GetExpressionValue(m => m.ParameterBindings);
+
+                        // one more hack, fix up later
+                        // just checking presense of the strings
+                        foreach (var srcBinding in s.ParameterBindings)
+                        {
+                            var hasName = webPartBindings.Contains(srcBinding.Name);
+                            var hasValue = webPartBindings.Contains(srcBinding.Location);
+
+                            if (!hasName || !hasValue)
+                            {
+                                isValid = false;
+                            }
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
 
                 if (!string.IsNullOrEmpty(definition.AuthorizationFilter))

@@ -1063,5 +1063,77 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
         }
 
         #endregion
+
+        #region parameter bindings
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.XsltListViewWebPart.ParameterBindings")]
+        public void CanDeploy_XsltListViewWebPart_With_ParameterBindings_ID_Filtering()
+        {
+            var dstList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var sourceListView = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Query = "<Eq><FieldRef Name=\"ID\" /><Value Type=\"Counter\">{ID}</Value></Eq>";
+                def.Hidden = true;
+            });
+
+            // this web part would be binded to list view
+            // it will also be performing 'filtering' via query string - ID
+            var xsltListViewWebpart = ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
+            {
+                def.ListId = Guid.Empty;
+                def.ListTitle = sourceList.Title;
+                def.ListUrl = string.Empty;
+
+                def.ViewName = sourceListView.Title;
+                def.ViewId = null;
+
+                def.JSLink = string.Empty;
+
+                def.ParameterBindings.Add(new ParameterBindingValue
+                {
+                    Name = "ID",
+                    Location = "QueryString(ID)"
+                });
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(sourceList, list =>
+                    {
+                        list.AddListView(sourceListView);
+
+                        list
+                            .AddRandomListItem()
+                            .AddRandomListItem()
+                            .AddRandomListItem();
+                    })
+                    .AddList(dstList, list =>
+                    {
+                        list
+                            .AddRandomListItem()
+                            .AddRandomListItem();
+
+                        list.AddHostListView(BuiltInListViewDefinitions.Lists.EditForm, view =>
+                        {
+                            view.AddXsltListViewWebPart(xsltListViewWebpart);
+                        });
+                    });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }
