@@ -30,11 +30,14 @@ namespace SPMeta2.Definitions
 
         public FarmSolutionDefinition()
         {
-            // made int?
+            // changed to int?
             // no locale by default
             //LCID = 1033;
 
             Content = new byte[0];
+
+            DeploymentGlobalInstallWPPackDlls = true;
+            DeploymentForce = true;
         }
 
         #endregion
@@ -46,7 +49,59 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [DataMember]
+        [ExpectValidation]
         public int? LCID { get; set; }
+
+        /// <summary>
+        /// Indicates if solution has to be retracted
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldRetract { get; set; }
+
+        /// <summary>
+        /// Indicates if solution has to be deleted
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldDelete { get; set; }
+
+        /// <summary>
+        /// Indicates if solution has to be deployed
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldDeploy { get; set; }
+
+        /// <summary>
+        /// Indicates if solution has to be updated
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldUpdate { get; set; }
+
+        /// <summary>
+        /// Deployment date. NULL for 'right now'
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public DateTime? DeploymentDate { get; set; }
+
+        /// <summary>
+        /// Passed to SPSolution.Deploy() method.
+        /// TRUE by default
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool DeploymentGlobalInstallWPPackDlls { get; set; }
+
+        /// <summary>
+        /// Passed to SPSolution.Deploy() method.
+        /// TRUE by default
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool DeploymentForce { get; set; }
 
         #endregion
 
