@@ -9,9 +9,11 @@ using SPMeta2.Utils;
 namespace SPMeta2.Definitions
 {
     /// <summary>
-    /// Allows to define and deploy SharePoint farm solution.
-    /// </summary>
+    /// Allows to define and deploy SharePoint farm solution
     /// 
+    /// Supports Retract, Delete, Add, Deploy/Update workflows with the ShouldXXX properties
+    /// By default always ShouldAdd always true.
+    /// </summary>
 
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Administration.SPSolution", "Microsoft.SharePoint")]
 
@@ -38,6 +40,8 @@ namespace SPMeta2.Definitions
 
             DeploymentGlobalInstallWPPackDlls = true;
             DeploymentForce = true;
+
+            ShouldAdd = true;
         }
 
         #endregion
@@ -60,6 +64,13 @@ namespace SPMeta2.Definitions
         public bool? ShouldRetract { get; set; }
 
         /// <summary>
+        /// Indicates if solution has to be added
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShouldAdd { get; set; }
+
+        /// <summary>
         /// Indicates if solution has to be deleted
         /// </summary>
         [DataMember]
@@ -74,11 +85,11 @@ namespace SPMeta2.Definitions
         public bool? ShouldDeploy { get; set; }
 
         /// <summary>
-        /// Indicates if solution has to be updated
+        /// Indicates if solution has to be upgraded
         /// </summary>
         [DataMember]
         [ExpectValidation]
-        public bool? ShouldUpdate { get; set; }
+        public bool? ShouldUpgrade { get; set; }
 
         /// <summary>
         /// Deployment date. NULL for 'right now'
@@ -86,6 +97,13 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectValidation]
         public DateTime? DeploymentDate { get; set; }
+
+        /// <summary>
+        /// Upgrade date. NULL for 'right now'
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public DateTime? UpgradeDate { get; set; }
 
         /// <summary>
         /// Passed to SPSolution.Deploy() method.

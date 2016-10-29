@@ -13,6 +13,7 @@ using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System.Threading;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -39,6 +40,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         #region properties
 
         public static int SolutionDeploymentTimeoutInMillisecond { get; set; }
+        protected bool IsQARun { get; set; }
 
         public override Type TargetType
         {
@@ -54,7 +56,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
             var solutionModel = model.WithAssertAndCast<FarmSolutionDefinition>("model", value => value.RequireNotNull());
 
-            DeploySolution(farmModelHost, solutionModel);
+            DeploySolutionDefinition(farmModelHost, solutionModel);
         }
 
         protected SPSolution FindExistingSolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
@@ -69,12 +71,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var farm = modelHost.HostFarm;
 
+            // always get anew instance of the farm
+            // that would refresh the .Solution colleciton with the right state of the solutions
+            farm = SPFarm.Local;
+
             return farm.Solutions.FirstOrDefault(s =>
                 s.Name.ToUpper() == definition.FileName.ToUpper() ||
                 definition.SolutionId != Guid.Empty && s.SolutionId == definition.SolutionId);
         }
 
-        private void DeploySolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
+        private void DeploySolutionDefinition(FarmModelHost modelHost, FarmSolutionDefinition definition)
         {
             var farm = modelHost.HostFarm;
             var existingSolution = FindExistingSolution(modelHost, definition);
@@ -94,26 +100,38 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (existingSolution != null && definition.ShouldRetract == true)
             {
                 RetractSolution(modelHost, definition, existingSolution);
+                existingSolution = FindExistingSolution(modelHost, definition);
             }
+            else if (existingSolution == null && definition.ShouldRetract == true)
+            {
+                // set up flag for nn existing solution
+                if (IsQARun)
+                    definition.SetPropertyBagValue("HadRetractHit");
+            }
+
 
             // should delete?
             if (existingSolution != null && definition.ShouldDelete == true)
             {
                 DeleteSolution(modelHost, definition, existingSolution);
+                existingSolution = FindExistingSolution(modelHost, definition);
             }
 
-            // add solution to the farm
-            existingSolution = AddSolution(modelHost, definition);
-
-            // should update?
-            if (existingSolution != null && definition.ShouldUpdate == true)
+            // should add?
+            if (definition.ShouldAdd == true)
             {
-                UpdateSolution(modelHost, definition, existingSolution);
+                // add solution to the farm
+                existingSolution = AddSolution(modelHost, definition);
             }
 
-            // should deploy?
-            if (existingSolution != null && definition.ShouldDeploy == true)
+            if (existingSolution != null && definition.ShouldUpgrade == true)
             {
+                // should upgrade?
+                UpgradeSolution(modelHost, definition, existingSolution);
+            }
+            else if (existingSolution != null && definition.ShouldDeploy == true)
+            {
+                // should deploy?
                 DeploySolution(modelHost, definition, existingSolution);
             }
 
@@ -131,6 +149,8 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual void DeploySolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existingSolution)
         {
+            definition.SetPropertyBagValue("HadDeploymentHit");
+
             if (!existingSolution.Deployed)
             {
                 TraceService.Information((int)LogEventId.CoreCalls, string.Format("Deploying farm solution:[{0}]", existingSolution.Name));
@@ -156,7 +176,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     isNowDeployment = true;
                 }
 
-                var deployed = existingSolution.Deployed;
+                var deployed = existingSolution.DeploymentState != SPSolutionDeploymentState.NotDeployed;
 
                 if (isNowDeployment)
                 {
@@ -172,7 +192,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                             string.Format("Checkin .Deployed for solution [{0}] in [{1}] milliseconds...",
                             existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
 
-                        deployed = existingSolution.Deployed;
+                        existingSolution = FindExistingSolution(modelHost, definition);
+                        deployed = existingSolution.DeploymentState != SPSolutionDeploymentState.NotDeployed;
                     }
 
                     TraceService.Information((int)LogEventId.CoreCalls, string.Format("Checking .Deployed status to be false"));
@@ -189,6 +210,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                             string.Format("Checkin .JobExists for solution [{0}] in [{1}] milliseconds...",
                             existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
 
+                        existingSolution = FindExistingSolution(modelHost, definition);
                         jobExists = existingSolution.JobExists;
                     }
 
@@ -205,28 +227,106 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        protected virtual void UpdateSolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existingSolution)
+        protected virtual void UpgradeSolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existingSolution)
         {
+            definition.SetPropertyBagValue("HadUpgradetHit");
 
+            // ensure deployment state first
+            TraceService.Information((int)LogEventId.CoreCalls, string.Format("Ensuring deployment state. Solution must be deployed before upgrading."));
+            DeploySolution(modelHost, definition, existingSolution);
+
+            // upgrade
+            var tmpWspDirectory = string.Format("{0}_{1}", Path.GetFileNameWithoutExtension(definition.FileName), Guid.NewGuid().ToString("N"));
+            var tmpWspDirectoryPath = Path.Combine(Path.GetTempPath(), tmpWspDirectory);
+
+            Directory.CreateDirectory(tmpWspDirectoryPath);
+
+            var tmpWspFilPath = Path.Combine(tmpWspDirectoryPath, definition.FileName);
+            File.WriteAllBytes(tmpWspFilPath, definition.Content);
+
+            var isNowDeployment = false;
+
+            if (definition.UpgradeDate.HasValue)
+            {
+                existingSolution.Upgrade(tmpWspFilPath, definition.UpgradeDate.Value);
+            }
+            else
+            {
+                existingSolution.Upgrade(tmpWspFilPath, DateTime.Now);
+                isNowDeployment = true;
+            }
+
+            var deployed = existingSolution.Deployed;
+
+            if (isNowDeployment)
+            {
+                TraceService.Information((int)LogEventId.CoreCalls, string.Format("Checking .Deployed status to be true"));
+
+                while (!deployed)
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls,
+                        string.Format("Sleeping [{0}] milliseconds...", SolutionDeploymentTimeoutInMillisecond));
+                    Thread.Sleep(SolutionDeploymentTimeoutInMillisecond);
+
+                    TraceService.Information((int)LogEventId.CoreCalls,
+                        string.Format("Checkin .Deployed for solution [{0}] in [{1}] milliseconds...",
+                        existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
+
+                    existingSolution = FindExistingSolution(modelHost, definition);
+                    deployed = existingSolution.DeploymentState != SPSolutionDeploymentState.NotDeployed;
+                }
+
+                existingSolution = FindExistingSolution(modelHost, definition);
+                TraceService.Information((int)LogEventId.CoreCalls, string.Format("Checking .Deployed status to be false"));
+                var jobExists = existingSolution.JobExists;
+
+                while (jobExists)
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls,
+                        string.Format("Sleeping [{0}] milliseconds...", SolutionDeploymentTimeoutInMillisecond));
+                    Thread.Sleep(SolutionDeploymentTimeoutInMillisecond);
+
+
+                    TraceService.Information((int)LogEventId.CoreCalls,
+                        string.Format("Checkin .JobExists for solution [{0}] in [{1}] milliseconds...",
+                        existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
+
+                    existingSolution = FindExistingSolution(modelHost, definition);
+                    jobExists = existingSolution.JobExists;
+                }
+
+                TraceService.Information((int)LogEventId.CoreCalls, string.Format(".Deployed is true AND .JobExists is false"));
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.CoreCalls, string.Format("Future upgrade. Passing wait."));
+            }
         }
 
-        protected virtual void DeleteSolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existringSolution)
+        protected virtual void DeleteSolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existingSolution)
         {
-            existringSolution.Delete();
+            if (IsQARun)
+                definition.SetPropertyBagValue("HadDeleteHit");
+
+            TraceService.Information((int)LogEventId.CoreCalls, string.Format("Deleting solution [{0}]", existingSolution.Name));
+            existingSolution.Delete();
         }
 
         protected virtual void RetractSolution(FarmModelHost modelHost, FarmSolutionDefinition definition, SPSolution existingSolution)
         {
+            if (IsQARun)
+                definition.SetPropertyBagValue("HadRetractHit");
+
             TraceService.Information((int)LogEventId.CoreCalls, string.Format("Retracting solution [{0}]", existingSolution.Name));
 
             if (existingSolution.Deployed)
             {
-                var deployed = existingSolution.Deployed;
+                var retracted = existingSolution.DeploymentState == SPSolutionDeploymentState.NotDeployed;
                 existingSolution.Retract(DateTime.Now);
 
                 TraceService.Information((int)LogEventId.CoreCalls, string.Format("Checking .Deployed status to be false"));
 
-                while (deployed)
+                while (!retracted)
                 {
                     TraceService.Information((int)LogEventId.CoreCalls,
                         string.Format("Sleeping [{0}] milliseconds...", SolutionDeploymentTimeoutInMillisecond));
@@ -236,8 +336,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                         string.Format("Checkin .Deployed for solution [{0}] in [{1}] milliseconds...",
                             existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
 
-                    deployed = existingSolution.Deployed;
+                    existingSolution = FindExistingSolution(modelHost, definition);
+                    retracted = existingSolution.DeploymentState == SPSolutionDeploymentState.NotDeployed;
                 }
+
+                existingSolution = FindExistingSolution(modelHost, definition);
 
                 TraceService.Information((int)LogEventId.CoreCalls, string.Format("Checking .JobExists status to be false"));
                 var jobExists = existingSolution.JobExists;
@@ -253,8 +356,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                         string.Format("Checkin .JobExists for solution [{0}] in [{1}] milliseconds...",
                             existingSolution.Name, SolutionDeploymentTimeoutInMillisecond));
 
+                    existingSolution = FindExistingSolution(modelHost, definition);
                     jobExists = existingSolution.JobExists;
                 }
+
+                existingSolution = FindExistingSolution(modelHost, definition);
 
                 TraceService.Information((int)LogEventId.CoreCalls, string.Format(".Deployed and .JobExists are false"));
             }
@@ -266,6 +372,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         protected virtual SPSolution AddSolution(FarmModelHost modelHost, FarmSolutionDefinition definition)
         {
+            if (IsQARun)
+                definition.SetPropertyBagValue("HadAddHit");
+
+            TraceService.Information((int)LogEventId.CoreCalls, string.Format("Adding solution [{0}]", definition.FileName));
+
             var farm = modelHost.HostFarm;
 
             var existringSolution = FindExistingSolution(modelHost, definition);
@@ -293,7 +404,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Farm solution exists");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Farm solution exists. No need to add.");
             }
 
             return existringSolution;
