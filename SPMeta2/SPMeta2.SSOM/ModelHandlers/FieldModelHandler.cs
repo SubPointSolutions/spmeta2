@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
-using SPMeta2.ModelHandlers;
+using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-using System.Globalization;
-using SPMeta2.Exceptions;
-using System.Diagnostics;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
     public class FieldModelHandler : SSOMModelHandlerBase
     {
-        #region construactors
+        #region constructors
 
         static FieldModelHandler()
         {
@@ -90,7 +88,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
-            SPField field = null;
+            SPField field;
 
             var isListField = false;
 
@@ -134,7 +132,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                field.Update(true);
+                field.Update(!fieldModel.PushChangesToLists.HasValue || fieldModel.PushChangesToLists.Value);
             }
         }
 

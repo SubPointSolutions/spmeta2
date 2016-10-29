@@ -282,6 +282,10 @@ namespace SPMeta2.Definitions
         public bool? EnforceUniqueValues { get; set; }
 
         [ExpectValidation]
+        [DataMember]
+        public bool? PushChangesToLists { get; set; }
+
+        [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
         public virtual bool Indexed { get; set; }

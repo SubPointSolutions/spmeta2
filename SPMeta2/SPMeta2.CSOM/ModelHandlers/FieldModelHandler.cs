@@ -16,7 +16,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 {
     public class FieldModelHandler : CSOMModelHandlerBase
     {
-        #region construactors
+        #region constructors
 
         static FieldModelHandler()
         {
@@ -51,10 +51,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 new XAttribute(BuiltInFieldAttributes.Group, String.Empty),
                 new XAttribute(BuiltInFieldAttributes.CanToggleHidden, "TRUE"));
         }
-
-        #endregion
-
-        #region methods
 
         protected virtual bool PreloadProperties(Field field)
         {
@@ -196,9 +192,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "UpdateAndPushChanges(true)");
-            currentField.UpdateAndPushChanges(true);
-
+            if (fieldModel.PushChangesToLists.HasValue)
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, $"UpdateAndPushChanges({fieldModel.PushChangesToLists.Value})");
+                currentField.UpdateAndPushChanges(fieldModel.PushChangesToLists.Value);
+            }
+            else
+            {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "UpdateAndPushChanges(true)");
+                // Why does SSOM handler distinguish between list and web/site fields and csom doesn't?
+                currentField.UpdateAndPushChanges(true);
+            }
+            
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
             context.ExecuteQueryWithTrace();
 
