@@ -361,6 +361,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
+
+            assert.SkipProperty(m => m.PushChangesToLists,
+                "Covered by 'Regression.Scenarios.Fields.PushChangesToLists' test category");
         }
     }
 }

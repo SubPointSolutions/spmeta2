@@ -1089,6 +1089,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ValidationFormula = string.Empty;
 
                 def.Title = newFieldTitle;
+
+                def.PushChangesToLists = pushChangesToLists;
             });
 
             var oldListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>

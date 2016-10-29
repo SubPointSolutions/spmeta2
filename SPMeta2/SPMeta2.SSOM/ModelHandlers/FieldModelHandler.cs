@@ -128,11 +128,26 @@ namespace SPMeta2.SSOM.ModelHandlers
             // no promotion for the list field, and force push for the site fields
             if (isListField)
             {
+                TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Update() for list field");
                 field.Update();
             }
             else
             {
-                field.Update(!fieldModel.PushChangesToLists.HasValue || fieldModel.PushChangesToLists.Value);
+
+                if (fieldModel.PushChangesToLists.HasValue)
+                {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
+                    string.Format("UpdateAndPushChanges({0})", fieldModel.PushChangesToLists));
+
+                    field.Update(fieldModel.PushChangesToLists.Value);
+                }
+                else
+                {
+                    TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Update(true)");
+                    field.Update(true);
+                }
+
+
             }
         }
 

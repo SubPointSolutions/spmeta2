@@ -339,6 +339,9 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
+
+            assert.SkipProperty(m => m.PushChangesToLists,
+                "Covered by 'Regression.Scenarios.Fields.PushChangesToLists' test category");
         }
     }
 }
