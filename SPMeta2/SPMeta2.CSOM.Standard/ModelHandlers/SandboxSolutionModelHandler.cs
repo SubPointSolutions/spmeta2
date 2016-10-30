@@ -170,9 +170,15 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             });
         }
 
-        protected File FindExistingSolution(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
+        protected File FindExistingSolution(SiteModelHost siteModelHost,
+            SandboxSolutionDefinition sandboxSolutionDefinition)
         {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by SolutionId: [{0}]", sandboxSolutionDefinition.SolutionId);
+            return FindExistingSolutionById(siteModelHost, sandboxSolutionDefinition.SolutionId);
+        }
+
+        protected File FindExistingSolutionById(SiteModelHost siteModelHost, Guid solutionId)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by SolutionId: [{0}]", solutionId);
 
             var site = siteModelHost.HostSite;
             var context = site.Context;
@@ -183,13 +189,20 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.Load(files);
             context.ExecuteQueryWithTrace();
 
-            var fileItem = files.ToList().FirstOrDefault(f => new Guid(f["SolutionId"].ToString()) == sandboxSolutionDefinition.SolutionId);
+            var fileItem = files.ToList().FirstOrDefault(f => new Guid(f["SolutionId"].ToString()) == solutionId);
             return fileItem != null ? fileItem.File : null;
         }
 
-        protected File FindExistingSolutionFile(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
+
+        protected File FindExistingSolutionFile(SiteModelHost siteModelHost,
+            SandboxSolutionDefinition sandboxSolutionDefinition)
         {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by FileName: [{0}]", sandboxSolutionDefinition.FileName);
+            return FindExistingSolutionFileByName(siteModelHost, sandboxSolutionDefinition.FileName);
+        }
+
+        protected File FindExistingSolutionFileByName(SiteModelHost siteModelHost, string fileName)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by FileName: [{0}]", fileName);
 
             var site = siteModelHost.HostSite;
             var context = site.Context;
@@ -200,7 +213,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.Load(files);
             context.ExecuteQueryWithTrace();
 
-            var fileItem = files.ToList().FirstOrDefault(f => f["FileLeafRef"].ToString() == sandboxSolutionDefinition.FileName);
+            var fileItem = files.ToList().FirstOrDefault(f => f["FileLeafRef"].ToString() == fileName);
 
             return fileItem != null ? fileItem.File : null;
         }

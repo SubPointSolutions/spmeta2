@@ -22,6 +22,9 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<DesignPackageDefinition>("model", value => value.RequireNotNull());
 
+            var site = siteModelHost.HostSite;
+            var rootWeb = site.RootWeb;
+
             var spObject = FindExistingSolutionById(siteModelHost, definition.SolutionId);
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, definition, spObject)
@@ -32,7 +35,24 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
 
             if (definition.Apply)
             {
-                // TODO
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    // once applied, design package sets AppliedDesignGuid property in the root web
+                    // checking is all good
+                    var installedPackageId = ConvertUtils.ToGuid(rootWeb.AllProperties["AppliedDesignGuid"]);
+
+                    var srcProp = s.GetExpressionValue(m => m.Apply);
+                    var isValid = spObject != null
+                                  && installedPackageId == definition.SolutionId;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
             }
             else
             {

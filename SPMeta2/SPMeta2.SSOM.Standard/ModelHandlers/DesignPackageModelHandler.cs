@@ -97,12 +97,13 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Deploying design package file to the root folder of the root web");
 
                 var rootFolder = site.RootWeb.RootFolder;
-                var file = rootFolder.Files.Add(definition.FileName, definition.Content, true);
+                var tmpDesignPackageFile = rootFolder.Files.Add(definition.FileName, definition.Content, true);
 
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
-                    string.Format("Installing design package from URL:[{0}]", file.ServerRelativeUrl));
+                    string.Format("Installing design package from URL:[{0}]", tmpDesignPackageFile.ServerRelativeUrl));
 
-                DesignPackage.Install(site, designPackageInfo, file.ServerRelativeUrl);
+                DesignPackage.Install(site, designPackageInfo, tmpDesignPackageFile.ServerRelativeUrl);
+                sandboxSolution = FindExistingSolutionById(siteModelHost, definition.SolutionId);
 
                 if (definition.Apply)
                 {
@@ -114,7 +115,11 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Apply == false. Skipping design package activation");
                 }
 
-                sandboxSolution = FindExistingSolutionById(siteModelHost, definition.SolutionId);
+                // cleanup
+                if (tmpDesignPackageFile.Exists)
+                {
+                    tmpDesignPackageFile.Delete();
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -150,6 +155,8 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Solution is NULL. Skipping Apply status");
                 }
+
+                sandboxSolution = FindExistingSolutionById(siteModelHost, definition.SolutionId);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

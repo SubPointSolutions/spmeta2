@@ -163,6 +163,7 @@
     <Compile Include="Impl\Scenarios\Fields\OutcomeChoiceFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\CorePropertyScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\FarmSolutionScenariosTest.cs" />
+    <Compile Include="Impl\Scenarios\DesignPackageScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\UserScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Webparts\ContentByQueryWebPartScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WorkflowAssociationScenariosTest.cs" />

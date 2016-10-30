@@ -379,6 +379,11 @@ namespace SPMeta2.Containers.Services
                 }
                 else
                 {
+                    if (context.Object == null)
+                    {
+                        Console.WriteLine("");
+                    }
+
                     AssertService.IsNotNull(context.Object);
                     AssertService.IsNotNull(context.ObjectDefinition);
 
