@@ -23,6 +23,18 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        #region set helpers
+
+        public static void SetNonPublicFieldValue(object obj, string fieldName, object value)
+        {
+            var prop = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (prop != null)
+                prop.SetValue(obj, value);
+        }
+
+        #endregion
+
         #region get prop methods
 
         public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj)

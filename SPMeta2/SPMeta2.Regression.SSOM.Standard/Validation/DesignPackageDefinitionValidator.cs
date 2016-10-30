@@ -3,10 +3,13 @@ using System.Linq;
 using Microsoft.SharePoint.Publishing;
 using SPMeta2.Common;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.SSOM.Extensions;
+using SPMeta2.Regression.SSOM.Validation;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.SSOM.Standard.ModelHandlers;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Standard.Validation
 {
@@ -19,13 +22,46 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<DesignPackageDefinition>("model", value => value.RequireNotNull());
 
-            // TODO
+            var spObject = FindExistingSolutionById(siteModelHost, definition.SolutionId);
 
-            DesignPackageInfo spObject = null;
+            var assert = ServiceFactory.AssertService.NewAssert(definition, definition, spObject)
+                                .ShouldNotBeNull(spObject)
+                                .ShouldBeEqual(m => m.SolutionId, o => o.SolutionId)
+                                .SkipProperty(m => m.FileName, "Solution should be deployed fine.")
+                                .SkipProperty(m => m.Content, "Solution should be deployed fine.");
 
-            var assert = ServiceFactory.AssertService
-                            .NewAssert(definition, spObject)
-                            .ShouldNotBeNull(spObject);
+            if (definition.Apply)
+            {
+                // TODO
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Apply, "Apply is false");
+            }
+
+            if (definition.Install)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Install);
+                    var isValid = spObject != null;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Install, "Install is false");
+            }
+
+            assert.SkipProperty(m => m.MajorVersion, string.Empty);
+            assert.SkipProperty(m => m.MinorVersion, string.Empty);
         }
 
         #endregion

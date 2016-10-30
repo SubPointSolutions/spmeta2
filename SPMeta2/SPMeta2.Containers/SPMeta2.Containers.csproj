@@ -321,6 +321,24 @@
     <None Include="Containers\Apps\1.0.0.0\SPMeta2.Containers.AppContainer.app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\DesignPackages\ci-1-1.0.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.2.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.3.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.4.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.5.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
