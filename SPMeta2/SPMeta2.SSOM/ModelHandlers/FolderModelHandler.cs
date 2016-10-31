@@ -41,7 +41,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (folderModelHost.CurrentLibrary != null)
             {
-                var currentFolder = EnsureLibraryFolder(folderModelHost, folderModel);
+                var currentFolder = FindCurrentLibraryFolder(folderModelHost, folderModel);
 
                 var newContext = new FolderModelHost
                 {
@@ -55,7 +55,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else if (folderModelHost.CurrentList != null)
             {
-                var currentListItem = EnsureListFolder(folderModelHost, folderModel);
+                var currentListItem = FindCurrentListFolder(folderModelHost, folderModel);
 
                 var newContext = new FolderModelHost
                 {
@@ -136,6 +136,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             return folder;
         }
 
+        private SPListItem FindCurrentListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "FindCurrentListFolder()");
+
+            var list = folderModelHost.CurrentList;
+            var currentFolder = GetListFolder(folderModelHost, folderModel);
+
+            return currentFolder.Item;
+        }
+
         private SPListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
             TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "EnsureListFolder()");
@@ -210,7 +220,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             return currentFolderItem;
         }
 
+        private SPFolder FindCurrentLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "FindCurrentLibraryFolder()");
 
+            var currentFolder = GetLibraryFolder(folderModelHost, folderModel);
+
+            return currentFolder;
+        }
 
         private SPFolder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
@@ -234,13 +251,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentFolder == null || !currentFolder.Exists)
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new library folder");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject,
+                    "Processing new library folder");
 
                 currentFolder = parentFolder.SubFolders.Add(folderModel.Name);
                 currentFolder.Update();
 
-                MapFolderProperties(currentFolder.Item, folderModel);
-                currentFolder.Item.Update();
+                // if NULL - that's /Forms or other 'hidden folder' within the library
+                if (currentFolder.Item != null)
+                {
+                    MapFolderProperties(currentFolder.Item, folderModel);
+                    currentFolder.Item.Update();
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -255,7 +277,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing library folder");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
+                    "Processing existing library folder");
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -267,11 +290,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = folderModel,
                     ModelHost = folderModelHost
                 });
-                
-                currentFolder.Update();
 
-                MapFolderProperties(currentFolder.Item, folderModel);
-                currentFolder.Item.Update();
+                //currentFolder.Update();
+
+                // if NULL - that's /Forms or other 'hidden folder' within the library
+                if (currentFolder.Item != null)
+                {
+                    MapFolderProperties(currentFolder.Item, folderModel);
+                    currentFolder.Item.Update();
+                }
             }
 
             return currentFolder;
