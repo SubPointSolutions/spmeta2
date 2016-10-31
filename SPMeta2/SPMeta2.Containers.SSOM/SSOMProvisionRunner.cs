@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Office.SecureStoreService.Server;
 using Microsoft.Office.Server.Audience;
 using Microsoft.Office.Server.Search.Portability;
@@ -102,6 +103,17 @@ namespace SPMeta2.Containers.SSOM
                                   args.CurrentNode.Value
                                   }));
             };
+
+            foreach (var modelHandler in _provisionService.ModelHandlers.Values)
+            {
+                var isQA = modelHandler.GetType()
+                    .GetProperty("IsQARun", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                if (isQA != null)
+                {
+                    isQA.SetValue(modelHandler, true); ;
+                }
+            }
         }
 
         private void LoadEnvironmentConfig()

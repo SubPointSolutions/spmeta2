@@ -28,50 +28,74 @@ namespace SPMeta2.Definitions
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 5)]
+        [ExpectNullable]
         public short? AdjustHijriDays { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 0, MaxValue = 16)]
+        [ExpectNullable]
         public short? AlternateCalendarType { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 0, MaxValue = 16)]
+        [ExpectNullable]
         public short? CalendarType { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 0, MaxValue = 38)]
+        [ExpectNullable]
         public short? Collation { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectNullable]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 4)]
         public uint? FirstDayOfWeek { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 0, MaxValue = 2)]
+        [ExpectNullable]
         public short? FirstWeekOfYear { get; set; }
 
-        //[ExpectValidation]
+        [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsLCID]
+        [ExpectNullable]
         public uint? LocaleId { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public bool? ShowWeeks { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdate]
+        [ExpectNullable]
         public bool? Time24 { get; set; }
 
-        //[ExpectValidation]
+        [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 5, MaxValue = 8)]
+        [ExpectNullable]
         public short? WorkDayEndHour { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 5)]
+        [ExpectNullable]
         public short? WorkDays { get; set; }
 
-        //[ExpectValidation]
+        [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 4)]
+        [ExpectNullable]
         public short? WorkDayStartHour { get; set; }
 
         [ExpectValidation]

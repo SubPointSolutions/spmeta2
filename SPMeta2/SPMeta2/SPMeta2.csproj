@@ -343,6 +343,7 @@
     <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
     <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedModelHost.cs" />
+    <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />

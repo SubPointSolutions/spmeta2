@@ -8,11 +8,18 @@ namespace SPMeta2.CSOM.Standard.Config
 {
     public class MetadataNavigationHierarchyConfig
     {
-        public MetadataNavigationHierarchyConfig(Guid fieldId)
+        #region constructors
+        public MetadataNavigationHierarchyConfig()
         {
-            this.FieldId = fieldId;
-        }
 
+        }
+        #endregion
+
+        #region properties
         public Guid FieldId { get; set; }
+        public string FieldType { get; set; }
+        public string CachedName { get; set; }
+        public string CachedDisplayName { get; set; }
+        #endregion
     }
 }

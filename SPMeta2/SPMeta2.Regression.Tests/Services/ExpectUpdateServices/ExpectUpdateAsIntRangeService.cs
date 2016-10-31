@@ -30,6 +30,16 @@ namespace SPMeta2.Regression.Tests.Services.ExpectUpdateServices
             {
                 newValue = Convert.ToUInt16(tmpValue);
             }
+            else if (prop.PropertyType == typeof(Int16?) ||
+                 prop.PropertyType == typeof(Int16))
+            {
+                newValue = Convert.ToInt16(tmpValue);
+            }
+            else if (prop.PropertyType == typeof(UInt32?) ||
+                 prop.PropertyType == typeof(UInt32))
+            {
+                newValue = Convert.ToUInt32(tmpValue);
+            }
             else
             {
                 // TODO, as per case

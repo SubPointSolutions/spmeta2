@@ -356,10 +356,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var currentFolderItem = currentFolder.ListItemAllFields;
 
-                MapProperties(currentFolderItem, folderModel);
+                // could be NULL, in the /Forms or other hidden folders
+                if (currentFolderItem != null
+                    && currentFolderItem.ServerObjectIsNull != null
+                    && !currentFolderItem.ServerObjectIsNull.Value)
+                {
+                    MapProperties(currentFolderItem, folderModel);
 
-                currentFolderItem.Update();
-                context.ExecuteQueryWithTrace();
+                    currentFolderItem.Update();
+                    context.ExecuteQueryWithTrace();
+                }
 #endif
             }
             else
@@ -376,10 +382,16 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 var currentFolderItem = currentFolder.ListItemAllFields;
 
-                MapProperties(currentFolderItem, folderModel);
+                // could be NULL, in the /Forms or other hidden folders
+                if (currentFolderItem != null 
+                    && currentFolderItem.ServerObjectIsNull != null
+                    && !currentFolderItem.ServerObjectIsNull.Value)
+                {
+                    MapProperties(currentFolderItem, folderModel);
 
-                currentFolderItem.Update();
-                context.ExecuteQueryWithTrace();
+                    currentFolderItem.Update();
+                    context.ExecuteQueryWithTrace();
+                }
 #endif
             }
 

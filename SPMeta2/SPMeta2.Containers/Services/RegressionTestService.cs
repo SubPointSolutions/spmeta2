@@ -370,12 +370,26 @@ namespace SPMeta2.Containers.Services
 
                 hook.OnProvisioned = true;
 
-                AssertService.IsNotNull(context.Object);
-                AssertService.IsNotNull(context.ObjectDefinition);
+                var farmDef = context.ObjectDefinition as FarmSolutionDefinition;
 
-                AssertService.IsNotNull(context.ModelHost);
+                if (farmDef != null && farmDef.ShouldDelete == true)
+                {
+                    // by passing checking the object within onb provisioed event
+                    // farm solution is expected to be deleted
+                }
+                else
+                {
+                    if (context.Object == null)
+                    {
+                        Console.WriteLine("");
+                    }
 
-                AssertService.IsInstanceOfType(context.Object, typeof(TObjectType));
+                    AssertService.IsNotNull(context.Object);
+                    AssertService.IsNotNull(context.ObjectDefinition);
+
+                    AssertService.IsNotNull(context.ModelHost);
+                    AssertService.IsInstanceOfType(context.Object, typeof(TObjectType));
+                }
             });
         }
 

@@ -10,14 +10,15 @@ using SPMeta2.Definitions;
 using SPMeta2.Utils;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes.Capabilities;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Standard.Definitions
 {
     /// <summary>
     /// Allows to define and deploy SharePoint design package.
     /// </summary>
-    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.Publishing.DesignPackageInfo", "Microsoft.SharePoint.Publishing")]
-    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.Publishing.DesignPackageInfo", "Microsoft.SharePoint.Client.Publishing")]
+    [SPObjectType(SPObjectModelType.SSOM, "Microsoft.SharePoint.SPUserSolution", "Microsoft.SharePoint")]
+    [SPObjectType(SPObjectModelType.CSOM, "Microsoft.SharePoint.Client.File", "Microsoft.SharePoint.Client")]
 
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
@@ -31,27 +32,45 @@ namespace SPMeta2.Standard.Definitions
 
     [ExpectManyInstances]
 
-    public class DesignPackageDefinition : DefinitionBase
+    public class DesignPackageDefinition : SolutionDefinitionBase
     {
+        #region ccontructors
+
+        public DesignPackageDefinition()
+        {
+            Content = new byte[0];
+
+            Install = true;
+            Apply = false;
+        }
+
+        #endregion
+
         #region properties
 
-        [ExpectRequired]
-        [DataMember]
-        [IdentityKey]
-        public string PackageName { get; set; }
-
-        [ExpectRequired]
-        [DataMember]
         [ExpectValidation]
-        public Guid PackageGuid { get; set; }
+        [DataMember]
+        public int MajorVersion { get; set; }
 
         [ExpectValidation]
         [DataMember]
-        public int? MajorVersion { get; set; }
+        public int MinorVersion { get; set; }
 
+        /// <summary>
+        /// Represents DesignPackage.Install() call
+        /// True by default.
+        /// </summary>
         [ExpectValidation]
         [DataMember]
-        public int? MinorVersion { get; set; }
+        public bool Install { get; set; }
+
+        /// <summary>
+        /// Represents DesignPackage.Apply() call
+        /// False by default.
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public bool Apply { get; set; }
 
         #endregion
 
@@ -60,7 +79,10 @@ namespace SPMeta2.Standard.Definitions
         public override string ToString()
         {
             return new ToStringResult<DesignPackageDefinition>(this)
-                          .AddPropertyValue(p => p.PackageName)
+                          .AddPropertyValue(p => p.FileName)
+                          .AddPropertyValue(p => p.SolutionId)
+                          .AddPropertyValue(p => p.Install)
+                          .AddPropertyValue(p => p.Apply)
                           .ToString();
         }
 

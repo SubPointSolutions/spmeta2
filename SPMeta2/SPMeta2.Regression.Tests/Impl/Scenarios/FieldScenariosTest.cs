@@ -7,6 +7,7 @@ using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using SPMeta2.Containers.Services;
@@ -19,9 +20,64 @@ using SPMeta2.Utils;
 using SPMeta2.Attributes.Regression;
 
 using SPMeta2.Containers.Extensions;
+using SPMeta2.Exceptions;
+using SPMeta2.Models;
+
+using SPMeta2.Regression.Tests.Utils;
+using ReflectionUtils = SPMeta2.Utils.ReflectionUtils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
+    [TestClass]
+    public class FieldScenariosSelfTest
+    {
+        #region default values
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        [TestCategory("CI.Core")]
+        public void SelfDiagnostic_AllFields_Should_Have_DefaultValue_Tests()
+        {
+            // check if FieldScenariosTest class has all testsfor field default values
+            // should not inherit SPMeta2RegresionScenarioTestBase as it will force to use (init) provisioners under CI
+            // that's why it is separated
+
+            var isValid = true;
+
+            var methods = typeof(FieldScenariosTest).GetMethods();
+            var targetTypes = new List<Type>();
+
+            var assemblies = new[]
+            {
+                typeof(FieldDefinition).Assembly,
+                typeof(TaxonomyFieldDefinition).Assembly
+            };
+
+            targetTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<FieldDefinition>(assemblies));
+
+            Trace.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
+
+            foreach (var fieldType in targetTypes.OrderBy(m => m.Name))
+            {
+                var fullDefName = fieldType.Name;
+                var shortDefName = fieldType.Name.Replace("Definition", string.Empty);
+
+                var testName = string.Format("CanDeploy_{0}_DefaultValue", shortDefName);
+
+                var testExists = methods.Any(m => m.Name == testName);
+
+                if (!testExists)
+                    isValid = false;
+
+                Trace.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
+                        testExists, fullDefName, testName));
+            }
+
+            Assert.IsTrue(isValid);
+        }
+        #endregion
+    }
+
     [TestClass]
     public class FieldScenariosTest : SPMeta2RegresionScenarioTestBase
     {
@@ -405,7 +461,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
-            var types = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            var types = SPMeta2.Utils.ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
             {
              spMetaAssembly,
              spMetaStandardAssembly
@@ -756,6 +812,367 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region default values
+
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_BooleanField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_BusinessDataField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_CalculatedField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ComputedField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_CurrencyField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_DateTimeField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_DependentLookupField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_Field_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_GeolocationField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_GuidField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_HTMLField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_ImageField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_LinkField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_LookupField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_MediaField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_MultiChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_NoteField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_NumberField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_OutcomeChoiceField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_SummaryLinkField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_TaxonomyField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_TextField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_URLField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.DefaultValues")]
+        public void CanDeploy_UserField_DefaultValue()
+        {
+            // Cover FieldDefinition.DefaultValue with regression tests #595
+            // https://github.com/SubPointSolutions/spmeta2/issues/595
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region PushChangesToLists tests
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.PushChangesToLists")]
+        public void CanDeploy_Field_Without_PushChangesToLists_OnSite()
+        {
+            InternalDeploySiteFieldWithPushChangesToLists(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.PushChangesToLists")]
+        public void CanDeploy_Field_With_PushChangesToLists_OnSite()
+        {
+            InternalDeploySiteFieldWithPushChangesToLists(true);
+        }
+
+        private void InternalDeploySiteFieldWithPushChangesToLists(bool pushChangesToLists)
+        {
+            var oldFieldTitle = Rnd.String();
+            var newFieldTitle = Rnd.String();
+
+            var oldSharePointFieldTitle = string.Empty;
+            var newSharePointFieldTitle = string.Empty;
+
+            // defs
+            var oldFieldDef = ModelGeneratorService.GetRandomDefinition<TextFieldDefinition>(def =>
+            {
+                def.DefaultFormula = string.Empty;
+                def.ValidationFormula = string.Empty;
+
+                def.Title = oldFieldTitle;
+            });
+
+            var newFieldDef = oldFieldDef.Inherit(def =>
+            {
+                def.DefaultFormula = string.Empty;
+                def.ValidationFormula = string.Empty;
+
+                def.Title = newFieldTitle;
+
+                def.PushChangesToLists = pushChangesToLists;
+            });
+
+            var oldListDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+
+            });
+
+            var newListDef = oldListDef.Inherit(def =>
+            {
+
+            });
+
+            var oldListFielLink = new ListFieldLinkDefinition
+            {
+                FieldId = oldFieldDef.Id
+            };
+
+            var newListFielLink = new ListFieldLinkDefinition
+            {
+                FieldId = oldFieldDef.Id
+            };
+
+            var oldSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(oldFieldDef);
+            });
+
+            var oldWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(oldListDef, list =>
+                {
+                    list.AddListFieldLink(oldListFielLink);
+                });
+            });
+
+            var newWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(newListDef, list =>
+                {
+                    list.AddListFieldLink(newListFielLink);
+                });
+            });
+
+            var newSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(newFieldDef);
+            });
+
+            // passing Reg_Title as definition PropertyBag
+            // later, validation handlers foe ListFieldLink will use Reg_Title instead of title 
+            // bit if a hack
+            if (pushChangesToLists)
+            {
+                newListFielLink.PropertyBag.Add(new PropertyBagValue
+                {
+                    Name = "_Reg_DisplayName",
+                    Value = newFieldTitle
+                });
+            }
+            else
+            {
+                newListFielLink.PropertyBag.Add(new PropertyBagValue
+                {
+                    Name = "_Reg_DisplayName",
+                    Value = oldFieldTitle
+                });
+            }
+
+            // deploy initial field and list
+            TestModel(oldSiteModel);
+            TestModel(oldWebModel);
+
+            // deploy 'new' field model
+            TestModel(newSiteModel);
+            TestModel(newWebModel);
+        }
+
+        private string ExtractFieldTitleFromObject(OnCreatingContext<object, DefinitionBase> context)
+        {
+            var obj = context.Object;
+
+            return obj.GetPropertyValue("Title") as string;
         }
 
         #endregion
