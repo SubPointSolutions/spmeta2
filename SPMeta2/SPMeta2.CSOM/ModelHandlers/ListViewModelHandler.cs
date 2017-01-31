@@ -243,7 +243,9 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             listView.DefaultView = definition.IsDefault;
             listView.Paged = definition.IsPaged;
-            listView.IncludeRootFolder = definition.IncludeRootFolder;
+
+            if (definition.IncludeRootFolder.HasValue)
+                listView.IncludeRootFolder = definition.IncludeRootFolder.Value;
 
             if (!string.IsNullOrEmpty(definition.Query))
                 listView.ViewQuery = definition.Query;

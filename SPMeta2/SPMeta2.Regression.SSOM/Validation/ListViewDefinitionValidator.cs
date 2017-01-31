@@ -188,6 +188,11 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.SkipProperty(m => m.TabularView, "TabularView is null or empty. Skipping.");
 
+            if (definition.IncludeRootFolder.HasValue)
+                assert.ShouldBeEqual(m => m.IncludeRootFolder, o => o.IncludeRootFolder);
+            else
+                assert.SkipProperty(m => m.IncludeRootFolder, "IncludeRootFolder is null or empty. Skipping.");
+
             if (string.IsNullOrEmpty(definition.ContentTypeName))
                 assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
             else

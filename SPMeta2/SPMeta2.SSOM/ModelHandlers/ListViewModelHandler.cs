@@ -237,6 +237,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentView.DefaultView = listViewModel.IsDefault;
             currentView.Paged = listViewModel.IsPaged;
 
+            if (listViewModel.IncludeRootFolder.HasValue)
+                currentView.IncludeRootFolder = listViewModel.IncludeRootFolder.Value;
+
 #if !NET35
             if (!string.IsNullOrEmpty(listViewModel.JSLink))
                 currentView.JSLink = listViewModel.JSLink;
