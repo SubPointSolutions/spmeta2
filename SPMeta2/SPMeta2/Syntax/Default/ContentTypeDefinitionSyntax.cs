@@ -72,11 +72,13 @@ namespace SPMeta2.Syntax.Default
 
         public static bool IsChildOf(string childId, string parentId)
         {
-            if (parentId.Length < childId.Length)
+            // parent content type ID is bigger than the childID?
+            if (parentId.Length > childId.Length)
                 return false;
 
-            for (int i = 0; i < childId.Length; i++)
-                if (childId[i] != parentId[i])
+            // comparing up to the parent ID length
+            for (int i = 0; i < parentId.Length; i++)
+                if (char.ToUpperInvariant(childId[i]) != char.ToUpperInvariant(parentId[i]))
                     return false;
 
             return true;
