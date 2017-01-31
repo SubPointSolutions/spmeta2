@@ -154,6 +154,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool IsDefault { get; set; }
 
+        /// <summary>
+        /// Gets or sets whether the list view should include parent folder item.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool IncludeRootFolder { get; set; }
+
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
