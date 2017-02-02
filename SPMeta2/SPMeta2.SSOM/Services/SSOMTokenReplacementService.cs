@@ -106,7 +106,7 @@ namespace SPMeta2.SSOM.Services
 
                 if (tokenContext.IsSiteRelativeUrl)
                 {
-                    return web.ServerRelativeUrl;
+                    return "/" + web.ServerRelativeUrl.Replace(web.Site.ServerRelativeUrl, string.Empty);
                 }
 
                 if (web.ServerRelativeUrl == "/")
