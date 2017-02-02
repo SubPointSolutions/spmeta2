@@ -30,6 +30,8 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string SiteMasterPageUrl { get; set; }
 
         [DataMember]
@@ -38,6 +40,8 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [SiteCollectionTokenCapability]
+        [WebTokenCapability]
         public string SystemMasterPageUrl { get; set; }
 
         [DataMember]

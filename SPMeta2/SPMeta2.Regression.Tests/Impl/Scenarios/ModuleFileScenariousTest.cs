@@ -504,5 +504,48 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region versioning
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Versioning")]
+        public void CanDeploy_ModuleFile_MoreThan_511_Times()
+        {
+            // Module file provision fails at minor version 511 #930
+            // https://github.com/SubPointSolutions/spmeta2/issues/930                        
+
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+
+            var moduleFileName = string.Format("{0}.txt", Rnd.String());
+            var moduleFiles = new List<ModuleFileDefinition>();
+
+            for (var i = 0; i < 520; i++)
+            {
+                var moduleFileDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+                {
+                    def.FileName = moduleFileName;
+                    def.Content = new byte[3] { 1, 2, 3 };
+                });
+
+                moduleFiles.Add(moduleFileDef);
+            }
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(list, rndList =>
+                {
+                    rndList.AddModuleFiles(moduleFiles);
+                });
+
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

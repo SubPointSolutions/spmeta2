@@ -66,7 +66,12 @@ namespace SPMeta2.SSOM.Services
             foreach (var tokenInfo in TokenProcessInfos)
             {
                 if (!string.IsNullOrEmpty(result.Value))
-                    result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context.Context, tokenInfo.Name));
+                {
+                    result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context, context.Context, tokenInfo.Name));
+
+                    result.Value = result.Value.Replace(@"//", @"/");
+                    result.Value = result.Value.Replace(@"\\", @"\");
+                }
             }
 
             if (OnTokenReplaced != null)
@@ -80,10 +85,13 @@ namespace SPMeta2.SSOM.Services
             return result;
         }
 
-        private string ResolveToken(object contextObject, string token)
+        private string ResolveToken(TokenReplacementContext tokenContext, object contextObject, string token)
         {
             if (string.Equals(token, "~sitecollection", StringComparison.CurrentCultureIgnoreCase))
             {
+                if (tokenContext.IsSiteRelativeUrl)
+                    return "/";
+
                 var site = ExtractSite(contextObject);
 
                 if (site.ServerRelativeUrl == "/")
@@ -95,6 +103,11 @@ namespace SPMeta2.SSOM.Services
             if (string.Equals(token, "~site", StringComparison.CurrentCultureIgnoreCase))
             {
                 var web = ExtractWeb(contextObject);
+
+                if (tokenContext.IsSiteRelativeUrl)
+                {
+                    return web.ServerRelativeUrl;
+                }
 
                 if (web.ServerRelativeUrl == "/")
                     return string.Empty;
