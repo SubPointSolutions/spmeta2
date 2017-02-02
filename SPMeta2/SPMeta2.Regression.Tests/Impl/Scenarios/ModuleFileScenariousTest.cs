@@ -15,6 +15,8 @@ using SPMeta2.Regression.Tests.Data;
 using SPMeta2.Regression.Tests.Prototypes;
 using SPMeta2.Syntax.Extended;
 
+using SPMeta2.Containers.Extensions;
+
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
@@ -505,6 +507,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+
+    }
+
+    [TestClass]
+    public class ModuleFileVersioningScenariousTest : SPMeta2RegresionScenarioTestBase
+    {
+        #region constructors
+
+        public ModuleFileVersioningScenariousTest()
+        {
+            RegressionService.ProvisionGenerationCount = 1;
+
+            RegressionService.EnableDefinitionValidation = false;
+            RegressionService.EnableEventValidation = false;
+        }
+
+        #endregion
+
+        #region internal
+
+        [ClassInitializeAttribute]
+        public static void Init(TestContext context)
+        {
+            InternalInit();
+        }
+
+        [ClassCleanupAttribute]
+        public static void Cleanup()
+        {
+            InternalCleanup();
+        }
+
+        #endregion
+
         #region versioning
 
         [TestMethod]
@@ -516,6 +552,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
             {
+                def.EnableVersioning = true;
+                def.EnableMinorVersions = true;
+
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
@@ -523,7 +562,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var moduleFileName = string.Format("{0}.txt", Rnd.String());
             var moduleFiles = new List<ModuleFileDefinition>();
 
-            for (var i = 0; i < 520; i++)
+            var filesCount = 520;
+
+            for (var i = 0; i < filesCount; i++)
             {
                 var moduleFileDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
                 {
@@ -534,16 +575,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 moduleFiles.Add(moduleFileDef);
             }
 
+            // RegExcludeFromValidation - exclude all defs from the validation
+            // don't need to check them as we test ability to perfrom more than 511 updates
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(list, rndList =>
                 {
-                    rndList.AddModuleFiles(moduleFiles);
+                    rndList.RegExcludeFromValidation();
+
+                    foreach (var moduleFile in moduleFiles)
+                    {
+                        rndList.AddModuleFile(moduleFile, file =>
+                        {
+                            file.RegExcludeFromValidation();
+                        });
+                    }
                 });
 
             });
 
-            TestModel(model);
+            TestModel(model, true);
         }
 
         #endregion

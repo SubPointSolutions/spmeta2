@@ -486,6 +486,11 @@ namespace SPMeta2.Containers.Services
 
         public void TestModels(IEnumerable<ModelNode> models)
         {
+            TestModels(models, false);
+        }
+
+        public void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
+        {
             // force XML serialiation
             GetSerializedAndRestoredModels(models);
 
@@ -533,15 +538,21 @@ namespace SPMeta2.Containers.Services
 
                     }
 
-                    if (this.EnableDefinitionValidation)
+                    if (!deployOnce)
                     {
-                        var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
-                        AssertService.IsFalse(hasMissedOrInvalidProps);
+                        if (this.EnableDefinitionValidation)
+                        {
+                            var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                            AssertService.IsFalse(hasMissedOrInvalidProps);
+                        }
                     }
                 });
 
-                if (EnableDefinitionImmutabilityValidation)
-                    PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
+                if (!deployOnce)
+                {
+                    if (EnableDefinitionImmutabilityValidation)
+                        PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
+                }
             }
         }
 

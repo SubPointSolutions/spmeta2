@@ -297,7 +297,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new ModelNode[] { model });
+            TestModel(model, false);
+        }
+
+        protected void TestModel(ModelNode model, bool deployOnce)
+        {
+            TestModels(new ModelNode[] { model }, deployOnce);
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
@@ -342,10 +347,18 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModels(IEnumerable<ModelNode> models)
         {
-            RegressionService.TestModels(models);
+            TestModels(models, false);
+        }
 
-            PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
-            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+        protected void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
+        {
+            RegressionService.TestModels(models, deployOnce);
+
+            if (!deployOnce)
+            {
+                PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
+                PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+            }
         }
 
         private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)
