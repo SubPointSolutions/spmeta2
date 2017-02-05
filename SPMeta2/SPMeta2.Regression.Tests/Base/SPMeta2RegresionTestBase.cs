@@ -99,8 +99,12 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
             TestOptions.EnableContentTypeHubTests = true;
-
             TestOptions.EnablWebConfigModificationTest = false;
+            
+            // too long, disabled by default
+            // Module file provision fails at minor version 511 #930
+            // https://github.com/SubPointSolutions/spmeta2/issues/930
+            TestOptions.EnableModuleFile511Tests = false;
         }
 
         #endregion
@@ -156,6 +160,8 @@ namespace SPMeta2.Regression.Tests.Base
             public bool EnablWebConfigModificationTest { get; set; }
 
             public bool EnableContentTypeHubTests { get; set; }
+
+            public bool EnableModuleFile511Tests { get; set; }
         }
 
         #endregion

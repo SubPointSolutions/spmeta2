@@ -372,6 +372,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                         file.Publish("Provision");
                         file.RefreshLoad();
 
+                        if (list.EnableModeration)
+                        {
+                            file.Approve("Provision");
+                            file.RefreshLoad();
+                        }
+
                         context.ExecuteQueryWithTrace();
                     }
                 }

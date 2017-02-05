@@ -71,7 +71,7 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
             if (exceptions.Count > 0)
             {
-                throw new SPMeta2AggregateException("Required properties validation error", 
+                throw new SPMeta2AggregateException("Required properties validation error",
                     exceptions.OfType<Exception>());
             }
         }
@@ -112,6 +112,14 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 result.Name = prop.Name;
                 result.IsValid = true;
 
+
+                // Some properties can be 0, so we need to pass them as successes
+
+                // Can't provision list with NoListTemplate template type #944
+                // https://github.com/SubPointSolutions/spmeta2/issues/944
+
+
+
                 if (prop.PropertyType == typeof(string))
                 {
                     var value = prop.GetValue(obj, null) as string;
@@ -140,11 +148,32 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 {
                     var value = prop.GetValue(obj, null) as int?;
 
-                    if (value.HasValue && value.Value > 0)
-                    { }
+                    // any valud range?
+                    // ExpectRequiredIntRange
+
+                    var allowedRangeProperty = prop.GetCustomAttributes(typeof(ExpectRequiredIntRange), true)
+                                                   .FirstOrDefault() as ExpectRequiredIntRange;
+
+                    if (allowedRangeProperty != null)
+                    {
+                        var minValue = allowedRangeProperty.MinValue;
+                        var maxValue = allowedRangeProperty.MaxValue;
+
+                        if (value.HasValue && (value.Value >= minValue && value.Value <= maxValue))
+                        { }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
+                    }
                     else
                     {
-                        result.IsValid = false;
+                        if (value.HasValue && value.Value > 0)
+                        { }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
                     }
                 }
                 else if (prop.PropertyType == typeof(byte[]))

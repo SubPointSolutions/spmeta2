@@ -545,19 +545,48 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ModuleFiles.Versioning")]
-        public void CanDeploy_ModuleFile_MoreThan_511_Times()
+        public void CanDeploy_ModuleFile_MoreThan_511_Times_NoModeration()
         {
-            // Module file provision fails at minor version 511 #930
-            // https://github.com/SubPointSolutions/spmeta2/issues/930                        
+            if (!TestOptions.EnableModuleFile511Tests)
+                return;
 
             var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
             {
                 def.EnableVersioning = true;
                 def.EnableMinorVersions = true;
 
+                def.EnableModeration = false;
+
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
+            CanDeploy_ModuleFile_MoreThan_511_Times(list);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Versioning")]
+        public void CanDeploy_ModuleFile_MoreThan_511_Times_WithModeration()
+        {
+            if (!TestOptions.EnableModuleFile511Tests)
+                return;
+
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.EnableVersioning = true;
+                def.EnableMinorVersions = true;
+
+                def.EnableModeration = true;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            CanDeploy_ModuleFile_MoreThan_511_Times(list);
+        }
+
+        public void CanDeploy_ModuleFile_MoreThan_511_Times(ListDefinition list)
+        {
+            // Module file provision fails at minor version 511 #930
+            // https://github.com/SubPointSolutions/spmeta2/issues/930                        
 
             var moduleFileName = string.Format("{0}.txt", Rnd.String());
             var moduleFiles = new List<ModuleFileDefinition>();
