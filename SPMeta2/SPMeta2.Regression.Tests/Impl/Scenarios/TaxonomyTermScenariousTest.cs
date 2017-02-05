@@ -40,7 +40,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-        [TestCategory("Regression.Scenarios.Taxonomy.Term")]
+        [TestCategory("Regression.Scenarios.Taxonomy.Term.CustomProperties")]
         [TestMethod]
         public void CanDeploy_TaxonomyTerms_WithCustomProperties()
         {
