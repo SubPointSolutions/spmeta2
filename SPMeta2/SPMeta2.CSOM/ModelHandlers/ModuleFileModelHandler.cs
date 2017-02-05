@@ -374,8 +374,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                         if (list.EnableModeration)
                         {
+                            // this is gonna be ugly for SP2010, sorry pals
+#if !NET35
                             file.Approve("Provision");
                             file.RefreshLoad();
+#endif
                         }
 
                         context.ExecuteQueryWithTrace();
