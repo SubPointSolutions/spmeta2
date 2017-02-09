@@ -17,9 +17,19 @@ namespace SPMeta2.CSOM.ModelHandlers
 {
     public class ModuleFileModelHandler : CSOMModelHandlerBase
     {
+        #region static
+
+        static ModuleFileModelHandler()
+        {
+            MaxMinorVersionCount = 50;
+        }
+
+        #endregion
+
         #region properties
 
         private double ContentStreamFileSize = 1024 * 1024 * 1.5;
+        private static int MaxMinorVersionCount { get; set; }
 
         public override Type TargetType
         {
@@ -336,7 +346,6 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (isDocumentLibrary && doesFileHasListItem)
             {
-
                 if (list != null && file != null && (file.Exists && file.CheckOutType != CheckOutType.None))
                 {
                     file.UndoCheckOut();
@@ -352,6 +361,28 @@ namespace SPMeta2.CSOM.ModelHandlers
                     file.RefreshLoad();
 
                     context.ExecuteQueryWithTrace();
+
+                    // Module file provision fails at minor version 511 #930
+                    // https://github.com/SubPointSolutions/spmeta2/issues/930
+
+                    // checking out .511 version will result in an exception
+                    // can be cause by multiple provisions of the same file (such as on dev/test environment)
+                    if (file.MinorVersion >= MaxMinorVersionCount)
+                    {
+                        file.Publish("Provision");
+                        file.RefreshLoad();
+
+                        if (list.EnableModeration)
+                        {
+                            // this is gonna be ugly for SP2010, sorry pals
+#if !NET35
+                            file.Approve("Provision");
+                            file.RefreshLoad();
+#endif
+                        }
+
+                        context.ExecuteQueryWithTrace();
+                    }
                 }
 
                 if (list != null && file != null && (file.Exists && file.CheckOutType == CheckOutType.None))

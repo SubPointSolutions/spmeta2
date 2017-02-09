@@ -16,6 +16,7 @@ using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Syntax.Default.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -449,6 +450,25 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     def.EnableFolderCreation = false;
                     def.TemplateType = BuiltInListTemplateTypeId.Events;
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_NoListTemplateList()
+        {
+            // .NoListTemplate is 0 which isn't allowed by SharePoint
+
+            // Can't provision list with NoListTemplate template type #944
+            // https://github.com/SubPointSolutions/spmeta2/issues/944
+            WithExcpectedException(typeof(SPMeta2AggregateException), () =>
+            {
+                TestRandomDefinition<ListDefinition>(def =>
+                {
+                    def.EnableMinorVersions = false;
+
+                    def.TemplateType = BuiltInListTemplateTypeId.NoListTemplate;
                 });
             });
         }

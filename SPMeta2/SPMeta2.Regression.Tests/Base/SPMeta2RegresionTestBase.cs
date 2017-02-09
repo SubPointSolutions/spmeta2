@@ -99,8 +99,12 @@ namespace SPMeta2.Regression.Tests.Base
             TestOptions.EnableSerializeDeserializeAndStillDeployTests = false;
 
             TestOptions.EnableContentTypeHubTests = true;
-
             TestOptions.EnablWebConfigModificationTest = false;
+            
+            // too long, disabled by default
+            // Module file provision fails at minor version 511 #930
+            // https://github.com/SubPointSolutions/spmeta2/issues/930
+            TestOptions.EnableModuleFile511Tests = false;
         }
 
         #endregion
@@ -156,6 +160,8 @@ namespace SPMeta2.Regression.Tests.Base
             public bool EnablWebConfigModificationTest { get; set; }
 
             public bool EnableContentTypeHubTests { get; set; }
+
+            public bool EnableModuleFile511Tests { get; set; }
         }
 
         #endregion
@@ -297,7 +303,12 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModel(ModelNode model)
         {
-            TestModels(new ModelNode[] { model });
+            TestModel(model, false);
+        }
+
+        protected void TestModel(ModelNode model, bool deployOnce)
+        {
+            TestModels(new ModelNode[] { model }, deployOnce);
         }
 
         protected void TestModel(ModelNode firstModel, ModelNode secondModel)
@@ -342,10 +353,18 @@ namespace SPMeta2.Regression.Tests.Base
 
         protected void TestModels(IEnumerable<ModelNode> models)
         {
-            RegressionService.TestModels(models);
+            TestModels(models, false);
+        }
 
-            PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
-            PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+        protected void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
+        {
+            RegressionService.TestModels(models, deployOnce);
+
+            if (!deployOnce)
+            {
+                PleaseMakeSureWeCanUpdatePropertiesForTheSharePointSake(models);
+                PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(models);
+            }
         }
 
         private void PleaseMakeSureWeCanSerializeDeserializeAndStillDeploy(IEnumerable<ModelNode> models)

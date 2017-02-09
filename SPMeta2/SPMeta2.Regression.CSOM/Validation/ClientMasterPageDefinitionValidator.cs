@@ -58,8 +58,18 @@ namespace SPMeta2.Regression.CSOM.Validation
                                              .ShouldNotBeNull(spObject)
                                              .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
                                              .ShouldBeEqual(m => m.DefaultCSSFile, o => o.GetDefaultCSSFile())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
-                                             .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription());
+
+
+            if (folderModelHost.HostSite.ServerRelativeUrl == folderModelHost.HostWeb.ServerRelativeUrl)
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.GetTitle());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Skipping master page 'Title' update. Subweb is detcted.");
+            }
+
 
             if (definition.UIVersion.Count > 0)
             {

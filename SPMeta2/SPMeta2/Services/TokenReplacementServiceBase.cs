@@ -10,6 +10,8 @@ namespace SPMeta2.Services
         public object Context { get; set; }
         public string Value { get; set; }
 
+        public bool IsSiteRelativeUrl { get; set; }
+
         #endregion
     }
 

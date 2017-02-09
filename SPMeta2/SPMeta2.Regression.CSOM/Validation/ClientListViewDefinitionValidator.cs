@@ -41,7 +41,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                 v => v.AggregationsStatus,
                 v => v.Aggregations,
                 v => v.ViewType,
+                v => v.IncludeRootFolder,
                 v => v.ViewData));
+
             context.ExecuteQueryWithTrace();
 
             var spObject = FindViewByTitle(list.Views, definition.Title);
@@ -136,6 +138,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             assert.SkipProperty(m => m.InlineEdit, "InlineEdit unsupported by SP CSOM API yet. Skipping.");
 
             assert.ShouldBeEqualIfNotNullOrEmpty(m => m.JSLink, o => o.JSLink);
+
+            if (definition.IncludeRootFolder.HasValue)
+                assert.ShouldBeEqual(m => m.IncludeRootFolder, o => o.IncludeRootFolder);
+            else
+                assert.SkipProperty(m => m.IncludeRootFolder, "IncludeRootFolder is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.Query))
             {

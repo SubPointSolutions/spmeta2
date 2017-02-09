@@ -53,14 +53,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
-                web.CustomMasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+                var url = ResolveUrlWithTokens(webModelHost.HostWeb, masterPageSettings.SiteMasterPageUrl);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrl: [{0}]", url);
+                web.CustomMasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, url);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
             {
+                var url = ResolveUrlWithTokens(webModelHost.HostWeb, masterPageSettings.SystemMasterPageUrl);
+
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
-                web.MasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+                web.MasterUrl = SPUrlUtility.CombineUrl(siteRelativeUrl, url);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||
@@ -93,6 +97,21 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
             }
+        }
+
+        protected virtual string ResolveUrlWithTokens(SPWeb web, string url)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original url: [{0}]", url);
+            url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = url,
+                Context = web,
+                IsSiteRelativeUrl = true
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced url: [{0}]", url);
+
+            return url;
         }
 
         #endregion

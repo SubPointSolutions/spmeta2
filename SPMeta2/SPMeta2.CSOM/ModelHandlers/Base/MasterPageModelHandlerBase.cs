@@ -10,6 +10,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Utils;
+using SPMeta2.Services;
 
 namespace SPMeta2.CSOM.ModelHandlers.Base
 {
@@ -146,20 +147,35 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
                 context.Load(newFileItem);
                 context.ExecuteQueryWithTrace();
 
-                var site = folderModelHost.HostSite;
-                var currentPageLayoutItem = FindPageLayoutItem(site, definition.FileName);
+                //var site = folderModelHost.HostSite;
+                //var currentPageLayoutItem = FindPageLayoutItem(site, definition.FileName);
 
+                //var currentPageLayoutItemContext = currentPageLayoutItem.Context;
+                //var publishingFile = currentPageLayoutItem.File;
 
-                var currentPageLayoutItemContext = currentPageLayoutItem.Context;
-                var publishingFile = currentPageLayoutItem.File;
+                //currentPageLayoutItemContext.Load(currentPageLayoutItem);
+                //currentPageLayoutItemContext.Load(currentPageLayoutItem, i => i.DisplayName);
+                //currentPageLayoutItemContext.Load(publishingFile);
 
-                currentPageLayoutItemContext.Load(currentPageLayoutItem);
-                currentPageLayoutItemContext.Load(currentPageLayoutItem, i => i.DisplayName);
-                currentPageLayoutItemContext.Load(publishingFile);
+                //currentPageLayoutItemContext.ExecuteQueryWithTrace();
 
-                currentPageLayoutItemContext.ExecuteQueryWithTrace();
+                // ** SIC.. found with Problem with url in MasterPageSettings #936
+                // https://github.com/SubPointSolutions/spmeta2/issues/936
 
-                newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+                // * /_catalogs/masterpage - would have 'Title' field (and correct content types)
+                // * /my-sub-web/_catalogs/masterpage - would NOT have 'Title' fiels so that provision fails
+
+                // so performing Title update only for the root web
+                if (folderModelHost.HostSite.ServerRelativeUrl == folderModelHost.HostWeb.ServerRelativeUrl)
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Updating master page 'Title' on the root web.", null);
+                    newFileItem[BuiltInInternalFieldNames.Title] = definition.Title;
+                }
+                else
+                {
+                    TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Skipping master page 'Title' update. Subweb is detcted.", null);
+                }
+
                 newFileItem["MasterPageDescription"] = definition.Description;
                 newFileItem[BuiltInInternalFieldNames.ContentTypeId] = PageContentTypeId;
 

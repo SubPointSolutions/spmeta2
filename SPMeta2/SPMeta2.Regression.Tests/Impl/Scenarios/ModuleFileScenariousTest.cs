@@ -15,6 +15,8 @@ using SPMeta2.Regression.Tests.Data;
 using SPMeta2.Regression.Tests.Prototypes;
 using SPMeta2.Syntax.Extended;
 
+using SPMeta2.Containers.Extensions;
+
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
@@ -501,6 +503,128 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(siteModel, webModel);
+        }
+
+        #endregion
+
+
+    }
+
+    [TestClass]
+    public class ModuleFileVersioningScenariousTest : SPMeta2RegresionScenarioTestBase
+    {
+        #region constructors
+
+        public ModuleFileVersioningScenariousTest()
+        {
+            RegressionService.ProvisionGenerationCount = 1;
+
+            RegressionService.EnableDefinitionValidation = false;
+            RegressionService.EnableEventValidation = false;
+        }
+
+        #endregion
+
+        #region internal
+
+        [ClassInitializeAttribute]
+        public static void Init(TestContext context)
+        {
+            InternalInit();
+        }
+
+        [ClassCleanupAttribute]
+        public static void Cleanup()
+        {
+            InternalCleanup();
+        }
+
+        #endregion
+
+        #region versioning
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Versioning")]
+        public void CanDeploy_ModuleFile_MoreThan_511_Times_NoModeration()
+        {
+            if (!TestOptions.EnableModuleFile511Tests)
+                return;
+
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.EnableVersioning = true;
+                def.EnableMinorVersions = true;
+
+                def.EnableModeration = false;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            CanDeploy_ModuleFile_MoreThan_511_Times(list);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ModuleFiles.Versioning")]
+        public void CanDeploy_ModuleFile_MoreThan_511_Times_WithModeration()
+        {
+            if (!TestOptions.EnableModuleFile511Tests)
+                return;
+
+            var list = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.EnableVersioning = true;
+                def.EnableMinorVersions = true;
+
+                def.EnableModeration = true;
+
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            CanDeploy_ModuleFile_MoreThan_511_Times(list);
+        }
+
+        public void CanDeploy_ModuleFile_MoreThan_511_Times(ListDefinition list)
+        {
+            // Module file provision fails at minor version 511 #930
+            // https://github.com/SubPointSolutions/spmeta2/issues/930                        
+
+            var moduleFileName = string.Format("{0}.txt", Rnd.String());
+            var moduleFiles = new List<ModuleFileDefinition>();
+
+            var filesCount = 520;
+
+            for (var i = 0; i < filesCount; i++)
+            {
+                var moduleFileDef = ModelGeneratorService.GetRandomDefinition<ModuleFileDefinition>(def =>
+                {
+                    def.FileName = moduleFileName;
+                    def.Content = new byte[3] { 1, 2, 3 };
+                });
+
+                moduleFiles.Add(moduleFileDef);
+            }
+
+            // RegExcludeFromValidation - exclude all defs from the validation
+            // don't need to check them as we test ability to perfrom more than 511 updates
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(list, rndList =>
+                {
+                    rndList.RegExcludeFromValidation();
+
+                    foreach (var moduleFile in moduleFiles)
+                    {
+                        rndList.AddModuleFile(moduleFile, file =>
+                        {
+                            file.RegExcludeFromValidation();
+                        });
+                    }
+                });
+
+            });
+
+            TestModel(model, true);
         }
 
         #endregion

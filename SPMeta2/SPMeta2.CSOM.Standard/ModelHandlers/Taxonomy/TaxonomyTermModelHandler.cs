@@ -134,7 +134,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termName, termModel.LCID, Guid.NewGuid());
 
-                MapTermProperties(currentTerm, termModel);
+                MapTermProperties(currentTerm, termModel, true);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -151,7 +151,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                MapTermProperties(currentTerm, termModel);
+                MapTermProperties(currentTerm, termModel, false);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -169,7 +169,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             termStore.Context.ExecuteQueryWithTrace();
         }
 
-        private void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel)
+        private void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel, bool isNewObject)
         {
             if (!string.IsNullOrEmpty(termModel.Description))
                 currentTerm.SetDescription(termModel.Description, termModel.LCID);
@@ -180,15 +180,92 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             if (termModel.IsAvailableForTagging.HasValue)
                 currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
 
+            UpdateTermProperties(currentTerm, termModel, false, isNewObject);
+            UpdateTermProperties(currentTerm, termModel, true, isNewObject);
+        }
 
-            foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
+        private void UpdateTermProperties(Term currentTerm, TaxonomyTermDefinition termModel, bool isLocalProperties, bool isNewObject)
+        {
+            // TaxonomyTermCustomProperty.Overwrite set to false - No properties are created. #932
+            // https://github.com/SubPointSolutions/spmeta2/issues/932
+
+            // 1 - set everything what is not there
+            var srcProperties = termModel.CustomProperties;
+            IDictionary<string, string> dstProperties = null;
+
+            if (!isNewObject)
+                dstProperties = currentTerm.CustomProperties;
+
+            if (isLocalProperties)
             {
-                currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
+                TraceService.Information((int)LogEventId.ModelProvision, "Processing local custom properties");
+
+                srcProperties = termModel.LocalCustomProperties;
+
+                if (!isNewObject)
+                    dstProperties = currentTerm.LocalCustomProperties;
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvision, "Processing custom properties");
+
+                srcProperties = termModel.CustomProperties;
+
+                if (!isNewObject)
+                    dstProperties = currentTerm.CustomProperties;
             }
 
-            foreach (var customProp in termModel.LocalCustomProperties.Where(p => p.Override))
+            foreach (var prop in srcProperties)
             {
-                currentTerm.SetLocalCustomProperty(customProp.Name, customProp.Value);
+                var propName = prop.Name;
+                var propValue = prop.Value;
+                
+                var propExist = false;
+
+                if (isNewObject)
+                {
+                    propExist = false;
+                }
+                else
+                {
+                    propExist = dstProperties.Keys
+                                                  .FirstOrDefault(k => k.ToUpper() == propName.ToUpper())
+                                                  != null;
+                }
+
+                if (!propExist)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Property [{0}] does not exist. Adding with value:[{1}]",
+                                new object[] { prop.Name, prop.Value }));
+
+                    if (isLocalProperties)
+                        currentTerm.SetLocalCustomProperty(propName, propValue);
+                    else
+                        currentTerm.SetCustomProperty(propName, propValue);
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Property [{0}] exists. No need to add it. Optionally, it will be owerwritten if .Override is set 'true'",
+                                new object[] { propName, propValue }));
+                }
+            }
+
+            // 2 - override as needed
+            foreach (var prop in srcProperties.Where(p => p.Override))
+            {
+                var propName = prop.Name;
+                var propValue = prop.Value;
+
+                TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Overwriting property [{0}] with value:[{1}] as .Override is set 'true'",
+                                new object[] { propName, propValue }));
+
+                if (isLocalProperties)
+                    currentTerm.SetLocalCustomProperty(propName, propValue);
+                else
+                    currentTerm.SetCustomProperty(propName, propValue);
             }
         }
 
@@ -219,7 +296,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ? termSet.CreateTerm(termName, termModel.LCID, termModel.Id.Value)
                     : termSet.CreateTerm(termName, termModel.LCID, Guid.NewGuid());
 
-                MapTermProperties(currentTerm, termModel);
+                MapTermProperties(currentTerm, termModel, true);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -236,7 +313,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
-                MapTermProperties(currentTerm, termModel);
+                MapTermProperties(currentTerm, termModel, false);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

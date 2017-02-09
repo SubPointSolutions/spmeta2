@@ -240,6 +240,7 @@
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Syntax\ContentTypeDefinitionSyntaxTests.cs" />
     <Compile Include="Impl\Syntax\TypedSyntaxTests.cs" />
     <Compile Include="Impl\Utils\ConvertUtilsTests.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />

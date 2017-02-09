@@ -129,6 +129,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Template")]
+        //[ExpectRequiredIntRange(MinValue = 0, MaxValue = int.MaxValue)]
         [DataMember]
         public int TemplateType { get; set; }
 
