@@ -312,7 +312,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 field.Indexed = definition.Indexed;
             }
 
-            field.JSLink = definition.JSLink;
+            // setting up JS link seems to crash fields provision in some cases
+            // Issue deploying fields to Site attached to Office 365 Group #945
+            // https://github.com/SubPointSolutions/spmeta2/issues/945
+            if (!string.IsNullOrEmpty(definition.JSLink))
+                field.JSLink = definition.JSLink;
 #endif
 
 #if !NET35
@@ -451,8 +455,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.StaticName, fieldModel.InternalName);
 
             // additions
+#if !NET35
             if (!String.IsNullOrEmpty(fieldModel.JSLink))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
+#endif
 
             if (!string.IsNullOrEmpty(fieldModel.DefaultValue))
                 fieldTemplate.SetSubNode("Default", fieldModel.DefaultValue);
