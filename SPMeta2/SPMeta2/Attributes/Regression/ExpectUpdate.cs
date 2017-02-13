@@ -108,13 +108,18 @@ namespace SPMeta2.Attributes.Regression
 
     public class ExpectUpdateAsBooleanFieldDefaultValue : ExpectUpdate
     {
-        
+
     }
 
     public class ExpectUpdateAsIntRange : ExpectUpdate
     {
         public int MinValue { get; set; }
         public int MaxValue { get; set; }
+    }
+
+    public class ExpectUpdateAsNumberFieldDisplayFormat : ExpectUpdate
+    {
+
     }
 
     public class ExpectUpdateAsUrlFieldFormat : ExpectUpdate

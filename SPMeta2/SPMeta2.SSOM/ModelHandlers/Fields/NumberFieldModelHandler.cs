@@ -46,6 +46,9 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             if (typedFieldModel.MaximumValue.HasValue)
                 typedField.MaximumValue = typedFieldModel.MaximumValue.Value;
 
+            if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
+                typedField.DisplayFormat = (SPNumberFormatTypes)Enum.Parse(typeof(SPNumberFormatTypes), typedFieldModel.DisplayFormat);
+
             typedField.ShowAsPercentage = typedFieldModel.ShowAsPercentage;
         }
 
@@ -62,7 +65,6 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Max, typedFieldModel.MaximumValue);
 
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Percentage, typedFieldModel.ShowAsPercentage.ToString().ToUpper());
-
             fieldTemplate.SetAttribute(BuiltInFieldAttributes.Decimals, GetDecimalsValue(typedFieldModel.DisplayFormat));
         }
 

@@ -54,6 +54,7 @@ namespace SPMeta2.Definitions.Fields
         [ExpectValidation]
         [DataMember]
         [ExpectNullable]
+        [ExpectUpdateAsNumberFieldDisplayFormat()]
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]
