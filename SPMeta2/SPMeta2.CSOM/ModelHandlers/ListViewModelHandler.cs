@@ -195,6 +195,27 @@ namespace SPMeta2.CSOM.ModelHandlers
                         string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
                 }
 
+                // nasty hack
+
+                // The provision of calendars is not working properly #935
+                // https://github.com/SubPointSolutions/spmeta2/issues/935
+                if (listViewModel.Types.Count() > 0)
+                {
+                    ViewType? finalType = null;
+
+                    foreach (var type in listViewModel.Types)
+                    {
+                        var tmpViewType = (ViewType)Enum.Parse(typeof(ViewType), type);
+
+                        if (finalType == null)
+                            finalType = tmpViewType;
+                        else
+                            finalType = finalType | tmpViewType;
+                    }
+
+                    newView.ViewTypeKind = finalType.Value;
+                }
+
                 currentView = list.Views.Add(newView);
 
                 MapListViewProperties(list, currentView, listViewModel);
