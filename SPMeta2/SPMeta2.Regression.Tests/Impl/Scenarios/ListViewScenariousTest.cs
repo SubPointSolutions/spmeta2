@@ -307,6 +307,42 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region aggregations
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleCount()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Aggregations = "<FieldRef Name='Title' Type='Count'/>";
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleSum()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Aggregations = "<FieldRef Name='Title' Type='Sum'/>";
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+            });
+        }
+
+        #endregion
+
         #region localization
 
         [TestMethod]
