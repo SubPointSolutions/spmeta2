@@ -228,7 +228,30 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (string.IsNullOrEmpty(definition.Aggregations))
                 assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
             else
-                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Aggregations);
+                    var dstProp = d.GetExpressionValue(ct => ct.Aggregations);
+
+                    var isValid = s.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty) ==
+                                  d.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
 
             assert.ShouldBePartOfIfNotNullOrEmpty(m => m.Url, o => o.ServerRelativeUrl);
 

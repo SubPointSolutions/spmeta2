@@ -320,8 +320,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestRandomDefinition<ListViewDefinition>(def =>
             {
-                def.Aggregations = "<FieldRef Name='Title' Type='Count'/>";
                 def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Count'/>";
             });
         }
 
@@ -336,8 +336,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestRandomDefinition<ListViewDefinition>(def =>
             {
-                def.Aggregations = "<FieldRef Name='Title' Type='Sum'/>";
                 def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Sum'/>";
             });
         }
 

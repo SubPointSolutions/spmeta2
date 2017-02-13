@@ -278,10 +278,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             // There is no value in setting Aggregations if AggregationsStatus is not to "On"
             if (!string.IsNullOrEmpty(definition.AggregationsStatus) && definition.AggregationsStatus == "On")
             {
-                listView.AggregationsStatus = definition.AggregationsStatus;
-
                 if (!string.IsNullOrEmpty(definition.Aggregations))
                     listView.Aggregations = definition.Aggregations;
+
+                listView.AggregationsStatus = definition.AggregationsStatus;
             }
 
             listView.Hidden = definition.Hidden;
