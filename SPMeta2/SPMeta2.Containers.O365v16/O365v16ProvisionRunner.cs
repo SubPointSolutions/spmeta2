@@ -56,6 +56,32 @@ namespace SPMeta2.Containers.O365v16
 
             foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(csomtandartValidationAsm))
                 _validationService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
+
+            _provisionService.OnModelNodeProcessing += (sender, args) =>
+            {
+                Trace.WriteLine(
+                    string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                    new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
+
+            _provisionService.OnModelNodeProcessed += (sender, args) =>
+            {
+                Trace.WriteLine(
+                   string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                   new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
         }
 
         private void LoadEnvironmentConfig()
@@ -219,6 +245,13 @@ namespace SPMeta2.Containers.O365v16
             using (var context = new ClientContext(siteUrl))
             {
                 context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
+
+                context.Load(context.Site, s => s.ServerRelativeUrl);
+                context.Load(context.Web);
+                context.Load(context.Web, s => s.ServerRelativeUrl);
+
+                context.ExecuteQuery();
+
                 action(context);
             }
         }

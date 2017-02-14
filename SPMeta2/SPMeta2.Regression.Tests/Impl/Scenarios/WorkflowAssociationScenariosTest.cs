@@ -14,7 +14,7 @@ using System.Text;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.DefinitionGenerators;
 using SPMeta2.Containers.Services;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;

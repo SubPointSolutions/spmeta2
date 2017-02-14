@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -16,6 +16,8 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Definitions.ContentTypes;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 {

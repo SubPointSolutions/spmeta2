@@ -254,6 +254,18 @@ if($build365 -eq $true) {
         #"BuildParams" = ("/p:spRuntime=365 /p:Configuration=Debug45 /p:DefineConstants=NET45 " + $defaultBuildParams);
         "BuildParams" = ("/p:DefineConstants=NET45 " + $defaultBuildParams);
     }
+
+    $buildProfiles += @{
+        "Name"  = "M2 Regression CSOM NET45";
+        "ProjectNames" = @('SPMeta2.Regression.CSOM', 'SPMeta2.Regression.CSOM.Standard'); 
+
+        "CheckBaseline" = $false;
+        "Runtime" = "365";
+        "Configuration" = "Debug45";
+
+        #"BuildParams" = ("/p:spRuntime=365 /p:Configuration=Debug45 /p:DefineConstants=NET45 " + $defaultBuildParams);
+        "BuildParams" = ("/p:DefineConstants=NET45 " + $defaultBuildParams);
+    }
 }
 
 $buildProfiles += @{
@@ -277,6 +289,9 @@ $buildProfiles += @{
         #"BuildParams" = (" /p:Configuration=Debug /p:DefineConstants=NET45 " + $defaultBuildParams);
         "BuildParams" = (" /p:DefineConstants=NET45 " + $defaultBuildParams);
 }
+
+
+
 
 foreach($buildProfile in $buildProfiles) {
 

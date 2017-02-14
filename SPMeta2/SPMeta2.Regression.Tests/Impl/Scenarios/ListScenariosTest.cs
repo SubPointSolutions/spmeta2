@@ -12,11 +12,12 @@ using System.Linq;
 using System.Text;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers.Services;
-using SPMeta2.CSOM.DefaultSyntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Exceptions;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {

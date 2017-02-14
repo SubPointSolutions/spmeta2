@@ -126,6 +126,11 @@ namespace SPMeta2.Attributes.Regression
     {
     }
 
+    public class ExpectUpdateAsEmailAddress : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsUrl : ExpectUpdate
     {
         public ExpectUpdateAsUrl()

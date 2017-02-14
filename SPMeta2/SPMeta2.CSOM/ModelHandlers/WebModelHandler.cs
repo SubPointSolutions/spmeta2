@@ -396,7 +396,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             }
         }
 
-        private static void MapProperties(Web web, WebDefinition webModel)
+        protected virtual void MapProperties(Web web, WebDefinition webModel)
         {
             if (!string.IsNullOrEmpty(webModel.Title))
                 web.Title = webModel.Title;
@@ -411,20 +411,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var context = web.Context;
 
                 if (!string.IsNullOrEmpty(webModel.AlternateCssUrl))
-                {
-                    context.AddQuery(new ClientActionInvokeMethod(web, "AlternateCssUrl", new object[]
-                    {
-                        webModel.AlternateCssUrl
-                    }));
-                }
+                    ClientRuntimeQueryService.SetProperty(web, "AlternateCssUrl", webModel.AlternateCssUrl);
 
                 if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
-                {
-                    context.AddQuery(new ClientActionInvokeMethod(web, "SiteLogoUrl", new object[]
-                    {
-                        webModel.SiteLogoUrl
-                    }));
-                }
+                    ClientRuntimeQueryService.SetProperty(web, "SiteLogoUrl", webModel.SiteLogoUrl);
             }
             else
             {
@@ -435,15 +425,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
             {
                 if (ReflectionUtils.HasProperty(web, "RequestAccessEmail"))
-                {
-
-                    var context = web.Context;
-
-                    context.AddQuery(new ClientActionInvokeMethod(web, "RequestAccessEmail", new object[]
-                    {
-                        webModel.SiteLogoUrl
-                    }));
-                }
+                    ClientRuntimeQueryService.SetProperty(web, "RequestAccessEmail", webModel.RequestAccessEmail);
                 else
                 {
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
@@ -453,15 +435,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (webModel.MembersCanShare.HasValue)
             {
                 if (ReflectionUtils.HasProperty(web, "MembersCanShare"))
-                {
-                    var context = web.Context;
-
-                    context.AddQuery(new ClientActionInvokeMethod(web, "MembersCanShare", new object[]
-                    {
-                        webModel.MembersCanShare.Value
-                    }));
-
-                }
+                    ClientRuntimeQueryService.SetProperty(web, "MembersCanShare", webModel.MembersCanShare.Value);
                 else
                 {
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,

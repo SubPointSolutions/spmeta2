@@ -468,7 +468,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (ReflectionUtils.HasProperty(list, "MajorVersionLimit"))
                 {
-                    context.AddQuery(new ClientActionSetProperty(list, "MajorVersionLimit", definition.MajorVersionLimit.Value));
+                    ClientRuntimeQueryService.SetProperty(list, "MajorVersionLimit", definition.MajorVersionLimit.Value);
                 }
                 else
                 {
@@ -483,7 +483,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 if (ReflectionUtils.HasProperty(list, "MajorWithMinorVersionsLimit"))
                 {
-                    context.AddQuery(new ClientActionSetProperty(list, "MajorWithMinorVersionsLimit", definition.MajorWithMinorVersionsLimit.Value));
+                    ClientRuntimeQueryService.SetProperty(list, "MajorWithMinorVersionsLimit", definition.MajorWithMinorVersionsLimit.Value);
                 }
                 else
                 {
@@ -497,12 +497,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.ReadSecurity.HasValue)
             {
                 if (ReflectionUtils.HasProperty(list, "ReadSecurity"))
-                {
-                    context.AddQuery(new ClientActionInvokeMethod(list, "ReadSecurity", new object[]
-                    {
-                        definition.ReadSecurity.Value
-                    }));
-                }
+                    ClientRuntimeQueryService.SetProperty(list, "ReadSecurity", definition.ReadSecurity.Value);
                 else
                 {
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
@@ -513,12 +508,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.WriteSecurity.HasValue)
             {
                 if (ReflectionUtils.HasProperty(list, "WriteSecurity"))
-                {
-                    context.AddQuery(new ClientActionInvokeMethod(list, "WriteSecurity", new object[]
-                    {
-                        definition.WriteSecurity.Value
-                    }));
-                }
+                    ClientRuntimeQueryService.SetProperty(list, "WriteSecurity", definition.WriteSecurity.Value);
                 else
                 {
                     TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,

@@ -154,13 +154,13 @@ namespace SPMeta2.Definitions
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdateAsUrl(Extension = ".png")]
+        [ExpectUpdateAsUrl(Extension = ".png")]
         [ExpectNullable]
         public string SiteLogoUrl { get; set; }
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdateAsUrl(Extension = ".css")]
+        [ExpectUpdateAsUrl(Extension = ".css")]
         [ExpectNullable]
         public string AlternateCssUrl { get; set; }
 
@@ -173,10 +173,13 @@ namespace SPMeta2.Definitions
 
         [DataMember]
         [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdateAsEmailAddress]
         public string RequestAccessEmail { get; set; }
 
         [DataMember]
         [ExpectNullable]
+        [ExpectValidation]
         public bool? MembersCanShare { get; set; }
 
         #endregion
