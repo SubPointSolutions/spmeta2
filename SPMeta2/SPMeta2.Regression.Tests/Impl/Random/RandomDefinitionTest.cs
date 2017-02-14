@@ -98,7 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             EnablePropertyNullableValidation = true;
             PropertyNullableGenerationCount = 1;
 
-            RegressionService.ShowOnlyFalseResults = true;
+            RegressionService.ShowOnlyFalseResults = false;
         }
 
         #region common

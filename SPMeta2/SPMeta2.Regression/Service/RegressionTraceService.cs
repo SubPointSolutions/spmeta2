@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace SPMeta2.Regression.Service
             IsWarningEnabled = true;
             IsErrorEnabled = true;
             IsCriticalEnabled = true;
+
+            var fileName = string.Format("spmeta2.regression.{0}.log", GetTimestamp());
+            LogFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
 
         #endregion
@@ -45,9 +49,16 @@ namespace SPMeta2.Regression.Service
         public bool IsErrorEnabled { get; set; }
         public bool IsCriticalEnabled { get; set; }
 
+        public string LogFilePath { get; set; }
+
         #endregion
 
         #region methods
+
+        protected virtual String GetTimestamp()
+        {
+            return (DateTime.Now).ToString("yyyyMMdd_HHmmssfff");
+        }
 
         protected virtual void InternalWrite(Level level, string message)
         {
@@ -55,6 +66,9 @@ namespace SPMeta2.Regression.Service
 
             Trace.WriteLine(internalMessgae);
             Debug.WriteLine(internalMessgae);
+
+            using (StreamWriter sw = File.AppendText(LogFilePath))
+                sw.WriteLine(internalMessgae);
         }
 
         public override void Critical(int id, object message, Exception exception)

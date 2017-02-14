@@ -174,7 +174,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         [ExpectValidation]
-        [ExpectUpdateAsEmailAddress]
+       // [ExpectUpdateAsEmailAddress]
         public string RequestAccessEmail { get; set; }
 
         [DataMember]
