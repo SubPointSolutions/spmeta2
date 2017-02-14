@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Regression.Utils;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Reports
@@ -41,7 +42,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
                 var validatedProps = allProps.Where(p => p.GetCustomAttributes(typeof(ExpectValidationAttribute)).Any());
                 var updatableProps = allProps.Where(p => p.GetCustomAttributes(true).Any(a => (a as ExpectUpdate) != null));
 
-                Trace.WriteLine(definitionType.Name);
+                RegressionUtils.WriteLine(definitionType.Name);
 
                 result.Append("<table class='table table-bordered table-striped'>");
 
@@ -73,7 +74,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
                     result.AppendFormat("<td>{0}</td>", isValidated);
                     result.AppendFormat("<td>{0}</td>", isUpdated);
 
-                    Trace.WriteLine(string.Format("{0}{1} - validated:{2} updated:{3}", '\t', prop.Name, isValidated, isUpdated));
+                    RegressionUtils.WriteLine(string.Format("{0}{1} - validated:{2} updated:{3}", '\t', prop.Name, isValidated, isUpdated));
 
                     isFirst = false;
 
@@ -89,7 +90,7 @@ namespace SPMeta2.Regression.Tests.Impl.Reports
             }
 
             var reportHtml = result.ToString();
-            Trace.WriteLine(reportHtml);
+            RegressionUtils.WriteLine(reportHtml);
         }
 
         #endregion

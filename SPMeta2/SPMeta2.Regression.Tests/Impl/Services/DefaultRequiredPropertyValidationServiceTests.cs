@@ -16,6 +16,7 @@ using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Services.Impl.Validation;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
@@ -115,7 +116,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 foreach (var ex in (e.InnerException as AggregateException).InnerExceptions
                                 .OfType<SPMeta2ModelValidationException>())
                 {
-                    Trace.WriteLine("Ex: " + ex.Message + " N:" + ex.Definition);
+                    RegressionUtils.WriteLine("Ex: " + ex.Message + " N:" + ex.Definition);
                 }
             }
 

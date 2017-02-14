@@ -133,7 +133,7 @@ namespace SPMeta2.Regression.Tests.Impl.Validation
             var result = source.ValidationResult;
             var prop = ReflectionUtils.GetExpressionValue(source.Model, exp);
 
-            TraceUtils.WithScope(s =>
+            IndentableTrace.WithScope(s =>
             {
                 s.WriteLine(string.Format("Validating property: [{0}]", prop.Name));
 

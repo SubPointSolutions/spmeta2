@@ -12,6 +12,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 {
@@ -77,7 +78,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 
             var content = xmlService.Serialize(result);
 
-            Trace.WriteLine(content);
+            RegressionUtils.WriteLine(content);
 
             var paths = new[]
             {
@@ -106,20 +107,20 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
                                                               .Select(t => t.AssemblyQualifiedName)
                                                               .ToList();
 
-            Trace.WriteLine(string.Format("AssemblyFullName:[{0}]", result.AssemblyFullName));
-            Trace.WriteLine(string.Format("DefinitionTypeFullNames:[{0}]", result.DefinitionTypeFullNames.Count));
-            Trace.WriteLine(string.Format("ModelHandlerTypeFullNames:[{0}]", result.ModelHandlerTypeFullNames.Count));
+            RegressionUtils.WriteLine(string.Format("AssemblyFullName:[{0}]", result.AssemblyFullName));
+            RegressionUtils.WriteLine(string.Format("DefinitionTypeFullNames:[{0}]", result.DefinitionTypeFullNames.Count));
+            RegressionUtils.WriteLine(string.Format("ModelHandlerTypeFullNames:[{0}]", result.ModelHandlerTypeFullNames.Count));
 
-            Trace.WriteLine("Definitions:");
+            RegressionUtils.WriteLine("Definitions:");
             foreach (var name in result.DefinitionTypeFullNames)
-                Trace.WriteLine(" " + name);
+                RegressionUtils.WriteLine(" " + name);
 
-            Trace.WriteLine("Model handlers:");
+            RegressionUtils.WriteLine("Model handlers:");
             foreach (var name in result.ModelHandlerTypeFullNames)
-                Trace.WriteLine(" " + name);
+                RegressionUtils.WriteLine(" " + name);
 
-            Trace.WriteLine(string.Empty);
-            Trace.WriteLine(string.Empty);
+            RegressionUtils.WriteLine(string.Empty);
+            RegressionUtils.WriteLine(string.Empty);
 
             return result;
         }

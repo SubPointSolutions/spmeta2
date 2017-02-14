@@ -21,6 +21,7 @@ using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Tests.Base;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -56,7 +57,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             foreach (var fieldDefintion in fieldDefinitionTypes)
             {
-                Trace.WriteLine(string.Format("Checking Indexed prop for Indexed def:[{0}]", fieldDefintion.GetType().Name));
+                RegressionUtils.WriteLine(string.Format("Checking Indexed prop for Indexed def:[{0}]", fieldDefintion.GetType().Name));
 
                 var indexedSiteModel = SPMeta2Model.NewSiteModel(m => { });
                 var indexedSiteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
@@ -75,7 +76,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 TestModel(indexedSiteModel);
 
-                Trace.WriteLine(string.Format("Checking Indexed prop for non-Indexed def:[{0}]", fieldDefintion.GetType().Name));
+                RegressionUtils.WriteLine(string.Format("Checking Indexed prop for non-Indexed def:[{0}]", fieldDefintion.GetType().Name));
 
                 var nonIdexedSiteModel = SPMeta2Model.NewSiteModel(m => { });
                 var nonIndexedSiteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;
@@ -107,7 +108,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             foreach (var fieldDefintion in fieldDefinitionTypes)
             {
-                Trace.WriteLine(string.Format("Checking Indexed propr for Indexed def:[{0}]", fieldDefintion.GetType().Name));
+                RegressionUtils.WriteLine(string.Format("Checking Indexed propr for Indexed def:[{0}]", fieldDefintion.GetType().Name));
 
                 var siteModel = SPMeta2Model.NewSiteModel(m => { });
                 var siteField = ModelGeneratorService.GetRandomDefinition(fieldDefintion) as FieldDefinition;

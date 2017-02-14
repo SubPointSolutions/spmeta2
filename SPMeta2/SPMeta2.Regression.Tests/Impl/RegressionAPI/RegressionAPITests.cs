@@ -44,7 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.RegressionAPI
             updateAttrServices.AddRange(ReflectionUtils.GetTypesFromAssembly<ExpectUpdateValueServiceBase>(typeof(ExpectUpdateValueServiceBase).Assembly)
                                                          .Select(t => Activator.CreateInstance(t) as ExpectUpdateValueServiceBase));
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 foreach (var attr in updateAttrTypes)
                 {

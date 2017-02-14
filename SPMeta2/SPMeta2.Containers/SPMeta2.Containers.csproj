@@ -255,8 +255,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DocumentTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ContainerTraceUtils.cs" />
     <Compile Include="Utils\RunnerEnvironment.cs" />
-    <Compile Include="Utils\TraceUtils.cs" />
+    <Compile Include="Utils\IndentableTrace.cs" />
     <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
       <AutoGen>True</AutoGen>

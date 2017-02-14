@@ -25,6 +25,7 @@ using SPMeta2.Models;
 
 using SPMeta2.Regression.Tests.Utils;
 using ReflectionUtils = SPMeta2.Utils.ReflectionUtils;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -55,7 +56,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             targetTypes.AddRange(ReflectionUtils.GetTypesFromAssemblies<FieldDefinition>(assemblies));
 
-            Trace.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
+            RegressionUtils.WriteLine(string.Format("Found [{0}] fied types.", targetTypes.Count));
 
             foreach (var fieldType in targetTypes.OrderBy(m => m.Name))
             {
@@ -69,7 +70,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 if (!testExists)
                     isValid = false;
 
-                Trace.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
+                RegressionUtils.WriteLine(string.Format("[{0}] def: {1} test method: {2}",
                         testExists, fullDefName, testName));
             }
 

@@ -269,6 +269,10 @@
       <Project>{2DA71A5B-C039-4A2E-9985-91D6501F293C}</Project>
       <Name>SPMeta2.Regression.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
+      <Project>{0de538c9-1723-46b1-90f8-5dc67c56d7dd}</Project>
+      <Name>SPMeta2.Regression</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj">
       <Project>{7D095A0D-0BDE-446D-8093-13E5685F1D3C}</Project>
       <Name>SPMeta2.SSOM.Standard</Name>

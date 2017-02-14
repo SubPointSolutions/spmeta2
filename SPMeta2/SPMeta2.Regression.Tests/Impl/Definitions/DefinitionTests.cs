@@ -22,6 +22,7 @@ using SPMeta2.Regression.Tests.Config;
 using SPMeta2.Services;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Standard.Definitions.Webparts;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
@@ -128,7 +129,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 var hasToStringOverride = definitionType.GetMethod("ToString").DeclaringType == definitionType;
 
                 if (!hasToStringOverride)
-                    Trace.WriteLine(string.Format("Checking definition type:[{0}]. Has override:[{1}]", definitionType, hasToStringOverride));
+                    RegressionUtils.WriteLine(string.Format("Checking definition type:[{0}]. Has override:[{1}]", definitionType, hasToStringOverride));
 
                 Assert.IsTrue(hasToStringOverride);
             }
@@ -145,7 +146,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             {
                 var hasAttr = definitionType.GetCustomAttributes(typeof(SerializableAttribute)).Any();
 
-                Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has SerializableAttribute:[{1}]",
+                RegressionUtils.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has SerializableAttribute:[{1}]",
                     definitionType, hasAttr, hasAttr.ToString().ToUpper()));
 
                 if (!hasAttr)
@@ -168,7 +169,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 if (!hasAttr)
                 {
-                    Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has DataContractAttribute:[{1}]",
+                    RegressionUtils.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Has DataContractAttribute:[{1}]",
                         definitionType, hasAttr, hasAttr.ToString().ToUpper()));
 
                 }
@@ -193,7 +194,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 if (!hasAttr)
                 {
-                    Trace.WriteLine(string.Format("[{2}] - Checking model node type:[{0}]. Has DataContractAttribute:[{1}]",
+                    RegressionUtils.WriteLine(string.Format("[{2}] - Checking model node type:[{0}]. Has DataContractAttribute:[{1}]",
                         modelNodeType, hasAttr, hasAttr.ToString().ToUpper()));
 
                 }
@@ -219,7 +220,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 if (isSingleIdenity)
                 {
-                    //Trace.WriteLine(string.Format("[{1}] - Checking SINGLE type:[{0}].", definitionType, bool.TrueString.ToUpper()));
+                    //RegressionUtils.WriteLine(string.Format("[{1}] - Checking SINGLE type:[{0}].", definitionType, bool.TrueString.ToUpper()));
 
                     continue;
                 }
@@ -232,7 +233,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                         .Any();
                     if (!hasKeys)
                     {
-                        Trace.WriteLine(string.Format("[{2}] - Checking INSTANCE type:[{0}]. Has keys:[{1}]",
+                        RegressionUtils.WriteLine(string.Format("[{2}] - Checking INSTANCE type:[{0}]. Has keys:[{1}]",
                             definitionType, hasKeys, hasKeys.ToString().ToUpper()));
 
                     }
@@ -267,7 +268,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                     if (!hasAttr)
                     {
-                        Trace.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
+                        RegressionUtils.WriteLine(string.Format("[{2}] - Checking definition type:[{0}]. Prop:[{1}]",
                             definitionType.Name, prop.Name, hasAttr));
                     }
 
@@ -279,7 +280,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 }
             }
 
-            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+            RegressionUtils.WriteLine(string.Format("Errors: [{0}]", errors));
 
             Assert.IsTrue(result);
         }
@@ -292,7 +293,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             var targetTypes = AllDefinitionTypes;
             var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
 
-            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+            RegressionUtils.WriteLine(string.Format("Errors: [{0}]", errors));
 
             Assert.IsTrue(errors == 0);
         }
@@ -312,7 +313,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                 if (!hasAttr)
                 {
-                    Trace.WriteLine(string.Format(" - Checking type:[{0}]. Has:[{1}] Attr:[ExpectWebpartType]",
+                    RegressionUtils.WriteLine(string.Format(" - Checking type:[{0}]. Has:[{1}] Attr:[ExpectWebpartType]",
                         definitionType.Name, hasAttr));
                 }
 
@@ -322,7 +323,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 }
             }
 
-            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+            RegressionUtils.WriteLine(string.Format("Errors: [{0}]", errors));
 
             Assert.IsTrue(errors == 0);
         }
@@ -342,7 +343,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
                     if (!hasAttr)
                     {
-                        Trace.WriteLine(string.Format("[{2}] - Checking type:[{0}]. Prop:[{1}]",
+                        RegressionUtils.WriteLine(string.Format("[{2}] - Checking type:[{0}]. Prop:[{1}]",
                             definitionType.Name, prop.Name, hasAttr));
                     }
 
@@ -373,7 +374,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             var errors = CheckDataMemberOrIgnoreDataMemberAttr(targetTypes);
 
-            Trace.WriteLine(string.Format("Errors: [{0}]", errors));
+            RegressionUtils.WriteLine(string.Format("Errors: [{0}]", errors));
 
             Assert.IsTrue(errors == 0);
         }
@@ -403,12 +404,12 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             {
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
-                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
+                RegressionUtils.WriteLine(string.Format("Definition: [{0}]", definitionName));
 
                 #region AddXXX()
 
                 // validate (this ModelNode model, XXXDefinition definition)
-                Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
+                RegressionUtils.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition)", definitionName));
                 var addDefinitionMethodName = string.Format("Add{0}", definitionName);
 
                 var hasAddDefinitionMethod = methods.FirstOrDefault(m =>
@@ -417,7 +418,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                                         m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
                                                         m.GetParameters()[1].ParameterType == definitionType) != null;
 
-                Trace.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
+                RegressionUtils.WriteLine(string.Format("     Add{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))", definitionName));
                 // 2. should be one with "(this ModelNode model, XXXDefinition definition, Action<ModelNode> action)"
                 var hasAddDefinitionWithCallbackMethod = true;
 
@@ -429,8 +430,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 //                    m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
 
 
-                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
-                Trace.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
+                RegressionUtils.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition))", hasAddDefinitionMethod.ToString().ToUpper(), definitionName));
+                RegressionUtils.WriteLine(string.Format("    [{0}] - Add{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))", hasAddDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
 
                 #endregion
 
@@ -442,7 +443,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 if (shouldCheckArrayOverload)
                 {
                     // validate (this ModelNode model, XXXDefinition definition)
-                    Trace.WriteLine(
+                    RegressionUtils.WriteLine(
                         string.Format(
                             "     Add{0}s(this ModelNode model, IEnumerable<{0}Definition> definitions, Action<ModelNode> action))",
                             definitionName));
@@ -470,14 +471,14 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
                         m.GetParameters()[1].ParameterType == arrayDefinitionType) != null;
 
-                    Trace.WriteLine(
+                    RegressionUtils.WriteLine(
                       string.Format("    [{0}] - {1}(this ModelNode model, IEnumerable<{2}Definition> definitions))",
                           hasAddArrayDefinitionMethod.ToString().ToUpper(), addArrayDefinitionMethodName, definitionName));
 
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddXXXs() arrary overload as there is no ExpectArrayExtensionMethod attr"));
+                    RegressionUtils.WriteLine(string.Format("    [SKIPPING] Skipping AddXXXs() arrary overload as there is no ExpectArrayExtensionMethod attr"));
                 }
 
                 #endregion
@@ -493,7 +494,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 if (shouldCheckAddHostOverload)
                 {
                     // validate (this ModelNode model, XXXDefinition definition)
-                    Trace.WriteLine(string.Format("     AddHost{0}(this ModelNode model, {0}Definition definition)",
+                    RegressionUtils.WriteLine(string.Format("     AddHost{0}(this ModelNode model, {0}Definition definition)",
                         definitionName));
                     var addHostDefinitionMethodName = string.Format("AddHost{0}", definitionName);
 
@@ -503,7 +504,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         m.GetParameters()[0].ParameterType == typeof(ModelNode) &&
                         m.GetParameters()[1].ParameterType == definitionType) != null;
 
-                    Trace.WriteLine(
+                    RegressionUtils.WriteLine(
                         string.Format(
                             "     AddHost{0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action))",
                             definitionName));
@@ -516,17 +517,17 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                         m.GetParameters()[2].ParameterType == typeof(Action<ModelNode>)) != null;
 
 
-                    Trace.WriteLine(
+                    RegressionUtils.WriteLine(
                         string.Format("    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition))",
                             hasAddHostDefinitionMethod.ToString().ToUpper(), definitionName));
-                    Trace.WriteLine(
+                    RegressionUtils.WriteLine(
                         string.Format(
                             "    [{0}] - AddHost{1}(this ModelNode model, {1}Definition definition, Action<ModelNode> action))",
                             hasAddHostDefinitionWithCallbackMethod.ToString().ToUpper(), definitionName));
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("    [SKIPPING] Skipping AddHostXXX() methods as there is no ExpectAddHostExtensionMethod attr"));
+                    RegressionUtils.WriteLine(string.Format("    [SKIPPING] Skipping AddHostXXX() methods as there is no ExpectAddHostExtensionMethod attr"));
                 }
 
                 #endregion
@@ -564,7 +565,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             {
                 var definitionName = definitionType.Name.Replace("Definition", string.Empty);
 
-                Trace.WriteLine(string.Format("Definition: [{0}]", definitionName));
+                RegressionUtils.WriteLine(string.Format("Definition: [{0}]", definitionName));
 
                 var shouldCheckWithMethod = definitionType.GetCustomAttributes(typeof(ExpectWithExtensionMethod), false).Any();
 
@@ -586,7 +587,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 if (!shouldCheckWithMethod)
                 {
                     if (showSkipping)
-                        Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - SKIPPING", addDefinitionMethodName));
+                        RegressionUtils.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - SKIPPING", addDefinitionMethodName));
 
                     continue;
                 }
@@ -599,9 +600,9 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                                         m.GetParameters()[1].ParameterType == typeof(Action<ModelNode>)) != null;
 
                 if (hasWithMethod)
-                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - TRUE", addDefinitionMethodName));
+                    RegressionUtils.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - TRUE", addDefinitionMethodName));
                 else
-                    Trace.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - FALSE", addDefinitionMethodName));
+                    RegressionUtils.WriteLine(string.Format("     {0}(this ModelNode model, {0}Definition definition, Action<ModelNode> action)) - FALSE", addDefinitionMethodName));
 
 
                 #endregion
@@ -661,21 +662,21 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
             var defTypesWithoutRelationships = AllDefinitionTypes.Where(d => AllDefinitionRelationships.All(r => r.DefinitionType != d));
 
-            Trace.WriteLine("Cheking ParentHostCapability attr presence for all definitions");
+            RegressionUtils.WriteLine("Cheking ParentHostCapability attr presence for all definitions");
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 foreach (var def in defTypesWithoutRelationships)
-                    Trace.WriteLine(string.Format("missing relationship for definition:[{0}]", def.Name));
+                    RegressionUtils.WriteLine(string.Format("missing relationship for definition:[{0}]", def.Name));
             });
 
             if (defTypesWithoutRelationships.Any())
                 passed = false;
 
             if (defTypesWithoutRelationships.Any())
-                Trace.WriteLine("[FALSE] Missing definition relationships detected");
+                RegressionUtils.WriteLine("[FALSE] Missing definition relationships detected");
             else
-                Trace.WriteLine("[TRUE] Missing definition relationships detected");
+                RegressionUtils.WriteLine("[TRUE] Missing definition relationships detected");
 
             Assert.IsTrue(passed);
         }
@@ -686,13 +687,13 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         [TestCategory("CI.Core")]
         public void DefinitionsShouldHave_TypedModelNodes_v12()
         {
-            Trace.WriteLine("Checking typed model nodes");
-            Trace.WriteLine("");
+            RegressionUtils.WriteLine("Checking typed model nodes");
+            RegressionUtils.WriteLine("");
 
             var passes = true;
             var showOnlyFalseOutput = true;
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
                 {
@@ -748,10 +749,10 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
             // AddField<TModelNode>(this TModelNode model, FieldDefinition definition, Action<FieldModelNode> action)
             // where TModelNode : ModelNode, IFieldHostModelNode, new()
 
-            Trace.WriteLine("Checking AddXXX() method specs");
-            Trace.WriteLine("");
+            RegressionUtils.WriteLine("Checking AddXXX() method specs");
+            RegressionUtils.WriteLine("");
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 foreach (var defType in AllDefinitionTypes.OrderBy(d => d.Name))
                 {
@@ -973,7 +974,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             passed = false;
                             completedtype = false;
 
-                            addXXXTrace.WriteLine("[FALSE] AddXXX()");
+                            RegressionUtils.WriteLine("[FALSE] AddXXX()");
                         }
                         else
                         {
@@ -984,7 +985,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 passed = false;
                                 completedtype = false;
 
-                                addXXXTrace.WriteLine(string.Format(
+                                RegressionUtils.WriteLine(string.Format(
                                         "[FALSE] AddXXX() misses relationships: [{0}]",
                                         string.Join(",", missedRelationshipModelNodeTypes)));
                             }
@@ -995,7 +996,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                             passed = false;
                             completedtype = false;
 
-                            addXXXTrace.WriteLine("[FALSE] AddXXX(callback)");
+                            RegressionUtils.WriteLine("[FALSE] AddXXX(callback)");
                         }
                         else
                         {
@@ -1006,7 +1007,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 passed = false;
                                 completedtype = false;
 
-                                addXXXTrace.WriteLine(string.Format(
+                                RegressionUtils.WriteLine(string.Format(
                                         "[FALSE] AddXXX(callback) misses relationships: [{0}]",
                                         string.Join(",", missedRelationshipModelNodeTypes)));
                             }
@@ -1021,7 +1022,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 passed = false;
                                 completedtype = false;
 
-                                addXXXTrace.WriteLine("[FALSE] AddXXXs()");
+                                RegressionUtils.WriteLine("[FALSE] AddXXXs()");
                             }
                             else
                             {
@@ -1032,7 +1033,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     passed = false;
                                     completedtype = false;
 
-                                    addXXXTrace.WriteLine(string.Format(
+                                    RegressionUtils.WriteLine(string.Format(
                                             "[FALSE] AddXXXs() misses relationships: [{0}]",
                                             string.Join(",", missedRelationshipModelNodeTypes)));
                                 }
@@ -1050,7 +1051,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 passed = false;
                                 completedtype = false;
 
-                                addXXXTrace.WriteLine("[FALSE] AddHostXXX()");
+                                RegressionUtils.WriteLine("[FALSE] AddHostXXX()");
                             }
                             else
                             {
@@ -1061,7 +1062,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     passed = false;
                                     completedtype = false;
 
-                                    addXXXTrace.WriteLine(string.Format(
+                                    RegressionUtils.WriteLine(string.Format(
                                             "[FALSE] AddHostXXX() misses relationships: [{0}]",
                                             string.Join(",", missedRelationshipModelNodeTypes)));
                                 }
@@ -1072,7 +1073,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                 passed = false;
                                 completedtype = false;
 
-                                addXXXTrace.WriteLine("[FALSE] AddHostXXX(callback)");
+                                RegressionUtils.WriteLine("[FALSE] AddHostXXX(callback)");
                             }
                             else
                             {
@@ -1083,7 +1084,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                                     passed = false;
                                     completedtype = false;
 
-                                    addXXXTrace.WriteLine(string.Format(
+                                    RegressionUtils.WriteLine(string.Format(
                                             "[FALSE] AddHostXXX(callback) misses relationships: [{0}]",
                                             string.Join(",", missedRelationshipModelNodeTypes)));
                                 }
@@ -1099,8 +1100,8 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                 }
             });
 
-            Trace.WriteLine("");
-            Trace.WriteLine(string.Format("{0}/{1}", missesCount, allCount));
+            RegressionUtils.WriteLine("");
+            RegressionUtils.WriteLine(string.Format("{0}/{1}", missesCount, allCount));
 
             Assert.IsTrue(passed);
         }

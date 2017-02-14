@@ -50,7 +50,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             else
                 typedFieldAssert.SkipProperty(m => m.Formula);
 
-            TraceUtils.WithScope(s =>
+            IndentableTrace.WithScope(s =>
             {
                 s.WriteLine(string.Format("Formula: Src:[{0}] Dst:[{1}]", typedDefinition.Formula, typedField.Formula));
             });

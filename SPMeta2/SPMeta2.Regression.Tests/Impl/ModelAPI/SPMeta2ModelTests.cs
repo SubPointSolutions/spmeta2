@@ -121,7 +121,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
             });
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 var modelString = SPMeta2Model.ToXML(orginalModel);
                 Assert.IsFalse(string.IsNullOrEmpty(modelString));
@@ -146,7 +146,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 
             });
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 var modelString = SPMeta2Model.ToJSON(orginalModel);
                 Assert.IsFalse(string.IsNullOrEmpty(modelString));

@@ -70,6 +70,17 @@ namespace SPMeta2
                 list.Add(service);
         }
 
+        public void ReplaceService(Type type, object service)
+        {
+            if (!Services.ContainsKey(type))
+                Services.Add(type, new List<object>());
+
+            var list = Services[type];
+
+            list.Clear();
+            list.Add(service);
+        }
+
         public void RegisterServices(Type type, List<object> services)
         {
             foreach (var s in services)

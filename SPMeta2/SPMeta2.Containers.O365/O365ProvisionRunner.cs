@@ -61,7 +61,7 @@ namespace SPMeta2.Containers.O365
 
             _provisionService.OnModelNodeProcessing += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                     string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                     new object[] {
                                   args.ProcessedModelNodeCount,
@@ -74,7 +74,7 @@ namespace SPMeta2.Containers.O365
 
             _provisionService.OnModelNodeProcessed += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                    string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                    new object[] {
                                   args.ProcessedModelNodeCount,
@@ -188,7 +188,7 @@ namespace SPMeta2.Containers.O365
 
         private void SiteOnUrl(ModelNode model, string siteUrl)
         {
-            Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+            ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
             for (var provisionGeneration = 0;
                 provisionGeneration < ProvisionGenerationCount;
@@ -225,7 +225,7 @@ namespace SPMeta2.Containers.O365
 
         private void WebOnUrl(ModelNode model, string webUrl)
         {
-            Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+            ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
             WithO365Context(webUrl, context =>
             {
@@ -258,7 +258,7 @@ namespace SPMeta2.Containers.O365
             {
                 foreach (var webUrl in WebUrls)
                 {
-                    Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                    ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
 
 

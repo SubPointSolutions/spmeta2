@@ -30,6 +30,7 @@ using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
 using System.IO;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -45,10 +46,10 @@ namespace SPMeta2.Regression.Tests.Base
             var m2runner = Environment.GetEnvironmentVariable("SPMeta2_RunnerLibraries", EnvironmentVariableTarget.Machine);
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            Trace.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
+            RegressionUtils.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
 
-            Trace.WriteLine(string.Format("    RequestingAssembly:[{0}]", args.RequestingAssembly));
-            Trace.WriteLine(string.Format("    What requested:[{0}]", args.Name));
+            RegressionUtils.WriteLine(string.Format("    RequestingAssembly:[{0}]", args.RequestingAssembly));
+            RegressionUtils.WriteLine(string.Format("    What requested:[{0}]", args.Name));
 
             var assemblyName = args.Name.Split(',')[0] + ".dll";
             var assemblyVersion = args.Name.Split(',')[1].Split('=')[1];
@@ -83,7 +84,7 @@ namespace SPMeta2.Regression.Tests.Base
 
                 if (File.Exists(filePath))
                 {
-                    Trace.WriteLine(string.Format("Loading assemblly:[{0}]", filePath));
+                    RegressionUtils.WriteLine(string.Format("Loading assemblly:[{0}]", filePath));
                     return Assembly.LoadFile(filePath);
                 }
             }
@@ -433,7 +434,7 @@ namespace SPMeta2.Regression.Tests.Base
             if (!TestOptions.EnableSerializeDeserializeAndStillDeployTests)
                 return;
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("Saving-restoring XML/JSON models. Deployng..");
                 var serializedModels = RegressionService.GetSerializedAndRestoredModels(models);
@@ -461,7 +462,7 @@ namespace SPMeta2.Regression.Tests.Base
                 .Where(p => p.GetCustomAttributes(typeof(ExpectNullable), true).Count() > 0);
 
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("");
 
@@ -491,7 +492,7 @@ namespace SPMeta2.Regression.Tests.Base
                 .Where(p => p.GetCustomAttributes(typeof(ExpectUpdate), true).Count() > 0);
 
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("");
 
