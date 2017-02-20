@@ -214,7 +214,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 newSubscription.SetProperty("WebId", web.Id.ToString());
                 newSubscription.SetProperty("Microsoft.SharePoint.ActivationProperties.WebId", web.Id.ToString());
 
-                MapProperties(currentSubscription, workflowSubscriptionModel);
+                MapProperties(newSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -342,7 +342,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 newSubscription.SetProperty("ListId", list.Id.ToString());
                 newSubscription.SetProperty("Microsoft.SharePoint.ActivationProperties.ListId", list.Id.ToString());
 
-                MapProperties(currentSubscription, workflowSubscriptionModel);
+                MapProperties(newSubscription, workflowSubscriptionModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
