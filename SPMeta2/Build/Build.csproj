@@ -42,8 +42,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build-new.ps1" />
+    <None Include="build-new.cake" />
     <None Include="build.cake" />
+    <None Include="build.json" />
     <None Include="build.ps1" />
+    <None Include="tools\nuget.config" />
+    <None Include="tools\packages.config" />
+    <None Include="tools\packages.config.md5sum" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

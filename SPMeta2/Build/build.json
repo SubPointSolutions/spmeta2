@@ -1,0 +1,31 @@
+﻿{
+    "defaultSolutionDirectory": "./../../",
+    "defaultSolutionFilePath": "./../../SPMeta2.sln",
+    "defaultNuGetPackagesDirectory": "./build-artifact-nuget-packages",
+    "defaultChocolateyPackagesDirectory": "./build-artifact-cli-packages",
+    "defaultNuspecVersion": "0.1.0",
+    
+    "defaultDocsViewFolder" : "SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsRepoFolder" : "m2-m2",
+    "defaultDocsBranch" : "wyam-dev",
+    "defaultDocsFileExtensions" : [
+        "*.md",
+        "*.cs",
+        "*.cshtml"
+    ],
+    
+    "defaultTestCategories": [
+        "CI.Core"
+    ],
+    "customNuspecs": [
+        
+    ],
+    "customChocolateySpecs": [
+        
+    ],
+    "defaultTestAssemblyPaths": [
+       
+    ],
+    "defaultBuildDirs": [ ],
+    "defaultEnvironmentVariables": [ ]
+}
