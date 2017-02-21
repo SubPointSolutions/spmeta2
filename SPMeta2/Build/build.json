@@ -20,7 +20,7 @@
                 "/p:Configuration=Debug35",
                 "/p:DefineConstants=NET35",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -46,7 +46,7 @@
                 "/p:Configuration=Debug40",
                 "/p:DefineConstants=NET40",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -72,7 +72,7 @@
                 "/p:Configuration=Debug45",
                 "/p:DefineConstants=NET45",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -98,7 +98,7 @@
                 "/p:Configuration=Debug45",
                 "/p:DefineConstants=NET45",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -122,7 +122,7 @@
                 "/p:Configuration=Debug40",
                 "/p:DefineConstants=NET40",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -145,7 +145,7 @@
                 "/p:Configuration=Debug45",
                 "/p:DefineConstants=NET45",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -166,7 +166,7 @@
                 "/p:Configuration=Debug",
                 "/p:DefineConstants=NET45",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
@@ -185,7 +185,7 @@
                 "/p:Configuration=Debug",
                 "/p:DefineConstants=NET45",
 
-                "/t:Clean,Rebuild",
+                "/t:Build",
                 "/p:Platform=AnyCPU",
                 "/p:WarningLevel=0",
                 "/verbosity:quiet",
