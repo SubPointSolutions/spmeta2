@@ -349,20 +349,20 @@
       <Link>SPMeta2.Containers.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-15\SPMeta2.CSOM.dll">
-      <Link>_Dependencies\spmeta2-csom-2013\SPMeta2.CSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-15\SPMeta2.CSOM.Standard.dll">
-      <Link>_Dependencies\spmeta2-csom-2013\SPMeta2.CSOM.Standard.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.dll">
       <Link>_Dependencies\spmeta2-csom-365\SPMeta2.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.Standard.dll">
       <Link>_Dependencies\spmeta2-csom-365\SPMeta2.CSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug\SPMeta2.CSOM.Standard.dll">
+      <Link>_Dependencies\spmeta2-csom-2013\SPMeta2.CSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.dll">
+      <Link>_Dependencies\spmeta2-csom-2013\SPMeta2.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.Office.Client.Policy.dll">
@@ -425,6 +425,46 @@
       <Link>_Dependencies\csom-v365\Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.DocumentManagement.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.Publishing.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.Runtime.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.Search.Applications.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.Search.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.ServerRuntime.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.Taxonomy.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.UserProfiles.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll">
+      <Link>_Dependencies\csom-v2013\Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.SecureStoreService.dll">
       <Link>Microsoft.Office.SecureStoreService.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -469,8 +509,16 @@
       <Link>_Dependencies\spmeta2-csom-regression-365\SPMeta2.Regression.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Regression.CSOM.Standard\bin\Debug\SPMeta2.Regression.CSOM.Standard.dll">
+      <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug45-365\SPMeta2.Regression.CSOM.dll">
       <Link>_Dependencies\spmeta2-csom-regression-365\SPMeta2.Regression.CSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.dll">
+      <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SPMeta2.Regression.SSOM.Standard\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll">

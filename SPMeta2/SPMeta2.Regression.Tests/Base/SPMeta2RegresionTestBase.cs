@@ -63,6 +63,10 @@ namespace SPMeta2.Regression.Tests.Base
                     case "16.1.0.0":
                         assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\csom-v365"));
                         break;
+
+                    case "15.0.0.0":
+                        assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\csom-v2013"));
+                        break;
                 }
             }
 
@@ -74,9 +78,13 @@ namespace SPMeta2.Regression.Tests.Base
 
             if (m2runner == "SPMeta2.Containers.O365.dll")
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
+            assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
 
             if (m2runner == "SPMeta2.Containers.CSOM.dll")
+            {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+            }
 
             foreach (var dir in assemblyDirs)
             {

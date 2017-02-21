@@ -154,11 +154,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public void CanDeploy_TaxonomyTermGroup_As_NonSiteCollectionGroup()
         {
             // woudn't work for O365
-            // must be scoped for on-premis execution only
-
-            // SPMeta2 Provisioning Taxonomy Group with CSOM Standard #959
-            // https://github.com/SubPointSolutions/spmeta2/issues/959
-            
             var termGroup = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
             {
                 def.IsSiteCollectionGroup = false;
@@ -174,6 +169,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                               {
                                   group.AddRandomTermSet();
                               });
+                          });
+                  });
+
+            TestModel(model);
+        }
+
+        [TestCategory("Regression.Scenarios.Taxonomy.TermGroup")]
+        [TestMethod]
+        public void CanDeploy_TaxonomyTermGroup_As_NonSiteCollectionGrou_SameNameAndId()
+        {
+            // woudn't work for O365
+            // must be scoped for on-premis execution only
+
+            // SPMeta2 Provisioning Taxonomy Group with CSOM Standard #959
+            // https://github.com/SubPointSolutions/spmeta2/issues/959
+
+            var termGroup1 = ModelGeneratorService.GetRandomDefinition<TaxonomyTermGroupDefinition>(def =>
+            {
+                def.Name = Rnd.String();
+                def.Id = Rnd.Guid();
+
+                def.IsSiteCollectionGroup = false;
+            });
+
+            var termGroup2 = termGroup1.Inherit();
+
+            var model = SPMeta2Model
+                  .NewSiteModel(site =>
+                  {
+                      site
+                          .AddRandomTermStore(store =>
+                          {
+                              store.AddTaxonomyTermGroup(termGroup1);
+                              store.AddTaxonomyTermGroup(termGroup2);
                           });
                   });
 
