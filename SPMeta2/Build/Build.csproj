@@ -47,6 +47,7 @@
     <None Include="build.cake" />
     <None Include="build.json" />
     <None Include="build.ps1" />
+    <None Include="Pester\pester.run.ps1" />
     <None Include="Pester\regression.nuget.ps1" />
     <None Include="Pester\_install.ps1" />
     <None Include="tools\nuget.config" />

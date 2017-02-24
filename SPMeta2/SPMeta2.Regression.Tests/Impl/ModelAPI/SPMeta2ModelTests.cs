@@ -209,5 +209,115 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
         }
 
         #endregion
+
+        #region new model API
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.NewXXXModel")]
+        [TestCategory("CI.Core")]
+        public void SPMeta2Model_NewFarmModel_Contract()
+        {
+            var expectedType = typeof(FarmModelNode);
+            var newDefinition = new FarmDefinition();
+
+            // new
+            Assert.IsTrue(SPMeta2Model.NewFarmModel().GetType() == expectedType);
+
+            // new with callback
+            Assert.IsTrue(SPMeta2Model.NewFarmModel(model => { }).GetType() == expectedType);
+
+            // new definition
+            Assert.IsTrue(SPMeta2Model.NewFarmModel(newDefinition).GetType() == expectedType);
+
+            // new definition with callback
+            Assert.IsTrue(SPMeta2Model.NewFarmModel(newDefinition, farm => { }).GetType() == expectedType);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.NewXXXModel")]
+        [TestCategory("CI.Core")]
+        public void SPMeta2Model_NewWebAppModel_Contract()
+        {
+            var expectedType = typeof(WebApplicationModelNode);
+            var newDefinition = new WebApplicationDefinition();
+
+            // new
+            Assert.IsTrue(SPMeta2Model.NewWebApplicationModel().GetType() == expectedType);
+
+            // new with callback
+            Assert.IsTrue(SPMeta2Model.NewWebApplicationModel(model => { }).GetType() == expectedType);
+
+            // new definition
+            Assert.IsTrue(SPMeta2Model.NewWebApplicationModel(newDefinition).GetType() == expectedType);
+
+            // new definition with callback
+            Assert.IsTrue(SPMeta2Model.NewWebApplicationModel(newDefinition, farm => { }).GetType() == expectedType);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.NewXXXModel")]
+        [TestCategory("CI.Core")]
+        public void SPMeta2Model_NewSiteModel_Contract()
+        {
+            var expectedType = typeof(SiteModelNode);
+            var newDefinition = new SiteDefinition();
+
+            // new
+            Assert.IsTrue(SPMeta2Model.NewSiteModel().GetType() == expectedType);
+
+            // new with callback
+            Assert.IsTrue(SPMeta2Model.NewSiteModel(model => { }).GetType() == expectedType);
+
+            // new definition
+            Assert.IsTrue(SPMeta2Model.NewSiteModel(newDefinition).GetType() == expectedType);
+
+            // new definition with callback
+            Assert.IsTrue(SPMeta2Model.NewSiteModel(newDefinition, node => { }).GetType() ==  expectedType);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.NewXXXModel")]
+        [TestCategory("CI.Core")]
+        public void SPMeta2Model_NewWebModel_Contract()
+        {
+            var expectedType = typeof(WebModelNode);
+            var newDefinition = new WebDefinition();
+
+            // new
+            Assert.IsTrue(SPMeta2Model.NewWebModel().GetType() == expectedType);
+
+            // new with callback
+            Assert.IsTrue(SPMeta2Model.NewWebModel(model => { }).GetType() == expectedType);
+
+            // new definition
+            Assert.IsTrue(SPMeta2Model.NewWebModel(newDefinition).GetType() == expectedType);
+
+            // new definition with callback
+            Assert.IsTrue(SPMeta2Model.NewWebModel(newDefinition, node => { }).GetType() == expectedType);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.SPMeta2Model.NewXXXModel")]
+        [TestCategory("CI.Core")]
+        public void SPMeta2Model_NewListModel_Contract()
+        {
+            var expectedType = typeof(ListModelNode);
+            var newDefinition = new ListDefinition();
+
+            // new
+            Assert.IsTrue(SPMeta2Model.NewListModel().GetType() == expectedType);
+
+            // new with callback
+            Assert.IsTrue(SPMeta2Model.NewListModel(model => { }).GetType() == expectedType);
+
+            // new definition
+            Assert.IsTrue(SPMeta2Model.NewListModel(newDefinition).GetType() == expectedType);
+
+            // new definition with callback
+            Assert.IsTrue(SPMeta2Model.NewListModel(newDefinition, node => { }).GetType() == expectedType);
+        }
+
+        #endregion
     }
 }

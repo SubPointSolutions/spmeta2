@@ -4,7 +4,7 @@
 
     "defaultDocsBuildEnabled" : true,
 
-    "defaultDocsViewFolder" : "SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsViewFolder" : "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
     "defaultDocsRepoFolder" : "m2-m2",
     "defaultDocsBranch" : "wyam-dev",
     "defaultDocsFileExtensions" : [

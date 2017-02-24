@@ -52,15 +52,15 @@ $g_M2TestEnvironment = New-Object PSObject -Property @{
     EnvironmentType = "SSOM"
 
    #O365 specific settings
-   O365UserName = ""
-   O365UserPassword = ""
+   O365UserName = "support@subpointsolutions.com"
+   O365UserPassword = "su1sbhsbhu8wxvKQ"
 
    O365SiteUrls = @(
-       ""
+       "https://subpointsolutions.sharepoint.com/sites/calc-col"
    )
 
    O365WebUrls = @(
-        ""
+        "https://subpointsolutions.sharepoint.com/sites/calc-col"
    )
    
    RandomBalancedUrls = @( 
