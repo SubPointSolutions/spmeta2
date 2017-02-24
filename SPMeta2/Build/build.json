@@ -2,7 +2,7 @@
     "defaultSolutionDirectory": "./../../",
     "defaultSolutionFilePath": "./../../SPMeta2.sln",
 
-    "defaultDocsBuildEnabled" : true,
+    "defaultDocsBuildEnabled" : false,
 
     "defaultDocsViewFolder" : "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
     "defaultDocsRepoFolder" : "m2-m2",
