@@ -2,6 +2,17 @@
     "defaultSolutionDirectory": "./../../",
     "defaultSolutionFilePath": "./../../SPMeta2.sln",
 
+    "defaultDocsBuildEnabled" : true,
+
+    "defaultDocsViewFolder" : "SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsRepoFolder" : "m2-m2",
+    "defaultDocsBranch" : "wyam-dev",
+    "defaultDocsFileExtensions" : [
+        "*.md",
+        "*.cs",
+        "*.cshtml"
+    ],
+
     "customProjectBuildProfiles": [
         {
             "ProfileName" : "SPMeta2: SP2010 + NET35",

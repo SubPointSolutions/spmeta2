@@ -75,5 +75,31 @@ defaultActionBuild
     }            
 });
 
+Task("Action-API-NuGet-Regression")
+    .Does(() => {
+
+        Information("Running Pester testing...");
+
+        Information("- ensuring peter is installed...");
+        StartPowershellFile("Pester/_install.ps1", args =>
+        {
+            // args.Append("Username", "admin")
+            //     .AppendSecret("Password", "pass1");
+        });
+
+        Information("- running regression...");
+
+        StartPowershellFile("Pester/pester.run.ps1", args =>
+        {
+            // args.Append("Username", "admin")
+            //     .AppendSecret("Password", "pass1");
+        });
+    });
+
+// add one more for defaultActionAPINuGetPackaging
+// testing that NuGet packages were done in the right way
+defaultActionAPINuGetPackaging
+    .IsDependentOn("Action-API-NuGet-Regression");
+
 // default targets
 RunTarget(target);
