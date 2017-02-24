@@ -96,9 +96,10 @@ Task("Action-API-NuGet-Regression")
         });
     });
 
-// add one more for defaultActionAPINuGetPackaging
+// add one more for defaultActionCLIZipPackaging
+// it is run after Action-API-NuGet-Packaging
 // testing that NuGet packages were done in the right way
-defaultActionAPINuGetPackaging
+defaultActionCLIZipPackaging
     .IsDependentOn("Action-API-NuGet-Regression");
 
 // default targets
