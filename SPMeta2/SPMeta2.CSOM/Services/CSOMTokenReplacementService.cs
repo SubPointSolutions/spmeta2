@@ -84,10 +84,39 @@ namespace SPMeta2.CSOM.Services
             {
                 if (!string.IsNullOrEmpty(result.Value))
                 {
-                    result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context, context.Context, tokenInfo.Name));
+                    var replacedValue = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context, context.Context, tokenInfo.Name));
 
-                    result.Value = result.Value.Replace(@"//", @"/");
-                    result.Value = result.Value.Replace(@"\\", @"\");
+                    if (!string.IsNullOrEmpty(replacedValue))
+                    {
+                        // everything to '/'
+                        replacedValue = replacedValue.Replace(@"\", @"/");
+
+                        // replace doubles after '://'
+                        var urlParts = replacedValue.Split(new string[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // return non 'protocol://' values
+                        if (urlParts.Count() == 1)
+                        {
+                            result.Value = urlParts[0].Replace(@"//", @"/");
+                        }
+                        else
+                        {
+                            var resultValues = new List<string>();
+
+                            resultValues.Add(urlParts[0]);
+
+                            foreach (var value in urlParts.Skip(1))
+                            {
+                                resultValues.Add(value.Replace(@"//", @"/"));
+                            }
+
+                            result.Value = string.Join("://", resultValues);
+                        }
+                    }
+                    else
+                    {
+                        result.Value = replacedValue;
+                    }
                 }
             }
 

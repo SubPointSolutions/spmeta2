@@ -136,6 +136,21 @@
     <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\DesignPackages\ci-1-1.0.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.2.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.4.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.5.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -517,7 +532,7 @@
       <Link>_Dependencies\spmeta2-csom-regression-365\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.dll" >
+    <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug\SPMeta2.Regression.CSOM.dll">
       <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

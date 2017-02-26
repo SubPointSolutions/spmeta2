@@ -149,6 +149,40 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
             Assert.IsTrue(isValid);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Impl.SSOMTokenReplacementService")]
+        public void SSOMTokenReplacementService_Should_Not_ChangeNonTokenedUrl()
+        {
+            var isValid = true;
+            var runner = new SSOMProvisionRunner();
+
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithSSOMSiteAndWebContext(siteUrl, (site, web) =>
+                {
+                    var originalFullUrl = site.Url;
+                    var originalSiteRelativeUrl = site.ServerRelativeUrl;
+
+                    var originalValueResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = originalFullUrl,
+                        Context = site
+                    });
+
+                    var originalSiteRelativeResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = originalSiteRelativeUrl,
+                        Context = site
+                    });
+
+                    Assert.AreEqual(originalFullUrl, originalValueResult.Value);
+                    Assert.AreEqual(originalSiteRelativeUrl, originalSiteRelativeResult.Value);
+                });
+            });
+
+            Assert.IsTrue(isValid);
+        }
+
         #endregion
     }
 }

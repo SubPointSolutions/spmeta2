@@ -13,6 +13,7 @@ using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Regression.Utils;
+using System.IO;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 {
@@ -41,7 +42,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
     [TestClass]
     public class BuildBaselineTests
     {
-      
+
 
         [TestMethod]
         [TestCategory("CI.Core")]
@@ -82,12 +83,17 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 
             var paths = new[]
             {
-                fileName,
-                "../../../SPMeta2.Build/" + fileName
+                System.IO.Path.GetFullPath(fileName),
+                System.IO.Path.GetFullPath("../../../SPMeta2.Build/" + fileName)
             };
 
             foreach (var path in paths)
+            {
+                var dirPath = Path.GetDirectoryName(path);
+                Directory.CreateDirectory(dirPath);
+
                 System.IO.File.WriteAllText(path, content);
+            }
         }
 
         private BuildBaseline BuildBaselineFromAssembly(Assembly assembly)

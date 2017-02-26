@@ -728,6 +728,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 {
                     var randomList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
                     {
+                        //def.EnableVersioning = true;
+                        //def.EnableMinorVersions = true;
+                        
+                        //def.EnableModeration = true;
+
                         def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
                     });
 

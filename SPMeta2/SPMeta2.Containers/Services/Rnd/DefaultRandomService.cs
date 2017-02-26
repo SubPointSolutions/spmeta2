@@ -98,7 +98,13 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override string DbServerName()
         {
-            return string.Format("{0}", RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
+            var dbServerName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName);
+
+            if (string.IsNullOrEmpty(dbServerName))
+                throw new Exception(
+                    string.Format("Environment variable [{0]] is null or empty", EnvironmentConsts.DefaultSqlServerName));
+
+            return string.Format("{0}", dbServerName);
         }
 
         public override string ActiveDirectoryGroup()
