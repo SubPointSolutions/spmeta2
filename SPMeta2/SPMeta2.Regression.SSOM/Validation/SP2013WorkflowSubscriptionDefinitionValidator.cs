@@ -149,6 +149,45 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             #endregion
 
+            if (definition.Properties.Count() > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Properties);
+                    var dstProp = d.GetExpressionValue(ct => ct.PropertyDefinitions);
+
+                    var isValid = true;
+
+                    foreach (var prop in s.Properties)
+                    {
+                        var propName = prop.Name;
+                        var propValue = prop.Value;
+
+                        if (!d.PropertyDefinitions.ContainsKey(propName))
+                        {
+                            isValid = false;
+                        }
+
+                        if (d.PropertyDefinitions[propName] != propValue)
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(p => p.Properties, ".Properties.Count() = 0. Skipping");
+            }
+
             #endregion
         }
     }

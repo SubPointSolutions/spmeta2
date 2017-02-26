@@ -93,7 +93,7 @@ namespace SPMeta2.SSOM.Services
                                 resultValues.Add(value.Replace(@"//", @"/"));
                             }
 
-                            result.Value = string.Join("://", resultValues);
+                            result.Value = string.Join("://", resultValues.ToArray());
                         }
                     }
                     else
