@@ -1,5 +1,4 @@
-﻿#addin "Cake.Powershell"
-#addin nuget:?package=Cake.Git
+﻿#addin nuget:https://www.nuget.org/api/v2/?package=Cake.Powershell&Version=0.2.9
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS

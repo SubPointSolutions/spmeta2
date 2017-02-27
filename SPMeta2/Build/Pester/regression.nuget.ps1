@@ -30,12 +30,37 @@ function Get-ScriptDirectory
 
 $g_buildBaseline = @{
 
+    Packages = @(
+        @{
+            Name = "SPMeta2.CSOM.Foundation-v16";
+            ExpectedDependencies = @(
+                @{
+                    Id = "Microsoft.SharePointOnline.CSOM";
+                    Version = "16.1.5715.1200"
+                }
+            )
+        },
+
+        @{
+            Name = "SPMeta2.CSOM.Standard-v16";
+            ExpectedDependencies = @(
+                @{
+                    Id = "Microsoft.SharePointOnline.CSOM";
+                    Version = "16.1.5715.1200"
+                }
+            )
+        }
+    )
+
 	Assemblies = @(
 		
         #region SPMeta2.dll
 		@{
             AssemblyFileName = "SPMeta2.dll";
 			Runtime = "14";
+
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
             
 			ExcludedHandlers = @(
 			
@@ -50,6 +75,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -63,6 +91,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -76,6 +107,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.dll";
 			Runtime = "365";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -92,6 +126,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.Standard.dll";
 			Runtime = "14";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -105,6 +142,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.Standard.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -118,6 +158,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.Standard.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -131,6 +174,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.Standard.dll";
 			Runtime = "365";
             
+            EnableSharePointAssemblyVersionsCheck = $false;
+            SharePointAssemblyVersions = "0.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -144,7 +190,10 @@ $g_buildBaseline = @{
 		@{
             AssemblyFileName = "SPMeta2.SSOM.dll";
 			Runtime = "14";
-            
+           
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "14.0.0.0";
+
 			ExcludedHandlers = @(
 			    "SPMeta2.SSOM.ModelHandlers.ComposedLookItemLinkModelHandler, SPMeta2.SSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a",
                 
@@ -177,6 +226,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.SSOM.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "15.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -190,6 +242,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.SSOM.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -204,6 +259,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.SSOM.Standard.dll";
 			Runtime = "14";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "14.0.0.0";
+
 			ExcludedHandlers = @(
                 "SPMeta2.SSOM.Standard.ModelHandlers.ManagedPropertyModelHandler, SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
                 "SPMeta2.SSOM.Standard.ModelHandlers.ImageRenditionModelHandler, SPMeta2.SSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
@@ -239,6 +297,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.SSOM.Standard.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "15.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -252,6 +313,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.SSOM.Standard.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -266,6 +330,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.dll";
 			Runtime = "14";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "14.0.0.0";
+
 			ExcludedHandlers = @(
 			    "SPMeta2.CSOM.ModelHandlers.AppModelHandler, SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
                 "SPMeta2.CSOM.ModelHandlers.AppPrincipalModelHandler, SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
@@ -295,6 +362,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "15.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -309,6 +379,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.1.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -323,6 +396,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.dll";
 			Runtime = "365";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.1.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -337,6 +413,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.Standard.dll";
 			Runtime = "14";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "14.0.0.0";
+
 			ExcludedHandlers = @(
 			    "SPMeta2.CSOM.Standard.ModelHandlers.Fields.TaxonomyFieldModelHandler, SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a"
                 
@@ -375,6 +454,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.Standard.dll";
 			Runtime = "15";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "15.0.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -389,6 +471,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.Standard.dll";
 			Runtime = "16";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.1.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -403,6 +488,9 @@ $g_buildBaseline = @{
             AssemblyFileName = "SPMeta2.CSOM.Standard.dll";
 			Runtime = "365";
             
+            EnableSharePointAssemblyVersionsCheck = $true;
+            SharePointAssemblyVersions = "16.1.0.0";
+
 			ExcludedHandlers = @(
 			
 			);
@@ -498,6 +586,68 @@ function Check-PackageBaseline($nugetFilePath) {
     Write-BInfo "Unpacking NuGet package for baseline check:[$tmpNuGetPackageFolder]"
     Add-Type -assembly "system.io.compression.filesystem" | out-null
     [io.compression.zipfile]::ExtractToDirectory($nugetFilePath, $tmpNuGetPackageFolder)
+
+    # nuspce file
+    $nuspecFilePath = [System.IO.Directory]::GetFiles($tmpNuGetPackageFolder, "*.nuspec") | Select-Object -First 1
+    
+    if( [System.IO.File]::Exists($nuspecFilePath) -eq $false) {
+         throw "Cannot find nuspec file in directory:[$tmpNuGetPackageFolder]"
+    }
+
+    $nuspecFileXml = [xml](get-content  $nuspecFilePath)
+
+    # checking nuget package baseline
+    $packageId = $nuspecFileXml.package.metadata.id.ToString();
+
+    if([string]::IsNullOrEmpty($packageId) -eq $true) {
+        throw "Cannot extract packageId from package NuSpec:[$nuspecFilePath]"
+    }
+
+    Write-BInfo "Found packages build profiles: $($g_buildBaseline.Packages.Count)"
+    $packageBuildProfile = $g_buildBaseline.Packages | Where-Object { $_.Name -eq $packageId } 
+
+    if($packageBuildProfile -eq $null) {
+         Write-BInfo "No package profile found for package id:[$packageId]"
+    } else {
+         Write-BInfo "Checking package build profile for package id:[$packageId]"
+
+         $currentDeps = @()
+
+         foreach($dep in $nuspecFileXml.package.metadata.dependencies.ChildNodes) {
+            Write-BVerbose "Current dep: $($dep.id) $($dep.version)"
+            $currentDeps += $dep
+         }
+
+         # deps must match
+         foreach($expectedDep in $packageBuildProfile.ExpectedDependencies) {
+
+             $expectedDepId = $expectedDep.Id
+             $expectedDepVersion = $expectedDep.Version
+
+             Write-BInfo "Expecting dep: $expectedDepId $expectedDepVersion"
+
+             $hasDep = $false
+
+             foreach($currentDep in $currentDeps ) {
+                  Write-BVerbose "`tTesting current dep: $($currentDep.id) $($currentDep.version)"
+                  Write-BVerbose "`tExpecting dep: $expectedDepId $expectedDepVersion"
+
+                 if ( ($currentDep.id -eq $expectedDepId) -and ($currentDep.version -eq $expectedDepVersion) ) {
+                      Write-BVerbose "`tmatch, sweet, we are fine"  
+                      $hasDep = $true;
+                      break;
+                 } else {
+                     Write-BVerbose "`tno match"
+                 }
+             }
+
+             if($hasDep -eq $false) {
+                 throw "Cannot find Expecting dep: $expectedDepId $expectedDepVersion"
+             } else {
+                 Write-BInfo "`tFound Expecting dep: $expectedDepId $expectedDepVersion"
+             }
+         }         
+    }
 
     $libFolder = [System.IO.Path]::Combine($tmpNuGetPackageFolder, "lib")
     $netProfileFolders = Get-ChildItem $libFolder
@@ -610,6 +760,17 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
         Write-BVerbose "Target baseline: [$($targetBaseline.AssemblyFileName)]"
         Write-BVerbose "Custom baseline runtime: [$($customBaseline.Runtime)]"
 
+        
+        Write-BVerbose "EnableSharePointAssemblyVersionsCheck: [$($customBaseline.EnableSharePointAssemblyVersionsCheck)]"
+        Write-BVerbose "SharePointAssemblyVersions: [$($customBaseline.SharePointAssemblyVersions)]"
+
+        if($customBaseline.EnableSharePointAssemblyVersionsCheck -eq $true)
+        {
+            if([string]::IsNullOrEmpty($customBaseline.SharePointAssemblyVersions) -eq $true) {
+                throw "baseline.SharePointAssemblyVersions is null or empty"
+            }
+        }
+
         Write-BVerbose " - DefinitionTypeFullNames: [$($targetBaseline.DefinitionTypeFullNames.ChildNodes.Count)]"
         Write-BVerbose " - ModelHandlerTypeFullNames: [$($targetBaseline.ModelHandlerTypeFullNames.ChildNodes.Count)]"
     }
@@ -617,6 +778,7 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
     $assembly = [Mono.Cecil.AssemblyDefinition]::ReadAssembly($assemblyFilePath);
     $typeReferences = $assembly.MainModule.GetTypes();
 
+    # .NET runtime version check
     if($netRuntime -ne $null) {
         Write-BVerbose "Checking expecting .NET runtime:[$netRuntime]"
 
@@ -643,6 +805,17 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
         Write-BVerbose "Skipping expecting .NET runtime check"
     }
 
+    # SharePoint referencies check
+    if($customBaseline.EnableSharePointAssemblyVersionsCheck -eq $true)
+    {
+        Write-BInfo "Checking SharePoint refs versioning..."
+        CheckSharePointAssemblyReferencies $assemblyFilePath $customBaseline.SharePointAssemblyVersions
+    }
+    else{
+        Write-BInfo "Skipping SharePoint refs versioning..."
+    }   
+
+    # SPMeta2 handlers check
     $allTypes = @()
 
     foreach($type in $typeReferences)
@@ -704,6 +877,68 @@ function Check-AssemblyBaseline($assemblyFileName, $runtime, $assemblyFilePath, 
 
 }
 
+function CheckSharePointAssemblyReferencies([string]$assemblyFilePath, [string]$expectedSharePointVersionString) {
+
+    $expectedSharePointVersion = [version]($expectedSharePointVersionString)
+
+    $assembly = [Mono.Cecil.AssemblyDefinition]::ReadAssembly($assemblyFilePath);
+
+    $assemblyRefs = @()
+    foreach($asmReference in $assembly.MainModule.AssemblyReferences | sort-object "FullName") {
+        $assemblyRefs += $asmReference
+    }
+
+    $refsCount = $assemblyRefs.Count
+    $uniqueRefsCount = ($assemblyRefs | select-object { $_.FullName.Split(',')[0] }  -Unique).Count
+
+    Write-Host "Checking unique assembly refs..." -fore green
+
+    # must be uniqie 
+    # SharePoint assembly might be refernecies twice - version 15 and version 16
+    # that happens due to incorrect *.csproj file conditions in VS solution
+    # fix them
+    if($refsCount -ne $uniqueRefsCount) {
+    
+        foreach($ref in $assemblyRefs | sort-object "FullName") {
+            Write-Host "Assembly ref:[$($ref)]"
+        }
+
+        throw "Found assembly ref duplicate! [$refsCount] total and [$uniqueRefsCount] unique refs"
+    }
+
+    Write-Host "`tAll assembly refs count:[$refsCount]" -fore gray
+    Write-Host "`tAll assembly uniqie refs count:[$uniqueRefsCount]" -fore gray
+
+    Write-Host "Checking SharePoint assembly refs version. Must be [$($expectedSharePointVersion.Major)]" -fore green
+
+    # all SharePoint refs must be of the target version
+    foreach($asmReference in $assemblyRefs) {
+    
+        $refName = $asmReference.FullName
+        $refVersion = $asmReference.Version
+
+        if(($refName.Contains("Microsoft.SharePoint")) -eq $true)
+        {
+            Write-Host "`tChecking SharePoint assembly reference:[$refName]" -fore gray
+
+            # major and minor should match
+            # that meand that assembly compiled with an appropriate SharePoint runtime such as 
+            # 14.0.x.x - SP2010
+            # 15.0.x.x - SP2013
+            # 16.0.x.x - SP2016
+            # 16.1.x.x - O365
+            if( ($refVersion.Major -ne $expectedSharePointVersion.Major) -or ($refVersion.Minor -ne $expectedSharePointVersion.Minor) ) {
+                throw "Assembly [$refName] has Major/Minor version mismatch. Version:[$($refVersion.ToString())]. Expected:[$($expectedSharePointVersion.ToString())]"
+            }
+            Write-Host "`t`t[GOOD] Version:[$($refVersion.ToString())]. Expected:[$($expectedSharePointVersion.ToString())" -fore gray
+        }
+        else
+        {
+            Write-Host "`tSkipping non-SharePoint assembly reference:[$refName]" -fore gray
+        }
+    }
+}
+
 Describe "regression.nuget" {
   
     # generic
@@ -715,8 +950,48 @@ Describe "regression.nuget" {
         $filesCount | Should Be $expectedNuGetPackagesCount 
     }
 
-    #NET version within folders
-    It "Packages baseline" {
+    It "Expect [2] v16 NuGet packages" {
+        
+        $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*-v16*.nupkg"
+        $filesCount = $files.Count   
+        
+        $filesCount | Should Be 2
+    }
+
+     It "Expect [4] v14 NuGet packages" {
+        
+        $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*-v14*.nupkg"
+        $filesCount = $files.Count   
+        
+        $filesCount | Should Be 4
+    }
+
+     It "Expect [2] Core NuGet packages" {
+        
+        $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*.Core.*.nupkg"
+        $filesCount = $files.Count   
+        
+        $filesCount | Should Be 2
+    }
+
+     It "Expect [6] CSOM NuGet packages" {
+        
+        $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*.CSOM.*.nupkg"
+        $filesCount = $files.Count   
+        
+        $filesCount | Should Be 6
+    }
+
+      It "Expect [4] SSOM NuGet packages" {
+        
+        $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*.SSOM.*.nupkg"
+        $filesCount = $files.Count   
+        
+        $filesCount | Should Be 4
+    }
+
+    # NuGet packages regression
+    It "NuGet packages baseline" {
         
         $files = Get-ChildItem -Path $defautPackagedFolder -Filter "*.nupkg"
         $filesCount = $files.Count
