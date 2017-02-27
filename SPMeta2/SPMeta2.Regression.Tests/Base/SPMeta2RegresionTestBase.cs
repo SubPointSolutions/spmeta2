@@ -51,6 +51,12 @@ namespace SPMeta2.Regression.Tests.Base
             RegressionUtils.WriteLine(string.Format("    RequestingAssembly:[{0}]", args.RequestingAssembly));
             RegressionUtils.WriteLine(string.Format("    What requested:[{0}]", args.Name));
 
+            if (args.Name.Contains(".resources,"))
+            {
+                RegressionUtils.WriteLine("resources assembly. returning null");
+                return null;
+            }
+
             var assemblyName = args.Name.Split(',')[0] + ".dll";
             var assemblyVersion = args.Name.Split(',')[1].Split('=')[1];
 

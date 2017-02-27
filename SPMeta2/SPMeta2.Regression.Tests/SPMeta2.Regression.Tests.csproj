@@ -136,6 +136,21 @@
     <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\DesignPackages\ci-1-1.0.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.2.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.4.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.5.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -337,7 +352,7 @@
       <Link>SPMeta2.Containers.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll">
+    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <Link>SPMeta2.Containers.O365v16.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -349,11 +364,11 @@
       <Link>SPMeta2.Containers.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.dll">
+    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <Link>_Dependencies\spmeta2-csom-365\SPMeta2.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.Standard.dll">
+    <Content Include="..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.Standard.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <Link>_Dependencies\spmeta2-csom-365\SPMeta2.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -505,7 +520,7 @@
       <Link>Microsoft.SharePoint.WorkflowServicesBase.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.CSOM.Standard\bin\Debug45-365\SPMeta2.Regression.CSOM.Standard.dll">
+    <Content Include="..\SPMeta2.Regression.CSOM.Standard\bin\Debug45-365\SPMeta2.Regression.CSOM.Standard.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <Link>_Dependencies\spmeta2-csom-regression-365\SPMeta2.Regression.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -513,7 +528,7 @@
       <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.Standard.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug45-365\SPMeta2.Regression.CSOM.dll">
+    <Content Include="..\SPMeta2.Regression.CSOM\bin\Debug45-365\SPMeta2.Regression.CSOM.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <Link>_Dependencies\spmeta2-csom-regression-365\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

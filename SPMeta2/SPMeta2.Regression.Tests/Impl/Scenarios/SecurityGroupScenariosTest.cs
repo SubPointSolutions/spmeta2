@@ -45,8 +45,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.SecurityGroup")]
         public void CanDeploy_SecurityGroup_Under_SecurityGroup()
         {
-            var activeDirectoryOrGlobalO365Groups = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultTestADGroups)
-                                                                         .Split(',');
+            var activeDirectoryOrGlobalO365Groups = RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.DefaultTestADGroups);
+
+            if (activeDirectoryOrGlobalO365Groups.Count() == 0)
+                throw new Exception(string.Format("Environment variable [{0}] is null or empty", EnvironmentConsts.DefaultTestADGroups));
 
             var randomNestedGroup = Rnd.RandomFromArray(activeDirectoryOrGlobalO365Groups);
 

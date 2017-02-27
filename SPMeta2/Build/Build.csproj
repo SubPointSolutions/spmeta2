@@ -42,8 +42,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="build.cake" />
     <None Include="build.ps1" />
+    <None Include="build.cake" />
+    <None Include="build-v12.cake" />
+    <None Include="build.json" />
+    <None Include="build-v12.ps1" />
+    <None Include="Pester\pester.run.ps1" />
+    <None Include="Pester\regression.nuget.ps1" />
+    <None Include="Pester\_install.ps1" />
+    <None Include="tools\nuget.config" />
+    <None Include="tools\packages.config" />
+    <None Include="tools\packages.config.md5sum" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\nuget.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

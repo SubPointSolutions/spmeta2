@@ -8,6 +8,7 @@ using System.Text;
 
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -27,8 +28,54 @@ namespace SPMeta2.Regression.SSOM.Validation
                                  .ShouldBeEqual(m => m.Xaml, o => o.Xaml)
                                  .ShouldBeEqual(m => m.DisplayName, o => o.DisplayName);
 
+            if (!string.IsNullOrEmpty(definition.RestrictToScope))
+                assert.ShouldBeEqual(m => m.RestrictToScope, o => o.RestrictToScope);
+            else
+                assert.SkipProperty(p => p.RestrictToScope);
 
-            // TODO, check Override later
+            if (!string.IsNullOrEmpty(definition.RestrictToType))
+                assert.ShouldBeEqual(m => m.RestrictToType, o => o.RestrictToType);
+            else
+                assert.SkipProperty(p => p.RestrictToType);
+
+            if (definition.Properties.Count() > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Properties);
+                    var dstProp = d.GetExpressionValue(ct => ct.Properties);
+
+                    var isValid = true;
+
+                    foreach (var prop in s.Properties)
+                    {
+                        var propName = prop.Name;
+                        var propValue = prop.Value;
+
+                        if (!d.Properties.ContainsKey(propName))
+                        {
+                            isValid = false;
+                        }
+
+                        if (d.Properties[propName] != propValue)
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(p => p.Properties, ".Properties.Count() = 0. Skipping");
+            }
         }
     }
 }

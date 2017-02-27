@@ -1,116 +1,106 @@
-﻿#addin "Cake.Powershell"
-#addin nuget:?package=Cake.Git
+﻿// load up common tools
+#load tools/SubPointSolutions.CakeBuildTools/scripts/SubPointSolutions.CakeBuild.Core.cake
 
-//////////////////////////////////////////////////////////////////////
-// ARGUMENTS
-//////////////////////////////////////////////////////////////////////
-
-
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Debug");
-
-Task("Docs-Publishing")
-    .Does(() =>
+// replace default buil
+defaultActionBuild.Task.Actions.Clear();
+defaultActionBuild
+    .Does(() => 
 {
-    var projectName = "SPMeta2";
-    var projectDocsFolder = "SPMeta2";
-
-    var environmentVariables = new [] {
-        "subpointsolutions-docs-username",
-        "subpointsolutions-docs-userpassword",
-    };
-
-    foreach(var name in environmentVariables)
+    if(jsonConfig["customProjectBuildProfiles"] == null)
     {
-        Information(string.Format("HasEnvironmentVariable - [{0}]", name));
-        if(!HasEnvironmentVariable(name)) {
-            Information(string.Format("Cannot find environment variable:[{0}]", name));
-            throw new ArgumentException(string.Format("Cannot find environment variable:[{0}]", name));
-        }
+        Verbose("No custom project profiles detected. Switching to normal *.sln build");
+        return;
     }
 
-     var docsRepoUserName = EnvironmentVariable("subpointsolutions-docs-username");
-	 var docsRepoUserPassword = EnvironmentVariable("subpointsolutions-docs-userpassword");
+    var customProjectBuildProfiles = jsonConfig["customProjectBuildProfiles"];
 
-     var docsRepoFolder = string.Format(@"{0}/m2",  "c:/__m2");
-     var docsRepoUrl = @"https://github.com/SubPointSolutions/subpointsolutions-docs";
-     var docsRepoPushUrl = string.Format(@"https://{0}:{1}@github.com/SubPointSolutions/subpointsolutions-docs", docsRepoUserName, docsRepoUserPassword);
+    var currentBuildProfileIndex = 0;
+    var buildProfilesCount = customProjectBuildProfiles.Count();
 
-     var srcDocsPath = System.IO.Path.GetFullPath(string.Format(@"./../SubPointSolutions.Docs/Views/{0}", projectDocsFolder));
-     var dstDocsPath = string.Format(@"{0}/subpointsolutions-docs/SubPointSolutions.Docs/Views", docsRepoFolder);
+    foreach(var buildProfile in customProjectBuildProfiles) {
 
-     var srcSamplesPath = System.IO.Path.GetFullPath(string.Format(@"./../SubPointSolutions.Docs/Code/Samples/m2Samples.cs"));
-     var dstSamplesPath = string.Format(@"{0}/subpointsolutions-docs/SubPointSolutions.Docs/Code/Samples", docsRepoFolder);
+        currentBuildProfileIndex++;
+        var profileName = (string)buildProfile["ProfileName"];
 
-     var commitName = string.Format(@"{0} - CI docs update {1}", projectName, DateTime.Now.ToString("yyyyMMdd_HHmmssfff"));
+        Information(string.Format("[{0}/{1}] Building project profile:[{2}]",
+            new object[] {
+                currentBuildProfileIndex,
+                buildProfilesCount,
+                profileName
+            }));
 
-     Information(string.Format("Merging documentation wiht commit:[{0}]", commitName));
+        var projectFiles = buildProfile["ProjectFiles"].Select(p => (string)p);
+        var buildParameters = buildProfile["BuildParameters"].Select(p => (string)p);
 
-     Information(string.Format("Cloning repo [{0}] to [{1}]", docsRepoUrl, docsRepoFolder));
+        var currentProjectFileIndex = 0;
+        var projecFilesCount = projectFiles.Count();
 
-     if(!System.IO.Directory.Exists(docsRepoFolder))
-     {   
-        System.IO.Directory.CreateDirectory(docsRepoFolder);   
+        foreach(var projectFile in projectFiles)
+        {
+            currentProjectFileIndex++;
+            var fullProjectFilePath = ResolveFullPathFromSolutionRelativePath(projectFile);
 
-        var cloneCmd = new []{
-            string.Format("cd '{0}'", docsRepoFolder),
-            string.Format("git clone -b wyam-dev {0}", docsRepoUrl)
-        };
+            Information(string.Format(" [{0}/{1}] Building project file:[{2}]",
+                new object[] {
+                    currentProjectFileIndex,
+                    projecFilesCount,
+                    projectFile
+            }));
 
-        StartPowershellScript(string.Join(Environment.NewLine, cloneCmd));  
-     }                            
+            Verbose(string.Format(" - file path:[{0}]", fullProjectFilePath)); 
+            
+            var buildSettings =  new MSBuildSettings{
 
-     docsRepoFolder = docsRepoFolder + "/subpointsolutions-docs"; 
+            };
 
-     Information(string.Format("Checkout..."));
-     var checkoutCmd = new []{
-            string.Format("cd '{0}'", docsRepoFolder),
-            string.Format("git checkout wyam-dev"),
-            string.Format("git pull")
-      };
+            var buildParametersString = String.Empty;
+            var solutionDirectoryParam = "/p:SolutionDir=" + "\"" + defaultSolutionDirectory + "\"";
 
-      StartPowershellScript(string.Join(Environment.NewLine, checkoutCmd));  
+            buildParametersString += " " + solutionDirectoryParam;
+            buildParametersString += " " + String.Join(" ", buildParameters);
 
-      Information(string.Format("Merge and commit..."));
-      var mergeCmd = new []{
-            string.Format("cd '{0}'", docsRepoFolder),
-            string.Format("copy-item  '{0}' '{1}' -Recurse -Force", srcDocsPath,  dstDocsPath),
-            string.Format("copy-item  '{0}' '{1}' -Recurse -Force", srcSamplesPath,  dstSamplesPath),
-            string.Format("git add *.md"),
-            string.Format("git add *.cs"),
-            string.Format("git commit -m '{0}'", commitName),
-      };
+            buildSettings.ArgumentCustomization = args => {
+                
+                foreach(var arg in buildParameters) {
+                    args.Append(arg);
+                }
 
-      StartPowershellScript(string.Join(Environment.NewLine, mergeCmd)); 
+                args.Append(solutionDirectoryParam);
+                return args;
+            };
 
-      Information(string.Format("Push to the main repo..."));
-      var pushCmd = new []{
-            string.Format("cd '{0}'", docsRepoFolder),
-            string.Format("git config http.sslVerify false"),
-            string.Format("git push {0}", docsRepoPushUrl)
-      };
-
-      var res = StartPowershellScript(string.Join(Environment.NewLine, pushCmd), new PowershellSettings()
-      {
-            LogOutput = false,
-            OutputToAppConsole  = false
-      });
-
-      Information(string.Format("Completed docs merge.")); 
+            Verbose(string.Format(" - params:[{0}]", buildParametersString)); 
+            MSBuild(fullProjectFilePath, buildSettings);
+        }
+    }            
 });
 
-//////////////////////////////////////////////////////////////////////
-// TASK TARGETS
-//////////////////////////////////////////////////////////////////////
+Task("Action-API-NuGet-Regression")
+    .Does(() => {
 
-Task("Default-Docs")
-    .IsDependentOn("Docs-Publishing");
+        Information("Running Pester testing...");
 
-Task("Default-Appveyor")
-    .IsDependentOn("Docs-Publishing");
+        Information("- ensuring peter is installed...");
+        StartPowershellFile("Pester/_install.ps1", args =>
+        {
+            // args.Append("Username", "admin")
+            //     .AppendSecret("Password", "pass1");
+        });
 
-//////////////////////////////////////////////////////////////////////
-// EXECUTION
-//////////////////////////////////////////////////////////////////////
+        Information("- running regression...");
 
+        StartPowershellFile("Pester/pester.run.ps1", args =>
+        {
+            // args.Append("Username", "admin")
+            //     .AppendSecret("Password", "pass1");
+        });
+    });
+
+// add one more for defaultActionCLIZipPackaging
+// it is run after Action-API-NuGet-Packaging
+// testing that NuGet packages were done in the right way
+defaultActionCLIZipPackaging
+    .IsDependentOn("Action-API-NuGet-Regression");
+
+// default targets
 RunTarget(target);

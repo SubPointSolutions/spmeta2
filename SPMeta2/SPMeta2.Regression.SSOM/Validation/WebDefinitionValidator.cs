@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                        .NewAssert(definition, spObject)
                        .ShouldBeEqual(m => m.LCID, o => o.GetLCID());
-                 //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+            //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
 
             // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
             CultureUtils.WithCulture(spObject.UICulture, () =>
@@ -175,6 +175,11 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
                 assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
+
+
+            // O365 props
+            assert.SkipProperty(m => m.MembersCanShare, "Skipping O365 prop");
+            assert.SkipProperty(m => m.RequestAccessEmail, "Skipping O365 prop");
         }
     }
 }

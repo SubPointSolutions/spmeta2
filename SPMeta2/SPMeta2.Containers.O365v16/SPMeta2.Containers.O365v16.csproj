@@ -119,14 +119,28 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
-    <Reference Include="SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+    <Reference Include="SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.CSOM\bin\Debug45-365\SPMeta2.CSOM.dll</HintPath>
     </Reference>
-    <Reference Include="SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL">
+    <Reference Include="SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.CSOM.Standard\bin\Debug45-365\SPMeta2.CSOM.Standard.dll</HintPath>
     </Reference>
+	
+	<Reference Include="SPMeta2.CSOM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" >
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+	
+	<Reference Include="SPMeta2.CSOM.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d71faae3bf28531a, processorArchitecture=MSIL" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" >
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\SPMeta2.CSOM\bin\Debug\SPMeta2.CSOM.Standard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+	
+	
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
