@@ -1,3 +1,5 @@
+test: off
+
 clone_folder: c:\prj\m2
 
 build_script: 
