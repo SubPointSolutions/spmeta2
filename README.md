@@ -10,7 +10,11 @@ The most comprehensive, enterprise-ready framework for provisioning SharePoint a
 * Enterprise ready: regression tests, localization, SLA
 
 ### Build status
-[![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2)
+| Branch  | Status |
+| ------------- | ------------- |
+| dev   | [![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1/branch/dev?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2/branch/dev)  |
+| beta  | [![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1/branch/beta?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2/branch/beta)  |
+| master| [![Build status](https://ci.appveyor.com/api/projects/status/0ym3fts7hmrdjvy1/branch/master?svg=true)](https://ci.appveyor.com/project/SubPointSupport/spmeta2/branch/master) |
 
 ### SPMeta2 in details
 
