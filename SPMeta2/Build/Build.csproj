@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="build.ps1" />
-    <None Include="build..cake" />
+    <None Include="build.cake" />
     <None Include="build-v12.cake" />
     <None Include="build.json" />
     <None Include="build-v12.ps1" />
