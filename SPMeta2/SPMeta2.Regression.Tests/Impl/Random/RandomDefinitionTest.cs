@@ -30,6 +30,7 @@ using System.IO;
 using SPMeta2.Standard.Definitions.DisplayTemplates;
 using SPMeta2.Validation.Services;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Random
 {
@@ -54,7 +55,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
             foreach (var def in allDefinitions)
             {
-                Trace.WriteLine(def.Name);
+                RegressionUtils.WriteLine(def.Name);
             }
 
             var isValid = true;
@@ -65,7 +66,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
                 if (!hasTestMethod)
                 {
-                    Trace.WriteLine(string.Format("[ERR]:{0}", definition.Name));
+                    RegressionUtils.WriteLine(string.Format("[ERR]:{0}", definition.Name));
 
                     isValid = false;
                 }
@@ -78,7 +79,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         {
             var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
 
-            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
+            RegressionUtils.WriteLine(string.Format("Asserting method:[{0}]", methodName));
 
             var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
 
@@ -97,7 +98,7 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             EnablePropertyNullableValidation = true;
             PropertyNullableGenerationCount = 1;
 
-            RegressionService.ShowOnlyFalseResults = true;
+            RegressionService.ShowOnlyFalseResults = false;
         }
 
         #region common

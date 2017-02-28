@@ -12,6 +12,7 @@ using SPMeta2.Exceptions;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.Services.Impl;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -23,6 +24,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TokenReplacementService = ServiceContainer.Instance.GetService<CSOMTokenReplacementService>();
             LocalizationService = ServiceContainer.Instance.GetService<CSOMLocalizationService>();
+
+            ClientRuntimeQueryService = ServiceContainer.Instance.GetService<ClientRuntimeQueryServiceBase>() ?? new DefaultClientRuntimeQueryService();
 
             // TODO, move to ServiceContainer
             ContentTypeLookupService = new CSOMContentTypeLookupService();
@@ -37,6 +40,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         public CSOMContentTypeLookupService ContentTypeLookupService { get; set; }
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
         public LocalizationServiceBase LocalizationService { get; set; }
+
+        public ClientRuntimeQueryServiceBase ClientRuntimeQueryService { get; set; }
 
         #endregion
 

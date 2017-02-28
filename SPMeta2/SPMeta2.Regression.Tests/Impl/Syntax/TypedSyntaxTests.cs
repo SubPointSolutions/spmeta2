@@ -79,6 +79,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
             {
                 site.AddSharePointDesignerSettings(new SharePointDesignerSettingsDefinition());
 
+                site.AddRootWeb(new RootWebDefinition { }, rootWeb =>
+                {
+                    rootWeb.AddTopNavigationNode(new TopNavigationNodeDefinition());
+                });
+
                 site.AddCoreProperty(new CorePropertyDefinition())
                     .AddCoreProperty(new CorePropertyDefinition(), property =>
                     {

@@ -255,8 +255,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DocumentTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ContainerTraceUtils.cs" />
     <Compile Include="Utils\RunnerEnvironment.cs" />
-    <Compile Include="Utils\TraceUtils.cs" />
+    <Compile Include="Utils\IndentableTrace.cs" />
     <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -346,6 +347,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\WebTemplates\M2CustomWebAsTemplate.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

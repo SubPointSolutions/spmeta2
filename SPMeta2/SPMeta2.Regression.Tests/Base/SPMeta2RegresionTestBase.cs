@@ -29,11 +29,87 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
+using System.IO;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {
     public class SPMeta2RegresionTestCoreBase
     {
+        static SPMeta2RegresionTestCoreBase()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var m2runner = Environment.GetEnvironmentVariable("SPMeta2_RunnerLibraries", EnvironmentVariableTarget.Machine);
+            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            RegressionUtils.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
+
+            RegressionUtils.WriteLine(string.Format("    RequestingAssembly:[{0}]", args.RequestingAssembly));
+            RegressionUtils.WriteLine(string.Format("    What requested:[{0}]", args.Name));
+
+            if (args.Name.Contains(".resources,"))
+            {
+                RegressionUtils.WriteLine("resources assembly. returning null");
+                return null;
+            }
+
+            var assemblyName = args.Name.Split(',')[0] + ".dll";
+            var assemblyVersion = args.Name.Split(',')[1].Split('=')[1];
+
+            var assemblyDirs = new List<string>();
+
+            if (assemblyName.Contains("Microsoft.SharePoint.Client."))
+            {
+                switch (assemblyVersion)
+                {
+                    case "16.1.0.0":
+                        assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\csom-v365"));
+                        break;
+
+                    case "15.0.0.0":
+                        assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\csom-v2013"));
+                        break;
+                }
+            }
+
+            if (m2runner == "SPMeta2.Containers.O365v16.dll")
+            {
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-365"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+            }
+
+            if (m2runner == "SPMeta2.Containers.O365.dll")
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
+            assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+
+            if (m2runner == "SPMeta2.Containers.CSOM.dll")
+            {
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+            }
+
+            foreach (var dir in assemblyDirs)
+            {
+                var filePath = Path.Combine(dir, assemblyName);
+
+                if (File.Exists(filePath))
+                {
+                    RegressionUtils.WriteLine(string.Format("Loading assemblly:[{0}]", filePath));
+                    return Assembly.LoadFile(filePath);
+                }
+            }
+
+            throw new Exception(string.Format("Cannot load custom assembly:[{0}] for assembly:[{1}]",
+                args.Name,
+                args.RequestingAssembly
+                ));
+        }
+
+
         public SPMeta2RegresionTestCoreBase()
         {
             Rnd = new DefaultRandomService();
@@ -100,7 +176,7 @@ namespace SPMeta2.Regression.Tests.Base
 
             TestOptions.EnableContentTypeHubTests = true;
             TestOptions.EnablWebConfigModificationTest = false;
-            
+
             // too long, disabled by default
             // Module file provision fails at minor version 511 #930
             // https://github.com/SubPointSolutions/spmeta2/issues/930
@@ -372,7 +448,7 @@ namespace SPMeta2.Regression.Tests.Base
             if (!TestOptions.EnableSerializeDeserializeAndStillDeployTests)
                 return;
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("Saving-restoring XML/JSON models. Deployng..");
                 var serializedModels = RegressionService.GetSerializedAndRestoredModels(models);
@@ -400,7 +476,7 @@ namespace SPMeta2.Regression.Tests.Base
                 .Where(p => p.GetCustomAttributes(typeof(ExpectNullable), true).Count() > 0);
 
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("");
 
@@ -430,7 +506,7 @@ namespace SPMeta2.Regression.Tests.Base
                 .Where(p => p.GetCustomAttributes(typeof(ExpectUpdate), true).Count() > 0);
 
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 trace.WriteLine("");
 

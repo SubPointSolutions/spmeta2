@@ -1,0 +1,690 @@
+﻿{
+    "defaultSolutionDirectory": "./../../",
+    "defaultSolutionFilePath": "./../../SPMeta2.sln",
+
+    "defaultDocsBuildEnabled" : false,
+
+    "defaultDocsViewFolder" : "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsRepoFolder" : "m2-m2",
+    "defaultDocsBranch" : "wyam-dev",
+    "defaultDocsFileExtensions" : [
+        "*.md",
+        "*.cs",
+        "*.cshtml"
+    ],
+
+    "customProjectBuildProfiles": [
+        {
+            "ProfileName" : "SPMeta2: SP2010 + NET35",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+                
+                "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
+                "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=14",
+                "/p:Configuration=Debug35",
+                "/p:DefineConstants=NET35",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName" : "SPMeta2: SP2013 + NET40",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+                
+                "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
+                "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=15",
+                "/p:Configuration=Debug40",
+                "/p:DefineConstants=NET40",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName" : "SPMeta2: SP2013 + NET45",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+                
+                "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
+                "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=15",
+                "/p:Configuration=Debug45",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName" : "SPMeta2: SP2016 + NET45",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+                
+                "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
+                "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=16",
+                "/p:Configuration=Debug45",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+
+        {
+            "ProfileName" : "SPMeta2: SharePoint Online (O365) + NET40",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=365",
+                "/p:Configuration=Debug40",
+                "/p:DefineConstants=NET40",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+         {
+            "ProfileName" : "SPMeta2: SharePoint Online (O365) + NET45",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2/SPMeta2.csproj",
+                "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
+
+                "SPMeta2/SPMeta2.CSOM/SPMeta2.CSOM.csproj",
+                "SPMeta2/SPMeta2.CSOM.Standard/SPMeta2.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=365",
+                "/p:Configuration=Debug45",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName" : "SPMeta2: Regression test containers NET45",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2.Containers.CSOM/SPMeta2.Containers.CSOM.csproj",
+                "SPMeta2/SPMeta2.Containers.SSOM/SPMeta2.Containers.SSOM.csproj",
+                "SPMeta2/SPMeta2.Containers.O365/SPMeta2.Containers.O365.csproj", 
+                "SPMeta2/SPMeta2.Containers.O365v16/SPMeta2.Containers.O365v16.csproj"
+            ],
+            "BuildParameters": [
+                "/p:Configuration=Debug",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+         {
+            "ProfileName" : "SPMeta2: Regression tests NET45",
+            "ProjectFiles" : [
+                "SPMeta2/SPMeta2.Regression.Tests/SPMeta2.Regression.Tests.csproj",
+                "SPMeta2/SPMeta2.Regression.Impl.Tests/SPMeta2.Regression.Impl.Tests.csproj",
+            ],
+            "BuildParameters": [
+                "/p:Configuration=Debug",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        }
+    ]
+    ,
+
+    "defaultNuGetPackagesDirectory": "./build-artifact-nuget-packages",
+    "defaultChocolateyPackagesDirectory": "./build-artifact-cli-packages",
+    "defaultNuspecVersion": "0.1.0",
+    
+    "defaultDocsViewFolder" : "SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsRepoFolder" : "m2-m2",
+    "defaultDocsBranch" : "wyam-dev",
+    "defaultDocsFileExtensions" : [
+        "*.md",
+        "*.cs",
+        "*.cshtml"
+    ],
+    
+    "defaultTestCategories": [
+        "CI.Core"
+    ],
+    "customNuspecs": [
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2",
+            "Id": "SPMeta2.Core",
+            "Version": "1.2.110",
+            "Dependencies": [ ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Foundation, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35/SPMeta2.dll",
+                        "bin/debug35/SPMeta2.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40/SPMeta2.dll",
+                        "bin/debug40/SPMeta2.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45/SPMeta2.dll",
+                        "bin/debug45/SPMeta2.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.Standard",
+            "Id": "SPMeta2.Core.Standard",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35/SPMeta2.Standard.dll",
+                        "bin/debug35/SPMeta2.Standard.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40/SPMeta2.Standard.dll",
+                        "bin/debug40/SPMeta2.Standard.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45/SPMeta2.Standard.dll",
+                        "bin/debug45/SPMeta2.Standard.xml"
+                    ]
+                }
+            ]
+        },
+
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
+            "Id": "SPMeta2.CSOM.Foundation",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                 {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-15/SPMeta2.CSOM.dll",
+                        "bin/debug40-15/SPMeta2.CSOM.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-15/SPMeta2.CSOM.dll",
+                        "bin/debug45-15/SPMeta2.CSOM.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
+            "Id": "SPMeta2.CSOM.Standard",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.CSOM.Foundation",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "SPMeta2.Core.Standard",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-15/SPMeta2.CSOM.Standard.dll",
+                        "bin/debug40-15/SPMeta2.CSOM.Standard.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-15/SPMeta2.CSOM.Standard.dll",
+                        "bin/debug45-15/SPMeta2.CSOM.Standard.xml"
+                    ]
+                }
+            ]
+        },
+        
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
+            "Id": "SPMeta2.SSOM.Foundation",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                 {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-15/SPMeta2.SSOM.dll",
+                        "bin/debug40-15/SPMeta2.SSOM.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-15/SPMeta2.SSOM.dll",
+                        "bin/debug45-15/SPMeta2.SSOM.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
+            "Id": "SPMeta2.SSOM.Standard",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.SSOM.Foundation",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "SPMeta2.Core.Standard",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-15/SPMeta2.SSOM.Standard.dll",
+                        "bin/debug40-15/SPMeta2.SSOM.Standard.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-15/SPMeta2.SSOM.Standard.dll",
+                        "bin/debug45-15/SPMeta2.SSOM.Standard.xml"
+                    ]
+                }
+            ]
+        },
+
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
+            "Id": "SPMeta2.CSOM.Foundation-v14",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                 {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35-14/SPMeta2.CSOM.dll",
+                        "bin/debug35-14/SPMeta2.CSOM.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
+            "Id": "SPMeta2.CSOM.Standard-v14",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.CSOM.Foundation-v14",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "SPMeta2.Core.Standard",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35-14/SPMeta2.CSOM.Standard.dll",
+                        "bin/debug35-14/SPMeta2.CSOM.Standard.xml"
+                    ]
+                }
+            ]
+        },
+        
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
+            "Id": "SPMeta2.SSOM.Foundation-v14",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                 {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35-14/SPMeta2.SSOM.dll",
+                        "bin/debug35-14/SPMeta2.SSOM.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
+            "Id": "SPMeta2.SSOM.Standard-v14",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.SSOM.Foundation-v14",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "SPMeta2.Core.Standard",
+                    "Version": "1.2.110"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net35",
+                    "TargetFiles": [
+                        "bin/debug35-14/SPMeta2.SSOM.Standard.dll",
+                        "bin/debug35-14/SPMeta2.SSOM.Standard.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
+            "Id": "SPMeta2.CSOM.Foundation-v16",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.Core",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "Microsoft.SharePointOnline.CSOM",
+                    "Version": "16.1.5715.1200"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                 {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-365/SPMeta2.CSOM.dll",
+                        "bin/debug40-365/SPMeta2.CSOM.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-365/SPMeta2.CSOM.dll",
+                        "bin/debug45-365/SPMeta2.CSOM.xml"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
+            "Id": "SPMeta2.CSOM.Standard-v16",
+            "Version": "1.2.110",
+            "Dependencies": [ 
+                {
+                    "Id": "SPMeta2.CSOM.Foundation-v16",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "SPMeta2.Core.Standard",
+                    "Version": "1.2.110"
+                },
+                {
+                    "Id": "Microsoft.SharePointOnline.CSOM",
+                    "Version": "16.1.5715.1200"
+                }
+            ],
+            "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
+            "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
+            "IconUrl": "https://raw.githubusercontent.com/SubPointSolutions/spmeta2/dev/SPMeta2/SPMeta2.Dependencies/Images/SPMeta2_64_64.png",
+            "Description": "SPMeta2 common infrastructure. Provides artifact definitions for SharePoint Standard+, models and handlers, artifact model tree construction, base syntax, validation and common set of the services.",
+            "Copyright": "Copyright 2016",
+            "Tags": [
+                
+            ],
+
+            "Files": [
+                {
+                    "Target": "lib/net40",
+                    "TargetFiles": [
+                        "bin/debug40-365/SPMeta2.CSOM.Standard.dll",
+                        "bin/debug40-365/SPMeta2.CSOM.Standard.xml"
+                    ]
+                },
+                {
+                    "Target": "lib/net45",
+                    "TargetFiles": [
+                        "bin/debug45-365/SPMeta2.CSOM.Standard.dll",
+                        "bin/debug45-365/SPMeta2.CSOM.Standard.xml"
+                    ]
+                }
+            ]
+        },
+    ],
+    "customChocolateySpecs": [
+        
+    ],
+    "defaultTestAssemblyPaths": [
+       
+    ],
+    "defaultBuildDirs": [ ],
+    "defaultEnvironmentVariables": [ ]
+}

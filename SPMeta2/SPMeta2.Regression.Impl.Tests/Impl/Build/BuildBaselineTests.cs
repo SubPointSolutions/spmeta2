@@ -12,6 +12,8 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Utils;
+using System.IO;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 {
@@ -40,7 +42,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
     [TestClass]
     public class BuildBaselineTests
     {
-      
+
 
         [TestMethod]
         [TestCategory("CI.Core")]
@@ -77,16 +79,21 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
 
             var content = xmlService.Serialize(result);
 
-            Trace.WriteLine(content);
+            RegressionUtils.WriteLine(content);
 
             var paths = new[]
             {
-                fileName,
-                "../../../SPMeta2.Build/" + fileName
+                System.IO.Path.GetFullPath(fileName),
+                System.IO.Path.GetFullPath("../../../SPMeta2.Build/" + fileName)
             };
 
             foreach (var path in paths)
+            {
+                var dirPath = Path.GetDirectoryName(path);
+                Directory.CreateDirectory(dirPath);
+
                 System.IO.File.WriteAllText(path, content);
+            }
         }
 
         private BuildBaseline BuildBaselineFromAssembly(Assembly assembly)
@@ -106,20 +113,20 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Build
                                                               .Select(t => t.AssemblyQualifiedName)
                                                               .ToList();
 
-            Trace.WriteLine(string.Format("AssemblyFullName:[{0}]", result.AssemblyFullName));
-            Trace.WriteLine(string.Format("DefinitionTypeFullNames:[{0}]", result.DefinitionTypeFullNames.Count));
-            Trace.WriteLine(string.Format("ModelHandlerTypeFullNames:[{0}]", result.ModelHandlerTypeFullNames.Count));
+            RegressionUtils.WriteLine(string.Format("AssemblyFullName:[{0}]", result.AssemblyFullName));
+            RegressionUtils.WriteLine(string.Format("DefinitionTypeFullNames:[{0}]", result.DefinitionTypeFullNames.Count));
+            RegressionUtils.WriteLine(string.Format("ModelHandlerTypeFullNames:[{0}]", result.ModelHandlerTypeFullNames.Count));
 
-            Trace.WriteLine("Definitions:");
+            RegressionUtils.WriteLine("Definitions:");
             foreach (var name in result.DefinitionTypeFullNames)
-                Trace.WriteLine(" " + name);
+                RegressionUtils.WriteLine(" " + name);
 
-            Trace.WriteLine("Model handlers:");
+            RegressionUtils.WriteLine("Model handlers:");
             foreach (var name in result.ModelHandlerTypeFullNames)
-                Trace.WriteLine(" " + name);
+                RegressionUtils.WriteLine(" " + name);
 
-            Trace.WriteLine(string.Empty);
-            Trace.WriteLine(string.Empty);
+            RegressionUtils.WriteLine(string.Empty);
+            RegressionUtils.WriteLine(string.Empty);
 
             return result;
         }

@@ -177,17 +177,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
-        [ExpectedException(typeof(SPMeta2NotImplementedException))]
-        public void CanDeploy_ListView_AsRecurrence()
+        public void CanDeploy_ListView_As_CalendarAndRecurrence()
         {
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Hidden = false;
+                def.Type = BuiltInViewType.Html;
 
-            throw new SPMeta2NotImplementedException();
-
-            //TestRandomDefinition<ListViewDefinition>(def =>
-            //{
-            //    def.Hidden = false;
-            //    def.Type = BuiltInViewType.Recurrence;
-            //});
+                def.Types = new Collection<string>(new string[]{
+                    BuiltInViewType.Calendar,
+                    BuiltInViewType.Recurrence
+                });
+            });
         }
 
         #endregion
@@ -302,6 +303,42 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.Title = Rnd.String();
                 def.Url = string.Format("{0}.aspx", Rnd.String());
+            });
+        }
+
+        #endregion
+
+        #region aggregations
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleCount()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Count'/>";
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleSum()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Sum'/>";
             });
         }
 

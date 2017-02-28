@@ -80,7 +80,7 @@ namespace SPMeta2.Containers.SSOM
 
             _provisionService.OnModelNodeProcessing += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                     string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                     new object[] {
                                   args.ProcessedModelNodeCount,
@@ -93,7 +93,7 @@ namespace SPMeta2.Containers.SSOM
 
             _provisionService.OnModelNodeProcessed += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                    string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                    new object[] {
                                   args.ProcessedModelNodeCount,
@@ -183,7 +183,7 @@ namespace SPMeta2.Containers.SSOM
 
             foreach (var webAppUrl in WebApplicationUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web app: [{0}]", webAppUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web app: [{0}]", webAppUrl));
 
                 for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
@@ -341,7 +341,7 @@ namespace SPMeta2.Containers.SSOM
             {
                 //var siteUrl = GetTargetSiteCollectionUrl();
 
-                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
                 for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
@@ -367,7 +367,7 @@ namespace SPMeta2.Containers.SSOM
                 //var webUrl = GetTargetSiteCollectionUrl();
 
 
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
                 for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
@@ -389,7 +389,7 @@ namespace SPMeta2.Containers.SSOM
         {
             foreach (var webUrl in WebUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
                 for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {

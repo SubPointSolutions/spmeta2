@@ -10,6 +10,7 @@ using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Services;
 using System.Text.RegularExpressions;
+using System;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -42,6 +43,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 v => v.Aggregations,
                 v => v.ViewType,
                 v => v.IncludeRootFolder,
+                v => v.HtmlSchemaXml,
                 v => v.ViewData));
 
             context.ExecuteQueryWithTrace();
@@ -111,27 +113,76 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.ViewData);
 
-            if (!string.IsNullOrEmpty(definition.Type))
+            if (definition.Types.Count() == 0)
             {
+                assert.SkipProperty(m => m.Types, "Types.Count == 0");
+
+                if (!string.IsNullOrEmpty(definition.Type))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.Type);
+                        var dstProp = d.GetExpressionValue(o => o.ViewType);
+
+                        var isValid = srcProp.Value.ToString().ToUpper() ==
+                            dstProp.Value.ToString().ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Type);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Type, "Types.Count != 0");
+
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var srcProp = s.GetExpressionValue(def => def.Type);
-                    var dstProp = d.GetExpressionValue(o => o.ViewType);
+                    var srcProp = s.GetExpressionValue(def => def.Types);
+                    //var dstProp = d.GetExpressionValue(o => o.Type);
 
-                    var isValid = srcProp.Value.ToString().ToUpper() ==
-                        dstProp.Value.ToString().ToUpper();
+                    var isValid = false;
+
+                    ViewType? srcType = null;
+
+                    foreach (var type in s.Types)
+                    {
+                        var tmpViewType = (ViewType)Enum.Parse(typeof(ViewType), type);
+
+                        if (srcType == null)
+                            srcType = tmpViewType;
+                        else
+                            srcType = srcType | tmpViewType;
+                    }
+
+                    var srcTypeValue = (int)srcType;
+                    var dstTypeValue = (int)0;
+
+                    // checking if only reccurence set
+                    // test designed that way only
+                    if (((int)srcTypeValue & (int)(ViewType.Recurrence)) ==
+                        (int)ViewType.Recurrence)
+                    {
+                        // nah, whatever, it works and does the job
+                        isValid = d.HtmlSchemaXml.Contains("RecurrenceRowset=\"TRUE\"");
+                    }
 
                     return new PropertyValidationResult
                     {
                         Tag = p.Tag,
                         Src = srcProp,
-                        Dst = dstProp,
+                        Dst = null,
                         IsValid = isValid
                     };
                 });
             }
-            else
-                assert.SkipProperty(m => m.Type);
 
             assert.SkipProperty(m => m.ViewStyleId, "ViewStyleId unsupported by SP CSOM API yet. Skipping.");
             assert.SkipProperty(m => m.TabularView, "TabularView unsupported by SP CSOM API yet. Skipping.");
@@ -228,7 +279,30 @@ namespace SPMeta2.Regression.CSOM.Validation
             if (string.IsNullOrEmpty(definition.Aggregations))
                 assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
             else
-                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Aggregations);
+                    var dstProp = d.GetExpressionValue(ct => ct.Aggregations);
+
+                    var isValid = s.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty) ==
+                                  d.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
 
             assert.ShouldBePartOfIfNotNullOrEmpty(m => m.Url, o => o.ServerRelativeUrl);
 

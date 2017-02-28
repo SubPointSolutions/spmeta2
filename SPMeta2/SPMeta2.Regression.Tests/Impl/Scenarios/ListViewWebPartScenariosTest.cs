@@ -9,7 +9,7 @@ using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Standard;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Enumerations;
@@ -20,6 +20,8 @@ using SPMeta2.Standard.Enumerations;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Definitions.Base;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {

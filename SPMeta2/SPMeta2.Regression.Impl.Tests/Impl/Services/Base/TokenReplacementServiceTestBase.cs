@@ -7,6 +7,7 @@ using System.Text;
 
 using Microsoft.SharePoint.Client;
 using SPMeta2.Services;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
 {
@@ -27,7 +28,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
                     methodPrefix);
                 var method = methods.FirstOrDefault(m => m.Name.ToUpper() == methodName.ToUpper());
 
-                Trace.WriteLine(methodName + " : " + (method != null));
+                RegressionUtils.WriteLine(methodName + " : " + (method != null));
 
                 if (method == null)
                     isValid = false;
@@ -59,7 +60,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
         {
             var result = true;
 
-            Trace.WriteLine(message);
+            RegressionUtils.WriteLine(message);
 
             var valueResult = Service.ReplaceTokens(new TokenReplacementContext
             {
@@ -69,7 +70,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
 
             result = expectedUrl.ToUpper() == valueResult.Value.ToUpper();
 
-            Trace.WriteLine(string.Format("[{0}] - [{1}] - token:[{2}] expected value:[{3}] replaced value:[{4}]",
+            RegressionUtils.WriteLine(string.Format("[{0}] - [{1}] - token:[{2}] expected value:[{3}] replaced value:[{4}]",
                 new object[]
                 {
                     message,

@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
@@ -51,9 +51,14 @@ namespace SPMeta2.Definitions.Fields
             }
         }
 
+        /// <summary>
+        /// Can be updated in SSOM.
+        /// CSOM API does not support changes/updates.
+        /// </summary>
         [ExpectValidation]
         [DataMember]
         [ExpectNullable]
+        [ExpectUpdateAsNumberFieldDisplayFormat()]
         public string DisplayFormat { get; set; }
 
         [ExpectValidation]

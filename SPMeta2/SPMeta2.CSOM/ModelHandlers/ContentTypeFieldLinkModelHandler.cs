@@ -179,12 +179,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 if (ReflectionUtils.HasProperty(fieldLink, "DisplayName"))
                 {
                     if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.DisplayName))
-                    {
-                        context.AddQuery(new ClientActionInvokeMethod(fieldLink, "DisplayName", new object[]
-                        {
-                            contentTypeFieldLinkModel.DisplayName
-                        }));
-                    }
+                        ClientRuntimeQueryService.SetProperty(fieldLink, "DisplayName", contentTypeFieldLinkModel.DisplayName);
                 }
                 else
                 {

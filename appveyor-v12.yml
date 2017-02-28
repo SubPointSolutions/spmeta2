@@ -1,0 +1,25 @@
+environment:
+  SPMeta2_DefaultTestUserLogins:
+    secure: 3HnXxy6w2UfBFP55pJ6q1/TguITu3p3mmEo+7U2dm1g=
+
+test:
+  assemblies:
+    - '**\*.Tests.dll'
+  categories:
+    only:
+      - CI.Core 
+
+clone_folder: c:\prj\m2
+
+before_build:
+    - ps: c:\prj\m2\SPMeta2\Build\build.ps1 -Verbosity Minimal -Target "Default-Appveyor"
+    - ps: c:\prj\m2\SPMeta2\Build\build-new.ps1 -Verbosity Minimal -Target "Default-CI"
+
+build_script: 
+    - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\build.v12.ps1
+
+after_test:
+    - ps: c:\prj\m2\SPMeta2\SPMeta2.Build\nuget.v12.ps1
+
+artifacts:
+    - path: '**\*.nupkg'

@@ -46,7 +46,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewFarmModel(Action<FarmModelNode> action)
+        public static FarmModelNode NewFarmModel(Action<FarmModelNode> action)
         {
             var node = NewFarmModel(new FarmDefinition(), action);
 

@@ -59,12 +59,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webs.Templates")]
         public void CanDeploy_Custom_WebTemplate_As_SaveAsTemplate()
         {
-            // TODO
             // should be uploaded manually yet
-            var solution = new SandboxSolutionDefinition
+            var customWebAsTemplateSolution = new SandboxSolutionDefinition
             {
                 FileName = Rnd.WspFileName(),
                 Content = File.ReadAllBytes(DefaultContainers.WebTemplates.M2CustomWebAsTemplate.FilePath),
+                Activate = true,
+                SolutionId = DefaultContainers.WebTemplates.M2CustomWebAsTemplate.SolutionId
+            };
+
+            var customTeamSiteTemplateSolution = new SandboxSolutionDefinition
+            {
+                FileName = Rnd.WspFileName(),
+                Content = File.ReadAllBytes(DefaultContainers.WebTemplates.M2CustomTeamSite.FilePath),
                 Activate = true,
                 SolutionId = DefaultContainers.WebTemplates.M2CustomWebAsTemplate.SolutionId
             };

@@ -128,6 +128,44 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        public void CSOMTokenReplacementService_Should_Not_ChangeNonTokenedUrl()
+        {
+            var isValid = true;
+            var runner = new CSOMProvisionRunner();
+
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithCSOMContext(siteUrl, context =>
+                {
+                    PreloadProperties(context);
+
+                    var site = context.Site;
+
+                    var originalFullUrl = site.Url;
+                    var originalSiteRelativeUrl = site.ServerRelativeUrl;
+
+                    var originalValueResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = originalFullUrl,
+                        Context = context
+                    });
+
+                    var originalSiteRelativeResult = Service.ReplaceTokens(new TokenReplacementContext
+                    {
+                        Value = originalSiteRelativeUrl,
+                        Context = context
+                    });
+
+                    Assert.AreEqual(originalFullUrl, originalValueResult.Value);
+                    Assert.AreEqual(originalSiteRelativeUrl, originalSiteRelativeResult.Value);
+                });
+            });
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
         public void CSOMTokenReplacementService_Should_Support_ClientContext()
         {
             if (!CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext)
@@ -218,9 +256,21 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
                 needQuery = true;
             }
 
+            if (!clientContext.Site.IsPropertyAvailable("Url"))
+            {
+                clientContext.Load(clientContext.Site, s => s.Url);
+                needQuery = true;
+            }
+
             if (!clientContext.Web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 clientContext.Load(clientContext.Web, w => w.ServerRelativeUrl);
+                needQuery = true;
+            }
+
+            if (!clientContext.Web.IsPropertyAvailable("Url"))
+            {
+                clientContext.Load(clientContext.Web, w => w.Url);
                 needQuery = true;
             }
 

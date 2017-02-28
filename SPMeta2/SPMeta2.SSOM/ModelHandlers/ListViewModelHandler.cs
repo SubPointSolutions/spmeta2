@@ -153,6 +153,27 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
                     string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
 
+                // nasty hack
+
+                // The provision of calendars is not working properly #935
+                // https://github.com/SubPointSolutions/spmeta2/issues/935
+                if (listViewModel.Types.Count() > 0)
+                {
+                    SPViewCollection.SPViewType? finalType = null;
+
+                    foreach (var type in listViewModel.Types)
+                    {
+                        var tmpViewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType), type);
+
+                        if (finalType == null)
+                            finalType = tmpViewType;
+                        else
+                            finalType = finalType | tmpViewType;
+                    }
+
+                    viewType = finalType.Value;
+                }
+
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
                             string.IsNullOrEmpty(listViewModel.Url) ? listViewModel.Title : GetSafeViewUrl(listViewModel.Url),
@@ -219,10 +240,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             // There is no value in setting Aggregations if AggregationsStatus is not to "On"
             if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
             {
-                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
-
                 if (!string.IsNullOrEmpty(listViewModel.Aggregations))
                     currentView.Aggregations = listViewModel.Aggregations;
+
+                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
             }
 
             currentView.Hidden = listViewModel.Hidden;

@@ -10,6 +10,7 @@ using SPMeta2.Services.Impl.Validation;
 using SPMeta2.SSOM.Services;
 using SPMeta2.SSOM.Standard.Services;
 using SPMeta2.Utils;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 {
@@ -50,8 +51,8 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
             {
                 var service = Activator.CreateInstance(validationServiceType) as PreDeploymentValidationServiceBase;
 
-                Trace.WriteLine(service.Title);
-                Trace.WriteLine(service.Description);
+                RegressionUtils.WriteLine(service.Title);
+                RegressionUtils.WriteLine(service.Description);
 
                 Assert.IsNotNull(service);
 

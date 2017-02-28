@@ -95,6 +95,58 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             if (supportsAlternateCssAndSiteImageUrl)
             {
+                // also check for MembersCanShare / RequestAccessEmail
+                if (definition.MembersCanShare.HasValue)
+                {
+                    var membersCanShare = ConvertUtils.ToBool(ReflectionUtils.GetPropertyValue(spObject, "MembersCanShare")).Value;
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MembersCanShare);
+                        var isValid = true;
+
+                        isValid = s.MembersCanShare.Value == membersCanShare;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MembersCanShare);
+                }
+
+                if (!string.IsNullOrEmpty(definition.RequestAccessEmail))
+                {
+                    var requestAccessEmail = ReflectionUtils.GetPropertyValue(spObject, "RequestAccessEmail");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.RequestAccessEmail);
+                        var isValid = true;
+
+                        isValid = s.RequestAccessEmail.ToUpper() == requestAccessEmail.ToString().ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.RequestAccessEmail);
+                }
+
+
                 if (!string.IsNullOrEmpty(definition.AlternateCssUrl))
                 {
                     var alternateCssUrl = ReflectionUtils.GetPropertyValue(spObject, "AlternateCssUrl");
@@ -151,6 +203,9 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 assert.SkipProperty(m => m.AlternateCssUrl, "AlternateCssUrl is null or empty. Skipping.");
                 assert.SkipProperty(m => m.SiteLogoUrl, "SiteLogoUrl is null or empty. Skipping.");
+
+                assert.SkipProperty(m => m.MembersCanShare, "SiteLogoUrl is null or empty. Skipping.");
+                assert.SkipProperty(m => m.RequestAccessEmail, "SiteLogoUrl is null or empty. Skipping.");
             }
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
