@@ -261,6 +261,7 @@
     <Compile Include="Impl\Utils\ConvertUtilsTests.cs" />
     <Compile Include="Impl\Validation\EmptyDefinitionValidationTest.cs" />
     <Compile Include="Impl\Misc\BuiltInWebpartTemplatesTest.cs" />
+    <Compile Include="Impl\Validation\SecurityGroupValidationTest.cs" />
     <Compile Include="Impl\Validation\WikiPageValidationTest.cs" />
     <Compile Include="Impl\Validation\PublishingPageLayoutValidationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
