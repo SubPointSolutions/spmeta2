@@ -46,7 +46,7 @@ namespace SPMeta2.Definitions
 
         [DataMember]
         [ExpectValidation]
-        [ExpectRequired]
+        [ExpectRequired(GroupName = "Name, IsAssociatedVisitorsGroup, IsAssociatedMemberGroup or IsAssociatedOwnerGroup")]
         [IdentityKey]
         public string Name { get; set; }
 
@@ -90,6 +90,8 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [DataMember]
+        [ExpectRequiredBoolRange(true)]
+        [ExpectRequired(GroupName = "Name, IsAssociatedVisitorsGroup, IsAssociatedMemberGroup or IsAssociatedOwnerGroup")]
         public bool IsAssociatedVisitorsGroup { get; set; }
 
         /// <summary>
@@ -97,6 +99,8 @@ namespace SPMeta2.Definitions
         /// </summary>
         /// 
         [DataMember]
+        [ExpectRequiredBoolRange(true)]
+        [ExpectRequired(GroupName = "Name, IsAssociatedVisitorsGroup, IsAssociatedMemberGroup or IsAssociatedOwnerGroup")]
         public bool IsAssociatedMemberGroup { get; set; }
 
         /// <summary>
@@ -104,6 +108,8 @@ namespace SPMeta2.Definitions
         /// </summary>
 
         [DataMember]
+        [ExpectRequiredBoolRange(true)]
+        [ExpectRequired(GroupName = "Name, IsAssociatedVisitorsGroup, IsAssociatedMemberGroup or IsAssociatedOwnerGroup")]
         public bool IsAssociatedOwnerGroup { get; set; }
 
         [ExpectValidation]
