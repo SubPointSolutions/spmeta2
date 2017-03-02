@@ -17,9 +17,10 @@ namespace SPMeta2.Services.Impl
 
         public DefaultIncrementalModelTreeTraverseService()
         {
-            HashService = new MD5HashCodeServiceBase();
+            _hashService = new MD5HashCodeServiceBase();
 
             CurrentModelHash = new ModelHash();
+            IgnoredModelNodes = new List<ModelNode>();
         }
 
         #endregion
@@ -29,17 +30,32 @@ namespace SPMeta2.Services.Impl
         public ModelHash PreviousModelHash { get; set; }
         public ModelHash CurrentModelHash { get; set; }
 
-        public HashCodeServiceBase HashService { get; set; }
+        public HashCodeServiceBase _hashService { get; set; }
+
+        protected List<ModelNode> IgnoredModelNodes { get; private set; }
 
         #endregion
 
         #region methods
 
+        protected string GetHashString(object value)
+        {
+            return _hashService.GetHashCode(value);
+        }
+
+        protected virtual bool IsSingletonIdentityDefinition(DefinitionBase definition)
+        {
+            var definitionType = definition.GetType();
+            var isInstanceIdentity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+
+            return isInstanceIdentity;
+        }
+
         protected virtual string GetDefinitionIdentityKey(DefinitionBase definition)
         {
             var definitionType = definition.GetType();
 
-            var isInstanceIdentity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+            var isInstanceIdentity = IsSingletonIdentityDefinition(definition);
 
             if (isInstanceIdentity)
             {
@@ -68,12 +84,29 @@ namespace SPMeta2.Services.Impl
             return resultIdentityKey;
         }
 
-        protected virtual string GetDefinitionFullPath()
+        protected virtual string GetDefinitionFullPath(bool asHash)
         {
-            var currentDefinitions = CurrentModelPath.Select(p => p.Value);
-            var currentDefinitionPath = string.Join("/", currentDefinitions.Select(p => GetDefinitionIdentityKey(p)).ToArray());
+            var result = string.Empty;
 
-            return currentDefinitionPath;
+            // get site -> web -> list -> so on
+            var currentDefinitions = CurrentModelPath.Reverse().Select(p => p.Value).ToList();
+
+            // always remove the root definition as 
+            // 1) they may not have identity key (farm definition)
+            // 2) definition path should always be 'root' relative
+            currentDefinitions.RemoveAt(0);
+
+            if (asHash)
+            {
+                result = string.Join("/", currentDefinitions.Select(p => GetHashString(GetDefinitionIdentityKey(p))).ToArray());
+            }
+            else
+            {
+                result = string.Join("/", currentDefinitions.Select(p => GetDefinitionIdentityKey(p)).ToArray());
+                // full path is 'hash(identitykey)/hash(identitykey)/hash(identitykey)'
+            }
+
+            return result;
         }
 
         protected override void OnBeforeDeployModel(object modelHost, ModelNode modelNode)
@@ -86,25 +119,52 @@ namespace SPMeta2.Services.Impl
 
             var prevModelHash = GetPreviousModelHash();
 
-            TraceService.Information(0, "Calculating hashes for node and definition");
-            TraceService.InformationFormat(0, "    -node:[{0}]", modelNode);
-            TraceService.InformationFormat(0, "    -definition:[{0}]", modelNode.Value);
+            var isSingleIdentity = IsSingletonIdentityDefinition(currentDefinition);
+
+            if (isSingleIdentity)
+            {
+                TraceService.Information(0, "Detected singleton definition. Incremental update for such definitions isn't supported yet. Skipping.");
+                return;
+            }
+            else
+            {
+                TraceService.Information(0, "Calculating hashes for node and definition");
+            }
 
             //var currentNodeHashHash = HashService.GetHashCode(currentModelNode);
-            var currentDefinitionHash = HashService.GetHashCode(currentDefinition);
+            var currentDefinitionHash = GetHashString(currentDefinition);
 
             var currentDefinitionIdentityKey = GetDefinitionIdentityKey(currentDefinition);
-            var currentDefinitionIdentityHash = HashService.GetHashCode(currentDefinitionIdentityKey);
+            var currentDefinitionIdentityHash = GetHashString(currentDefinitionIdentityKey);
 
-            var currentDefinitionFullPath = GetDefinitionFullPath();
-            var currentDefinitionFullPathHash = HashService.GetHashCode(currentDefinitionFullPath);
+            var currentDefinitionFullPath = GetDefinitionFullPath(false);
+            var currentDefinitionFullPathHash = GetDefinitionFullPath(true);
 
             //TraceService.InformationFormat(0, "    -node hash:[{0}]", currentNodeHashHash);
-            TraceService.InformationFormat(0, "    -definition hash:[{0}]", currentDefinitionHash);
-            TraceService.InformationFormat(0, "    -definition full path:[{0}]", currentDefinitionFullPath);
-            TraceService.InformationFormat(0, "    -definition full path hash:[{0}]", currentDefinitionFullPathHash);
+            TraceService.InformationFormat(0, "    - definition hash:[{0}]", currentDefinitionHash);
+            TraceService.InformationFormat(0, "    - definition full path:[{0}]", currentDefinitionFullPath);
+            TraceService.InformationFormat(0, "    - definition full path hash:[{0}]", currentDefinitionFullPathHash);
 
-            var prevModeNodeHash = prevModelHash.ModelNodes.FirstOrDefault(h => h.DefinitionFullPathHash == currentDefinitionFullPathHash);
+            var prevModeNodeHashes = prevModelHash.ModelNodes
+                                                  .Where(h => h.DefinitionFullPathHash == currentDefinitionFullPathHash);
+
+            // same definition is added multiple times 
+            // this could be
+            // - toggling, such as feature activation toggling
+            // - intentional toggling of the field or something
+            // - intentional adding definition twice
+            // we don't change anyting with the yet preferring to skip incremental provision detection
+            if (prevModeNodeHashes.Count() > 1)
+            {
+                TraceService.InformationFormat(0, "Found more than one previous model node by path hash:[{0}]", currentDefinitionFullPathHash);
+                TraceService.Information(0, "Not changing anything, incremental provision can't detect right path to change here.");
+
+                IgnoredModelNodes.Add(currentModelNode);
+
+                return;
+            }
+
+            var prevModeNodeHash = prevModeNodeHashes.FirstOrDefault();
 
             if (prevModeNodeHash != null)
             {
@@ -114,10 +174,8 @@ namespace SPMeta2.Services.Impl
                 {
                     TraceService.Information(0, "Definition hashes don't macth. Setting .Options.RequireSelfProcessing  = true if it's not.");
 
-                    if (modelNode.Options.RequireSelfProcessing)
+                    if (!modelNode.Options.RequireSelfProcessing)
                     {
-
-
                         modelNode.Options.RequireSelfProcessing = true;
                     }
                 }
@@ -141,22 +199,31 @@ namespace SPMeta2.Services.Impl
             var currentModelNode = modelNode;
             var currentDefinition = modelNode.Value;
 
+            var isSingleIdentity = IsSingletonIdentityDefinition(currentDefinition);
+
+            if (isSingleIdentity)
+            {
+                return;
+            }
+
             //var currentNodeHashHash = HashService.GetHashCode(currentModelNode);
-            var currentDefinitionHash = HashService.GetHashCode(currentDefinition);
+            var currentDefinitionHash = GetHashString(currentDefinition);
 
             var currentDefinitionIdentityKey = GetDefinitionIdentityKey(currentDefinition);
-            var currentDefinitionIdentityHash = HashService.GetHashCode(currentDefinitionIdentityKey);
+            var currentDefinitionIdentityHash = GetHashString(currentDefinitionIdentityKey);
 
-            var currentDefinitionFullPath = GetDefinitionFullPath();
-            var currentDefinitionFullPathHash = HashService.GetHashCode(currentDefinitionFullPath);
-
+            var currentDefinitionFullPath = GetDefinitionFullPath(false);
+            var currentDefinitionFullPathHash = GetDefinitionFullPath(true);
 
             CurrentModelHash.ModelNodes.Add(new ModelNodeHash
             {
-                DefinitionFullPath = currentDefinitionFullPath,
-                DefinitionFullPathHash = currentDefinitionFullPathHash,
+                DefinitionHash = currentDefinitionHash,
 
-                DefinitionHash = currentDefinitionHash
+                DefinitionIdentityKey = currentDefinitionIdentityKey,
+                DefinitionIdentityKeyHash = currentDefinitionIdentityHash,
+
+                DefinitionFullPath = currentDefinitionFullPath,
+                DefinitionFullPathHash = currentDefinitionFullPathHash
             });
         }
 

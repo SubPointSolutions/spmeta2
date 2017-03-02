@@ -51,6 +51,10 @@ namespace SPMeta2.Common
         public string DefinitionFullPath { get; set; }
 
         #endregion
+
+        public string DefinitionIdentityKey { get; set; }
+
+        public string DefinitionIdentityKeyHash { get; set; }
     }
 
     //[DataContract]

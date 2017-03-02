@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Common;
 using SPMeta2.Containers;
 using SPMeta2.Definitions;
@@ -9,12 +11,60 @@ using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using System.Collections.Generic;
 using SPMeta2.Extensions;
+using SPMeta2.Regression.Utils;
+using SPMeta2.Containers.Services.Rnd;
+using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Standard.DefinitionGenerators;
+using SPMeta2.Attributes;
+using SPMeta2.Standard.Definitions.Fields;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
+    public class IncrementalModelPrettyPrintService : DefaultModelPrettyPrintService
+    {
+        protected override string GetDefinitionValue(ModelNode modelNode)
+        {
+            var shouldDeploy = modelNode.Options.RequireSelfProcessing;
+
+            if (shouldDeploy)
+            {
+                return string.Format("[+] {0}", base.GetDefinitionValue(modelNode));
+            }
+            else
+            {
+                return string.Format("[-] {0}", base.GetDefinitionValue(modelNode));
+            }
+        }
+    }
+
     [TestClass]
     public class IncrementalModelTreeTraverseServiceTests
     {
+        #region constructors
+
+        public IncrementalModelTreeTraverseServiceTests()
+        {
+            ModelPrintService = new IncrementalModelPrettyPrintService();
+
+            Rnd = new DefaultRandomService();
+
+            ModelGeneratorService = new ModelGeneratorService();
+            ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+        }
+
+        #endregion
+
+        #region properties
+
+        public ModelPrintServiceBase ModelPrintService { get; set; }
+
+        public ModelGeneratorService ModelGeneratorService { get; set; }
+
+        public DefaultRandomService Rnd { get; set; }
+
+        #endregion
+
         #region default
 
         [TestMethod]
@@ -23,9 +73,12 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public void Can_Create_IncrementalModelTreeTraverseService()
         {
             var service = new DefaultIncrementalModelTreeTraverseService();
+
         }
 
         #endregion
+
+
 
         #region non-singlentons
 
@@ -54,13 +107,83 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             // check one more with second provision
             var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
+            RegressionUtils.WriteLine("Original model:");
+            RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+
             secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
             secondProvisionService.Traverse(null, currentModel);
+
+            RegressionUtils.WriteLine(string.Empty);
+            RegressionUtils.WriteLine("Provisioned model:");
+            RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
 
             // asserts
             // should be NONE of the nodes to update on the same model
             Assert.AreEqual(0, secondProvisionService.ModelNodesToUpdate.Count);
             Assert.AreEqual(GetTotalModelNodeCount(model), secondProvisionService.ModelNodesToSkip.Count);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.Random")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_AllDefinitions_As_RandomModels()
+        {
+            var spMetaAssembly = typeof(FieldDefinition).Assembly;
+            var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
+
+            var allDefinitionTypes = ReflectionUtils.GetTypesFromAssemblies<DefinitionBase>(new[]
+            {
+                spMetaAssembly,
+                spMetaStandardAssembly
+            }).OrderBy(t => t.Name);
+
+            var allDefinitionTypesCount = allDefinitionTypes.Count();
+            var currentDefinitionTypeIndex = 0;
+
+            foreach (var definitionType in allDefinitionTypes)
+            {
+                currentDefinitionTypeIndex++;
+                RegressionUtils.WriteLine(string.Format("[{0}/{1}] Testing definition:[{2}]",
+                    new object[] {
+                        currentDefinitionTypeIndex,
+                        allDefinitionTypesCount,
+                        definitionType.FullName
+                    }));
+
+                var model = GetVeryRandomModel(definitionType, SPObjectModelType.CSOM);
+
+                var prevModel = model;
+                var currentModel = model;
+
+                var firstProvisionService = new FakeIncrementalModelTreeTraverseService();
+
+                firstProvisionService.PreviousModelHash = new ModelHash();
+                firstProvisionService.Traverse(null, currentModel);
+
+                var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
+
+                // check one more with second provision
+                var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
+
+                RegressionUtils.WriteLine("Original model:");
+                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+
+                secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
+                secondProvisionService.Traverse(null, currentModel);
+
+                RegressionUtils.WriteLine(string.Empty);
+                RegressionUtils.WriteLine("Provisioned model:");
+                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+
+                // asserts
+                var expectedProvisionNodesCount = 0;
+
+                expectedProvisionNodesCount += secondProvisionService.GetTotalSingleIdentityNodeCount();
+                expectedProvisionNodesCount += secondProvisionService.GetTotalIgnoredNodeCount();
+
+                Assert.AreEqual(expectedProvisionNodesCount, secondProvisionService.ModelNodesToUpdate.Count);
+                Assert.AreEqual(GetTotalModelNodeCount(model) - expectedProvisionNodesCount, secondProvisionService.ModelNodesToSkip.Count);
+            }
         }
 
         [TestMethod]
@@ -83,6 +206,9 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             firstProvisionService.PreviousModelHash = new ModelHash();
             firstProvisionService.Traverse(null, currentModel);
 
+            RegressionUtils.WriteLine("Original model:");
+            RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+
             var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
 
             ModelNode newField1 = null;
@@ -92,11 +218,17 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             model.AddRandomField(f => { newField1 = f; });
             model.AddRandomField(f => { newField2 = f; });
 
+
+
             // check one more with second provision
             var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
             secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
             secondProvisionService.Traverse(null, currentModel);
+
+            RegressionUtils.WriteLine(string.Empty);
+            RegressionUtils.WriteLine("Provisioned model:");
+            RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
 
             // asserts
             // should be 2 of the nodes to update on the same model
@@ -113,7 +245,36 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #region utils
 
-        public int GetTotalModelNodeCount(ModelNode model)
+        protected ModelNode GetVeryRandomModel(Type definitionType, SPObjectModelType spObjectModelType)
+        {
+            var definitionSandbox = ModelGeneratorService.GenerateModelTreeForDefinition(definitionType, spObjectModelType);
+            var additionalDefinitions = ModelGeneratorService.GetAdditionalDefinitions(definitionType);
+
+            ModelGeneratorService.ComposeModelWithAdditionalDefinitions(definitionSandbox, additionalDefinitions, spObjectModelType);
+
+            // more random definitions
+            var messyDefinitions = new List<DefinitionBase>();
+
+            var flatNodes = definitionSandbox.Flatten().ToArray();
+
+            foreach (var node in flatNodes)
+            {
+                if (node.ChildModels.Count == 0)
+                    continue;
+
+                var defType = node.ChildModels[0].Value.GetType();
+                var randomFactor = Rnd.Int(5) + 3;
+
+                for (var i = 0; i < randomFactor; i++)
+                {
+                    node.AddDefinitionNode(ModelGeneratorService.GetRandomDefinition(defType));
+                }
+            }
+
+            return definitionSandbox;
+        }
+
+        protected int GetTotalModelNodeCount(ModelNode model)
         {
             if (model == null)
                 return 0;
@@ -159,6 +320,22 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 ModelNodesToUpdate.Add(modelNode);
             else
                 ModelNodesToSkip.Add(modelNode);
+        }
+
+        public int GetTotalSingleIdentityNodeCount()
+        {
+            // && RequireSelfProcessing cause root defs such as FarmDefinition must be excluded
+            // getting only singletons from the actual model, not the root nodes
+            var result =
+                ModelNodesToUpdate.Count(n => IsSingletonIdentityDefinition(n.Value) && n.Options.RequireSelfProcessing)
+                + ModelNodesToSkip.Count(n => IsSingletonIdentityDefinition(n.Value) && n.Options.RequireSelfProcessing);
+
+            return result;
+        }
+
+        public int GetTotalIgnoredNodeCount()
+        {
+            return IgnoredModelNodes.Count();
         }
     }
 }

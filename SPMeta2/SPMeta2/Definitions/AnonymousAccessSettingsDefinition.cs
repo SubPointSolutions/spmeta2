@@ -25,6 +25,7 @@ namespace SPMeta2.Definitions
 
     [ParentHostCapability(typeof(WebDefinition))]
     [SelfHostCapability]
+    [SingletonIdentity]
     public class AnonymousAccessSettingsDefinition : DefinitionBase
     {
         public AnonymousAccessSettingsDefinition()
