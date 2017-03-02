@@ -22,7 +22,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         [TestCategory("CI.Core")]
         public void Can_Create_IncrementalModelTreeTraverseService()
         {
-            var service = new IncrementalModelTreeTraverseService();
+            var service = new DefaultIncrementalModelTreeTraverseService();
         }
 
         #endregion
@@ -128,7 +128,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         #endregion
     }
 
-    public class FakeIncrementalModelTreeTraverseService : IncrementalModelTreeTraverseService
+    public class FakeIncrementalModelTreeTraverseService : DefaultIncrementalModelTreeTraverseService
     {
         #region constructors
         public FakeIncrementalModelTreeTraverseService()

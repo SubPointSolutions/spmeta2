@@ -365,7 +365,7 @@
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
-    <Compile Include="Services\Impl\IncrementalModelTreeTraverseService.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />

@@ -11,11 +11,11 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Services.Impl
 {
-    public class IncrementalModelTreeTraverseService : DefaultModelTreeTraverseService
+    public class DefaultIncrementalModelTreeTraverseService : DefaultModelTreeTraverseService
     {
         #region constuctors
 
-        public IncrementalModelTreeTraverseService()
+        public DefaultIncrementalModelTreeTraverseService()
         {
             HashService = new MD5HashCodeServiceBase();
 
@@ -57,13 +57,13 @@ namespace SPMeta2.Services.Impl
             foreach (var keyProp in keyProperties)
             {
                 var keyName = keyProp.Name;
-                var keyValue = ConvertUtils.ToString(keyProp.GetValue(definition));
+                var keyValue = ConvertUtils.ToString(ReflectionUtils.GetPropertyValue(definition, keyProp.Name));
 
                 identityKeyValues.Add(keyName, keyValue);
             }
 
             var resultIdentityKey = string.Join(";",
-                identityKeyValues.Select(v => string.Format("{0}:{1}", v.Key, v.Value)));
+                identityKeyValues.Select(v => string.Format("{0}:{1}", v.Key, v.Value)).ToArray());
 
             return resultIdentityKey;
         }
@@ -71,7 +71,7 @@ namespace SPMeta2.Services.Impl
         protected virtual string GetDefinitionFullPath()
         {
             var currentDefinitions = CurrentModelPath.Select(p => p.Value);
-            var currentDefinitionPath = string.Join("/", currentDefinitions.Select(p => GetDefinitionIdentityKey(p)));
+            var currentDefinitionPath = string.Join("/", currentDefinitions.Select(p => GetDefinitionIdentityKey(p)).ToArray());
 
             return currentDefinitionPath;
         }
@@ -172,7 +172,5 @@ namespace SPMeta2.Services.Impl
         }
 
         #endregion
-
-
     }
 }
