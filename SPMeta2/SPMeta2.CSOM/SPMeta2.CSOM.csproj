@@ -281,6 +281,7 @@
     <Compile Include="Services\ClientRuntimeQueryServiceBase.cs" />
     <Compile Include="Services\CSOMContentTypeLookupService.cs" />
     <Compile Include="Services\CSOMFieldLookupService.cs" />
+    <Compile Include="Services\CSOMIncrementalProvisionService.cs" />
     <Compile Include="Services\CSOMProvisionService.cs" />
     <Compile Include="ModelHandlers\SP2013WorkflowDefinitionHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' Or '$(spRuntime)'=='365' or  '$(Configuration)'=='Debug'" />
     <Compile Include="Services\CSOMTokenReplacementService.cs" />

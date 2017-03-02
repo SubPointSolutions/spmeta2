@@ -137,6 +137,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInWikiPages.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
+    <Compile Include="Common\IncrementalProvisionConfig.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHash.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
@@ -350,6 +351,8 @@
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />
+    <Compile Include="Interfaces\IIncrementalProvisionService.cs" />
+    <Compile Include="Interfaces\IProvisionService.cs" />
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
@@ -399,6 +402,7 @@
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ModelDotPrintServiceBase.cs" />
     <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
+    <Compile Include="Services\ProvisionServiceBaseExtensions.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />

@@ -5,10 +5,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using SPMeta2.Definitions;
+using SPMeta2.Interfaces;
 
 namespace SPMeta2.Services
 {
-    public class ProvisionServiceBase : ModelServiceBase
+    public class ProvisionServiceBase : ModelServiceBase, IProvisionService
     {
         #region constructors
 

@@ -28,7 +28,7 @@ namespace SPMeta2.Services.Impl
         #region properties
 
         public ModelHash PreviousModelHash { get; set; }
-        public ModelHash CurrentModelHash { get; set; }
+        public ModelHash CurrentModelHash { get; private set; }
 
         public HashCodeServiceBase _hashService { get; set; }
 

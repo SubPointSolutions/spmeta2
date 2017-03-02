@@ -20,6 +20,7 @@ using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
+using SPMeta2.Interfaces;
 
 namespace SPMeta2.Regression.Impl.Tests
 {
@@ -138,6 +139,55 @@ namespace SPMeta2.Regression.Impl.Tests
             {
                 var dstHandlerImpl = service.ModelHandlers.Values.FirstOrDefault(h => h.GetType() == srcHandlerImplType);
                 Assert.IsNotNull(dstHandlerImpl);
+            }
+        }
+
+        #endregion
+
+        #region incremental proivision services
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService")]
+        [TestCategory("CI.Core")]
+        public void Can_Create_IncrementaProvisionServices()
+        {
+            var services = new List<ProvisionServiceBase>();
+
+            services.Add(new CSOMIncrementalProvisionService());
+            services.Add(new StandardCSOMIncrementalProvisionService());
+
+            services.Add(new SSOMIncrementalProvisionService());
+            services.Add(new StandardSSOMIncrementalProvisionService());
+
+            foreach (var service in services)
+            {
+                var incrementalService = service as IIncrementalProvisionService;
+
+                Assert.IsNotNull(incrementalService.PreviousModelHash);
+                Assert.IsNotNull(incrementalService.CurrentModelHash);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService")]
+        [TestCategory("CI.Core")]
+        public void Can_Create_IncrementaProvisionServices_With_FluentAPI()
+        {
+            var services = new List<ProvisionServiceBase>();
+
+            services.Add(new CSOMProvisionService());
+            services.Add(new StandardCSOMProvisionService());
+
+            services.Add(new SSOMProvisionService());
+            services.Add(new StandardSSOMProvisionService());
+
+            foreach (var service in services)
+            {
+                var incrementalService = service.SetIncrementalMode();
+
+                var currentModelHash = incrementalService.GetIncrementalModelHash();
+
+                Assert.IsNotNull(currentModelHash);
             }
         }
 
