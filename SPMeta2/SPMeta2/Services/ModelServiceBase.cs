@@ -150,7 +150,7 @@ namespace SPMeta2.Services
 
                 return _modelTraverseService;
             }
-            set { }
+            set { _modelTraverseService = value; }
         }
 
         public List<PreDeploymentServiceBase> PreDeploymentServices { get; set; }

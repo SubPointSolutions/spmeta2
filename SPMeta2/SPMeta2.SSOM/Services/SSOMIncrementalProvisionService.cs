@@ -21,7 +21,7 @@ namespace SPMeta2.SSOM.Services
 
         public SSOMIncrementalProvisionService()
         {
-            this.SetIncrementalMode();
+            this.SetIncrementalProvisionMode();
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace SPMeta2.SSOM.Standard.Services
 
         public StandardSSOMIncrementalProvisionService()
         {
-            this.SetIncrementalMode();
+            this.SetIncrementalProvisionMode();
         }
 
         #endregion

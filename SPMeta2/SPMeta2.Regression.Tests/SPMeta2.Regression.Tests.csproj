@@ -244,7 +244,7 @@
     <Compile Include="Impl\Scenarios\SecurityScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebConfigModificationScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\WebScenariosTest.cs" />
-    <Compile Include="Impl\Services\IncrementalModelTreeTraverseServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultModelTreeTraverseServiceTests.cs" />
     <Compile Include="Impl\Services\DiscussionBoardListFieldDefinitionValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultContentTypeLinkDeploymentValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultRequiredPropertyValidationServiceTests.cs" />
@@ -255,7 +255,7 @@
     <Compile Include="Impl\Services\DefaultXmlBasedPropertiesValidationServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultFluentModelValidationServiceTests.cs" />
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
-    <Compile Include="Impl\Services\DefaultModelTreeTraverseServiceTests.cs" />
+    <Compile Include="Impl\Services\IncrementalModelTreeTraverseServiceTests.cs" />
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Syntax\ContentTypeDefinitionSyntaxTests.cs" />

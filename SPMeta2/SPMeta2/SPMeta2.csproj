@@ -402,7 +402,7 @@
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ModelDotPrintServiceBase.cs" />
     <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
-    <Compile Include="Services\ProvisionServiceBaseExtensions.cs" />
+    <Compile Include="Services\IncrementalProvisionServiceBaseExtensions.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />

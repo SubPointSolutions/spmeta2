@@ -183,9 +183,9 @@ namespace SPMeta2.Regression.Impl.Tests
 
             foreach (var service in services)
             {
-                var incrementalService = service.SetIncrementalMode();
+                var incrementalService = service.SetIncrementalProvisionMode();
 
-                var currentModelHash = incrementalService.GetIncrementalModelHash();
+                var currentModelHash = incrementalService.GetIncrementalProvisionModelHash();
 
                 Assert.IsNotNull(currentModelHash);
             }

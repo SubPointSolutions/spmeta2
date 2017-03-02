@@ -10,17 +10,36 @@ using SPMeta2.Exceptions;
 
 namespace SPMeta2.Services
 {
-    public static class ProvisionServiceBaseExtensions
+    public static class IncrementalProvisionServiceBaseExtensions
     {
-        #region incremental provision
+        #region default provision
 
-        public static ProvisionServiceBase SetIncrementalMode(this ProvisionServiceBase service)
+        public static ProvisionServiceBase ResetProvisionMode(this ProvisionServiceBase service)
         {
-            return SetIncrementalMode(service, null);
+            return SetDefaultProvisionMode(service);
         }
 
-        public static ProvisionServiceBase SetIncrementalMode(this ProvisionServiceBase service, IncrementalProvisionConfig config)
+        public static ProvisionServiceBase SetDefaultProvisionMode(this ProvisionServiceBase service)
         {
+            service.CustomModelTreeTraverseServiceType = null;
+            service.ModelTraverseService = null;
+
+            return service;
+        }
+
+        #endregion
+
+        #region incremental provision
+
+        public static ProvisionServiceBase SetIncrementalProvisionMode(this ProvisionServiceBase service)
+        {
+            return SetIncrementalProvisionMode(service, null);
+        }
+
+        public static ProvisionServiceBase SetIncrementalProvisionMode(this ProvisionServiceBase service, IncrementalProvisionConfig config)
+        {
+            service.ModelTraverseService = null;
+
             if (config == null)
                 config = IncrementalProvisionConfig.Default;
 
@@ -35,7 +54,7 @@ namespace SPMeta2.Services
             return service;
         }
 
-        public static ProvisionServiceBase SetIncrementalModelHash(this ProvisionServiceBase service, ModelHash modelHash)
+        public static ProvisionServiceBase SetIncrementalProvisionModelHash(this ProvisionServiceBase service, ModelHash modelHash)
         {
             var typedModelService = GetIncrementalModelTraverseService(service);
             typedModelService.PreviousModelHash = modelHash;
@@ -43,7 +62,7 @@ namespace SPMeta2.Services
             return service;
         }
 
-        public static ModelHash GetIncrementalModelHash(this ProvisionServiceBase service)
+        public static ModelHash GetIncrementalProvisionModelHash(this ProvisionServiceBase service)
         {
             var typedModelService = GetIncrementalModelTraverseService(service);
             return typedModelService.CurrentModelHash;
