@@ -107,7 +107,7 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ManagedPropertyDefinition>(this, base.ToString())
+            return new ToStringResult<ManagedPropertyDefinition>(this)
                           .AddPropertyValue(p => p.Name)
                           .AddPropertyValue(p => p.Description)
                           .ToString();

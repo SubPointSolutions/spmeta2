@@ -306,7 +306,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FieldDefinition>(this, base.ToString())
+            return new ToStringResult<FieldDefinition>(this)
                          .AddPropertyValue(p => p.InternalName)
                          .AddPropertyValue(p => p.Id)
                          .AddPropertyValue(p => p.Title)

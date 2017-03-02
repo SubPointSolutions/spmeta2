@@ -9,6 +9,7 @@ using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Definitions;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Standard.Definitions
 {
@@ -99,7 +100,8 @@ namespace SPMeta2.Standard.Definitions
             if (!string.IsNullOrEmpty(result))
                 return result;
 
-            return base.ToString();
+            return new ToStringResult<MetadataNavigationSettingsDefinition>(this)
+                        .ToString();
         }
 
         #endregion

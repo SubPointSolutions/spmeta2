@@ -4,6 +4,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -35,7 +36,8 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             // we need that to pass SPMeta2 API tests 'DefinitionsShouldHaveToStringOverride'
-            return base.ToString();
+            return new ToStringResult<ResetRoleInheritanceDefinition>(this)
+                         .ToString();
         }
 
         #endregion

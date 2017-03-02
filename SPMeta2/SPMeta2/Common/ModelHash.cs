@@ -43,18 +43,19 @@ namespace SPMeta2.Common
         [DataMember]
         public string DefinitionHash { get; set; }
 
-
         [DataMember]
         public string DefinitionFullPathHash { get; set; }
 
         [DataMember]
         public string DefinitionFullPath { get; set; }
 
-        #endregion
-
+        [DataMember]
         public string DefinitionIdentityKey { get; set; }
 
+        [DataMember]
         public string DefinitionIdentityKeyHash { get; set; }
+
+        #endregion
     }
 
     //[DataContract]
