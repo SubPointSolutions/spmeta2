@@ -138,6 +138,7 @@
     <Compile Include="BuiltInDefinitions\BuiltInWikiPages.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
+    <Compile Include="Common\ModelHash.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
@@ -364,6 +365,7 @@
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\IncrementalModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
