@@ -9,6 +9,14 @@ namespace SPMeta2.SSOM.ModelHosts
 {
     public class SSOMModelHostBase : ModelHostBase
     {
-        
+         #region constructors
+
+        public SSOMModelHostBase()
+        {
+            IsCSOM = false;
+            IsSSOM = true;
+        }
+
+        #endregion
     }
 }

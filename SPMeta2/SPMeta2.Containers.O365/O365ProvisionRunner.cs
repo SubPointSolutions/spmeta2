@@ -20,6 +20,7 @@ using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.Standard.Services;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.O365
 {
@@ -42,6 +43,11 @@ namespace SPMeta2.Containers.O365
 
             UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
             UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+        }
+
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
         }
 
         private void InitServices()
@@ -197,7 +203,15 @@ namespace SPMeta2.Containers.O365
                 WithO365Context(siteUrl, context =>
                 {
                     if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
                         _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
 
                     if (EnableDefinitionValidation)
                         _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
@@ -234,7 +248,15 @@ namespace SPMeta2.Containers.O365
                     provisionGeneration++)
                 {
                     if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
                         _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
 
                     if (EnableDefinitionValidation)
                         _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
@@ -260,8 +282,6 @@ namespace SPMeta2.Containers.O365
                 {
                     ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-
-
                     for (var provisionGeneration = 0;
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
@@ -269,15 +289,22 @@ namespace SPMeta2.Containers.O365
                         WithO365Context(webUrl, context =>
                         {
                             if (EnableDefinitionProvision)
+                            {
+                                if (OnBeforeDeployModel != null)
+                                    OnBeforeDeployModel(_provisionService, model);
+
                                 _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                                if (OnAfterDeployModel != null)
+                                    OnAfterDeployModel(_provisionService, model);
+
+                            }
 
                             if (EnableDefinitionValidation)
                                 _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
 
                         });
                     }
-
-
                 }
             }
         }

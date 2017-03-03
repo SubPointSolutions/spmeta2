@@ -9,6 +9,16 @@ namespace SPMeta2.CSOM.ModelHosts
 {
     public abstract class CSOMModelHostBase : ModelHostBase
     {
+        #region constructors
+
+        public CSOMModelHostBase()
+        {
+            IsCSOM = true;
+            IsSSOM = false;
+        }
+
+        #endregion
+
         #region properties
 
         public ClientContext HostClientContext { get; set; }

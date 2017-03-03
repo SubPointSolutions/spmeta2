@@ -5,6 +5,7 @@ using System.Reflection;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Services;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Extensions
 {
@@ -231,6 +232,53 @@ namespace SPMeta2.Extensions
             var service = ServiceContainer.Instance.GetService<FluentModelValidationServiceBase>();
 
             return service.Validate(node, action);
+        }
+
+        #endregion
+
+        #region incremental provision
+
+
+        private static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
+            where TModelNode : ModelNode
+        {
+            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
+                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
+
+            if (incrementalRequireSelfProcessingValue == null)
+            {
+                incrementalRequireSelfProcessingValue = new PropertyBagValue
+                {
+                    Name = "_sys.IncrementalProvision.PersistenceStorageModelId",
+                    Value = modelId
+                };
+
+                modelNode.PropertyBag.Add(incrementalRequireSelfProcessingValue);
+            }
+
+            incrementalRequireSelfProcessingValue.Value = modelId;
+
+            return modelNode;
+        }
+
+        public static FarmModelNode SetIncrementalProvisionModelId(this FarmModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebApplicationModelNode SetIncrementalProvisionModelId(this WebApplicationModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static SiteModelNode SetIncrementalProvisionModelId(this SiteModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebModelNode SetIncrementalProvisionModelId(this WebModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
         }
 
         #endregion

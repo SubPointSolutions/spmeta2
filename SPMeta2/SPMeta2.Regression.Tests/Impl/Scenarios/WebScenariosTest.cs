@@ -245,31 +245,30 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Webs")]
         public void CanDeploy_WebHierarchy()
         {
-            var model = SPMeta2Model
-                             .NewWebModel(web =>
-                             {
-                                 web
-                                     .AddWeb(RegWebs.Archive)
-                                     .AddWeb(RegWebs.Blog)
-                                     .AddWeb(RegWebs.CIO, cioWeb =>
-                                     {
-                                         cioWeb
-                                             .AddWeb(RegWebs.CIOBlog);
-                                     })
-                                     .AddWeb(RegWebs.Departments, departmentsWeb =>
-                                     {
-                                         departmentsWeb
-                                           .AddWeb(RegWebs.HR)
-                                           .AddWeb(RegWebs.IT)
-                                           .AddWeb(RegWebs.Delivery)
-                                           .AddWeb(RegWebs.Sales)
-                                           .AddWeb(RegWebs.PR);
-                                     })
-                                     .AddWeb(RegWebs.Projects)
-                                     .AddWeb(RegWebs.Wiki)
-                                     .AddWeb(RegWebs.FAQ);
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddWeb(RegWebs.Archive)
+                    .AddWeb(RegWebs.Blog)
+                    .AddWeb(RegWebs.CIO, cioWeb =>
+                    {
+                        cioWeb
+                            .AddWeb(RegWebs.CIOBlog);
+                    })
+                    .AddWeb(RegWebs.Departments, departmentsWeb =>
+                    {
+                        departmentsWeb
+                          .AddWeb(RegWebs.HR)
+                          .AddWeb(RegWebs.IT)
+                          .AddWeb(RegWebs.Delivery)
+                          .AddWeb(RegWebs.Sales)
+                          .AddWeb(RegWebs.PR);
+                    })
+                    .AddWeb(RegWebs.Projects)
+                    .AddWeb(RegWebs.Wiki)
+                    .AddWeb(RegWebs.FAQ);
 
-                             });
+            });
 
             TestModel(model);
         }

@@ -202,43 +202,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Taxonomy")]
         public void CanDeploy_TaxonomyHierarchy()
         {
-            var model = SPMeta2Model
-                  .NewSiteModel(site =>
-                  {
-                      site
-                          .AddRandomTermStore(store =>
-                          {
-                              store
-                                  .AddRandomTermGroup(group =>
-                                  {
-                                      group
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          })
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          });
-                                  })
-                                  .AddRandomTermGroup(group =>
-                                  {
-                                      group
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          });
-                                  });
-                          });
-                  });
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(store =>
+                {
+                    store.AddRandomTermGroup(group =>
+                    {
+                        group
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm()
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            })
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            });
+                    })
+                    .AddRandomTermGroup(group =>
+                    {
+                        group
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            });
+                    });
+                });
+            });
 
             TestModel(model);
         }

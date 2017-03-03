@@ -187,7 +187,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelHandlers\DesignPackageModelHandler.cs"  Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\DesignPackageModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\CorePropertyModelHandler.cs" />
     <Compile Include="ModelHandlers\DocumentSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
@@ -254,6 +254,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\StandardSSOMIncrementalProvisionService.cs" />
     <Compile Include="Services\StandardSSOMProvisionService.cs" />
   </ItemGroup>
   <ItemGroup>

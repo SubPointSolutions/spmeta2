@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPMeta2.Services;
 using SPMeta2.Services.Impl;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2
 {
@@ -18,12 +19,17 @@ namespace SPMeta2
         private ServiceContainer()
         {
             Services = new Dictionary<Type, List<object>>();
+            ServiceTypes = new Dictionary<Type, Type>();
 
             InitServices();
         }
 
         private void InitServices()
         {
+            // types
+            RegisterServiceType(typeof(ModelTreeTraverseServiceBase), typeof(DefaultModelTreeTraverseService));
+
+            // service
             RegisterService(typeof(TraceServiceBase), new TraceSourceService());
 
             RegisterService(typeof(ModelTreeTraverseServiceBase), new DefaultModelTreeTraverseService());
@@ -55,9 +61,51 @@ namespace SPMeta2
 
         public Dictionary<Type, List<object>> Services { get; set; }
 
+        public Dictionary<Type, Type> ServiceTypes { get; set; }
+
         #endregion
 
         #region methods
+
+
+        public void RegisterServiceType(Type serviceType, Type implementationType)
+        {
+            if (!ServiceTypes.ContainsKey(serviceType))
+                ServiceTypes.Add(serviceType, implementationType);
+
+            ServiceTypes[serviceType] = implementationType;
+        }
+
+        public TServiceType CreateNewService<TServiceType>()
+            where TServiceType : class
+        {
+            var type = typeof(TServiceType);
+            return CreateNewService(type) as TServiceType;
+        }
+
+        public object CreateNewService(Type serviceType)
+        {
+            if (!ServiceTypes.ContainsKey(serviceType))
+                throw new SPMeta2Exception(string.Format("Cannot find implementation type for service type:[{0}]", serviceType));
+
+            return CreateNewInstance(ServiceTypes[serviceType]);
+        }
+
+        public TInstanceType CreateNewInstance<TInstanceType>()
+            where TInstanceType : class
+        {
+            return CreateNewInstance(typeof(TInstanceType)) as TInstanceType;
+        }
+
+        public object CreateNewInstance(Type instanceType)
+        {
+            var instance = Activator.CreateInstance(instanceType);
+
+            if (instance == null)
+                throw new SPMeta2Exception(string.Format("Created instance is null. Service type:[{0}]", instanceType));
+
+            return instance;
+        }
 
         public void RegisterService(Type type, object service)
         {
@@ -124,5 +172,7 @@ namespace SPMeta2
         public static ServiceContainer Instance { get; set; }
 
         #endregion
+
+
     }
 }
