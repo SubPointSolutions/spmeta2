@@ -8,13 +8,20 @@ using System.Text;
 
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
+using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.Services.Impl
 {
-    public class DefaultSSOMFarmPropertyBagStorage : PersistenceStorageServiceBase
+    public class DefaultSSOMFarmPropertyBagStorage : SharePointPersistenceStorageServiceBase
     {
         #region consturctors
+
+        public DefaultSSOMFarmPropertyBagStorage()
+        {
+
+        }
 
         public DefaultSSOMFarmPropertyBagStorage(SPFarm farm)
         {
@@ -26,6 +33,19 @@ namespace SPMeta2.SSOM.Services.Impl
         #region properties
 
         public SPFarm CurrentFarm { get; set; }
+
+        public override List<Type> TargetDefinitionTypes
+        {
+            get
+            {
+                var result = new List<Type>();
+
+                result.Add(typeof(FarmDefinition));
+
+                return result;
+            }
+            set { }
+        }
 
         #endregion
 
@@ -61,6 +81,13 @@ namespace SPMeta2.SSOM.Services.Impl
             properties[key] = dataString;
 
             CurrentFarm.Update();
+        }
+
+        public override void InitialiseFromModelHost(object modelHost)
+        {
+            var typedModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
+
+            this.CurrentFarm = typedModelHost.HostFarm;
         }
 
         #endregion

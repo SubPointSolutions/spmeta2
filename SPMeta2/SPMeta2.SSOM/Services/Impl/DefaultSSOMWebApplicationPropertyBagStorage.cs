@@ -8,13 +8,20 @@ using System.Text;
 
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
+using SPMeta2.Definitions;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.Services.Impl
 {
-    public class DefaultSSOMWebApplicationPropertyBagStorage : PersistenceStorageServiceBase
+    public class DefaultSSOMWebApplicationPropertyBagStorage : SharePointPersistenceStorageServiceBase
     {
         #region consturctors
+
+        public DefaultSSOMWebApplicationPropertyBagStorage()
+        {
+
+        }
 
         public DefaultSSOMWebApplicationPropertyBagStorage(SPWebApplication webApplication)
         {
@@ -26,6 +33,20 @@ namespace SPMeta2.SSOM.Services.Impl
         #region properties
 
         public SPWebApplication CurrentWebApplication { get; set; }
+
+        public override List<Type> TargetDefinitionTypes
+        {
+            get
+            {
+                var result = new List<Type>();
+
+                result.Add(typeof(WebApplicationDefinition));
+
+                return result;
+            }
+            set { }
+        }
+
 
         #endregion
 
@@ -61,6 +82,13 @@ namespace SPMeta2.SSOM.Services.Impl
             properties[key] = dataString;
 
             CurrentWebApplication.Update();
+        }
+
+        public override void InitialiseFromModelHost(object modelHost)
+        {
+            var typedModelHost = modelHost.WithAssertAndCast<WebApplicationModelHost>("modelHost", value => value.RequireNotNull());
+
+            this.CurrentWebApplication = typedModelHost.HostWebApplication;
         }
 
         #endregion

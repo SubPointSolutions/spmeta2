@@ -274,8 +274,10 @@ namespace SPMeta2.Services.Impl
             // clean up current model hash
             CurrentModelHash = new ModelHash();
 
+            var storages = ResolvePersistenceStorages(modelHost, modelNode);
+
             // restore previous one
-            if (Configuration != null && Configuration.PersistenceStorages.Count() > 0)
+            if (Configuration != null && storages.Count() > 0)
             {
                 TraceService.Information(0, "Model hash restore: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
@@ -294,7 +296,9 @@ namespace SPMeta2.Services.Impl
                     typeof(ModelNodeHash)
                 });
 
-                foreach (var storage in Configuration.PersistenceStorages)
+
+
+                foreach (var storage in storages)
                 {
                     TraceService.Information(0, string.Format("Restoring model hash with object id:[{0}] using storage impl [{1}]",
                                                    objectId, storage.GetType()));
@@ -335,7 +339,9 @@ namespace SPMeta2.Services.Impl
             base.OnAfterDeployModel(modelHost, modelNode);
 
             // save model hash to a persistan storages
-            if (Configuration != null && Configuration.PersistenceStorages.Count() > 0)
+            var storages = ResolvePersistenceStorages(modelHost, modelNode);
+
+            if (Configuration != null && storages.Count() > 0)
             {
                 TraceService.Information(0, "Model hash save: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
@@ -359,18 +365,17 @@ namespace SPMeta2.Services.Impl
 
                 var data = Encoding.UTF8.GetBytes(serializer.Serialize(CurrentModelHash));
 
-                foreach (var storage in Configuration.PersistenceStorages)
+                foreach (var storage in storages)
                 {
                     TraceService.Information(0, string.Format("Saving model hash with object id:[{0}] using storage impl [{1}]. Size:[{2}] bytes",
                                                     objectId, storage.GetType(), data.LongLength));
-
 
                     storage.SaveObject(objectId, data);
                 }
             }
             else
             {
-                TraceService.Information(0, "Model hash save: can't find any persistence storage impl in Configuration.PersistenceStorages. Assuming manual model hash management is used");
+                TraceService.Information(0, "Model hash save: can't find any persistence storage impl in Configuration... Assuming manual model hash management is used");
             }
         }
 
@@ -383,6 +388,21 @@ namespace SPMeta2.Services.Impl
             // load up from provider such as file, SharePoint and so on
 
             throw new SPMeta2Exception(".CurrentModelHash must be set");
+        }
+
+        // AutoDetectSharePointPersistenceStorage
+
+        protected virtual List<PersistenceStorageServiceBase> ResolvePersistenceStorages(object modelHost, ModelNode modelNode)
+        {
+            if (Configuration == null)
+                return new List<PersistenceStorageServiceBase>();
+
+            if (Configuration.AutoDetectSharePointPersistenceStorage)
+            {
+                throw new SPMeta2NotImplementedException("Auto detection for SharePoint storage is not implemented yet");
+            }
+
+            return Configuration.PersistenceStorages;
         }
 
         #endregion

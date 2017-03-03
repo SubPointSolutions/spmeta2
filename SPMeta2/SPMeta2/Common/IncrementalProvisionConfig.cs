@@ -18,11 +18,15 @@ namespace SPMeta2.Common
         {
             PreviousModelHash = new ModelHash();
             PersistenceStorages = new List<PersistenceStorageServiceBase>();
+
+            AutoDetectSharePointPersistenceStorage = false;
         }
 
         #endregion
 
         #region properties
+
+        public bool AutoDetectSharePointPersistenceStorage { get; set; }
         public ModelHash PreviousModelHash { get; set; }
 
         public Type CustomModelTreeTraverseServiceType { get; set; }
@@ -35,10 +39,42 @@ namespace SPMeta2.Common
         {
             get
             {
-                return new IncrementalProvisionConfig
+                var config = new IncrementalProvisionConfig
                 {
                     CustomModelTreeTraverseServiceType = typeof(DefaultIncrementalModelTreeTraverseService)
                 };
+
+                return config;
+            }
+        }
+
+        public static IncrementalProvisionConfig DefaultFileSystem
+        {
+            get
+            {
+                var config = new IncrementalProvisionConfig
+                {
+                    CustomModelTreeTraverseServiceType = typeof(DefaultIncrementalModelTreeTraverseService)
+                };
+
+                config.PersistenceStorages.Add(new DefaultFileSystemPersistenceStorage());
+
+                return config;
+            }
+        }
+
+        public static IncrementalProvisionConfig DefaultSharePoint
+        {
+            get
+            {
+                var config = new IncrementalProvisionConfig
+                {
+                    CustomModelTreeTraverseServiceType = typeof(DefaultIncrementalModelTreeTraverseService)
+                };
+
+                config.AutoDetectSharePointPersistenceStorage = true;
+
+                return config;
             }
         }
     }

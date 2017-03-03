@@ -15,4 +15,10 @@ namespace SPMeta2.Services
 
         #endregion
     }
+
+    public abstract class SharePointPersistenceStorageServiceBase : PersistenceStorageServiceBase
+    {
+        public abstract void InitialiseFromModelHost(object modelHost);
+        public abstract List<Type> TargetDefinitionTypes { get; set; }
+    }
 }

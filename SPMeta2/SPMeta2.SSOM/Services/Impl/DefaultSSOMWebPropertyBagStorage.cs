@@ -7,13 +7,21 @@ using System.Security.Policy;
 using System.Text;
 
 using Microsoft.SharePoint;
+using SPMeta2.Definitions;
+using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.Services.Impl
 {
-    public class DefaultSSOMWebPropertyBagStorage : PersistenceStorageServiceBase
+    public class DefaultSSOMWebPropertyBagStorage : SharePointPersistenceStorageServiceBase
     {
         #region consturctors
+
+        public DefaultSSOMWebPropertyBagStorage()
+        {
+
+        }
 
         public DefaultSSOMWebPropertyBagStorage(SPWeb web)
         {
@@ -33,6 +41,20 @@ namespace SPMeta2.SSOM.Services.Impl
         protected Hashtable ExtractProperties()
         {
             return CurrentWeb.AllProperties;
+        }
+
+        public override List<Type> TargetDefinitionTypes
+        {
+            get
+            {
+                var result = new List<Type>();
+
+                result.Add(typeof(SiteDefinition));
+                result.Add(typeof(WebDefinition));
+
+                return result;
+            }
+            set { }
         }
 
         public override byte[] LoadObject(string objectId)
@@ -60,6 +82,28 @@ namespace SPMeta2.SSOM.Services.Impl
             properties[key] = dataString;
 
             CurrentWeb.Update();
+        }
+
+        public override void InitialiseFromModelHost(object modelHost)
+        {
+            var csomModelHost = modelHost.WithAssertAndCast<SSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
+            if (csomModelHost is WebModelHost)
+            {
+                var webModelHost = csomModelHost as WebModelHost;
+
+                this.CurrentWeb = webModelHost.HostWeb;
+            }
+            else if (csomModelHost is SiteModelHost)
+            {
+                var webModelHost = csomModelHost as SiteModelHost;
+
+                this.CurrentWeb = webModelHost.HostSite.RootWeb;
+            }
+            else
+            {
+                throw new SPMeta2Exception(string.Format("Unsuported model host type:[{0}]", modelHost.GetType()));
+            }
         }
 
         #endregion
