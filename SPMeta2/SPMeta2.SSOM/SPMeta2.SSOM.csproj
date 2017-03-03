@@ -343,6 +343,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\Impl\DefaultSSOMFarmPropertyBagStorage.cs" />
+    <Compile Include="Services\Impl\DefaultSSOMWebApplicationPropertyBagStorage.cs" />
+    <Compile Include="Services\Impl\DefaultSSOMWebPropertyBagStorage.cs" />
     <Compile Include="Services\SSOMContentTypeLookupService.cs" />
     <Compile Include="Services\SSOMDeleteNavigationNodesService.cs" />
     <Compile Include="Services\SSOMFieldLookupService.cs" />

@@ -239,11 +239,11 @@ namespace SPMeta2.Extensions
         #region incremental provision
 
 
-        public static TModelNode SetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
+        private static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
             where TModelNode : ModelNode
         {
             var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
-                 .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
+                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
 
             if (incrementalRequireSelfProcessingValue == null)
             {
@@ -260,6 +260,27 @@ namespace SPMeta2.Extensions
 
             return modelNode;
         }
+
+        public static FarmModelNode SetIncrementalProvisionModelId(this FarmModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebApplicationModelNode SetIncrementalProvisionModelId(this WebApplicationModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static SiteModelNode SetIncrementalProvisionModelId(this SiteModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebModelNode SetIncrementalProvisionModelId(this WebModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
         #endregion
     }
 }

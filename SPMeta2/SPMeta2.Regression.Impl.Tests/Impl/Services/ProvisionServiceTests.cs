@@ -14,12 +14,13 @@ using SPMeta2.Containers.CSOM;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Containers.O365;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using System;
+using SPMeta2.Containers.SSOM;
 using SPMeta2.CSOM.Services.Impl;
 using SPMeta2.Extensions;
+using SPMeta2.SSOM.Services.Impl;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 {
@@ -217,14 +218,14 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
                 provisionRunner.WithO365Context(siteUrl, context =>
                 {
-                    provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                    provisionService.DeployModel(SPMeta2.CSOM.ModelHosts.SiteModelHost.FromClientContext(context), model);
                 });
             });
         }
 
         [TestMethod]
         [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
-        [TestCategory("CI.Core")]
+        [TestCategory("CI.Core.O365")]
         public void Can_Provision_Incrementally_With_FileSystemStorage()
         {
             var provisionRunner = new O365ProvisionRunner();
@@ -248,7 +249,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
                 provisionRunner.WithO365Context(siteUrl, context =>
                 {
-                    provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                    provisionService.DeployModel(SPMeta2.CSOM.ModelHosts.SiteModelHost.FromClientContext(context), model);
                 });
             });
         }
@@ -283,7 +284,79 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
                         model.SetIncrementalProvisionModelId(incrementalModelId);
 
 
-                        provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                        provisionService.DeployModel(SPMeta2.CSOM.ModelHosts.SiteModelHost.FromClientContext(context), model);
+                    }
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
+        [TestCategory("CI.Core.SharePoint")]
+        public void Can_Provision_Incrementally_With_SSOMWebPropertyBagStorage()
+        {
+            var provisionRunner = new SSOMProvisionRunner();
+            var provisionService = provisionRunner.ProvisionService;
+
+            var incrementalModelId = "m2.regression." + Guid.NewGuid().ToString("N");
+
+            provisionRunner.SiteUrls.ForEach(siteUrl =>
+            {
+                provisionRunner.WithSSOMSiteAndWebContext((spSite, spWeb) =>
+                {
+                    for (var i = 0; i < 3; i++)
+                    {
+                        var incrementalProvisionConfig = new IncrementalProvisionConfig();
+                        incrementalProvisionConfig.PersistenceStorages.Add(
+                            new DefaultSSOMWebPropertyBagStorage(spWeb));
+
+                        provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+
+                        var model = SPMeta2Model.NewSiteModel(site =>
+                        {
+
+                        });
+
+                        model.SetIncrementalProvisionModelId(incrementalModelId);
+
+
+                        provisionService.DeployModel(SPMeta2.SSOM.ModelHosts.WebModelHost.FromWeb(spWeb), model);
+                    }
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
+        [TestCategory("CI.Core.SharePoint")]
+        public void Can_Provision_Incrementally_With_SSOMWebApplicationPropertyBagStorage()
+        {
+            var provisionRunner = new SSOMProvisionRunner();
+            var provisionService = provisionRunner.ProvisionService;
+
+            var incrementalModelId = "m2.regression." + Guid.NewGuid().ToString("N");
+
+            provisionRunner.WebApplicationUrls.ForEach(url =>
+            {
+                provisionRunner.WithSSOMWebApplicationContext(url, spWebApp =>
+                {
+                    for (var i = 0; i < 3; i++)
+                    {
+                        var incrementalProvisionConfig = new IncrementalProvisionConfig();
+                        incrementalProvisionConfig.PersistenceStorages.Add(
+                            new DefaultSSOMWebApplicationPropertyBagStorage(spWebApp));
+
+                        provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+
+                        var model = SPMeta2Model.NewSiteModel(site =>
+                        {
+
+                        });
+
+                        model.SetIncrementalProvisionModelId(incrementalModelId);
+
+
+                        provisionService.DeployModel(SPMeta2.SSOM.ModelHosts.WebApplicationModelHost.FromWebApplication(spWebApp), model);
                     }
                 });
             });
