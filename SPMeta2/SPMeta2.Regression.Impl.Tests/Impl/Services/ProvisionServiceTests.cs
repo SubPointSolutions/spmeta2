@@ -255,7 +255,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
-        [TestCategory("CI.Core")]
+        [TestCategory("CI.Core.O365")]
         public void Can_Provision_Incrementally_With_CSOMWebPropertyBagStorage()
         {
             var provisionRunner = new O365ProvisionRunner();
