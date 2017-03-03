@@ -25,6 +25,8 @@ namespace SPMeta2.Services.Impl
 
             DefaultDefinitionFullPathSeparator = "/";
             DefaultDefinitionIdentityKeySeparator = ";";
+
+            DefaultPersistenceModelIdPrefix = "spmeta2.incremental_state";
         }
 
         #endregion
@@ -42,6 +44,9 @@ namespace SPMeta2.Services.Impl
 
         protected string DefaultDefinitionFullPathSeparator { get; set; }
         protected string DefaultDefinitionIdentityKeySeparator { get; set; }
+
+        public string DefaultPersistenceModelIdPrefix { get; set; }
+
 
         #endregion
 
@@ -280,7 +285,7 @@ namespace SPMeta2.Services.Impl
                     throw new SPMeta2Exception("IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
                 var modelId = modelIdProperty.Value;
-                var objectId = string.Format("incremental_state_{0}", modelId);
+                var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
                 serializer.RegisterKnownTypes(new[]
@@ -343,8 +348,7 @@ namespace SPMeta2.Services.Impl
                         "IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
                 var modelId = modelIdProperty.Value;
-
-                var objectId = string.Format("incremental_state_{0}", modelId);
+                var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
                 serializer.RegisterKnownTypes(new[]

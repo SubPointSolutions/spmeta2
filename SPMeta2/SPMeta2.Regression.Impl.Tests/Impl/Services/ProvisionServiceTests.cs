@@ -18,6 +18,8 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using System;
+using SPMeta2.CSOM.Services.Impl;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 {
@@ -242,23 +244,47 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
                 });
 
-                var incrementalRequireSelfProcessingValue = model.NonPersistentPropertyBag
-                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
-
-                if (incrementalRequireSelfProcessingValue == null)
-                {
-                    incrementalRequireSelfProcessingValue = new PropertyBagValue
-                    {
-                        Name = "_sys.IncrementalProvision.PersistenceStorageModelId",
-                        Value = incrementalModelId
-                    };
-
-                    model.PropertyBag.Add(incrementalRequireSelfProcessingValue);
-                }
+                model.SetIncrementalProvisionModelId(incrementalModelId);
 
                 provisionRunner.WithO365Context(siteUrl, context =>
                 {
                     provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
+        [TestCategory("CI.Core")]
+        public void Can_Provision_Incrementally_With_CSOMWebPropertyBagStorage()
+        {
+            var provisionRunner = new O365ProvisionRunner();
+            var provisionService = provisionRunner.ProvisionService;
+
+            var incrementalModelId = "m2.regression." + Guid.NewGuid().ToString("N");
+
+            provisionRunner.SiteUrls.ForEach(siteUrl =>
+            {
+                provisionRunner.WithO365Context(siteUrl, context =>
+                {
+                    for (var i = 0; i < 3; i++)
+                    {
+                        var incrementalProvisionConfig = new IncrementalProvisionConfig();
+                        incrementalProvisionConfig.PersistenceStorages.Add(
+                            new DefaultCSOMWebPropertyBagStorage(context.Web));
+
+                        provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+
+                        var model = SPMeta2Model.NewSiteModel(site =>
+                        {
+
+                        });
+
+                        model.SetIncrementalProvisionModelId(incrementalModelId);
+
+
+                        provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                    }
                 });
             });
         }
