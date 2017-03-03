@@ -24,6 +24,7 @@
         public const string CSOM_Password = "SPMeta2_CSOM_Password";
 
         public const string RunnerLibraries = "SPMeta2_RunnerLibraries";
+        public const string RunnerProvisionMode = "SPMeta2_RunnerProvisionMode";
 
         public const string DefaultTaxonomyStoreName = "SPMeta2_DefaultTaxonomyStoreName";
         public const string DefaultTaxonomyStoreId = "SPMeta2_DefaultTaxonomyStoreId";
@@ -34,8 +35,6 @@
         public const string DefaultTestDomainUserEmails = "SPMeta2_DefaultTestDomainUserEmails";
 
         public const string DefaultTestADGroups = "SPMeta2_DefaultTestADGroups";
-
-        
 
         #endregion
     }

@@ -30,7 +30,7 @@ namespace SPMeta2.Services.Impl
         {
             var result = new StringBuilder();
 
-            result.AppendFormat("{0}{1}", GetDefinitionValue(modelNode), NewLineString);
+            result.AppendFormat("{0}{1}{2}", GetCurrentIntent(modelNode, string.Empty), GetDefinitionValue(modelNode), NewLineString);
 
             WalkModelNodes(modelNode, result, IndentString);
 
@@ -45,10 +45,15 @@ namespace SPMeta2.Services.Impl
             {
                 foreach (var modelNode in modelNodeGroup)
                 {
-                    result.AppendFormat("{0}{1}{2}", indent, GetDefinitionValue(modelNode), NewLineString);
-                    WalkModelNodes(modelNode, result, IndentString + IndentString);
+                    result.AppendFormat("{0}{1}{2}", GetCurrentIntent(modelNode, indent), GetDefinitionValue(modelNode), NewLineString);
+                    WalkModelNodes(modelNode, result, indent + IndentString);
                 }
             }
+        }
+
+        protected virtual string GetCurrentIntent(ModelNode modelNode, string currentIndent)
+        {
+            return currentIndent;
         }
 
         protected virtual string GetDefinitionValue(ModelNode modelNode)

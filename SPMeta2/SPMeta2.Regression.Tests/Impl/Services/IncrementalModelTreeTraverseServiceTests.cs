@@ -21,22 +21,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
-    public class IncrementalModelPrettyPrintService : DefaultModelPrettyPrintService
-    {
-        protected override string GetDefinitionValue(ModelNode modelNode)
-        {
-            var shouldDeploy = modelNode.Options.RequireSelfProcessing;
-
-            if (shouldDeploy)
-            {
-                return string.Format("[+] {0}", base.GetDefinitionValue(modelNode));
-            }
-            else
-            {
-                return string.Format("[-] {0}", base.GetDefinitionValue(modelNode));
-            }
-        }
-    }
+   
 
     [TestClass]
     public class IncrementalModelTreeTraverseServiceTests
@@ -45,7 +30,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         public IncrementalModelTreeTraverseServiceTests()
         {
-            ModelPrintService = new IncrementalModelPrettyPrintService();
+            ModelPrintService = new DefaultIncrementalModelPrettyPrintService();
 
             Rnd = new DefaultRandomService();
 

@@ -30,6 +30,7 @@ using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
 using System.IO;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
@@ -143,6 +144,23 @@ namespace SPMeta2.Regression.Tests.Base
             where T : DefinitionBase
         {
             return ModelGeneratorService.GetRandomDefinition<T>(action);
+        }
+        public bool IsIncrementalProvisionMode
+        {
+            get
+            {
+                var result = false;
+
+                var value = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.RunnerProvisionMode);
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (value.ToLower() == "incremental")
+                        result = true;
+                }
+
+                return result;
+            }
         }
     }
 

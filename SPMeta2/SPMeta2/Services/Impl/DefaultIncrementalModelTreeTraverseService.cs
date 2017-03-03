@@ -21,6 +21,9 @@ namespace SPMeta2.Services.Impl
 
             CurrentModelHash = new ModelHash();
             IgnoredModelNodes = new List<ModelNode>();
+
+            DefaultDefinitionFullPathSeparator = "/";
+            DefaultDefinitionIdentityKeySeparator = ";";
         }
 
         #endregion
@@ -30,9 +33,12 @@ namespace SPMeta2.Services.Impl
         public ModelHash PreviousModelHash { get; set; }
         public ModelHash CurrentModelHash { get; private set; }
 
-        public HashCodeServiceBase _hashService { get; set; }
+        protected HashCodeServiceBase _hashService { get; set; }
 
         protected List<ModelNode> IgnoredModelNodes { get; private set; }
+
+        protected string DefaultDefinitionFullPathSeparator { get; set; }
+        protected string DefaultDefinitionIdentityKeySeparator { get; set; }
 
         #endregion
 
@@ -78,7 +84,7 @@ namespace SPMeta2.Services.Impl
                 identityKeyValues.Add(keyName, keyValue);
             }
 
-            var resultIdentityKey = string.Join(";",
+            var resultIdentityKey = string.Join(DefaultDefinitionIdentityKeySeparator,
                 identityKeyValues.Select(v => string.Format("{0}:{1}", v.Key, v.Value)).ToArray());
 
             return resultIdentityKey;
@@ -98,11 +104,11 @@ namespace SPMeta2.Services.Impl
 
             if (asHash)
             {
-                result = string.Join("/", currentDefinitions.Select(p => GetHashString(GetDefinitionIdentityKey(p))).ToArray());
+                result = string.Join(DefaultDefinitionFullPathSeparator, currentDefinitions.Select(p => GetHashString(GetDefinitionIdentityKey(p))).ToArray());
             }
             else
             {
-                result = string.Join("/", currentDefinitions.Select(p => GetDefinitionIdentityKey(p)).ToArray());
+                result = string.Join(DefaultDefinitionFullPathSeparator, currentDefinitions.Select(p => GetDefinitionIdentityKey(p)).ToArray());
                 // full path is 'hash(identitykey)/hash(identitykey)/hash(identitykey)'
             }
 

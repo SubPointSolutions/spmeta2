@@ -362,6 +362,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />

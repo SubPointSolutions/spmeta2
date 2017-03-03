@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SPMeta2.Models;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.Services
 {
@@ -16,6 +17,17 @@ namespace SPMeta2.Containers.Services
         #endregion
 
         #region properties
+
+        public Action<ProvisionServiceBase, ModelNode> OnBeforeDeployModel { get; set; }
+        public Action<ProvisionServiceBase, ModelNode> OnAfterDeployModel { get; set; }
+
+        public virtual ProvisionServiceBase ProvisionService
+        {
+            get
+            {
+                throw new NotImplementedException("override this property in ProvisionRunnerBase implementation");
+            }
+        }
 
         public string Name { get; set; }
 
@@ -75,6 +87,6 @@ namespace SPMeta2.Containers.Services
 
         }
 
-        
+
     }
 }

@@ -489,6 +489,9 @@ namespace SPMeta2.Containers.Services
             TestModels(models, false);
         }
 
+        public Action<ProvisionRunnerBase> BeforeProvisionRunnerExcecution { get; set; }
+        public Action<ProvisionRunnerBase> AfterProvisionRunnerExcecution { get; set; }
+
         public void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
         {
             // force XML serialiation
@@ -513,6 +516,9 @@ namespace SPMeta2.Containers.Services
                 {
                     var runner = runnerContext.Runner;
 
+                    if (BeforeProvisionRunnerExcecution != null)
+                        BeforeProvisionRunnerExcecution(runner);
+
                     var omModelType = GetRunnerType(runner);
                     var hooks = GetHooks(model);
 
@@ -535,7 +541,6 @@ namespace SPMeta2.Containers.Services
                     {
                         throw new SPMeta2NotImplementedException(
                             string.Format("Runner does not support model of type: [{0}]", model.Value.GetType()));
-
                     }
 
                     if (!deployOnce)
@@ -546,6 +551,9 @@ namespace SPMeta2.Containers.Services
                             AssertService.IsFalse(hasMissedOrInvalidProps);
                         }
                     }
+
+                    if (AfterProvisionRunnerExcecution != null)
+                        AfterProvisionRunnerExcecution(runner);
                 });
 
                 if (!deployOnce)
@@ -593,6 +601,9 @@ namespace SPMeta2.Containers.Services
             {
                 var runner = runnerContext.Runner;
 
+                if (BeforeProvisionRunnerExcecution != null)
+                    BeforeProvisionRunnerExcecution(runner);
+
                 ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
                 var omModelType = GetRunnerType(runner);
@@ -634,6 +645,9 @@ namespace SPMeta2.Containers.Services
                     var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
                     AssertService.IsFalse(hasMissedOrInvalidProps);
                 }
+
+                if (AfterProvisionRunnerExcecution != null)
+                    AfterProvisionRunnerExcecution(runner);
 
                 result = definitionSandbox;
             });
