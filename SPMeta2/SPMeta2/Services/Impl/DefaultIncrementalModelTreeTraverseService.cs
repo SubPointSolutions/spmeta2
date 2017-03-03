@@ -115,8 +115,13 @@ namespace SPMeta2.Services.Impl
             return result;
         }
 
-        protected override void OnBeforeDeployModel(object modelHost, ModelNode modelNode)
+        protected override void OnBeforeDeployModelNode(object modelHost, ModelNode modelNode)
         {
+            // temporary measure
+            // we need to restoreoriginal value of .RequireSelfProcessing to avoid any model changes
+            // set 'ProcessedRequireSelfProcessingValue' in property bag for the further
+            OriginalRequireSelfProcessingValue = modelNode.Options.RequireSelfProcessing;
+
             // lookup node and definition in model state
             // mark as modelNode.Options.RequireSelfProcessing true/false based on state
 
@@ -200,8 +205,29 @@ namespace SPMeta2.Services.Impl
         }
 
 
-        protected override void OnAfterDeployModel(object modelHost, ModelNode modelNode)
+        protected override void OnAfterDeployModelNode(object modelHost, ModelNode modelNode)
         {
+            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
+                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
+
+            if (incrementalRequireSelfProcessingValue == null)
+            {
+                incrementalRequireSelfProcessingValue = new PropertyBagValue
+                {
+                    Name = "_sys.IncrementalRequireSelfProcessingValue",
+                    Value = modelNode.Options.RequireSelfProcessing.ToString()
+                };
+
+                modelNode.NonPersistentPropertyBag.Add(incrementalRequireSelfProcessingValue);
+            }
+            else
+            {
+                incrementalRequireSelfProcessingValue.Value = modelNode.Options.RequireSelfProcessing.ToString();
+            }
+
+            // restore model state
+            modelNode.Options.RequireSelfProcessing = OriginalRequireSelfProcessingValue;
+
             var currentModelNode = modelNode;
             var currentDefinition = modelNode.Value;
 
@@ -233,6 +259,11 @@ namespace SPMeta2.Services.Impl
             });
         }
 
+        protected override void OnBeforeDeployModel(object modelHost, ModelNode modelNode)
+        {
+            CurrentModelHash = new ModelHash();
+        }
+
         protected virtual ModelHash GetPreviousModelHash()
         {
             if (PreviousModelHash != null)
@@ -245,5 +276,7 @@ namespace SPMeta2.Services.Impl
         }
 
         #endregion
+
+        public bool OriginalRequireSelfProcessingValue { get; set; }
     }
 }

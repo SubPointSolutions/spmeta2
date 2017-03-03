@@ -52,10 +52,24 @@ namespace SPMeta2.Services.Impl
 
         }
 
+
+        protected virtual void OnBeforeDeployModelNode(object modelHost, ModelNode modelNode)
+        {
+
+        }
+
+        protected virtual void OnAfterDeployModelNode(object modelHost, ModelNode modelNode)
+        {
+
+        }
+
         public override void Traverse(object modelHost, ModelNode modelNode)
         {
             try
             {
+                if (CurrentModelPath.Count == 0)
+                    OnBeforeDeployModel(modelHost, modelNode);
+
                 CurrentModelPath.Push(modelNode);
 
                 var modelDefinition = modelNode.Value as DefinitionBase;
@@ -73,7 +87,7 @@ namespace SPMeta2.Services.Impl
                 if (OnModelProcessing != null)
                     OnModelProcessing(modelNode);
 
-                OnBeforeDeployModel(modelHost, modelNode);
+                OnBeforeDeployModelNode(modelHost, modelNode);
 
                 //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
                 var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
@@ -112,7 +126,7 @@ namespace SPMeta2.Services.Impl
                 if (OnModelProcessed != null)
                     OnModelProcessed(modelNode);
 
-                OnAfterDeployModel(modelHost, modelNode);
+                OnAfterDeployModelNode(modelHost, modelNode);
 
                 var childModelTypes = GetSortedChildModelTypes(modelNode);
 
@@ -195,6 +209,9 @@ namespace SPMeta2.Services.Impl
             finally
             {
                 CurrentModelPath.Pop();
+
+                if (CurrentModelPath.Count == 0)
+                    OnAfterDeployModel(modelHost, modelNode);
             }
         }
 

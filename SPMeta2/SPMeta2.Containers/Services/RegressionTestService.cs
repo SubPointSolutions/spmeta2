@@ -520,12 +520,20 @@ namespace SPMeta2.Containers.Services
                         BeforeProvisionRunnerExcecution(runner);
 
                     var omModelType = GetRunnerType(runner);
-                    var hooks = GetHooks(model);
+                    var hooks = new List<EventHooks>();
 
-                    foreach (var hook in hooks)
-                        hook.Tag = runner.Name;
+                    if (!deployOnce)
+                    {
+                        if (this.EnableDefinitionValidation)
+                        {
+                            hooks = GetHooks(model);
 
-                    allHooks.AddRange(hooks);
+                            foreach (var hook in hooks)
+                                hook.Tag = runner.Name;
+
+                            allHooks.AddRange(hooks);
+                        }
+                    }
 
                     if (model.Value.GetType() == typeof(FarmDefinition))
                         runner.DeployFarmModel(model);
@@ -619,14 +627,22 @@ namespace SPMeta2.Containers.Services
                         definitionSetup(def as TDefinition);
                 }
 
-                var hooks = GetHooks(definitionSandbox);
+                var hooks = new List<EventHooks>();
 
-                foreach (var hook in hooks)
-                    hook.Tag = runner.Name;
+                if (this.EnableDefinitionValidation)
+                {
+                    hooks = GetHooks(definitionSandbox);
 
-                GetSerializedAndRestoredModels(definitionSandbox);
+                    foreach (var hook in hooks)
+                        hook.Tag = runner.Name;
 
-                allHooks.AddRange(hooks);
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                    allHooks.AddRange(hooks);
+                }
+                else
+                {
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                }
 
                 if (definitionSandbox.Value.GetType() == typeof(FarmDefinition))
                     runner.DeployFarmModel(definitionSandbox);

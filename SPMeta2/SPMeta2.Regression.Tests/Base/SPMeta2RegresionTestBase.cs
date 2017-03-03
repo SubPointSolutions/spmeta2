@@ -479,10 +479,14 @@ namespace SPMeta2.Regression.Tests.Base
         {
             foreach (var model in models)
             {
+                var localModel = model;
+
                 model.WithNodesOfType<DefinitionBase>(node =>
                 {
                     var def = node.Value;
-                    ProcessDefinitionsPropertyUpdateValidation(def);
+
+                    if (node != localModel)
+                        ProcessDefinitionsPropertyUpdateValidation(def);
                 });
             }
         }

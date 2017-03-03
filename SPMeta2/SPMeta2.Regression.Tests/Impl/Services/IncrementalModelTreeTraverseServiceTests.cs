@@ -346,10 +346,10 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #endregion
 
-        protected override void OnBeforeDeployModel(object modelHost, ModelNode modelNode)
+        protected override void OnBeforeDeployModelNode(object modelHost, ModelNode modelNode)
         {
             // process deployment need
-            base.OnBeforeDeployModel(modelHost, modelNode);
+            base.OnBeforeDeployModelNode(modelHost, modelNode);
 
             if (modelNode.Options.RequireSelfProcessing)
                 ModelNodesToUpdate.Add(modelNode);

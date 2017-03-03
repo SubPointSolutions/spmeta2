@@ -59,6 +59,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
                 RegressionService.EnableEventValidation = false;
                 RegressionService.EnableDefinitionValidation = false;
                 RegressionService.EnablePropertyValidation = false;
+
+                EnablePropertyUpdateValidation = true;
             }
         }
 
