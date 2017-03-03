@@ -51,6 +51,8 @@ namespace SPMeta2.Services
             var typedModelService = service.ModelTraverseService as DefaultIncrementalModelTreeTraverseService;
             typedModelService.PreviousModelHash = config.PreviousModelHash ?? new ModelHash();
 
+            typedModelService.Configuration = config;
+
             return service;
         }
 

@@ -10,6 +10,7 @@ using SPMeta2.Services;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using System.Collections.Generic;
+using System.Text;
 using SPMeta2.Extensions;
 using SPMeta2.Regression.Utils;
 using SPMeta2.Containers.Services.Rnd;
@@ -21,7 +22,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
-   
+
 
     [TestClass]
     public class IncrementalModelTreeTraverseServiceTests
@@ -206,6 +207,24 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
                 secondProvisionService.Traverse(null, currentModel);
 
+                // trace size of the model hash  + amount if the aritfacts
+                var modelNodesCount = 0;
+                model.WithNodesOfType<DefinitionBase>(n => { modelNodesCount++; });
+
+                var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
+                serializer.RegisterKnownTypes(new[]
+                {
+                    typeof(ModelHash),
+                    typeof(ModelNodeHash)
+                });
+
+                var data = Encoding.UTF8.GetBytes(serializer.Serialize(firstProvisionService.CurrentModelHash));
+
+                var persistanceFileService = new DefaultFileSystemPersistenceStorage();
+                persistanceFileService.SaveObject(
+                                        string.Format("incremental_state_m2.regression-artifact-{1}-{0}", definitionType.Name, modelNodesCount),
+                                        data);
+
                 RegressionUtils.WriteLine(string.Empty);
                 RegressionUtils.WriteLine("Provisioned model:");
                 RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
@@ -277,6 +296,8 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         }
 
         #endregion
+
+
 
         #region utils
 

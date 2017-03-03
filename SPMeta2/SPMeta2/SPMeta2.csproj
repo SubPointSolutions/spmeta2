@@ -362,6 +362,7 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultFileSystemPersistenceStorage.cs" />
     <Compile Include="Services\Impl\DefaultIncrementalModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
@@ -399,6 +400,7 @@
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />
     <Compile Include="Services\Impl\TraceSourceService.cs" />
+    <Compile Include="Services\PersistenceStorageServiceBase.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ModelDotPrintServiceBase.cs" />

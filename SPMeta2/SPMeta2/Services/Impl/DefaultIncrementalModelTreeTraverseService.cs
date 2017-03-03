@@ -8,6 +8,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Models;
 using SPMeta2.Utils;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Services.Impl
 {
@@ -29,6 +30,8 @@ namespace SPMeta2.Services.Impl
         #endregion
 
         #region properties
+
+        public IncrementalProvisionConfig Configuration { get; set; }
 
         public ModelHash PreviousModelHash { get; set; }
         public ModelHash CurrentModelHash { get; private set; }
@@ -261,7 +264,110 @@ namespace SPMeta2.Services.Impl
 
         protected override void OnBeforeDeployModel(object modelHost, ModelNode modelNode)
         {
+            base.OnBeforeDeployModel(modelHost, modelNode);
+
+            // clean up current model hash
             CurrentModelHash = new ModelHash();
+
+            // restore previous one
+            if (Configuration != null && Configuration.PersistenceStorages.Count() > 0)
+            {
+                TraceService.Information(0, "Model hash restore: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
+
+                var modelIdProperty = modelNode.PropertyBag.FirstOrDefault(p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+
+                if (modelIdProperty == null)
+                    throw new SPMeta2Exception("IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
+
+                var modelId = modelIdProperty.Value;
+                var objectId = string.Format("incremental_state_{0}", modelId);
+
+                var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
+                serializer.RegisterKnownTypes(new[]
+                {
+                    typeof(ModelHash), 
+                    typeof(ModelNodeHash)
+                });
+
+                foreach (var storage in Configuration.PersistenceStorages)
+                {
+                    TraceService.Information(0, string.Format("Restoring model hash with object id:[{0}] using storage impl [{1}]",
+                                                   objectId, storage.GetType()));
+
+                    var data = storage.LoadObject(objectId);
+
+                    if (data != null)
+                    {
+                        var dataString = Encoding.UTF8.GetString(data);
+                        var dataObject = serializer.Deserialize(typeof(ModelHash), dataString) as ModelHash;
+
+                        if (dataObject != null)
+                        {
+                            PreviousModelHash = dataObject;
+
+                            TraceService.Information(0, string.Format("Restored model hash with object id:[{0}] using storage impl [{1}]",
+                                                   objectId, storage.GetType()));
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        TraceService.Information(0, string.Format("Restored model hash with object id:[{0}] using storage impl [{1}]",
+                                                  objectId, storage.GetType()));
+                    }
+                }
+
+                TraceService.Information(0, string.Format("Coudn't restore model hash with object id:[{0}]. Either first provision is user or storage is wrong.", objectId));
+            }
+            else
+            {
+                TraceService.Information(0, "Model hash restore: can't find any persistence storage impl in Configuration.PersistenceStorages. Assuming manual model hash management is used");
+            }
+        }
+
+        protected override void OnAfterDeployModel(object modelHost, ModelNode modelNode)
+        {
+            base.OnAfterDeployModel(modelHost, modelNode);
+
+            // save model hash to a persistan storages
+            if (Configuration != null && Configuration.PersistenceStorages.Count() > 0)
+            {
+                TraceService.Information(0, "Model hash save: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
+
+                var modelIdProperty =
+                    modelNode.PropertyBag.FirstOrDefault(
+                        p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+
+                if (modelIdProperty == null)
+                    throw new SPMeta2Exception(
+                        "IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
+
+                var modelId = modelIdProperty.Value;
+
+                var objectId = string.Format("incremental_state_{0}", modelId);
+
+                var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
+                serializer.RegisterKnownTypes(new[]
+                {
+                    typeof(ModelHash),
+                    typeof(ModelNodeHash)
+                });
+
+                var data = Encoding.UTF8.GetBytes(serializer.Serialize(CurrentModelHash));
+
+                foreach (var storage in Configuration.PersistenceStorages)
+                {
+                    TraceService.Information(0, string.Format("Saving model hash with object id:[{0}] using storage impl [{1}]. Size:[{2}] bytes",
+                                                    objectId, storage.GetType(), data.LongLength));
+
+
+                    storage.SaveObject(objectId, data);
+                }
+            }
+            else
+            {
+                TraceService.Information(0, "Model hash save: can't find any persistence storage impl in Configuration.PersistenceStorages. Assuming manual model hash management is used");
+            }
         }
 
         protected virtual ModelHash GetPreviousModelHash()
@@ -277,6 +383,6 @@ namespace SPMeta2.Services.Impl
 
         #endregion
 
-        public bool OriginalRequireSelfProcessingValue { get; set; }
+        protected bool OriginalRequireSelfProcessingValue { get; set; }
     }
 }

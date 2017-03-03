@@ -208,7 +208,8 @@ namespace SPMeta2.Services.Impl
             }
             finally
             {
-                CurrentModelPath.Pop();
+                if (CurrentModelPath.Count != 0)
+                    CurrentModelPath.Pop();
 
                 if (CurrentModelPath.Count == 0)
                     OnAfterDeployModel(modelHost, modelNode);

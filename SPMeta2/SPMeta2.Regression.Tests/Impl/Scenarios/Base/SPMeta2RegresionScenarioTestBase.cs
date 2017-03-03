@@ -32,7 +32,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
             {
                 RegressionService.BeforeProvisionRunnerExcecution += (runner) =>
                 {
-                    runner.ProvisionService.SetIncrementalProvisionMode();
+                    var config = new IncrementalProvisionConfig();
+                    runner.ProvisionService.SetIncrementalProvisionMode(config);
 
                     runner.OnBeforeDeployModel += (provisionService, model) =>
                     {

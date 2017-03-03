@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Microsoft.SharePoint;
-using Microsoft.SharePoint.Taxonomy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.CSOM.ModelHandlers;
+using SPMeta2.Common;
 using SPMeta2.CSOM.Services;
-using SPMeta2.CSOM.Standard.ModelHandlers.Fields;
 using SPMeta2.CSOM.Standard.Services;
+using SPMeta2.Interfaces;
 using SPMeta2.ModelHandlers;
-using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Services;
 using SPMeta2.SSOM.Standard.Services;
-using SPMeta2.Standard.Definitions.Taxonomy;
-using SPMeta2.Standard.Syntax;
-using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using SPMeta2.Interfaces;
+using SPMeta2.Containers.CSOM;
+using SPMeta2.Services.Impl;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Containers.O365;
+using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
+using System;
 
-namespace SPMeta2.Regression.Impl.Tests
+namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 {
     [TestClass]
     public class ModelHandlersTest
@@ -149,7 +146,7 @@ namespace SPMeta2.Regression.Impl.Tests
         [TestMethod]
         [TestCategory("Regression.Impl.IncrementalProvisionService")]
         [TestCategory("CI.Core")]
-        public void Can_Create_IncrementaProvisionServices()
+        public void Can_Create_IncrementalProvisionServices()
         {
             var services = new List<ProvisionServiceBase>();
 
@@ -171,7 +168,7 @@ namespace SPMeta2.Regression.Impl.Tests
         [TestMethod]
         [TestCategory("Regression.Impl.IncrementalProvisionService")]
         [TestCategory("CI.Core")]
-        public void Can_Create_IncrementaProvisionServices_With_FluentAPI()
+        public void Can_Create_IncrementalProvisionServices_With_FluentAPI()
         {
             var services = new List<ProvisionServiceBase>();
 
@@ -189,6 +186,81 @@ namespace SPMeta2.Regression.Impl.Tests
 
                 Assert.IsNotNull(currentModelHash);
             }
+        }
+
+
+
+        #endregion
+
+        #region persistence storage
+
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
+        [TestCategory("CI.Core")]
+        [ExpectedException(typeof(SPMeta2Exception))]
+        public void Can_Provision_Incrementally_With_NoIncrementalModelId()
+        {
+            var provisionRunner = new O365ProvisionRunner();
+            var provisionService = provisionRunner.ProvisionService;
+
+            var incrementalProvisionConfig = new IncrementalProvisionConfig();
+            incrementalProvisionConfig.PersistenceStorages.Add(new DefaultFileSystemPersistenceStorage());
+
+            provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+
+            provisionRunner.SiteUrls.ForEach(siteUrl =>
+            {
+                var model = SPMeta2Model.NewSiteModel(site => { });
+
+                provisionRunner.WithO365Context(siteUrl, context =>
+                {
+                    provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.IncrementalProvisionService.PersistenceStorage")]
+        [TestCategory("CI.Core")]
+        public void Can_Provision_Incrementally_With_FileSystemStorage()
+        {
+            var provisionRunner = new O365ProvisionRunner();
+            var provisionService = provisionRunner.ProvisionService;
+
+            var incrementalProvisionConfig = new IncrementalProvisionConfig();
+            incrementalProvisionConfig.PersistenceStorages.Add(new DefaultFileSystemPersistenceStorage());
+
+            provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+
+            provisionRunner.SiteUrls.ForEach(siteUrl =>
+            {
+                var incrementalModelId = "m2.regression." + Guid.NewGuid().ToString("N");
+
+                var model = SPMeta2Model.NewSiteModel(site =>
+                {
+
+                });
+
+                var incrementalRequireSelfProcessingValue = model.NonPersistentPropertyBag
+                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
+
+                if (incrementalRequireSelfProcessingValue == null)
+                {
+                    incrementalRequireSelfProcessingValue = new PropertyBagValue
+                    {
+                        Name = "_sys.IncrementalProvision.PersistenceStorageModelId",
+                        Value = incrementalModelId
+                    };
+
+                    model.PropertyBag.Add(incrementalRequireSelfProcessingValue);
+                }
+
+                provisionRunner.WithO365Context(siteUrl, context =>
+                {
+                    provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+                });
+            });
         }
 
         #endregion

@@ -31,6 +31,15 @@ namespace SPMeta2.Common
         public List<ModelNodeHash> ModelNodes { get; set; }
 
         #endregion
+
+        #region override
+
+        public override string ToString()
+        {
+            return string.Format("Model hash:[{0}] nodes count:[{1}]", Hash, ModelNodes.Count);
+        }
+
+        #endregion
     }
 
 
@@ -54,6 +63,15 @@ namespace SPMeta2.Common
 
         [DataMember]
         public string DefinitionIdentityKeyHash { get; set; }
+
+        #endregion
+
+        #region override
+
+        public override string ToString()
+        {
+            return string.Format("Identity key:[{0}] Definition hash:[{1}]", DefinitionIdentityKey, DefinitionHash);
+        }
 
         #endregion
     }
