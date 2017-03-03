@@ -32,6 +32,7 @@ using SPMeta2.Services.Impl.Validation;
 using SPMeta2.SSOM.Standard.Services;
 using SPMeta2.ModelHosts;
 using SPMeta2.Exceptions;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.SSOM
 {
@@ -131,6 +132,11 @@ namespace SPMeta2.Containers.SSOM
         #endregion
 
         #region properties
+
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
+        }
 
         public List<string> WebApplicationUrls { get; set; }
         public List<string> SiteUrls { get; set; }

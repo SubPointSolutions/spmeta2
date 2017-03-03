@@ -17,6 +17,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Containers.O365v16
@@ -120,6 +121,10 @@ namespace SPMeta2.Containers.O365v16
         private CSOMProvisionService _provisionService;
         private CSOMValidationService _validationService;
 
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
+        }
 
         #endregion
 

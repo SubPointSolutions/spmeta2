@@ -9,6 +9,7 @@ using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using System;
 using System.Reflection;
+using SPMeta2.SSOM.Services.Impl;
 
 namespace SPMeta2.SSOM.Services
 {
@@ -22,6 +23,11 @@ namespace SPMeta2.SSOM.Services
             ServiceContainer.Instance.RegisterService(typeof(SSOMLocalizationService), new SSOMLocalizationService());
 
             ServiceContainer.Instance.RegisterService(typeof(SSOMListViewLookupService), new SSOMListViewLookupService());
+
+            // default sharepoint persistence storage impl
+            ServiceContainer.Instance.RegisterService(typeof(SharePointPersistenceStorageServiceBase), new DefaultSSOMWebPropertyBagStorage());
+            ServiceContainer.Instance.RegisterService(typeof(SharePointPersistenceStorageServiceBase), new DefaultSSOMWebApplicationPropertyBagStorage());
+            ServiceContainer.Instance.RegisterService(typeof(SharePointPersistenceStorageServiceBase), new DefaultSSOMFarmPropertyBagStorage());
 
             RegisterModelHandlers();
 

@@ -9,6 +9,7 @@ using SPMeta2.Exceptions;
 using SPMeta2.Models;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.Services.Impl
 {
@@ -399,7 +400,53 @@ namespace SPMeta2.Services.Impl
 
             if (Configuration.AutoDetectSharePointPersistenceStorage)
             {
-                throw new SPMeta2NotImplementedException("Auto detection for SharePoint storage is not implemented yet");
+                var rootModelNodeType = modelNode.Value.GetType();
+
+                TraceService.InformationFormat(0, "Detecting SharePoint persistence storage implementation for root definitin type:[{0}]", rootModelNodeType);
+
+                var currentStorageServices = ServiceContainer.Instance.GetServices<SharePointPersistenceStorageServiceBase>();
+                SharePointPersistenceStorageServiceBase targetService = null;
+
+                var typedModelHost = modelHost.WithAssertAndCast<ModelHostBase>("modelHost", v => v.RequireNotNull());
+
+                foreach (var service in currentStorageServices)
+                {
+                    if (service.TargetDefinitionTypes.Contains(rootModelNodeType))
+                    {
+                        var serviceTypeName = service.GetType().Name;
+
+                        // cause it could be multiple service registrations here by both CSOM and SSOM
+                        // we need to know the context coming from the top and then resolve correct service for the API
+                        if (typedModelHost.IsSSOM && serviceTypeName.Contains("SSOM"))
+                        {
+                            targetService = service;
+                            break;
+                        }
+
+                        if (typedModelHost.IsCSOM && serviceTypeName.Contains("CSOM"))
+                        {
+                            targetService = service;
+                            break;
+                        }
+                    }
+                }
+
+                if (targetService == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Coudn't find SharePoint persistence storage implementation for root definitin type:[{0}]",
+                        rootModelNodeType));
+                }
+
+                TraceService.InformationFormat(0, "Initialilize persistence storage [{0}] with model host", targetService.GetType());
+                targetService.InitialiseFromModelHost(modelHost);
+
+                TraceService.Information(0, "Returning persistence storage implementation");
+
+                var result = new List<PersistenceStorageServiceBase>();
+
+                result.Add(targetService);
+                return result;
             }
 
             return Configuration.PersistenceStorages;

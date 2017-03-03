@@ -24,6 +24,9 @@ namespace SPMeta2.CSOM.Services
             ServiceContainer.Instance.RegisterService(typeof(CSOMTokenReplacementService), new CSOMTokenReplacementService());
             ServiceContainer.Instance.RegisterService(typeof(CSOMLocalizationService), new CSOMLocalizationService());
 
+            // default sharepoint persistence storage impl
+            ServiceContainer.Instance.RegisterService(typeof(SharePointPersistenceStorageServiceBase), new DefaultCSOMWebPropertyBagStorage());
+
             // Align CSOM throttling setting with MS recommendations, open up API #849
             // https://github.com/SubPointSolutions/spmeta2/issues/849
 
