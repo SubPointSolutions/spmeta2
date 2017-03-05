@@ -8,7 +8,7 @@ TileLink: true
 TileLinkOrder: 5
 TileDescription: 'Hassle-free SharePoint artifact provisioning framework for SP2010, SP2013 and O365.'
 ---
-## Welcome to M2 (also known as SPMeta2) 
+## Welcome to SPMeta2
 
 SPMeta2 is a hassle-free fluent API for code-based SharePoint artefact provisioning.
 It offers a consistent provisioning API via SSOM/CSOM for SharePoin 2010, 2013 and O365.
