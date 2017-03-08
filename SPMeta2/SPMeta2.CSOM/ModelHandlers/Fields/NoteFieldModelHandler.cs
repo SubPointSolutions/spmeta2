@@ -47,6 +47,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
         {
             var typedFieldModel = fieldModel.WithAssertAndCast<NoteFieldDefinition>("model", value => value.RequireNotNull());
 
+            if (field.TypeAsString == "Text")
+            {
+                field.SchemaXml = field.SchemaXml.Replace(@"""Text""", @"""Note""");
+                field.Update();
+                field.Context.ExecuteQuery();
+            }
+
             // the XML update goes first
             // then the rest of the normal props with base.ProcessFieldProperties(field, fieldModel);
             // then specific to NoteField props

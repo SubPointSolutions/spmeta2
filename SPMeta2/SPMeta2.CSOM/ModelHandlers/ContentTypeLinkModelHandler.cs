@@ -37,12 +37,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             var listContentType = FindListContentType(list, contentTypeLinkModel);
 
-            action(new ModelHostContext
-            {
-                Site = listModelHost.HostSite,
-                Web = listModelHost.HostWeb,
-                ContentType = listContentType
-            });
+            action(listModelHost);
 
             listContentType.Update(false);
             context.ExecuteQueryWithTrace();
