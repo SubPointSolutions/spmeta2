@@ -59,10 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public void Can_Create_IncrementalModelTreeTraverseService()
         {
             var service = new DefaultIncrementalModelTreeTraverseService();
-
         }
-
-
 
         #endregion
 
@@ -118,18 +115,8 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #region non-singlentons
 
-        [TestMethod]
-        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
-        [TestCategory("CI.Core")]
-        public void Incremental_Update_NonSingleton_ModelNodes_SameModels()
+        public void Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(ModelNode model)
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddRandomField();
-                site.AddRandomField();
-                site.AddRandomField();
-            });
-
             var prevModel = model;
             var currentModel = model;
 
@@ -157,6 +144,57 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             // should be NONE of the nodes to update on the same model
             Assert.AreEqual(0, secondProvisionService.ModelNodesToUpdate.Count);
             Assert.AreEqual(GetTotalModelNodeCount(model), secondProvisionService.ModelNodesToSkip.Count);
+
+            RegressionUtils.WriteLine("Current model hash:");
+            RegressionUtils.WriteLine(Environment.NewLine + secondProvisionService.CurrentModelHash);
+
+            foreach (var modelNodeHash in secondProvisionService.CurrentModelHash.ModelNodes)
+            {
+                RegressionUtils.WriteLine(string.Format("- {0}", modelNodeHash.ToString()));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_NonSingleton_ModelNodes_Two_Level_Model()
+        {
+            var contentTypeCounts = Rnd.Int(3) + 3;
+            var fieldLinksCount = Rnd.Int(3) + 3;
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                for (var ctIndex = 0; ctIndex < contentTypeCounts; ctIndex++)
+                {
+                    site.AddRandomContentType(contentType =>
+                    {
+                        for (var flIndex = 0; flIndex < fieldLinksCount; flIndex++)
+                        {
+                            contentType.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                            {
+                                FieldId = Rnd.Guid()
+                            });
+                        }
+                    });
+                }
+            });
+
+            Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_NonSingleton_ModelNodes_SameModels()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomField();
+                site.AddRandomField();
+                site.AddRandomField();
+            });
+
+            Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(model);
         }
 
         [TestMethod]
@@ -272,8 +310,6 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             model.AddRandomField(f => { newField1 = f; });
             model.AddRandomField(f => { newField2 = f; });
 
-
-
             // check one more with second provision
             var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
@@ -293,11 +329,12 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             // new field must be marked as to be updated
             Assert.IsTrue(newField1.Options.RequireSelfProcessing);
             Assert.IsTrue(newField2.Options.RequireSelfProcessing);
+
+            RegressionUtils.WriteLine("Current model hash:");
+            RegressionUtils.WriteLine(Environment.NewLine + secondProvisionService.CurrentModelHash);
         }
 
         #endregion
-
-
 
         #region utils
 

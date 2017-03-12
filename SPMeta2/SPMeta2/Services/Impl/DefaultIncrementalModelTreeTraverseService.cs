@@ -10,6 +10,7 @@ using SPMeta2.Models;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
 using SPMeta2.ModelHosts;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Services.Impl
 {
@@ -143,12 +144,16 @@ namespace SPMeta2.Services.Impl
 
             if (isSingleIdentity)
             {
-                TraceService.Information(0, "Detected singleton definition. Incremental update for such definitions isn't supported yet. Skipping.");
+                TraceService.InformationFormat(0,
+                                             "Detected singleton definition [{0}]. Incremental update for such definitions isn't supported yet. Skipping.",
+                                             currentDefinition);
                 return;
             }
             else
             {
-                TraceService.Information(0, "Calculating hashes for node and definition");
+                TraceService.InformationFormat(0,
+                                               "Calculating hashes for node and definition:[{0}]",
+                                               currentDefinition);
             }
 
             //var currentNodeHashHash = HashService.GetHashCode(currentModelNode);
@@ -216,23 +221,9 @@ namespace SPMeta2.Services.Impl
 
         protected override void OnAfterDeployModelNode(object modelHost, ModelNode modelNode)
         {
-            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
-                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
-
-            if (incrementalRequireSelfProcessingValue == null)
-            {
-                incrementalRequireSelfProcessingValue = new PropertyBagValue
-                {
-                    Name = "_sys.IncrementalRequireSelfProcessingValue",
-                    Value = modelNode.Options.RequireSelfProcessing.ToString()
-                };
-
-                modelNode.NonPersistentPropertyBag.Add(incrementalRequireSelfProcessingValue);
-            }
-            else
-            {
-                incrementalRequireSelfProcessingValue.Value = modelNode.Options.RequireSelfProcessing.ToString();
-            }
+            var incrementalRequireSelfProcessingValue = modelNode.SetNonPersistentPropertyBagValue(
+                                                                DefaultModelNodePropertyBagValue.Sys.IncrementalRequireSelfProcessingValue,
+                                                                modelNode.Options.RequireSelfProcessing.ToString());
 
             // restore model state
             modelNode.Options.RequireSelfProcessing = OriginalRequireSelfProcessingValue;
@@ -282,12 +273,12 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.Information(0, "Model hash restore: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
-                var modelIdProperty = modelNode.PropertyBag.FirstOrDefault(p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+                var modelIdProperty = modelNode.GetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId);
 
                 if (modelIdProperty == null)
                     throw new SPMeta2Exception("IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
-                var modelId = modelIdProperty.Value;
+                var modelId = modelIdProperty;
                 var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
@@ -296,8 +287,6 @@ namespace SPMeta2.Services.Impl
                     typeof(ModelHash), 
                     typeof(ModelNodeHash)
                 });
-
-
 
                 foreach (var storage in storages)
                 {
@@ -346,15 +335,13 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.Information(0, "Model hash save: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
-                var modelIdProperty =
-                    modelNode.PropertyBag.FirstOrDefault(
-                        p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+                var modelIdProperty = modelNode.GetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId);
 
                 if (modelIdProperty == null)
                     throw new SPMeta2Exception(
                         "IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
-                var modelId = modelIdProperty.Value;
+                var modelId = modelIdProperty;
                 var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
