@@ -6,6 +6,8 @@ using SPMeta2.Definitions;
 using SPMeta2.Models;
 using SPMeta2.Services;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Common;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Extensions
 {
@@ -236,27 +238,96 @@ namespace SPMeta2.Extensions
 
         #endregion
 
+        #region model node properties
+
+        internal static void InternalSetPropertyBagValue(List<PropertyBagValue> values,
+            string name,
+            string value)
+        {
+            var currentValue = values.FirstOrDefault(p => !string.IsNullOrEmpty(p.Name)
+                                                            && p.Name.ToUpper() == name.ToUpper());
+
+            if (currentValue == null)
+            {
+                currentValue = new PropertyBagValue
+                {
+                    Name = name,
+                    Value = value
+                };
+
+                values.Add(currentValue);
+            }
+
+            currentValue.Value = value;
+        }
+
+        internal static string InternalGetPropertyBagValue(List<PropertyBagValue> values,
+            string name)
+        {
+            var currentValue = values.FirstOrDefault(p => !string.IsNullOrEmpty(p.Name)
+                                                            && p.Name.ToUpper() == name.ToUpper());
+
+            if (currentValue != null)
+            {
+                return currentValue.Value;
+            }
+
+            return null;
+        }
+
+        public static TModelNode SetNonPersistentPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name,
+            string value)
+            where TModelNode : ModelNode
+        {
+            InternalSetPropertyBagValue(modelNode.NonPersistentPropertyBag, name, value);
+
+            return modelNode;
+        }
+
+
+        public static string GetNonPersistentPropertyBagValue<TModelNode>(this TModelNode modelNode,
+              string name)
+              where TModelNode : ModelNode
+        {
+            return InternalGetPropertyBagValue(modelNode.NonPersistentPropertyBag, name);
+        }
+        public static TModelNode SetPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name,
+            string value)
+            where TModelNode : ModelNode
+        {
+            InternalSetPropertyBagValue(modelNode.PropertyBag, name, value);
+
+            return modelNode;
+        }
+
+        public static string GetPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name)
+            where TModelNode : ModelNode
+        {
+            return InternalGetPropertyBagValue(modelNode.PropertyBag, name);
+        }
+
+        #endregion
+
         #region incremental provision
 
+        public static bool GetIncrementalRequireSelfProcessingValue<TModelNode>(this TModelNode modelNode)
+            where TModelNode : ModelNode
+        {
+            var incrementalRequireSelfProcessingValue = modelNode.GetNonPersistentPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalRequireSelfProcessingValue);
+
+            if (incrementalRequireSelfProcessingValue != null)
+                return ConvertUtils.ToBoolWithDefault(incrementalRequireSelfProcessingValue, false);
+
+            return false;
+        }
 
         private static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
             where TModelNode : ModelNode
         {
-            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
-                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
-
-            if (incrementalRequireSelfProcessingValue == null)
-            {
-                incrementalRequireSelfProcessingValue = new PropertyBagValue
-                {
-                    Name = "_sys.IncrementalProvision.PersistenceStorageModelId",
-                    Value = modelId
-                };
-
-                modelNode.PropertyBag.Add(incrementalRequireSelfProcessingValue);
-            }
-
-            incrementalRequireSelfProcessingValue.Value = modelId;
+            modelNode.SetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId, modelId);
 
             return modelNode;
         }
@@ -282,5 +353,7 @@ namespace SPMeta2.Extensions
         }
 
         #endregion
+
+
     }
 }

@@ -468,7 +468,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
                     provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
 
-                    var model = SPMeta2Model.NewSiteModel(site =>
+                    var model = SPMeta2Model.NewFarmModel(site =>
                     {
 
                     });
@@ -492,7 +492,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
                         provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
 
-                        var model = SPMeta2Model.NewSiteModel(site =>
+                        var model = SPMeta2Model.NewWebApplicationModel(site =>
                         {
 
                         });

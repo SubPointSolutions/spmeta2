@@ -10,6 +10,7 @@ using SPMeta2.Models;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
 using SPMeta2.ModelHosts;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Services.Impl
 {
@@ -28,11 +29,17 @@ namespace SPMeta2.Services.Impl
             DefaultDefinitionIdentityKeySeparator = ";";
 
             DefaultPersistenceModelIdPrefix = "spmeta2.incremental_state";
+
+            EnableCaching = true;
         }
 
         #endregion
 
         #region properties
+
+        public bool EnableCaching { get; set; }
+
+        protected bool OriginalRequireSelfProcessingValue { get; set; }
 
         public IncrementalProvisionConfig Configuration { get; set; }
 
@@ -48,55 +55,182 @@ namespace SPMeta2.Services.Impl
 
         public string DefaultPersistenceModelIdPrefix { get; set; }
 
-
         #endregion
 
         #region methods
 
         protected string GetHashString(object value)
         {
-            return _hashService.GetHashCode(value);
+            if (EnableCaching)
+            {
+                if (!_cache4Object2Hash.ContainsKey(value))
+                {
+                    var hash = _hashService.GetHashCode(value);
+
+                    TraceService.VerboseFormat(0,
+                                             "GetHashString() - cold hit, adding value to cache:[{0}] -> [{1}]",
+                                             new object[] { value, hash },
+                                             null);
+
+                    _cache4Object2Hash.Add(value, hash);
+                }
+                else
+                {
+                    var hash = _cache4Object2Hash[value];
+
+                    TraceService.VerboseFormat(0,
+                                             "GetHashString() - hot hit, returning value from cache:[{0}] -> [{1}]",
+                                             new object[] { value, hash },
+                                             null);
+                }
+
+                return _cache4Object2Hash[value];
+            }
+            else
+            {
+                var hash = _hashService.GetHashCode(value);
+
+                TraceService.VerboseFormat(0,
+                                         "GetHashString() - hot hit, returning value from cache:[{0}] -> [{1}]",
+                                         new object[] { value, hash },
+                                         null);
+
+                return hash;
+            }
         }
 
         protected virtual bool IsSingletonIdentityDefinition(DefinitionBase definition)
         {
             var definitionType = definition.GetType();
-            var isInstanceIdentity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
 
-            return isInstanceIdentity;
+            if (EnableCaching)
+            {
+                if (!_cache4SingletonIdentityTypes.ContainsKey(definitionType))
+                {
+                    var isInstanceIdentity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+
+                    TraceService.VerboseFormat(0,
+                                             "IsSingletonIdentityDefinition() - cold hit, adding value to cache:[{0}] -> [{1}]",
+                                             new object[] { definitionType, isInstanceIdentity },
+                                             null);
+
+                    _cache4SingletonIdentityTypes.Add(definitionType, isInstanceIdentity);
+                }
+                else
+                {
+                    var isInstanceIdentity = _cache4SingletonIdentityTypes[definitionType];
+
+                    TraceService.VerboseFormat(0,
+                                             "IsSingletonIdentityDefinition() - hot hit, returning value from cache:[{0}] -> [{1}]",
+                                             new object[] { definitionType, isInstanceIdentity },
+                                             null);
+
+                }
+
+                return _cache4SingletonIdentityTypes[definitionType];
+            }
+            else
+            {
+                var isInstanceIdentity = definitionType.GetCustomAttributes(typeof(SingletonIdentityAttribute), true).Any();
+
+                TraceService.VerboseFormat(0,
+                                         "IsSingletonIdentityDefinition() - no caching. Returning value:[{0}] -> [{1}]",
+                                         new object[] { definitionType, isInstanceIdentity },
+                                         null);
+
+                return isInstanceIdentity;
+            }
         }
 
-        protected virtual string GetDefinitionIdentityKey(DefinitionBase definition)
+        protected virtual void ClearCaches()
         {
-            var definitionType = definition.GetType();
+            // don't need to clear that one
+            // can reuse Type->Boolean mapping
+            // _cache4SingletonIdentityTypes.Clear();
 
-            var isInstanceIdentity = IsSingletonIdentityDefinition(definition);
+            // clear identity keys for definitions
+            _cache4DefinitionIdentityKey.Clear();
 
-            if (isInstanceIdentity)
+            // clear actual object cache - Object->Hash
+            _cache4Object2Hash.Clear();
+        }
+
+        protected Dictionary<DefinitionBase, string> _cache4DefinitionIdentityKey = new Dictionary<DefinitionBase, string>();
+        protected Dictionary<Type, bool> _cache4SingletonIdentityTypes = new Dictionary<Type, bool>();
+        protected Dictionary<object, string> _cache4Object2Hash = new Dictionary<object, string>();
+
+        protected virtual string GetDefinitionIdentityKey(DefinitionBase definitionValue)
+        {
+            Func<DefinitionBase, string> calculateDefinitionIdentityKey = (definition) =>
             {
-                throw new SPMeta2Exception(string.Format(
-                    "definitions of type:[{0}] don't support incremental updates yet",
-                    definitionType));
-            }
+                var definitionType = definition.GetType();
 
-            var keyProperties = definitionType.GetProperties()
-                                              .Where(p => p.GetCustomAttributes(typeof(IdentityKeyAttribute), true).Any())
-                                              .OrderBy(p => p.Name);
+                var isInstanceIdentity = IsSingletonIdentityDefinition(definition);
 
-            var identityKeyValues = new Dictionary<string, string>();
+                if (isInstanceIdentity)
+                {
+                    throw new SPMeta2Exception(string.Format(
+                        "definitions of type:[{0}] don't support incremental updates yet",
+                        definitionType));
+                }
 
-            foreach (var keyProp in keyProperties)
+                var keyProperties = definitionType.GetProperties()
+                                                  .Where(p => p.GetCustomAttributes(typeof(IdentityKeyAttribute), true).Any())
+                                                  .OrderBy(p => p.Name);
+
+                var identityKeyValues = new Dictionary<string, string>();
+
+                foreach (var keyProp in keyProperties)
+                {
+                    var keyName = keyProp.Name;
+                    var keyValue = ConvertUtils.ToString(ReflectionUtils.GetPropertyValue(definition, keyProp.Name));
+
+                    identityKeyValues.Add(keyName, keyValue);
+                }
+
+                var resultIdentityKey = string.Join(DefaultDefinitionIdentityKeySeparator,
+                    identityKeyValues.Select(v => string.Format("{0}:{1}", v.Key, v.Value)).ToArray());
+
+                return resultIdentityKey;
+            };
+
+            if (EnableCaching)
             {
-                var keyName = keyProp.Name;
-                var keyValue = ConvertUtils.ToString(ReflectionUtils.GetPropertyValue(definition, keyProp.Name));
+                if (!_cache4DefinitionIdentityKey.ContainsKey(definitionValue))
+                {
+                    var resultIdentityKey = calculateDefinitionIdentityKey(definitionValue);
 
-                identityKeyValues.Add(keyName, keyValue);
+                    TraceService.VerboseFormat(0,
+                                             "GetDefinitionIdentityKey() - cold hit, adding value to cache:[{0}] -> [{1}]",
+                                             new object[] { definitionValue, resultIdentityKey },
+                                             null);
+
+
+                    _cache4DefinitionIdentityKey.Add(definitionValue, resultIdentityKey);
+                }
+                else
+                {
+                    var resultIdentityKey = _cache4DefinitionIdentityKey[definitionValue];
+
+                    TraceService.VerboseFormat(0,
+                                             "GetDefinitionIdentityKey() - hot hit, returning value from cache:[{0}] -> [{1}]",
+                                             new object[] { definitionValue, resultIdentityKey },
+                                             null);
+                }
+
+                return _cache4DefinitionIdentityKey[definitionValue];
             }
+            else
+            {
+                var resultIdentityKey = calculateDefinitionIdentityKey(definitionValue);
 
-            var resultIdentityKey = string.Join(DefaultDefinitionIdentityKeySeparator,
-                identityKeyValues.Select(v => string.Format("{0}:{1}", v.Key, v.Value)).ToArray());
+                TraceService.VerboseFormat(0,
+                                        "GetDefinitionIdentityKey() - no caching. Returning value:[{0}] -> [{1}]",
+                                        new object[] { definitionValue, resultIdentityKey },
+                                        null);
 
-            return resultIdentityKey;
+                return resultIdentityKey;
+            }
         }
 
         protected virtual string GetDefinitionFullPath(bool asHash)
@@ -143,12 +277,16 @@ namespace SPMeta2.Services.Impl
 
             if (isSingleIdentity)
             {
-                TraceService.Information(0, "Detected singleton definition. Incremental update for such definitions isn't supported yet. Skipping.");
+                TraceService.InformationFormat(0,
+                                             "Detected singleton definition [{0}]. Incremental update for such definitions isn't supported yet. Skipping.",
+                                             currentDefinition);
                 return;
             }
             else
             {
-                TraceService.Information(0, "Calculating hashes for node and definition");
+                TraceService.InformationFormat(0,
+                                               "Calculating hashes for node and definition:[{0}]",
+                                               currentDefinition);
             }
 
             //var currentNodeHashHash = HashService.GetHashCode(currentModelNode);
@@ -216,23 +354,9 @@ namespace SPMeta2.Services.Impl
 
         protected override void OnAfterDeployModelNode(object modelHost, ModelNode modelNode)
         {
-            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
-                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
-
-            if (incrementalRequireSelfProcessingValue == null)
-            {
-                incrementalRequireSelfProcessingValue = new PropertyBagValue
-                {
-                    Name = "_sys.IncrementalRequireSelfProcessingValue",
-                    Value = modelNode.Options.RequireSelfProcessing.ToString()
-                };
-
-                modelNode.NonPersistentPropertyBag.Add(incrementalRequireSelfProcessingValue);
-            }
-            else
-            {
-                incrementalRequireSelfProcessingValue.Value = modelNode.Options.RequireSelfProcessing.ToString();
-            }
+            var incrementalRequireSelfProcessingValue = modelNode.SetNonPersistentPropertyBagValue(
+                                                                DefaultModelNodePropertyBagValue.Sys.IncrementalRequireSelfProcessingValue,
+                                                                modelNode.Options.RequireSelfProcessing.ToString());
 
             // restore model state
             modelNode.Options.RequireSelfProcessing = OriginalRequireSelfProcessingValue;
@@ -274,6 +398,9 @@ namespace SPMeta2.Services.Impl
 
             // clean up current model hash
             CurrentModelHash = new ModelHash();
+            ClearCaches();
+
+            TraceService.InformationFormat(0, "Starting incremental provision with EnableCaching = {0}", EnableCaching);
 
             var storages = ResolvePersistenceStorages(modelHost, modelNode);
 
@@ -282,12 +409,12 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.Information(0, "Model hash restore: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
-                var modelIdProperty = modelNode.PropertyBag.FirstOrDefault(p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+                var modelIdProperty = modelNode.GetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId);
 
                 if (modelIdProperty == null)
                     throw new SPMeta2Exception("IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
-                var modelId = modelIdProperty.Value;
+                var modelId = modelIdProperty;
                 var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
@@ -296,8 +423,6 @@ namespace SPMeta2.Services.Impl
                     typeof(ModelHash), 
                     typeof(ModelNodeHash)
                 });
-
-
 
                 foreach (var storage in storages)
                 {
@@ -346,15 +471,13 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.Information(0, "Model hash save: found [{0}] storage impl in Configuration.PersistenceStorages. Automatic model hash management is used");
 
-                var modelIdProperty =
-                    modelNode.PropertyBag.FirstOrDefault(
-                        p => p.Name == "_sys.IncrementalProvision.PersistenceStorageModelId");
+                var modelIdProperty = modelNode.GetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId);
 
                 if (modelIdProperty == null)
                     throw new SPMeta2Exception(
                         "IncrementalProvisionModelId is not set. Either clean PersistenceStorages and handle model hash persistence manually or set .PersistenceStorageModelId");
 
-                var modelId = modelIdProperty.Value;
+                var modelId = modelIdProperty;
                 var objectId = string.Format("{0}.{1}", DefaultPersistenceModelIdPrefix, modelId);
 
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
@@ -453,7 +576,5 @@ namespace SPMeta2.Services.Impl
         }
 
         #endregion
-
-        protected bool OriginalRequireSelfProcessingValue { get; set; }
     }
 }

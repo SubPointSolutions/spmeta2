@@ -70,7 +70,8 @@ namespace SPMeta2.Common
 
         public override string ToString()
         {
-            return string.Format("Identity key:[{0}] Definition hash:[{1}]", DefinitionIdentityKey, DefinitionHash);
+            return string.Format("Definition hash:[{0}] Full path hash:[{1}] Identity key hash:[{2}]",
+                        DefinitionHash, DefinitionFullPathHash, DefinitionIdentityKeyHash);
         }
 
         #endregion

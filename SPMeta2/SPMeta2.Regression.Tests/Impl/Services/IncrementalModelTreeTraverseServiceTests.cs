@@ -59,10 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         public void Can_Create_IncrementalModelTreeTraverseService()
         {
             var service = new DefaultIncrementalModelTreeTraverseService();
-
         }
-
-
 
         #endregion
 
@@ -118,18 +115,8 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         #region non-singlentons
 
-        [TestMethod]
-        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
-        [TestCategory("CI.Core")]
-        public void Incremental_Update_NonSingleton_ModelNodes_SameModels()
+        public void Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(ModelNode model)
         {
-            var model = SPMeta2Model.NewSiteModel(site =>
-            {
-                site.AddRandomField();
-                site.AddRandomField();
-                site.AddRandomField();
-            });
-
             var prevModel = model;
             var currentModel = model;
 
@@ -157,13 +144,88 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             // should be NONE of the nodes to update on the same model
             Assert.AreEqual(0, secondProvisionService.ModelNodesToUpdate.Count);
             Assert.AreEqual(GetTotalModelNodeCount(model), secondProvisionService.ModelNodesToSkip.Count);
+
+            RegressionUtils.WriteLine("Current model hash:");
+            RegressionUtils.WriteLine(Environment.NewLine + secondProvisionService.CurrentModelHash);
+
+            foreach (var modelNodeHash in secondProvisionService.CurrentModelHash.ModelNodes)
+            {
+                RegressionUtils.WriteLine(string.Format("- {0}", modelNodeHash.ToString()));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_NonSingleton_ModelNodes_Two_Level_Model()
+        {
+            var contentTypeCounts = Rnd.Int(3) + 3;
+            var fieldLinksCount = Rnd.Int(3) + 3;
+
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                for (var ctIndex = 0; ctIndex < contentTypeCounts; ctIndex++)
+                {
+                    site.AddRandomContentType(contentType =>
+                    {
+                        for (var flIndex = 0; flIndex < fieldLinksCount; flIndex++)
+                        {
+                            contentType.AddContentTypeFieldLink(new ContentTypeFieldLinkDefinition
+                            {
+                                FieldId = Rnd.Guid()
+                            });
+                        }
+                    });
+                }
+            });
+
+            Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.NonSingleton")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_NonSingleton_ModelNodes_SameModels()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomField();
+                site.AddRandomField();
+                site.AddRandomField();
+            });
+
+            Internal_Incremental_Update_NonSingleton_ModelNodes_SameModels(model);
         }
 
         [TestMethod]
         [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.Random")]
         [TestCategory("CI.Core")]
-        public void Incremental_Update_AllDefinitions_As_RandomModels()
+        public void Incremental_Update_AllDefinitions_As_RandomModels_NoCache()
         {
+            Incremental_Update_AllDefinitions_As_RandomModels_Internal(service =>
+            {
+                service.EnableCaching = false;
+            }, true, 1);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.Random")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_AllDefinitions_As_RandomModels_WithCache()
+        {
+            Incremental_Update_AllDefinitions_As_RandomModels_Internal(service =>
+            {
+
+            }, true, 1);
+        }
+
+        public void Incremental_Update_AllDefinitions_As_RandomModels_Internal(
+            Action<DefaultIncrementalModelTreeTraverseService> configureService,
+            bool silentMode,
+            int iterationCount)
+        {
+            var m2logService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
@@ -176,67 +238,86 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             var allDefinitionTypesCount = allDefinitionTypes.Count();
             var currentDefinitionTypeIndex = 0;
 
-            foreach (var definitionType in allDefinitionTypes)
+            for (int it = 0; it < iterationCount; it++)
             {
-                currentDefinitionTypeIndex++;
-                RegressionUtils.WriteLine(string.Format("[{0}/{1}] Testing definition:[{2}]",
-                    new object[] {
+                foreach (var definitionType in allDefinitionTypes)
+                {
+                    currentDefinitionTypeIndex++;
+
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine(string.Format("[{0}/{1}] Testing definition:[{2}]",
+                            new object[] {
                         currentDefinitionTypeIndex,
                         allDefinitionTypesCount,
                         definitionType.FullName
                     }));
+                    }
 
-                var model = GetVeryRandomModel(definitionType, SPObjectModelType.CSOM);
+                    var model = GetVeryRandomModel(definitionType, SPObjectModelType.CSOM);
 
-                var prevModel = model;
-                var currentModel = model;
+                    var prevModel = model;
+                    var currentModel = model;
 
-                var firstProvisionService = new FakeIncrementalModelTreeTraverseService();
+                    var firstProvisionService = new FakeIncrementalModelTreeTraverseService();
 
-                firstProvisionService.PreviousModelHash = new ModelHash();
-                firstProvisionService.Traverse(null, currentModel);
+                    if (configureService != null)
+                        configureService(firstProvisionService);
 
-                var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
+                    firstProvisionService.PreviousModelHash = new ModelHash();
+                    firstProvisionService.Traverse(null, currentModel);
 
-                // check one more with second provision
-                var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
+                    var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
 
-                RegressionUtils.WriteLine("Original model:");
-                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    // check one more with second provision
+                    var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
-                secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
-                secondProvisionService.Traverse(null, currentModel);
+                    if (configureService != null)
+                        configureService(secondProvisionService);
 
-                // trace size of the model hash  + amount if the aritfacts
-                var modelNodesCount = 0;
-                model.WithNodesOfType<DefinitionBase>(n => { modelNodesCount++; });
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine("Original model:");
+                        RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    }
 
-                var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
-                serializer.RegisterKnownTypes(new[]
+                    secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
+                    secondProvisionService.Traverse(null, currentModel);
+
+                    // trace size of the model hash  + amount if the aritfacts
+                    var modelNodesCount = 0;
+                    model.WithNodesOfType<DefinitionBase>(n => { modelNodesCount++; });
+
+                    var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
+                    serializer.RegisterKnownTypes(new[]
                 {
                     typeof(ModelHash),
                     typeof(ModelNodeHash)
                 });
 
-                var data = Encoding.UTF8.GetBytes(serializer.Serialize(firstProvisionService.CurrentModelHash));
+                    var data = Encoding.UTF8.GetBytes(serializer.Serialize(firstProvisionService.CurrentModelHash));
 
-                var persistanceFileService = new DefaultFileSystemPersistenceStorage();
-                persistanceFileService.SaveObject(
-                                        string.Format("incremental_state_m2.regression-artifact-{1}-{0}", definitionType.Name, modelNodesCount),
-                                        data);
+                    var persistanceFileService = new DefaultFileSystemPersistenceStorage();
+                    persistanceFileService.SaveObject(
+                                            string.Format("incremental_state_m2.regression-artifact-{1}-{0}", definitionType.Name, modelNodesCount),
+                                            data);
 
-                RegressionUtils.WriteLine(string.Empty);
-                RegressionUtils.WriteLine("Provisioned model:");
-                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine(string.Empty);
+                        RegressionUtils.WriteLine("Provisioned model:");
+                        RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    }
 
-                // asserts
-                var expectedProvisionNodesCount = 0;
+                    // asserts
+                    var expectedProvisionNodesCount = 0;
 
-                expectedProvisionNodesCount += secondProvisionService.GetTotalSingleIdentityNodeCount();
-                expectedProvisionNodesCount += secondProvisionService.GetTotalIgnoredNodeCount();
+                    expectedProvisionNodesCount += secondProvisionService.GetTotalSingleIdentityNodeCount();
+                    expectedProvisionNodesCount += secondProvisionService.GetTotalIgnoredNodeCount();
 
-                Assert.AreEqual(expectedProvisionNodesCount, secondProvisionService.ModelNodesToUpdate.Count);
-                Assert.AreEqual(GetTotalModelNodeCount(model) - expectedProvisionNodesCount, secondProvisionService.ModelNodesToSkip.Count);
+                    Assert.AreEqual(expectedProvisionNodesCount, secondProvisionService.ModelNodesToUpdate.Count);
+                    Assert.AreEqual(GetTotalModelNodeCount(model) - expectedProvisionNodesCount, secondProvisionService.ModelNodesToSkip.Count);
+                }
             }
         }
 
@@ -272,8 +353,6 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             model.AddRandomField(f => { newField1 = f; });
             model.AddRandomField(f => { newField2 = f; });
 
-
-
             // check one more with second provision
             var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
@@ -293,11 +372,12 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             // new field must be marked as to be updated
             Assert.IsTrue(newField1.Options.RequireSelfProcessing);
             Assert.IsTrue(newField2.Options.RequireSelfProcessing);
+
+            RegressionUtils.WriteLine("Current model hash:");
+            RegressionUtils.WriteLine(Environment.NewLine + secondProvisionService.CurrentModelHash);
         }
 
         #endregion
-
-
 
         #region utils
 

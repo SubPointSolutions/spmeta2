@@ -141,6 +141,7 @@
     <Compile Include="Common\KeyNameValue.cs" />
     <Compile Include="Common\ModelHash.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
+    <Compile Include="Common\DefaultModelNodePropertyBagValue.cs" />
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Models;
 using SPMeta2.Utils;
+using SPMeta2.Extensions;
+using SPMeta2.Common;
 
 namespace SPMeta2.Services.Impl
 {
@@ -13,15 +15,9 @@ namespace SPMeta2.Services.Impl
 
         protected override string GetCurrentIntent(ModelNode modelNode, string currentIndent)
         {
-            bool? shouldDeploy = false;
+            var shouldDeployAsIncremental = modelNode.GetIncrementalRequireSelfProcessingValue();
 
-            var incrementalRequireSelfProcessingValue = modelNode.NonPersistentPropertyBag
-                .FirstOrDefault(p => p.Name == "_sys.IncrementalRequireSelfProcessingValue");
-
-            if (incrementalRequireSelfProcessingValue != null)
-                shouldDeploy = ConvertUtils.ToBoolWithDefault(incrementalRequireSelfProcessingValue.Value, false);
-
-            if (shouldDeploy.Value)
+            if (shouldDeployAsIncremental)
                 return string.Format("[+] {0}", currentIndent);
 
             return string.Format("[-] {0}", currentIndent);
