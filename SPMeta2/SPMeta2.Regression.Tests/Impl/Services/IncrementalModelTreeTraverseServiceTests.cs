@@ -200,8 +200,32 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         [TestMethod]
         [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.Random")]
         [TestCategory("CI.Core")]
-        public void Incremental_Update_AllDefinitions_As_RandomModels()
+        public void Incremental_Update_AllDefinitions_As_RandomModels_NoCache()
         {
+            Incremental_Update_AllDefinitions_As_RandomModels_Internal(service =>
+            {
+                service.EnableCaching = false;
+            }, true, 1);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Services.IncrementalModelTreeTraverseService.Random")]
+        [TestCategory("CI.Core")]
+        public void Incremental_Update_AllDefinitions_As_RandomModels_WithCache()
+        {
+            Incremental_Update_AllDefinitions_As_RandomModels_Internal(service =>
+            {
+
+            }, true, 1);
+        }
+
+        public void Incremental_Update_AllDefinitions_As_RandomModels_Internal(
+            Action<DefaultIncrementalModelTreeTraverseService> configureService,
+            bool silentMode,
+            int iterationCount)
+        {
+            var m2logService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 
@@ -214,67 +238,86 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             var allDefinitionTypesCount = allDefinitionTypes.Count();
             var currentDefinitionTypeIndex = 0;
 
-            foreach (var definitionType in allDefinitionTypes)
+            for (int it = 0; it < iterationCount; it++)
             {
-                currentDefinitionTypeIndex++;
-                RegressionUtils.WriteLine(string.Format("[{0}/{1}] Testing definition:[{2}]",
-                    new object[] {
+                foreach (var definitionType in allDefinitionTypes)
+                {
+                    currentDefinitionTypeIndex++;
+
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine(string.Format("[{0}/{1}] Testing definition:[{2}]",
+                            new object[] {
                         currentDefinitionTypeIndex,
                         allDefinitionTypesCount,
                         definitionType.FullName
                     }));
+                    }
 
-                var model = GetVeryRandomModel(definitionType, SPObjectModelType.CSOM);
+                    var model = GetVeryRandomModel(definitionType, SPObjectModelType.CSOM);
 
-                var prevModel = model;
-                var currentModel = model;
+                    var prevModel = model;
+                    var currentModel = model;
 
-                var firstProvisionService = new FakeIncrementalModelTreeTraverseService();
+                    var firstProvisionService = new FakeIncrementalModelTreeTraverseService();
 
-                firstProvisionService.PreviousModelHash = new ModelHash();
-                firstProvisionService.Traverse(null, currentModel);
+                    if (configureService != null)
+                        configureService(firstProvisionService);
 
-                var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
+                    firstProvisionService.PreviousModelHash = new ModelHash();
+                    firstProvisionService.Traverse(null, currentModel);
 
-                // check one more with second provision
-                var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
+                    var trace = ServiceContainer.Instance.GetService<TraceServiceBase>();
 
-                RegressionUtils.WriteLine("Original model:");
-                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    // check one more with second provision
+                    var secondProvisionService = new FakeIncrementalModelTreeTraverseService();
 
-                secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
-                secondProvisionService.Traverse(null, currentModel);
+                    if (configureService != null)
+                        configureService(secondProvisionService);
 
-                // trace size of the model hash  + amount if the aritfacts
-                var modelNodesCount = 0;
-                model.WithNodesOfType<DefinitionBase>(n => { modelNodesCount++; });
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine("Original model:");
+                        RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    }
 
-                var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
-                serializer.RegisterKnownTypes(new[]
+                    secondProvisionService.PreviousModelHash = firstProvisionService.CurrentModelHash;
+                    secondProvisionService.Traverse(null, currentModel);
+
+                    // trace size of the model hash  + amount if the aritfacts
+                    var modelNodesCount = 0;
+                    model.WithNodesOfType<DefinitionBase>(n => { modelNodesCount++; });
+
+                    var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
+                    serializer.RegisterKnownTypes(new[]
                 {
                     typeof(ModelHash),
                     typeof(ModelNodeHash)
                 });
 
-                var data = Encoding.UTF8.GetBytes(serializer.Serialize(firstProvisionService.CurrentModelHash));
+                    var data = Encoding.UTF8.GetBytes(serializer.Serialize(firstProvisionService.CurrentModelHash));
 
-                var persistanceFileService = new DefaultFileSystemPersistenceStorage();
-                persistanceFileService.SaveObject(
-                                        string.Format("incremental_state_m2.regression-artifact-{1}-{0}", definitionType.Name, modelNodesCount),
-                                        data);
+                    var persistanceFileService = new DefaultFileSystemPersistenceStorage();
+                    persistanceFileService.SaveObject(
+                                            string.Format("incremental_state_m2.regression-artifact-{1}-{0}", definitionType.Name, modelNodesCount),
+                                            data);
 
-                RegressionUtils.WriteLine(string.Empty);
-                RegressionUtils.WriteLine("Provisioned model:");
-                RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    if (!silentMode)
+                    {
+                        RegressionUtils.WriteLine(string.Empty);
+                        RegressionUtils.WriteLine("Provisioned model:");
+                        RegressionUtils.WriteLine(ModelPrintService.PrintModel(currentModel));
+                    }
 
-                // asserts
-                var expectedProvisionNodesCount = 0;
+                    // asserts
+                    var expectedProvisionNodesCount = 0;
 
-                expectedProvisionNodesCount += secondProvisionService.GetTotalSingleIdentityNodeCount();
-                expectedProvisionNodesCount += secondProvisionService.GetTotalIgnoredNodeCount();
+                    expectedProvisionNodesCount += secondProvisionService.GetTotalSingleIdentityNodeCount();
+                    expectedProvisionNodesCount += secondProvisionService.GetTotalIgnoredNodeCount();
 
-                Assert.AreEqual(expectedProvisionNodesCount, secondProvisionService.ModelNodesToUpdate.Count);
-                Assert.AreEqual(GetTotalModelNodeCount(model) - expectedProvisionNodesCount, secondProvisionService.ModelNodesToSkip.Count);
+                    Assert.AreEqual(expectedProvisionNodesCount, secondProvisionService.ModelNodesToUpdate.Count);
+                    Assert.AreEqual(GetTotalModelNodeCount(model) - expectedProvisionNodesCount, secondProvisionService.ModelNodesToSkip.Count);
+                }
             }
         }
 
