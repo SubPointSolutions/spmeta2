@@ -84,10 +84,10 @@ namespace SPMeta2.Services.Impl
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                     "Raising OnModelProcessing for model: [{0}].", modelNode);
 
+                OnBeforeDeployModelNode(modelHost, modelNode);
+
                 if (OnModelProcessing != null)
                     OnModelProcessing(modelNode);
-
-                OnBeforeDeployModelNode(modelHost, modelNode);
 
                 //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
                 var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
@@ -123,10 +123,13 @@ namespace SPMeta2.Services.Impl
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                     "Raising OnModelProcessed for model: [{0}].", modelNode);
 
+                // call up before OnModelProcessed
+                // Incremental provision real time trace problems #978
+                // https://github.com/SubPointSolutions/spmeta2/issues/978
+                OnAfterDeployModelNode(modelHost, modelNode);
+
                 if (OnModelProcessed != null)
                     OnModelProcessed(modelNode);
-
-                OnAfterDeployModelNode(modelHost, modelNode);
 
                 var childModelTypes = GetSortedChildModelTypes(modelNode);
 
