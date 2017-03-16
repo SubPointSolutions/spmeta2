@@ -1,0 +1,33 @@
+﻿## What's new in @Model.ReleaseTitle @Model.ReleaseVersion, @Model.ReleaseMonthAndYear
+
+@if(!System.String.IsNullOrEmpty(Model.AssemblyFileVersion)) 
+{
+<text>
+AssemblyFileVersion: @Model.AssemblyFileVersion
+</text>
+}
+
+@foreach(var releaseGroup in Model.ReleaseIssueGroups){
+
+var items = releaseGroup.Issues;
+var label = releaseGroup.Label;
+var labelTitle = releaseGroup.LabelTitle;
+
+if (items.Count > 0) 
+{
+<text>
+### @labelTitle
+@foreach (var item in items)
+{
+<text>* <a href='@item.Url'>#@item.Number</a>, @item.Title</text>
+}
+</text>
+}
+}
+
+### Feature requests, support and contributions
+This project is a part of the [SPMeta2 ecosystem](http://subpointsolutions.com). In case you have unexpected issues, feedback or keen to see new features, please join [Yammer Community](https://www.yammer.com/spmeta2feedback), check out [documentation](http://docs.subpointsolutions.com/spmeta2/) or post your feedback or issues directly at [GitHub issue tracker](https://github.com/SubPointSolutions/spmeta2/issues). Enterprise support and SLA is [available upon request](http://subpointsolutions.com/services/).
+
+* [Yammer Community](https://www.yammer.com/spmeta2feedback)
+* [@Model.ProjectName documentation](http://docs.subpointsolutions.com/spmeta2/)
+* [GitHub issue tracker](https://github.com/SubPointSolutions/spmeta2/issues)

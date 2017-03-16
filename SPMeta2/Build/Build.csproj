@@ -47,6 +47,7 @@
     <None Include="build-v12.cake" />
     <None Include="build.json" />
     <None Include="build-v12.ps1" />
+    <None Include="github-release-notes.chtml" />
     <None Include="Pester\pester.run.ps1" />
     <None Include="Pester\regression.nuget.ps1" />
     <None Include="Pester\_install.ps1" />

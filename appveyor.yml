@@ -3,7 +3,8 @@ test: off
 clone_folder: c:\prj\m2
 
 build_script: 
-    - ps: c:\prj\m2\SPMeta2\Build\build.ps1 -Verbosity Minimal -Target "Default-CI"
+    - ps: c:\prj\m2\SPMeta2\Build\build.ps1 -Target "Default-CI"
 
 artifacts:
-    - path: '**\*.nupkg'
+    - path: '**\build-artifact-nuget-packages\*.nupkg'
+    - path: '**\build-artifact-cli-packages\*.nupkg'
