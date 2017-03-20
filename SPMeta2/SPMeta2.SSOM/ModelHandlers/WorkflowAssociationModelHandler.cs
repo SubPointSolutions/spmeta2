@@ -49,14 +49,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 DeployContentTypeWorkflowAssociationDefinition(contentType, contentType, workflowAssociationModel);
             }
+            else if (modelHost is ContentTypeLinkModelHost)
+            {
+                var contentType = (modelHost as ContentTypeLinkModelHost).HostContentType;
+
+                DeployContentTypeWorkflowAssociationDefinition(contentType, contentType, workflowAssociationModel);
+            }
 
             else
             {
                 throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
             }
         }
-
-
 
         private SPWeb GetWebFromModelHost(object modelHost)
         {
@@ -74,6 +78,11 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is SPContentType)
             {
                 return (modelHost as SPContentType).ParentWeb;
+            }
+
+            if (modelHost is ContentTypeLinkModelHost)
+            {
+                return (modelHost as ContentTypeLinkModelHost).HostWeb;
             }
 
             throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
@@ -98,6 +107,20 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is SPContentType)
             {
                 var contentType = (modelHost as SPContentType);
+                var web = contentType.ParentWeb;
+
+                return contentType.WorkflowAssociations
+                                  .GetAssociationByName(def.Name, web.UICulture);
+            }
+            if (modelHost is ContentTypeLinkModelHost)
+            {
+                var listContentTypeHost = (modelHost as ContentTypeLinkModelHost);
+
+                // don't update content type link within list
+                if (listContentTypeHost.HostList != null)
+                    listContentTypeHost.ShouldUpdateHost = false;
+
+                var contentType = listContentTypeHost.HostContentType;
                 var web = contentType.ParentWeb;
 
                 return contentType.WorkflowAssociations

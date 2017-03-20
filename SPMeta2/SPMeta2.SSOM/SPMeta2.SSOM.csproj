@@ -335,6 +335,7 @@
     <Compile Include="ModelHosts\SiteModelHost.cs" />
     <Compile Include="ModelHosts\SSOMModelHostBase.cs" />
     <Compile Include="ModelHosts\WebApplicationModelHost.cs" />
+    <Compile Include="ModelHosts\ContentTypeModelHost.cs" />
     <Compile Include="ModelHosts\WebModelHost.cs" />
     <Compile Include="ModelHosts\WebpartPageModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

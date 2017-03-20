@@ -9,6 +9,7 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -42,7 +43,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
-            var modelHost = modelHostContext.ModelHost;
+            var modelHost = modelHostContext.ModelHost as ModelHostBase;
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
@@ -54,9 +55,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var contentType = list.ContentTypes[contentTypeLinkModel.ContentTypeName];
 
-            action(contentType);
+            var contentTypeLinkHost = ModelHostBase.Inherit<ContentTypeLinkModelHost>(modelHost, host =>
+            {
+                host.HostContentType = contentType;
+                host.HostList = list;
+            });
 
-            contentType.Update(false);
+            action(contentTypeLinkHost);
+
+            if (!contentTypeLinkHost.ShouldUpdateHost)
+                contentType.Update(false);
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)
