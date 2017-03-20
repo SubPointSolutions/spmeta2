@@ -172,6 +172,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.Hidden = true;
                 def.TemplateType = BuiltInListTemplateTypeId.Tasks;
+                def.ContentTypesEnabled = true;
             });
 
             var historyList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
