@@ -161,6 +161,70 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.WorkflowAssociation")]
+        public void CanDeploy_WorkflowAssociation_UnderContentTypeLink()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+
+            });
+
+            var taskList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.Tasks;
+            });
+
+            var historyList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.WorkflowHistory;
+            });
+
+            var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+            {
+                def.TaskListTitle = taskList.Title;
+                def.HistoryListTitle = historyList.Title;
+            });
+
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
+
+                def.AssociationData = Rnd.String();
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(taskList);
+                web.AddList(historyList);
+
+                web.AddRandomList(list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef, contentTypeLink =>
+                    {
+                        contentTypeLink.AddWorkflowAssociation(workflowDef);
+                        contentTypeLink.AddWorkflowAssociation(workflowDefChanges);
+                    });
+                });
+            });
+
+            TestModel(siteModel, model);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WorkflowAssociation")]
         public void CanDeploy_WorkflowAssociation_UnderContentType()
         {
             // Enhance WorkflowAssociationDefinition - support deployment under content type #867
