@@ -68,6 +68,7 @@ namespace SPMeta2.Definitions.Fields
 
         [ExpectValidation]
         [DataMember]
+        [ExpectUpdateAsDateFormat]
         public string DateFormat { get; set; }
 
         [ExpectValidation]

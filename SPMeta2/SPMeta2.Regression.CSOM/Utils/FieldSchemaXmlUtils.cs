@@ -121,21 +121,24 @@ namespace SPMeta2.Regression.CSOM.Utils
         {
             var value = GetDateFormat(field);
 
-            if (value == 0)
+            // Format="0" when provisioning CalculatedField #969
+            // https://github.com/SubPointSolutions/spmeta2/issues/969
+
+            if (string.Compare(value, BuiltInDateTimeFieldFormatType.DateOnly, true) == 0)
                 return BuiltInDateTimeFieldFormatType.DateOnly;
 
-            if (value == 1)
+            if (string.Compare(value, BuiltInDateTimeFieldFormatType.DateTime, true) == 0)
                 return BuiltInDateTimeFieldFormatType.DateTime;
 
-            throw new ArgumentException("BuiltInDateTimeFieldFormatType");
+            throw new ArgumentException("BuiltInDateTimeFieldFormatType was:" + value);
 
         }
 
-        public static int GetDateFormat(this Field field)
+        public static string GetDateFormat(this Field field)
         {
             var xml = field.SchemaXml;
 
-            return ConvertUtils.ToInt(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Format)).Value;
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Format));
         }
 
         public static int GetCurrencyLocaleId(this Field field)
