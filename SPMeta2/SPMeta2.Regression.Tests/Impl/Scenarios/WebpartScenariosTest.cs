@@ -148,6 +148,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         public void CanDeploy_WebpartTo_UploadForm_InLibrary()
         {
             var model = SPMeta2Model
@@ -170,6 +171,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         public void CanDeploy_WebpartTo_OOTBListViews_InLibrary()
         {
             var model = SPMeta2Model
@@ -205,6 +207,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
         public void CanDeploy_WebpartTo_CustomListViews_InLibrary()
         {
@@ -244,6 +247,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         public void CanDeploy_WebpartTo_OOTBListViews_InList()
         {
             var model = SPMeta2Model
@@ -289,6 +293,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListViews")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         public void CanDeploy_WebpartTo_CustomListViews_InList()
         {
             var model = SPMeta2Model
@@ -331,6 +336,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts.ListForms")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         public void CanDeploy_WebpartTo_ListForm_InLibrary()
         {
             var model = SPMeta2Model
@@ -361,6 +367,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
         [TestCategory("Regression.Scenarios.Webparts.ListForms")]
         public void CanDeploy_WebpartTo_ListForm_InList()
         {
@@ -431,7 +438,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWebpartPage()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_WebpartPage()
         {
             var model = SPMeta2Model
                 .NewWebModel(web =>
@@ -461,7 +469,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWebpartPage_WithCustomPageLayout()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_WebpartPage_WithCustomPageLayout()
         {
             var webPartPage1 = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>(def =>
             {
@@ -538,40 +547,100 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToPublishingPageWebPartZone()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_VideoContentType_VideoPlayerPage()
         {
-            var siteModel = SPMeta2Model
-                                .NewSiteModel(site =>
-                                {
-                                    site
-                                        .AddSiteFeature(RegSiteFeatures.Publishing);
-                                });
+            // aiming to deploy a web part to the following page with in a library
+            // forms/videocontenttype/videoplayerpage.aspx
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
+
+            var contentTypeName = "Video";
+            var contentTypeLinkDef = new ContentTypeLinkDefinition
+            {
+                ContentTypeName = contentTypeName,
+                ContentTypeId = BuiltInSiteContentTypeId.Video
+            };
+
+            var formsFolder = new FolderDefinition
+            {
+                Name = "Forms"
+            };
+
+            var contentTypeFolder = new FolderDefinition
+            {
+                Name = contentTypeName
+            };
+
+            var pageDefinition = new WebPartPageDefinition
+            {
+                FileName = "videoplayerpage.aspx",
+                PageLayoutTemplate = BuiltInWebPartPageTemplates.spstd1,
+                NeedOverride = false
+            };
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddContentTypeLink(contentTypeLinkDef);
+
+                    list.AddFolder(formsFolder, forms =>
+                    {
+                        forms.AddFolder(contentTypeFolder, folder =>
+                        {
+                            folder.AddHostWebPartPage(pageDefinition, page =>
+                            {
+                                page.AddRandomWebpart();
+                                page.AddRandomWebpart();
+                                page.AddRandomWebpart();
+                            });
+                        });
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts")]
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_PublishingPageWebPartZone()
+        {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(RegSiteFeatures.Publishing);
+            });
 
             TestModel(siteModel);
 
-            var webModel = SPMeta2Model
-               .NewWebModel(web =>
-               {
-                   web
-                       .AddWebFeature(RegWebFeatures.Publishing)
-                       .AddHostList(BuiltInListDefinitions.Pages, list =>
-                       {
-                           list
-                               .AddRandomPublishingPage(page =>
-                               {
-                                   page
-                                       .AddRandomWebpart()
-                                       .AddRandomWebpart();
-                               })
-                               .AddRandomPublishingPage(page =>
-                               {
-                                   page
-                                       .AddRandomWebpart()
-                                       .AddRandomWebpart();
-                               });
-                       });
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddWebFeature(RegWebFeatures.Publishing)
+                    .AddHostList(BuiltInListDefinitions.Pages, list =>
+                    {
+                        list
+                            .AddRandomPublishingPage(page =>
+                            {
+                                page
+                                    .AddRandomWebpart()
+                                    .AddRandomWebpart();
+                            })
+                            .AddRandomPublishingPage(page =>
+                            {
+                                page
+                                    .AddRandomWebpart()
+                                    .AddRandomWebpart();
+                            });
+                    });
 
-               });
+            });
 
             TestModel(webModel);
         }
@@ -579,7 +648,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToPublishingPageContent()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_PublishingPageContent()
         {
             var webModel = SPMeta2Model
                .NewWebModel(web =>
@@ -656,7 +726,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWikiPageContent_AsItIs()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_WikiPageContent_AsItIs()
         {
             // Some web part provision on wiki page give empty markup
             // https://github.com/SubPointSolutions/spmeta2/issues/693
@@ -683,7 +754,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_ScriptEditorToWikiPageContent_As_AddToPageContent()
+        public void CanDeploy_ScriptEditorTo_WikiPageContent_As_AddToPageContent()
         {
             // Some web part provision on wiki page give empty markup
             // https://github.com/SubPointSolutions/spmeta2/issues/693
@@ -735,7 +806,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWikiPageContent_As_AddToPageContent()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_WikiPageContent_As_AddToPageContent()
         {
             // Some web part provision on wiki page give empty markup
             // https://github.com/SubPointSolutions/spmeta2/issues/693
@@ -800,7 +872,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Webparts")]
-        public void CanDeploy_WebpartToWikiPageContent()
+        [TestCategory("Regression.Scenarios.Webparts.Hosts")]
+        public void CanDeploy_WebpartTo_WikiPageContent()
         {
             var webModel = SPMeta2Model
                .NewWebModel(web =>
