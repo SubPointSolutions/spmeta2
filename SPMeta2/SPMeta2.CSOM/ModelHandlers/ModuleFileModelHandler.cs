@@ -327,7 +327,13 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (file != null)
             {
                 context.Load(file, f => f.Exists);
+                context.Load(file, f => f.ListItemAllFields); //SergeiSnitko. Need to be loaded to get if object is null
                 context.ExecuteQueryWithTrace();
+                //SergeiSnitko. I don't know all logic based on doesFileHasListItem. So I fill doesFileHasListItem by the real value
+                //of ListItem existing only if doesFileHasListItem is true. This action helps to prevent exceptions on web part provision
+                //on the page without ListItem not only under Forms folder (for example Forms/ContentTypeName/videoplayerpage.aspx fires exception)
+                doesFileHasListItem = doesFileHasListItem ? !(bool)file.ListItemAllFields.ServerObjectIsNull : doesFileHasListItem;
+
 
                 if (file.Exists)
                 {
