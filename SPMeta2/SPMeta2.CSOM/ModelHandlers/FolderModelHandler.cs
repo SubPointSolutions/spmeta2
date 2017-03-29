@@ -53,18 +53,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // once done, pass down via model host
                 if (folderModel.Name.ToLower() == "forms")
                 {
+                    var doesFileHaveListItem = false;
+
+#if !NET35
                     currentFolder.Context.Load(currentFolder, f => f.Properties);
                     currentFolder.Context.ExecuteQueryWithTrace();
 
-                    var doesFileHaveListItem =
-                        //Forms folders
-                  !(currentFolder != null
-                    &&
-                    (currentFolder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                    doesFileHaveListItem = !(currentFolder != null
                      &&
-                     currentFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
-                     "00000012"));
+                     (currentFolder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                      &&
+                      currentFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
+                      "00000012"));
 
+
+#endif
                     isSpecialFolderContext = !doesFileHaveListItem;
 
                     folderModelHost.IsSpecialFolderContext = isSpecialFolderContext;
