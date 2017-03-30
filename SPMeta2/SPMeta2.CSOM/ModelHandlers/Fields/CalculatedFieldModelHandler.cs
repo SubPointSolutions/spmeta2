@@ -43,6 +43,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating formula for a CalculatedField. Ensure FieldReferences are correct.");
 
                 typedField.Formula = typedFieldModel.Formula;
+
+                typedField.DateFormat = (DateTimeFieldFormatType)
+                    Enum.Parse(typeof(DateTimeFieldFormatType), typedFieldModel.DateFormat);
             }
 
             if (!string.IsNullOrEmpty(typedFieldModel.OutputType))
@@ -67,7 +70,11 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
             fieldTemplate.Add(formulaNode);
 
-            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, (int)Enum.Parse(typeof(DateTimeFieldFormatType), typedFieldModel.DateFormat));
+            // must be enum name, actually
+
+            // Format="0" when provisioning CalculatedField #969
+            // https://github.com/SubPointSolutions/spmeta2/issues/969
+            fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, typedFieldModel.DateFormat);
 
             if (typedFieldModel.ShowAsPercentage.HasValue)
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.Percentage, typedFieldModel.ShowAsPercentage.Value.ToString().ToUpper());

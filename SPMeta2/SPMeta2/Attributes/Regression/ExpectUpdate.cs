@@ -218,4 +218,9 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsDateFormat : ExpectUpdate
+    {
+
+    }
+
 }

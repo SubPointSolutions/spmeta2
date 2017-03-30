@@ -273,6 +273,7 @@
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsBooleanFieldDefaultValueService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsEmailAddressService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsNumberFieldDisplayFormatService.cs" />
+    <Compile Include="Services\ExpectUpdateServices\ExpectUpdatAsDisplayFormatService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateDeveloperDashboardSettingsService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsToolbarTypeService.cs" />
     <Compile Include="Services\ExpectUpdateServices\ExpectUpdateAsChoiceFieldEditFormatService.cs" />

@@ -232,6 +232,11 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                       .AddProperty(new PropertyDefinition());
 
 
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition(), contentTypeLink =>
+                    {
+                        contentTypeLink.AddWorkflowAssociation(new WorkflowAssociationDefinition());
+
+                    });
                     list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition());
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
                     list.AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition());

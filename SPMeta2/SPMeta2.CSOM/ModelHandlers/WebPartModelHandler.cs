@@ -400,6 +400,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                        listItemModelHost.HostFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
                        "00000012"));
 
+                // is parent /forms folder or nay other special page?
+                if (doesFileHasListItem)
+                {
+                    doesFileHasListItem = !listItemModelHost.IsSpecialFolderContext;
+                }
+
 #endif
 
 #if NET35
