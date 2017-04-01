@@ -355,9 +355,8 @@
     </Content>
     <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
       <Link>SPMeta2.Containers.CSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
+    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll">
       <Link>SPMeta2.Containers.O365v16.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -541,18 +540,6 @@
       <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Regression.SSOM.Standard\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll">
-      <Link>SPMeta2.Regression.SSOM.Standard.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
-      <Link>SPMeta2.Regression.SSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.SSOM.Standard\bin\Debug\SPMeta2.SSOM.Standard.dll">
-      <Link>SPMeta2.SSOM.Standard.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll">
       <Link>SPMeta2.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -589,9 +576,6 @@
     <None Include="PSScripts\100 - Ensure M2 Web Application.ps1" />
     <None Include="PSScripts\_config.ps1" />
     <None Include="PSScripts\_sys.common.ps1" />
-    <None Include="SPMeta2.Containers.O365.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SPMeta2.Regression.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

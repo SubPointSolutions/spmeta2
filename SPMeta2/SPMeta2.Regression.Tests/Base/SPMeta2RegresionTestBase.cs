@@ -42,10 +42,15 @@ namespace SPMeta2.Regression.Tests.Base
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
+        private static string GetFullPath(string path)
+        {
+            return Path.GetFullPath(path);
+        }
+
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var m2runner = Environment.GetEnvironmentVariable("SPMeta2_RunnerLibraries", EnvironmentVariableTarget.Machine);
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var baseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
 
             RegressionUtils.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
 
@@ -81,11 +86,24 @@ namespace SPMeta2.Regression.Tests.Base
             {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-365"));
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45-365\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45-365\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45-365\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45-365\")));
             }
 
             if (m2runner == "SPMeta2.Containers.O365.dll")
+            {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
-            assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+            }
 
             if (m2runner == "SPMeta2.Containers.CSOM.dll")
             {
