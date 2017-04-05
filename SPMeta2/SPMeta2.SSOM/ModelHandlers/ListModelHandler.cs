@@ -167,6 +167,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.NavigateForFormsPages.HasValue)
                 list.NavigateForFormsPages = definition.NavigateForFormsPages.Value;
 
+            if (definition.EnableThrottling.HasValue)
+                list.EnableThrottling = definition.EnableThrottling.Value;
+
 #if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {

@@ -276,6 +276,16 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool? NavigateForFormsPages { get; set; }
 
+        /// <summary>
+        /// Represents SPList.EnableThrottling property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/908
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? EnableThrottling { get; set; }
+
         #endregion
 
         #region methods
