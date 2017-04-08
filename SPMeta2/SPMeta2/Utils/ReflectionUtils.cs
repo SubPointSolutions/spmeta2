@@ -303,6 +303,29 @@ namespace SPMeta2.Utils
             return false;
         }
 
+        public static int? GetHResultValue(Exception exception)
+        {
+            // .net 4 hack to get HResult
+            var hResultProp = exception.GetType()
+                                .GetProperty("HResult",
+                                            BindingFlags.NonPublic
+                                            | BindingFlags.Public
+                                            | BindingFlags.Instance
+                                            | BindingFlags.Static);
+
+
+            if (hResultProp != null)
+            {
+                var hResultValue = hResultProp.GetValue(exception, null);
+                if (hResultValue is int)
+                {
+                    return (int)hResultValue;
+                }
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }

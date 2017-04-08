@@ -198,10 +198,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 var serverException = e as ServerException;
 
                 if (serverException != null
-#if !NET35
- && serverException.HResult == -2146233088
-#endif
- && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
+                    && ReflectionUtils.GetHResultValue(serverException).Value == -2146233088
+                    && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
@@ -405,10 +403,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 var serverException = e as ServerException;
 
                 if (serverException != null
-#if !NET35
- && serverException.HResult == -2146233088
-#endif
- && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
+                    && ReflectionUtils.GetHResultValue(serverException).Value == -2146233088
+                    && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
                 {
                     TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
 
