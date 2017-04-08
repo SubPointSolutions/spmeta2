@@ -53,6 +53,8 @@ namespace SPMeta2
             RegisterService(typeof(FluentModelValidationServiceBase), new DefaultFluentModelValidationService());
 
             RegisterService(typeof(ModelStatInfoServiceBase), new DefaultModelStatInfoService());
+
+            RegisterService(typeof(TryRetryServiceBase), new DefaultTryRetryService());
         }
 
         #endregion

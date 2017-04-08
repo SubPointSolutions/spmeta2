@@ -134,6 +134,14 @@ namespace SPMeta2.CSOM.Services.Impl
             //if (ex.HResult == -2146233088)
             //    return true;
 
+            if (ex.Message.Contains("Failed to read from or write to database"))
+            {
+                // Nested terms provisioning in Office 365 fails #995
+                // TermSet not found #994
+
+                return false;
+            }
+
             // O365 related handling
             if (IsAllowedHttpWebResponseStatusCode(ex))
                 return true;

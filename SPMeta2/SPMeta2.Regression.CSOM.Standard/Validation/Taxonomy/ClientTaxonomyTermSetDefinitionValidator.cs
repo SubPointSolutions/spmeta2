@@ -17,6 +17,12 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             var spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
 
+            TryRetryService.TryWithRetry(() =>
+            {
+                spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
+                return spObject != null;
+            });
+
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject)

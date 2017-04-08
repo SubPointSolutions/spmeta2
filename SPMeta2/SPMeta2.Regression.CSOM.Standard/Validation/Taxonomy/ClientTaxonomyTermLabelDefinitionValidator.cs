@@ -15,6 +15,15 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             var spObject = FindLabelInTerm(termModelHost.HostTerm, definition);
 
+            if (spObject == null)
+            {
+                TryRetryService.TryWithRetry(() =>
+                {
+                    spObject = FindLabelInTerm(termModelHost.HostTerm, definition);
+                    return spObject != null;
+                });
+            }
+
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)

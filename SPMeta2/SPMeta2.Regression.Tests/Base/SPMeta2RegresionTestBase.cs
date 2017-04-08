@@ -35,7 +35,7 @@ using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {
-    public class SPMeta2RegresionTestCoreBase
+    public class SPMeta2RegresionTestCoreBase : SPMeta2RegresionTestVeryBase
     {
         static SPMeta2RegresionTestCoreBase()
         {
@@ -49,7 +49,7 @@ namespace SPMeta2.Regression.Tests.Base
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var m2runner = Environment.GetEnvironmentVariable("SPMeta2_RunnerLibraries", EnvironmentVariableTarget.Machine);
+            var m2runner = RegressionTestService.CurrentProvisionRunnerAsssmbly;
             var baseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
 
             RegressionUtils.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
@@ -103,12 +103,28 @@ namespace SPMeta2.Regression.Tests.Base
             {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45\")));
             }
 
             if (m2runner == "SPMeta2.Containers.CSOM.dll")
             {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45\")));
             }
 
             foreach (var dir in assemblyDirs)
@@ -122,7 +138,7 @@ namespace SPMeta2.Regression.Tests.Base
                 }
             }
 
-            throw new Exception(string.Format("Cannot load custom assembly:[{0}] for assembly:[{1}]",
+            throw new Exception(string.Format("Cannot load custom assembly:[{0}] for assembly:[{1}]. Rebuild solution via powershell .\build in 'Build' project and run regression again",
                 args.Name,
                 args.RequestingAssembly
                 ));

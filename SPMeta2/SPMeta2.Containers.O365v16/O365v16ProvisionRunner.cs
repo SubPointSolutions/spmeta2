@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
@@ -19,6 +20,7 @@ using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Containers.O365v16
 {
@@ -154,6 +156,9 @@ namespace SPMeta2.Containers.O365v16
         /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
+            if (!SiteUrls.Any())
+                throw new SPMeta2Exception("SiteUrls is empty");
+
             foreach (var siteUrl in SiteUrls)
             {
                 ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
@@ -185,6 +190,9 @@ namespace SPMeta2.Containers.O365v16
         /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
+            if (!WebUrls.Any())
+                throw new SPMeta2Exception("WebUrls is empty");
+
             foreach (var webUrl in WebUrls)
             {
                 ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));

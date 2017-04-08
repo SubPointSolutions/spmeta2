@@ -24,7 +24,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Base
         public SPMeta2RegresionScenarioTestBase()
         {
             RegressionService.ProvisionGenerationCount = 2;
-            RegressionService.ShowOnlyFalseResults = false;
+            RegressionService.ShowOnlyFalseResults = true;
 
             var isIncrementalProvisionEnabled = IsIncrementalProvisionMode;
 

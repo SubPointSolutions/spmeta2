@@ -17,6 +17,12 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             var spObject = FindGroup(termStoreModelHost, definition);
 
+            TryRetryService.TryWithRetry(() =>
+            {
+                spObject = FindGroup(termStoreModelHost, definition);
+                return spObject != null;
+            });
+
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
                 .ShouldNotBeNull(spObject);
@@ -40,8 +46,6 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                         IsValid = isValid
                     };
                 });
-
-                
             }
             else
             {

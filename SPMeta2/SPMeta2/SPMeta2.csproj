@@ -372,6 +372,7 @@
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
+    <Compile Include="Services\Impl\DefaultTryRetryService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
@@ -422,6 +423,7 @@
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
+    <Compile Include="Services\TryRetryServiceBase.cs" />
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />

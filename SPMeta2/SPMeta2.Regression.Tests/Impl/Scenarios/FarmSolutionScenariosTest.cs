@@ -26,7 +26,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         public FarmSolutionScenariosTest()
         {
             RegressionService.ProvisionGenerationCount = 1;
-            RegressionService.ShowOnlyFalseResults = false;
+            RegressionService.ShowOnlyFalseResults = true;
         }
 
         #endregion

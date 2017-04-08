@@ -88,6 +88,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Base\ListViewWebPartScenariosTestBase.cs" />
+    <Compile Include="Base\SPMeta2RegresionTestVeryBase.cs" />
     <Compile Include="Config\M2RegressionRuntime.cs" />
     <Compile Include="Consts\RegWebparts.cs" />
     <Compile Include="Data\PageTemplates.Designer.cs">
@@ -355,6 +356,7 @@
     </Content>
     <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
       <Link>SPMeta2.Containers.CSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll">
       <Link>SPMeta2.Containers.O365v16.dll</Link>
@@ -540,6 +542,18 @@
       <Link>_Dependencies\spmeta2-csom-regression-2013\SPMeta2.Regression.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SPMeta2.Regression.SSOM.Standard\bin\Debug\SPMeta2.Regression.SSOM.Standard.dll">
+      <Link>SPMeta2.Regression.SSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.Regression.SSOM\bin\Debug\SPMeta2.Regression.SSOM.dll">
+      <Link>SPMeta2.Regression.SSOM.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SPMeta2.SSOM.Standard\bin\Debug\SPMeta2.SSOM.Standard.dll">
+      <Link>SPMeta2.SSOM.Standard.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SPMeta2.SSOM\bin\Debug\SPMeta2.SSOM.dll">
       <Link>SPMeta2.SSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -552,8 +566,6 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
-    <None Include="PSScripts\300 - Configure M2 Grid.ps1" />
     <None Include="Resources\XsltListViewWebPart_TestXsl.txt" />
     <None Include="Resources\CustomAllItemsPage.txt" />
   </ItemGroup>
@@ -573,9 +585,6 @@
     <EmbeddedResource Include="Templates\Webparts\Base\ContentEditor.webpart" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PSScripts\100 - Ensure M2 Web Application.ps1" />
-    <None Include="PSScripts\_config.ps1" />
-    <None Include="PSScripts\_sys.common.ps1" />
     <None Include="SPMeta2.Regression.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
