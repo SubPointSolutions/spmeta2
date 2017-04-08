@@ -324,7 +324,7 @@ namespace SPMeta2.Extensions
             return false;
         }
 
-        private static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
+        internal static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
             where TModelNode : ModelNode
         {
             modelNode.SetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId, modelId);

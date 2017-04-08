@@ -7,6 +7,9 @@ using System.Reflection;
 using SPMeta2.Definitions;
 using SPMeta2.Common;
 using SPMeta2.Exceptions;
+using SPMeta2.ModelHosts;
+using SPMeta2.Models;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Services
 {
@@ -83,6 +86,65 @@ namespace SPMeta2.Services
             var typedModelService = service.ModelTraverseService as DefaultIncrementalModelTreeTraverseService;
 
             return typedModelService;
+        }
+
+        #endregion
+
+        #region deployment helpers
+
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// </summary>
+        /// <param name="provisionService"></param>
+        /// <param name="modelHost"></param>
+        /// <param name="model"></param>
+        /// <param name="incrementalModelId"></param>
+        public static void DeployModelIncrementally(this ProvisionServiceBase provisionService,
+            ModelHostBase modelHost,
+            ModelNode model,
+            string incrementalModelId)
+        {
+            DeployModelIncrementally(provisionService, modelHost, model, incrementalModelId, null);
+        }
+
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with IncrementalProvisionConfig.AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// Callback on IncrementalProvisionConfig makes it easy to configure IncrementalProvisionConfig instance
+        /// </summary>
+        /// <param name="provisionService"></param>
+        /// <param name="modelHost"></param>
+        /// <param name="model"></param>
+        /// <param name="incrementalModelId"></param>
+        /// <param name="config"></param>
+        public static void DeployModelIncrementally(this ProvisionServiceBase provisionService,
+            ModelHostBase modelHost,
+            ModelNode model,
+            string incrementalModelId,
+            Action<IncrementalProvisionConfig> config)
+        {
+            try
+            {
+                var incrementalProvisionConfig = new IncrementalProvisionConfig
+                {
+                    AutoDetectSharePointPersistenceStorage = true
+                };
+
+                if (config != null)
+                    config(incrementalProvisionConfig);
+
+                provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
+                model.InternalSetIncrementalProvisionModelId(incrementalModelId);
+
+                provisionService.DeployModel(modelHost, model);
+            }
+            finally
+            {
+                provisionService.SetDefaultProvisionMode();
+            }
         }
 
         #endregion
