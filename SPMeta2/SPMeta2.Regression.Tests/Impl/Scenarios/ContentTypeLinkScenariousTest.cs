@@ -53,8 +53,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
+                web.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+
                 web.AddRandomWeb(subWeb =>
                 {
+                    subWeb.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit(f =>
+                    {
+                        f.Enable = true;
+                    }));
+
                     subWeb.AddContentType(webContentType);
 
                     subWeb.AddList(webList, list =>

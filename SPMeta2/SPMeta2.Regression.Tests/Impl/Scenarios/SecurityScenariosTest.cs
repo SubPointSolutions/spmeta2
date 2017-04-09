@@ -1163,23 +1163,22 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var securityGroup = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
 
-            var webModel = SPMeta2Model
-                 .NewWebModel(web =>
-                 {
-                     web.AddRandomWeb(rndWeb =>
-                     {
-                         rndWeb.AddRandomList(rndList =>
-                         {
-                             rndList.AddRandomListItem(rndListItem =>
-                             {
-                                 rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
-                                 {
-                                     IsAssociatedMemberGroup = true
-                                 });
-                             });
-                         });
-                     });
-                 });
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddRandomList(rndList =>
+                    {
+                        rndList.AddRandomListItem(rndListItem =>
+                        {
+                            rndListItem.AddSecurityGroupLink(new SecurityGroupLinkDefinition
+                            {
+                                IsAssociatedMemberGroup = true
+                            });
+                        });
+                    });
+                });
+            });
 
 
             TestModels(new ModelNode[] { webModel });

@@ -27,14 +27,16 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var contentType = modelHost.WithAssertAndCast<SPContentType>("modelHost", value => value.RequireNotNull()); ;
+            var typedModelHost = modelHost.WithAssertAndCast<ContentTypeModelHost>("modelHost", value => value.RequireNotNull()); ;
             var contentTypeOrderDefinition = model.WithAssertAndCast<UniqueContentTypeFieldsOrderDefinition>("model", value => value.RequireNotNull());
 
-            DeployContentTypeOrder(modelHost, contentType, contentTypeOrderDefinition);
+            DeployContentTypeOrder(modelHost, typedModelHost, contentTypeOrderDefinition);
         }
 
-        private void DeployContentTypeOrder(object modelHost, SPContentType contentType, UniqueContentTypeFieldsOrderDefinition reorderFieldLinksModel)
+        private void DeployContentTypeOrder(object modelHost, ContentTypeModelHost contentTypeModellHost, UniqueContentTypeFieldsOrderDefinition reorderFieldLinksModel)
         {
+            var contentType = contentTypeModellHost.HostContentType;
+
             var fieldLinks = contentType.FieldLinks.OfType<SPFieldLink>().ToList();
             var fields = contentType.Fields.OfType<SPField>().ToList();
 
@@ -85,6 +87,8 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
                 ObjectDefinition = reorderFieldLinksModel,
                 ModelHost = modelHost
             });
+
+            contentTypeModellHost.ShouldUpdateHost = true;
         }
 
         #endregion

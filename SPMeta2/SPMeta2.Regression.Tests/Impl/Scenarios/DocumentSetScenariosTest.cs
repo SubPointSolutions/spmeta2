@@ -59,6 +59,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.DocumentSets.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(listDef, list =>
@@ -68,7 +76,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -87,6 +95,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.DocumentSets.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(listDef, list =>
@@ -100,7 +116,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -119,6 +135,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.DocumentSets.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(listDef, list =>
@@ -129,7 +153,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -148,6 +172,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.DocumentSets.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(listDef, list =>
@@ -161,7 +193,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         #endregion

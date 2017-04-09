@@ -63,3 +63,16 @@
       #- CSOM
       #- O365
       #- O365v16
+    TestData:
+      UserLogins:
+      # test user logins to be used with security related tests
+      # must not be same account under which tests are run
+        - dev\user1
+        - dev\user2
+      ActiveDirectoryGroups:
+      # test group user logins to be used with security related tests
+        - dev\group1         
+        - dev\group2         
+      DomainUserEmails:
+        - user1@dev.local
+        - user2@dev.local
