@@ -258,6 +258,7 @@
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\XsltListViewWebPartModelHandler.cs" />
     <Compile Include="ModelHosts\ContentTypeLinkModelHost.cs" />
+    <Compile Include="ModelHosts\ContentTypeModelHost.cs" />
     <Compile Include="ModelHosts\ListItemFieldValueModelHost.cs" />
     <Compile Include="ModelHosts\ListItemModelHost.cs" />
     <Compile Include="ModelHosts\ModuleFileModelHost.cs" />

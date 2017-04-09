@@ -117,12 +117,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    action(new ModelHostContext
+                    action(ModelHostBase.Inherit<ContentTypeModelHost>(mdHHost, host =>
                     {
-                        Site = site,
-                        Web = web,
-                        ContentType = currentContentType
-                    });
+                        host.HostContentType = currentContentType;
+                    }));
                 }
 
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
