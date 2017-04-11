@@ -12,9 +12,45 @@ function Get-RegressionConfig() {
     return $config
 }
 
-if($dsc_configFilePath -eq $null) {
-    $dsc_configFilePath = "config.yaml"
+function Get-EnvironmentVariable($name) {
+	
+	$result = [System.Environment]::GetEnvironmentVariable($name) 
+	if($result -ne $null) { return $result; }
+
+	$result = [System.Environment]::GetEnvironmentVariable($name, "Machine") 
+	if($result -ne $null) { return $result; }
+
+	$result = [System.Environment]::GetEnvironmentVariable($name, "Process") 
+	if($result -ne $null) { return $result; }
+
+	$result = [System.Environment]::GetEnvironmentVariable($name, "User") 
+	if($result -ne $null) { return $result; }
+
+	return $null
 }
+
+if($dsc_configFilePath -eq $null) {
+    
+    $dsc_configFilePath = "config.yaml"
+
+    # environment specific?
+    $environmentSpecificConfigPath = Get-EnvironmentVariable "SPMeta2.Regression.Config.FilePath"
+
+    if( [System.IO.File]::Exists($environmentSpecificConfigPath) -eq $true) {
+        $dsc_configFilePath = $environmentSpecificConfigPath
+        Write-Host "Using environment specific config file:[$dsc_configFilePath]" -ForegroundColor Green
+    }
+    else {
+        $dsc_configFilePath = "config.yaml"
+        Write-Host "Using default config file:[$dsc_configFilePath]" -ForegroundColor Green
+        
+    }
+}
+
+if( [System.IO.File]::Exists($dsc_configFilePath) -eq $false) {
+    throw "Config file [$dsc_configFilePath] does not exist"
+}
+
 
 $dsc_config = Get-RegressionConfig($dsc_configFilePath)
 $env_config = $dsc_config.Configuration.Environment

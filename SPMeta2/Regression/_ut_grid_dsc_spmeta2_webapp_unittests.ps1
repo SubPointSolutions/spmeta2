@@ -241,6 +241,11 @@ Configuration SPMeta2_UnitTestSettings
         Value =  ($config.OnlineUserPassword) 
     }
 
+    $env_vars += @{
+        Name = "SPMeta2_DefaultSqlServerName"
+        Value =  $NodeName
+    }
+
     Node $NodeName {
         
         foreach($var in $env_vars) {
