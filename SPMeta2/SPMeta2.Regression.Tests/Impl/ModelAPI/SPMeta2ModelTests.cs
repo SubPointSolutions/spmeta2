@@ -11,6 +11,8 @@ using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Containers.Utils;
+using SPMeta2.Enumerations;
+using SPMeta2.Models;
 
 namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 {
@@ -91,6 +93,22 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
         [TestCategory("Regression.SPMeta2Model")]
         public void CanDeploy_ListModel_WithFolders()
         {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+            });
+
             var model = SPMeta2Model.NewListModel(list =>
             {
                 list.AddFolder(ModelGeneratorService.GetRandomDefinition<FolderDefinition>());
@@ -98,7 +116,11 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
                 list.AddFolder(ModelGeneratorService.GetRandomDefinition<FolderDefinition>());
             });
 
-            TestModel(model);
+            TestModels(new ModelNode[]{
+                siteModel,
+                webModel,
+                model
+            });
         }
 
         #endregion
@@ -272,7 +294,7 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
             Assert.IsTrue(SPMeta2Model.NewSiteModel(newDefinition).GetType() == expectedType);
 
             // new definition with callback
-            Assert.IsTrue(SPMeta2Model.NewSiteModel(newDefinition, node => { }).GetType() ==  expectedType);
+            Assert.IsTrue(SPMeta2Model.NewSiteModel(newDefinition, node => { }).GetType() == expectedType);
         }
 
 

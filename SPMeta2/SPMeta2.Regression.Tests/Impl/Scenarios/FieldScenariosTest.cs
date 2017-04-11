@@ -440,14 +440,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
 
-            var model = SPMeta2Model
-                   .NewWebModel(web =>
-                   {
-                       web.AddRandomList(list =>
-                       {
-                           list.AddField(field);
-                       });
-                   });
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    list.AddField(field);
+                });
+            });
 
             TestModel(model);
         }

@@ -44,7 +44,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             // TermSet not found #994
             var context = siteModelHost.HostClientContext;
 
-            if (context.Credentials is SharePointOnlineCredentials)
+            if (IsSharePointOnlineContext(context))
             {
                 var currentGroup = FindGroup(siteModelHost, groupModel);
 
@@ -72,10 +72,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var storeModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var groupModel = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
+            var context = storeModelHost.HostClientContext;
+
             var termStore = storeModelHost.HostTermStore;
             var currentGroup = FindGroup(storeModelHost, groupModel);
 
-            if (currentGroup == null)
+            if (currentGroup == null && IsSharePointOnlineContext(context))
             {
                 TryRetryService.TryWithRetry(() =>
                 {
@@ -227,6 +229,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             catch (Exception e)
             {
+                var context = siteModelHost.HostClientContext;
+
+                if (!IsSharePointOnlineContext(context))
+                    throw;
+
                 // SPMeta2 Provisioning Taxonomy Group with CSOM Standard #959
                 // https://github.com/SubPointSolutions/spmeta2/issues/959
 

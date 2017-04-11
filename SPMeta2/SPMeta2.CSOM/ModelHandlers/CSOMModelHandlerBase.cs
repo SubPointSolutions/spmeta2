@@ -52,6 +52,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             return ReflectionUtils.GetPropertyValue(obj, propName);
         }
 
+        protected virtual bool IsSharePointOnlineContext(ClientContext context)
+        {
+            return context.Credentials is SharePointOnlineCredentials;
+        }
+
         #endregion
 
         #region localization

@@ -43,7 +43,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             // TermSet not found #994
             var context = termModelHost.HostClientContext;
 
-            if (context.Credentials is SharePointOnlineCredentials)
+            if (IsSharePointOnlineContext(context))
             {
                 var term = termModelHost.HostTerm;
                 var currentLabel = FindLabelInTerm(term, definition);

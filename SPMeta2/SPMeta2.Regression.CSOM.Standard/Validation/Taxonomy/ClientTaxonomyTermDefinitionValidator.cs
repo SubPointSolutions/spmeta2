@@ -22,19 +22,31 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
 
             if (modelHost is TermModelHost)
             {
-                TryRetryService.TryWithRetry(() =>
+                var context = (modelHost as TermModelHost).HostClientContext;
+                spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
+
+                if (spObject == null && IsSharePointOnlineContext(context))
                 {
-                    spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
-                    return spObject != null;
-                });
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
+                        return spObject != null;
+                    });
+                }
             }
             else if (modelHost is TermSetModelHost)
             {
-                TryRetryService.TryWithRetry(() =>
+                var context = (modelHost as TermSetModelHost).HostClientContext;
+                spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
+
+                if (spObject == null && IsSharePointOnlineContext(context))
                 {
-                    spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
-                    return spObject != null;
-                });
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
+                        return spObject != null;
+                    });
+                }
             }
             else
             {

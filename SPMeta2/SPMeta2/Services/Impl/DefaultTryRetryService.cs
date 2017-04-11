@@ -60,11 +60,11 @@ namespace SPMeta2.Services.Impl
             {
                 TraceService.Warning((int)LogEventId.ModelProvision,
                     string.Format("Coudn't perform action. Waiting and retrying [{1}/{2}]",
-                            RetryTimeoutInMilliseconds,
+                            retryTimeoutInMilliseconds,
                             currentTryIndex,
                             MaxRetryCount));
 
-                if (currentTryIndex > retryTimeoutInMilliseconds)
+                if (currentTryIndex > maxTryCount)
                     break;
 
                 waiter(currentTryIndex, maxTryCount, retryTimeoutInMilliseconds);

@@ -259,14 +259,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 n.Url = string.Format("~sitecollection/{0}.html", Rnd.String());
             });
 
-            var model = SPMeta2Model
-                .NewWebModel(web =>
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
                 {
-                    web.AddRandomWeb(rndWeb =>
-                    {
-                        rndWeb.AddQuickLaunchNavigationNode(nav1Node);
-                    });
+                    rndWeb.AddQuickLaunchNavigationNode(nav1Node);
                 });
+            });
 
             TestModel(model);
         }

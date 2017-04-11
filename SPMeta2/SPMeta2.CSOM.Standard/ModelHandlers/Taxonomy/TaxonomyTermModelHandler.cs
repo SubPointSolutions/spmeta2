@@ -86,7 +86,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
                 currentTerm = FindTermInTerm(h.HostTerm, definition);
 
-                if (currentTerm == null)
+                var context = h.HostClientContext;
+
+                if (currentTerm == null && IsSharePointOnlineContext(context))
                 {
                     TryRetryService.TryWithRetry(() =>
                     {
@@ -110,7 +112,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
                 currentTerm = FindTermInTermSet(h.HostTermSet, definition);
 
-                if (currentTerm == null)
+                var context = h.HostClientContext;
+
+                if (currentTerm == null && IsSharePointOnlineContext(context))
                 {
                     TryRetryService.TryWithRetry(() =>
                     {
@@ -135,6 +139,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var currentTerm = FindTermInTermSet(termSet, termModel);
             var termName = NormalizeTermName(termModel.Name);
+
+
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -195,6 +201,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             catch (Exception e)
             {
+                var context = groupModelHost.HostClientContext;
+
+                if (!IsSharePointOnlineContext(context))
+                    throw;
+
                 var serverException = e as ServerException;
 
                 if (serverException != null
@@ -400,6 +411,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             }
             catch (Exception e)
             {
+                var context = groupModelHost.HostClientContext;
+
+                if (!IsSharePointOnlineContext(context))
+                    throw;
+
                 var serverException = e as ServerException;
 
                 if (serverException != null

@@ -3,7 +3,7 @@
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 . "$ScriptDirectory/_helpers.ps1"
 
-$o365RuntimePath = "$PSScriptRoot\..\..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4420.1017\CSOM"
+$o365RuntimePath = "$PSScriptRoot\..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4420.1017\CSOM"
         Write-Host "Loading SharePoint CSOM API" -fore Green
 
         $files = [System.IO.Directory]::GetFiles($o365RuntimePath, "*.dll")

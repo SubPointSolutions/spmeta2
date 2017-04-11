@@ -52,7 +52,7 @@ Configuration SPMeta2_WebApp
             ApplicationPoolAccount = $config.WebPoolManagedAccount.UserName
             AllowAnonymous         = $false
             AuthenticationMethod   = "NTLM"
-            DatabaseName           = "SPMeta2_Regression_Content"
+            DatabaseName           = "SPMeta2_Regression_Content_$webApp_Port"
             Url                    = $webApp_Url
             #HostHeader             = "spmeta2.contoso.com"
             Port                   = $webApp_Port
@@ -101,7 +101,7 @@ $config = @{
                     WebPoolManagedAccount = $dsc_WebPoolManagedCredentials
                     SPSetupAccount = $dsc_SPSetupAccountCredentials
 
-                    #DeleteWebApplication = $true
+                    DeleteWebApplication = $false
                     
                     WebAppPort = $env_config.SharePoint.WebApp.Port
 

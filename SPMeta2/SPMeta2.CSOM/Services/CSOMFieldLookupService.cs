@@ -14,12 +14,12 @@ namespace SPMeta2.CSOM.Services
     {
         public virtual FieldCollection GetFieldCollection(object modelHost)
         {
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite.RootWeb.Fields;
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList.Fields;
             else if (modelHost is WebModelHost)
                 return (modelHost as WebModelHost).HostWeb.Fields;
-            else if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostList.Fields;
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb.Fields;
 
             throw new SPMeta2Exception("Unsupported model host");
         }

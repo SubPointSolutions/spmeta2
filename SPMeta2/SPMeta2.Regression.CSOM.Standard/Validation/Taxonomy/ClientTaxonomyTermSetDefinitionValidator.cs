@@ -16,12 +16,16 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var definition = model.WithAssertAndCast<TaxonomyTermSetDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
+            var context = termGroupModelHost.HostClientContext;
 
-            TryRetryService.TryWithRetry(() =>
+            if (spObject == null && IsSharePointOnlineContext(context))
             {
-                spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
-                return spObject != null;
-            });
+                TryRetryService.TryWithRetry(() =>
+                {
+                    spObject = FindTermSet(termGroupModelHost.HostGroup, definition);
+                    return spObject != null;
+                });
+            }
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
