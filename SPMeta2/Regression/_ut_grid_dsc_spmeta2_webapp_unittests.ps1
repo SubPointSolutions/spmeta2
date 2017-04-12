@@ -246,6 +246,26 @@ Configuration SPMeta2_UnitTestSettings
         Value =  $NodeName
     }
 
+    $env_vars += @{
+        Name = "SPMeta2_O365_DefaultTestUserLogins"
+        Value = [string]::Join(",", ($config.TestUserLogins | Foreach { [string]$_  } ) ) 
+    }
+
+    $env_vars += @{
+        Name = "SPMeta2_DefaultTestUserLogins"
+        Value = [string]::Join(",", ($config.TestUserLogins | Foreach { [string]$_  } ) ) 
+    }
+
+    $env_vars += @{
+        Name = "SPMeta2_DefaultTestDomainUserEmails"
+        Value = [string]::Join(",", ($config.TestDomainUserEmails | Foreach { [string]$_  } ) ) 
+    }
+
+    $env_vars += @{
+        Name = "SPMeta2_DefaultTestADGroups"
+        Value = [string]::Join(",", ($config.TestActiveDirectoryGroups | Foreach { [string]$_  } ) ) 
+    }
+
     Node $NodeName {
         
         foreach($var in $env_vars) {
@@ -265,6 +285,10 @@ $config = @{
         AllNodes = @(
                 @{
                     ObjectModels = $regression_config.ObjectModels
+
+                    TestUserLogins = $regression_config.TestData.UserLogins
+                    TestActiveDirectoryGroups = $regression_config.TestData.ActiveDirectoryGroups
+                    TestDomainUserEmails = $regression_config.TestData.DomainUserEmails
 
                     WebAppPort =  $env_config.SharePoint.WebApp.Port
                     
