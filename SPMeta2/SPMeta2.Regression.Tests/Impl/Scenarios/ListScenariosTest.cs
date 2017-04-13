@@ -669,7 +669,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     // add a clone second time with the template
                     var listWithDocumentTemplate = randomList.Inherit();
 #pragma warning disable 618
-                    listWithDocumentTemplate.DocumentTemplateUrl = string.Format("/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
+                    listWithDocumentTemplate.DocumentTemplateUrl = string.Format("~sitecollection/" + randomList.GetListUrl() + "/Forms/" + templateFileName);
 #pragma warning restore 618
 
                     web.AddList(listWithDocumentTemplate);
