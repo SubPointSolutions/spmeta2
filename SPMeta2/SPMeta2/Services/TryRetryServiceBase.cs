@@ -16,6 +16,7 @@ namespace SPMeta2.Services
         #region methods
 
         public abstract void TryWithRetry(Func<bool> action);
+        public abstract void TryWithRetry(Func<bool> action, int maxTryCount);
         public abstract void TryWithRetry(Func<bool> action, int maxTryCount, int retryTimeoutInMilliseconds);
         public abstract void TryWithRetry(Func<bool> action, int maxTryCount, int retryTimeoutInMilliseconds, Action<int, int, int> waiter);
 

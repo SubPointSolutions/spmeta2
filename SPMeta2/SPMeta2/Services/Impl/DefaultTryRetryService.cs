@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMeta2.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,6 +43,11 @@ namespace SPMeta2.Services.Impl
 
         public override void TryWithRetry(Func<bool> action)
         {
+            TryWithRetry(action, MaxRetryCount);
+        }
+
+        public override void TryWithRetry(Func<bool> action, int maxTryCount)
+        {
             TryWithRetry(action, MaxRetryCount, RetryTimeoutInMilliseconds);
         }
 
@@ -54,9 +60,12 @@ namespace SPMeta2.Services.Impl
             int maxTryCount, int retryTimeoutInMilliseconds,
             Action<int, int, int> waiter)
         {
-            var currentTryIndex = 0;
+            ValidateParameters(action, maxTryCount, retryTimeoutInMilliseconds, waiter);
 
-            while (action() != true)
+            var currentTryIndex = 1;
+            var actionResult = action();
+
+            while (actionResult != true)
             {
                 TraceService.Warning((int)LogEventId.ModelProvision,
                     string.Format("Coudn't perform action. Waiting and retrying [{1}/{2}]",
@@ -64,12 +73,36 @@ namespace SPMeta2.Services.Impl
                             currentTryIndex,
                             MaxRetryCount));
 
-                if (currentTryIndex > maxTryCount)
+                if (currentTryIndex >= maxTryCount)
                     break;
 
                 waiter(currentTryIndex, maxTryCount, retryTimeoutInMilliseconds);
                 currentTryIndex++;
+
+                actionResult = action();
             }
+
+            if (actionResult != true)
+            {
+                throw new SPMeta2Exception(string.Format(
+                    "Error while performing requested action. Tried [{0}] out of [{1}], raising exception",
+                    currentTryIndex, maxTryCount));
+            }
+        }
+
+        private static void ValidateParameters(Func<bool> action, int maxTryCount, int retryTimeoutInMilliseconds, Action<int, int, int> waiter)
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            if (waiter == null)
+                throw new ArgumentNullException("waiter");
+
+            if (maxTryCount <= 0)
+                throw new ArgumentOutOfRangeException("maxTryCount must be greater than 0");
+
+            if (retryTimeoutInMilliseconds <= 0)
+                throw new ArgumentOutOfRangeException("retryTimeoutInMilliseconds must be greater than 0");
         }
     }
 }
