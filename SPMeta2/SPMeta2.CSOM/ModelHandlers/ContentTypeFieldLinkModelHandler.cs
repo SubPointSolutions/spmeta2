@@ -9,6 +9,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -121,12 +122,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
+            var modelHostWrapper = modelHost.WithAssertAndCast<ContentTypeModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeFieldLinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
 
             //var site = modelHostWrapper.Site;
-            var web = modelHostWrapper.Web;
-            var contentType = modelHostWrapper.ContentType;
+            var web = modelHostWrapper.HostWeb;
+            var contentType = modelHostWrapper.HostContentType;
 
             var context = contentType.Context;
 

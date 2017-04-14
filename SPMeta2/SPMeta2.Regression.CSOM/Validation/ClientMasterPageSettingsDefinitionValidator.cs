@@ -42,7 +42,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         var srcProp = s.GetExpressionValue(def => def.SiteMasterPageUrl);
                         var dstProp = d.GetExpressionValue(def => def.CustomMasterUrl);
 
-                        var isValid = url == (string)dstProp.Value;
+                        var isValid = ((string)dstProp.Value).EndsWith((string)url);
 
                         return new PropertyValidationResult
                         {
@@ -75,7 +75,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                         var srcProp = s.GetExpressionValue(def => def.SystemMasterPageUrl);
                         var dstProp = d.GetExpressionValue(def => def.MasterUrl);
 
-                        var isValid = (string)url == (string)dstProp.Value;
+                        var isValid = ((string)dstProp.Value).EndsWith((string)url);
 
                         return new PropertyValidationResult
                         {

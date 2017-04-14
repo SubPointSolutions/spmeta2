@@ -42,6 +42,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public string ServerName { get; set; }
 
         [ExpectValidation]

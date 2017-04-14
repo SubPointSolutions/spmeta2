@@ -124,12 +124,16 @@ namespace SPMeta2.Containers.Services
 
         private bool _hasInit = false;
 
+        public static string CurrentProvisionRunnerAsssmbly {get;set;}
+
         protected virtual void InitRunnerImplementations()
         {
             if (_hasInit) return;
 
             foreach (var asmFileName in ProvisionRunnerAssemblies)
             {
+                CurrentProvisionRunnerAsssmbly = asmFileName;
+
                 var asmImpl = Assembly.LoadFrom(asmFileName);
 
                 var types = ReflectionUtils.GetTypesFromAssembly<ProvisionRunnerBase>(asmImpl);

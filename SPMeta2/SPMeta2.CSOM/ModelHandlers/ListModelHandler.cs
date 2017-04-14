@@ -38,12 +38,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             Web web = null;
             List hostList = null;
 
-            if (modelHost is WebModelHost)
-                web = (modelHost as WebModelHost).HostWeb;
-            else if (modelHost is ListModelHost)
+            if (modelHost is ListModelHost)
             {
                 web = (modelHost as ListModelHost).HostList.ParentWeb;
                 hostList = (modelHost as ListModelHost).HostList;
+            }
+            else if (modelHost is WebModelHost)
+            {
+                web = (modelHost as WebModelHost).HostWeb;
             }
             else
             {

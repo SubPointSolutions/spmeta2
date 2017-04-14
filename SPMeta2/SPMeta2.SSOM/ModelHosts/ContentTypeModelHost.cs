@@ -7,7 +7,7 @@ using Microsoft.SharePoint;
 
 namespace SPMeta2.SSOM.ModelHosts
 {
-    public class ContentTypeLinkModelHost : SSOMModelHostBase
+    public class ContentTypeModelHost : SSOMModelHostBase
     {
         #region constructors
 
@@ -22,7 +22,6 @@ namespace SPMeta2.SSOM.ModelHosts
 
 
 
-        public SPList HostList { get; set; }
         public SPWeb HostWeb { get; set; }
     }
 }

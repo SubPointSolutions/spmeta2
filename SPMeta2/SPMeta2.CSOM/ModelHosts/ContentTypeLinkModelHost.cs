@@ -8,7 +8,9 @@ using Microsoft.SharePoint.Client;
 
 namespace SPMeta2.CSOM.ModelHosts
 {
-    public class ContentTypeLinkModelHost : ListModelHost
+
+
+    public class ContentTypeLinkModelHost : ContentTypeModelHost
     {
         #region constructors
 
@@ -17,7 +19,7 @@ namespace SPMeta2.CSOM.ModelHosts
 
         #region properties
 
-        public ContentType HostContentType { get; set; }
+        public List HostList { get; set; }
 
         #endregion
     }

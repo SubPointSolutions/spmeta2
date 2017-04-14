@@ -45,6 +45,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.SecurityGroup")]
         public void CanDeploy_SecurityGroup_Under_SecurityGroup()
         {
+            // TODO, handle O365 failure
+            // this ine would fail in O365, that's fine 
+            // must only work onprem with 'AD' groups
+
             var activeDirectoryOrGlobalO365Groups = RunnerEnvironmentUtils.GetEnvironmentVariables(EnvironmentConsts.DefaultTestADGroups);
 
             if (activeDirectoryOrGlobalO365Groups.Count() == 0)
@@ -58,14 +62,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.Name = randomNestedGroup;
             });
 
-            var siteModel = SPMeta2Model
-                                .NewSiteModel(site =>
-                                {
-                                    site.AddSecurityGroup(spGroup, group =>
-                                    {
-                                        group.AddSecurityGroup(domainGroup);
-                                    });
-                                });
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSecurityGroup(spGroup, group =>
+                {
+                    group.AddSecurityGroup(domainGroup);
+                });
+            });
 
             TestModels(new ModelNode[] { siteModel });
         }

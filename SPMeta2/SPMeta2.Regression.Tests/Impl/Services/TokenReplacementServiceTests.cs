@@ -197,9 +197,13 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             {
                 hasHit = true;
 
-                if (e.Result.Value == expectedEndWithUrl)
+                if (e.Result.Value.EndsWith(expectedEndWithUrl))
                 {
                     hasCorrectUrl = true;
+                }
+                else
+                {
+                    hasCorrectUrl = false;
                 }
             };
 

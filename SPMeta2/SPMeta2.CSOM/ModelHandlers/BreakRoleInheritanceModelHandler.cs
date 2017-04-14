@@ -22,14 +22,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (modelHost is SecurableObject)
                 return modelHost as SecurableObject;
 
-            if (modelHost is SiteModelHost)
-                return (modelHost as SiteModelHost).HostSite.RootWeb;
+            if (modelHost is ListModelHost)
+                return (modelHost as ListModelHost).HostList;
 
             if (modelHost is WebModelHost)
                 return (modelHost as WebModelHost).HostWeb;
 
-            if (modelHost is ListModelHost)
-                return (modelHost as ListModelHost).HostList;
+            if (modelHost is SiteModelHost)
+                return (modelHost as SiteModelHost).HostSite.RootWeb;
 
             if (modelHost is File)
                 return (modelHost as File).ListItemAllFields;

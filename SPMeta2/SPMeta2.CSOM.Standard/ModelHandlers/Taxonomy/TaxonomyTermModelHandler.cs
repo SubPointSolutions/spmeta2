@@ -13,6 +13,7 @@ using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Standard.Utils;
 using SPMeta2.Utils;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 {
@@ -63,7 +64,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var definition = model.WithAssertAndCast<TaxonomyTermDefinition>("model", value => value.RequireNotNull());
 
             Term currentTerm = null;
@@ -71,7 +71,10 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             TermSet termSet = null;
             TermStore termStore = null;
 
-            TermModelHost localModelHost = new TermModelHost();
+            var localModelHost = ModelHostBase.Inherit<TermModelHost>(modelHost as ModelHostBase, host =>
+            {
+
+            });
 
             if (modelHost is TermModelHost)
             {
@@ -82,6 +85,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 termStore = h.HostTermStore;
 
                 currentTerm = FindTermInTerm(h.HostTerm, definition);
+
+                var context = h.HostClientContext;
+
+                if (currentTerm == null && IsSharePointOnlineContext(context))
+                {
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        currentTerm = FindTermInTerm(h.HostTerm, definition);
+                        return currentTerm != null;
+                    });
+                }
 
                 localModelHost.HostGroup = group;
                 localModelHost.HostTermSet = termSet;
@@ -97,6 +111,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 termSet = h.HostTermSet;
 
                 currentTerm = FindTermInTermSet(h.HostTermSet, definition);
+
+                var context = h.HostClientContext;
+
+                if (currentTerm == null && IsSharePointOnlineContext(context))
+                {
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        currentTerm = FindTermInTermSet(h.HostTermSet, definition);
+                        return currentTerm != null;
+                    });
+                }
 
                 localModelHost.HostGroup = group;
                 localModelHost.HostTermSet = termSet;
@@ -114,6 +139,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var currentTerm = FindTermInTermSet(termSet, termModel);
             var termName = NormalizeTermName(termModel.Name);
+
+
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -165,8 +192,56 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 });
             }
 
-            termStore.CommitAll();
-            termStore.Context.ExecuteQueryWithTrace();
+            try
+            {
+                termStore.CommitAll();
+                currentTerm.RefreshLoad();
+
+                termStore.Context.ExecuteQueryWithTrace();
+            }
+            catch (Exception e)
+            {
+                var context = groupModelHost.HostClientContext;
+
+                if (!IsSharePointOnlineContext(context))
+                    throw;
+
+                var serverException = e as ServerException;
+
+                if (serverException != null
+                    && ReflectionUtils.GetHResultValue(serverException).Value == -2146233088
+                    && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
+
+                    currentTerm = FindTermInTermSet(termSet, termModel);
+
+                    if (currentTerm == null)
+                    {
+                        TryRetryService.TryWithRetry(() =>
+                        {
+                            currentTerm = FindTermInTermSet(termSet, termModel);
+                            return currentTerm != null;
+                        });
+                    }
+
+                    MapTermProperties(currentTerm, termModel, false);
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentTerm,
+                        ObjectType = typeof(Term),
+                        ObjectDefinition = termModel,
+                        ModelHost = modelHost
+                    });
+
+                    termStore.CommitAll();
+                    termStore.Context.ExecuteQueryWithTrace();
+                }
+            }
         }
 
         private void MapTermProperties(Term currentTerm, TaxonomyTermDefinition termModel, bool isNewObject)
@@ -219,7 +294,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             {
                 var propName = prop.Name;
                 var propValue = prop.Value;
-                
+
                 var propExist = false;
 
                 if (isNewObject)
@@ -327,8 +402,56 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 });
             }
 
-            termStore.CommitAll();
-            termStore.Context.ExecuteQueryWithTrace();
+            try
+            {
+                termStore.CommitAll();
+                currentTerm.RefreshLoad();
+
+                termStore.Context.ExecuteQueryWithTrace();
+            }
+            catch (Exception e)
+            {
+                var context = groupModelHost.HostClientContext;
+
+                if (!IsSharePointOnlineContext(context))
+                    throw;
+
+                var serverException = e as ServerException;
+
+                if (serverException != null
+                    && ReflectionUtils.GetHResultValue(serverException).Value == -2146233088
+                    && serverException.ServerErrorTypeName == "Microsoft.SharePoint.Taxonomy.TermStoreOperationException")
+                {
+                    TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term");
+
+                    currentTerm = FindTermInTerm(termSet, termModel);
+
+                    if (currentTerm == null)
+                    {
+                        TryRetryService.TryWithRetry(() =>
+                        {
+                            currentTerm = FindTermInTerm(termSet, termModel);
+                            return currentTerm != null;
+                        });
+                    }
+
+                    MapTermProperties(currentTerm, termModel, false);
+
+                    InvokeOnModelEvent(this, new ModelEventArgs
+                    {
+                        CurrentModelNode = null,
+                        Model = null,
+                        EventType = ModelEventType.OnProvisioned,
+                        Object = currentTerm,
+                        ObjectType = typeof(Term),
+                        ObjectDefinition = termModel,
+                        ModelHost = modelHost
+                    });
+
+                    termStore.CommitAll();
+                    termStore.Context.ExecuteQueryWithTrace();
+                }
+            }
         }
 
 
@@ -411,7 +534,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                 result = terms.FirstOrDefault();
             }
 
-            if (result != null && result.ServerObjectIsNull == false)
+            if (result != null
+                && result.ServerObjectIsNull.HasValue
+                && result.ServerObjectIsNull == false)
             {
                 context.Load(result);
                 context.ExecuteQueryWithTrace();

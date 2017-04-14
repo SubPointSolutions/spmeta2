@@ -51,11 +51,19 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else if (modelHost is ContentTypeLinkModelHost)
             {
-                var contentType = (modelHost as ContentTypeLinkModelHost).HostContentType;
+                var contentTypeLinkMpodelHost = (modelHost as ContentTypeLinkModelHost);
+                var contentType = contentTypeLinkMpodelHost.HostContentType;
+
+                DeployContentTypeWorkflowAssociationDefinition(contentType, contentType, workflowAssociationModel);
+
+                contentTypeLinkMpodelHost.ShouldUpdateHost = false;
+            }
+            else if (modelHost is ContentTypeModelHost)
+            {
+                var contentType = (modelHost as ContentTypeModelHost).HostContentType;
 
                 DeployContentTypeWorkflowAssociationDefinition(contentType, contentType, workflowAssociationModel);
             }
-
             else
             {
                 throw new SPMeta2NotSupportedException("model host should be of type ListModelHost or WebModelHost");
@@ -80,6 +88,12 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return (modelHost as SPContentType).ParentWeb;
             }
 
+
+            if (modelHost is ContentTypeModelHost)
+            {
+                return (modelHost as ContentTypeModelHost).HostWeb;
+            }
+
             if (modelHost is ContentTypeLinkModelHost)
             {
                 return (modelHost as ContentTypeLinkModelHost).HostWeb;
@@ -97,22 +111,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                 return list.WorkflowAssociations
                           .GetAssociationByName(def.Name, list.ParentWeb.UICulture);
             }
-            if (modelHost is WebModelHost)
+            else if (modelHost is WebModelHost)
             {
                 var web = (modelHost as WebModelHost).HostWeb;
 
                 return web.WorkflowAssociations
                           .GetAssociationByName(def.Name, web.UICulture);
             }
-            if (modelHost is SPContentType)
+            else if (modelHost is SPContentType)
             {
                 var contentType = (modelHost as SPContentType);
                 var web = contentType.ParentWeb;
 
                 return contentType.WorkflowAssociations
-                                  .GetAssociationByName(def.Name, web.UICulture);
+                                   .GetAssociationByName(def.Name, web.UICulture);
             }
-            if (modelHost is ContentTypeLinkModelHost)
+            else if (modelHost is ContentTypeLinkModelHost)
             {
                 var listContentTypeHost = (modelHost as ContentTypeLinkModelHost);
 
@@ -121,6 +135,14 @@ namespace SPMeta2.SSOM.ModelHandlers
                     listContentTypeHost.ShouldUpdateHost = false;
 
                 var contentType = listContentTypeHost.HostContentType;
+                var web = contentType.ParentWeb;
+
+                return contentType.WorkflowAssociations
+                                  .GetAssociationByName(def.Name, web.UICulture);
+            }
+            else if (modelHost is ContentTypeModelHost)
+            {
+                var contentType = (modelHost as ContentTypeModelHost).HostContentType;
                 var web = contentType.ParentWeb;
 
                 return contentType.WorkflowAssociations

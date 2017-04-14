@@ -42,11 +42,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 host.HostContentType = contentType;
                 host.HostList = list;
+                host.ShouldUpdateHost = true;
             });
 
             action(contentTypeLinkHost);
 
-            if (!contentTypeLinkHost.ShouldUpdateHost)
+            if (contentTypeLinkHost.ShouldUpdateHost)
                 contentType.Update(false);
 
             context.ExecuteQueryWithTrace();

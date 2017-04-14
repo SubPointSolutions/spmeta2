@@ -97,6 +97,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.AssociationData = Rnd.String();
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                AddDefaultWorkflowFeatures(site);
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
@@ -106,7 +111,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWorkflowAssociation(workflowDefChanges);
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -144,6 +149,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.AssociationData = Rnd.String();
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+           {
+               AddDefaultWorkflowFeatures(site);
+           });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
@@ -156,7 +166,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -203,6 +213,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
                 site.AddContentType(contentTypeDef);
+                AddDefaultWorkflowFeatures(site);
             });
 
             var model = SPMeta2Model.NewWebModel(web =>
@@ -222,6 +233,35 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             TestModel(siteModel, model);
         }
+
+        private void AddDefaultWorkflowFeatures(SiteModelNode site)
+        {
+            site.AddSiteFeature(BuiltInSiteFeatures.Workflows.Inherit(f =>
+            {
+                f.Enable = true;
+            }));
+
+            site.AddSiteFeature(BuiltInSiteFeatures.SharePoint2007Workflows.Inherit(f =>
+            {
+                f.Enable = true;
+            }));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.DispositionApprovalWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.PublishingApprovalWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.ThreeStateWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+        }
+
 
 
         [TestMethod]
@@ -247,6 +287,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.TaskListTitle = taskList.Title;
                 def.HistoryListTitle = historyList.Title;
+            });
+
+            var initialSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                AddDefaultWorkflowFeatures(site);
             });
 
             // changability 
@@ -279,7 +324,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(webModel, siteModel);
+            TestModels(new ModelNode[] { 
+                initialSiteModel,
+                webModel,
+                siteModel });
         }
     }
 }

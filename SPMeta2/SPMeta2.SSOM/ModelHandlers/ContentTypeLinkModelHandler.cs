@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             action(contentTypeLinkHost);
 
-            if (!contentTypeLinkHost.ShouldUpdateHost)
+            if (contentTypeLinkHost.ShouldUpdateHost)
                 contentType.Update(false);
         }
 

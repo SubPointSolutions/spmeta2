@@ -144,26 +144,31 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            if (modelHost is SiteModelHost)
+            if (modelHost is ListModelHost)
             {
-                var siteHost = modelHost as SiteModelHost;
-                context = siteHost.HostSite.Context;
+                var listHost = modelHost as ListModelHost;
+                context = listHost.HostList.Context;
 
-                currentField = DeploySiteField(siteHost as SiteModelHost, fieldModel);
+                currentField = DeployListField(modelHost as ListModelHost, fieldModel);
             }
-            if (modelHost is WebModelHost)
+            else if (modelHost is WebModelHost)
             {
                 var webHost = modelHost as WebModelHost;
                 context = webHost.HostWeb.Context;
 
                 currentField = DeployWebField(webHost as WebModelHost, fieldModel);
             }
-            else if (modelHost is ListModelHost)
-            {
-                var listHost = modelHost as ListModelHost;
-                context = listHost.HostList.Context;
 
-                currentField = DeployListField(modelHost as ListModelHost, fieldModel);
+            else if (modelHost is SiteModelHost)
+            {
+                var siteHost = modelHost as SiteModelHost;
+                context = siteHost.HostSite.Context;
+
+                currentField = DeploySiteField(siteHost as SiteModelHost, fieldModel);
+            }
+            else
+            {
+                throw new ArgumentException("modelHost needs to be SiteModelHost/WebModelHost/ListModelHost instance.");
             }
 
             object typedField = null;

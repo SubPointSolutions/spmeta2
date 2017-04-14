@@ -59,11 +59,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.SP2013Workflow")]
         public void CanDeploy_SP2013ListWorkflowAccosiation()
         {
-            var model = SPMeta2Model
-                .NewWebModel(web =>
-                {
-                    AddListWorkflow(web);
-                });
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                AddListWorkflow(web);
+            });
 
             TestModel(model);
         }

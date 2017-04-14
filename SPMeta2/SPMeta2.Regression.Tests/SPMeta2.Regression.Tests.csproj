@@ -88,6 +88,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Base\ListViewWebPartScenariosTestBase.cs" />
+    <Compile Include="Base\SPMeta2RegresionTestVeryBase.cs" />
     <Compile Include="Config\M2RegressionRuntime.cs" />
     <Compile Include="Consts\RegWebparts.cs" />
     <Compile Include="Data\PageTemplates.Designer.cs">
@@ -257,6 +258,7 @@
     <Compile Include="Impl\Services\DefaultFluentModelValidationServiceTests.cs" />
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
     <Compile Include="Impl\Services\IncrementalModelTreeTraverseServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultTryRetryServiceTests.cs" />
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Syntax\ContentTypeDefinitionSyntaxTests.cs" />
@@ -357,7 +359,7 @@
       <Link>SPMeta2.Containers.CSOM.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll" Condition="'$(spRuntime)'=='365' And '$(Configuration)' == 'Debug45'">
+    <Content Include="..\SPMeta2.Containers.O365v16\bin\Debug\SPMeta2.Containers.O365v16.dll">
       <Link>SPMeta2.Containers.O365v16.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -565,8 +567,6 @@
       <Link>SPMeta2.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="PSScripts\200 - Configure M2 Test Environment.ps1" />
-    <None Include="PSScripts\300 - Configure M2 Grid.ps1" />
     <None Include="Resources\XsltListViewWebPart_TestXsl.txt" />
     <None Include="Resources\CustomAllItemsPage.txt" />
   </ItemGroup>
@@ -586,12 +586,6 @@
     <EmbeddedResource Include="Templates\Webparts\Base\ContentEditor.webpart" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PSScripts\100 - Ensure M2 Web Application.ps1" />
-    <None Include="PSScripts\_config.ps1" />
-    <None Include="PSScripts\_sys.common.ps1" />
-    <None Include="SPMeta2.Containers.O365.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SPMeta2.Regression.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
