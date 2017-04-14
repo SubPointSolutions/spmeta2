@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SharePoint">
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security">
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,8 +45,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ModelHandlers\NintexWorkflowModelHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPMeta2.Nintex\SPMeta2.Nintex.csproj">
+      <Project>{D19B0907-CED5-416A-9D45-0F112990C234}</Project>
+      <Name>SPMeta2.Nintex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.SSOM\SPMeta2.SSOM.csproj">
+      <Project>{FBD78AC1-B766-4332-A9B1-C73EE64FD5C6}</Project>
+      <Name>SPMeta2.SSOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
+      <Project>{EE49D3FD-6180-40E6-829F-6831FF89DAC6}</Project>
+      <Name>SPMeta2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

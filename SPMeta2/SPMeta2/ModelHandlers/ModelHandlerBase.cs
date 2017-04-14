@@ -2,6 +2,7 @@
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Services;
+using SPMeta2.Services.Impl;
 
 namespace SPMeta2.ModelHandlers
 {
@@ -15,12 +16,14 @@ namespace SPMeta2.ModelHandlers
         public ModelHandlerBase()
         {
             TraceService = ServiceContainer.Instance.GetService<TraceServiceBase>();
+            TryRetryService = ServiceContainer.Instance.GetService<TryRetryServiceBase>() ?? new DefaultTryRetryService();
         }
 
         #endregion
 
         #region properties
 
+        protected static TryRetryServiceBase TryRetryService { get; set; }
         protected static TraceServiceBase TraceService { get; set; }
 
         /// <summary>

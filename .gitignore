@@ -3,6 +3,7 @@
 
 # M2 docs index and refs
 *.sample-ref
+*.ncrunchsolution
 
 # User-specific files
 *.suo

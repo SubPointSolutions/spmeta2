@@ -269,8 +269,12 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
             var webModel = SPMeta2Model.NewWebModel(rootWeb =>
             {
+                rootWeb.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit());
+
                 rootWeb.AddWeb(webDef, web =>
                 {
+                    web.AddWebFeature(BuiltInWebFeatures.WikiPageHomePage.Inherit());
+
                     web
                         .AddList(Lists.TestList1, list =>
                         {

@@ -19,22 +19,6 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            if (modelHost is WebModelHost)
-            {
-                var workflowWebSubscriptionModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-                var definition = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
-
-                var web = workflowWebSubscriptionModelHost.HostWeb;
-
-                var spObject = GetCurrentWebWorkflowSubscriptioBySourceId(workflowWebSubscriptionModelHost,
-                       workflowWebSubscriptionModelHost.HostClientContext,
-                       web,
-                       web.Id,
-                       definition);
-
-                ValidateWorkflowSubscription(modelHost, workflowWebSubscriptionModelHost.HostClientContext, workflowWebSubscriptionModelHost.HostWeb, spObject, definition);
-            }
-
             if (modelHost is ListModelHost)
             {
                 var workflowSubscriptionModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
@@ -50,6 +34,21 @@ namespace SPMeta2.Regression.CSOM.Validation
                       definition);
 
                 ValidateWorkflowSubscription(modelHost, workflowSubscriptionModelHost.HostClientContext, web, spObject, definition);
+            }
+            else if (modelHost is WebModelHost)
+            {
+                var workflowWebSubscriptionModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                var definition = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
+
+                var web = workflowWebSubscriptionModelHost.HostWeb;
+
+                var spObject = GetCurrentWebWorkflowSubscriptioBySourceId(workflowWebSubscriptionModelHost,
+                       workflowWebSubscriptionModelHost.HostClientContext,
+                       web,
+                       web.Id,
+                       definition);
+
+                ValidateWorkflowSubscription(modelHost, workflowWebSubscriptionModelHost.HostClientContext, workflowWebSubscriptionModelHost.HostWeb, spObject, definition);
             }
         }
 

@@ -50,8 +50,16 @@ namespace SPMeta2.Regression.CSOM.Validation
                         var srcProp = s.GetExpressionValue(def => def.Owner);
                         var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
+                        var srcOwner = dstProp.Value.ToString().ToUpper().Replace("\\", "/");
+                        var dstOwner = dstProp.Value.ToString().ToUpper().Replace("\\", "/");
+
                         var isValid = dstProp.Value.ToString().ToUpper().Replace("\\", "/").EndsWith(
                             srcProp.Value.ToString().ToUpper().Replace("\\", "/"));
+
+                        if (!isValid)
+                        {
+                            isValid = dstOwner.Contains(srcOwner);
+                        }
 
                         return new PropertyValidationResult
                         {

@@ -15,7 +15,17 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var termStoreModelHost = modelHost.WithAssertAndCast<TermStoreModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<TaxonomyTermGroupDefinition>("model", value => value.RequireNotNull());
 
+            var context = termStoreModelHost.HostClientContext;
             var spObject = FindGroup(termStoreModelHost, definition);
+
+            if (spObject == null && IsSharePointOnlineContext(context))
+            {
+                TryRetryService.TryWithRetry(() =>
+                {
+                    spObject = FindGroup(termStoreModelHost, definition);
+                    return spObject != null;
+                });
+            }
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, spObject)
@@ -40,8 +50,6 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                         IsValid = isValid
                     };
                 });
-
-                
             }
             else
             {

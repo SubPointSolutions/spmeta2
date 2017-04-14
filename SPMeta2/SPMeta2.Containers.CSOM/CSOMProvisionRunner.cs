@@ -27,6 +27,7 @@ using SPMeta2.Services.Impl.Validation;
 
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.ModelHosts;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.CSOM
 {
@@ -46,6 +47,11 @@ namespace SPMeta2.Containers.CSOM
 
             UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_UserName);
             UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_Password);
+        }
+
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
         }
 
         private void InitServices()

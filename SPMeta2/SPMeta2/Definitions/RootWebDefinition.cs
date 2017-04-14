@@ -4,6 +4,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -47,7 +48,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("RootWeb Definition has not properties.");
+            return new ToStringResult<RootWebDefinition>(this)
+                         .ToString();
         }
 
         #endregion

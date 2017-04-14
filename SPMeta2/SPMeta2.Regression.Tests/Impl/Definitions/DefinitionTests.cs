@@ -36,12 +36,12 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         protected static List<Type> AllDefinitionTypes
         {
-            get { return allDefinitionTypes ?? (allDefinitionTypes = LoadDefinitions().ToList()); }
+            get { return allDefinitionTypes ?? (allDefinitionTypes = LoadDefinitions().OrderBy(d => d.Name).ToList()); }
         }
 
         protected static List<Type> AllModelNodeTypes
         {
-            get { return allModelNodesTypes ?? (allModelNodesTypes = LoadModelNodes().ToList()); }
+            get { return allModelNodesTypes ?? (allModelNodesTypes = LoadModelNodes().OrderBy(d => d.Name).ToList()); }
         }
 
         #endregion
@@ -132,6 +132,25 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
                     RegressionUtils.WriteLine(string.Format("Checking definition type:[{0}]. Has override:[{1}]", definitionType, hasToStringOverride));
 
                 Assert.IsTrue(hasToStringOverride);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Definitions")]
+        [TestCategory("CI.Core")]
+        public void DefinitionsShouldHaveCorrectToStringOverrideOutput()
+        {
+            var wrongStartingText = string.Format("SPMeta2.");
+
+            foreach (var definitionType in AllDefinitionTypes)
+            {
+                var def = Activator.CreateInstance(definitionType);
+                var output = def.ToString();
+
+                RegressionUtils.WriteLine(string.Format("Definition:[{0}] Output:[{1}]", definitionType.Name, output));
+
+                Assert.IsTrue(!output.StartsWith(wrongStartingText),
+                    string.Format("Output starts with {0}.  It should not. It was {1}", wrongStartingText, output));
             }
         }
 

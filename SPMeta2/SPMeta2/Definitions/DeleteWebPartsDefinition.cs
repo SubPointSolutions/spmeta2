@@ -5,6 +5,7 @@ using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
@@ -46,7 +47,8 @@ namespace SPMeta2.Definitions
         // ReSharper disable once RedundantOverridenMember
         public override string ToString()
         {
-            return base.ToString();
+            return new ToStringResult<DeleteWebPartsDefinition>(this)
+                         .ToString();
         }
 
         #endregion

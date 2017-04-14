@@ -20,6 +20,10 @@ using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.Standard.Services;
+using SPMeta2.Services;
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.Exceptions;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.Containers.O365
 {
@@ -42,6 +46,11 @@ namespace SPMeta2.Containers.O365
 
             UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_UserName);
             UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.O365_Password);
+        }
+
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
         }
 
         private void InitServices()
@@ -197,7 +206,15 @@ namespace SPMeta2.Containers.O365
                 WithO365Context(siteUrl, context =>
                 {
                     if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
                         _provisionService.DeployModel(SiteModelHost.FromClientContext(context), model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
 
                     if (EnableDefinitionValidation)
                         _validationService.DeployModel(SiteModelHost.FromClientContext(context), model);
@@ -207,20 +224,67 @@ namespace SPMeta2.Containers.O365
 
         public override void DeployListModel(ModelNode model)
         {
-
-            if (RandomBalancedUrls.Count > 0)
+            foreach (var webUrl in WebUrls)
             {
-                var url = RandomBalancedUrls[rnd.Next(0, RandomBalancedUrls.Count)];
-                WebOnUrl(model, url);
+                ListOnUrl(model, webUrl);
             }
-            else
-            {
+        }
 
-                foreach (var webUrl in WebUrls)
+        private void ListOnUrl(ModelNode model, string webUrl)
+        {
+            ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+            WithO365Context(webUrl, context =>
+            {
+                for (var provisionGeneration = 0;
+                    provisionGeneration < ProvisionGenerationCount;
+                    provisionGeneration++)
                 {
-                    WebOnUrl(model, webUrl);
+                    if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
+                        var web = context.Web;
+                        var list = web.QueryAndGetListByTitle("Site Pages");
+
+                        if (list == null)
+                            list = web.QueryAndGetListByTitle("Pages");
+
+                        if (list == null)
+                            throw new SPMeta2Exception("Cannot find host list");
+
+                        var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                        {
+                            h.HostList = list;
+                        });
+
+                        _provisionService.DeployModel(listHost, model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
+
+                    if (EnableDefinitionValidation)
+                    {
+                        var web = context.Web;
+                        var list = web.QueryAndGetListByTitle("Site Pages");
+
+                        if (list == null)
+                            list = web.QueryAndGetListByTitle("Pages");
+
+                        if (list == null)
+                            throw new SPMeta2Exception("Cannot find host list");
+
+                        var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                        {
+                            h.HostList = list;
+                        });
+
+                        _validationService.DeployModel(listHost, model);
+                    }
                 }
-            }
+            });
         }
 
         private void WebOnUrl(ModelNode model, string webUrl)
@@ -234,7 +298,15 @@ namespace SPMeta2.Containers.O365
                     provisionGeneration++)
                 {
                     if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
                         _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
 
                     if (EnableDefinitionValidation)
                         _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
@@ -260,8 +332,6 @@ namespace SPMeta2.Containers.O365
                 {
                     ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
-
-
                     for (var provisionGeneration = 0;
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
@@ -269,15 +339,22 @@ namespace SPMeta2.Containers.O365
                         WithO365Context(webUrl, context =>
                         {
                             if (EnableDefinitionProvision)
+                            {
+                                if (OnBeforeDeployModel != null)
+                                    OnBeforeDeployModel(_provisionService, model);
+
                                 _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+
+                                if (OnAfterDeployModel != null)
+                                    OnAfterDeployModel(_provisionService, model);
+
+                            }
 
                             if (EnableDefinitionValidation)
                                 _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
 
                         });
                     }
-
-
                 }
             }
         }

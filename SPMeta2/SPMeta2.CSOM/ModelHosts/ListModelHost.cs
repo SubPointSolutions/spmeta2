@@ -2,7 +2,7 @@
 
 namespace SPMeta2.CSOM.ModelHosts
 {
-    public class ListModelHost : CSOMModelHostBase
+    public class ListModelHost : WebModelHost
     {
         #region properties
 

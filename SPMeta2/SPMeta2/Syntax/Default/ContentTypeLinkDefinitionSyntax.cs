@@ -10,6 +10,7 @@ namespace SPMeta2.Syntax.Default
     [DataContract]
     public class ContentTypeLinkModelNode : TypedModelNode
         , IContentTypeModelNode
+        , IWorkflowAssociationHostModelNode
     {
 
     }

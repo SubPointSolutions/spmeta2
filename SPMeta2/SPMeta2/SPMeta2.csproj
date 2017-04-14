@@ -116,6 +116,7 @@
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectManyInstances.cs" />
+    <Compile Include="Attributes\Regression\ExpectRequiredBoolRange.cs" />
     <Compile Include="Attributes\Regression\ExpectRequiredIntRange.cs" />
     <Compile Include="Attributes\Regression\ExpectWebpartType.cs" />
     <Compile Include="Attributes\Regression\ExpectNullable.cs" />
@@ -136,8 +137,11 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInWikiPages.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
+    <Compile Include="Common\IncrementalProvisionConfig.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
+    <Compile Include="Common\ModelHash.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
+    <Compile Include="Common\DefaultModelNodePropertyBagValue.cs" />
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
@@ -348,6 +352,8 @@
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />
+    <Compile Include="Interfaces\IIncrementalProvisionService.cs" />
+    <Compile Include="Interfaces\IProvisionService.cs" />
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
@@ -357,12 +363,16 @@
     <Compile Include="Services\DeploymentServiceBase.cs" />
     <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
+    <Compile Include="Services\Impl\DefaultFileSystemPersistenceStorage.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
     <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
     <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />
     <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
     <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
+    <Compile Include="Services\Impl\DefaultTryRetryService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
@@ -392,10 +402,12 @@
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />
     <Compile Include="Services\Impl\TraceSourceService.cs" />
+    <Compile Include="Services\PersistenceStorageServiceBase.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
     <Compile Include="Services\ModelDotPrintServiceBase.cs" />
     <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
+    <Compile Include="Services\IncrementalProvisionServiceBaseExtensions.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
     <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />
@@ -411,6 +423,7 @@
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
+    <Compile Include="Services\TryRetryServiceBase.cs" />
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />

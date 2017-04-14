@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace SPMeta2.Services
 {
@@ -43,26 +44,38 @@ namespace SPMeta2.Services
 
         public override string GetHashCode(object instance)
         {
-            var instanceType = instance.GetType();
-
-            var knowTypes = new List<Type>();
-            knowTypes.Add(instanceType);
-
-            var props = instanceType.GetProperties();
-            foreach (var prop in props)
+            // this is a bit lazy
+            // we should not expect hashed for non-string and non-object types
+            if (instance is string)
             {
-                if (!knowTypes.Contains(prop.PropertyType))
-                    knowTypes.Add(prop.PropertyType);
-            }
+                var instanceStringArray = Encoding.UTF8.GetBytes(instance as string);
 
-            var serializer = new DataContractSerializer(instance.GetType(), knowTypes);
-
-            using (var memoryStream = new MemoryStream())
-            {
-                serializer.WriteObject(memoryStream, instance);
-
-                _cryptoServiceProvider.ComputeHash(memoryStream.ToArray());
+                _cryptoServiceProvider.ComputeHash(instanceStringArray);
                 return Convert.ToBase64String(_cryptoServiceProvider.Hash);
+            }
+            else
+            {
+                var instanceType = instance.GetType();
+
+                var knowTypes = new List<Type>();
+                knowTypes.Add(instanceType);
+
+                var props = instanceType.GetProperties();
+                foreach (var prop in props)
+                {
+                    if (!knowTypes.Contains(prop.PropertyType))
+                        knowTypes.Add(prop.PropertyType);
+                }
+
+                var serializer = new DataContractSerializer(instance.GetType(), knowTypes);
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    serializer.WriteObject(memoryStream, instance);
+
+                    _cryptoServiceProvider.ComputeHash(memoryStream.ToArray());
+                    return Convert.ToBase64String(_cryptoServiceProvider.Hash);
+                }
             }
         }
 

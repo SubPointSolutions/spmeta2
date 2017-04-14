@@ -2,12 +2,12 @@
     "defaultSolutionDirectory": "./../../",
     "defaultSolutionFilePath": "./../../SPMeta2.sln",
 
-    "defaultDocsBuildEnabled" : false,
+    "defaultDocsBuildEnabled": true,
 
-    "defaultDocsViewFolder" : "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
-    "defaultDocsRepoFolder" : "m2-m2",
-    "defaultDocsBranch" : "wyam-dev",
-    "defaultDocsFileExtensions" : [
+    "defaultDocsViewFolder": "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsRepoFolder": "m2-m2",
+    "defaultDocsBranch": "wyam-dev",
+    "defaultDocsFileExtensions": [
         "*.md",
         "*.cs",
         "*.cshtml"
@@ -15,11 +15,11 @@
 
     "customProjectBuildProfiles": [
         {
-            "ProfileName" : "SPMeta2: SP2010 + NET35",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: SP2010 + NET35",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
-                
+
                 "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
                 "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
 
@@ -41,11 +41,11 @@
         },
 
         {
-            "ProfileName" : "SPMeta2: SP2013 + NET40",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: SP2013 + NET40",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
-                
+
                 "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
                 "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
 
@@ -67,11 +67,11 @@
         },
 
         {
-            "ProfileName" : "SPMeta2: SP2013 + NET45",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: SP2013 + NET45",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
-                
+
                 "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
                 "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
 
@@ -93,11 +93,11 @@
         },
 
         {
-            "ProfileName" : "SPMeta2: SP2016 + NET45",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: SP2016 + NET45",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
-                
+
                 "SPMeta2/SPMeta2.SSOM/SPMeta2.SSOM.csproj",
                 "SPMeta2/SPMeta2.SSOM.Standard/SPMeta2.SSOM.Standard.csproj",
 
@@ -120,8 +120,8 @@
 
 
         {
-            "ProfileName" : "SPMeta2: SharePoint Online (O365) + NET40",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: SharePoint Online (O365) + NET40",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
 
@@ -142,9 +142,9 @@
             ]
         },
 
-         {
-            "ProfileName" : "SPMeta2: SharePoint Online (O365) + NET45",
-            "ProjectFiles" : [
+        {
+            "ProfileName": "SPMeta2: SharePoint Online (O365) + NET45",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2/SPMeta2.csproj",
                 "SPMeta2/SPMeta2.Standard/SPMeta2.Standard.csproj",
 
@@ -166,11 +166,11 @@
         },
 
         {
-            "ProfileName" : "SPMeta2: Regression test containers NET45",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: Regression test containers NET45",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2.Containers.CSOM/SPMeta2.Containers.CSOM.csproj",
                 "SPMeta2/SPMeta2.Containers.SSOM/SPMeta2.Containers.SSOM.csproj",
-                "SPMeta2/SPMeta2.Containers.O365/SPMeta2.Containers.O365.csproj", 
+                "SPMeta2/SPMeta2.Containers.O365/SPMeta2.Containers.O365.csproj",
                 "SPMeta2/SPMeta2.Containers.O365v16/SPMeta2.Containers.O365v16.csproj"
             ],
             "BuildParameters": [
@@ -186,9 +186,67 @@
             ]
         },
 
+        {
+            "ProfileName": "SPMeta2: Regression CSOM",
+            "ProjectFiles": [
+                "SPMeta2/SPMeta2.Regression.CSOM/SPMeta2.Regression.CSOM.csproj",
+                "SPMeta2/SPMeta2.Regression.CSOM.Standard/SPMeta2.Regression.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:Configuration=Debug",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName": "SPMeta2: Regression CSOM NET45",
+            "ProjectFiles": [
+                "SPMeta2/SPMeta2.Regression.CSOM/SPMeta2.Regression.CSOM.csproj",
+                "SPMeta2/SPMeta2.Regression.CSOM.Standard/SPMeta2.Regression.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:Configuration=Debug",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
          {
-            "ProfileName" : "SPMeta2: Regression tests NET45",
-            "ProjectFiles" : [
+            "ProfileName": "SPMeta2: Regression CSOM NET45 - v365",
+            "ProjectFiles": [
+                "SPMeta2/SPMeta2.Regression.CSOM/SPMeta2.Regression.CSOM.csproj",
+                "SPMeta2/SPMeta2.Regression.CSOM.Standard/SPMeta2.Regression.CSOM.Standard.csproj"
+            ],
+            "BuildParameters": [
+                "/p:spRuntime=365",
+                "/p:Configuration=Debug45",
+                "/p:DefineConstants=NET45",
+
+                "/t:Build",
+                "/p:Platform=AnyCPU",
+                "/p:WarningLevel=0",
+                "/verbosity:quiet",
+                "/clp:ErrorsOnly",
+                "/nologo"
+            ]
+        },
+
+        {
+            "ProfileName": "SPMeta2: Regression tests NET45",
+            "ProjectFiles": [
                 "SPMeta2/SPMeta2.Regression.Tests/SPMeta2.Regression.Tests.csproj",
                 "SPMeta2/SPMeta2.Regression.Impl.Tests/SPMeta2.Regression.Impl.Tests.csproj",
             ],
@@ -204,14 +262,13 @@
                 "/nologo"
             ]
         }
-    ]
-    ,
+    ],
 
     "defaultNuGetPackagesDirectory": "./build-artifact-nuget-packages",
     "defaultChocolateyPackagesDirectory": "./build-artifact-cli-packages",
     "defaultNuspecVersion": "0.1.0",
     
-    "defaultDocsViewFolder" : "SubPointSolutions.Docs/Views/SPMeta2",
+    "defaultDocsViewFolder" : "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
     "defaultDocsRepoFolder" : "m2-m2",
     "defaultDocsBranch" : "wyam-dev",
     "defaultDocsFileExtensions" : [
@@ -227,7 +284,7 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2",
             "Id": "SPMeta2.Core",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
             "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
@@ -266,11 +323,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.Standard",
             "Id": "SPMeta2.Core.Standard",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -311,11 +368,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -348,15 +405,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -389,11 +446,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
             "Id": "SPMeta2.SSOM.Foundation",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -426,15 +483,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
             "Id": "SPMeta2.SSOM.Standard",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.SSOM.Foundation",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -468,11 +525,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation-v14",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -498,15 +555,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard-v14",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation-v14",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -532,11 +589,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
             "Id": "SPMeta2.SSOM.Foundation-v14",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -562,15 +619,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
             "Id": "SPMeta2.SSOM.Standard-v14",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.SSOM.Foundation-v14",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -596,11 +653,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation-v16",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "Microsoft.SharePointOnline.CSOM",
@@ -637,15 +694,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard-v16",
-            "Version": "1.2.110",
+            "Version": "1.2.120",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation-v16",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.110"
+                    "Version": "1.2.120"
                 },
                 {
                     "Id": "Microsoft.SharePointOnline.CSOM",

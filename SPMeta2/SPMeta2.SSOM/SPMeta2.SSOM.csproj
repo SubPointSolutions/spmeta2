@@ -325,6 +325,7 @@
     <Compile Include="ModelHandlers\WelcomePageModelHandler.cs" />
     <Compile Include="ModelHandlers\WikiPageModelHandler.cs" />
     <Compile Include="ModelHandlers\WorkflowAssociationModelHandler.cs" />
+    <Compile Include="ModelHosts\ContentTypeModelHost.cs" />
     <Compile Include="ModelHosts\FarmModelHost.cs" />
     <Compile Include="ModelHosts\SecureStoreApplicationModelHost.cs" />
     <Compile Include="ModelHosts\FolderModelHost.cs" />
@@ -335,6 +336,7 @@
     <Compile Include="ModelHosts\SiteModelHost.cs" />
     <Compile Include="ModelHosts\SSOMModelHostBase.cs" />
     <Compile Include="ModelHosts\WebApplicationModelHost.cs" />
+    <Compile Include="ModelHosts\ContentTypeLinkModelHost.cs" />
     <Compile Include="ModelHosts\WebModelHost.cs" />
     <Compile Include="ModelHosts\WebpartPageModelHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -343,11 +345,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\Impl\DefaultSSOMFarmPropertyBagStorage.cs" />
+    <Compile Include="Services\Impl\DefaultSSOMWebApplicationPropertyBagStorage.cs" />
+    <Compile Include="Services\Impl\DefaultSSOMWebPropertyBagStorage.cs" />
     <Compile Include="Services\SSOMContentTypeLookupService.cs" />
     <Compile Include="Services\SSOMDeleteNavigationNodesService.cs" />
     <Compile Include="Services\SSOMFieldLookupService.cs" />
     <Compile Include="Services\SSOMListViewLookupService.cs" />
     <Compile Include="Services\SSOMLocalizationService.cs" />
+    <Compile Include="Services\SSOMIncrementalProvisionService.cs" />
     <Compile Include="Services\SSOMProvisionService.cs" />
     <Compile Include="Services\SSOMTokenReplacementService.cs" />
     <Compile Include="WebPartTemplates.Designer.cs">

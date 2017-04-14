@@ -22,6 +22,15 @@ namespace SPMeta2.Regression.CSOM.Validation
             var definition = model.WithAssertAndCast<UserCustomActionDefinition>("model", value => value.RequireNotNull());
             var spObject = GetCurrentCustomUserAction(modelHost, definition);
 
+            var shouldCheckRegistrationType = true;
+
+            if (modelHost is ListModelHost)
+            {
+                //// skipping setup for List script 
+                //// System.NotSupportedException: Setting this property is not supported.  A value of List has already been set and cannot be changed.
+                shouldCheckRegistrationType = false;
+            }
+
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, definition, spObject)
                                             .ShouldBeEqual(m => m.Name, o => o.Name)
@@ -32,9 +41,14 @@ namespace SPMeta2.Regression.CSOM.Validation
                                             .ShouldBeEqual(m => m.ScriptSrc, o => o.ScriptSrc)
                                             .ShouldBeEqual(m => m.ScriptBlock, o => o.ScriptBlock)
                                             .ShouldBeEqual(m => m.Sequence, o => o.Sequence)
-                                            .ShouldBeEqual(m => m.Url, o => o.Url)
-                //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
-                                            .ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
+                                            .ShouldBeEqual(m => m.Url, o => o.Url);
+            //.ShouldBeEqual(m => m.RegistrationId, o => o.RegistrationId)
+            //.ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
+
+            if (shouldCheckRegistrationType)
+                assert.ShouldBeEqual(m => m.RegistrationType, o => o.GetRegistrationType());
+            else
+                assert.SkipProperty(m => m.RegistrationType, "Skipping validation");
 
             var context = spObject.Context;
 

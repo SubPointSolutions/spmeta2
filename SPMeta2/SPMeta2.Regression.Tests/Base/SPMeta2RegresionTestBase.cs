@@ -30,21 +30,27 @@ using SPMeta2.Regression.ModelHandlers;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
 using SPMeta2.Services;
 using System.IO;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {
-    public class SPMeta2RegresionTestCoreBase
+    public class SPMeta2RegresionTestCoreBase : SPMeta2RegresionTestVeryBase
     {
         static SPMeta2RegresionTestCoreBase()
         {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
+        private static string GetFullPath(string path)
+        {
+            return Path.GetFullPath(path);
+        }
+
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var m2runner = Environment.GetEnvironmentVariable("SPMeta2_RunnerLibraries", EnvironmentVariableTarget.Machine);
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var m2runner = RegressionTestService.CurrentProvisionRunnerAsssmbly;
+            var baseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
 
             RegressionUtils.WriteLine(string.Format("Resolving custom assembly binding for m2 runner:[{0}]", m2runner));
 
@@ -80,16 +86,45 @@ namespace SPMeta2.Regression.Tests.Base
             {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-365"));
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-365"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45-365\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45-365\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45-365\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45-365\")));
             }
 
             if (m2runner == "SPMeta2.Containers.O365.dll")
+            {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
-            assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+                assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45\")));
+            }
 
             if (m2runner == "SPMeta2.Containers.CSOM.dll")
             {
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-2013"));
                 assemblyDirs.Add(Path.Combine(baseDir, @"_Dependencies\spmeta2-csom-regression-2013"));
+
+                // VS sometimes does not coipy these accorss
+                // referencing straight to the solution
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM.Standard\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.CSOM\bin\Debug45\")));
+
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM\bin\Debug45\")));
+                assemblyDirs.Add(GetFullPath(Path.Combine(baseDir, @"..\..\..\SPMeta2.Regression.CSOM.Standard\bin\Debug45\")));
             }
 
             foreach (var dir in assemblyDirs)
@@ -103,7 +138,7 @@ namespace SPMeta2.Regression.Tests.Base
                 }
             }
 
-            throw new Exception(string.Format("Cannot load custom assembly:[{0}] for assembly:[{1}]",
+            throw new Exception(string.Format("Cannot load custom assembly:[{0}] for assembly:[{1}]. Rebuild solution via powershell .\build in 'Build' project and run regression again",
                 args.Name,
                 args.RequestingAssembly
                 ));
@@ -143,6 +178,23 @@ namespace SPMeta2.Regression.Tests.Base
             where T : DefinitionBase
         {
             return ModelGeneratorService.GetRandomDefinition<T>(action);
+        }
+        public bool IsIncrementalProvisionMode
+        {
+            get
+            {
+                var result = false;
+
+                var value = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.RunnerProvisionMode);
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (value.ToLower() == "incremental")
+                        result = true;
+                }
+
+                return result;
+            }
         }
     }
 
@@ -461,10 +513,14 @@ namespace SPMeta2.Regression.Tests.Base
         {
             foreach (var model in models)
             {
+                var localModel = model;
+
                 model.WithNodesOfType<DefinitionBase>(node =>
                 {
                     var def = node.Value;
-                    ProcessDefinitionsPropertyUpdateValidation(def);
+
+                    if (node != localModel)
+                        ProcessDefinitionsPropertyUpdateValidation(def);
                 });
             }
         }

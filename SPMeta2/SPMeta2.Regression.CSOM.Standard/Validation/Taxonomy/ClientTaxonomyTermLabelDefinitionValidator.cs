@@ -14,6 +14,16 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var definition = model.WithAssertAndCast<TaxonomyTermLabelDefinition>("model", value => value.RequireNotNull());
 
             var spObject = FindLabelInTerm(termModelHost.HostTerm, definition);
+            var context = termModelHost.HostClientContext;
+
+            if (spObject == null && IsSharePointOnlineContext(context))
+            {
+                TryRetryService.TryWithRetry(() =>
+                {
+                    spObject = FindLabelInTerm(termModelHost.HostTerm, definition);
+                    return spObject != null;
+                });
+            }
 
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)

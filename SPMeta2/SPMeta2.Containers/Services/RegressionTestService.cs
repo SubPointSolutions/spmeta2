@@ -124,12 +124,16 @@ namespace SPMeta2.Containers.Services
 
         private bool _hasInit = false;
 
+        public static string CurrentProvisionRunnerAsssmbly {get;set;}
+
         protected virtual void InitRunnerImplementations()
         {
             if (_hasInit) return;
 
             foreach (var asmFileName in ProvisionRunnerAssemblies)
             {
+                CurrentProvisionRunnerAsssmbly = asmFileName;
+
                 var asmImpl = Assembly.LoadFrom(asmFileName);
 
                 var types = ReflectionUtils.GetTypesFromAssembly<ProvisionRunnerBase>(asmImpl);
@@ -489,6 +493,9 @@ namespace SPMeta2.Containers.Services
             TestModels(models, false);
         }
 
+        public Action<ProvisionRunnerBase> BeforeProvisionRunnerExcecution { get; set; }
+        public Action<ProvisionRunnerBase> AfterProvisionRunnerExcecution { get; set; }
+
         public void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
         {
             // force XML serialiation
@@ -513,13 +520,24 @@ namespace SPMeta2.Containers.Services
                 {
                     var runner = runnerContext.Runner;
 
+                    if (BeforeProvisionRunnerExcecution != null)
+                        BeforeProvisionRunnerExcecution(runner);
+
                     var omModelType = GetRunnerType(runner);
-                    var hooks = GetHooks(model);
+                    var hooks = new List<EventHooks>();
 
-                    foreach (var hook in hooks)
-                        hook.Tag = runner.Name;
+                    if (!deployOnce)
+                    {
+                        if (this.EnableDefinitionValidation)
+                        {
+                            hooks = GetHooks(model);
 
-                    allHooks.AddRange(hooks);
+                            foreach (var hook in hooks)
+                                hook.Tag = runner.Name;
+
+                            allHooks.AddRange(hooks);
+                        }
+                    }
 
                     if (model.Value.GetType() == typeof(FarmDefinition))
                         runner.DeployFarmModel(model);
@@ -535,7 +553,6 @@ namespace SPMeta2.Containers.Services
                     {
                         throw new SPMeta2NotImplementedException(
                             string.Format("Runner does not support model of type: [{0}]", model.Value.GetType()));
-
                     }
 
                     if (!deployOnce)
@@ -546,6 +563,9 @@ namespace SPMeta2.Containers.Services
                             AssertService.IsFalse(hasMissedOrInvalidProps);
                         }
                     }
+
+                    if (AfterProvisionRunnerExcecution != null)
+                        AfterProvisionRunnerExcecution(runner);
                 });
 
                 if (!deployOnce)
@@ -593,6 +613,9 @@ namespace SPMeta2.Containers.Services
             {
                 var runner = runnerContext.Runner;
 
+                if (BeforeProvisionRunnerExcecution != null)
+                    BeforeProvisionRunnerExcecution(runner);
+
                 ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
                 var omModelType = GetRunnerType(runner);
@@ -608,14 +631,22 @@ namespace SPMeta2.Containers.Services
                         definitionSetup(def as TDefinition);
                 }
 
-                var hooks = GetHooks(definitionSandbox);
+                var hooks = new List<EventHooks>();
 
-                foreach (var hook in hooks)
-                    hook.Tag = runner.Name;
+                if (this.EnableDefinitionValidation)
+                {
+                    hooks = GetHooks(definitionSandbox);
 
-                GetSerializedAndRestoredModels(definitionSandbox);
+                    foreach (var hook in hooks)
+                        hook.Tag = runner.Name;
 
-                allHooks.AddRange(hooks);
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                    allHooks.AddRange(hooks);
+                }
+                else
+                {
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                }
 
                 if (definitionSandbox.Value.GetType() == typeof(FarmDefinition))
                     runner.DeployFarmModel(definitionSandbox);
@@ -634,6 +665,9 @@ namespace SPMeta2.Containers.Services
                     var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
                     AssertService.IsFalse(hasMissedOrInvalidProps);
                 }
+
+                if (AfterProvisionRunnerExcecution != null)
+                    AfterProvisionRunnerExcecution(runner);
 
                 result = definitionSandbox;
             });

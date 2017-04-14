@@ -118,8 +118,6 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 // Can't provision list with NoListTemplate template type #944
                 // https://github.com/SubPointSolutions/spmeta2/issues/944
 
-
-
                 if (prop.PropertyType == typeof(string))
                 {
                     var value = prop.GetValue(obj, null) as string;
@@ -196,6 +194,42 @@ namespace SPMeta2.Services.ServiceModelHandlers
                     else
                     {
                         result.IsValid = false;
+                    }
+                }
+                else if (prop.PropertyType == typeof(bool) ||
+                    prop.PropertyType == typeof(bool?))
+                {
+                    var value = prop.GetValue(obj, null) as bool?;
+
+                    // any valud range?
+                    // ExpectRequiredBoolRange
+                    var allowedBoolProperty = prop.GetCustomAttributes(typeof(ExpectRequiredBoolRange), true)
+                                                   .FirstOrDefault() as ExpectRequiredBoolRange;
+
+                    if (allowedBoolProperty != null)
+                    {
+                        var allowedBoolPropertyValue = allowedBoolProperty.ExpectedValue;
+
+                        if (value != null && value.HasValue)
+                        {
+                            result.IsValid = value == allowedBoolPropertyValue;
+                        }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
+                    }
+                    else
+                    {
+                        // all set 'boolean' values as to be true unless values are defined via ExpectRequiredBoolRange
+                        if (value != null && value.HasValue)
+                        {
+
+                        }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
                     }
                 }
                 else

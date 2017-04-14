@@ -19,7 +19,7 @@ namespace SPMeta2.Standard.Definitions
     [SPObjectType(SPObjectModelType.SSOM, "Microsoft.Office.Server.UserProfiles.ProfileTypeProperty", "Microsoft.Office.Server.UserProfiles")]
 
     [DefaultParentHost(typeof(CorePropertyDefinition))]
-    [DefaultRootHost(typeof(CorePropertyDefinition))]
+    [DefaultRootHost(typeof(SiteDefinition))]
 
     [Serializable]
     [DataContract]

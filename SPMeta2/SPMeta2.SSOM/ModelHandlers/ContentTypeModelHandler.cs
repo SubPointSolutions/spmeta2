@@ -10,6 +10,7 @@ using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -53,7 +54,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                     }
                     else
                     {
-                        action(targetContentType);
+                        action(ModelHostBase.Inherit<ContentTypeModelHost>(modelHost as ModelHostBase, host =>
+                        {
+                            host.HostContentType = targetContentType;
+                        }));
                     }
 
                     targetContentType.Update(true);

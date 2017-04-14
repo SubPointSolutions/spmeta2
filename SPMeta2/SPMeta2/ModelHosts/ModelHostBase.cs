@@ -12,6 +12,9 @@ namespace SPMeta2.ModelHosts
         public ModelHostBase()
         {
             ShouldUpdateHost = true;
+
+            IsCSOM = false;
+            IsSSOM = false;
         }
 
         #endregion
@@ -66,6 +69,8 @@ namespace SPMeta2.ModelHosts
 
         #region properties
 
+        public bool IsSSOM { get; set; }
+        public bool IsCSOM { get; set; }
         public bool ShouldUpdateHost { get; set; }
 
         #endregion

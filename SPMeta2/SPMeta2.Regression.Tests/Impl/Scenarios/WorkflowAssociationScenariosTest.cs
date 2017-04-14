@@ -97,6 +97,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.AssociationData = Rnd.String();
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                AddDefaultWorkflowFeatures(site);
+            });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
@@ -106,7 +111,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWorkflowAssociation(workflowDefChanges);
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
@@ -144,6 +149,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.AssociationData = Rnd.String();
             });
 
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+           {
+               AddDefaultWorkflowFeatures(site);
+           });
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddList(taskList);
@@ -156,8 +166,103 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WorkflowAssociation")]
+        public void CanDeploy_WorkflowAssociation_UnderContentTypeLink()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+
+            });
+
+            var taskList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.Tasks;
+                def.ContentTypesEnabled = true;
+            });
+
+            var historyList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.WorkflowHistory;
+            });
+
+            var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+            {
+                def.TaskListTitle = taskList.Title;
+                def.HistoryListTitle = historyList.Title;
+            });
+
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
+
+                def.AssociationData = Rnd.String();
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+                AddDefaultWorkflowFeatures(site);
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(taskList);
+                web.AddList(historyList);
+
+                web.AddRandomList(list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef, contentTypeLink =>
+                    {
+                        contentTypeLink.AddWorkflowAssociation(workflowDef);
+                        contentTypeLink.AddWorkflowAssociation(workflowDefChanges);
+                    });
+                });
+            });
+
+            TestModel(siteModel, model);
+        }
+
+        private void AddDefaultWorkflowFeatures(SiteModelNode site)
+        {
+            site.AddSiteFeature(BuiltInSiteFeatures.Workflows.Inherit(f =>
+            {
+                f.Enable = true;
+            }));
+
+            site.AddSiteFeature(BuiltInSiteFeatures.SharePoint2007Workflows.Inherit(f =>
+            {
+                f.Enable = true;
+            }));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.DispositionApprovalWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.PublishingApprovalWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+
+            //site.AddSiteFeature(BuiltInSiteFeatures.ThreeStateWorkflow.Inherit(f =>
+            //{
+            //    f.Enable = true;
+            //}));
+        }
+
+
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.WorkflowAssociation")]
@@ -182,6 +287,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 def.TaskListTitle = taskList.Title;
                 def.HistoryListTitle = historyList.Title;
+            });
+
+            var initialSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                AddDefaultWorkflowFeatures(site);
             });
 
             // changability 
@@ -214,7 +324,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(webModel, siteModel);
+            TestModels(new ModelNode[] { 
+                initialSiteModel,
+                webModel,
+                siteModel });
         }
     }
 }

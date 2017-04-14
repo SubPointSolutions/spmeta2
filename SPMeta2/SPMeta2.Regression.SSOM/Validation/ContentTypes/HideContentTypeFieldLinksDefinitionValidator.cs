@@ -14,7 +14,9 @@ namespace SPMeta2.Regression.SSOM.Validation.ContentTypes
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var definition = model.WithAssertAndCast<HideContentTypeFieldLinksDefinition>("model", value => value.RequireNotNull());
-            var spObject = modelHost as SPContentType;
+            var typedModelhost = modelHost.WithAssertAndCast<ContentTypeModelHost>("model", value => value.RequireNotNull());
+
+            var spObject = typedModelhost.HostContentType;
 
             ServiceFactory.AssertService
                            .NewAssert(definition, spObject)

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SPMeta2.Regression.Service
 {
@@ -42,12 +42,6 @@ namespace SPMeta2.Regression.Service
         #endregion
 
         #region props
-
-        public bool IsVerboseEnabled { get; set; }
-        public bool IsInformationEnabled { get; set; }
-        public bool IsWarningEnabled { get; set; }
-        public bool IsErrorEnabled { get; set; }
-        public bool IsCriticalEnabled { get; set; }
 
         public string LogFilePath { get; set; }
 

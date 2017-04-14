@@ -43,9 +43,35 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
 
+            var isSpecialFolderContext = false;
+
             if (folderModelHost.CurrentList != null && folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
             {
                 var currentFolder = EnsureLibraryFolder(folderModelHost, folderModel);
+
+                // preload props to identify 'special folder'
+                // once done, pass down via model host
+                if (folderModel.Name.ToLower() == "forms")
+                {
+                    var doesFileHaveListItem = false;
+
+#if !NET35
+                    currentFolder.Context.Load(currentFolder, f => f.Properties);
+                    currentFolder.Context.ExecuteQueryWithTrace();
+
+                    doesFileHaveListItem = !(currentFolder != null
+                     &&
+                     (currentFolder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                      &&
+                      currentFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
+                      "00000012"));
+
+
+#endif
+                    isSpecialFolderContext = !doesFileHaveListItem;
+
+                    folderModelHost.IsSpecialFolderContext = isSpecialFolderContext;
+                }
 
                 var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
@@ -383,7 +409,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var currentFolderItem = currentFolder.ListItemAllFields;
 
                 // could be NULL, in the /Forms or other hidden folders
-                if (currentFolderItem != null 
+                if (currentFolderItem != null
                     && currentFolderItem.ServerObjectIsNull != null
                     && !currentFolderItem.ServerObjectIsNull.Value)
                 {
