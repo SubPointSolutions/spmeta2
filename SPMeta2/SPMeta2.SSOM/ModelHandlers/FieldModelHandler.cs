@@ -409,6 +409,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             field.Required = definition.Required;
 
+            if (definition.ReadOnlyField.HasValue)
+                field.ReadOnlyField = definition.ReadOnlyField.Value;
+
             if (!string.IsNullOrEmpty(definition.StaticName))
                 field.StaticName = definition.StaticName;
 
