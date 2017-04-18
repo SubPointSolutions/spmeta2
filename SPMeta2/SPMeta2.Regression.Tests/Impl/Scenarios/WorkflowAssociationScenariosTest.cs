@@ -225,6 +225,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 web.AddRandomList(list =>
                 {
+                    ((list.Value) as ListDefinition).ContentTypesEnabled = true;
+
                     list.AddContentTypeLink(contentTypeDef, contentTypeLink =>
                     {
                         contentTypeLink.AddWorkflowAssociation(workflowDef);
