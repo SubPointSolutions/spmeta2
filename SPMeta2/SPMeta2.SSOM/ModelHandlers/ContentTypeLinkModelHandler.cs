@@ -64,7 +64,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             action(contentTypeLinkHost);
 
             if (contentTypeLinkHost.ShouldUpdateHost)
-                contentType.Update(false);
+            {
+                if (!contentType.ReadOnly)
+                    contentType.Update(false);
+            }
         }
 
         public override void DeployModel(object modelHost, DefinitionBase model)

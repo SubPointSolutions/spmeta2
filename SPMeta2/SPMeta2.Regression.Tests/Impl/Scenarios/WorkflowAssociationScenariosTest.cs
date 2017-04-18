@@ -234,6 +234,71 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(siteModel, model);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WorkflowAssociation")]
+        public void CanDeploy_WorkflowAssociation_UnderContentTypeLink_ReadOnly()
+        {
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ReadOnly = true;
+            });
+
+            var taskList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.Tasks;
+                def.ContentTypesEnabled = true;
+            });
+
+            var historyList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.WorkflowHistory;
+            });
+
+            var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+            {
+                def.TaskListTitle = taskList.Title;
+                def.HistoryListTitle = historyList.Title;
+            });
+
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
+
+                def.AssociationData = Rnd.String();
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef);
+                AddDefaultWorkflowFeatures(site);
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(taskList);
+                web.AddList(historyList);
+
+                web.AddRandomList(list =>
+                {
+                    list.AddContentTypeLink(contentTypeDef, contentTypeLink =>
+                    {
+                        contentTypeLink.AddWorkflowAssociation(workflowDef);
+                        contentTypeLink.AddWorkflowAssociation(workflowDefChanges);
+                    });
+                });
+            });
+
+            TestModel(siteModel, model);
+        }
+
         private void AddDefaultWorkflowFeatures(SiteModelNode site)
         {
             site.AddSiteFeature(BuiltInSiteFeatures.Workflows.Inherit(f =>
@@ -318,6 +383,77 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
                 site.AddRandomContentType(contentType =>
+                {
+                    contentType.AddWorkflowAssociation(workflowDef);
+                    contentType.AddWorkflowAssociation(workflowDefChanges);
+                });
+            });
+
+            TestModels(new ModelNode[] { 
+                initialSiteModel,
+                webModel,
+                siteModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.WorkflowAssociation")]
+        public void CanDeploy_WorkflowAssociation_UnderContentType_ReadOnly()
+        {
+            // .AddWorkflowAssociation() for Read Only Content Types throws error #1001
+            // https://github.com/SubPointSolutions/spmeta2/issues/1001
+
+            var taskList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.Tasks;
+            });
+
+            var historyList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.Hidden = true;
+                def.TemplateType = BuiltInListTemplateTypeId.WorkflowHistory;
+            });
+
+            var workflowDef = ModelGeneratorService.GetRandomDefinition<WorkflowAssociationDefinition>(def =>
+            {
+                def.TaskListTitle = taskList.Title;
+                def.HistoryListTitle = historyList.Title;
+            });
+
+            var initialSiteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                AddDefaultWorkflowFeatures(site);
+            });
+
+            var readOnlyContentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ReadOnly = true;
+            });
+
+            // changability 
+            // deploy the same association with different props
+            var workflowDefChanges = workflowDef.Inherit(def =>
+            {
+                var value = Rnd.Bool();
+
+                def.AllowManual = value;
+                def.AutoStartChange = !value;
+                def.AutoStartCreate = value;
+
+                def.AssociationData = Rnd.String();
+            });
+
+            // lists are to be deployed before contet type
+            // workflow association on the cotnent type references lists
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(historyList);
+                web.AddList(taskList);
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(readOnlyContentTypeDef, contentType =>
                 {
                     contentType.AddWorkflowAssociation(workflowDef);
                     contentType.AddWorkflowAssociation(workflowDefChanges);

@@ -60,7 +60,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                         }));
                     }
 
-                    targetContentType.Update(true);
+                    if (!targetContentType.ReadOnly)
+                        targetContentType.Update(true);
+
                     tmpRootWeb.Update();
                 }
             }
