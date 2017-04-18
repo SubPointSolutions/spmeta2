@@ -22,6 +22,8 @@ using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Utils;
 using SPMeta2.Exceptions;
 
+using SPMeta2.Containers.Extensions;
+
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
@@ -277,7 +279,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
             {
-                site.AddContentType(contentTypeDef);
+                site.AddContentType(contentTypeDef, contentType =>
+                {
+                    contentType.RegExcludeFromValidation();
+                });
+
                 AddDefaultWorkflowFeatures(site);
             });
 
@@ -455,6 +461,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 site.AddContentType(readOnlyContentTypeDef, contentType =>
                 {
+                    contentType.RegExcludeFromValidation();
+
                     contentType.AddWorkflowAssociation(workflowDef);
                     contentType.AddWorkflowAssociation(workflowDefChanges);
                 });

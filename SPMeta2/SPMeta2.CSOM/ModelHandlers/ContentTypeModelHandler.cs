@@ -82,6 +82,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var id = contentTypeModel.GetContentTypeId();
                 var currentContentType = web.ContentTypes.GetById(id);
 
+                context.Load(currentContentType);
+                context.Load(currentContentType, c => c.ReadOnly);
+
                 context.ExecuteQueryWithTrace();
 #endif
 
@@ -96,6 +99,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 var currentContentType = currentContentTypes.FirstOrDefault();
+
+                context.Load(currentContentType);
+                context.Load(currentContentType, c => c.ReadOnly);
+
+                context.ExecuteQueryWithTrace();
+
 #endif
 
                 if (childModelType == typeof(ModuleFileDefinition))
@@ -124,7 +133,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
 
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
-                currentContentType.Update(true);
+
+                if (!currentContentType.ReadOnly)
+                {
+                    currentContentType.Update(true);
+                }
 
                 context.ExecuteQueryWithTrace();
             }
@@ -335,9 +348,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!currentContentType.Sealed)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
-                currentContentType.Update(true);
 
-                context.ExecuteQueryWithTrace();
+                if (!currentContentType.ReadOnly)
+                {
+                    currentContentType.Update(true);
+                    context.ExecuteQueryWithTrace();
+                }
             }
 #endif
         }

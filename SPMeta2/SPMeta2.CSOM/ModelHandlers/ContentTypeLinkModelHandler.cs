@@ -48,7 +48,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             action(contentTypeLinkHost);
 
             if (contentTypeLinkHost.ShouldUpdateHost)
-                contentType.Update(false);
+            {
+                if (!contentType.ReadOnly)
+                {
+                    contentType.Update(false);
+                }
+            }
 
             context.ExecuteQueryWithTrace();
         }
