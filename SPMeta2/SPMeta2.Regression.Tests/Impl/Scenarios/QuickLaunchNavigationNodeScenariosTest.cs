@@ -257,21 +257,22 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             // Incorrect provision order for navigation nodes #1019
             // https://github.com/SubPointSolutions/spmeta2/issues/1019
 
-            var subWebDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
-            {
-
-            });
-
-            var quickNavigationDef = ModelGeneratorService.GetRandomDefinition<QuickLaunchNavigationNodeDefinition>(def =>
-            {
-                def.Title = Rnd.String();
-                def.Url = string.Format("~sitecollection/{0}", subWebDef.Url);
-            });
+            var index = Rnd.Int();
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddQuickLaunchNavigationNode(quickNavigationDef);
-                web.AddWeb(subWebDef);
+                web.AddWeb(new WebDefinition()
+                {
+                    Title = "Forum",
+                    LCID = 1049,
+                    Url = "Forum" + index,
+                    WebTemplate = BuiltInWebTemplates.Collaboration.CommunitySite
+                });
+                web.AddQuickLaunchNavigationNode(new QuickLaunchNavigationNodeDefinition()
+                {
+                    Title = "Forum" + index,
+                    Url = "~sitecollection/Forum" + index
+                });
             });
 
             TestModel(model);

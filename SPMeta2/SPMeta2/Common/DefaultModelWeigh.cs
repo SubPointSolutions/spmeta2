@@ -155,7 +155,16 @@ namespace SPMeta2.Common
                     typeof (SP2013WorkflowDefinition),
                     
                     typeof (ListDefinition),
-                    
+
+                    // goes after list definitions to make sure you get history/task lists 
+                    typeof (SP2013WorkflowSubscriptionDefinition),
+                    typeof (WorkflowAssociationDefinition),
+
+                    typeof (MasterPageSettingsDefinition),
+                    typeof (WelcomePageDefinition),
+
+                    typeof (WebDefinition),
+
                     // moved navigation provision after lists
                     // cause adding libraries would trigger 'Recent' link
                     // https://github.com/SubPointSolutions/spmeta2/issues/865
@@ -166,13 +175,6 @@ namespace SPMeta2.Common
                     
                     typeof (QuickLaunchNavigationNodeDefinition),
                     typeof (TopNavigationNodeDefinition),
-
-                    // goes after list definitions to make sure you get history/task lists 
-                    typeof (SP2013WorkflowSubscriptionDefinition),
-                    typeof (WorkflowAssociationDefinition),
-
-                    typeof (MasterPageSettingsDefinition),
-                    typeof (WelcomePageDefinition)
                 }));
         }
 
