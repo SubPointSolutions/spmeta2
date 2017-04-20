@@ -682,6 +682,16 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             });
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebApplication")]
+        public void CanDeployRandom_SuiteBarDefinition()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<SuiteBarDefinition>();
+            });
+        }
+
         #endregion
 
         #region web scope

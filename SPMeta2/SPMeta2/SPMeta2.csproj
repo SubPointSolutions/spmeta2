@@ -145,6 +145,7 @@
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
+    <Compile Include="Definitions\SuiteBarDefinition.cs" />
     <Compile Include="Definitions\OfficialFileHostDefinition.cs" />
     <Compile Include="Definitions\SharePointDesignerSettingsDefinition.cs" />
     <Compile Include="Definitions\DeveloperDashboardSettingsDefinition.cs" />
@@ -429,6 +430,7 @@
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\SuiteBarDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SharePointDesignerSettingsSyntax.cs" />
     <Compile Include="Syntax\Default\DeveloperDashboardSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ClearRecycleBinDefinitionSyntax.cs" />

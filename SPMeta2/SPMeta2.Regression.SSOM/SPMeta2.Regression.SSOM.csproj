@@ -132,6 +132,7 @@
     <Compile Include="Extensions\SPWebExtensions.cs" />
     <Compile Include="Extensions\WebPartPageItemExtensions.cs" />
     <Compile Include="Extensions\WikiPageItemExtensions.cs" />
+    <Compile Include="Validation\SuiteBarDefinitionValidator.cs" />
     <Compile Include="Validation\OfficialFileHostDefinitionValidator.cs" />
     <Compile Include="Validation\SharePointDesignerSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\ClearRecycleBinDefinitionValidator.cs" />
