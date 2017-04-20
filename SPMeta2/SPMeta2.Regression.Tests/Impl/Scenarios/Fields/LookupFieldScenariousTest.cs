@@ -410,6 +410,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         #endregion
 
+        #region count related
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.CountRelated")]
+        public void CanDeploy_LookupField_With_CountRelated()
+        {
+            var field1 = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.CountRelated = Rnd.Bool();
+            });
+
+            var field2 = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.CountRelated = !field1.CountRelated;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field1);
+                site.AddField(field2);
+            });
+
+            TestModel(siteModel);
+        }
+
+        #endregion
+
         #region multi seelct
 
         [TestMethod]

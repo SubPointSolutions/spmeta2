@@ -7,6 +7,7 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
+using System.Xml.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
@@ -290,7 +291,31 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
                 }
             }
 
-            typedFieldAssert.SkipProperty(m => m.CountRelated, "CountRelated is not supported by CSOM");
+            if (typedDefinition.CountRelated.HasValue)
+            {
+                typedFieldAssert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.CountRelated);
+                    var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
+
+                    var isValid = bool.Parse(dstXmlNode.Attribute("CountRelated").Value) ==
+                                    typedDefinition.CountRelated.Value;
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+
+                //typedFieldAssert.ShouldBeEqual(m => m.CountRelated, o => o.cou);
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.CountRelated, "CountRelated is NULL. Skipping.");
+            }
         }
     }
 }

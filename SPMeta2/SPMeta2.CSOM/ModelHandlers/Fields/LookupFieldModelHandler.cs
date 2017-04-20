@@ -29,16 +29,38 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         #region methods
 
+        protected override bool PreloadProperties(Field field)
+        {
+            base.PreloadProperties(field);
+
+            var context = field.Context;
+            context.Load(field, f => f.SchemaXml);
+
+            return true;
+        }
+
+
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
+            var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
+
             var site = HostSite;
             var context = site.Context;
+
+            // CountRelated in Lookups in CSOM #1018
+            // https://github.com/SubPointSolutions/spmeta2/issues/673
+            if (typedFieldModel.CountRelated.HasValue)
+            {
+                var fieldXml = XDocument.Parse(field.SchemaXml);
+                fieldXml.Root.SetAttribute("CountRelated", typedFieldModel.CountRelated.ToString().ToUpper());
+
+                field.SchemaXml = fieldXml.ToString();
+            }
 
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
             var typedField = field.Context.CastTo<FieldLookup>(field);
-            var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
             if (!typedField.IsPropertyAvailable("LookupList"))
             {

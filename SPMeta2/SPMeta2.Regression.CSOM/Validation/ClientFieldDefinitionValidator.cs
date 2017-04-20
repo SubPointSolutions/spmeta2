@@ -68,7 +68,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var depLookupDefinition = definition as LookupFieldDefinition;
 
                 // cjeck against CountRelated for lookups
-                if (depLookupDefinition.CountRelated.HasValue)
+                if (depLookupDefinition.CountRelated.HasValue
+                    && depLookupDefinition.ReadOnlyField.HasValue)
                 {
                     assert.ShouldBeEqual((p, s, d) =>
                     {
