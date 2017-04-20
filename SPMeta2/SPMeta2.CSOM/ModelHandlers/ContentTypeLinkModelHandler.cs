@@ -36,12 +36,11 @@ namespace SPMeta2.CSOM.ModelHandlers
             //context.Load(list, l => l.ContentTypes);
             context.Load(list, l => l.ContentTypes.Include(
                 ct => ct.Id,
-                ct => ct.StringId,
                 ct => ct.Name,
                 ct => ct.ReadOnly,
 
-                ct => ct.Parent.Id,
-                ct => ct.Parent.StringId));
+                ct => ct.Parent.Id
+                ));
 
             context.ExecuteQueryWithTrace();
 
@@ -89,12 +88,10 @@ namespace SPMeta2.CSOM.ModelHandlers
                 //context.Load(list, l => l.ContentTypes);
                 context.Load(list, l => l.ContentTypes.Include(
                     ct => ct.Id,
-                    ct => ct.StringId,
                     ct => ct.Name,
                     ct => ct.ReadOnly,
 
-                    ct => ct.Parent.Id,
-                    ct => ct.Parent.StringId));
+                    ct => ct.Parent.Id));
 
                 context.ExecuteQueryWithTrace();
 
@@ -231,7 +228,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 foreach (var contentType in list.ContentTypes)
                 {
-                    if (contentType.Parent.StringId.ToUpper() == contentTypeLinkModel.ContentTypeId.ToUpper())
+                    if (contentType.Parent.Id.ToString().ToUpper() == contentTypeLinkModel.ContentTypeId.ToUpper())
                     {
                         result = contentType;
                         break;

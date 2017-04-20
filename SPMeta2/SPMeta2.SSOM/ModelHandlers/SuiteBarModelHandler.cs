@@ -73,7 +73,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapObject(SPWebApplication currentObject, SuiteBarDefinition typedDefinition)
         {
+#if !NET35
             currentObject.SuiteBarBrandingElementHtml = typedDefinition.SuiteBarBrandingElementHtml;
+#endif
         }
 
         #endregion
