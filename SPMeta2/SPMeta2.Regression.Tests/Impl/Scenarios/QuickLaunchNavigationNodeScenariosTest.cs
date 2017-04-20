@@ -248,6 +248,37 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region provision order
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Order")]
+        public void CanDeploy_QuickLaunchNavigationNodes_With_SubWeb()
+        {
+            // Incorrect provision order for navigation nodes #1019
+            // https://github.com/SubPointSolutions/spmeta2/issues/1019
+
+            var subWebDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var quickNavigationDef = ModelGeneratorService.GetRandomDefinition<QuickLaunchNavigationNodeDefinition>(def =>
+            {
+                def.Title = Rnd.String();
+                def.Url = string.Format("~sitecollection/{0}", subWebDef.Url);
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddQuickLaunchNavigationNode(quickNavigationDef);
+                web.AddWeb(subWebDef);
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region tokens
 
         [TestMethod]

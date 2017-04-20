@@ -31,11 +31,22 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (result == null && !string.IsNullOrEmpty(definition.ContentTypeId))
             {
-                var linkContenType = new SPContentTypeId(definition.ContentTypeId);
-                var bestMatch = list.ContentTypes.BestMatch(linkContenType);
+                var linkContentType = new SPContentTypeId(definition.ContentTypeId);
 
-                if (bestMatch.IsChildOf(linkContenType))
-                    result = list.ContentTypes[bestMatch];
+                // "Item" ContentTypeLink #1016
+                // replacing best match, it does not work on list scoped content types
+
+                // Content type operations within a list
+                // http://docs.subpointsolutions.com/spmeta2/kb/kb-m2-000003.html
+
+                //var bestMatch = list.ContentTypes.BestMatch(linkContenType);
+
+                //if (bestMatch.IsChildOf(linkContenType))
+                //    result = list.ContentTypes[bestMatch];
+
+                result = list.ContentTypes
+                             .OfType<SPContentType>()
+                             .FirstOrDefault(ct => ct.Parent.Id == linkContentType);
             }
 
             return result;

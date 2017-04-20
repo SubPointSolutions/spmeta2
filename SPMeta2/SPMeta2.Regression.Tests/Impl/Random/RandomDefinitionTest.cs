@@ -672,6 +672,13 @@ namespace SPMeta2.Regression.Tests.Impl.Random
             TestRandomDefinition<ContentTypeFieldLinkDefinition>();
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Rnd.WebApplication")]
+        public void CanDeployRandom_OfficialFileHostDefinition()
+        {
+            TestRandomDefinition<OfficialFileHostDefinition>();
+        }
+
         #endregion
 
         #region web scope

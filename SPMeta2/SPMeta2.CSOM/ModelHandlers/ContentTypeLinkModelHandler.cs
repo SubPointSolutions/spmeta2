@@ -33,7 +33,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             var list = listModelHost.HostList;
             var context = list.Context;
 
-            context.Load(list, l => l.ContentTypes);
+            //context.Load(list, l => l.ContentTypes);
+            context.Load(list, l => l.ContentTypes.Include(
+                ct => ct.Id,
+                ct => ct.StringId,
+                ct => ct.Name,
+                ct => ct.ReadOnly,
+
+                ct => ct.Parent.Id,
+                ct => ct.Parent.StringId));
+
             context.ExecuteQueryWithTrace();
 
             var contentType = FindListContentType(list, contentTypeLinkModel);
@@ -77,7 +86,15 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var web = list.ParentWeb;
 
                 // context.Load(web, w => w.AvailableContentTypes);
-                context.Load(list, l => l.ContentTypes);
+                //context.Load(list, l => l.ContentTypes);
+                context.Load(list, l => l.ContentTypes.Include(
+                    ct => ct.Id,
+                    ct => ct.StringId,
+                    ct => ct.Name,
+                    ct => ct.ReadOnly,
+
+                    ct => ct.Parent.Id,
+                    ct => ct.Parent.StringId));
 
                 context.ExecuteQueryWithTrace();
 
@@ -180,6 +197,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 result = list.ContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
             }
 
+
+
             // trying to find by content type id
             // will never be resolved, actually
             // list content types have different ID
@@ -197,10 +216,26 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6356289-expose-spcontenttypecollection-bestmatch-for-csom
 
                 // TODO, correct best match impl
+
+                // "Item" ContentTypeLink #1016
+                // replacing best match, it does not work on list scoped content types
+
+                // Content type operations within a list
+                // http://docs.subpointsolutions.com/spmeta2/kb/kb-m2-000003.html
+
+                //foreach (var contentType in list.ContentTypes)
+                //{
+                //    if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeLinkModel.ContentTypeId.ToUpper()))
+                //        result = contentType;
+                //}
+
                 foreach (var contentType in list.ContentTypes)
                 {
-                    if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeLinkModel.ContentTypeId.ToUpper()))
+                    if (contentType.Parent.StringId.ToUpper() == contentTypeLinkModel.ContentTypeId.ToUpper())
+                    {
                         result = contentType;
+                        break;
+                    }
                 }
             }
 
