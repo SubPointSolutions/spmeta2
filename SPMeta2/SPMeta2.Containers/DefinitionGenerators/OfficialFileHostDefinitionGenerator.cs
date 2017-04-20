@@ -4,6 +4,7 @@ using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Containers.Services;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Containers.DefinitionGenerators
 {
@@ -16,7 +17,12 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.OfficialFileName = Rnd.String();
                 def.OfficialFileUrl = Rnd.HttpsUrl();
 
-                // TODO
+                def.Action = Rnd.RandomFromArray(
+                    new[]{
+                       OfficialFileAction.Copy,
+                       OfficialFileAction.Link,
+                       OfficialFileAction.Move
+                   });
             });
         }
     }

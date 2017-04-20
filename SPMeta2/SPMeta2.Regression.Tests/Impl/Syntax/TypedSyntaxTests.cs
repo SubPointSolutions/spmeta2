@@ -67,6 +67,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 webApplication.AddPrefix(new PrefixDefinition());
 
                 webApplication.AddContentDatabase(new ContentDatabaseDefinition());
+
+                webApplication.AddOfficialFileHost(new OfficialFileHostDefinition());
             });
         }
 

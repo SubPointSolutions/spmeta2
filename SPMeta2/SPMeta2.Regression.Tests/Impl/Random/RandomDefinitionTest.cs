@@ -676,7 +676,10 @@ namespace SPMeta2.Regression.Tests.Impl.Random
         [TestCategory("Regression.Rnd.WebApplication")]
         public void CanDeployRandom_OfficialFileHostDefinition()
         {
-            TestRandomDefinition<OfficialFileHostDefinition>();
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                TestRandomDefinition<OfficialFileHostDefinition>();
+            });
         }
 
         #endregion

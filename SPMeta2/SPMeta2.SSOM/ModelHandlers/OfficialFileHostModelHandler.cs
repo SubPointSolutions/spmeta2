@@ -76,17 +76,34 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            typedModelHost.ShouldUpdateHost = true;
+            typedModelHost.HostWebApplication.Update();
         }
 
         private void MapObject(SPOfficialFileHost currentObject, OfficialFileHostDefinition typedDefinition)
         {
-            throw new NotImplementedException();
+            currentObject.OfficialFileUrl = new Uri(typedDefinition.OfficialFileUrl);
+            currentObject.OfficialFileName = typedDefinition.OfficialFileName;
+            currentObject.ShowOnSendToMenu = typedDefinition.ShowOnSendToMenu;
+
+            if (!string.IsNullOrEmpty(typedDefinition.Explanation))
+                currentObject.Explanation = typedDefinition.Explanation;
+
+            currentObject.Action = (SPOfficialFileAction)typedDefinition.Action;
         }
 
-        private SPOfficialFileHost CreateNewObject(SPWebApplication sPWebApplication, OfficialFileHostDefinition typedDefinition)
+        private SPOfficialFileHost CreateNewObject(SPWebApplication webApp,
+            OfficialFileHostDefinition typedDefinition)
         {
-            throw new NotImplementedException();
+            SPOfficialFileHost result = null;
+
+            if (typedDefinition.CreateUniqueId)
+                result = new SPOfficialFileHost(true);
+            else
+                result = new SPOfficialFileHost(false);
+
+            webApp.OfficialFileHosts.Add(result);
+
+            return result;
         }
 
         protected virtual SPOfficialFileHost FindExistingObject(SPWebApplication webApp,
@@ -94,7 +111,7 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             return webApp.OfficialFileHosts
                          .FirstOrDefault(h => !string.IsNullOrEmpty(h.OfficialFileName)
-                         && h.OfficialFileName.ToUpper() == definition.OfficialFileUrl.ToUpper());
+                         && h.OfficialFileName.ToUpper() == definition.OfficialFileName.ToUpper());
         }
 
         #endregion

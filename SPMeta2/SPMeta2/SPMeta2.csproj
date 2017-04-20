@@ -220,6 +220,7 @@
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\SPMeta2Diagnostic.cs" />
     <Compile Include="Diagnostic\ModelStatInfo.cs" />
+    <Compile Include="Enumerations\BuiltInOfficialFileHostAction.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
     <Compile Include="Enumerations\BuiltInAggregationsStatus.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
@@ -498,6 +499,7 @@
     <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
     <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\TrustedAccessProviderDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\OfficialFileHostDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
