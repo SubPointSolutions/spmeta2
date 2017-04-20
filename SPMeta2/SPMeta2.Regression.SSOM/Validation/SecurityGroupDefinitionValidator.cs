@@ -14,12 +14,18 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class SecurityGroupDefinitionValidator : SecurityGroupModelHandler
     {
-        protected string GetSafeUserLoging(string userLoginString)
+        protected string GetSafeUserLogin(string userLoginString)
         {
             var result = userLoginString.ToString().ToUpper().Replace("\\", "/");
 
             if (result.Contains("|"))
                 result = result.Split('|')[1];
+
+            if (result.Contains('\\'))
+                result = result.Split('\\')[1];
+
+            if (result.Contains('/'))
+                result = result.Split('/')[1];
 
             return result;
         }
@@ -71,8 +77,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                         var srcProp = s.GetExpressionValue(def => def.Owner);
                         var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                        var srcUserLogin = GetSafeUserLoging(srcProp.Value.ToString());
-                        var dstsUserLogin = GetSafeUserLoging(dstProp.Value.ToString());
+                        var srcUserLogin = GetSafeUserLogin(srcProp.Value.ToString());
+                        var dstsUserLogin = GetSafeUserLogin(dstProp.Value.ToString());
 
                         var isValid = srcUserLogin == dstsUserLogin;
 
@@ -105,8 +111,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                         foreach (var userName in userNames)
                         {
 
-                            var srcUserLogin = GetSafeUserLoging(srcProp.Value.ToString());
-                            var dstsUserLogin = GetSafeUserLoging(userName);
+                            var srcUserLogin = GetSafeUserLogin(srcProp.Value.ToString());
+                            var dstsUserLogin = GetSafeUserLogin(userName);
 
                             if (srcUserLogin == dstsUserLogin)
                             {

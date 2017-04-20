@@ -134,6 +134,9 @@ namespace SPMeta2.Common
                     
                     typeof (FeatureDefinition),
 
+                    // Incorrect provision order for SecurityGroup / SecurityRole #1017
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1017
+                    typeof (SecurityRoleDefinition),
                     typeof (SecurityGroupDefinition),
 
                     typeof (BreakRoleInheritanceDefinition),
@@ -185,8 +188,10 @@ namespace SPMeta2.Common
                     
                     typeof (PropertyDefinition),
 
-                    typeof (SecurityGroupDefinition),
+                    // Incorrect provision order for SecurityGroup / SecurityRole #1017
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1017
                     typeof (SecurityRoleDefinition),
+                    typeof (SecurityGroupDefinition),
 
                     typeof (UserCustomActionDefinition),
 

@@ -24,7 +24,18 @@ namespace SPMeta2.Regression.SSOM.Validation
             var securableObject = modelHostContext.SecurableObject;
             var securityGroup = modelHostContext.SecurityGroup;
 
-            var securityRole = ResolveSecurityRole(ExtractWeb(securableObject), definition);
+            SPWeb web = null;
+
+            if (securableObject != null)
+                web = ExtractWeb(securableObject);
+            else
+                web = securityGroup.ParentWeb;
+
+            var securityRole = ResolveSecurityRole(web, definition);
+
+            // security group -> roles
+            if (securableObject == null)
+                securableObject = web;
 
             var roleAssignments = securableObject.RoleAssignments;
             var spObject = roleAssignments.OfType<SPRoleAssignment>()

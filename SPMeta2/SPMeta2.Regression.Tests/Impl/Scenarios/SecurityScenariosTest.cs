@@ -521,8 +521,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region break role inheritance and amount of security groups
 
-
-
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security")]
         public void CanDeploy_SecurityGroupLink_AsSingleItem()
@@ -987,6 +985,34 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
             TestModels(new ModelNode[] { siteModel, webModel });
+        }
+
+        #endregion
+
+        #region role links order
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Security.RoleLinks.Order")]
+        public void CanDeploy_SecurityRoleLink_Under_SecurityGroup()
+        {
+            // Incorrect provision order for SecurityGroup / SecurityRole #1017
+            // https://github.com/SubPointSolutions/spmeta2/issues/1017
+
+            var securityGroupDef = ModelGeneratorService.GetRandomDefinition<SecurityGroupDefinition>();
+            var securityRoleDef = ModelGeneratorService.GetRandomDefinition<SecurityRoleDefinition>();
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site
+                    .AddSecurityRole(securityRoleDef)
+                    .AddSecurityGroup(securityGroupDef, securityGroup =>
+                    {
+                        securityGroup.AddSecurityRoleLink(securityRoleDef.Name);
+                    });
+            });
+
+
+            TestModel(siteModel);
         }
 
         #endregion
