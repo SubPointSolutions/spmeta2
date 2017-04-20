@@ -168,6 +168,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.NavigateForFormsPages.HasValue)
                 list.NavigateForFormsPages = definition.NavigateForFormsPages.Value;
 
+            if (definition.EnableAssignToEmail.HasValue)
+                list.EnableAssignToEmail = definition.EnableAssignToEmail.Value;
+
 #if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {

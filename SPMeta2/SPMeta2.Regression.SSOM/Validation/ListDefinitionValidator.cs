@@ -47,6 +47,11 @@ namespace SPMeta2.Regression.SSOM.Validation
                     assert.SkipProperty(m => m.Description);
             });
 
+            if (definition.EnableAssignToEmail.HasValue)
+                assert.ShouldBeEqual(m => m.EnableAssignToEmail, o => o.EnableAssignToEmail);
+            else
+                assert.SkipProperty(m => m.EnableAssignToEmail, "EnableAssignToEmail   is null or empty");
+
             if (definition.NavigateForFormsPages.HasValue)
             {
                 assert.ShouldBeEqual(m => m.NavigateForFormsPages, o => o.NavigateForFormsPages);

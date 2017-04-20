@@ -69,6 +69,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             else
                 assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
+            assert.SkipProperty(m => m.EnableAssignToEmail, "EnableAssignToEmail is not supported by CSOM");
             assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is not supported by CSOM");
             assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages is not supported by CSOM");
 
