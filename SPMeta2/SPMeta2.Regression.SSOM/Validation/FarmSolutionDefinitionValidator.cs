@@ -5,6 +5,8 @@ using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Extensions;
+using Microsoft.SharePoint.Administration;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -22,9 +24,27 @@ namespace SPMeta2.Regression.SSOM.Validation
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             var definition = model.WithAssertAndCast<FarmSolutionDefinition>("model", value => value.RequireNotNull());
-            var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
 
-            var solution = FindExistingSolution(farmModelHost, definition);
+            SPFarm farm = null;
+            SPWebApplication webApp = null;
+
+            if (modelHost is WebApplicationModelHost)
+            {
+                farm = (modelHost as WebApplicationModelHost).HostWebApplication.Farm;
+                webApp = (modelHost as WebApplicationModelHost).HostWebApplication;
+            }
+            else if (modelHost is FarmModelHost)
+            {
+                farm = (modelHost as FarmModelHost).HostFarm;
+                webApp = null;
+            }
+            else
+            {
+                throw new SPMeta2Exception(
+                    string.Format("Unsupported model host type:[{0}]", modelHost.GetType()));
+            }
+
+            var solution = FindExistingSolution(modelHost, farm, webApp, definition);
 
             var assert = ServiceFactory.AssertService
                 .NewAssert(definition, definition, solution);
@@ -53,6 +73,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.SkipProperty(m => m.ShouldDeploy, "ShouldDelete = true");
                 assert.SkipProperty(m => m.ShouldRetract, "ShouldDelete = true");
                 assert.SkipProperty(m => m.ShouldUpgrade, "ShouldDelete = true");
+
+                CheckWebApplicationDeployment(modelHost, farm, webApp, solution, definition);
 
                 return;
             }
@@ -126,7 +148,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(def => def.ShouldUpgrade);
 
-                    var isValid = definition.HasPropertyBagValue("HadUpgradetHit"); 
+                    var isValid = definition.HasPropertyBagValue("HadUpgradetHit");
 
                     return new PropertyValidationResult
                     {
@@ -136,6 +158,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                         IsValid = isValid
                     };
                 });
+
+                CheckWebApplicationDeployment(modelHost, farm, webApp, solution, definition);
 
                 return;
             }
@@ -168,7 +192,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var srcProp = s.GetExpressionValue(def => def.ShouldDeploy);
 
                     var isValid = d.Deployed
-                                && definition.HasPropertyBagValue("HadDeploymentHit"); 
+                                && definition.HasPropertyBagValue("HadDeploymentHit");
 
                     return new PropertyValidationResult
                     {
@@ -178,6 +202,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                         IsValid = isValid
                     };
                 });
+
+                CheckWebApplicationDeployment(modelHost, farm, webApp, solution, definition);
 
                 return;
             }
@@ -223,6 +249,54 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
             {
                 assert.SkipProperty(m => m.UpgradeDate, "UpgradeDate is NULL");
+            }
+        }
+
+        private void CheckWebApplicationDeployment(object modelHost, SPFarm farm, SPWebApplication webApp, SPSolution solution, FarmSolutionDefinition definition)
+        {
+            // might come from the deleting operation
+            if (solution != null)
+            {
+                // web app scope deployment
+                if (webApp != null)
+                {
+                    if (!solution.Deployed)
+                        return;
+
+                    if (solution.DeploymentState == SPSolutionDeploymentState.GlobalDeployed
+                        || solution.DeploymentState == SPSolutionDeploymentState.NotDeployed)
+                    {
+                        throw new SPMeta2Exception(
+                            string.Format("Solution is not expected to have deployment state:[{0}]",
+                            solution.DeploymentState));
+                    }
+
+                    if (solution.DeployedWebApplications.Count == 0)
+                    {
+                        throw new SPMeta2Exception("Web scoped solution is expected to be deployed under at least one web application");
+                    }
+
+                    if (!solution.DeployedWebApplications.Contains(webApp))
+                    {
+                        throw new SPMeta2Exception(
+                            string.Format("Web scoped solution is expected to be deployed under web application:[{0}]", webApp));
+                    }
+                }
+                else
+                {
+                    // farm, global deployment
+
+                    if (!solution.Deployed)
+                        return;
+
+                    if (solution.DeploymentState == SPSolutionDeploymentState.WebApplicationDeployed
+                        || solution.DeploymentState == SPSolutionDeploymentState.NotDeployed)
+                    {
+                        throw new SPMeta2Exception(
+                            string.Format("Farm scoped solution is not expected to have deployment state:[{0}]",
+                            solution.DeploymentState));
+                    }
+                }
             }
         }
         #endregion

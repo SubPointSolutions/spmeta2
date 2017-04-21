@@ -55,6 +55,12 @@ namespace SPMeta2.Containers.Consts
             public static Guid SolutionId = new Guid("a4a2146d-57d1-48bd-a02e-ba97b371903d");
         }
 
+        public static class FarmSolutionWebScope
+        {
+            public static string FilePath = @"Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer.wsp";
+            public static Guid SolutionId = new Guid("c6cf3a69-1a73-4cc5-9c67-e3859a071197");
+        }
+
         public static class Apps
         {
             public static Guid ProductId = new Guid("{e81b6820-5d57-4d17-a098-5f4317f6c400}");

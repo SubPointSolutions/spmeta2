@@ -15,6 +15,10 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
+using SPMeta2.Containers.Consts;
+using System.IO;
+
+using SPMeta2.Containers.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -55,7 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(false, def =>
                 {
 
                 });
@@ -70,12 +74,65 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(true, def =>
                 {
 
                 });
 
                 TestFarmSolutionModel(solutionDef, true);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Default")]
+        public void CanDeploy_FarmSolution_As_Default_UnderTwoWebApplication()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var webApp1 = ModelGeneratorService.GetRandomDefinition<WebApplicationDefinition>(def =>
+                {
+                    def.Port = 31401;
+                    def.UseSecureSocketsLayer = false;
+                });
+
+                var webApp2 = ModelGeneratorService.GetRandomDefinition<WebApplicationDefinition>(def =>
+                {
+                    def.Port = 31402;
+                    def.UseSecureSocketsLayer = false;
+                });
+
+                var solutionDef1 = GetFarmSolutionDefinition(true, def =>
+                {
+                    //def.ShouldRetract = true;
+                    def.ShouldDeploy = true;
+                });
+
+                var solutionDef2 = GetFarmSolutionDefinition(true, def =>
+                {
+                    //def.ShouldRetract = true;
+                    def.ShouldDeploy = true;
+                });
+
+                var farmModel = SPMeta2Model.NewFarmModel(farm =>
+                {
+                    farm.AddWebApplication(webApp1, webApp =>
+                    {
+                        webApp.RegExcludeFromValidation();
+
+                        webApp.AddFarmSolution(solutionDef1);
+                    });
+
+
+                    farm.AddWebApplication(webApp2, webApp =>
+                    {
+                        webApp.RegExcludeFromValidation();
+
+                        webApp.AddFarmSolution(solutionDef2);
+                    });
+
+                });
+
+                TestModel(farmModel);
             });
         }
 
@@ -87,7 +144,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
 
                 });
@@ -111,11 +168,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             CanDeploy_FarmSolution_As_Add_FromDeleted_State_Internal(true);
         }
 
+        protected FarmSolutionDefinition GetFarmSolutionDefinition(bool isWebApplication, Action<FarmSolutionDefinition> action)
+        {
+            var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+            {
+                action(def);
+            });
+
+            if (isWebApplication)
+            {
+                solutionDef.SolutionId = DefaultContainers.FarmSolutionWebScope.SolutionId;
+                solutionDef.Content = File.ReadAllBytes(DefaultContainers.FarmSolutionWebScope.FilePath);
+            }
+
+            return solutionDef;
+        }
+
         public void CanDeploy_FarmSolution_As_Add_FromRetracted_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
 
                 });
@@ -143,7 +216,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
 
                 });
@@ -171,13 +244,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
 
                 });
 
-                PrepareDeployedState(solutionDef, false);
-                TestFarmSolutionModel(solutionDef, false);
+                PrepareDeployedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
@@ -203,7 +276,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDelete = true;
                     def.ShouldAdd = false;
@@ -232,7 +305,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDelete = true;
                     def.ShouldAdd = false;
@@ -261,7 +334,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDelete = true;
                     def.ShouldAdd = false;
@@ -290,7 +363,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDelete = true;
                     def.ShouldAdd = false;
@@ -323,7 +396,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldRetract = true;
                 });
@@ -351,7 +424,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldRetract = true;
                 });
@@ -379,7 +452,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldRetract = true;
                 });
@@ -407,7 +480,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldRetract = true;
                 });
@@ -440,7 +513,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDeploy = true;
                 });
@@ -469,7 +542,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDeploy = true;
                 });
@@ -497,7 +570,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDeploy = true;
                 });
@@ -525,7 +598,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldDeploy = true;
                 });
@@ -557,7 +630,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldUpgrade = true;
                 });
@@ -585,7 +658,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldUpgrade = true;
                 });
@@ -613,7 +686,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldUpgrade = true;
                 });
@@ -642,7 +715,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                var solutionDef = GetFarmSolutionDefinition(isWebApplication, def =>
                 {
                     def.ShouldUpgrade = true;
                 });
@@ -768,7 +841,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     webApp.AddFarmSolution(solutionDef);
                 });
 
-                var newModel = SPMeta2Model.NewFarmModel(farm =>
+                var newModel = SPMeta2Model.NewWebApplicationModel(farm =>
                 {
                     farm.AddFarmSolution(newSolutiondef);
                 });
