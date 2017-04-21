@@ -50,7 +50,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Default")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Default")]
         public void CanDeploy_FarmSolution_As_Default()
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
@@ -60,7 +60,22 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-                TestFarmSolutionModel(solutionDef);
+                TestFarmSolutionModel(solutionDef, false);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Default")]
+        public void CanDeploy_FarmSolution_As_Default_UnderWebApplication()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+
+                });
+
+                TestFarmSolutionModel(solutionDef, true);
             });
         }
 
@@ -68,10 +83,36 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region add operations
 
+        public void CanDeploy_FarmSolution_As_Add_FromDeleted_State_Internal(bool isWebApplication)
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+
+                });
+
+                PrepareDeletedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
+            });
+        }
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Add")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromDeleted_State()
         {
+            CanDeploy_FarmSolution_As_Add_FromDeleted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
+        public void CanDeploy_FarmSolution_As_Add_FromDeleted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Add_FromDeleted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Add_FromRetracted_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -79,16 +120,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-                PrepareDeletedState(solutionDef);
-
-                TestFarmSolutionModel(solutionDef);
+                PrepareRetractedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Add")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromRetracted_State()
         {
+            CanDeploy_FarmSolution_As_Add_FromRetracted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
+        public void CanDeploy_FarmSolution_As_Add_FromRetracted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Add_FromRetracted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Add_FromAdded_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -96,30 +148,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-                PrepareRetractedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareAddedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Add")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromAdded_State()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
-                {
-
-                });
-
-                PrepareAddedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
-            });
+            CanDeploy_FarmSolution_As_Add_FromAdded_State_Internal(false);
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Add")]
-        public void CanDeploy_FarmSolution_As_Add_FromDeployed_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
+        public void CanDeploy_FarmSolution_As_Add_FromAdded_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Add_FromAdded_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Add_FromDeployed_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -128,19 +176,60 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 });
 
-                PrepareDeployedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareDeployedState(solutionDef, false);
+                TestFarmSolutionModel(solutionDef, false);
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
+        public void CanDeploy_FarmSolution_As_Add_FromDeployed_State()
+        {
+            CanDeploy_FarmSolution_As_Add_FromDeployed_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
+        public void CanDeploy_FarmSolution_As_Add_FromDeployed_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Add_FromDeployed_State_Internal(true);
         }
 
         #endregion
 
         #region delete operations
 
+        public void CanDeploy_FarmSolution_As_Delete_FromDeleted_State_Internal(bool isWebApplication)
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+                    def.ShouldDelete = true;
+                    def.ShouldAdd = false;
+                });
+
+                PrepareDeletedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
+            });
+        }
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Delete")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromDeleted_State()
         {
+            CanDeploy_FarmSolution_As_Delete_FromDeleted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
+        public void CanDeploy_FarmSolution_As_Delete_FromDeleted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Delete_FromDeleted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Delete_FromRetracted_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -149,16 +238,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldAdd = false;
                 });
 
-                PrepareDeletedState(solutionDef);
-
-                TestFarmSolutionModel(solutionDef);
+                PrepareRetractedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Delete")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromRetracted_State()
         {
+            CanDeploy_FarmSolution_As_Delete_FromRetracted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
+        public void CanDeploy_FarmSolution_As_Delete_FromRetracted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Delete_FromRetracted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Delete_FromAdded_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -167,31 +267,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldAdd = false;
                 });
 
-                PrepareRetractedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareAddedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Delete")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromAdded_State()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
-                {
-                    def.ShouldDelete = true;
-                    def.ShouldAdd = false;
-                });
-
-                PrepareAddedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
-            });
+            CanDeploy_FarmSolution_As_Delete_FromAdded_State_Internal(false);
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Delete")]
-        public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
+        public void CanDeploy_FarmSolution_As_Delete_FromAdded_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Delete_FromAdded_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -201,19 +296,59 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldAdd = false;
                 });
 
-                PrepareDeployedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareDeployedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
+        public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State()
+        {
+            CanDeploy_FarmSolution_As_Delete_FromDeployed_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
+        public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Delete_FromDeployed_State_Internal(true);
         }
 
         #endregion
 
         #region retract operations
 
+        public void CanDeploy_FarmSolution_As_Retract_FromDeleted_State_Internal(bool isWebApplication)
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+                    def.ShouldRetract = true;
+                });
+
+                PrepareDeletedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
+            });
+        }
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Retract")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromDeleted_State()
         {
+            CanDeploy_FarmSolution_As_Retract_FromDeleted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
+        public void CanDeploy_FarmSolution_As_Retract_FromDeleted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Retract_FromDeleted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Retract_FromRetracted_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -221,16 +356,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldRetract = true;
                 });
 
-                PrepareDeletedState(solutionDef);
-
-                TestFarmSolutionModel(solutionDef);
+                PrepareRetractedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Retract")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromRetracted_State()
         {
+            CanDeploy_FarmSolution_As_Retract_FromRetracted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
+        public void CanDeploy_FarmSolution_As_Retract_FromRetracted_State_UnderWbApplication()
+        {
+            CanDeploy_FarmSolution_As_Retract_FromRetracted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Retract_FromAdded_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -238,30 +384,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldRetract = true;
                 });
 
-                PrepareRetractedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareAddedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Retract")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromAdded_State()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
-                {
-                    def.ShouldRetract = true;
-                });
-
-                PrepareAddedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
-            });
+            CanDeploy_FarmSolution_As_Retract_FromAdded_State_Internal(false);
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Retract")]
-        public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
+        public void CanDeploy_FarmSolution_As_Retract_FromAdded_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Retract_FromAdded_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -270,9 +412,23 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldRetract = true;
                 });
 
-                PrepareDeployedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareDeployedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
+        public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State()
+        {
+            CanDeploy_FarmSolution_As_Retract_FromDeployed_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
+        public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Retract_FromDeployed_State_Internal(true);
         }
 
         #endregion
@@ -280,10 +436,37 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region deploy operations
 
+        public void CanDeploy_FarmSolution_As_Deploy_FromDeleted_State_Internal(bool isWebApplication)
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+                    def.ShouldDeploy = true;
+                });
+
+                PrepareDeletedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
+            });
+        }
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Deploy")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromDeleted_State()
         {
+            CanDeploy_FarmSolution_As_Deploy_FromDeleted_State_Internal(false);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
+        public void CanDeploy_FarmSolution_As_Deploy_FromDeleted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Deploy_FromDeleted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Deploy_FromRetracted_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -291,15 +474,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldDeploy = true;
                 });
 
-                PrepareDeletedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareRetractedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Deploy")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromRetracted_State()
         {
+            CanDeploy_FarmSolution_As_Deploy_FromRetracted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
+        public void CanDeploy_FarmSolution_As_Deploy_FromRetracted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Deploy_FromRetracted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Deploy_FromAdded_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -307,30 +502,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldDeploy = true;
                 });
 
-                PrepareRetractedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareAddedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Deploy")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromAdded_State()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
-                {
-                    def.ShouldDeploy = true;
-                });
-
-                PrepareAddedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
-            });
+            CanDeploy_FarmSolution_As_Deploy_FromAdded_State_Internal(false);
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Deploy")]
-        public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
+        public void CanDeploy_FarmSolution_As_Deploy_FromAdded_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Deploy_FromAdded_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -339,19 +530,59 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldDeploy = true;
                 });
 
-                PrepareDeployedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareDeployedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
+        public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State()
+        {
+            CanDeploy_FarmSolution_As_Deploy_FromDeployed_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
+        public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Deploy_FromDeployed_State_Internal(true);
         }
 
         #endregion
 
         #region upgrade operations
 
+        public void CanDeploy_FarmSolution_As_Upgrade_FromDeleted_State_Internal(bool isWebApplication)
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
+                {
+                    def.ShouldUpgrade = true;
+                });
+
+                PrepareDeletedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
+            });
+        }
+
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Upgrade")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Upgrade")]
         public void CanDeploy_FarmSolution_As_Upgrade_FromDeleted_State()
         {
+            CanDeploy_FarmSolution_As_Upgrade_FromDeleted_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromDeleted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromDeleted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Upgrade_FromRetracted_State_Internal(bool isWebApplication)
+        {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
@@ -359,30 +590,26 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldUpgrade = true;
                 });
 
-                PrepareDeletedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareRetractedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Upgrade")]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Upgrade")]
         public void CanDeploy_FarmSolution_As_Upgrade_FromRetracted_State()
         {
-            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
-            {
-                var solutionDef = ModelGeneratorService.GetRandomDefinition<FarmSolutionDefinition>(def =>
-                {
-                    def.ShouldUpgrade = true;
-                });
-
-                PrepareRetractedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
-            });
+            CanDeploy_FarmSolution_As_Upgrade_FromRetracted_State_Internal(false);
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Upgrade")]
-        public void CanDeploy_FarmSolution_As_Upgrade_FromAdded_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromRetracted_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromRetracted_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Upgrade_FromAdded_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -391,14 +618,27 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldUpgrade = true;
                 });
 
-                PrepareAddedState(solutionDef);
+                PrepareAddedState(solutionDef, isWebApplication);
                 //TestFarmSolutionModel(solutionDef);
             });
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.FarmSolution.Upgrade")]
-        public void CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State()
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromAdded_State()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromAdded_State_Internal(false);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromAdded_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromAdded_State_Internal(true);
+        }
+
+        public void CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State_Internal(bool isWebApplication)
         {
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
@@ -407,16 +647,31 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     def.ShouldUpgrade = true;
                 });
 
-                PrepareDeployedState(solutionDef);
-                TestFarmSolutionModel(solutionDef);
+                PrepareDeployedState(solutionDef, isWebApplication);
+                TestFarmSolutionModel(solutionDef, isWebApplication);
             });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State_Internal(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Upgrade")]
+        public void CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State_UnderWebApplication()
+        {
+            CanDeploy_FarmSolution_As_Upgrade_FromDeployed_State_Internal(true);
         }
 
         #endregion
 
         #region utils
 
-        private void PrepareDeployedState(FarmSolutionDefinition solutionDef)
+        private void PrepareDeployedState(FarmSolutionDefinition solutionDef,
+            bool isWebAcpplication)
         {
             var deployDef = solutionDef.Inherit(def =>
             {
@@ -428,10 +683,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ShouldDeploy = true;
             });
 
-            TestFarmSolutionModel(deployDef);
+            TestFarmSolutionModel(deployDef, isWebAcpplication);
         }
 
-        private void PrepareAddedState(FarmSolutionDefinition solutionDef)
+        private void PrepareAddedState(FarmSolutionDefinition solutionDef,
+            bool isWebApplication)
         {
             var addDef = solutionDef.Inherit(def =>
             {
@@ -443,7 +699,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ShouldRetract = null;
             });
 
-            TestFarmSolutionModel(addDef);
+            TestFarmSolutionModel(addDef, isWebApplication);
 
             var retractDef = solutionDef.Inherit(def =>
             {
@@ -455,10 +711,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ShouldRetract = true;
             });
 
-            TestFarmSolutionModel(retractDef);
+            TestFarmSolutionModel(retractDef, isWebApplication);
         }
 
-        private void PrepareRetractedState(FarmSolutionDefinition solutionDef)
+        private void PrepareRetractedState(FarmSolutionDefinition solutionDef,
+            bool isWebApplication)
         {
             var deployDef = solutionDef.Inherit(def =>
             {
@@ -480,11 +737,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ShouldRetract = true;
             });
 
-            TestFarmSolutionModel(deployDef);
-            TestFarmSolutionModel(retractDef);
+            TestFarmSolutionModel(deployDef, isWebApplication);
+            TestFarmSolutionModel(retractDef, isWebApplication);
         }
 
-        private void PrepareDeletedState(FarmSolutionDefinition solutionDef)
+        private void PrepareDeletedState(FarmSolutionDefinition solutionDef,
+                bool isWebApplication)
         {
             var deletedDef = solutionDef.Inherit(def =>
             {
@@ -496,25 +754,43 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ShouldDelete = true;
             });
 
-            TestFarmSolutionModel(deletedDef);
+            TestFarmSolutionModel(deletedDef, isWebApplication);
         }
 
-        protected virtual void TestFarmSolutionModel(FarmSolutionDefinition solutionDef)
+        protected virtual void TestFarmSolutionModel(FarmSolutionDefinition solutionDef, bool isWebApplicationLevel)
         {
             var newSolutiondef = solutionDef.Inherit();
 
-            var originalModel = SPMeta2Model.NewFarmModel(farm =>
+            if (isWebApplicationLevel)
             {
-                farm.AddFarmSolution(solutionDef);
-            });
+                var originalModel = SPMeta2Model.NewWebApplicationModel(webApp =>
+                {
+                    webApp.AddFarmSolution(solutionDef);
+                });
 
-            var newModel = SPMeta2Model.NewFarmModel(farm =>
+                var newModel = SPMeta2Model.NewFarmModel(farm =>
+                {
+                    farm.AddFarmSolution(newSolutiondef);
+                });
+
+                TestModel(originalModel);
+                TestModel(newModel);
+            }
+            else
             {
-                farm.AddFarmSolution(newSolutiondef);
-            });
+                var originalModel = SPMeta2Model.NewFarmModel(farm =>
+                {
+                    farm.AddFarmSolution(solutionDef);
+                });
 
-            TestModel(originalModel);
-            TestModel(newModel);
+                var newModel = SPMeta2Model.NewFarmModel(farm =>
+                {
+                    farm.AddFarmSolution(newSolutiondef);
+                });
+
+                TestModel(originalModel);
+                TestModel(newModel);
+            }
         }
 
         #endregion
