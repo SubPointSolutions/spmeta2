@@ -54,6 +54,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region default
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Default")]
         public void CanDeploy_FarmSolution_As_Default()
         {
@@ -69,6 +70,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Default")]
         public void CanDeploy_FarmSolution_As_Default_UnderWebApplication()
         {
@@ -84,9 +86,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Default")]
         public void CanDeploy_FarmSolution_As_Default_UnderTwoWebApplication()
         {
+            // the same wsp package is to be deployed under different web app
+            // checking that the same *.wsp package can be sfaely deployed under two web app
+            // such deployment and retraction should only be scoped to a particular web app not affecting other web app deployments
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var webApp1 = ModelGeneratorService.GetRandomDefinition<WebApplicationDefinition>(def =>
@@ -109,6 +116,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 var solutionDef2 = GetFarmSolutionDefinition(true, def =>
                 {
+                    // the same wsp package is to be deployed under different web app
+                    def.FileName = solutionDef1.FileName;
+
                     //def.ShouldRetract = true;
                     def.ShouldDeploy = true;
                 });
@@ -119,7 +129,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         webApp.RegExcludeFromValidation();
 
-                        webApp.AddFarmSolution(solutionDef1);
+                        webApp.AddFarmSolution(solutionDef1, solution =>
+                        {
+
+                        });
                     });
 
 
@@ -127,7 +140,77 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         webApp.RegExcludeFromValidation();
 
-                        webApp.AddFarmSolution(solutionDef2);
+                        webApp.AddFarmSolution(solutionDef2, solution =>
+                        {
+
+                        });
+                    });
+
+                });
+
+                TestModel(farmModel);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Default")]
+        public void CanDeploy_FarmSolution_As_Upgrade_UnderTwoWebApplication()
+        {
+            // the same wsp package is to be deployed under different web app
+            // checking that the same *.wsp package can be sfaely deployed under two web app
+            // such deployment and retraction should only be scoped to a particular web app not affecting other web app deployments
+
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var webApp1 = ModelGeneratorService.GetRandomDefinition<WebApplicationDefinition>(def =>
+                {
+                    def.Port = 31401;
+                    def.UseSecureSocketsLayer = false;
+                });
+
+                var webApp2 = ModelGeneratorService.GetRandomDefinition<WebApplicationDefinition>(def =>
+                {
+                    def.Port = 31402;
+                    def.UseSecureSocketsLayer = false;
+                });
+
+                var solutionDef1 = GetFarmSolutionDefinition(true, def =>
+                {
+                    def.ShouldUpgrade = true;
+                    def.ShouldDeploy = true;
+                });
+
+                var solutionDef2 = GetFarmSolutionDefinition(true, def =>
+                {
+                    // the same wsp package is to be deployed under different web app
+                    def.FileName = solutionDef1.FileName;
+
+                    def.ShouldUpgrade = true;
+                    def.ShouldDeploy = true;
+                });
+
+                var farmModel = SPMeta2Model.NewFarmModel(farm =>
+                {
+                    farm.AddWebApplication(webApp1, webApp =>
+                    {
+                        webApp.RegExcludeFromValidation();
+
+                        webApp.AddFarmSolution(solutionDef1, solution =>
+                        {
+
+                        });
+                    });
+
+
+                    farm.AddWebApplication(webApp2, webApp =>
+                    {
+                        webApp.RegExcludeFromValidation();
+
+                        webApp.AddFarmSolution(solutionDef2, solution =>
+                        {
+
+                        });
                     });
 
                 });
@@ -155,6 +238,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromDeleted_State()
         {
@@ -162,6 +246,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromDeleted_State_UnderWebApplication()
         {
@@ -199,6 +284,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromRetracted_State()
         {
@@ -206,6 +292,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromRetracted_State_UnderWebApplication()
         {
@@ -227,6 +314,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromAdded_State()
         {
@@ -234,6 +322,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromAdded_State_UnderWebApplication()
         {
@@ -255,6 +344,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromDeployed_State()
         {
@@ -262,6 +352,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Add")]
         public void CanDeploy_FarmSolution_As_Add_FromDeployed_State_UnderWebApplication()
         {
@@ -288,6 +379,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromDeleted_State()
         {
@@ -295,6 +387,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromDeleted_State_UnderWebApplication()
         {
@@ -317,6 +410,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromRetracted_State()
         {
@@ -324,6 +418,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromRetracted_State_UnderWebApplication()
         {
@@ -346,6 +441,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromAdded_State()
         {
@@ -353,6 +449,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromAdded_State_UnderWebApplication()
         {
@@ -375,6 +472,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State()
         {
@@ -382,6 +480,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Delete")]
         public void CanDeploy_FarmSolution_As_Delete_FromDeployed_State_UnderWebApplication()
         {
@@ -407,6 +506,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromDeleted_State()
         {
@@ -414,6 +514,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromDeleted_State_UnderWebApplication()
         {
@@ -435,6 +536,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromRetracted_State()
         {
@@ -442,6 +544,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromRetracted_State_UnderWbApplication()
         {
@@ -463,6 +566,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromAdded_State()
         {
@@ -470,6 +574,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromAdded_State_UnderWebApplication()
         {
@@ -491,6 +596,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State()
         {
@@ -498,6 +604,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Retract")]
         public void CanDeploy_FarmSolution_As_Retract_FromDeployed_State_UnderWebApplication()
         {
@@ -524,6 +631,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromDeleted_State()
         {
@@ -532,6 +640,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromDeleted_State_UnderWebApplication()
         {
@@ -553,6 +662,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromRetracted_State()
         {
@@ -560,6 +670,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromRetracted_State_UnderWebApplication()
         {
@@ -581,6 +692,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromAdded_State()
         {
@@ -588,6 +700,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromAdded_State_UnderWebApplication()
         {
@@ -609,6 +722,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.Farm")]
         [TestCategory("Regression.Scenarios.FarmSolution.Farm.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State()
         {
@@ -616,6 +730,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
+        [TestCategory("Regression.Scenarios.FarmSolution.WebApplication")]
         [TestCategory("Regression.Scenarios.FarmSolution.WebApplication.Deploy")]
         public void CanDeploy_FarmSolution_As_Deploy_FromDeployed_State_UnderWebApplication()
         {

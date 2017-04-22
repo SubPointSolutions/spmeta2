@@ -106,8 +106,23 @@ namespace SPMeta2.Regression.SSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(def => def.ShouldRetract);
 
-                    var isValid = d.Deployed == false
-                                  && definition.HasPropertyBagValue("HadRetractHit");
+                    var isValid = false;
+
+                    if (webApp == null)
+                    {
+                        isValid = d.Deployed == false
+                                       && definition.HasPropertyBagValue("HadRetractHit");
+                    }
+                    else
+                    {
+                        isValid = !solution.DeployedWebApplications.Contains(webApp)
+                                   && definition.HasPropertyBagValue("HadRetractHit");
+                    }
+
+                    if (isValid == false)
+                    {
+
+                    }
 
                     return new PropertyValidationResult
                     {
@@ -193,6 +208,17 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                     var isValid = d.Deployed
                                 && definition.HasPropertyBagValue("HadDeploymentHit");
+
+                    if (webApp == null)
+                    {
+                        isValid = d.Deployed == true
+                                       && definition.HasPropertyBagValue("HadDeploymentHit");
+                    }
+                    else
+                    {
+                        isValid = solution.DeployedWebApplications.Contains(webApp)
+                                   && definition.HasPropertyBagValue("HadDeploymentHit");
+                    }
 
                     return new PropertyValidationResult
                     {

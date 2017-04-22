@@ -348,6 +348,9 @@
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

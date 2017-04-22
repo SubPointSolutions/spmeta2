@@ -43,6 +43,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 farm.AddDiagnosticsServiceBase(new DiagnosticsServiceBaseDefinition());
 
                 farm.AddDeveloperDashboardSettings(new DeveloperDashboardSettingsDefinition());
+
+                farm.AddWebApplication(new WebApplicationDefinition());
             });
         }
 
@@ -71,6 +73,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 webApplication.AddOfficialFileHost(new OfficialFileHostDefinition());
 
                 webApplication.AddSuiteBar(new SuiteBarDefinition());
+
+                webApplication.AddFarmSolution(new FarmSolutionDefinition());
             });
         }
 

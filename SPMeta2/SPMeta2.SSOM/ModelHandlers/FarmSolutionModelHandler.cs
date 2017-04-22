@@ -183,7 +183,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (webApplication != null)
                 webAppCollection.Add(webApplication);
 
-            if (!existingSolution.Deployed)
+            // either not deploed or not deployed to a particular web app
+            if (!existingSolution.Deployed ||
+                (webAppCollection.Any() && !existingSolution.DeployedWebApplications.Contains(webAppCollection.First())))
             {
                 TraceService.Information((int)LogEventId.CoreCalls, string.Format("Deploying farm solution:[{0}]", existingSolution.Name));
 
@@ -281,7 +283,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                TraceService.Information((int)LogEventId.CoreCalls, string.Format("Farm solution:[{0}] was already deployed.", existingSolution.Name));
+                if (webAppCollection.Any())
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls, string.Format("Farm solution:[{0}] was already deployed to web app", existingSolution.Name));
+                }   
+                else
+                {
+                    TraceService.Information((int)LogEventId.CoreCalls, string.Format("Farm solution:[{0}] was already deployed.", existingSolution.Name));
+                }
             }
         }
 
