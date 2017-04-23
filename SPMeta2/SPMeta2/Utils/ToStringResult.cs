@@ -45,15 +45,20 @@ namespace SPMeta2.Utils
 
         public override string ToString()
         {
+            return ToString(" ");
+        }
+
+        public string ToString(string joinSeparator)
+        {
             var result = new List<string>();
 
             foreach (var key in Values.Keys)
                 result.Add(string.Format("{0}:[{1}]", key, Values[key]));
 
             if (!string.IsNullOrEmpty(InitialString))
-                return InitialString + " " + string.Join(" ", result.ToArray());
+                return InitialString + joinSeparator + string.Join(joinSeparator, result.ToArray());
 
-            return string.Join(" ", result.ToArray());
+            return string.Join(joinSeparator, result.ToArray());
         }
 
         public ToStringResult<TType> AddPropertyValue(Expression<Func<TType, object>> exp)
