@@ -48,6 +48,8 @@ namespace SPMeta2.CSOM.Services
         /// Incorrect ~site token resolution for CSOM for the subwebs #863
         /// https://github.com/SubPointSolutions/spmeta2/issues/863
         /// </summary>
+        /// 
+        [Obsolete("Obsolete, isn't used anymore - Tokens in LookupWebUrl #1013 - https://github.com/SubPointSolutions/spmeta2/issues/1013")]
         public static bool AllowClientContextAsTokenReplacementContext { get; set; }
 
         #endregion

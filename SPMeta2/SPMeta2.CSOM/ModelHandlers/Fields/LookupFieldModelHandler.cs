@@ -8,6 +8,7 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
@@ -155,16 +156,22 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(webUrl))
             {
-                var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
+                //var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
 
                 try
                 {
-                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = true;
+                    // restrict, only site / web
+                    // Tokens in LookupWebUrl #1013
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1013
+
+                    //CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = false;
+
+                    object replacementObject = ModelHost;
 
                     var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = webUrl,
-                        Context = context
+                        Context = replacementObject
                     }).Value;
 
                     // server relative url, ensure / in the beginning
@@ -180,7 +187,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 }
                 finally
                 {
-                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = oldValue;
+                    //CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = oldValue;
                 }
             }
 
