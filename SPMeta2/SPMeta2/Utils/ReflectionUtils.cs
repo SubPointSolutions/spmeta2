@@ -30,7 +30,7 @@ namespace SPMeta2.Utils
             var prop = obj.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (prop != null)
-                prop.SetValue(obj, value);
+                prop.SetValue(obj, value, null);
         }
 
         public static void SetNonPublicFieldValue(object obj, string name, object value)
