@@ -156,6 +156,12 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool IsDefault { get; set; }
 
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? IsMobileDefaultView { get; set; }
+        
+
         /// <summary>
         /// Gets or sets whether the list view should include parent folder item.
         /// </summary>

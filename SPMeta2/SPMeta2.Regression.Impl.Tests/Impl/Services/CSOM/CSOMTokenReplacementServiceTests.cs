@@ -66,9 +66,6 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
         public void CSOMTokenReplacementService_Can_Replace_SiteCollection_Token()
         {
-            if (!CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext)
-                return;
-
             var isValid = true;
 
             ProvisionRunner.SiteUrls.ForEach(siteUrl =>
@@ -98,9 +95,6 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
         public void CSOMTokenReplacementService_Can_Replace_Site_Token()
         {
-            if (!CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext)
-                return;
-
             var isValid = true;
             var runner = new CSOMProvisionRunner();
 
@@ -119,6 +113,31 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
                     else
                     {
                         isValid &= CheckSubWebOnHost(context, web.ServerRelativeUrl);
+                    }
+                });
+            });
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
+        public void CSOMTokenReplacementService_Can_Replace_Site_Token_Raw()
+        {
+            var isValid = true;
+            var runner = new CSOMProvisionRunner();
+
+            runner.SiteUrls.ForEach(siteUrl =>
+            {
+                runner.WithCSOMContext(siteUrl, context =>
+                {
+                    PreloadProperties(context);
+
+                    var web = context.Web;
+
+                    if (web.ServerRelativeUrl == "/")
+                    {
+                        isValid &= CheckRootWebOnHost(context);
                     }
                 });
             });
@@ -168,9 +187,6 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestCategory("Regression.Impl.CSOMTokenReplacementService")]
         public void CSOMTokenReplacementService_Should_Support_ClientContext()
         {
-            if (!CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext)
-                return;
-
             var runner = new CSOMProvisionRunner();
 
             runner.SiteUrls.ForEach(siteUrl =>

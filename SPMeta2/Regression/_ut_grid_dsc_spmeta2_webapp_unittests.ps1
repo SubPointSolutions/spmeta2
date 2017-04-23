@@ -122,7 +122,18 @@ Configuration SPMeta2_UnitTestSettings
 
     if($onprem -eq $true) {
 
-        $siteUrl = $webApp_Url.TrimEnd('/') + $config.SiteCollectionUrls 
+        $siteUrl = $config.SiteCollectionUrls 
+
+        if( ($siteUrl -is [System.Object[]]) -eq $true)
+        {
+            $siteUrl = $siteUrl[0]
+        }
+
+        if($siteUrl.StartsWith("http") -eq $false)
+        {
+            $siteUrl = $webApp_Url.TrimEnd('/') + $siteUrl
+        }
+
         Write-Host "Fetching default taxoomy store for SharePoint:[$siteUrl]" -fore Green
 
         $o365_UserName = $config.OnlineUserName
@@ -302,9 +313,6 @@ $config = @{
                 }
             )
     }
-
-#$dsc_nodeNames = @("dev13")
-
 
 <#
 Apply-Dsc-Configuration -name SPMeta2_UnitTestSettings_Clean `

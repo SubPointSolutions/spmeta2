@@ -78,6 +78,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                     srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                     dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
 
+                    srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 

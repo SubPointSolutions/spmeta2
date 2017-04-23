@@ -30,6 +30,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 v => v.ViewFields,
                 v => v.Title,
                 v => v.DefaultView,
+                v => v.MobileDefaultView,
                 v => v.ViewQuery,
                 v => v.RowLimit,
                 v => v.Paged,
@@ -98,6 +99,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                    // replacing all new lines
                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+                   srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                   dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
@@ -208,6 +212,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                     // replacing all new lines
                     srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                     dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+                    srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 

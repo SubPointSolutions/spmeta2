@@ -122,6 +122,10 @@ namespace SPMeta2.CSOM.Services
                 }
             }
 
+            // remove ending slash, SharePoint removes it everywhere
+            if (result.Value.Length > 1)
+                result.Value = result.Value.TrimEnd('/');
+
             if (OnTokenReplaced != null)
             {
                 OnTokenReplaced(this, new TokenReplacementResultEventArgs
@@ -142,8 +146,12 @@ namespace SPMeta2.CSOM.Services
 
                 var site = ExtractSite(contextObject);
 
-                if (site.ServerRelativeUrl == "/")
-                    return string.Empty;
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
+
+                //if (site.ServerRelativeUrl == "/")
+                //    return string.Empty;
 
                 return site.ServerRelativeUrl;
             }
@@ -158,8 +166,12 @@ namespace SPMeta2.CSOM.Services
                     return "/" + web.ServerRelativeUrl.Replace(site.ServerRelativeUrl, string.Empty);
                 }
 
-                if (web.ServerRelativeUrl == "/")
-                    return string.Empty;
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
+
+                //if (web.ServerRelativeUrl == "/")
+                //    return string.Empty;
 
                 return web.ServerRelativeUrl;
             }
