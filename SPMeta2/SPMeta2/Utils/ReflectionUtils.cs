@@ -25,9 +25,17 @@ namespace SPMeta2.Utils
 
         #region set helpers
 
-        public static void SetNonPublicFieldValue(object obj, string fieldName, object value)
+        public static void SetNonPublicPropertyValue(object obj, string name, object value)
         {
-            var prop = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
+            var prop = obj.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (prop != null)
+                prop.SetValue(obj, value);
+        }
+
+        public static void SetNonPublicFieldValue(object obj, string name, object value)
+        {
+            var prop = obj.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (prop != null)
                 prop.SetValue(obj, value);
