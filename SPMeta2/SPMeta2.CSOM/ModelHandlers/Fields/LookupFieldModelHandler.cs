@@ -141,7 +141,12 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
         }
 
-        public Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        protected Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        {
+            return GetTargetWeb(site, webUrl, webId, ModelHost);
+        }
+
+        public Web GetTargetWeb(Site site, string webUrl, Guid? webId, object replacementObject)
         {
             var context = site.Context;
 
@@ -156,6 +161,9 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(webUrl))
             {
+                if (replacementObject == null)
+                    throw new ArgumentNullException("replacementObject");
+
                 //var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
 
                 try
@@ -165,8 +173,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                     // https://github.com/SubPointSolutions/spmeta2/issues/1013
 
                     //CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = false;
-
-                    object replacementObject = ModelHost;
 
                     var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {

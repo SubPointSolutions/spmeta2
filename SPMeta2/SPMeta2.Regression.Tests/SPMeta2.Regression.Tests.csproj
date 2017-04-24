@@ -155,6 +155,12 @@
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

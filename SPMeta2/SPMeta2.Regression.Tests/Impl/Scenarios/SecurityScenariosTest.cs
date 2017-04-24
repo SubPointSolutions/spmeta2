@@ -208,6 +208,32 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(model);
         }
 
+        private ModelNode GetSiteInsfrastructureModel()
+        {
+            var model = SPMeta2Model.NewSiteModel(site =>
+           {
+               site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(f =>
+               {
+                   f.Enable = true;
+               }));
+           });
+
+            return model;
+        }
+
+        private ModelNode GetWebInsfrastructureModel()
+        {
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(f =>
+                {
+                    f.Enable = true;
+                }));
+            });
+
+            return model;
+        }
+
         [TestMethod]
         [TestCategory("Regression.Scenarios.Security.Pages")]
         public void CanDeploy_ResetRoleInheritance_On_Publishingage()
@@ -236,7 +262,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            var models = new[]{
+                GetSiteInsfrastructureModel(),
+                GetWebInsfrastructureModel(),
+                model
+            };
+
+            TestModels(models);
         }
 
         [TestMethod]
@@ -478,7 +510,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            var models = new[]{
+                GetSiteInsfrastructureModel(),
+                GetWebInsfrastructureModel(),
+                model
+            };
+
+            TestModels(models);
         }
 
 
@@ -984,7 +1022,14 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                  });
 
 
-            TestModels(new ModelNode[] { siteModel, webModel });
+            var models = new[]{
+                GetSiteInsfrastructureModel(),
+                GetWebInsfrastructureModel(),
+                siteModel,
+                webModel
+            };
+
+            TestModels(models);
         }
 
         #endregion
@@ -1266,8 +1311,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         protected void TurnOffValidation(ModelNode node)
         {
+            node.RegExcludeFromValidation();
+
             //node.Value.RequireSelfProcessing = false;
-            node.Options.RequireSelfProcessing = false;
+            //node.Options.RequireSelfProcessing = false;
         }
 
         protected BreakRoleInheritanceDefinition GetCleanInheritance()

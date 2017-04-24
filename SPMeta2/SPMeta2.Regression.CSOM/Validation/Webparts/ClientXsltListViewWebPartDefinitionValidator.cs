@@ -726,7 +726,11 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                         if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                         {
                             targetWeb = new LookupFieldModelHandler()
-                                            .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                                            .GetTargetWeb(
+                                            this.CurrentClientContext.Site, 
+                                            typedDefinition.WebUrl, 
+                                            typedDefinition.WebId,
+                                            modelHost);
                         }
 
                         var list = XsltListViewWebPartModelHandler.LookupList(targetWeb,
@@ -818,7 +822,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
             {
                 web = new LookupFieldModelHandler()
                                 .GetTargetWeb(listItemModelHost.HostClientContext.Site,
-                                        wpModel.WebUrl, wpModel.WebId);
+                                        wpModel.WebUrl, wpModel.WebId,
+                                        listItemModelHost);
 
                 webId = web.Id;
             }

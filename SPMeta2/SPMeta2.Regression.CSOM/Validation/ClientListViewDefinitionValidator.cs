@@ -61,6 +61,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                 .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
+            if (definition.MobileDefaultView.HasValue)
+                assert.ShouldBeEqual(m => m.MobileDefaultView, o => o.MobileDefaultView);
+            else
+                assert.SkipProperty(m => m.MobileDefaultView, "MobileDefaultView is null or empty. Skipping.");
+
+
             if (!string.IsNullOrEmpty(definition.Scope))
             {
                 assert.ShouldBeEqual((p, s, d) =>

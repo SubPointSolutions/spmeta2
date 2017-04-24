@@ -159,7 +159,7 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
-        public bool? IsMobileDefaultView { get; set; }
+        public bool? MobileDefaultView { get; set; }
         
 
         /// <summary>

@@ -262,8 +262,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.RowLimit > 0)
                 listView.RowLimit = (uint)definition.RowLimit;
 
-            if (definition.IsMobileDefaultView.HasValue)
-                listView.MobileDefaultView = definition.IsMobileDefaultView.Value;
+            if (definition.MobileDefaultView.HasValue)
+                listView.MobileDefaultView = definition.MobileDefaultView.Value;
 
             listView.DefaultView = definition.IsDefault;
             listView.Paged = definition.IsPaged;

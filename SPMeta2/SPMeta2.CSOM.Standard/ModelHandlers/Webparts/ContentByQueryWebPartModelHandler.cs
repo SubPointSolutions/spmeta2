@@ -243,7 +243,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
 
                 var targetWeb = webLookup.GetTargetWeb(listItemModelHost.HostSite,
                     typedDefinition.WebUrl,
-                    typedDefinition.WebId);
+                    typedDefinition.WebId,
+                    listItemModelHost);
 
                 var list = targetWeb.QueryAndGetListByTitle(typedDefinition.ListName);
                 wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
@@ -273,7 +274,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Webparts
 
                 var targetWeb = webLookup.GetTargetWeb(listItemModelHost.HostSite,
                     typedDefinition.WebUrl,
-                    typedDefinition.WebId);
+                    typedDefinition.WebId,
+                    listItemModelHost);
 
                 var list = targetWeb.QueryAndGetListByUrl(typedDefinition.ListUrl);
                 wpXml.SetOrUpdateProperty("ListGuid", list.Id.ToString("D"));
