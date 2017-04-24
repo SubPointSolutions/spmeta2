@@ -217,6 +217,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
         {
+            if (listViewModel.MobileDefaultView.HasValue)
+                currentView.MobileDefaultView = listViewModel.MobileDefaultView.Value;
+
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
