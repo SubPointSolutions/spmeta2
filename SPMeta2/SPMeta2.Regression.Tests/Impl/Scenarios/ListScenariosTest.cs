@@ -136,8 +136,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         #region removing content types
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanRemoveContentTypeLinksInLibrary()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Remove")]
+        public void CanDeploy_CanRemoveContentTypeLinksInLibrary_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                 (siteModel, e) =>
@@ -187,8 +187,59 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanRemoveContentTypeLinksInList()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Remove")]
+        public void CanDeploy_CanRemoveContentTypeLinksInLibrary_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeLinkValue>
+                           {
+                                          new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                          new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
+                           }
+                       }, m =>
+                       {
+                           m.OnProvisioned<object>(ctx =>
+                           {
+                               // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
+
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
+                           });
+                       });
+                });
+
+            TestModel(env.SiteModel);
+
+            // we need to skip ct links validation
+            TestModel(env.WebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Remove")]
+        public void CanDeploy_CanRemoveContentTypeLinksInList_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                 (siteModel, e) =>
@@ -235,13 +286,62 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(env.WebModel);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Remove")]
+        public void CanDeploy_CanRemoveContentTypeLinksInList_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeLinkValue>
+                           {
+                                          new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                          new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
+                           }
+                       }, m =>
+                       {
+                           m.OnProvisioned<object>(ctx =>
+                           {
+                               // disable validation on content type  links as they would be deleted by 'RemoveContentTypeLinksDefinition'
+
+                               //e.FirstLink.Options.RequireSelfProcessing = e.FirstLink.Value.RequireSelfProcessing = false;
+                               //e.SecondLink.Options.RequireSelfProcessing = e.SecondLink.Value.RequireSelfProcessing = false;
+                               //e.ThirdLink.Options.RequireSelfProcessing = e.ThirdLink.Value.RequireSelfProcessing = false;
+
+                               e.FirstLink.Options.RequireSelfProcessing = false;
+                               e.SecondLink.Options.RequireSelfProcessing = false;
+                               e.ThirdLink.Options.RequireSelfProcessing = false;
+                           });
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
         #endregion
 
         #region hiding content types
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanHideContentTypeLinksInLibrary()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Hide")]
+        public void CanDeploy_CanHideContentTypeLinksInLibrary_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                 (siteModel, e) =>
@@ -274,10 +374,45 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(env.WebModel);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Hide")]
+        public void CanDeploy_CanHideContentTypeLinksInLibrary_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeLinkValue>
+                           {
+                                          new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                          new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanHideContentTypeLinksInList()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Hide")]
+        public void CanDeploy_CanHideContentTypeLinksInList_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                 (siteModel, e) =>
@@ -310,14 +445,49 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(env.WebModel);
         }
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Hide")]
+        public void CanDeploy_CanHideContentTypeLinksInList_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                       .AddHideContentTypeLinks(new HideContentTypeLinksDefinition
+                       {
+                           ContentTypes = new List<ContentTypeLinkValue>
+                           {
+                                          new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                          new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
+                           }
+                       });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
         #endregion
 
         #region content type order
 
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.UniqueOrder")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                 (siteModel, e) =>
@@ -352,8 +522,44 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         [TestMethod]
-        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks")]
-        public void CanDeploy_CanSetupUniqueContentTypeOrderForList()
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.UniqueOrder")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForLibrary_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                (siteModel, e) =>
+                {
+                    e.First.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Second.ParentContentTypeId = BuiltInContentTypeId.Document;
+                    e.Third.ParentContentTypeId = BuiltInContentTypeId.Document;
+                },
+                (webModel, e) =>
+                {
+
+                },
+                (listModel, e) =>
+                {
+                    e.List.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                    e.List.ContentTypesEnabled = true;
+
+                    listModel
+                      .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                      {
+                          ContentTypes = new List<ContentTypeLinkValue>
+                          {
+                                              new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                              new ContentTypeLinkValue { ContentTypeId = e.Third.GetContentTypeId() },
+                                              new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
+                          }
+                      });
+                });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.UniqueOrder")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForList_ByName()
         {
             var env = GetContentTypeLinksSandbox(
                  (siteModel, e) =>
@@ -379,6 +585,43 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                               new ContentTypeLinkValue { ContentTypeName = e.Second.Name },
                                               new ContentTypeLinkValue { ContentTypeName = e.Third.Name },
                                               new ContentTypeLinkValue { ContentTypeName = e.First.Name },
+                          }
+                       });
+                 });
+
+            TestModel(env.SiteModel);
+            TestModel(env.WebModel);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.UniqueOrder")]
+        public void CanDeploy_CanSetupUniqueContentTypeOrderForList_ById()
+        {
+            var env = GetContentTypeLinksSandbox(
+                 (siteModel, e) =>
+                 {
+                     e.First.ParentContentTypeId = BuiltInContentTypeId.Item;
+                     e.Second.ParentContentTypeId = BuiltInContentTypeId.Item;
+                     e.Third.ParentContentTypeId = BuiltInContentTypeId.Item;
+                 },
+                 (webModel, e) =>
+                 {
+
+                 },
+                 (listModel, e) =>
+                 {
+                     e.List.TemplateType = BuiltInListTemplateTypeId.GenericList;
+                     e.List.ContentTypesEnabled = true;
+
+                     listModel
+                       .AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                       {
+                           ContentTypes = new List<ContentTypeLinkValue>
+                          {
+                                              new ContentTypeLinkValue { ContentTypeId = e.Second.GetContentTypeId() },
+                                              new ContentTypeLinkValue { ContentTypeId = e.Third.GetContentTypeId() },
+                                              new ContentTypeLinkValue { ContentTypeId = e.First.GetContentTypeId() },
                           }
                        });
                  });
@@ -730,7 +973,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     {
                         //def.EnableVersioning = true;
                         //def.EnableMinorVersions = true;
-                        
+
                         //def.EnableModeration = true;
 
                         def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
