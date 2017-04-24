@@ -1,23 +1,7 @@
-----
-Hidden: true
-----
+Adding content types to a list is enabled via ContentTypeLinkDefinition object.
 
-### Provision scenario
-SCENARIO
+Both CSOM/SSOM object models are supported. 
+Provision checks if content type exists in a particular list by Name. 
+If content type cannot be found by Name, provision tries to find a list content type by comparing its parent content type Id.
+You can deploy either single content type link or a set using AddContentTypeLinks() extension method as per following examples. 
 
-### Scope
-SCOPE
-
-### Implementation
-IMPLEMENTATION
-
-### Samples
-A SAMPLE 1
-[TEST.TestFunctionName1]
-
-A SAMPLE 2
-[TEST.TestFunctionName2]
-
-### Links
-- [link 1](http://example.com)
-- [link 2](http://example.com)
