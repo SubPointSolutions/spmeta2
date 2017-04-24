@@ -415,6 +415,7 @@
     <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermSetDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\TaxonomyTermStoreDefinitionTests.cs" />
     <Compile Include="Views\SPMeta2\reference\sp-standard-definitions\WebNavigationSettingsDefinitionTests.cs" />
+    <Compile Include="Views\SPMeta2\reference\ProvisionServices.cs" />
     <Compile Include="Views\SPMeta2\reference\Utils.cs" />
     <Compile Include="Views\SPMeta2\reference\WebModel.cs" />
   </ItemGroup>
