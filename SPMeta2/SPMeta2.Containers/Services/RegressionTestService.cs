@@ -124,7 +124,7 @@ namespace SPMeta2.Containers.Services
 
         private bool _hasInit = false;
 
-        public static string CurrentProvisionRunnerAsssmbly {get;set;}
+        public static string CurrentProvisionRunnerAsssmbly { get; set; }
 
         protected virtual void InitRunnerImplementations()
         {
@@ -206,8 +206,15 @@ namespace SPMeta2.Containers.Services
                 }
 
                 foreach (var allowedType in exceptionTypes)
-                    if (targetExeption.GetType().IsAssignableFrom(allowedType))
+                {
+                    //if (targetExeption.GetType().IsAssignableFrom(allowedType))
+                    // we need a specific type matching to avoid missed excpetions
+
+                    // SPMeta2.Exceptions.SPMeta2UnsupportedModelHostException: model host should be ListModelHost/WebModelHost/SiteModelHost on deploy a model to a SiteCollection using the Feature Receiver (SSOM) #1035
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1035
+                    if (targetExeption.GetType() == allowedType)
                         isAllowedException = true;
+                }
 
                 if (isAllowedException)
                 {
