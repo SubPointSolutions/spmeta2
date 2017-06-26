@@ -477,27 +477,17 @@ namespace SPMeta2.Syntax.Default
 
         public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model)
         {
-            var service = ServiceContainer.Instance.GetService<ModelCompatibilityServiceBase>();
-
-            return service.CheckProvisionCompatibility(model);
+            return model.CheckProvisionCompatibility();
         }
 
         public static bool IsCSOMCompatible(ModelNode model)
         {
-            var compatibilityResult = CheckProvisionCompatibility(model);
-            var result = compatibilityResult.Result.All(r => r.IsCSOMCompatible.HasValue
-                                                       && r.IsCSOMCompatible.Value);
-
-            return result;
+            return model.IsCSOMCompatible();
         }
 
         public static bool IsSSOMCompatible(ModelNode model)
         {
-            var compatibilityResult = CheckProvisionCompatibility(model);
-            var result = compatibilityResult.Result.All(r => r.IsSSOMCompatible.HasValue
-                                                       && r.IsSSOMCompatible.Value);
-
-            return result;
+            return model.IsSSOMCompatible();
         }
 
         #endregion

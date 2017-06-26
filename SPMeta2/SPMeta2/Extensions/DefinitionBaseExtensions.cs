@@ -5,6 +5,7 @@ using System.Text;
 
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Services;
 
 namespace SPMeta2.Extensions
 {
@@ -60,6 +61,35 @@ namespace SPMeta2.Extensions
         public static bool HasPropertyBagValue(this DefinitionBase definition, string name)
         {
             return FindPropertyBagValue(definition, name) != null;
+        }
+
+        #endregion
+
+        #region provision compatibility
+
+        public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(this DefinitionBase definition)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelCompatibilityServiceBase>();
+
+            return service.CheckProvisionCompatibility(definition);
+        }
+
+        public static bool IsCSOMCompatible(this DefinitionBase definition)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(definition);
+            var result = compatibilityResult.Result.All(r => r.IsCSOMCompatible.HasValue
+                                                       && r.IsCSOMCompatible.Value);
+
+            return result;
+        }
+
+        public static bool IsSSOMCompatible(this DefinitionBase model)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(model);
+            var result = compatibilityResult.Result.All(r => r.IsSSOMCompatible.HasValue
+                                                             && r.IsSSOMCompatible.Value);
+
+            return result;
         }
 
         #endregion

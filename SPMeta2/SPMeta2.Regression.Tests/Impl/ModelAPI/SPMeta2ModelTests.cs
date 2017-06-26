@@ -13,6 +13,7 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
+using SPMeta2.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.ModelAPI
 {
@@ -198,6 +199,9 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
             // both CSOM / SSOM
             Assert.IsTrue(SPMeta2Model.IsCSOMCompatible(model));
             Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+
+            Assert.IsTrue(model.IsCSOMCompatible());
+            Assert.IsTrue(model.IsSSOMCompatible());
         }
 
         [TestMethod]
@@ -213,6 +217,9 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
             // - CSOM / + SSOM
             Assert.IsFalse(SPMeta2Model.IsCSOMCompatible(model));
             Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+
+            Assert.IsFalse(model.IsCSOMCompatible());
+            Assert.IsTrue(model.IsSSOMCompatible());
         }
 
         [TestMethod]
@@ -228,6 +235,9 @@ namespace SPMeta2.Regression.Tests.Impl.ModelAPI
             // - CSOM / + SSOM
             Assert.IsFalse(SPMeta2Model.IsCSOMCompatible(model));
             Assert.IsTrue(SPMeta2Model.IsSSOMCompatible(model));
+
+            Assert.IsFalse(model.IsCSOMCompatible());
+            Assert.IsTrue(model.IsSSOMCompatible());
         }
 
         #endregion
