@@ -200,6 +200,11 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         public List<WebPartProperty> Properties { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool? Hidden { get; set; }
+
         #endregion
 
         #region methods
