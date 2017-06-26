@@ -27,8 +27,8 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add content type to list",
                         Description = ""
                         )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
-        public void CanDeploySimpleContentTypeLinkDefinition()
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        public void CanDeployListItemContentTypeLinkDefinition()
         {
             var customerInfoContentType = new ContentTypeDefinition
             {
@@ -65,8 +65,8 @@ namespace SPMeta2.Docs.ProvisionSamples.Provision.Definitions
         [SampleMetadata(Title = "Add content type to document library",
                         Description = ""
                         )]
-        [SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
-        public void CanDeploySimpleContentTypeLinkDefinition()
+        //[SampleMetadataTag(Name = BuiltInTagNames.SampleHidden)]
+        public void CanDeployDocumentItemContentTypeLinkDefinition()
         {
             var customerReportContentType = new ContentTypeDefinition
             {

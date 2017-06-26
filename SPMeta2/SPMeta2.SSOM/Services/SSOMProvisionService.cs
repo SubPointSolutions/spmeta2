@@ -10,6 +10,7 @@ using SPMeta2.Utils;
 using System;
 using System.Reflection;
 using SPMeta2.SSOM.Services.Impl;
+using SPMeta2.Common;
 
 namespace SPMeta2.SSOM.Services
 {
@@ -108,6 +109,65 @@ namespace SPMeta2.SSOM.Services
             });
 
             modelHost.DeployModel(listHost, model);
+        }
+    }
+
+    public static class SSOMProvisionServiceIncrementalExtensions
+    {
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// </summary>
+        public static void DeploySiteModelIncrementally(this SSOMProvisionService modelHost,
+            SPSite site,
+            ModelNode model,
+            string incrementalModelId)
+        {
+            DeploySiteModelIncrementally(modelHost, site, model, incrementalModelId, null);
+        }
+
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with IncrementalProvisionConfig.AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// Callback on IncrementalProvisionConfig makes it easy to configure IncrementalProvisionConfig instance
+        /// </summary>
+        public static void DeploySiteModelIncrementally(this SSOMProvisionService modelHost,
+            SPSite site,
+            ModelNode model,
+            string incrementalModelId,
+            Action<IncrementalProvisionConfig> config)
+        {
+            modelHost.DeployModelIncrementally(SiteModelHost.FromSite(site), model, incrementalModelId);
+        }
+
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// </summary>
+        public static void DeployWebModelIncrementally(this SSOMProvisionService modelHost,
+            SPWeb web,
+            ModelNode model,
+            string incrementalModelId)
+        {
+            DeployWebModelIncrementally(modelHost, web, model, incrementalModelId, null);
+        }
+
+        /// <summary>
+        /// A shortcut for incremental provision
+        /// Sets incremental provision mode with IncrementalProvisionConfig.AutoDetectSharePointPersistenceStorage = true
+        /// Once done, reverts back to default provision mode
+        /// Callback on IncrementalProvisionConfig makes it easy to configure IncrementalProvisionConfig instance
+        /// </summary>
+        public static void DeployWebModelIncrementally(this SSOMProvisionService modelHost,
+            SPWeb web,
+            ModelNode model,
+            string incrementalModelId,
+            Action<IncrementalProvisionConfig> config)
+        {
+            modelHost.DeployModelIncrementally(WebModelHost.FromWeb(web), model, incrementalModelId, config);
         }
     }
 }
