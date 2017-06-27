@@ -37,6 +37,7 @@ namespace SPMeta2.Definitions.ContentTypes
 
         [DataMember]
         [IdentityKey]
+        [ExpectValidation]
         public List<ContentTypeLinkValue> ContentTypes { get; set; }
 
         #endregion
