@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
@@ -10,6 +12,7 @@ using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -95,11 +98,37 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 context.ExecuteQueryWithTrace();
 
-                var targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
-                var listContentType = FindListContentType(list, contentTypeLinkModel);
+                // load by id, then fallback on name
+                ContentType targetContentType = null;
 
-                context.Load(targetContentType);
-                context.ExecuteQueryWithTrace();
+                if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
+                {
+                    targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
+                    context.Load(targetContentType);
+                    context.ExecuteQueryWithTrace();
+                }
+
+                if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+                {
+                    var name = contentTypeLinkModel.ContentTypeName;
+
+                    context.Load(web.AvailableContentTypes, c => c.Where(w => w.Name == name));
+                    context.ExecuteQueryWithTrace();
+
+                    targetContentType = web.AvailableContentTypes[0];
+                }
+
+                if (targetContentType == null)
+                {
+                    TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
+                        "Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                        new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName });
+
+                    throw new SPMeta2Exception(string.Format("Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                        new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName }));
+                }
+
+                var listContentType = FindListContentType(list, contentTypeLinkModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -204,7 +233,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             //    result = list.ContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
 
             // trying to find by beat match
-            if (result == null)
+            if (result == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
             {
                 TraceService.InformationFormat((int)LogEventId.ModelProvisionCoreCall,
                     "Trying to find list content type by ContentTypeId: [{0}]", contentTypeLinkModel.ContentTypeId);

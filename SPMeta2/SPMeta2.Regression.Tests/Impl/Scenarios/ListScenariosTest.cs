@@ -482,6 +482,82 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region adding content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Add")]
+        public void CanDeploy_CanAddContentTypeLinksInList_ByName()
+        {
+            ContentTypeDefinition ctFirst = null;
+            ContentTypeDefinition ctSecond = null;
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site
+                    .AddRandomContentType(ct => { ctFirst = ct.Value as ContentTypeDefinition; })
+                    .AddRandomContentType(ct => { ctSecond = ct.Value as ContentTypeDefinition; });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    (list.Value as ListDefinition).ContentTypesEnabled = true;
+
+                    list
+                        .AddContentTypeLink(new ContentTypeLinkDefinition
+                        {
+                            ContentTypeName = ctFirst.Name
+                        })
+                        .AddContentTypeLink(new ContentTypeLinkDefinition
+                        {
+                            ContentTypeName = ctSecond.Name
+                        });
+                });
+            });
+
+            TestModel(siteModel);
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists.ContentTypeLinks.Add")]
+        public void CanDeploy_CanAddContentTypeLinksInList_ById()
+        {
+            ContentTypeDefinition ctFirst = null;
+            ContentTypeDefinition ctSecond = null;
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site
+                    .AddRandomContentType(ct => { ctFirst = ct.Value as ContentTypeDefinition; })
+                    .AddRandomContentType(ct => { ctSecond = ct.Value as ContentTypeDefinition; });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomList(list =>
+                {
+                    (list.Value as ListDefinition).ContentTypesEnabled = true;
+
+                    list
+                        .AddContentTypeLink(new ContentTypeLinkDefinition
+                        {
+                            ContentTypeId = ctFirst.GetContentTypeId()
+                        })
+                        .AddContentTypeLink(new ContentTypeLinkDefinition
+                        {
+                            ContentTypeId = ctSecond.GetContentTypeId()
+                        });
+                });
+            });
+
+            TestModel(siteModel);
+            TestModel(webModel);
+        }
+
+        #endregion
+
         #region content type order
 
 

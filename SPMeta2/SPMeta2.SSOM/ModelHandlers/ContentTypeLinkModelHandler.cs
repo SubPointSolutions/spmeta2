@@ -92,17 +92,28 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var web = list.ParentWeb;
 
-                var contentTypeId = new SPContentTypeId(contentTypeLinkModel.ContentTypeId);
-                var targetContentType = web.AvailableContentTypes[contentTypeId];
+                SPContentType targetContentType = null;
+
+                // load by id, then fallback on name
+                if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
+                {
+                    var contentTypeId = new SPContentTypeId(contentTypeLinkModel.ContentTypeId);
+                    targetContentType = web.AvailableContentTypes[contentTypeId];
+                }
+
+                if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+                {
+                    targetContentType = web.AvailableContentTypes[contentTypeLinkModel.ContentTypeName];
+                }
 
                 if (targetContentType == null)
                 {
                     TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
-                        "Cannot find site content type by ID: [{0}]. Throwing SPMeta2Exception.",
-                        contentTypeId);
+                         "Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                         new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName });
 
-                    throw new SPMeta2Exception(string.Format("Cannot find site content type with ID [{0}].",
-                        contentTypeId));
+                    throw new SPMeta2Exception(string.Format("Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                        new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName }));
                 }
 
                 var currentListContentType = GetListContentType(list, contentTypeLinkModel);
